@@ -1,0 +1,7 @@
+# Never upload these to Vercel
+.env*
+stripe.exe
+*.xlsx
+supabase/
+.next/
+node_modules/

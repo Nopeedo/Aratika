@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+/* ─── Aratika Design System ───────────────────────────────────────────────────
+   Light mode is the permanent default.
+   Dark mode is available via [data-theme="dark"] but not auto-triggered.
+──────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Fonts */
+  --font-sans:         var(--font-geist-sans);
+  --font-mono:         var(--font-geist-mono);
+  --font-manrope:      var(--font-manrope);
+  --font-display:      var(--font-space-grotesk);
+
+  /* ── Brand ─────────────────────────────────────────────────────────────── */
+  --color-brand-navy:         #0F172A;
+  --color-brand-jade:         #1F8A4C;
+  --color-brand-jade-light:   #36e08a;
+  --color-brand-jade-dark:    #166638;
+  --color-brand-jade-subtle:  #e8f5ee;
+
+  /* ── Semantic ───────────────────────────────────────────────────────────── */
+  --color-background:     var(--background);
+  --color-foreground:     var(--foreground);
+  --color-surface:        var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-muted:          var(--muted);
+  --color-muted-fg:       var(--muted-fg);
+  --color-border:         var(--border);
+  --color-border-strong:  var(--border-strong);
+
+  /* ── Party colours — refined for white backgrounds ──────────────────────
+     Source: Official NZ party brand guidelines, adjusted per design handoff.
+  ────────────────────────────────────────────────────────────────────────── */
+  --color-party-national:    #0A5BA8;
+  --color-party-labour:      #D5202B;
+  --color-party-act:         #F5C518;
+  --color-party-green:       #1F8A4C;
+  --color-party-nzfirst:     #181a1f;
+  --color-party-tpm:         #B11226;
+  --color-party-independent: #6B7280;
+
+  /* ── Status ─────────────────────────────────────────────────────────────── */
+  --color-status-active:   #1F8A4C;
+  --color-status-inactive: #6B7280;
+  --color-status-passed:   #2563EB;
+  --color-status-failed:   #DC2626;
+  --color-status-pending:  #D97706;
+
+  /* ── Official vs Public Sentiment ──────────────────────────────────────── */
+  --color-official-bg:      #EFF6FF;
+  --color-official-border:  #BFDBFE;
+  --color-official-text:    #1E40AF;
+  --color-sentiment-bg:     #FFF7ED;
+  --color-sentiment-border: #FED7AA;
+  --color-sentiment-text:   #C2410C;
+
+  /* ── Tier ───────────────────────────────────────────────────────────────── */
+  --color-tier-premium: #D97706;
+}
+
+/* ─── Light Mode (permanent default) ────────────────────────────────────── */
+:root {
+  --background:     #ffffff;
+  --foreground:     #0c0e12;
+  --surface:        #f8fafc;
+  --surface-raised: #ffffff;
+  --muted:          #6b7078;
+  --muted-fg:       #9aa0aa;
+  --border:         #e9e7e2;
+  --border-strong:  #d4d0ca;
+}
+
+/* ─── Dark Mode (opt-in only via [data-theme="dark"], not auto) ──────────
+   Uncomment the media query below to re-enable OS-level auto dark mode.
+────────────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --background:     #0F172A;
+  --foreground:     #F8FAFC;
+  --surface:        #1E293B;
+  --surface-raised: #293548;
+  --muted:          #94A3B8;
+  --muted-fg:       #64748B;
+  --border:         #334155;
+  --border-strong:  #475569;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background:     #0F172A;
+    ...
+  }
+} */
+
+/* ─── Base ───────────────────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Focus ──────────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #1F8A4C;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Selection ──────────────────────────────────────────────────────────── */
+::selection {
+  background-color: #d1fae5;
+  color: #166638;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ─── Dot grid background (used by parliament section + hero) ────────────── */
+.bg-dot-grid {
+  background-image: radial-gradient(circle at 1px 1px, #eceae6 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+/* ─── Animations ─────────────────────────────────────────────────────────── */
+
+/* Live pulse ring — green dot signalling real-time data */
+@keyframes live-pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(54, 224, 138, 0.5); }
+  70%  { box-shadow: 0 0 0 7px rgba(54, 224, 138, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(54, 224, 138, 0); }
+}
+.live-dot {
+  animation: live-pulse-ring 1.8s infinite;
+}
+
+/* Generic fade-pulse (for loading states) */
+@keyframes fade-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* Count-up hint (seats, coalition total) — add to display numbers */
+@keyframes count-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.count-in { animation: count-in 0.4s ease-out forwards; }
+
+/* ─── Policy card hover ──────────────────────────────────────────────────── */
+.policy-card:hover {
+  box-shadow:    0 6px 20px rgba(12,14,18,.10) !important;
+  border-color:  #1F8A4C !important;
+  transform:     translateY(-2px) !important;
+}
+
+/* ─── Party / MP / generic card hover ───────────────────────────────────── */
+.party-card,
+.mp-card {
+  transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
+}
+.party-card:hover,
+.mp-card:hover {
+  box-shadow:    0 6px 20px rgba(12,14,18,.10) !important;
+  border-color:  #1F8A4C !important;
+  transform:     translateY(-2px) !important;
+}
+
+/* ─── Tier gate ──────────────────────────────────────────────────────────── */
+.tier-locked {
+  filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ─── Official data / Sentiment dividers ─────────────────────────────────── */
+.official-data-indicator {
+  border-left: 3px solid var(--color-official-border);
+  background-color: var(--color-official-bg);
+}
+.sentiment-indicator {
+  border-left: 3px solid var(--color-sentiment-border);
+  background-color: var(--color-sentiment-bg);
+}
