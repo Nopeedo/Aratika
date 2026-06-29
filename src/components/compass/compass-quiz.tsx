@@ -270,8 +270,9 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                     {po.statements.map((st) => {
                       const dot = <Indicator kind={st.kind} />
+                      const tip = `${st.label}: ${st.quote ? `“${st.quote}”` : (st.summary ?? '')}${st.sourceUrl ? ' — source ↗' : ''}`
                       return st.sourceUrl ? (
-                        <a key={st.id} href={st.sourceUrl} target="_blank" rel="noopener noreferrer" title={`${st.label}: ${st.summary ?? ''} — source ↗`} style={{ textDecoration: 'none' }}>{dot}</a>
+                        <a key={st.id} href={st.sourceUrl} target="_blank" rel="noopener noreferrer" title={tip} style={{ textDecoration: 'none' }}>{dot}</a>
                       ) : <span key={st.id} title={`${st.label}: position not yet captured`}>{dot}</span>
                     })}
                   </div>

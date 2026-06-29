@@ -25,6 +25,7 @@ export interface StatementOverlap {
   kind: AgreeKind
   sourceUrl: string | null
   summary: string | null
+  quote: string | null
 }
 
 export interface PartyOverlap {
@@ -52,7 +53,7 @@ export function computeOverlap(answers: Record<string, number>): PartyOverlap[] 
       }
       return {
         id: s.id, label: s.label, userValue, partyAxis, kind,
-        sourceUrl: cell?.sourceUrl ?? null, summary: cell?.summary ?? null,
+        sourceUrl: cell?.sourceUrl ?? null, summary: cell?.summary ?? null, quote: cell?.quote ?? null,
       }
     })
     return { party, counted, sameSide, statements }

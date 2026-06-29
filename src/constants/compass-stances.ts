@@ -27,8 +27,9 @@ const S = {
   green:    'https://www.greens.org.nz/policy_complete_party',
   act:      'https://www.act.org.nz/policies',
   nzfirst:  'https://www.nzfirst.nz/policies',
-  tpm:      'https://www.maoriparty.org/',
+  tpm:      'https://www.maoriparty.org.nz/',
   tracker:  'https://en.wikipedia.org/wiki/2026_New_Zealand_general_election', // 2026 announcements, with citations
+  nzfManifesto: 'https://assets.nationbuilder.com/nzfirst/pages/4158/attachments/original/1696631089/2023-New-Zealand-First-Policy-Manifesto-1.pdf',
 } as const
 
 const lbl: Record<string, string> = {
@@ -45,7 +46,7 @@ export const COMPASS_STANCES: CompassStances = {
   'tax-vs-services': {
     national: { stance: 'support',          summary: 'Favours lower taxes and fiscal restraint over expanding public spending.', quote: null, sourceUrl: S.national, sourceLabel: lbl.national },
     labour:   { stance: 'oppose',           summary: 'Backs a capital gains tax on property to fund services — not lower taxes.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.labour },
-    green:    { stance: 'strongly_oppose',  summary: 'Proposes a wealth tax and higher income/corporate rates to fund services.', quote: null, sourceUrl: S.green, sourceLabel: lbl.green },
+    green:    { stance: 'strongly_oppose',  summary: 'Proposes a wealth tax and higher income/corporate rates to fund services.', quote: 'In Government, the Green Party will tackle inequality through a fairer tax system and Government spending.', sourceUrl: S.green, sourceLabel: lbl.green },
     act:      { stance: 'strongly_support', summary: 'Campaigns to cut government spending, lower taxes and merge ministries.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
     nzfirst:  { stance: 'mixed',            summary: 'Economically interventionist rather than tax-cutting; focus on cost of living.', quote: null, sourceUrl: S.nzfirst, sourceLabel: lbl.nzfirst },
     tpm:      { stance: 'strongly_oppose',  summary: 'Favours redistribution and higher taxes on wealth over lower taxes.', quote: null, sourceUrl: S.tpm, sourceLabel: lbl.tpm },
@@ -54,7 +55,7 @@ export const COMPASS_STANCES: CompassStances = {
   // 2 ── Public health should get significantly more funding, even via higher tax ──
   'health-funding': {
     national: { stance: 'mixed',            summary: 'Supports health delivery but emphasises efficiency over higher taxes.', quote: null, sourceUrl: S.national, sourceLabel: lbl.national },
-    labour:   { stance: 'strongly_support', summary: 'Would use a capital gains tax to subsidise GP visits and add free screenings.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.labour },
+    labour:   { stance: 'strongly_support', summary: 'Would use a capital gains tax to subsidise GP visits and add free screenings.', quote: "Three free doctor's visits a year for everyone. Delivered with Labour's new Medicard.", sourceUrl: S.labour, sourceLabel: lbl.labour },
     green:    { stance: 'strongly_support', summary: 'Backs substantially more public-health funding through progressive taxes.', quote: null, sourceUrl: S.green, sourceLabel: lbl.green },
     act:      { stance: 'oppose',           summary: 'Opposes higher taxes; favours efficiency, e.g. pharmacists easing GP load.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
     nzfirst:  { stance: 'support',          summary: 'Supports stronger public-health funding as part of core public services.', quote: null, sourceUrl: S.nzfirst, sourceLabel: lbl.nzfirst },
@@ -65,7 +66,7 @@ export const COMPASS_STANCES: CompassStances = {
   'public-housing': {
     national: { stance: 'oppose',           summary: 'Prefers market-led supply and planning reform over state house building.', quote: null, sourceUrl: S.national, sourceLabel: lbl.national },
     labour:   { stance: 'support',          summary: 'Backs social/community housing, e.g. raising the Crown guarantee for builders.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.labour },
-    green:    { stance: 'strongly_support', summary: 'Would build 40,000 social homes over five years, with rent caps.', quote: null, sourceUrl: S.green, sourceLabel: lbl.green },
+    green:    { stance: 'strongly_support', summary: 'Would build 40,000 social homes over five years, with rent caps.', quote: 'launching a massive public housing project that is funded, built and managed by the state', sourceUrl: S.green, sourceLabel: lbl.green },
     act:      { stance: 'strongly_oppose',  summary: 'Favours private supply via deregulation rather than government building.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
     nzfirst:  { stance: 'mixed',            summary: 'Supports state intervention on housing/prices but not large-scale state builds.', quote: null, sourceUrl: S.nzfirst, sourceLabel: lbl.nzfirst },
     tpm:      { stance: 'support',          summary: 'Backs public and papakāinga/Māori housing to address the shortage.', quote: null, sourceUrl: S.tpm, sourceLabel: lbl.tpm },
@@ -95,9 +96,9 @@ export const COMPASS_STANCES: CompassStances = {
   'justice-sentencing': {
     national: { stance: 'strongly_support', summary: 'Campaigns on tougher sentencing, e.g. scrapping some sentence discounts.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.national },
     labour:   { stance: 'oppose',           summary: 'Leans toward prevention and rehabilitation over tougher sentencing.', quote: null, sourceUrl: S.labour, sourceLabel: lbl.labour },
-    green:    { stance: 'strongly_oppose',  summary: 'Prioritises rehabilitation and reducing the prison population.', quote: null, sourceUrl: S.green, sourceLabel: lbl.green },
+    green:    { stance: 'strongly_oppose',  summary: 'Prioritises rehabilitation and reducing the prison population.', quote: 'We will prioritise restorative justice based on Te Tiriti o Waitangi and tikanga Māori values.', sourceUrl: S.green, sourceLabel: lbl.green },
     act:      { stance: 'strongly_support', summary: 'Long-standing tough-on-crime stance with firmer sentencing.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
-    nzfirst:  { stance: 'support',          summary: 'Supports tougher law-and-order and firmer sentencing.', quote: null, sourceUrl: S.nzfirst, sourceLabel: lbl.nzfirst },
+    nzfirst:  { stance: 'support',          summary: 'Supports tougher law-and-order and firmer sentencing.', quote: 'Getting tough on rising crime', sourceUrl: S.nzfManifesto, sourceLabel: 'NZ First 2023 manifesto' },
     tpm:      { stance: 'strongly_oppose',  summary: 'Would phase out prisons by 2040 in favour of community-led approaches.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.tpm },
   },
 
@@ -105,19 +106,19 @@ export const COMPASS_STANCES: CompassStances = {
   'treaty-partnership': {
     national: { stance: 'oppose',           summary: 'Has scaled back some Māori-specific policies while keeping the Treaty.', quote: null, sourceUrl: S.national, sourceLabel: lbl.national },
     labour:   { stance: 'support',          summary: 'Would reinstate Treaty obligations, e.g. for school boards.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.labour },
-    green:    { stance: 'strongly_support', summary: 'Strong commitment to Te Tiriti partnership and Māori rights.', quote: null, sourceUrl: S.green, sourceLabel: lbl.green },
+    green:    { stance: 'strongly_support', summary: 'Strong commitment to Te Tiriti partnership and Māori rights.', quote: 'We will honour Te Tiriti o Waitangi by strengthening the rights of Māori people.', sourceUrl: S.green, sourceLabel: lbl.green },
     act:      { stance: 'strongly_oppose',  summary: 'Advocates "one law for all" and merging Māori-specific agencies.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.act },
-    nzfirst:  { stance: 'strongly_oppose',  summary: 'Seeks a referendum on Māori seats and to remove Māori-specific bodies.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.nzfirst },
+    nzfirst:  { stance: 'strongly_oppose',  summary: 'Seeks a referendum on Māori seats and to remove Māori-specific bodies.', quote: 'Rule out working with any political party that promotes separatism.', sourceUrl: S.nzfManifesto, sourceLabel: 'NZ First 2023 manifesto' },
     tpm:      { stance: 'strongly_support', summary: 'Proposes a Treaty Commissioner able to audit and veto non-compliant bills.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.tpm },
   },
 
   // 8 ── Do more to reduce inequality and support people on low incomes ──
   'inequality-support': {
     national: { stance: 'mixed',            summary: 'Emphasises growth and work over redistribution to address living costs.', quote: null, sourceUrl: S.national, sourceLabel: lbl.national },
-    labour:   { stance: 'support',          summary: 'Backs targeted support and transport-fare caps to ease living costs.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.labour },
-    green:    { stance: 'strongly_support', summary: 'Proposes a tax-free threshold and wealth tax to cut poverty and inequality.', quote: null, sourceUrl: S.green, sourceLabel: lbl.green },
+    labour:   { stance: 'support',          summary: 'Backs targeted support and transport-fare caps to ease living costs.', quote: "$20 a week is the most you'll pay to get around by bus or train under Labour.", sourceUrl: S.labour, sourceLabel: lbl.labour },
+    green:    { stance: 'strongly_support', summary: 'Proposes a tax-free threshold and wealth tax to cut poverty and inequality.', quote: 'We will ensure that the income support system is sufficient, accessible, and enables people to live with dignity.', sourceUrl: S.green, sourceLabel: lbl.green },
     act:      { stance: 'oppose',           summary: 'Emphasises personal responsibility; tighter welfare settings.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
-    nzfirst:  { stance: 'support',          summary: 'Targets cost of living via market interventions on banks, energy and groceries.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.nzfirst },
+    nzfirst:  { stance: 'support',          summary: 'Targets cost of living via market interventions on banks, energy and groceries.', quote: "New Zealand First's seven-point solution for the cost of living crisis", sourceUrl: S.nzfManifesto, sourceLabel: 'NZ First 2023 manifesto' },
     tpm:      { stance: 'strongly_support', summary: 'Centres reducing poverty and inequality, especially for Māori and low-income whānau.', quote: null, sourceUrl: S.tpm, sourceLabel: lbl.tpm },
   },
 }
