@@ -40,7 +40,7 @@ export function CinematicHeroBurnt() {
         </motion.div>
 
         {/* headline */}
-        <motion.h1 {...rise(0.16)} style={{ fontSize: 'clamp(40px, 8.5vw, 104px)', fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.03, color: INK, fontFamily: MANROPE, margin: '0 0 20px' }}>
+        <motion.h1 {...rise(0.16)} style={{ fontSize: 'clamp(32px, 8.5vw, 104px)', fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.03, color: INK, fontFamily: MANROPE, margin: '0 0 20px' }}>
           The direction
           <br />
           of the country is
