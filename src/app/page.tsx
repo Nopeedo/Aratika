@@ -165,7 +165,7 @@ export default function HomePage() {
 
         {/* ── Party tiles — tap a colour for an at-a-glance snapshot ── */}
         <section style={{ background: '#fff' }}>
-          <div style={{ maxWidth: 760, margin: '0 auto', padding: '7px 36px 40px' }}>
+          <div style={{ maxWidth: 760, margin: '0 auto', padding: '7px clamp(18px, 5vw, 36px) 40px' }}>
             <PartyTilesSection />
           </div>
         </section>
@@ -176,8 +176,8 @@ export default function HomePage() {
 
       {/* ── Credibility strip ── */}
       <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px 36px', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 12, flex: 1, minWidth: 320, maxWidth: 560 }}>
+        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px)', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(116px, 1fr))', gap: 12, flex: 1, minWidth: 0, maxWidth: 560 }}>
             {STATS.map((s) => (
               <StatTile key={s.label} {...s} />
             ))}
@@ -204,7 +204,7 @@ export default function HomePage() {
           1b. START-HERE DOORS — meet each visitor where they are
       ═══════════════════════════════════════════════════════════════════ */}
       <section style={{ background: SURFACE, borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px 36px 44px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 44px' }}>
           <div style={{ marginBottom: 22 }}>
             <h2 style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 6px' }}>Your arsenal</h2>
             <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: 0 }}>Everything you need to walk in ready for the decision.</p>
@@ -264,7 +264,7 @@ export default function HomePage() {
           2. ELECTIONS 2026 — Phase-1 spotlight
       ═══════════════════════════════════════════════════════════════════ */}
       <section style={{ background: '#0c0e12' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px 36px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px clamp(18px, 5vw, 36px)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 40, alignItems: 'center' }}>
             <div>
               <div className="live-dot" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(54,224,138,.12)', color: '#36e08a', border: '1px solid rgba(54,224,138,.25)', borderRadius: 999, padding: '6px 13px', fontSize: 12.5, fontWeight: 800, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 18 }}>
@@ -310,12 +310,12 @@ export default function HomePage() {
           2a. ELECTORATE MAP — dedicated, interactive feature section
       ═══════════════════════════════════════════════════════════════════ */}
       <section style={{ background: '#fff', borderTop: '1px solid rgba(255,255,255,.06)' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 36px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px clamp(18px, 5vw, 36px)' }}>
           <Reveal>
             <div style={{ display: 'flex', gap: 44, alignItems: 'center', flexWrap: 'wrap' }}>
 
               {/* Copy + actions */}
-              <div style={{ flex: '1 1 320px', minWidth: 300 }}>
+              <div style={{ flex: '1 1 320px', minWidth: 0 }}>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: JADE, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 12 }}>
                   <Map style={{ width: 15, height: 15 }} /> The Electorate Map
                 </div>
@@ -355,7 +355,7 @@ export default function HomePage() {
               </div>
 
               {/* Live interactive map */}
-              <div style={{ flex: '1.4 1 420px', minWidth: 320, alignSelf: 'stretch', display: 'flex' }}>
+              <div style={{ flex: '1.4 1 420px', minWidth: 0, alignSelf: 'stretch', display: 'flex' }}>
                 <div style={{ flex: 1 }}>
                   <HomeMapFeature />
                 </div>
@@ -377,7 +377,7 @@ export default function HomePage() {
           3. POLICY HUB — Prominent issue grid with party indicators
       ═══════════════════════════════════════════════════════════════════ */}
       <section style={{ background: SURFACE, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 36px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px clamp(18px, 5vw, 36px)' }}>
 
           {/* Section header */}
           <div style={{
@@ -500,7 +500,7 @@ export default function HomePage() {
           4b. GET READY TO VOTE — election readiness strip
       ═══════════════════════════════════════════════════════════════════ */}
       <section style={{ background: SURFACE, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px 36px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px clamp(18px, 5vw, 36px)' }}>
           <h2 style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 6px' }}>Get ready to vote</h2>
           <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 24px' }}>Three quick steps to feel confident heading into 2026.</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
@@ -541,10 +541,10 @@ export default function HomePage() {
       ═══════════════════════════════════════════════════════════════════ */}
       {isEnabled('news') && (
       <section style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 36px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px clamp(18px, 5vw, 36px)' }}>
           <div style={{
             display:             'grid',
-            gridTemplateColumns: '1.6fr 1fr',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))',
             gap:                 48,
             alignItems:          'start',
           }}>
@@ -677,7 +677,7 @@ export default function HomePage() {
       ═══════════════════════════════════════════════════════════════════ */}
       {isEnabled('premium') && (
       <section style={{ background: '#0c0e12' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '72px 36px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '72px clamp(18px, 5vw, 36px)' }}>
 
           <div style={{ textAlign: 'center', maxWidth: 560, margin: '0 auto 48px' }}>
             <div style={{
@@ -720,7 +720,7 @@ export default function HomePage() {
 
           <div style={{
             display:             'grid',
-            gridTemplateColumns: '1fr 1fr',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))',
             gap:                 16,
             maxWidth:            640,
             margin:              '0 auto',
