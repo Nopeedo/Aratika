@@ -2,6 +2,6 @@
 .env*
 stripe.exe
 *.xlsx
-supabase/
+/supabase/
 .next/
 node_modules/
