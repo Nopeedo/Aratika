@@ -32,8 +32,11 @@ import { PARTY_COLORS } from '@/constants/parties'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import type { PolicyTopic } from '@/types'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
+// ── Burnt Clay palette (matches the hero + party tiles) ──
+const INK = '#2A1206', SECONDARY = '#6b5f54', TERTIARY = '#a99d8f'
+const BORDER = '#ece8e1', SURFACE = '#faf7f2', CLAY = '#C2410C'
+const CLAY_LIGHT = '#fbeee6'   // warm terracotta tint (was the green #ecfdf5)
+const GREEN = '#1F8A4C'        // kept only for the "agree" overlap indicator (distinct from disagree)
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 // ─── Part-1 option data ───────────────────────────────────────────────────────
@@ -107,7 +110,7 @@ export function CompassQuiz() {
             <span style={{ fontSize: 12, fontWeight: 700, color: TERTIARY, fontFamily: MANROPE }}>{Math.round((step / LAST) * 100)}%</span>
           </div>
           <div style={{ height: 6, borderRadius: 3, background: '#eceae5', overflow: 'hidden' }}>
-            <motion.div initial={false} animate={{ width: `${(step / LAST) * 100}%` }} transition={{ duration: 0.35 }} style={{ height: '100%', background: JADE, borderRadius: 3 }} />
+            <motion.div initial={false} animate={{ width: `${(step / LAST) * 100}%` }} transition={{ duration: 0.35 }} style={{ height: '100%', background: CLAY, borderRadius: 3 }} />
           </div>
         </div>
       )}
@@ -116,7 +119,7 @@ export function CompassQuiz() {
         {step === 0 && (
           <Slide k="intro">
             <div style={{ textAlign: 'center', padding: '12px 0' }}>
-              <div style={{ width: 56, height: 56, borderRadius: 16, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}><Compass style={{ width: 28, height: 28, color: JADE }} /></div>
+              <div style={{ width: 56, height: 56, borderRadius: 16, background: CLAY_LIGHT, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}><Compass style={{ width: 28, height: 28, color: CLAY }} /></div>
               <h1 style={{ fontSize: 'clamp(26px, 6vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Your political compass</h1>
               <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 auto 22px', maxWidth: 520 }}>
                 About 12 quick questions. We’ll point you to the tools that help most — and show where you overlap with each party on the issues, sourced and side by side.
@@ -146,7 +149,7 @@ export function CompassQuiz() {
 
         {onStatement && curStmt && (
           <Slide k={curStmt.id}>
-            <div style={{ marginBottom: 6, fontSize: 12, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>{curStmt.label}</div>
+            <div style={{ marginBottom: 6, fontSize: 12, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: CLAY, fontFamily: MANROPE }}>{curStmt.label}</div>
             <Head title={curStmt.text} sub="How much do you agree? There’s no right answer — be honest." />
             <Col>
               {LIKERT_SCALE.map((o) => (
@@ -199,15 +202,15 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
   return (
     <Slide k="result">
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        <div style={{ width: 52, height: 52, borderRadius: 14, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}><Sparkles style={{ width: 26, height: 26, color: JADE }} /></div>
+        <div style={{ width: 52, height: 52, borderRadius: 14, background: CLAY_LIGHT, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px' }}><Sparkles style={{ width: 26, height: 26, color: CLAY }} /></div>
         <h2 style={{ fontSize: 'clamp(22px, 5.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Your compass</h2>
       </div>
 
       {/* hero tool recommendation */}
       {hero && (
         <Link href={hero.href} style={{ textDecoration: 'none', display: 'block', marginBottom: 14 }}>
-          <div className="party-card" style={{ background: 'linear-gradient(150deg,#0f9152,#0c0e12)', borderRadius: 18, padding: '20px 20px' }}>
-            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: '#36e08a', fontFamily: MANROPE }}>Start here</span>
+          <div className="party-card" style={{ background: 'linear-gradient(150deg,#C2410C,#2A1206)', borderRadius: 18, padding: '20px 20px' }}>
+            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: '#f6a667', fontFamily: MANROPE }}>Start here</span>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 13, marginTop: 10 }}>
               <span style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(255,255,255,.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><HeroIcon style={{ width: 22, height: 22, color: '#fff' }} /></span>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -225,7 +228,7 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
             return (
               <Link key={r.href} href={r.href} style={{ textDecoration: 'none' }}>
                 <div className="party-card" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 14px', border: `1px solid ${BORDER}`, borderRadius: 14, background: '#fff' }}>
-                  <span style={{ width: 36, height: 36, borderRadius: 10, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon style={{ width: 18, height: 18, color: JADE }} /></span>
+                  <span style={{ width: 36, height: 36, borderRadius: 10, background: CLAY_LIGHT, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon style={{ width: 18, height: 18, color: CLAY }} /></span>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 14.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{r.title}</div>
                     <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.45, margin: 0 }}>{r.reason}</p>
@@ -305,11 +308,11 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
       )}
 
       {showEnrol && (
-        <div style={{ display: 'flex', gap: 10, padding: '13px 15px', background: '#ecfdf5', border: '1px solid #bbf0d0', borderRadius: 12, marginBottom: 16 }}>
-          <Vote style={{ width: 18, height: 18, color: '#136a3a', flexShrink: 0, marginTop: 1 }} />
-          <p style={{ fontSize: 13, color: '#136a3a', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+        <div style={{ display: 'flex', gap: 10, padding: '13px 15px', background: CLAY_LIGHT, border: '1px solid #f3d8c6', borderRadius: 12, marginBottom: 16 }}>
+          <Vote style={{ width: 18, height: 18, color: '#9A3412', flexShrink: 0, marginTop: 1 }} />
+          <p style={{ fontSize: 13, color: '#9A3412', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
             Not enrolled yet? Check or enrol in a few minutes at{' '}
-            <a href="https://vote.nz" target="_blank" rel="noopener noreferrer" style={{ color: '#0d5a30', fontWeight: 800, textDecoration: 'underline' }}>vote.nz <ExternalLink style={{ width: 12, height: 12, display: 'inline', verticalAlign: '-1px' }} /></a> — the official Electoral Commission site.
+            <a href="https://vote.nz" target="_blank" rel="noopener noreferrer" style={{ color: '#7c2d12', fontWeight: 800, textDecoration: 'underline' }}>vote.nz <ExternalLink style={{ width: 12, height: 12, display: 'inline', verticalAlign: '-1px' }} /></a> — the official Electoral Commission site.
           </p>
         </div>
       )}
@@ -324,7 +327,7 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
 // ─── small bits ───────────────────────────────────────────────────────────────
 function Indicator({ kind }: { kind: 'agree' | 'disagree' | 'partial' | 'na' }) {
   const map = {
-    agree:    { bg: '#ecfdf5', fg: JADE,      Icon: Check },
+    agree:    { bg: '#e9f7ef', fg: GREEN,     Icon: Check },
     disagree: { bg: '#fdecec', fg: '#c0392b', Icon: X },
     partial:  { bg: '#fdf6dc', fg: '#9a7a00', Icon: Minus },
     na:       { bg: '#f1f0ec', fg: '#b9b4ab', Icon: Minus },
@@ -338,8 +341,8 @@ function Legend({ kind, text }: { kind: 'agree' | 'disagree' | 'partial' | 'na';
 
 function Choice({ Icon, label, blurb, selected, hideIcon, onClick }: { Icon: React.ElementType; label: string; blurb?: string; selected: boolean; hideIcon?: boolean; onClick: () => void }) {
   return (
-    <button onClick={onClick} style={{ display: 'flex', alignItems: blurb ? 'flex-start' : 'center', gap: 12, textAlign: 'left', cursor: 'pointer', fontFamily: MANROPE, width: '100%', padding: '13px 15px', borderRadius: 14, border: `1.5px solid ${selected ? JADE : BORDER}`, background: selected ? '#ecfdf5' : '#fff', transition: 'all .15s' }}>
-      <span style={{ width: 34, height: 34, borderRadius: 10, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: selected ? JADE : SURFACE }}>
+    <button onClick={onClick} style={{ display: 'flex', alignItems: blurb ? 'flex-start' : 'center', gap: 12, textAlign: 'left', cursor: 'pointer', fontFamily: MANROPE, width: '100%', padding: '13px 15px', borderRadius: 14, border: `1.5px solid ${selected ? CLAY : BORDER}`, background: selected ? CLAY_LIGHT : '#fff', transition: 'all .15s' }}>
+      <span style={{ width: 34, height: 34, borderRadius: 10, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: selected ? CLAY : SURFACE }}>
         {selected ? <Check style={{ width: 18, height: 18, color: '#fff' }} /> : hideIcon ? <span style={{ width: 10, height: 10, borderRadius: '50%', border: `2px solid ${TERTIARY}` }} /> : <Icon style={{ width: 18, height: 18, color: SECONDARY }} />}
       </span>
       <span style={{ minWidth: 0 }}>
