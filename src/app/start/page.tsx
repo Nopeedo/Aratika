@@ -5,12 +5,12 @@
  */
 
 import type { Metadata } from 'next'
-import { OnboardingQuiz } from '@/components/onboarding/onboarding-quiz'
+import { CompassQuiz } from '@/components/compass/compass-quiz'
 
 export const metadata: Metadata = {
-  title: 'Find what matters to you',
+  title: 'Your political compass',
   description:
-    'A two-minute, no-jargon walkthrough to find the issues you care about and see where the parties stand — pitched at your level.',
+    'A 12-question, no-jargon compass: find the tools that help you most and see where you overlap with each party on the issues — sourced, side by side. Not voting advice.',
 }
 
 const BORDER = '#e9e7e2'
@@ -20,7 +20,7 @@ export default function StartPage() {
     <div style={{ background: '#fff', minHeight: '100vh' }}>
       <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '56px 36px 56px' }}>
-          <OnboardingQuiz />
+          <CompassQuiz />
         </div>
       </div>
     </div>

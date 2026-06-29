@@ -28,6 +28,7 @@ export interface Preferences {
   topIssues: PolicyTopic[]   // ordered subset of issues — most important first
   level: ComfortLevel | null
   learnStyles: LearnStyle[]
+  compass: Record<string, number>   // compass statement id → Likert value (-2..2)
   completed: boolean
 }
 
@@ -39,6 +40,7 @@ const EMPTY: Preferences = {
   topIssues: [],
   level: null,
   learnStyles: [],
+  compass: {},
   completed: false,
 }
 
