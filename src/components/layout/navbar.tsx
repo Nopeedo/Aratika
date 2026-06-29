@@ -19,11 +19,7 @@ const cleanHref = (href: string) => href.split('#')[0]
 
 function AratikaLogo() {
   return (
-    <Link href="/" className="flex items-center gap-2.5 shrink-0">
-      {/* Icon mark — stylised A with NZ jade colour */}
-      <div className="flex items-center justify-center size-8 rounded-lg bg-brand-navy text-brand-jade font-bold text-lg leading-none select-none">
-        A
-      </div>
+    <Link href="/" className="flex items-center shrink-0">
       <span className="font-semibold text-lg text-foreground tracking-tight">
         {SITE.name}
       </span>
