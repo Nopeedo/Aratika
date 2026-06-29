@@ -24,6 +24,7 @@ import { GENERATED_MPS } from './mps-generated'
 import { MP_DETAIL } from './mps-detail'
 import { GENERATED_DETAIL } from './mps-detail-generated'
 import { MP_PHOTOS } from './mp-photos'
+import { MP_WIKI } from './mps-wikipedia'
 
 export interface SponsoredBillExample {
   title:  string
@@ -53,6 +54,7 @@ export interface MPProfile {
   bornPlace?:        string
   priorCareer?:      string
   bio?:              string          // short biography, public record
+  bioSourceUrl?:     string          // attribution when the bio is sourced (e.g. Wikipedia)
   photo?:            string          // headshot path (local /public)
   photoCredit?:      string          // author/source for attribution
   photoLicense?:     string          // licence (e.g. 'CC0 1.0')
@@ -68,6 +70,15 @@ export interface MPProfile {
   electorateMajority?: number        // winning margin (last election)
   sponsoredBills?:    SponsoredBillExample[]
   recentVotes?:       VoteExample[]
+
+  // ── TERM ACTIVITY (current term — populated from the official record; all
+  //    optional so nothing is ever fabricated. Empty = "being added", not zero) ─
+  membersBills?:     { title: string; status: string; billSlug?: string }[]   // members' bills sponsored / in the ballot
+  billsInCharge?:    { title: string; billSlug?: string }[]                    // government bills this minister is responsible for
+  writtenQuestions?: number                                                    // written parliamentary questions lodged this term
+  speeches?:         number                                                    // contributions / speeches in the House this term
+  notableVotes?:     { title: string; vote: 'For' | 'Against' | 'Abstain'; conscience?: boolean; date?: string; billSlug?: string }[]
+  activityAsOf?:     string                                                    // ISO date the activity data was last refreshed
 }
 
 // ─── MP profiles ────────────────────────────────────────────────────────────
@@ -140,6 +151,13 @@ export const MP_PROFILES: Record<string, MPProfile> = (() => {
     if (map[slug]) map[slug] = { ...map[slug], ...detail }
   }
   map[LUXON.slug] = LUXON   // rich profile overrides the generated basic one
+
+  // Fill biographies from Wikipedia ONLY where no curated bio exists (attributed).
+  for (const slug in MP_WIKI) {
+    if (map[slug] && !map[slug].bio) {
+      map[slug] = { ...map[slug], bio: MP_WIKI[slug].bio, bioSourceUrl: MP_WIKI[slug].wikipediaUrl }
+    }
+  }
 
   // Merge in freely-licensed Wikimedia Commons portraits (with attribution).
   // Does not override a profile that already has its own photo (e.g. Luxon).

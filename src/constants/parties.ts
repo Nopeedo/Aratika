@@ -9,6 +9,7 @@ export const PARTY_NAMES: Record<PartySlug, { short: string; full: string }> = {
   green:    { short: 'Green',    full: 'Green Party of Aotearoa New Zealand' },
   nzfirst:  { short: 'NZ First', full: 'New Zealand First' },
   tpm:      { short: 'Te Pāti Māori', full: 'Te Pāti Māori' },
+  top:      { short: 'TOP', full: 'The Opportunity Party' },
   independent: { short: 'Independent', full: 'Independent' },
 }
 
@@ -24,6 +25,7 @@ export const PARTY_COLORS: Record<PartySlug, { bg: string; text: string; light: 
   green:       { bg: '#1F8A4C', text: '#ffffff', light: '#e6f4ec' },
   nzfirst:     { bg: '#181a1f', text: '#ffffff', light: '#ebebeb' },
   tpm:         { bg: '#B11226', text: '#ffffff', light: '#f8e6e8' },
+  top:         { bg: '#00E5CC', text: '#06302c', light: '#e5fdfc' },
   independent: { bg: '#6B7280', text: '#ffffff', light: '#f3f4f6' },
 }
 
@@ -37,6 +39,7 @@ export const CURRENT_SEATS: Record<PartySlug, number> = {
   green:       15,
   nzfirst:      8,
   tpm:          6,
+  top:          0,
   independent:  0,
 }
 
@@ -54,6 +57,7 @@ export const PARTY_STATUS: Record<PartySlug, 'governing' | 'opposition' | 'suppo
   labour:      'opposition',
   green:       'opposition',
   tpm:         'opposition',
+  top:         'none',
   independent: 'none',
 }
 

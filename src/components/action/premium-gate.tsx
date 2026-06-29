@@ -9,6 +9,7 @@
 import Link from 'next/link'
 import { Lock, Sparkles, LogIn } from 'lucide-react'
 import { useUser } from '@/hooks/use-user'
+import { PREMIUM_ENABLED } from '@/constants/features'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
@@ -23,10 +24,12 @@ export function PremiumGate({
 }) {
   const { user, loading, isPremium } = useUser()
 
+  // Paid tier off → no gate, content is free for everyone.
+  if (!PREMIUM_ENABLED || isPremium) return <>{children}</>
+
   if (loading) {
     return <div style={{ height: 200, borderRadius: 16, background: '#f4f2ee', border: `1px solid ${BORDER}` }} />
   }
-  if (isPremium) return <>{children}</>
 
   return (
     <div style={{ position: 'relative' }}>

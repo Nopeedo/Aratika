@@ -3,13 +3,17 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu, X, ChevronDown, Map, User, LogOut, Settings, Crown } from 'lucide-react'
+import { Menu, X, ChevronDown, Map, User, LogOut, Settings, Crown, ListChecks } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { Button } from '@/components/ui/button'
-import { NAV_LINKS } from '@/constants/nav-links'
+import { visibleNav, type NavItem } from '@/constants/nav-links'
+import { PREMIUM_ENABLED } from '@/constants/features'
 import { SITE } from '@/constants/site'
 import { useUser } from '@/hooks/use-user'
 import { createClient } from '@/lib/supabase/client'
+
+const NAV = visibleNav()
+const cleanHref = (href: string) => href.split('#')[0]
 
 // ─── Aratika Logo ─────────────────────────────────────────────────────────────
 
@@ -42,6 +46,14 @@ export function Navbar() {
   const { user, isPremium } = useUser()
   const isLoggedIn = !!user
 
+  const isActive = (href?: string) => {
+    if (!href) return false
+    const h = cleanHref(href)
+    return pathname === h || (h !== '/' && pathname.startsWith(h + '/'))
+  }
+  const groupActive = (item: NavItem) =>
+    item.children ? item.children.some((c) => isActive(c.href)) : isActive(item.href)
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,27 +64,31 @@ export function Navbar() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  'px-3 py-2 rounded-md text-sm font-medium transition-colors',
-                  pathname === link.href || pathname.startsWith(link.href + '/')
-                    ? 'text-brand-jade bg-brand-jade-subtle'
-                    : 'text-muted hover:text-foreground hover:bg-surface',
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {NAV.map((item) =>
+              item.children ? (
+                <DesktopGroup key={item.label} item={item} active={groupActive(item)} isActive={isActive} />
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href!}
+                  className={cn(
+                    'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                    isActive(item.href)
+                      ? 'text-brand-jade bg-brand-jade-subtle'
+                      : 'text-muted hover:text-foreground hover:bg-surface',
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ),
+            )}
           </nav>
 
           {/* Desktop Auth Actions */}
           <div className="hidden lg:flex items-center gap-2">
             {isLoggedIn ? (
               <>
-                {!isPremium && (
+                {PREMIUM_ENABLED && !isPremium && (
                   <Button variant="premium" size="sm" asChild>
                     <Link href="/subscription">
                       <Crown className="size-3.5" />
@@ -110,28 +126,32 @@ export function Navbar() {
       {mobileOpen && (
         <div className="lg:hidden border-t border-border bg-background">
           <nav className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  'flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
-                  pathname === link.href
-                    ? 'text-brand-jade bg-brand-jade-subtle'
-                    : 'text-foreground hover:bg-surface',
-                )}
-              >
-                {link.label}
-                <span className="ml-auto text-xs text-muted">{link.description}</span>
-              </Link>
-            ))}
+            {NAV.map((item) =>
+              item.children ? (
+                <MobileGroup key={item.label} item={item} isActive={isActive} />
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href!}
+                  className={cn(
+                    'flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
+                    isActive(item.href)
+                      ? 'text-brand-jade bg-brand-jade-subtle'
+                      : 'text-foreground hover:bg-surface',
+                  )}
+                >
+                  {item.label}
+                  <span className="ml-auto text-xs text-muted">{item.description}</span>
+                </Link>
+              ),
+            )}
           </nav>
 
           {/* Mobile Auth */}
           <div className="max-w-7xl mx-auto px-4 pb-4 pt-2 border-t border-border flex flex-col gap-2">
             {isLoggedIn ? (
               <>
-                {!isPremium && (
+                {PREMIUM_ENABLED && !isPremium && (
                   <Button variant="premium" asChild>
                     <Link href="/subscription">
                       <Crown className="size-4" />
@@ -157,6 +177,112 @@ export function Navbar() {
         </div>
       )}
     </header>
+  )
+}
+
+// ─── Desktop dropdown group ───────────────────────────────────────────────────
+
+function DesktopGroup({
+  item,
+  active,
+  isActive,
+}: {
+  item: NavItem
+  active: boolean
+  isActive: (href?: string) => boolean
+}) {
+  const [open, setOpen] = React.useState(false)
+  const closeTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const openNow = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current)
+    setOpen(true)
+  }
+  const closeSoon = () => {
+    closeTimer.current = setTimeout(() => setOpen(false), 120)
+  }
+
+  return (
+    <div className="relative" onMouseEnter={openNow} onMouseLeave={closeSoon}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className={cn(
+          'flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium transition-colors',
+          active
+            ? 'text-brand-jade bg-brand-jade-subtle'
+            : 'text-muted hover:text-foreground hover:bg-surface',
+        )}
+      >
+        {item.label}
+        <ChevronDown className={cn('size-3.5 transition-transform', open && 'rotate-180')} />
+      </button>
+
+      {open && (
+        <div className="absolute left-0 mt-1 w-64 bg-surface-raised rounded-xl border border-border shadow-lg py-1.5 z-50">
+          {item.children!.map((c) => (
+            <Link
+              key={c.href}
+              href={c.href}
+              onClick={() => setOpen(false)}
+              className={cn(
+                'flex flex-col gap-0.5 px-3 py-2 transition-colors',
+                isActive(c.href) ? 'bg-brand-jade-subtle' : 'hover:bg-surface',
+              )}
+            >
+              <span className={cn('text-sm font-medium', isActive(c.href) ? 'text-brand-jade' : 'text-foreground')}>
+                {c.label}
+              </span>
+              <span className="text-xs text-muted leading-snug">{c.description}</span>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Mobile accordion group ───────────────────────────────────────────────────
+
+function MobileGroup({
+  item,
+  isActive,
+}: {
+  item: NavItem
+  isActive: (href?: string) => boolean
+}) {
+  const [open, setOpen] = React.useState(true)
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="flex items-center w-full px-3 py-2.5 rounded-md text-sm font-semibold text-foreground hover:bg-surface transition-colors"
+      >
+        {item.label}
+        <ChevronDown className={cn('ml-auto size-4 transition-transform', open && 'rotate-180')} />
+      </button>
+      {open && (
+        <div className="ml-3 border-l border-border pl-2 flex flex-col">
+          {item.children!.map((c) => (
+            <Link
+              key={c.href}
+              href={c.href}
+              className={cn(
+                'flex items-center px-3 py-2 rounded-md text-sm transition-colors',
+                isActive(c.href)
+                  ? 'text-brand-jade bg-brand-jade-subtle font-medium'
+                  : 'text-foreground hover:bg-surface',
+              )}
+            >
+              {c.label}
+              <span className="ml-auto text-xs text-muted">{c.description}</span>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -198,12 +324,20 @@ function UserMenu({ isPremium }: { isPremium: boolean }) {
 
       {open && (
         <div className="absolute right-0 mt-1 w-48 bg-surface-raised rounded-xl border border-border shadow-lg py-1 z-50">
-          {isPremium && (
+          {PREMIUM_ENABLED && isPremium && (
             <div className="flex items-center gap-2 px-3 py-2 text-xs text-amber-600 font-medium border-b border-border mb-1">
               <Crown className="size-3.5" />
               Premium Member
             </div>
           )}
+          <Link
+            href="/plan"
+            className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-surface transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            <ListChecks className="size-4 text-muted" />
+            Your Plan
+          </Link>
           <Link
             href="/dashboard"
             className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-surface transition-colors"

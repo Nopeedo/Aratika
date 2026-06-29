@@ -24,8 +24,13 @@ export interface PartyProfile {
   leaderTitle:    string          // 'Leader' | 'Co-leader'
   coLeader?:      string
   coLeaderTitle?: string
+  /** Leader photo — only needed when the leader isn't an MP with a profile photo (e.g. extra-parliamentary parties). Open-licensed + attributed. */
+  leaderPhoto?:        string
+  leaderPhotoCredit?:  string
+  leaderPhotoLicense?: string
+  leaderPhotoSourceUrl?: string
   /** Status */
-  status:         'governing' | 'opposition'
+  status:         'governing' | 'opposition' | 'extra-parliamentary'
   coalitionRole?: string          // e.g. 'Lead coalition party', 'Coalition partner'
   seats:          number
   founded_note:   string          // human-readable founding context
@@ -308,9 +313,43 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     coreValues:    [],
     keyPolicyAreas: [],
   },
+
+  top: {
+    slug:          'top',
+    name:          'TOP',
+    fullName:      'The Opportunity Party',
+    founded:       2016,
+    color:         '#00E5CC',
+    textColor:     '#06302c',
+    leader:        'Qiulae Wong',
+    leaderTitle:   'Leader',
+    leaderPhoto:        '/mps/qiulae-wong.jpg',
+    leaderPhotoCredit:  'The Opportunity Party',
+    leaderPhotoLicense: 'CC BY 4.0',
+    leaderPhotoSourceUrl: 'https://commons.wikimedia.org/wiki/File:Qiulae_portrait_1_(cropped).jpg',
+    status:        'extra-parliamentary',
+    seats:         0,
+    electorateSeats: 0,
+    listSeats:       0,
+    founded_note:  'Founded in 2016 by economist Gareth Morgan as an evidence-based, policy-focused party; now led by a new generation.',
+    website:       'https://www.opportunity.org.nz/',
+    parliamentUrl: 'https://www.opportunity.org.nz/',
+    tagline:       'Evidence-based policy — unity, innovation and nature.',
+    overview:      'The Opportunity Party (TOP) is a small, policy-focused party campaigning on evidence-based reform — most notably an overhaul of the tax system — alongside environmental restoration and a less combative style of politics. It is contesting the 2026 election but is not currently in Parliament.',
+    history:       'TOP was founded in 2016 by economist and philanthropist Gareth Morgan. It has stood at every general election since, but has not crossed the 5% party-vote threshold or won an electorate seat, so it holds no seats in the 54th Parliament. It is now led by Qiulae Wong.',
+    ideology:      ['Evidence-based policy', 'Tax reform', 'Environmentalism', 'Social liberalism'],
+    coreValues: [
+      'Reset the tax system so it is fairer and rewards work and innovation',
+      'Build a sustainable, high-wage economy where people can afford the basics',
+      'Restore nature — healthier oceans and land, and real climate action',
+      'Lower the political temperature and seek long-term, cross-party solutions',
+      'Make policy based on evidence rather than ideology',
+    ],
+    keyPolicyAreas: ['economy', 'climate', 'housing'],
+  },
 }
 
 // Ordered list for directory page — exclude 'independent'
 export const PARTY_DIRECTORY_ORDER: PartySlug[] = [
-  'national', 'labour', 'green', 'act', 'nzfirst', 'tpm',
+  'national', 'labour', 'green', 'act', 'nzfirst', 'tpm', 'top',
 ]

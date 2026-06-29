@@ -14,6 +14,7 @@ import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PolicyTopic } from '@/types'
 import { SectionDivider } from '@/components/ui/section-divider'
+import { PolicyCoverage } from '@/components/policy/policy-coverage'
 
 export const metadata: Metadata = {
   title: 'Policy Hub',
@@ -91,6 +92,7 @@ export default function PolicyHubPage() {
           })}
         </div>
       </div>
+      <PolicyCoverage maxWidth={1100} />
     </div>
   )
 }

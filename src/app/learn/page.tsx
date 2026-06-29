@@ -7,6 +7,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   ArrowRight, GraduationCap, Vote, Landmark, Users, FileText, MessagesSquare, UserCog, Lock,
+  ClipboardCheck, Handshake, Megaphone, Scale,
 } from 'lucide-react'
 import { LEARN_MODULES } from '@/constants/learn-data'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -25,6 +26,7 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const ICONS: Record<string, React.ElementType> = {
   Vote, Landmark, Users, FileText, MessagesSquare, UserCog,
+  ClipboardCheck, Handshake, Megaphone, Scale,
 }
 
 export default function LearnHubPage() {

@@ -16,6 +16,7 @@ import {
 import { BillStatusBadge } from '@/components/ui/badge'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { formatDate } from '@/lib/utils/format'
+import { PREMIUM_ENABLED } from '@/constants/features'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
@@ -185,13 +186,15 @@ export default async function BillDetailPage(
             </p>
           </div>
           {/* Premium teaser */}
-          <div style={{ marginTop: 12, padding: '12px 14px', borderRadius: 10, background: 'linear-gradient(145deg,#fff9e6,#fffdf5)', border: '1px solid #fde68a', display: 'flex', alignItems: 'center', gap: 10 }}>
-            <Lock style={{ width: 15, height: 15, color: '#b45309', flexShrink: 0 }} />
-            <span style={{ fontSize: 12.5, color: '#92400e', fontFamily: MANROPE, lineHeight: 1.5 }}>
-              <b>Premium:</b> full reading history, division results, and submission counts — with alerts when this bill progresses.{' '}
-              <Link href="/subscription" style={{ color: '#b45309', fontWeight: 700 }}>Upgrade →</Link>
-            </span>
-          </div>
+          {PREMIUM_ENABLED && (
+            <div style={{ marginTop: 12, padding: '12px 14px', borderRadius: 10, background: 'linear-gradient(145deg,#fff9e6,#fffdf5)', border: '1px solid #fde68a', display: 'flex', alignItems: 'center', gap: 10 }}>
+              <Lock style={{ width: 15, height: 15, color: '#b45309', flexShrink: 0 }} />
+              <span style={{ fontSize: 12.5, color: '#92400e', fontFamily: MANROPE, lineHeight: 1.5 }}>
+                <b>Premium:</b> full reading history, division results, and submission counts — with alerts when this bill progresses.{' '}
+                <Link href="/subscription" style={{ color: '#b45309', fontWeight: 700 }}>Upgrade →</Link>
+              </span>
+            </div>
+          )}
         </Card>
       </div>
 

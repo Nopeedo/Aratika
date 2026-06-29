@@ -11,6 +11,9 @@
 import type { MPProfile } from './mps-data'
 
 export const GENERATED_MPS: MPProfile[] = [
+  // Added post-2023 (by-election / list change) from the current official directory.
+  { slug: 'oriini-kaipara', name: 'Oriini Kaipara', fullName: 'Oriini Kaipara', party: 'tpm', role: 'electorate', electorate: 'Tāmaki Makaurau', status: 'active', parliamentUrl: 'https://www.parliament.nz/en/mps-and-electorates/members-of-parliament/kaipara-oriini' },
+  { slug: 'mike-davidson', name: 'Mike Davidson', fullName: 'Mike Davidson', party: 'green', role: 'list', status: 'active', parliamentUrl: 'https://www.parliament.nz/en/mps-and-electorates/members-of-parliament/davidson-mike' },
   { slug: 'steve-abel', name: 'Steve Abel', fullName: 'Steve Abel', party: 'green', role: 'list', status: 'active', parliamentUrl: 'https://www.parliament.nz/en/mps-and-electorates/members-of-parliament/abel-steve' },
   { slug: 'ginny-andersen', name: 'Ginny Andersen', fullName: 'Ginny Andersen', party: 'labour', role: 'list', status: 'active', parliamentUrl: 'https://www.parliament.nz/en/mps-and-electorates/members-of-parliament/andersen-ginny' },
   { slug: 'miles-anderson', name: 'Miles Anderson', fullName: 'Miles Anderson', party: 'national', role: 'electorate', electorate: 'Waitaki', status: 'active', parliamentUrl: 'https://www.parliament.nz/en/mps-and-electorates/members-of-parliament/anderson-miles' },

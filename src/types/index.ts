@@ -7,6 +7,7 @@ export type PartySlug =
   | 'green'
   | 'nzfirst'
   | 'tpm'
+  | 'top'
   | 'independent'
 
 export interface Party {

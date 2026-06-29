@@ -11,20 +11,26 @@
  * official date is announced by the Governor-General.
  */
 
+import { useState, useEffect } from 'react'
+
 // ─── Placeholder election date ────────────────────────────────────────────────
 // NZ elections are held on Saturdays. Based on the 3-year cycle from the
 // 14 October 2023 election, the 2026 election is expected around October 2026.
 // Update this constant once the official date is set.
-const ELECTION_DATE = new Date('2026-10-10T09:00:00+13:00')
+export const ELECTION_DATE = new Date('2026-10-10T09:00:00+13:00')
 
 export function ElectionCountdown() {
-  const now  = new Date()
-  const diff = ELECTION_DATE.getTime() - now.getTime()
-  const days = Math.ceil(diff / (1000 * 60 * 60 * 24))
+  // Compute the day-count ONLY on the client after mount. Calling new Date()
+  // during render would make the server-rendered HTML and the first client
+  // render disagree → a React hydration-mismatch warning. We render a stable
+  // string on the server + first paint, then fill in the live count.
+  const [days, setDays] = useState<number | null>(null)
+  useEffect(() => {
+    setDays(Math.ceil((ELECTION_DATE.getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+  }, [])
 
-  if (days <= 0) {
-    return <span>● 2026 General Election — Election Day</span>
-  }
+  if (days === null) return <span>● 2026 General Election</span>
+  if (days <= 0) return <span>● 2026 General Election — Election Day</span>
 
   return (
     <span>

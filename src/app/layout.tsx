@@ -2,6 +2,10 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Manrope, Space_Grotesk } from 'next/font/google'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
+import { PlanTracker } from '@/components/onboarding/plan-tracker'
+import { PlanWidget } from '@/components/onboarding/plan-widget'
+import { CompanionWidget } from '@/components/companion/companion-widget'
+import { SoundToggle } from '@/components/homepage/sound-toggle'
 import { SITE } from '@/constants/site'
 import './globals.css'
 
@@ -88,7 +92,11 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Navbar />
+        <PlanTracker />
         <main className="flex-1">{children}</main>
+        <PlanWidget />
+        <CompanionWidget />
+        <SoundToggle />
         <Footer />
       </body>
     </html>

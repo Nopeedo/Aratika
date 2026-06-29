@@ -10,6 +10,7 @@
 import { useEffect, useState } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/client'
+import { PREMIUM_ENABLED } from '@/constants/features'
 
 const ACTIVE_STATUSES = ['active', 'trialing']
 
@@ -49,7 +50,9 @@ export function useUser() {
   }, [user])
 
   const metadataTier = user?.user_metadata?.tier as string | undefined
-  const isPremium = ACTIVE_STATUSES.includes(subStatus || '') || metadataTier === 'premium'
+  // While the paid tier is off, everyone is effectively premium so all gated
+  // content is free. Flip PREMIUM_ENABLED to restore real subscription checks.
+  const isPremium = !PREMIUM_ENABLED || ACTIVE_STATUSES.includes(subStatus || '') || metadataTier === 'premium'
 
   return { user, loading, isPremium, subStatus }
 }

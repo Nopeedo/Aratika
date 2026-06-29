@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Lock } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils/cn'
+import { PREMIUM_ENABLED } from '@/constants/features'
 import { Button } from './button'
 
 interface TierGateProps {
@@ -20,7 +21,8 @@ interface TierGateProps {
  * server-side for paid features — never rely on this component alone.
  */
 export function TierGate({ children, isLocked, feature, className }: TierGateProps) {
-  if (!isLocked) return <>{children}</>
+  // Paid tier off → never lock.
+  if (!PREMIUM_ENABLED || !isLocked) return <>{children}</>
 
   return (
     <div className={cn('relative rounded-xl overflow-hidden', className)}>

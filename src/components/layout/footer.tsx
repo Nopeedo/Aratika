@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ShieldCheck, ExternalLink } from 'lucide-react'
 import { SITE, DATA_SOURCES } from '@/constants/site'
 import { FOOTER_LINKS } from '@/constants/nav-links'
+import { isEnabled } from '@/constants/features'
 
 export function Footer() {
   return (
@@ -58,7 +59,7 @@ export function Footer() {
               Learn
             </h4>
             <ul className="space-y-2">
-              {FOOTER_LINKS.learn.map((link) => (
+              {FOOTER_LINKS.learn.filter((l) => isEnabled(l.feature)).map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -77,7 +78,7 @@ export function Footer() {
               Explore
             </h4>
             <ul className="space-y-2">
-              {FOOTER_LINKS.explore.map((link) => (
+              {FOOTER_LINKS.explore.filter((l) => isEnabled(l.feature)).map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -96,7 +97,7 @@ export function Footer() {
               Account
             </h4>
             <ul className="space-y-2">
-              {FOOTER_LINKS.account.map((link) => (
+              {FOOTER_LINKS.account.filter((l) => isEnabled(l.feature)).map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -115,7 +116,7 @@ export function Footer() {
               Legal
             </h4>
             <ul className="space-y-2">
-              {FOOTER_LINKS.legal.map((link) => (
+              {FOOTER_LINKS.legal.filter((l) => isEnabled(l.feature)).map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

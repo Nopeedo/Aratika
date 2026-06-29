@@ -12,16 +12,24 @@
 
 import Link from 'next/link'
 import {
-  Map, Users, ShieldCheck, Crown, ArrowRight, ChevronRight, ExternalLink,
+  Map, ShieldCheck, Crown, ArrowRight,
+  Compass, Scale, Vote, Newspaper, ArrowUpRight, Sparkles,
+  Users, Bookmark, Gavel,
 } from 'lucide-react'
 import { SectionDivider }      from '@/components/ui/section-divider'
 import { ParliamentSnapshot }  from '@/components/parliament/parliament-snapshot'
+import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
+import { PartyCycleProvider } from '@/components/homepage/party-cycle'
+import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
 import { ElectionCountdown }   from '@/components/homepage/election-countdown'
-import { MPFinderSearch }      from '@/components/homepage/mp-finder-search'
+import { HomeMapFeature }      from '@/components/homepage/home-map-feature'
 import { PolicyCard }          from '@/components/homepage/policy-card'
+import { Reveal }              from '@/components/ui/reveal'
 import { SITE }                from '@/constants/site'
 import { PARTY_COLORS }        from '@/constants/parties'
 import { POLICY_TOPIC_ORDER }  from '@/constants/policy-topics'
+import { HomePlanBanner }      from '@/components/onboarding/home-plan-banner'
+import { isEnabled }          from '@/constants/features'
 
 // ─── Design tokens (matching the Chamber design system) ───────────────────────
 
@@ -37,42 +45,23 @@ const PARTY_DOT_ORDER = [
   'green', 'labour', 'tpm', 'nzfirst', 'national', 'act',
 ] as const
 
-// ─── Mock news (placeholder until RSS integration in Week 2) ──────────────────
+// ─── News sources (real, official/public-interest — no fabricated headlines) ──
+// A curated live RSS feed is on the roadmap; until then we point to the source,
+// never invent headlines. Mirrors /news.
 
-const MOCK_NEWS = [
-  {
-    id: '1',
-    title: 'Parliament sits for final session before winter recess',
-    source: 'RNZ',
-    publishedAt: '2026-06-04',
-    url: 'https://www.rnz.co.nz',
-    category: 'Parliament',
-  },
-  {
-    id: '2',
-    title: 'Fast-track consenting bill passes third reading',
-    source: 'Beehive',
-    publishedAt: '2026-06-03',
-    url: 'https://www.beehive.govt.nz',
-    category: 'Legislation',
-  },
-  {
-    id: '3',
-    title: 'Labour outlines economic alternative ahead of 2026 election',
-    source: 'RNZ',
-    publishedAt: '2026-06-03',
-    url: 'https://www.rnz.co.nz',
-    category: 'Election 2026',
-  },
+const NEWS_SOURCES = [
+  { name: 'RNZ — Politics', url: 'https://www.rnz.co.nz/news/political', desc: 'NZ’s public broadcaster — independent political coverage.' },
+  { name: 'The Beehive', url: 'https://www.beehive.govt.nz', desc: 'Official Government press releases and ministerial statements.' },
+  { name: 'NZ Parliament', url: 'https://www.parliament.nz/en/get-involved/news-and-media/', desc: 'Official news — bills, debates and proceedings.' },
 ]
 
 // ─── Stat tiles data ──────────────────────────────────────────────────────────
 
 const STATS = [
-  { value: '123',   label: 'MPs tracked',    sublabel: '54th Parliament' },
-  { value: '6',     label: 'Parties',         sublabel: 'All represented' },
-  { value: '47+',   label: 'Bills tracked',   sublabel: 'Currently before House' },
-  { value: '2026',  label: 'General Election',sublabel: '~Oct 2026' },
+  { value: '2026',  label: 'General Election', sublabel: '~Oct 2026' },
+  { value: '72',    label: 'Electorates',      sublabel: 'General & Māori' },
+  { value: '6',     label: 'Parties',          sublabel: 'In Parliament' },
+  { value: '123',   label: 'MPs',              sublabel: 'You can look up' },
 ]
 
 // ─── Components ───────────────────────────────────────────────────────────────
@@ -122,8 +111,8 @@ function StatTile({ value, label, sublabel }: { value: string; label: string; su
 
 // PolicyCard — client component, imported from @/components/homepage/policy-card
 
-// News item card
-function NewsCard({ item }: { item: typeof MOCK_NEWS[number] }) {
+// News source card — links to the source; we never invent headlines
+function NewsSourceCard({ item }: { item: typeof NEWS_SOURCES[number] }) {
   return (
     <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
       <div style={{
@@ -131,65 +120,31 @@ function NewsCard({ item }: { item: typeof MOCK_NEWS[number] }) {
         borderBottom: `1px solid ${BORDER}`,
         display:      'flex',
         flexDirection:'column',
-        gap:          6,
+        gap:          5,
         cursor:       'pointer',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Newspaper style={{ width: 14, height: 14, color: JADE }} />
           <span style={{
-            fontSize:   10.5,
+            fontSize:   14,
             fontWeight: 800,
-            color:      JADE,
-            fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-            textTransform: 'uppercase',
-            letterSpacing: '.06em',
-          }}>
-            {item.source}
-          </span>
-          <span style={{ color: BORDER, fontSize: 10 }}>·</span>
-          <span style={{
-            fontSize:   11,
-            fontWeight: 500,
-            color:      TERTIARY,
+            color:      INK,
             fontFamily: 'var(--font-manrope), system-ui, sans-serif',
           }}>
-            {new Date(item.publishedAt).toLocaleDateString('en-NZ', { day: 'numeric', month: 'short' })}
+            {item.name}
           </span>
-          <span style={{
-            marginLeft:  'auto',
-            fontSize:    10.5,
-            fontWeight:  700,
-            color:       TERTIARY,
-            background:  SURFACE,
-            border:      `1px solid ${BORDER}`,
-            borderRadius:999,
-            padding:     '2px 8px',
-            fontFamily:  'var(--font-manrope), system-ui, sans-serif',
-          }}>
-            {item.category}
-          </span>
+          <ArrowUpRight style={{ width: 13, height: 13, color: TERTIARY, marginLeft: 'auto' }} />
         </div>
         <p style={{
-          fontSize:   14,
-          fontWeight: 600,
-          color:      INK,
+          fontSize:   13,
+          fontWeight: 500,
+          color:      SECONDARY,
           fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-          lineHeight: 1.4,
+          lineHeight: 1.5,
           margin:     0,
         }}>
-          {item.title}
+          {item.desc}
         </p>
-        <div style={{
-          fontSize:   11,
-          fontWeight: 700,
-          color:      JADE,
-          fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-          display:    'flex',
-          alignItems: 'center',
-          gap:        3,
-        }}>
-          Read at {item.source}
-          <ExternalLink style={{ width: 10, height: 10 }} />
-        </div>
       </div>
     </a>
   )
@@ -204,115 +159,32 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════════════════════════════
           1. HERO — Election urgency + personal MP finder
       ═══════════════════════════════════════════════════════════════════ */}
-      <section
-        className="bg-dot-grid"
-        style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}
-      >
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '72px 36px 80px' }}>
+      {/* Hero + party tiles share one PartyCycle clock so the title colour and the open tile stay in sync */}
+      <PartyCycleProvider>
+        <CinematicHero />
 
-          {/* Election countdown pill */}
-          <div
-            className="live-dot"
-            style={{
-              display:      'inline-flex',
-              alignItems:   'center',
-              gap:          8,
-              background:   '#0c0e12',
-              color:        '#ffffff',
-              borderRadius: 999,
-              padding:      '7px 14px 7px 12px',
-              fontSize:     12,
-              fontWeight:   700,
-              fontFamily:   'var(--font-manrope), system-ui, sans-serif',
-              marginBottom: 28,
-            }}
-          >
-            <span
-              className="live-dot"
-              style={{
-                width: 7, height: 7,
-                borderRadius: '50%',
-                background: '#36e08a',
-                display: 'inline-block',
-                flexShrink: 0,
-              }}
-            />
-            <ElectionCountdown />
+        {/* ── Party tiles — tap a colour for an at-a-glance snapshot ── */}
+        <section style={{ background: '#fff' }}>
+          <div style={{ maxWidth: 760, margin: '0 auto', padding: '7px 36px 40px' }}>
+            <PartyTilesSection />
           </div>
+        </section>
+      </PartyCycleProvider>
 
-          {/* Main headline */}
-          <h1 style={{
-            fontSize:      'clamp(36px, 5vw, 58px)',
-            fontWeight:    800,
-            letterSpacing: '-.025em',
-            lineHeight:    1.08,
-            color:         INK,
-            fontFamily:    'var(--font-manrope), system-ui, sans-serif',
-            maxWidth:      680,
-            marginBottom:  18,
-          }}>
-            Know exactly who you&apos;re
-            <br />
-            <span style={{ color: JADE }}>voting for</span> — and why.
-          </h1>
+      {/* ── REDESIGN CANVAS — intentional white space below the tiles for new content ── */}
+      <section aria-hidden style={{ background: '#fff', minHeight: 480, borderBottom: `1px solid ${BORDER}` }} />
 
-          {/* Subtitle */}
-          <p style={{
-            fontSize:     18,
-            fontWeight:   500,
-            color:        SECONDARY,
-            fontFamily:   'var(--font-manrope), system-ui, sans-serif',
-            lineHeight:   1.6,
-            maxWidth:     520,
-            marginBottom: 36,
-          }}>
-            Aratika is New Zealand&apos;s non-partisan guide to every MP, party,
-            bill, and policy — sourced exclusively from official data.
-          </p>
-
-          {/* MP Finder Search */}
-          <MPFinderSearch />
-
-          {/* Stat tiles */}
-          <div style={{
-            display:             'grid',
-            gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-            gap:                 12,
-            maxWidth:            560,
-            marginTop:           32,
-          }}>
+      {/* ── Credibility strip ── */}
+      <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+        <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px 36px', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 12, flex: 1, minWidth: 320, maxWidth: 560 }}>
             {STATS.map((s) => (
               <StatTile key={s.label} {...s} />
             ))}
           </div>
-
-          {/* Trust indicators */}
-          <div style={{
-            display:     'flex',
-            flexWrap:    'wrap',
-            gap:         '8px 20px',
-            marginTop:   28,
-            paddingTop:  24,
-            borderTop:   `1px solid ${BORDER}`,
-          }}>
-            {[
-              'NZ Parliament API',
-              'Electoral Commission',
-              'Stats NZ',
-              'Non-partisan & independent',
-            ].map((label) => (
-              <div
-                key={label}
-                style={{
-                  display:    'flex',
-                  alignItems: 'center',
-                  gap:        6,
-                  fontSize:   12,
-                  fontWeight: 500,
-                  color:      TERTIARY,
-                  fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-                }}
-              >
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 18px' }}>
+            {['NZ Parliament', 'Electoral Commission', 'Stats NZ', 'Non-partisan & independent'].map((label) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 500, color: TERTIARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>
                 <ShieldCheck style={{ width: 13, height: 13, color: JADE, flexShrink: 0 }} />
                 {label}
               </div>
@@ -323,9 +195,182 @@ export default function HomePage() {
 
 
       {/* ═══════════════════════════════════════════════════════════════════
-          2. PARLIAMENT SNAPSHOT — Chamber hemicycle (unchanged)
+          1b. YOUR PLAN — returning visitors pick up where they left off
       ═══════════════════════════════════════════════════════════════════ */}
-      <ParliamentSnapshot />
+      <HomePlanBanner />
+
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          1b. START-HERE DOORS — meet each visitor where they are
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ background: SURFACE, borderBottom: `1px solid ${BORDER}` }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px 36px 44px' }}>
+          <div style={{ marginBottom: 22 }}>
+            <h2 style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 6px' }}>Your arsenal</h2>
+            <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: 0 }}>Everything you need to walk in ready for the decision.</p>
+          </div>
+          <Reveal>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
+            {([
+              { href: '/start', icon: Compass, accent: true, title: 'Start with you', body: 'Tell us the issues you care about — we’ll point you to what matters for your vote.', cta: 'Find what matters' },
+              { href: '/compare', icon: Scale, accent: false, title: 'Line up the parties', body: 'Every party, side by side, on the issues that matter most to you.', cta: 'Compare parties' },
+              { href: '/map', icon: Map, accent: false, title: 'Know the ground', body: 'Find your electorate and see who represents it — and who’s standing in 2026.', cta: 'Open the map' },
+              { href: '/bills', icon: Gavel, accent: false, title: 'See the record', body: 'What this Parliament has actually passed — bills, budget and the promises behind them.', cta: 'Open the record' },
+            ] as const).map((d) => {
+              const Icon = d.icon
+              return (
+                <Link key={d.href} href={d.href} style={{ textDecoration: 'none' }}>
+                  <div className="party-card" style={{
+                    height: '100%', display: 'flex', flexDirection: 'column',
+                    background: d.accent ? 'linear-gradient(150deg,#0f9152,#0c0e12)' : '#fff',
+                    border: `1px solid ${d.accent ? 'transparent' : BORDER}`,
+                    borderRadius: 18, padding: '22px 22px',
+                  }}>
+                    <div style={{
+                      width: 40, height: 40, borderRadius: 11, marginBottom: 14,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      background: d.accent ? 'rgba(255,255,255,.16)' : '#ecfdf5',
+                    }}>
+                      <Icon style={{ width: 20, height: 20, color: d.accent ? '#fff' : JADE }} />
+                    </div>
+                    <div style={{
+                      fontSize: 18, fontWeight: 800, color: d.accent ? '#fff' : INK,
+                      fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 6,
+                    }}>{d.title}</div>
+                    <p style={{
+                      fontSize: 13.5, fontWeight: 500, lineHeight: 1.55, margin: '0 0 16px',
+                      color: d.accent ? 'rgba(255,255,255,.78)' : SECONDARY,
+                      fontFamily: 'var(--font-manrope), system-ui, sans-serif', flex: 1,
+                    }}>{d.body}</p>
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 6,
+                      fontSize: 13.5, fontWeight: 800,
+                      color: d.accent ? '#36e08a' : JADE,
+                      fontFamily: 'var(--font-manrope), system-ui, sans-serif',
+                    }}>
+                      {d.cta} <ArrowRight style={{ width: 15, height: 15 }} />
+                    </span>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+          </Reveal>
+        </div>
+      </section>
+
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          2. ELECTIONS 2026 — Phase-1 spotlight
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ background: '#0c0e12' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px 36px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 40, alignItems: 'center' }}>
+            <div>
+              <div className="live-dot" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(54,224,138,.12)', color: '#36e08a', border: '1px solid rgba(54,224,138,.25)', borderRadius: 999, padding: '6px 13px', fontSize: 12.5, fontWeight: 800, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 18 }}>
+                <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#36e08a', display: 'inline-block' }} />
+                <ElectionCountdown />
+              </div>
+              <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: '#fff', fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 12px', lineHeight: 1.12 }}>The 2026 election — let’s get you ready</h2>
+              <p style={{ fontSize: 16, color: 'rgba(255,255,255,.72)', fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, maxWidth: 520, margin: '0 0 24px' }}>
+                Compare the upcoming race with the 2023 result, explore every electorate, and follow who’s standing where — all from official data, no spin.
+              </p>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <Link href="/elections" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 20px', borderRadius: 11, background: JADE, color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}><Vote style={{ width: 16, height: 16 }} /> Explore Elections 2026</Link>
+                <Link href="/battlegrounds" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 20px', borderRadius: 11, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}><Map style={{ width: 16, height: 16 }} /> See the battlegrounds</Link>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {([
+                { href: '/elections', icon: Vote, t: '2026 vs 2023', d: 'The upcoming race, beside the last result' },
+                { href: '/battlegrounds', icon: Map, t: 'Electorate battlegrounds', d: 'Which seats are on a knife-edge' },
+                { href: '/policies', icon: Scale, t: 'Where parties stand', d: 'Compare positions on the issues you care about' },
+              ] as const).map((c) => {
+                const Icon = c.icon
+                return (
+                  <Link key={c.href} href={c.href} style={{ textDecoration: 'none' }}>
+                    <div className="party-card" style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '15px 17px', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.1)', borderRadius: 14 }}>
+                      <span style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(54,224,138,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon style={{ width: 19, height: 19, color: '#36e08a' }} /></span>
+                      <span style={{ flex: 1 }}>
+                        <span style={{ display: 'block', fontSize: 14.5, fontWeight: 800, color: '#fff', fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>{c.t}</span>
+                        <span style={{ display: 'block', fontSize: 12.5, color: 'rgba(255,255,255,.6)', fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginTop: 1 }}>{c.d}</span>
+                      </span>
+                      <ArrowRight style={{ width: 16, height: 16, color: 'rgba(255,255,255,.5)' }} />
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          2a. ELECTORATE MAP — dedicated, interactive feature section
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ background: '#fff', borderTop: '1px solid rgba(255,255,255,.06)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 36px' }}>
+          <Reveal>
+            <div style={{ display: 'flex', gap: 44, alignItems: 'center', flexWrap: 'wrap' }}>
+
+              {/* Copy + actions */}
+              <div style={{ flex: '1 1 320px', minWidth: 300 }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: JADE, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 12 }}>
+                  <Map style={{ width: 15, height: 15 }} /> The Electorate Map
+                </div>
+                <h2 style={{ fontSize: 'clamp(26px, 3.4vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.12, margin: '0 0 14px' }}>
+                  Start where you live.
+                </h2>
+                <p style={{ fontSize: 16.5, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, maxWidth: 460, margin: '0 0 22px' }}>
+                  Every vote is cast in an electorate. Click your patch on the live map to see who
+                  represents it, which party holds it, and how the 2023 race played out — then go deeper.
+                </p>
+
+                {/* Trust bullets */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 26 }}>
+                  {[
+                    { icon: ShieldCheck, t: 'Official Stats NZ 2020 boundaries — never placeholder geometry' },
+                    { icon: Users, t: 'All 72 electorates, coloured by the party that holds them' },
+                    { icon: Scale, t: 'General and Māori electorate layers' },
+                  ].map((b) => {
+                    const Icon = b.icon
+                    return (
+                      <div key={b.t} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ width: 28, height: 28, borderRadius: 8, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon style={{ width: 15, height: 15, color: JADE }} /></span>
+                        <span style={{ fontSize: 14, fontWeight: 600, color: '#33373f', fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>{b.t}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+
+                <div style={{ display: 'flex', gap: 11, flexWrap: 'wrap' }}>
+                  <Link href="/map" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '12px 22px', borderRadius: 12, background: JADE, color: '#fff', fontSize: 14.5, fontWeight: 800, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}>
+                    <Map style={{ width: 16, height: 16 }} /> Open the full map
+                  </Link>
+                  <Link href="/learn/electorate-vs-list" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '12px 22px', borderRadius: 12, background: '#fff', border: `1px solid ${BORDER}`, color: INK, fontSize: 14.5, fontWeight: 700, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}>
+                    <Compass style={{ width: 16, height: 16, color: JADE }} /> Learn more
+                  </Link>
+                </div>
+              </div>
+
+              {/* Live interactive map */}
+              <div style={{ flex: '1.4 1 420px', minWidth: 320, alignSelf: 'stretch', display: 'flex' }}>
+                <div style={{ flex: 1 }}>
+                  <HomeMapFeature />
+                </div>
+              </div>
+
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          2b. PARLIAMENT SNAPSHOT — gated (Phase 2)
+      ═══════════════════════════════════════════════════════════════════ */}
+      {isEnabled('parliament') && <ParliamentSnapshot />}
 
 
       {/* ═══════════════════════════════════════════════════════════════════
@@ -452,98 +497,49 @@ export default function HomePage() {
 
 
       {/* ═══════════════════════════════════════════════════════════════════
-          4. MAP — Condensed CTA banner (full section moved to /map page)
+          4b. GET READY TO VOTE — election readiness strip
       ═══════════════════════════════════════════════════════════════════ */}
-      <section style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 36px' }}>
-          <div style={{
-            display:        'flex',
-            alignItems:     'center',
-            justifyContent: 'space-between',
-            gap:            20,
-            padding:        '28px 32px',
-            background:     '#0c0e12',
-            borderRadius:   20,
-            margin:         '40px 0',
-            flexWrap:       'wrap',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <div style={{
-                width: 44, height: 44,
-                borderRadius: 12,
-                background: 'rgba(31,138,76,0.2)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
-                <Map style={{ width: 22, height: 22, color: '#36e08a' }} />
+      <section style={{ background: SURFACE, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px 36px' }}>
+          <h2 style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 6px' }}>Get ready to vote</h2>
+          <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 24px' }}>Three quick steps to feel confident heading into 2026.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+            {/* enrol — official */}
+            <a href="https://vote.nz" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+              <div className="party-card" style={{ height: '100%', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 22px' }}>
+                <div style={{ width: 40, height: 40, borderRadius: 11, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}><Vote style={{ width: 20, height: 20, color: JADE }} /></div>
+                <div style={{ fontSize: 16.5, fontWeight: 800, color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 5 }}>1. Enrol or check your details</div>
+                <p style={{ fontSize: 13.5, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.55, margin: '0 0 14px' }}>Free, takes a couple of minutes — at vote.nz, the official Electoral Commission site.</p>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>Go to vote.nz <ArrowUpRight style={{ width: 14, height: 14 }} /></span>
               </div>
-              <div>
-                <div style={{
-                  fontSize: 15, fontWeight: 800, color: '#ffffff',
-                  fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-                }}>
-                  Explore the interactive electorate map
-                </div>
-                <div style={{
-                  fontSize: 13, fontWeight: 500, color: '#6b7078',
-                  fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-                  marginTop: 2,
-                }}>
-                  Click any part of New Zealand to see who represents that area, their party,
-                  and what they stand for.
-                </div>
+            </a>
+            {/* learn how to vote */}
+            <Link href="/learn/how-to-vote" style={{ textDecoration: 'none' }}>
+              <div className="party-card" style={{ height: '100%', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 22px' }}>
+                <div style={{ width: 40, height: 40, borderRadius: 11, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}><Compass style={{ width: 20, height: 20, color: JADE }} /></div>
+                <div style={{ fontSize: 16.5, fontWeight: 800, color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 5 }}>2. Learn how voting works</div>
+                <p style={{ fontSize: 13.5, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.55, margin: '0 0 14px' }}>MMP, your two votes, and how to actually cast them — in plain language.</p>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>Start learning <ArrowRight style={{ width: 14, height: 14 }} /></span>
               </div>
-            </div>
-            <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
-              <Link
-                href="/map"
-                style={{
-                  display:      'inline-flex',
-                  alignItems:   'center',
-                  gap:          6,
-                  padding:      '10px 20px',
-                  borderRadius: 10,
-                  background:   '#1F8A4C',
-                  color:        '#ffffff',
-                  fontSize:     14,
-                  fontWeight:   700,
-                  fontFamily:   'var(--font-manrope), system-ui, sans-serif',
-                  textDecoration:'none',
-                  whiteSpace:   'nowrap',
-                }}
-              >
-                <Map style={{ width: 16, height: 16 }} />
-                Open Map
-              </Link>
-              <Link
-                href="/mps"
-                style={{
-                  display:      'inline-flex',
-                  alignItems:   'center',
-                  gap:          6,
-                  padding:      '10px 20px',
-                  borderRadius: 10,
-                  background:   'rgba(255,255,255,0.07)',
-                  border:       '1px solid rgba(255,255,255,0.12)',
-                  color:        '#ffffff',
-                  fontSize:     14,
-                  fontWeight:   700,
-                  fontFamily:   'var(--font-manrope), system-ui, sans-serif',
-                  textDecoration:'none',
-                  whiteSpace:   'nowrap',
-                }}
-              >
-                Browse all MPs
-              </Link>
-            </div>
+            </Link>
+            {/* find what matters */}
+            <Link href="/start" style={{ textDecoration: 'none' }}>
+              <div className="party-card" style={{ height: '100%', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 22px' }}>
+                <div style={{ width: 40, height: 40, borderRadius: 11, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}><Sparkles style={{ width: 20, height: 20, color: JADE }} /></div>
+                <div style={{ fontSize: 16.5, fontWeight: 800, color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 5 }}>3. Find what matters to you</div>
+                <p style={{ fontSize: 13.5, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.55, margin: '0 0 14px' }}>A 3-minute walkthrough that shows where the parties stand on your issues.</p>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>Take the walkthrough <ArrowRight style={{ width: 14, height: 14 }} /></span>
+              </div>
+            </Link>
           </div>
         </div>
       </section>
 
 
       {/* ═══════════════════════════════════════════════════════════════════
-          5. NEWS + POLL — Two-column layout
+          5. NEWS + POLL — Two-column layout (Phase 2)
       ═══════════════════════════════════════════════════════════════════ */}
+      {isEnabled('news') && (
       <section style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 36px' }}>
           <div style={{
@@ -569,9 +565,9 @@ export default function HomePage() {
                     fontFamily:   'var(--font-manrope), system-ui, sans-serif',
                     margin:       0,
                   }}>
-                    Latest News
+                    Follow the news
                   </h2>
-                  <SectionDivider type="official" label="Verified Sources" />
+                  <SectionDivider type="official" label="At the source" />
                 </div>
                 <Link
                   href="/news"
@@ -590,19 +586,19 @@ export default function HomePage() {
                 fontFamily: 'var(--font-manrope), system-ui, sans-serif',
                 marginBottom: 4, marginTop: 0,
               }}>
-                Sourced from RNZ and official government channels via RSS.
-                Aratika does not publish original news content.
+                A curated live feed is on the way. Until then — and always — we only ever surface real,
+                sourced reporting, never invented headlines. Here&apos;s where to follow it directly.
               </p>
 
-              {MOCK_NEWS.map((item) => (
-                <NewsCard key={item.id} item={item} />
+              {NEWS_SOURCES.map((item) => (
+                <NewsSourceCard key={item.name} item={item} />
               ))}
             </div>
 
-            {/* ── Public sentiment poll ──────────────── */}
+            {/* ── What matters to you? — survey invite (real, personalised) ── */}
             <div>
               <div style={{ marginBottom: 16 }}>
-                <SectionDivider type="sentiment" label="Public Sentiment" />
+                <SectionDivider type="sentiment" label="Make it yours" />
                 <h2 style={{
                   fontSize:     20,
                   fontWeight:   800,
@@ -618,93 +614,68 @@ export default function HomePage() {
                   fontFamily: 'var(--font-manrope), system-ui, sans-serif',
                   margin:     0,
                 }}>
-                  Non-scientific user poll — not representative of NZ population.
+                  Answer a few quick questions — we&apos;ll show you where parties stand on it.
                 </p>
               </div>
 
               <div style={{
-                background:   '#ffffff',
-                border:       `1px solid ${BORDER}`,
+                background:   'linear-gradient(155deg,#0f9152,#0c0e12)',
                 borderRadius: 20,
-                padding:      '22px 20px',
-                boxShadow:    '0 2px 4px rgba(12,14,18,.03)',
+                padding:      '24px 22px',
+                boxShadow:    '0 6px 24px rgba(12,14,18,.10)',
               }}>
-                {([
-                  ['Housing affordability', 72],
-                  ['Cost of living',        58],
-                  ['Health system',         45],
-                  ['Climate action',        38],
-                  ['Law and order',         29],
-                ] as [string, number][]).map(([option, pct]) => (
-                  <div key={option} style={{ marginBottom: 14 }}>
-                    <div style={{
-                      display:        'flex',
-                      justifyContent: 'space-between',
-                      marginBottom:   5,
-                    }}>
-                      <span style={{
-                        fontSize: 13, fontWeight: 700, color: INK,
-                        fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-                      }}>
-                        {option}
-                      </span>
-                      <span style={{
-                        fontSize: 12, fontWeight: 700, color: JADE,
-                        fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
-                      }}>
-                        {pct}%
-                      </span>
-                    </div>
-                    <div style={{
-                      height: 7, borderRadius: 999,
-                      background: '#f1efeb', overflow: 'hidden',
-                    }}>
-                      <div style={{
-                        width: `${pct}%`, height: '100%',
-                        background: JADE, borderRadius: 999,
-                      }} />
-                    </div>
-                  </div>
-                ))}
-
                 <div style={{
-                  paddingTop: 16,
-                  marginTop:  4,
-                  borderTop:  `1px solid ${BORDER}`,
-                  fontSize:   11,
-                  color:      TERTIARY,
+                  width: 44, height: 44, borderRadius: 12, marginBottom: 16,
+                  background: 'rgba(255,255,255,.16)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Sparkles style={{ width: 22, height: 22, color: '#fff' }} />
+                </div>
+                <div style={{
+                  fontSize: 17, fontWeight: 800, color: '#fff',
+                  fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 8,
+                }}>
+                  Find your issues
+                </div>
+                <p style={{
+                  fontSize: 13.5, fontWeight: 500, lineHeight: 1.55, margin: '0 0 18px',
+                  color: 'rgba(255,255,255,.8)',
                   fontFamily: 'var(--font-manrope), system-ui, sans-serif',
                 }}>
-                  1,247 votes · Sign up to cast your vote
-                </div>
+                  Pick what you care about and how much you already know — and Aratika
+                  will pitch everything at your level. No account needed.
+                </p>
+                <Link
+                  href="/start"
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+                    padding: '11px 0', borderRadius: 11, background: '#fff', color: '#0c0e12',
+                    fontSize: 14, fontWeight: 800, textDecoration: 'none',
+                    fontFamily: 'var(--font-manrope), system-ui, sans-serif',
+                  }}
+                >
+                  <Compass style={{ width: 16, height: 16 }} /> Start the walkthrough
+                </Link>
               </div>
 
-              <Link
-                href="/polls"
-                style={{
-                  display:    'inline-flex',
-                  alignItems: 'center',
-                  gap:        4,
-                  marginTop:  12,
-                  fontSize:   12,
-                  fontWeight: 800,
-                  color:      INK,
-                  fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-                  textDecoration: 'none',
-                }}
-              >
-                View all polls <ChevronRight style={{ width: 13, height: 13 }} />
-              </Link>
+              <p style={{
+                marginTop: 12, fontSize: 11, color: TERTIARY,
+                fontFamily: 'var(--font-manrope), system-ui, sans-serif',
+              }}>
+                Community polls are coming soon — see <Link href="/polls" style={{ color: SECONDARY, fontWeight: 700 }}>polls</Link>.
+              </p>
             </div>
 
           </div>
         </div>
       </section>
+      )}
 
 
       {/* ═══════════════════════════════════════════════════════════════════
-          6. PREMIUM CTA
+          6. PREMIUM CTA (Phase 2)
       ═══════════════════════════════════════════════════════════════════ */}
+      {isEnabled('premium') && (
       <section style={{ background: '#0c0e12' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '72px 36px' }}>
 
@@ -892,6 +863,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
     </>
   )

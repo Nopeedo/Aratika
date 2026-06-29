@@ -10,6 +10,9 @@ export interface AvatarProps {
   party?: PartySlug
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   className?: string
+  /** Crop+zoom toward the face (top of the portrait) so the circle frames the
+   *  face cleanly. Off by default so other avatars render the full image. */
+  face?: boolean
 }
 
 const sizes = {
@@ -29,7 +32,7 @@ function getInitials(name: string): string {
     .toUpperCase()
 }
 
-export function Avatar({ src, name, party, size = 'md', className }: AvatarProps) {
+export function Avatar({ src, name, party, size = 'md', className, face = false }: AvatarProps) {
   const { container, px } = sizes[size]
   const partyColor = party ? PARTY_COLORS[party] : null
 
@@ -48,6 +51,9 @@ export function Avatar({ src, name, party, size = 'md', className }: AvatarProps
           width={px}
           height={px}
           className="object-cover w-full h-full"
+          // Faces sit in the top third of these portraits — bias the crop up and
+          // zoom in so the face fills the circle instead of the suit/shoulders.
+          style={face ? { objectPosition: '50% 14%', transform: 'scale(1.4)', transformOrigin: '50% 14%' } : undefined}
         />
       ) : (
         <div

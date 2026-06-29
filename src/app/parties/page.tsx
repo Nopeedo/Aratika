@@ -21,6 +21,7 @@ const SURFACE   = '#f8fafc'
 export default function PartiesPage() {
   const governing   = PARTY_DIRECTORY_ORDER.filter((s) => PARTY_STATUS[s] === 'governing')
   const opposition  = PARTY_DIRECTORY_ORDER.filter((s) => PARTY_STATUS[s] === 'opposition')
+  const others      = PARTY_DIRECTORY_ORDER.filter((s) => PARTY_STATUS[s] !== 'governing' && PARTY_STATUS[s] !== 'opposition')
   const govtSeats   = governing.reduce((n, s) => n + CURRENT_SEATS[s], 0)
 
   return (
@@ -132,11 +133,23 @@ export default function PartiesPage() {
 
         {/* ── Opposition ────────────────────────────────────────────── */}
         <SectionTitle label="Opposition" count={opposition.length} />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 16, marginBottom: others.length ? 52 : 0 }}>
           {opposition.map((slug) => (
             <PartyCard key={slug} slug={slug} />
           ))}
         </div>
+
+        {/* ── Contesting 2026, not currently in Parliament ──────────── */}
+        {others.length > 0 && (
+          <>
+            <SectionTitle label="Contesting 2026 — not currently in Parliament" count={others.length} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 16 }}>
+              {others.map((slug) => (
+                <PartyCard key={slug} slug={slug} />
+              ))}
+            </div>
+          </>
+        )}
 
       </div>
     </div>
@@ -243,7 +256,7 @@ function PartyCard({ slug }: { slug: keyof typeof PARTY_PROFILES }) {
               background: party.color, color: party.textColor,
               fontFamily: 'var(--font-manrope), system-ui, sans-serif',
             }}>
-              {status === 'governing' ? 'Governing' : 'Opposition'}
+              {status === 'governing' ? 'Governing' : status === 'opposition' ? 'Opposition' : 'Not in Parliament'}
             </span>
             {party.coalitionRole && (
               <span style={{

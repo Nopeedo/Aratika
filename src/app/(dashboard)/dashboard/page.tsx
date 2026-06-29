@@ -6,9 +6,19 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { Star, Bell, BarChart3, Crown, Map, ArrowRight, PenLine, Sparkles, CheckCircle2 } from 'lucide-react'
+import { Crown, Map, ArrowRight, PenLine, Sparkles, CheckCircle2, Highlighter, Bookmark, Newspaper } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { ManageBillingButton } from '@/components/billing/billing-buttons'
+import { CommandCentre, type TrackedItem } from '@/components/bookmarks/command-centre'
+import { VideoSection } from '@/components/news/video-section'
+import type { Bookmark as BookmarkType } from '@/hooks/use-bookmarks'
+import { isEnabled, PREMIUM_ENABLED } from '@/constants/features'
+import { getNews } from '@/lib/news/live'
+import { getVideos } from '@/lib/news/videos'
+import { MP_PROFILES } from '@/constants/mps-data'
+import { PARTY_PROFILES } from '@/constants/parties-data'
+import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
+import type { PartySlug } from '@/types'
 
 export const metadata: Metadata = { title: 'My Dashboard' }
 
@@ -18,13 +28,69 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  let user = null
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch {
+    // Malformed/stale auth cookie — treat as logged out rather than erroring.
+  }
   if (!user) redirect('/login')
 
   const name = (user.user_metadata?.name as string) || user.email?.split('@')[0] || 'there'
 
   const { data: sub } = await supabase.from('subscriptions').select('status').eq('user_id', user.id).maybeSingle()
-  const isPremium = ['active', 'trialing'].includes((sub?.status as string) ?? '')
+  // Paid tier off → treat everyone as premium so all features are free.
+  const isPremium = !PREMIUM_ENABLED || ['active', 'trialing'].includes((sub?.status as string) ?? '')
+
+  // The user's saved bill highlights/notes, grouped by bill.
+  const { data: annsRaw } = await supabase
+    .from('bill_annotations')
+    .select('id, bill_slug, bill_title, quote, note, created_at')
+    .order('created_at', { ascending: false })
+    .limit(100)
+  type Ann = { id: string; bill_slug: string | null; bill_title: string | null; quote: string; note: string | null }
+  const annGroups = Object.values(((annsRaw ?? []) as Ann[]).reduce<Record<string, { slug: string | null; title: string; items: Ann[] }>>((acc, a) => {
+    const key = a.bill_slug || a.id
+    ;(acc[key] ||= { slug: a.bill_slug, title: a.bill_title || 'Legislation', items: [] }).items.push(a)
+    return acc
+  }, {}))
+
+  // The user's command centre — everything they've chosen to track.
+  const { data: bookmarksRaw } = await supabase
+    .from('bookmarks')
+    .select('id, kind, ref_id, label, sublabel, href, accent, created_at')
+    .order('created_at', { ascending: false })
+  const bookmarks = (bookmarksRaw ?? []) as BookmarkType[]
+
+  // Enrich tracked MP/party cards with display details (photo, party, leader) — server-side
+  // so we don't ship the full MP/party dataset to the client.
+  const enriched: TrackedItem[] = bookmarks.map((b) => {
+    if (b.kind === 'mp') {
+      const mp = MP_PROFILES[b.ref_id]
+      const role = mp ? (mp.role === 'electorate' ? `MP for ${mp.electorate}` : `${PARTY_PROFILES[mp.party]?.name ?? ''} list MP`) : b.sublabel
+      return { ...b, photo: mp?.photo, party: mp?.party, role }
+    }
+    if (b.kind === 'party') {
+      const p = PARTY_PROFILES[b.ref_id as PartySlug]
+      return { ...b, accent: p?.color ?? b.accent, role: p ? `Led by ${p.leader}` : b.sublabel }
+    }
+    return b
+  })
+
+  // Which parties is the user following (directly, or via a tracked MP)?
+  const trackedParties = new Set<string>()
+  for (const b of bookmarks) {
+    if (b.kind === 'party') trackedParties.add(b.ref_id)
+    else if (b.kind === 'mp') { const p = MP_PROFILES[b.ref_id]?.party; if (p) trackedParties.add(p) }
+  }
+  // Personalised feed — news + videos for the parties they follow.
+  const [allNews, allVideos] = trackedParties.size ? await Promise.all([getNews(), getVideos()]) : [[], []]
+  const feedNews = allNews.filter((n) => n.parties.some((p) => trackedParties.has(p))).slice(0, 6)
+  const feedVideos = allVideos.filter((v) => v.parties.some((p) => trackedParties.has(p))).slice(0, 10)
+
+  // Bill highlights are a Phase-2 feature; only surface them once legislation ships.
+  const showHighlights = isEnabled('legislation')
 
   return (
     <div style={{ background: '#fff', minHeight: 'calc(100vh - 64px)' }}>
@@ -41,8 +107,8 @@ export default async function DashboardPage() {
 
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '32px 36px 64px' }}>
 
-        {/* Premium status / upsell */}
-        {isPremium ? (
+        {/* Premium status / upsell — only when the premium tier has shipped */}
+        {isEnabled('premium') && (isPremium ? (
           <div style={{
             display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
             background: 'linear-gradient(145deg,#ecfdf5,#f7fffb)', border: '1px solid #a7f3d0',
@@ -80,37 +146,106 @@ export default async function DashboardPage() {
               <Crown style={{ width: 15, height: 15 }} /> See Premium
             </Link>
           </div>
-        )}
+        ))}
 
-        {/* Feature placeholders */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
-          {[
-            { icon: Star, title: 'Tracked MPs', body: 'MPs you bookmark will appear here with their latest votes, speeches and bills.' },
-            { icon: BarChart3, title: 'Tracked bills', body: 'Follow bills through the House and see when they reach each stage.' },
-            { icon: Bell, title: 'Alerts', body: 'Get notified when something you follow has new activity.' },
-          ].map((c) => (
-            <div key={c.title} style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '20px 22px' }}>
-              <div style={{ width: 38, height: 38, borderRadius: 10, background: SURFACE, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-                <c.icon style={{ width: 19, height: 19, color: JADE }} />
-              </div>
-              <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>{c.title}</div>
-              <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5 }}>{c.body}</div>
-              <div style={{ fontSize: 11.5, fontWeight: 700, color: TERTIARY, fontFamily: MANROPE, marginTop: 12 }}>Coming soon</div>
-            </div>
-          ))}
+        {/* Command centre — the centrepiece */}
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+            <Bookmark style={{ width: 18, height: 18, color: JADE }} />
+            <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Your command centre</h2>
+          </div>
+          <CommandCentre initial={enriched} />
         </div>
 
-        {/* Explore */}
+        {/* From the parties you follow — personalised news + video */}
+        {trackedParties.size > 0 && (feedNews.length > 0 || feedVideos.length > 0) && (
+          <div style={{ marginBottom: 32 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
+              <Sparkles style={{ width: 18, height: 18, color: JADE }} />
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>From the parties you follow</h2>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
+              {[...trackedParties].map((p) => (
+                <span key={p} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>
+                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: PARTY_COLORS[p as PartySlug]?.bg ?? JADE }} />
+                  {PARTY_NAMES[p as PartySlug]?.short ?? p}
+                </span>
+              ))}
+            </div>
+
+            {feedNews.length > 0 && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 10, marginBottom: feedVideos.length ? 24 : 0 }}>
+                {feedNews.map((n) => (
+                  <a key={n.id} href={n.link} target="_blank" rel="noopener noreferrer" className="party-card" style={{ display: 'flex', gap: 11, textDecoration: 'none', border: `1px solid ${BORDER}`, borderRadius: 12, padding: '11px 12px', background: '#fff' }}>
+                    <span style={{ width: 64, height: 48, flexShrink: 0, borderRadius: 8, overflow: 'hidden', background: '#eef4ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {n.image
+                        // eslint-disable-next-line @next/next/no-img-element
+                        ? <img src={n.image} alt="" loading="lazy" referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        : <Newspaper style={{ width: 18, height: 18, color: '#5b7cc4' }} />}
+                    </span>
+                    <span style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{ display: 'block', fontSize: 11, fontWeight: 700, color: TERTIARY, fontFamily: MANROPE, marginBottom: 2 }}>{n.outlet}</span>
+                      <span style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontSize: 13, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35 }}>{n.title}</span>
+                    </span>
+                  </a>
+                ))}
+              </div>
+            )}
+
+            {feedVideos.length > 0 && <VideoSection videos={feedVideos} />}
+          </div>
+        )}
+
+        {/* Your highlights & notes (Phase 2) */}
+        {showHighlights && (
+        <div style={{ marginBottom: 28 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+            <Highlighter style={{ width: 18, height: 18, color: JADE }} />
+            <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Your highlights &amp; notes</h2>
+          </div>
+          {annGroups.length === 0 ? (
+            <div style={{ border: `1px dashed ${TERTIARY}`, borderRadius: 14, padding: '18px 20px', background: SURFACE, fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6 }}>
+              When you highlight passages while reading a bill, they collect here with your notes.{isPremium ? '' : ' Highlighting is a Premium feature.'}{' '}
+              <Link href="/bills" style={{ color: JADE, fontWeight: 700 }}>Browse bills →</Link>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {annGroups.map((g) => (
+                <div key={g.slug ?? g.title} style={{ border: `1px solid ${BORDER}`, borderRadius: 16, padding: '16px 18px' }}>
+                  {g.slug
+                    ? <Link href={`/legislation/${g.slug}`} style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>{g.title} <ArrowRight style={{ width: 14, height: 14, color: JADE }} /></Link>
+                    : <span style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{g.title}</span>}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12 }}>
+                    {g.items.map((a) => (
+                      <div key={a.id} style={{ borderLeft: '3px solid #ffe08a', paddingLeft: 12 }}>
+                        <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.5, margin: 0, fontStyle: 'italic' }}>“{a.quote.length > 220 ? a.quote.slice(0, 220) + '…' : a.quote}”</p>
+                        {a.note && <p style={{ fontSize: 13, color: INK, fontFamily: MANROPE, lineHeight: 1.5, margin: '4px 0 0' }}>{a.note}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        )}
+
+        {/* Explore — keep the user moving toward what matters this phase */}
         <div style={{ marginTop: 28, display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <Link href="/map" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, background: JADE, color: '#fff', fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
-            <Map style={{ width: 15, height: 15 }} /> Find your MP
+            <Map style={{ width: 15, height: 15 }} /> Find your electorate
           </Link>
-          <Link href="/take-action" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, background: '#fff', border: `1px solid ${BORDER}`, color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
-            <PenLine style={{ width: 15, height: 15 }} /> Take action
+          <Link href="/mps" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, background: '#fff', border: `1px solid ${BORDER}`, color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
+            Browse MPs <ArrowRight style={{ width: 15, height: 15 }} />
           </Link>
-          <Link href="/bills" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, background: '#fff', border: `1px solid ${BORDER}`, color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
-            Browse bills <ArrowRight style={{ width: 15, height: 15 }} />
+          <Link href="/compare" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, background: '#fff', border: `1px solid ${BORDER}`, color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
+            Compare parties <ArrowRight style={{ width: 15, height: 15 }} />
           </Link>
+          {isEnabled('take-action') && (
+            <Link href="/take-action" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, background: '#fff', border: `1px solid ${BORDER}`, color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
+              <PenLine style={{ width: 15, height: 15 }} /> Take action
+            </Link>
+          )}
         </div>
       </div>
     </div>

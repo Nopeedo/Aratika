@@ -1,0 +1,25 @@
+name: Daily content ingest
+
+# Pulls from the official Parliament/PCO APIs once a day and stages new/changed
+# items into Supabase as 'pending' for editorial review. Manual run also enabled.
+on:
+  schedule:
+    - cron: '0 19 * * *'   # 19:00 UTC ≈ 7–8am NZ (after overnight); adjust as needed
+  workflow_dispatch:
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Run ingest
+        run: node scripts/ingest.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          PARLIAMENT_API_KEY: ${{ secrets.PARLIAMENT_API_KEY }}
+          LEGISLATION_RSS_URLS: ${{ secrets.LEGISLATION_RSS_URLS }}

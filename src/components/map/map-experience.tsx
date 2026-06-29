@@ -14,7 +14,7 @@
 import * as React from 'react'
 import dynamic from 'next/dynamic'
 import { Search, Layers, Loader2, MapPinOff, ShieldCheck } from 'lucide-react'
-import type { FeatureCollection } from 'geojson'
+import type { Feature, FeatureCollection } from 'geojson'
 import { ElectoratePanel } from './electorate-panel'
 import {
   electorateNameFromProps, normalizeElectorateKey,
@@ -39,12 +39,58 @@ const GEOJSON_PATHS: Record<LayerType, string> = {
   maori:   '/data/maori-electorates-2020.geojson',
 }
 
+// ─── Address → electorate ─────────────────────────────────────────────────────
+// We geocode the typed address/suburb (OpenStreetMap Nominatim, restricted to NZ)
+// to a lon/lat, then ray-cast that point against the OFFICIAL Stats NZ boundary
+// polygons we've already loaded — so the electorate match itself stays official.
+
+type LngLat = [number, number]
+
+function pointInRing(pt: LngLat, ring: number[][]): boolean {
+  let inside = false
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const xi = ring[i][0], yi = ring[i][1], xj = ring[j][0], yj = ring[j][1]
+    const intersect = (yi > pt[1]) !== (yj > pt[1]) && pt[0] < ((xj - xi) * (pt[1] - yi)) / (yj - yi) + xi
+    if (intersect) inside = !inside
+  }
+  return inside
+}
+
+// A polygon is [outerRing, ...holes]; a point counts only if inside the outer ring
+// and not inside any hole.
+function pointInPolygon(pt: LngLat, polygon: number[][][]): boolean {
+  if (!polygon.length || !pointInRing(pt, polygon[0])) return false
+  for (let k = 1; k < polygon.length; k++) if (pointInRing(pt, polygon[k])) return false
+  return true
+}
+
+function featureContains(feature: Feature, pt: LngLat): boolean {
+  const g = feature.geometry
+  if (!g) return false
+  if (g.type === 'Polygon') return pointInPolygon(pt, g.coordinates as number[][][])
+  if (g.type === 'MultiPolygon') return (g.coordinates as number[][][][]).some((poly) => pointInPolygon(pt, poly))
+  return false
+}
+
+async function geocodeNZ(q: string): Promise<{ pt: LngLat; label: string } | null> {
+  const url =
+    'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=nz&q=' +
+    encodeURIComponent(q)
+  const res = await fetch(url, { headers: { Accept: 'application/json' } })
+  if (!res.ok) throw new Error('geocode_failed')
+  const arr = (await res.json()) as Array<{ lat: string; lon: string; display_name?: string }>
+  if (!arr.length) return null
+  return { pt: [parseFloat(arr[0].lon), parseFloat(arr[0].lat)], label: arr[0].display_name?.split(',')[0] ?? q }
+}
+
 export function MapExperience({ initialSearch }: { initialSearch?: string }) {
   const [layer, setLayer]           = React.useState<LayerType>('general')
   const [data, setData]             = React.useState<FeatureCollection | null>(null)
   const [status, setStatus]         = React.useState<'loading' | 'ready' | 'missing' | 'error'>('loading')
   const [selected, setSelected]     = React.useState<string | null>(null)
   const [query, setQuery]           = React.useState(initialSearch ?? '')
+  const [searching, setSearching]   = React.useState(false)
+  const [searchMsg, setSearchMsg]   = React.useState<string | null>(null)
 
   // Fetch boundary GeoJSON when the layer changes
   React.useEffect(() => {
@@ -80,15 +126,41 @@ export function MapExperience({ initialSearch }: { initialSearch?: string }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status])
 
-  function runSearch(q: string, fc: FeatureCollection) {
+  async function runSearch(q: string, fc: FeatureCollection) {
     const needle = q.trim().toLowerCase()
     if (!needle) return
-    const match = fc.features.find((f) => {
-      const name = electorateNameFromProps(f.properties as Record<string, unknown>).toLowerCase()
-      return name.includes(needle)
-    })
-    if (match) {
-      setSelected(electorateNameFromProps(match.properties as Record<string, unknown>))
+    setSearchMsg(null)
+
+    // 1) Direct electorate-name match (fast, no network).
+    const byName = fc.features.find((f) =>
+      electorateNameFromProps(f.properties as Record<string, unknown>).toLowerCase().includes(needle),
+    )
+    if (byName) {
+      setSelected(electorateNameFromProps(byName.properties as Record<string, unknown>))
+      return
+    }
+
+    // 2) Treat it as an address/suburb: geocode → find the electorate that contains it.
+    setSearching(true)
+    try {
+      const geo = await geocodeNZ(q)
+      if (!geo) {
+        setSearchMsg('We couldn’t find that address. Try including your town or city, or check the spelling.')
+        return
+      }
+      const hit = fc.features.find((f) => featureContains(f, geo.pt))
+      if (hit) {
+        setSelected(electorateNameFromProps(hit.properties as Record<string, unknown>))
+        setSearchMsg(null)
+      } else {
+        setSearchMsg(
+          `Found “${geo.label}”, but it isn’t inside the ${layer === 'maori' ? 'Māori' : 'general'} electorates shown — try the ${layer === 'maori' ? 'General' : 'Māori'} layer.`,
+        )
+      }
+    } catch {
+      setSearchMsg('Address lookup is unavailable right now — you can still search by electorate name.')
+    } finally {
+      setSearching(false)
     }
   }
 
@@ -132,11 +204,12 @@ export function MapExperience({ initialSearch }: { initialSearch?: string }) {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search electorate name…"
+              placeholder="Search your address, suburb or electorate…"
               style={{ flex: 1, border: 'none', outline: 'none', padding: '9px 0', fontSize: 14, fontFamily: 'var(--font-geist-sans), sans-serif', color: INK }}
             />
-            <button type="submit" style={{ border: 'none', background: JADE, color: '#fff', padding: '9px 14px', fontSize: 13, fontWeight: 700, fontFamily: MANROPE, cursor: 'pointer' }}>
-              Search
+            <button type="submit" disabled={searching} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: JADE, color: '#fff', padding: '9px 14px', fontSize: 13, fontWeight: 700, fontFamily: MANROPE, cursor: searching ? 'default' : 'pointer', opacity: searching ? 0.75 : 1 }}>
+              {searching && <Loader2 className="animate-spin" style={{ width: 14, height: 14 }} />}
+              {searching ? 'Finding…' : 'Search'}
             </button>
           </div>
         </form>
@@ -147,6 +220,14 @@ export function MapExperience({ initialSearch }: { initialSearch?: string }) {
           Boundaries: Stats NZ (2020)
         </div>
       </div>
+
+      {/* Search feedback (address not found / outside layer) */}
+      {searchMsg && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14, padding: '10px 14px', borderRadius: 10, background: '#fffbeb', border: '1px solid #fde68a', fontSize: 13, color: '#92400e', fontFamily: MANROPE, lineHeight: 1.5 }}>
+          <MapPinOff style={{ width: 15, height: 15, flexShrink: 0 }} />
+          {searchMsg}
+        </div>
+      )}
 
       {/* Map + panel grid */}
       <div className="map-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'stretch' }}>

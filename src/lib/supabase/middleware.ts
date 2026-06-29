@@ -30,7 +30,16 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: refreshes the auth token. Do not run code between client creation
   // and getUser() — it can cause hard-to-debug session issues.
-  await supabase.auth.getUser()
+  try {
+    await supabase.auth.getUser()
+  } catch {
+    // A malformed/stale auth cookie can make the SSR client throw while parsing
+    // it. Never let that 500 the whole site — clear the bad Supabase cookies so
+    // the browser recovers to a logged-out state, and continue.
+    request.cookies.getAll().forEach(({ name }) => {
+      if (name.startsWith('sb-')) supabaseResponse.cookies.set(name, '', { maxAge: 0 })
+    })
+  }
 
   return supabaseResponse
 }

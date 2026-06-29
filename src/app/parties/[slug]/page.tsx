@@ -20,6 +20,8 @@ import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { PartySlug, PolicyTopic } from '@/types'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
+import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
+import { PartyLegislativeRecord } from '@/components/parties/legislative-record'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
@@ -132,7 +134,7 @@ export default async function PartyProfilePage(
                   background: party.color, color: party.textColor,
                   borderRadius: 999, padding: '4px 12px', fontFamily: MANROPE,
                 }}>
-                  {status === 'governing' ? 'Governing' : 'Opposition'}
+                  {status === 'governing' ? 'Governing' : status === 'opposition' ? 'Opposition' : 'Not in Parliament'}
                 </span>
                 {party.coalitionRole && (
                   <span style={{
@@ -164,6 +166,10 @@ export default async function PartyProfilePage(
                 <a href={party.parliamentUrl} target="_blank" rel="noopener noreferrer" style={btnSecondary}>
                   parliament.nz <ArrowUpRight style={{ width: 14, height: 14 }} />
                 </a>
+                <BookmarkButton entity={{
+                  kind: 'party', refId: slug, label: party.name,
+                  sublabel: 'Political party', href: `/parties/${slug}`, accent: party.color,
+                }} />
               </div>
             </div>
 
@@ -254,6 +260,9 @@ export default async function PartyProfilePage(
               })}
             </div>
           </Card>
+
+          {/* Legislative record this term */}
+          <PartyLegislativeRecord party={slug as PartySlug} partyName={party.name} />
         </div>
 
         {/* ── Sidebar ── */}
@@ -264,7 +273,7 @@ export default async function PartyProfilePage(
             <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 14 }}>
               Leadership
             </div>
-            <LeaderRow name={party.leader} title={party.leaderTitle} party={slug as PartySlug} photo={leaderSlug ? MP_PROFILES[leaderSlug].photo : undefined} href={leaderSlug ? `/mps/${leaderSlug}` : null} />
+            <LeaderRow name={party.leader} title={party.leaderTitle} party={slug as PartySlug} photo={leaderSlug ? MP_PROFILES[leaderSlug].photo : party.leaderPhoto} href={leaderSlug ? `/mps/${leaderSlug}` : null} />
             {party.coLeader && (
               <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
                 <LeaderRow name={party.coLeader} title={party.coLeaderTitle ?? 'Co-leader'} party={slug as PartySlug} photo={coLeaderSlug ? MP_PROFILES[coLeaderSlug].photo : undefined} href={coLeaderSlug ? `/mps/${coLeaderSlug}` : null} />
@@ -319,6 +328,10 @@ export default async function PartyProfilePage(
             <a href={party.parliamentUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>
               parliament.nz <ArrowUpRight style={{ width: 11, height: 11, display: 'inline' }} />
             </a>{' '}and official party records. Leadership details pending Parliament API verification.
+            {party.leaderPhoto && party.leaderPhotoCredit && (
+              <>{' '}Leader photo: {party.leaderPhotoCredit}{party.leaderPhotoLicense ? `, ${party.leaderPhotoLicense}` : ''}
+                {party.leaderPhotoSourceUrl && (<>{' '}<a href={party.leaderPhotoSourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>(source <ArrowUpRight style={{ width: 10, height: 10, display: 'inline' }} />)</a></>)}.</>
+            )}
           </p>
         </div>
       </div>

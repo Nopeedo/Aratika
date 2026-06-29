@@ -17,6 +17,11 @@ import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PolicyTopic } from '@/types'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
+import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
+import { getApprovedPositions } from '@/lib/positions/live'
+import { PolicyComparison } from '@/components/policy/policy-comparison'
+import { PolicyCoverage } from '@/components/policy/policy-coverage'
+import { BillsForTopic } from '@/components/bills/bills-for-topic'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
@@ -50,6 +55,8 @@ export default async function PolicyTopicPage(
   const priorityParties = PARTY_DIRECTORY_ORDER.filter((p) => PARTY_PROFILES[p].keyPolicyAreas.includes(topic as PolicyTopic))
   const otherParties = PARTY_DIRECTORY_ORDER.filter((p) => !priorityParties.includes(p))
 
+  const positions = await getApprovedPositions(topic)
+
   return (
     <div style={{ background: '#fff', minHeight: '100vh' }}>
 
@@ -63,10 +70,14 @@ export default async function PolicyTopicPage(
             <div className={t.color} style={{ width: 56, height: 56, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               {Icon && <Icon className={`size-7 ${t.textColor}`} />}
             </div>
-            <div>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Policy Topic</div>
               <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.1 }}>{t.label}</h1>
             </div>
+            <BookmarkButton entity={{
+              kind: 'policy', refId: topic, label: t.label,
+              sublabel: 'Policy topic', href: `/policies/${topic}`, accent: JADE,
+            }} />
           </div>
         </div>
       </div>
@@ -112,15 +123,22 @@ export default async function PolicyTopicPage(
           )}
         </div>
 
-        {/* Detailed positions — pending */}
-        <div style={{ display: 'flex', gap: 10, padding: '14px 16px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12 }}>
-          <Info style={{ width: 16, height: 16, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />
-          <p style={{ fontSize: 12.5, color: '#1e3a8a', fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
-            <b>Detailed party-by-party positions are being compiled.</b> Side-by-side position statements and
-            plain-language impact summaries for each party on {t.label.toLowerCase()} will be added here,
-            sourced and cited from official party policy documents — never paraphrased without attribution.
-          </p>
-        </div>
+        {/* Detailed party-by-party comparison */}
+        {positions.length > 0 ? (
+          <PolicyComparison positions={positions} topicLabel={t.label} topic={topic} />
+        ) : (
+          <div style={{ display: 'flex', gap: 10, padding: '14px 16px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12 }}>
+            <Info style={{ width: 16, height: 16, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />
+            <p style={{ fontSize: 12.5, color: '#1e3a8a', fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
+              <b>Detailed party-by-party positions are being compiled.</b> Side-by-side position statements and
+              plain-language summaries for each party on {t.label.toLowerCase()} will appear here, summarised
+              neutrally from official party policy and editor-checked — never paraphrased without attribution.
+            </p>
+          </div>
+        )}
+
+        {/* What's been legislated this term (bills → record, beside the comparison) */}
+        <BillsForTopic topic={topic as PolicyTopic} label={t.label} />
 
         {/* Source */}
         <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 16, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
@@ -130,6 +148,7 @@ export default async function PolicyTopicPage(
           </p>
         </div>
       </div>
+      <PolicyCoverage maxWidth={1000} />
     </div>
   )
 }

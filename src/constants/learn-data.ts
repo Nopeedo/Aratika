@@ -8,6 +8,8 @@
  * The MMP module is the flagship template; further modules follow the same shape.
  */
 
+import { HOW_TO_VOTE, GOVERNMENT_FORMATION, HAVE_YOUR_SAY, POLICY_TOPICS_MOD } from './learn-extra'
+
 export type LearnTier = 'kids' | 'beginner' | 'intermediate' | 'expert'
 
 export const TIERS: { key: LearnTier; label: string; blurb: string }[] = [
@@ -438,11 +440,15 @@ const ROLES_MOD: LearnModule = {
 
 export const LEARN_MODULES: LearnModule[] = [
   MMP,
-  WHAT_IS,
+  HOW_TO_VOTE,
   ELEC_LIST,
+  GOVERNMENT_FORMATION,
+  WHAT_IS,
+  ROLES_MOD,
   BILL,
   COMMITTEES,
-  ROLES_MOD,
+  HAVE_YOUR_SAY,
+  POLICY_TOPICS_MOD,
 ]
 
 export function getModule(id: string): LearnModule | undefined {

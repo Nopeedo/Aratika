@@ -10,8 +10,9 @@
 
 import Link from 'next/link'
 import {
-  MapPin, ArrowRight, Info, Lock, Bookmark, Vote, FileText, MousePointerClick,
+  MapPin, ArrowRight, Info, Vote, FileText, MousePointerClick,
 } from 'lucide-react'
+import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { getElectorate } from '@/constants/electorates-data'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_PROFILES } from '@/constants/parties-data'
@@ -144,15 +145,13 @@ export function ElectoratePanel({ electorateName }: { electorateName: string | n
                 Full profile coming soon
               </div>
             )}
-            <span style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
-              padding: '10px 14px', borderRadius: 10, border: `1px solid ${BORDER}`,
-              background: '#fff', color: TERTIARY, fontSize: 13, fontWeight: 700,
-              fontFamily: MANROPE, cursor: 'default',
-            }} title="Bookmarking is a Premium feature">
-              <Lock style={{ width: 13, height: 13 }} />
-              <Bookmark style={{ width: 14, height: 14 }} /> Bookmark this MP
-            </span>
+            <BookmarkButton entity={{
+              kind: 'electorate', refId: electorateName,
+              label: electorateName,
+              sublabel: info.mpName ? `${info.mpName} · ${party.name}` : (info.type === 'maori' ? 'Māori electorate' : 'General electorate'),
+              href: `/map?search=${encodeURIComponent(electorateName)}`,
+              accent: party.color,
+            }} />
           </div>
         </div>
       ) : (
