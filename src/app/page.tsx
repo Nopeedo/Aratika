@@ -21,6 +21,7 @@ import { ParliamentSnapshot }  from '@/components/parliament/parliament-snapshot
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
 import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
+import { CompassCta } from '@/components/compass/compass-cta'
 import { ElectionCountdown }   from '@/components/homepage/election-countdown'
 import { HomeMapFeature }      from '@/components/homepage/home-map-feature'
 import { PolicyCard }          from '@/components/homepage/policy-card'
@@ -171,29 +172,8 @@ export default function HomePage() {
         </section>
       </PartyCycleProvider>
 
-      {/* ── PERSONAL COMPASS — entry to the questionnaire ── */}
-      <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: 'clamp(40px, 7vw, 72px) clamp(18px, 5vw, 36px)' }}>
-          <div className="party-card" style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(150deg,#C2410C,#2A1206)', borderRadius: 24, padding: 'clamp(28px, 6vw, 52px)', textAlign: 'center' }}>
-            <div style={{ width: 60, height: 60, borderRadius: 17, background: 'rgba(255,255,255,.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
-              <Compass style={{ width: 30, height: 30, color: '#fff' }} />
-            </div>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: '#f6a667', fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 12 }}>Personal compass</div>
-            <h2 style={{ fontSize: 'clamp(26px, 5vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: '#fff', fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.1, margin: '0 0 14px' }}>
-              Find where you stand
-            </h2>
-            <p style={{ fontSize: 'clamp(15px, 2.2vw, 17px)', fontWeight: 500, color: 'rgba(255,255,255,.82)', fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, maxWidth: 560, margin: '0 auto 24px' }}>
-              12 quick questions. We point you to the tools that help you most — and show where you overlap with every party on the issues, <b style={{ color: '#fff' }}>sourced and side by side</b>. It’s not voting advice.
-            </p>
-            <Link href="/start" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 26px', borderRadius: 13, background: '#fff', color: '#2A1206', fontSize: 15.5, fontWeight: 800, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}>
-              <Compass style={{ width: 17, height: 17 }} /> Take the compass <ArrowRight style={{ width: 17, height: 17 }} />
-            </Link>
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '6px 18px', marginTop: 18, fontSize: 12.5, fontWeight: 600, color: 'rgba(255,255,255,.6)', fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>
-              <span>~3 minutes</span><span>·</span><span>No account needed</span><span>·</span><span>Non-partisan &amp; sourced</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── PERSONAL COMPASS — entry card; background cycles through party colours (non-partisan) ── */}
+      <CompassCta />
 
       {/* ── Credibility strip ── */}
       <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
