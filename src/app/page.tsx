@@ -22,6 +22,7 @@ import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinem
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
 import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
 import { CompassCta } from '@/components/compass/compass-cta'
+import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { ElectionCountdown }   from '@/components/homepage/election-countdown'
 import { HomeMapFeature }      from '@/components/homepage/home-map-feature'
 import { PolicyCard }          from '@/components/homepage/policy-card'
@@ -174,6 +175,9 @@ export default function HomePage() {
 
       {/* ── PERSONAL COMPASS — entry card; background cycles through party colours (non-partisan) ── */}
       <CompassCta />
+
+      {/* ── WHERE DO THE PARTIES STAND? — straight after the compass, for the first-timer flow ── */}
+      <PolicyHubGrid />
 
       {/* ── Credibility strip ── */}
       <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
@@ -372,129 +376,6 @@ export default function HomePage() {
           2b. PARLIAMENT SNAPSHOT — gated (Phase 2)
       ═══════════════════════════════════════════════════════════════════ */}
       {isEnabled('parliament') && <ParliamentSnapshot />}
-
-
-      {/* ═══════════════════════════════════════════════════════════════════
-          3. POLICY HUB — Prominent issue grid with party indicators
-      ═══════════════════════════════════════════════════════════════════ */}
-      <section style={{ background: SURFACE, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px clamp(18px, 5vw, 36px)' }}>
-
-          {/* Section header */}
-          <div style={{
-            display:        'flex',
-            justifyContent: 'space-between',
-            alignItems:     'flex-end',
-            marginBottom:   32,
-            flexWrap:       'wrap',
-            gap:            12,
-          }}>
-            <div>
-              <div style={{
-                fontSize:      12,
-                fontWeight:    800,
-                letterSpacing: '.12em',
-                textTransform: 'uppercase',
-                color:         JADE,
-                fontFamily:    'var(--font-manrope), system-ui, sans-serif',
-                marginBottom:  8,
-              }}>
-                Policy Comparison
-              </div>
-              <h2 style={{
-                fontSize:     28,
-                fontWeight:   800,
-                letterSpacing:'-.01em',
-                color:        INK,
-                fontFamily:   'var(--font-manrope), system-ui, sans-serif',
-                margin:       0,
-              }}>
-                Where do the parties stand?
-              </h2>
-              <p style={{
-                fontSize:   15,
-                fontWeight: 500,
-                color:      SECONDARY,
-                fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-                marginTop:  8,
-                marginBottom:0,
-              }}>
-                See every party&apos;s position on the issues that matter to New Zealanders.
-                All sourced from official party documents.
-              </p>
-            </div>
-
-            <Link
-              href="/policies"
-              style={{
-                display:    'inline-flex',
-                alignItems: 'center',
-                gap:        5,
-                fontSize:   13,
-                fontWeight: 800,
-                color:      INK,
-                fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-                textDecoration: 'none',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              All policy comparisons
-              <ArrowRight style={{ width: 14, height: 14 }} />
-            </Link>
-          </div>
-
-          {/* 10-topic grid */}
-          <div style={{
-            display:             'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-            gap:                 14,
-          }}>
-            {POLICY_TOPIC_ORDER.map((key) => (
-              <PolicyCard key={key} topicKey={key} />
-            ))}
-          </div>
-
-          {/* Party dot legend */}
-          <div style={{
-            display:     'flex',
-            flexWrap:    'wrap',
-            gap:         '6px 16px',
-            marginTop:   20,
-            paddingTop:  16,
-            borderTop:   `1px solid ${BORDER}`,
-          }}>
-            <span style={{
-              fontSize: 11, fontWeight: 600, color: TERTIARY,
-              fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-              alignSelf: 'center',
-              marginRight: 4,
-            }}>
-              Party positions shown for:
-            </span>
-            {PARTY_DOT_ORDER.map((slug) => (
-              <div
-                key={slug}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 5,
-                  fontSize: 11, fontWeight: 600, color: SECONDARY,
-                  fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-                }}
-              >
-                <span style={{
-                  width: 9, height: 9,
-                  borderRadius: '50%',
-                  background: PARTY_COLORS[slug].bg,
-                  display: 'inline-block',
-                  flexShrink: 0,
-                }} />
-                {slug === 'tpm' ? 'Te Pāti Māori'
-                  : slug === 'nzfirst' ? 'NZ First'
-                  : slug.charAt(0).toUpperCase() + slug.slice(1)}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
 
       {/* ═══════════════════════════════════════════════════════════════════
