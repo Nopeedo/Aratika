@@ -62,7 +62,7 @@ export default async function PolicyTopicPage(
 
       {/* Header */}
       <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px 36px 36px' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) clamp(18px, 5vw, 36px)' }}>
           <Link href="/policies" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 22 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All policy topics
           </Link>
@@ -82,7 +82,7 @@ export default async function PolicyTopicPage(
         </div>
       </div>
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '32px 36px 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '32px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
 
         {/* What this covers */}
         <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 24px' }}>

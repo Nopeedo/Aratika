@@ -39,7 +39,7 @@ export default function PolicyHubPage() {
   return (
     <div style={{ background: '#ffffff', minHeight: '100vh' }}>
       <div className="bg-dot-grid" style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px 36px 40px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
           <div style={{ marginBottom: 8 }}>
             <SectionDivider type="official" label="Party Policy Comparison" />
           </div>
@@ -53,7 +53,7 @@ export default function PolicyHubPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '36px 36px 64px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: 'clamp(18px, 5vw, 36px) clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
           {POLICY_TOPIC_ORDER.map((key) => {
             const topic = POLICY_TOPICS[key]

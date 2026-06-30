@@ -30,7 +30,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
         <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 720, fontFamily: MANROPE }}>
           <thead>
             <tr>
-              <th style={{ ...thBase, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, minWidth: 130 }}>Party</th>
+              <th style={{ ...thBase, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, minWidth: 96 }}>Party</th>
               {topics.map((t) => (
                 <th key={t.slug} style={{ ...thBase, textAlign: 'center' }}>
                   <Link href={`/policies/${t.slug}`} style={{ color: SECONDARY, textDecoration: 'none' }}>{t.label}</Link>

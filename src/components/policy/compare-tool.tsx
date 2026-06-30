@@ -2,19 +2,20 @@
 
 /**
  * CompareTool — the interactive party comparison. Switch topic, toggle
- * Plain/Detailed, and show/hide parties; positions sit side by side. Reads only
- * approved, editor-checked positions. Neutral directory order; every card cites
- * its source and links to the full on-site breakdown.
+ * Plain/Detailed, and show/hide parties; positions show as a mobile-first
+ * scannable stacked list (see PartyPositions). The topic switcher is sticky so
+ * you can change issue while reading. Reads only approved, editor-checked
+ * positions. Neutral directory order; every row cites its source.
  */
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { ExternalLink, ArrowRight, Scale } from 'lucide-react'
 import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
+import { PartyPositions } from '@/components/policy/party-positions'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
+const INK = '#0c0e12', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 interface TopicOpt { slug: string; label: string; hasData: boolean }
@@ -43,31 +44,33 @@ export function CompareTool({ positions, topics }: { positions: PartyPosition[];
 
   return (
     <div>
-      {/* Topic switcher */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 18 }}>
-        {topics.map((t) => {
-          const active = t.slug === topic
-          return (
-            <button
-              key={t.slug}
-              onClick={() => t.hasData && setTopic(t.slug)}
-              disabled={!t.hasData}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 999,
-                fontSize: 13, fontWeight: 700, fontFamily: MANROPE, cursor: t.hasData ? 'pointer' : 'default',
-                border: `1px solid ${active ? INK : BORDER}`,
-                background: active ? INK : '#fff', color: active ? '#fff' : (t.hasData ? INK : TERTIARY),
-                opacity: t.hasData ? 1 : 0.55,
-              }}
-            >
-              {t.label}{!t.hasData && <span style={{ fontSize: 10.5, fontWeight: 700, color: TERTIARY }}>soon</span>}
-            </button>
-          )
-        })}
+      {/* Topic switcher — sticky so you can change issue while scrolling. Horizontal-scrolls on mobile. */}
+      <div style={{ position: 'sticky', top: 60, zIndex: 5, background: '#fff', margin: '0 0 16px', paddingTop: 10 }}>
+        <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 12, WebkitOverflowScrolling: 'touch' }}>
+          {topics.map((t) => {
+            const active = t.slug === topic
+            return (
+              <button
+                key={t.slug}
+                onClick={() => t.hasData && setTopic(t.slug)}
+                disabled={!t.hasData}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 999, whiteSpace: 'nowrap', flexShrink: 0,
+                  fontSize: 13, fontWeight: 700, fontFamily: MANROPE, cursor: t.hasData ? 'pointer' : 'default',
+                  border: `1px solid ${active ? INK : BORDER}`,
+                  background: active ? INK : '#fff', color: active ? '#fff' : (t.hasData ? INK : TERTIARY),
+                  opacity: t.hasData ? 1 : 0.55,
+                }}
+              >
+                {t.label}{!t.hasData && <span style={{ fontSize: 10.5, fontWeight: 700, color: TERTIARY }}>soon</span>}
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       {/* Controls: party filter + plain/detailed */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 18 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
           {PARTY_DIRECTORY_ORDER.map((slug) => {
             const party = PARTY_PROFILES[slug as PartySlug]
@@ -95,52 +98,10 @@ export function CompareTool({ positions, topics }: { positions: PartyPosition[];
         </div>
       </div>
 
-      {/* Comparison grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
-        {visibleParties.map((slug) => {
-          const party = PARTY_PROFILES[slug as PartySlug]
-          const pos = byParty.get(slug)
-          const body = detailed ? (pos?.summary || pos?.summaryBasic) : (pos?.summaryBasic || pos?.summary)
-          return (
-            <div key={slug} style={{ border: `1px solid ${BORDER}`, borderRadius: 16, overflow: 'hidden', background: '#fff', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ height: 5, background: party.color }} />
-              <div style={{ padding: '15px 17px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                  <span style={{ width: 10, height: 10, borderRadius: 3, background: party.color, flexShrink: 0 }} />
-                  <span style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{party.name}</span>
-                </div>
-                {pos ? (
-                  <>
-                    <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 6 }}>{pos.periodLabel}</div>
-                    {pos.stance && <div style={{ fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.35, marginBottom: 8 }}>{pos.stance}</div>}
-                    <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>{body}</p>
-                    <div style={{ marginTop: 'auto', paddingTop: 10, borderTop: `1px solid ${BORDER}` }}>
-                      <Link href={`/policies/${topic}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none' }}>
-                        Full breakdown <ArrowRight style={{ width: 14, height: 14 }} />
-                      </Link>
-                      {pos.sourceUrl && (
-                        <div style={{ marginTop: 7 }}>
-                          <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-                            {pos.sourceLabel} <ExternalLink style={{ width: 11, height: 11 }} />
-                          </a>
-                        </div>
-                      )}
-                    </div>
-                  </>
-                ) : (
-                  <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
-                    No {topicLabel.toLowerCase()} position captured for {party.name} yet — being sourced and editor-checked.
-                  </p>
-                )}
-              </div>
-            </div>
-          )
-        })}
-      </div>
-
-      {visibleParties.length === 0 && (
+      {visibleParties.length > 0 ? (
+        <PartyPositions parties={visibleParties} getPos={(s) => byParty.get(s)} detailed={detailed} topic={topic} topicLabel={topicLabel} />
+      ) : (
         <div style={{ textAlign: 'center', padding: '40px 0', color: TERTIARY, fontFamily: MANROPE, fontSize: 14 }}>
-          <Scale style={{ width: 26, height: 26, margin: '0 auto 10px', color: '#cbd0d6' }} />
           All parties hidden — turn some back on above.
         </div>
       )}

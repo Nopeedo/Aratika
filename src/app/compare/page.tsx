@@ -31,7 +31,7 @@ export default async function ComparePage() {
     <div style={{ background: '#fff', minHeight: '100vh' }}>
       {/* Header */}
       <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 36px 30px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
           <div style={{ marginBottom: 10 }}>
             <SectionDivider type="official" label="Sourced from official party policy" />
           </div>
@@ -51,7 +51,7 @@ export default async function ComparePage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '28px 36px 64px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px' }}>
         {positions.length > 0 ? (
           <>
             {/* Coverage at a glance */}
