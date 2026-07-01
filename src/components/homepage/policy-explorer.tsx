@@ -29,12 +29,16 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; positions: PartyPosition[] }) {
   const [sel, setSel] = useState<string | null>(null)
+  const [showAll, setShowAll] = useState(false) // by default show only the focused party; opt in to the full comparison
   const { selectedSlug: focused, select } = usePartyCycle() // the party chosen in the command bar / hero tiles
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (sel && panelRef.current) panelRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   }, [sel])
+
+  // Collapse back to focused-only whenever the topic or the chosen party changes.
+  useEffect(() => { setShowAll(false) }, [sel, focused])
 
   const topicsWithData = new Set(positions.map((p) => p.topic))
   const selTopic = sel ? POLICY_TOPICS[sel as keyof typeof POLICY_TOPICS] : null
@@ -55,7 +59,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           <Target style={{ width: 15, height: 15, color: PARTY_COLORS[focused as PartySlug].bg, flexShrink: 0 }} />
           <span style={{ fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Focused on {PARTY_PROFILES[focused as PartySlug].name}</span>
           <span style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, flex: 1, minWidth: 130 }}>Tap an issue below to see where they stand.</span>
-          <button onClick={() => select(null)} style={{ fontSize: 12, fontWeight: 700, color: SECONDARY, background: 'none', border: `1px solid ${BORDER}`, borderRadius: 7, padding: '5px 10px', cursor: 'pointer', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>Show all</button>
+          <button onClick={() => select(null)} style={{ fontSize: 12, fontWeight: 700, color: SECONDARY, background: 'none', border: `1px solid ${BORDER}`, borderRadius: 7, padding: '5px 10px', cursor: 'pointer', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>Clear focus</button>
         </div>
       )}
 
@@ -131,8 +135,12 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
         <div ref={panelRef} style={{ marginTop: 18, border: `1px solid ${BORDER}`, borderRadius: 18, background: '#fff', padding: '18px clamp(14px, 4vw, 22px)', scrollMarginTop: 80 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 14, flexWrap: 'wrap' }}>
             <div style={{ minWidth: 0 }}>
-              <h3 style={{ fontSize: 'clamp(16px, 4.5vw, 18px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px', lineHeight: 1.25 }}>Where the parties stand on {selTopic.label}</h3>
-              <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Tap a party for the breakdown. Sourced from official policy.</p>
+              <h3 style={{ fontSize: 'clamp(16px, 4.5vw, 18px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px', lineHeight: 1.25 }}>
+                {focused && PARTY_PROFILES[focused as PartySlug] && !showAll
+                  ? `Where ${PARTY_PROFILES[focused as PartySlug].name} stands on ${selTopic.label}`
+                  : `Where the parties stand on ${selTopic.label}`}
+              </h3>
+              <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Sourced from official party policy.</p>
             </div>
             <button onClick={() => setSel(null)} aria-label="Close" style={{ background: 'none', border: `1px solid ${BORDER}`, borderRadius: 8, padding: 6, cursor: 'pointer', color: SECONDARY, display: 'flex', flexShrink: 0 }}>
               <X style={{ width: 15, height: 15 }} />
@@ -142,16 +150,29 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           {topicsWithData.has(sel) ? (
             focused && PARTY_PROFILES[focused as PartySlug] ? (
               <>
-                <FocusedCard slug={focused as PartySlug} pos={getPos(focused)} topic={sel} topicLabel={selTopic.label} onClear={() => select(null)} />
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '18px 0 11px' }}>
-                  <span style={{ flex: 1, height: 1, background: BORDER }} />
-                  <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, whiteSpace: 'nowrap', fontFamily: MANROPE }}>Compare the other parties</span>
-                  <span style={{ flex: 1, height: 1, background: BORDER }} />
-                </div>
-                <PartyPositions parties={PARTY_DIRECTORY_ORDER.filter((s) => s !== focused)} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
+                <FocusedCard slug={focused as PartySlug} pos={getPos(focused)} topic={sel} topicLabel={selTopic.label} showAll={showAll} onToggleAll={() => setShowAll((v) => !v)} />
+                {showAll && (
+                  <>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '18px 0 11px' }}>
+                      <span style={{ flex: 1, height: 1, background: BORDER }} />
+                      <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, whiteSpace: 'nowrap', fontFamily: MANROPE }}>The other parties</span>
+                      <span style={{ flex: 1, height: 1, background: BORDER }} />
+                    </div>
+                    <PartyPositions parties={PARTY_DIRECTORY_ORDER.filter((s) => s !== focused)} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
+                  </>
+                )}
               </>
-            ) : (
+            ) : showAll ? (
               <PartyPositions parties={PARTY_DIRECTORY_ORDER} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 11, padding: '18px 16px', border: `1px dashed ${BORDER}`, borderRadius: 14, background: '#fbfaf8' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                  <Target style={{ width: 16, height: 16, color: JADE, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Pick a party from the tiles above</span>
+                </span>
+                <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Tap a party tile to see just their stance on {selTopic.label.toLowerCase()} here — or see everyone at once.</p>
+                <button onClick={() => setShowAll(true)} style={{ fontSize: 12.5, fontWeight: 800, color: INK, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 9, padding: '8px 13px', cursor: 'pointer', fontFamily: MANROPE }}>Show all parties</button>
+              </div>
             )
           ) : (
             <p style={{ fontSize: 13, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
@@ -177,13 +198,15 @@ function isLightHex(hex: string): boolean {
   return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.6
 }
 
-/** The chosen party, pulled to the top of the panel and shown in full for the open topic. */
-function FocusedCard({ slug, pos, topic, topicLabel, onClear }: {
+/** The chosen party, pulled to the top of the panel and shown in full for the open topic.
+ *  Its header button toggles the rest of the parties in/out (default: focused party only). */
+function FocusedCard({ slug, pos, topic, topicLabel, showAll, onToggleAll }: {
   slug: PartySlug
   pos: PartyPosition | undefined
   topic: string
   topicLabel: string
-  onClear: () => void
+  showAll: boolean
+  onToggleAll: () => void
 }) {
   const party = PARTY_PROFILES[slug]
   const c = party.color
@@ -201,7 +224,10 @@ function FocusedCard({ slug, pos, topic, topicLabel, onClear }: {
             <Target style={{ width: 11, height: 11 }} /> Focused
           </span>
         </span>
-        <button onClick={onClear} style={{ fontSize: 11.5, fontWeight: 700, color: txt, background: overlay, border: 'none', borderRadius: 7, padding: '5px 9px', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: MANROPE }}>Show all parties</button>
+        <button onClick={onToggleAll} aria-expanded={showAll} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11.5, fontWeight: 700, color: txt, background: overlay, border: 'none', borderRadius: 7, padding: '5px 9px', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: MANROPE }}>
+          {showAll ? 'Hide other parties' : 'Show all parties'}
+          <ChevronDown style={{ width: 13, height: 13, transform: showAll ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
+        </button>
       </div>
       <div style={{ padding: '13px 14px', background: '#fff' }}>
         {pos ? (
