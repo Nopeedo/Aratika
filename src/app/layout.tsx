@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Manrope, Space_Grotesk } from 'next/font/google'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
 import { PlanTracker } from '@/components/onboarding/plan-tracker'
-import { PlanWidget } from '@/components/onboarding/plan-widget'
+// import { PlanWidget } from '@/components/onboarding/plan-widget' // hidden for now
 import { CompanionWidget } from '@/components/companion/companion-widget'
 import { SoundToggle } from '@/components/homepage/sound-toggle'
 import { SITE } from '@/constants/site'
@@ -94,7 +94,8 @@ export default function RootLayout({
         <Navbar />
         <PlanTracker />
         <main className="flex-1">{children}</main>
-        <PlanWidget />
+        {/* Plan feature hidden for now — restore this to bring back the floating checklist. */}
+        {/* <PlanWidget /> */}
         <CompanionWidget />
         <SoundToggle />
         <Footer />

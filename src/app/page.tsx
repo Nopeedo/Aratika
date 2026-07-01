@@ -30,7 +30,7 @@ import { Reveal }              from '@/components/ui/reveal'
 import { SITE }                from '@/constants/site'
 import { PARTY_COLORS }        from '@/constants/parties'
 import { POLICY_TOPIC_ORDER }  from '@/constants/policy-topics'
-import { HomePlanBanner }      from '@/components/onboarding/home-plan-banner'
+// import { HomePlanBanner }      from '@/components/onboarding/home-plan-banner' // hidden for now
 import { isEnabled }          from '@/constants/features'
 
 // ─── Design tokens (matching the Chamber design system) ───────────────────────
@@ -197,8 +197,9 @@ export default function HomePage() {
 
       {/* ═══════════════════════════════════════════════════════════════════
           1b. YOUR PLAN — returning visitors pick up where they left off
+          Plan feature hidden for now — restore <HomePlanBanner /> to bring it back.
       ═══════════════════════════════════════════════════════════════════ */}
-      <HomePlanBanner />
+      {/* <HomePlanBanner /> */}
 
 
       {/* ═══════════════════════════════════════════════════════════════════
