@@ -20,6 +20,7 @@ import { SectionDivider }      from '@/components/ui/section-divider'
 import { ParliamentSnapshot }  from '@/components/parliament/parliament-snapshot'
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
+import { PartyCommandBar } from '@/components/homepage/party-command-bar'
 import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
 import { CompassCta } from '@/components/compass/compass-cta'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
@@ -156,22 +157,24 @@ function NewsSourceCard({ item }: { item: typeof NEWS_SOURCES[number] }) {
 
 export default function HomePage() {
   return (
-    <>
+    <PartyCycleProvider>
+
+      {/* Persistent party command bar — pinned under the navbar, travels down the page.
+          Shares the one PartyCycle choice, so picking a party focuses it in the policy hub. */}
+      <PartyCommandBar />
 
       {/* ═══════════════════════════════════════════════════════════════════
           1. HERO — Election urgency + personal MP finder
       ═══════════════════════════════════════════════════════════════════ */}
       {/* Hero + party tiles share one PartyCycle clock so the title colour and the open tile stay in sync */}
-      <PartyCycleProvider>
-        <CinematicHero />
+      <CinematicHero />
 
-        {/* ── Party tiles — tap a colour for an at-a-glance snapshot ── */}
-        <section style={{ background: '#fff' }}>
-          <div style={{ maxWidth: 760, margin: '0 auto', padding: '7px clamp(18px, 5vw, 36px) 40px' }}>
-            <PartyTilesSection />
-          </div>
-        </section>
-      </PartyCycleProvider>
+      {/* ── Party tiles — tap a colour for an at-a-glance snapshot (also the scroll anchor for the command bar) ── */}
+      <section id="party-tiles-anchor" style={{ background: '#fff' }}>
+        <div style={{ maxWidth: 760, margin: '0 auto', padding: '7px clamp(18px, 5vw, 36px) 40px' }}>
+          <PartyTilesSection />
+        </div>
+      </section>
 
       {/* ── PERSONAL COMPASS — entry card; background cycles through party colours (non-partisan) ── */}
       <CompassCta />
@@ -747,6 +750,6 @@ export default function HomePage() {
       </section>
       )}
 
-    </>
+    </PartyCycleProvider>
   )
 }

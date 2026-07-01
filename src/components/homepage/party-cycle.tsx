@@ -17,6 +17,7 @@ const COLORS: Record<string, string> = {
 
 interface PartyCycle {
   panelSlug: string | null   // which party panel to show (null = closed by the user)
+  selectedSlug: string | null // the party the USER explicitly picked (null while auto-cycling / untouched) — drives cross-page focus
   accentColor: string        // current accent colour for the title
   fading: boolean            // true during the brief swap — both the title and panel fade together
   fadeMs: number             // duration of the current fade (shorter for the first transition on load)
@@ -70,7 +71,7 @@ export function PartyCycleProvider({ children }: { children: ReactNode }) {
   const accentColor = COLORS[autoplay ? cycleSlug : (selected ?? cycleSlug)]
 
   return (
-    <Ctx.Provider value={{ panelSlug, accentColor, fading: autoplay && fading, fadeMs, select }}>
+    <Ctx.Provider value={{ panelSlug, selectedSlug: selected, accentColor, fading: autoplay && fading, fadeMs, select }}>
       {children}
     </Ctx.Provider>
   )

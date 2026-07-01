@@ -11,13 +11,15 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import {
-  ChevronDown, ArrowRight, X,
+  ChevronDown, ArrowRight, X, ExternalLink, Target,
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { PARTY_COLORS } from '@/constants/parties'
-import { PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
+import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
 import { PartyPositions } from '@/components/policy/party-positions'
+import { usePartyCycle } from '@/components/homepage/party-cycle'
+import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
 
 const TOPIC_ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
@@ -27,6 +29,7 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; positions: PartyPosition[] }) {
   const [sel, setSel] = useState<string | null>(null)
+  const { selectedSlug: focused, select } = usePartyCycle() // the party chosen in the command bar / hero tiles
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -46,6 +49,16 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
 
   return (
     <div>
+      {/* When a party is chosen (command bar / hero tiles) but no issue is open yet — nudge them to pick one. */}
+      {focused && !sel && PARTY_PROFILES[focused as PartySlug] && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 14, padding: '10px 14px', border: `1px solid ${BORDER}`, borderLeft: `4px solid ${PARTY_COLORS[focused as PartySlug].bg}`, borderRadius: 12, background: '#fff' }}>
+          <Target style={{ width: 15, height: 15, color: PARTY_COLORS[focused as PartySlug].bg, flexShrink: 0 }} />
+          <span style={{ fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Focused on {PARTY_PROFILES[focused as PartySlug].name}</span>
+          <span style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, flex: 1, minWidth: 130 }}>Tap an issue below to see where they stand.</span>
+          <button onClick={() => select(null)} style={{ fontSize: 12, fontWeight: 700, color: SECONDARY, background: 'none', border: `1px solid ${BORDER}`, borderRadius: 7, padding: '5px 10px', cursor: 'pointer', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>Show all</button>
+        </div>
+      )}
+
       {/* Mobile: horizontal swipe rail (focus one issue at a time). Desktop (≥768px): the all-visible grid. */}
       <style>{`
         .pe-topic-rail {
@@ -127,7 +140,19 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           </div>
 
           {topicsWithData.has(sel) ? (
-            <PartyPositions parties={PARTY_DIRECTORY_ORDER} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
+            focused && PARTY_PROFILES[focused as PartySlug] ? (
+              <>
+                <FocusedCard slug={focused as PartySlug} pos={getPos(focused)} topic={sel} topicLabel={selTopic.label} onClear={() => select(null)} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '18px 0 11px' }}>
+                  <span style={{ flex: 1, height: 1, background: BORDER }} />
+                  <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, whiteSpace: 'nowrap', fontFamily: MANROPE }}>Compare the other parties</span>
+                  <span style={{ flex: 1, height: 1, background: BORDER }} />
+                </div>
+                <PartyPositions parties={PARTY_DIRECTORY_ORDER.filter((s) => s !== focused)} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
+              </>
+            ) : (
+              <PartyPositions parties={PARTY_DIRECTORY_ORDER} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
+            )
           ) : (
             <p style={{ fontSize: 13, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
               Party positions on {selTopic.label.toLowerCase()} are being sourced from official policy and editor-checked — they’ll appear here soon.
@@ -141,6 +166,71 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+/** Light party colours (e.g. ACT yellow) need dark text/tick on the coloured header. */
+function isLightHex(hex: string): boolean {
+  const m = hex.replace('#', '')
+  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.6
+}
+
+/** The chosen party, pulled to the top of the panel and shown in full for the open topic. */
+function FocusedCard({ slug, pos, topic, topicLabel, onClear }: {
+  slug: PartySlug
+  pos: PartyPosition | undefined
+  topic: string
+  topicLabel: string
+  onClear: () => void
+}) {
+  const party = PARTY_PROFILES[slug]
+  const c = party.color
+  const light = isLightHex(c)
+  const txt = light ? '#2A1206' : '#fff'
+  const overlay = light ? 'rgba(0,0,0,.13)' : 'rgba(255,255,255,.22)'
+  const body = pos?.summaryBasic || pos?.summary
+
+  return (
+    <div style={{ border: `1.5px solid ${c}`, borderRadius: 14, overflow: 'hidden' }}>
+      <div style={{ background: c, padding: '11px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+          <span style={{ fontSize: 15, fontWeight: 800, color: txt, fontFamily: MANROPE }}>{party.name}</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 9.5, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: txt, background: overlay, padding: '3px 8px', borderRadius: 20 }}>
+            <Target style={{ width: 11, height: 11 }} /> Focused
+          </span>
+        </span>
+        <button onClick={onClear} style={{ fontSize: 11.5, fontWeight: 700, color: txt, background: overlay, border: 'none', borderRadius: 7, padding: '5px 9px', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: MANROPE }}>Show all parties</button>
+      </div>
+      <div style={{ padding: '13px 14px', background: '#fff' }}>
+        {pos ? (
+          <>
+            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY, marginBottom: 6, fontFamily: MANROPE }}>On {topicLabel}</div>
+            <p style={{ fontSize: 14.5, fontWeight: 700, color: INK, lineHeight: 1.45, margin: '0 0 8px', fontFamily: MANROPE }}>{pos.stance || body}</p>
+            {body && pos.stance && (
+              <p style={{ fontSize: 13, color: '#33373f', lineHeight: 1.6, margin: '0 0 10px', fontFamily: MANROPE }}>{body}</p>
+            )}
+            {pos.quote && (
+              <p style={{ fontSize: 12.5, color: SECONDARY, lineHeight: 1.5, margin: '0 0 10px', paddingLeft: 10, borderLeft: `3px solid ${c}`, fontStyle: 'italic', fontFamily: MANROPE }}>“{pos.quote}”</p>
+            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', paddingTop: 10, borderTop: `1px solid ${BORDER}` }}>
+              <Link href={`/policies/${topic}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800, color: INK, textDecoration: 'none', fontFamily: MANROPE }}>
+                Full breakdown <ArrowRight style={{ width: 14, height: 14 }} />
+              </Link>
+              {pos.sourceUrl && (
+                <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE }}>
+                  {pos.sourceLabel} <ExternalLink style={{ width: 11, height: 11 }} />
+                </a>
+              )}
+            </div>
+          </>
+        ) : (
+          <p style={{ fontSize: 13, color: TERTIARY, lineHeight: 1.55, margin: 0, fontFamily: MANROPE }}>
+            No {topicLabel.toLowerCase()} position captured yet for {party.name} — being sourced from official policy, then editor-checked.
+          </p>
+        )}
+      </div>
     </div>
   )
 }
