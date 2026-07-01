@@ -79,15 +79,10 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
       <div ref={sentinelRef} aria-hidden style={{ height: 1 }} />
 
       {/* THE reference point: the full-size tile row, sticky under the navbar (top:64), so it
-          rides the whole page at its original dimensions — the tiles never leave the user's sight. */}
-      <div
-        style={{
-          position: 'sticky', top: 64, zIndex: 40, background: '#fff',
-          borderBottom: `1px solid ${stuck ? LINE : 'transparent'}`,
-          boxShadow: stuck ? '0 6px 20px rgba(0,0,0,.07)' : 'none',
-          transition: 'box-shadow .28s ease, border-color .28s ease',
-        }}
-      >
+          rides the whole page at its original dimensions. The band itself is TRANSPARENT — the
+          tiles float over the homepage content scrolling behind them, lifting off with a shadow
+          that deepens once they're pinned over the page. */}
+      <div style={{ position: 'sticky', top: 64, zIndex: 40, background: 'transparent', pointerEvents: 'none' }}>
         <div style={{ maxWidth: 760, margin: '0 auto', padding: '12px clamp(18px, 5vw, 36px)' }}>
           <div style={{ display: 'flex', gap: 10 }}>
             {parties.map((p) => {
@@ -101,9 +96,11 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
                   title={p.name}
                   style={{
                     flex: '1 1 0', minWidth: 0, aspectRatio: '1 / 1', borderRadius: 14, border: 'none', padding: 0,
-                    cursor: 'pointer', background: p.color,
-                    boxShadow: on ? '0 14px 26px rgba(0,0,0,.30)' : '0 2px 6px rgba(0,0,0,.10)',
-                    transform: on ? 'translateY(-6px)' : 'none', transition: 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease',
+                    cursor: 'pointer', background: p.color, pointerEvents: 'auto',
+                    boxShadow: on
+                      ? '0 16px 30px rgba(0,0,0,.34)'
+                      : stuck ? '0 10px 24px rgba(0,0,0,.24)' : '0 2px 6px rgba(0,0,0,.10)',
+                    transform: on ? 'translateY(-6px)' : 'none', transition: 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .35s ease',
                   }}
                 />
               )
