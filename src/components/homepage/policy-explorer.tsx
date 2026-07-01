@@ -46,7 +46,31 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
 
   return (
     <div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 180px), 1fr))', gap: 14 }}>
+      {/* Mobile: horizontal swipe rail (focus one issue at a time). Desktop (≥768px): the all-visible grid. */}
+      <style>{`
+        .pe-topic-rail {
+          display: flex; gap: 14px; overflow-x: auto;
+          scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+          padding-bottom: 6px; scrollbar-width: none; -ms-overflow-style: none;
+          scroll-padding-left: 2px;
+        }
+        .pe-topic-rail::-webkit-scrollbar { display: none; }
+        .pe-topic-card { flex: 0 0 auto; width: 200px; scroll-snap-align: start; }
+        .pe-rail-hint { display: flex; }
+        @media (min-width: 768px) {
+          .pe-topic-rail {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));
+            overflow: visible;
+          }
+          .pe-topic-card { width: auto; }
+          .pe-rail-hint { display: none; }
+        }
+      `}</style>
+      <div className="pe-rail-hint" style={{ alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, margin: '-2px 0 10px' }}>
+        Swipe issues, tap one to compare <ArrowRight style={{ width: 13, height: 13 }} />
+      </div>
+      <div className="pe-topic-rail">
         {topicKeys.map((key) => {
           const t = POLICY_TOPICS[key as keyof typeof POLICY_TOPICS]
           const Icon = TOPIC_ICONS[t.icon]
@@ -54,7 +78,11 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           return (
             <button
               key={key}
-              onClick={() => setSel(on ? null : key)}
+              className="pe-topic-card"
+              onClick={(e) => {
+                setSel(on ? null : key)
+                if (!on) e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+              }}
               aria-expanded={on}
               style={{
                 textAlign: 'left', cursor: 'pointer', background: '#fff', fontFamily: MANROPE,
