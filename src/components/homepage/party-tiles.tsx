@@ -10,8 +10,8 @@
  * server-side (see party-tiles-section.tsx) so heavy datasets stay off the client.
  */
 
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { motion, useReducedMotion } from 'framer-motion'
 import { Armchair } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
@@ -55,70 +55,80 @@ function seatColor(hex: string): string {
 }
 
 export function PartyTiles({ parties }: { parties: TileParty[] }) {
-  const reduce = useReducedMotion()
   // Active party + fade come from the shared PartyCycle clock (synced with the hero accent).
   const { panelSlug, fading, fadeMs, select } = usePartyCycle()
   const cur = parties.find((p) => p.slug === panelSlug) || null
 
+  // Detect when the tile row is "stuck" under the navbar, to add a header shadow.
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  const [stuck, setStuck] = useState(false)
+  useEffect(() => {
+    const el = sentinelRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => setStuck(!e.isIntersecting && e.boundingClientRect.top < 64),
+      { threshold: 0, rootMargin: '-64px 0px 0px 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
   return (
-    <motion.div
-      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <div style={{ display: 'flex', gap: 10 }}>
-        {parties.map((p) => {
-          const on = p.slug === panelSlug
-          return (
-            <button
-              key={p.slug}
-              onClick={() => select(on ? null : p.slug)}
-              aria-label={p.name + ' — show snapshot'}
-              aria-expanded={on}
-              title={p.name}
-              style={{
-                flex: '1 1 0', minWidth: 0, aspectRatio: '1 / 1', borderRadius: 14, border: 'none', padding: 0,
-                cursor: 'pointer', background: p.color,
-                boxShadow: on ? '0 16px 28px rgba(0,0,0,.34)' : '0 2px 6px rgba(0,0,0,.10)',
-                transform: on ? 'translateY(-8px)' : 'none', transition: 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease',
-              }}
-            />
-          )
-        })}
+    <>
+      {/* Sentinel just above the sticky bar — flags the stuck state for the header shadow. */}
+      <div ref={sentinelRef} aria-hidden style={{ height: 1 }} />
+
+      {/* THE reference point: the full-size tile row, sticky under the navbar (top:64), so it
+          rides the whole page at its original dimensions — the tiles never leave the user's sight. */}
+      <div
+        style={{
+          position: 'sticky', top: 64, zIndex: 40, background: '#fff',
+          borderBottom: `1px solid ${stuck ? LINE : 'transparent'}`,
+          boxShadow: stuck ? '0 6px 20px rgba(0,0,0,.07)' : 'none',
+          transition: 'box-shadow .28s ease, border-color .28s ease',
+        }}
+      >
+        <div style={{ maxWidth: 760, margin: '0 auto', padding: '12px clamp(18px, 5vw, 36px)' }}>
+          <div style={{ display: 'flex', gap: 10 }}>
+            {parties.map((p) => {
+              const on = p.slug === panelSlug
+              return (
+                <button
+                  key={p.slug}
+                  onClick={() => select(on ? null : p.slug)}
+                  aria-label={p.name + ' — show snapshot'}
+                  aria-expanded={on}
+                  title={p.name}
+                  style={{
+                    flex: '1 1 0', minWidth: 0, aspectRatio: '1 / 1', borderRadius: 14, border: 'none', padding: 0,
+                    cursor: 'pointer', background: p.color,
+                    boxShadow: on ? '0 14px 26px rgba(0,0,0,.30)' : '0 2px 6px rgba(0,0,0,.10)',
+                    transform: on ? 'translateY(-6px)' : 'none', transition: 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease',
+                  }}
+                />
+              )
+            })}
+          </div>
+        </div>
       </div>
 
-      {cur && (() => {
-        // Centre of the active tile (6 tiles, 10px gaps) → the caret glides here.
-        const i = parties.findIndex((p) => p.slug === cur.slug)
-        const n = parties.length
-        const tileW = `((100% - ${(n - 1) * 10}px) / ${n})`
-        const caretLeft = `calc(${i} * (${tileW} + 10px) + ${tileW} / 2)`
-        const glide = 'left .85s cubic-bezier(.4,0,.2,1), border-bottom-color .85s ease-in-out'
-        return (
-          <div style={{
-            position: 'relative', marginTop: 18, border: `4px solid ${cur.color}`, borderRadius: 16, background: cur.light,
-            minHeight: 440, padding: '20px 22px',
-            transition: 'border-color .85s ease-in-out, background-color .85s ease-in-out',
-          }}>
-            {/* speech-bubble caret — outer (border colour), tip reaches up to the active tile */}
-            <span aria-hidden style={{
-              position: 'absolute', top: -26, left: caretLeft, marginLeft: -13, width: 0, height: 0,
-              borderLeft: '13px solid transparent', borderRight: '13px solid transparent',
-              borderBottom: `24px solid ${cur.color}`, transition: glide,
-            }} />
-            {/* inner fill */}
-            <span aria-hidden style={{
-              position: 'absolute', top: -17, left: caretLeft, marginLeft: -9, width: 0, height: 0,
-              borderLeft: '9px solid transparent', borderRight: '9px solid transparent',
-              borderBottom: `18px solid ${cur.light}`, transition: glide,
-            }} />
-            <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
-              <Panel p={cur} />
+      {/* Snapshot panel — in flow, directly below the tiles; scrolls away as you move down the page. */}
+      {cur && (
+        <section style={{ background: '#fff' }}>
+          <div style={{ maxWidth: 760, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 40px' }}>
+            <div style={{
+              border: `4px solid ${cur.color}`, borderRadius: 16, background: cur.light,
+              minHeight: 440, padding: '20px 22px',
+              transition: 'border-color .85s ease-in-out, background-color .85s ease-in-out',
+            }}>
+              <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+                <Panel p={cur} />
+              </div>
             </div>
           </div>
-        )
-      })()}
-    </motion.div>
+        </section>
+      )}
+    </>
   )
 }
 
