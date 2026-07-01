@@ -82,6 +82,7 @@ export const FOOTER_LINKS: Record<'learn' | 'explore' | 'account' | 'legal', Foo
     { label: 'Our Sources', href: '/about#sources', feature: 'about' },
   ],
   explore: [
+    { label: 'Command Centre', href: '/command-centre', feature: 'dashboard' },
     { label: 'Elections', href: '/elections', feature: 'elections' },
     { label: 'Battlegrounds', href: '/battlegrounds', feature: 'battlegrounds' },
     { label: 'Interactive Map', href: '/map', feature: 'map' },

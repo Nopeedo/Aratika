@@ -23,6 +23,7 @@ import { PartyCycleProvider } from '@/components/homepage/party-cycle'
 import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
 import { CompassCta } from '@/components/compass/compass-cta'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
+import { TrackCta } from '@/components/homepage/track-cta'
 import { ElectionCountdown }   from '@/components/homepage/election-countdown'
 import { HomeMapFeature }      from '@/components/homepage/home-map-feature'
 import { PolicyCard }          from '@/components/homepage/policy-card'
@@ -174,6 +175,9 @@ export default function HomePage() {
 
       {/* ── WHERE DO THE PARTIES STAND? — straight after the compass, for the first-timer flow ── */}
       <PolicyHubGrid />
+
+      {/* ── COMMAND CENTRE — introduce tracking; the news/video/bills that come to you ── */}
+      <TrackCta />
 
       {/* ── Credibility strip ── */}
       <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
