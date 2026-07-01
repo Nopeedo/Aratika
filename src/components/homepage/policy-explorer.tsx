@@ -11,7 +11,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import {
-  ChevronDown, ArrowRight, X, ExternalLink, Target,
+  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink, Target,
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
@@ -27,6 +27,14 @@ const PARTY_DOT_ORDER = ['green', 'labour', 'tpm', 'nzfirst', 'national', 'act']
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
+// Desktop-only rail nav buttons (‹ ›). `display` is set by the .pe-rail-arrow class (hidden on mobile).
+const ARROW_BASE: React.CSSProperties = {
+  position: 'absolute', top: 'calc(50% - 3px)', transform: 'translateY(-50%)',
+  width: 40, height: 40, borderRadius: '50%', background: '#fff', border: `1px solid ${BORDER}`,
+  boxShadow: '0 4px 14px rgba(12,14,18,.14)', alignItems: 'center', justifyContent: 'center',
+  color: INK, cursor: 'pointer', zIndex: 3, transition: 'opacity .2s ease',
+}
+
 export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; positions: PartyPosition[] }) {
   const [sel, setSel] = useState<string | null>(null)
   const [showAll, setShowAll] = useState(false) // by default show only the focused party; opt in to the full comparison
@@ -39,6 +47,23 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
 
   // Collapse back to focused-only whenever the topic or the chosen party changes.
   useEffect(() => { setShowAll(false) }, [sel, focused])
+
+  // Desktop has no swipe — arrow buttons cycle the topic rail. Track which way it can scroll.
+  const railRef = useRef<HTMLDivElement>(null)
+  const [arrows, setArrows] = useState({ left: false, right: false })
+  const updateArrows = () => {
+    const el = railRef.current
+    if (!el) return
+    setArrows({ left: el.scrollLeft > 4, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 })
+  }
+  useEffect(() => {
+    updateArrows()
+    window.addEventListener('resize', updateArrows)
+    return () => window.removeEventListener('resize', updateArrows)
+  }, [])
+  const scrollRail = (dir: number) => {
+    railRef.current?.scrollBy({ left: dir * Math.max(240, railRef.current.clientWidth * 0.7), behavior: 'smooth' })
+  }
 
   const topicsWithData = new Set(positions.map((p) => p.topic))
   const selTopic = sel ? POLICY_TOPICS[sel as keyof typeof POLICY_TOPICS] : null
@@ -63,7 +88,8 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
         </div>
       )}
 
-      {/* Mobile: horizontal swipe rail (focus one issue at a time). Desktop (≥768px): the all-visible grid. */}
+      {/* One focused issue at a time: a horizontal rail on every screen. Mobile swipes it;
+          desktop (no swipe) cycles it with the ‹ › arrow buttons. */}
       <style>{`
         .pe-topic-rail {
           display: flex; gap: 14px; overflow-x: auto;
@@ -74,20 +100,33 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
         .pe-topic-rail::-webkit-scrollbar { display: none; }
         .pe-topic-card { flex: 0 0 auto; width: 200px; scroll-snap-align: start; }
         .pe-rail-hint { display: flex; }
+        .pe-rail-arrow { display: none; }
         @media (min-width: 768px) {
-          .pe-topic-rail {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(min(100%, 180px), 1fr));
-            overflow: visible;
-          }
-          .pe-topic-card { width: auto; }
           .pe-rail-hint { display: none; }
+          .pe-rail-arrow { display: flex; }
         }
       `}</style>
       <div className="pe-rail-hint" style={{ alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, margin: '-2px 0 10px' }}>
         Swipe issues, tap one to compare <ArrowRight style={{ width: 13, height: 13 }} />
       </div>
-      <div className="pe-topic-rail">
+      <div style={{ position: 'relative' }}>
+        <button
+          className="pe-rail-arrow"
+          aria-label="Previous topics"
+          onClick={() => scrollRail(-1)}
+          style={{ ...ARROW_BASE, left: -6, opacity: arrows.left ? 1 : 0, pointerEvents: arrows.left ? 'auto' : 'none' }}
+        >
+          <ChevronLeft style={{ width: 20, height: 20 }} />
+        </button>
+        <button
+          className="pe-rail-arrow"
+          aria-label="More topics"
+          onClick={() => scrollRail(1)}
+          style={{ ...ARROW_BASE, right: -6, opacity: arrows.right ? 1 : 0, pointerEvents: arrows.right ? 'auto' : 'none' }}
+        >
+          <ChevronRight style={{ width: 20, height: 20 }} />
+        </button>
+        <div className="pe-topic-rail" ref={railRef} onScroll={updateArrows}>
         {topicKeys.map((key) => {
           const t = POLICY_TOPICS[key as keyof typeof POLICY_TOPICS]
           const Icon = TOPIC_ICONS[t.icon]
@@ -129,6 +168,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
             </button>
           )
         })}
+        </div>
       </div>
 
       {sel && selTopic && (
