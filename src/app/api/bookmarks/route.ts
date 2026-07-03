@@ -14,7 +14,7 @@ import { createClient } from '@/lib/supabase/server'
 
 export const runtime = 'nodejs'
 
-const KINDS = ['mp', 'party', 'electorate', 'policy']
+const KINDS = ['mp', 'party', 'electorate', 'policy', 'bill']
 
 export async function GET() {
   const supabase = await createClient()

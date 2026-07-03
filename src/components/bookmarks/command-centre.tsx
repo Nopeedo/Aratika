@@ -9,7 +9,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Users, Landmark, MapPin, Scale, X, ArrowRight, Map as MapIcon } from 'lucide-react'
+import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import type { PartySlug } from '@/types'
 import type { Bookmark } from '@/hooks/use-bookmarks'
@@ -25,8 +25,9 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const GROUPS: { kind: Bookmark['kind']; label: string; icon: React.ElementType }[] = [
   { kind: 'mp', label: 'Tracked MPs', icon: Users },
   { kind: 'party', label: 'Tracked parties', icon: Landmark },
-  { kind: 'electorate', label: 'Tracked electorates', icon: MapPin },
   { kind: 'policy', label: 'Tracked policy topics', icon: Scale },
+  { kind: 'bill', label: 'Tracked bills', icon: Gavel },
+  { kind: 'electorate', label: 'Tracked electorates', icon: MapPin },
 ]
 
 function hrefFor(b: Bookmark): string {
@@ -35,6 +36,7 @@ function hrefFor(b: Bookmark): string {
     case 'mp': return `/mps/${b.ref_id}`
     case 'party': return `/parties/${b.ref_id}`
     case 'policy': return `/policies/${b.ref_id}`
+    case 'bill': return `/bills/${b.ref_id}`
     case 'electorate': return `/map?search=${encodeURIComponent(b.ref_id)}`
     default: return '/'
   }
@@ -96,7 +98,7 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
                         <span style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: b.accent || JADE, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, fontFamily: MANROPE }}>{initials(b.label)}</span>
                       ) : (
                         <span style={{ width: 40, height: 40, borderRadius: 11, flexShrink: 0, background: SURFACE, border: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: b.accent || JADE }}>
-                          {b.kind === 'electorate' ? <MapPin style={{ width: 18, height: 18 }} /> : <Scale style={{ width: 18, height: 18 }} />}
+                          {b.kind === 'electorate' ? <MapPin style={{ width: 18, height: 18 }} /> : b.kind === 'bill' ? <Gavel style={{ width: 18, height: 18 }} /> : <Scale style={{ width: 18, height: 18 }} />}
                         </span>
                       )}
                       <div style={{ minWidth: 0 }}>

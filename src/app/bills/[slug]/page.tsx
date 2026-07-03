@@ -14,6 +14,7 @@ import {
   getBill, BILL_SLUGS, BILL_STAGE_PIPELINE, BILLS_SOURCE_URL, BILLS_SNAPSHOT_DATE,
 } from '@/constants/bills-data'
 import { BillStatusBadge } from '@/components/ui/badge'
+import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { formatDate } from '@/lib/utils/format'
 import { PREMIUM_ENABLED } from '@/constants/features'
@@ -78,13 +79,25 @@ export default async function BillDetailPage(
             <BillStatusBadge status={bill.stage} />
           </div>
 
-          <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, lineHeight: 1.15, margin: '0 0 8px' }}>
-            {bill.title}
-          </h1>
-          <p style={{ fontSize: 13, color: TERTIARY, fontFamily: MANROPE, margin: 0 }}>
-            Last activity {formatDate(bill.lastActivity)}
-            {bill.selectCommittee ? ` · ${bill.selectCommittee} Committee` : ''}
-          </p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, lineHeight: 1.15, margin: '0 0 8px' }}>
+                {bill.title}
+              </h1>
+              <p style={{ fontSize: 13, color: TERTIARY, fontFamily: MANROPE, margin: 0 }}>
+                Last activity {formatDate(bill.lastActivity)}
+                {bill.selectCommittee ? ` · ${bill.selectCommittee} Committee` : ''}
+              </p>
+            </div>
+            <BookmarkButton
+              entity={{
+                kind: 'bill', refId: bill.slug, label: bill.title,
+                sublabel: bill.kind === 'government' ? 'Government Bill' : "Member's Bill",
+                href: `/bills/${bill.slug}`, accent: JADE,
+              }}
+              variant="pill"
+            />
+          </div>
         </div>
       </div>
 

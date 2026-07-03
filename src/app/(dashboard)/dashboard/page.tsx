@@ -18,7 +18,8 @@ import { getVideos } from '@/lib/news/videos'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
-import type { PartySlug } from '@/types'
+import { POLICY_TOPICS } from '@/constants/policy-topics'
+import type { PartySlug, PolicyTopic } from '@/types'
 
 export const metadata: Metadata = { title: 'My Dashboard' }
 
@@ -78,16 +79,21 @@ export default async function DashboardPage() {
     return b
   })
 
-  // Which parties is the user following (directly, or via a tracked MP)?
+  // What is the user following? Parties (directly or via a tracked MP) AND policy topics.
   const trackedParties = new Set<string>()
+  const trackedTopics = new Set<string>()
   for (const b of bookmarks) {
     if (b.kind === 'party') trackedParties.add(b.ref_id)
     else if (b.kind === 'mp') { const p = MP_PROFILES[b.ref_id]?.party; if (p) trackedParties.add(p) }
+    else if (b.kind === 'policy') trackedTopics.add(b.ref_id)
   }
-  // Personalised feed — news + videos for the parties they follow.
-  const [allNews, allVideos] = trackedParties.size ? await Promise.all([getNews(), getVideos()]) : [[], []]
-  const feedNews = allNews.filter((n) => n.parties.some((p) => trackedParties.has(p))).slice(0, 6)
-  const feedVideos = allVideos.filter((v) => v.parties.some((p) => trackedParties.has(p))).slice(0, 10)
+  const following = trackedParties.size + trackedTopics.size
+  const matches = (parties: string[], topics: string[]) =>
+    parties.some((p) => trackedParties.has(p)) || topics.some((t) => trackedTopics.has(t))
+  // Personalised feed — news + videos tagged to anything they follow (party or issue).
+  const [allNews, allVideos] = following ? await Promise.all([getNews(), getVideos()]) : [[], []]
+  const feedNews = allNews.filter((n) => matches(n.parties, n.topics)).slice(0, 6)
+  const feedVideos = allVideos.filter((v) => matches(v.parties, v.topics)).slice(0, 10)
 
   // Bill highlights are a Phase-2 feature; only surface them once legislation ships.
   const showHighlights = isEnabled('legislation')
@@ -157,18 +163,24 @@ export default async function DashboardPage() {
           <CommandCentre initial={enriched} />
         </div>
 
-        {/* From the parties you follow — personalised news + video */}
-        {trackedParties.size > 0 && (feedNews.length > 0 || feedVideos.length > 0) && (
+        {/* From what you follow — personalised news + video (parties + issues) */}
+        {following > 0 && (feedNews.length > 0 || feedVideos.length > 0) && (
           <div style={{ marginBottom: 32 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' }}>
               <Sparkles style={{ width: 18, height: 18, color: JADE }} />
-              <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>From the parties you follow</h2>
+              <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>From what you follow</h2>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
               {[...trackedParties].map((p) => (
-                <span key={p} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>
+                <span key={`p-${p}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>
                   <span style={{ width: 8, height: 8, borderRadius: '50%', background: PARTY_COLORS[p as PartySlug]?.bg ?? JADE }} />
                   {PARTY_NAMES[p as PartySlug]?.short ?? p}
+                </span>
+              ))}
+              {[...trackedTopics].map((t) => (
+                <span key={`t-${t}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>
+                  <span style={{ width: 8, height: 8, borderRadius: 3, background: JADE }} />
+                  {POLICY_TOPICS[t as PolicyTopic]?.label ?? t}
                 </span>
               ))}
             </div>
