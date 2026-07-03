@@ -10,6 +10,8 @@ import { Crown, Map, ArrowRight, PenLine, Sparkles, CheckCircle2, Highlighter, B
 import { createClient } from '@/lib/supabase/server'
 import { ManageBillingButton } from '@/components/billing/billing-buttons'
 import { CommandCentre, type TrackedItem } from '@/components/bookmarks/command-centre'
+import { DashboardElection } from '@/components/dashboard/election-module'
+import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { VideoSection } from '@/components/news/video-section'
 import type { Bookmark as BookmarkType } from '@/hooks/use-bookmarks'
 import { isEnabled, PREMIUM_ENABLED } from '@/constants/features'
@@ -90,6 +92,16 @@ export default async function DashboardPage() {
   const following = trackedParties.size + trackedTopics.size
   const matches = (parties: string[], topics: string[]) =>
     parties.some((p) => trackedParties.has(p)) || topics.some((t) => trackedTopics.has(t))
+
+  // Election module — the parties they follow with their 2023 baseline seats, and their tracked electorates.
+  const seatByParty = Object.fromEntries((BASELINE_ELECTION.results ?? []).map((r) => [r.party, r.seats]))
+  const electionParties = [...trackedParties].map((slug) => ({
+    slug, short: PARTY_NAMES[slug as PartySlug]?.short ?? slug,
+    color: PARTY_COLORS[slug as PartySlug]?.bg ?? JADE, seats2023: seatByParty[slug] ?? 0,
+  }))
+  const electionElectorates = bookmarks
+    .filter((b) => b.kind === 'electorate')
+    .map((b) => ({ label: b.label, href: b.href || `/map?search=${encodeURIComponent(b.ref_id)}` }))
   // Personalised feed — news + videos tagged to anything they follow (party or issue).
   const [allNews, allVideos] = following ? await Promise.all([getNews(), getVideos()]) : [[], []]
   const feedNews = allNews.filter((n) => matches(n.parties, n.topics)).slice(0, 6)
@@ -153,6 +165,11 @@ export default async function DashboardPage() {
             </Link>
           </div>
         ))}
+
+        {/* Election 2026 — the live, time-bound hook, tied to what they follow */}
+        <div style={{ marginBottom: 32 }}>
+          <DashboardElection parties={electionParties} electorates={electionElectorates} />
+        </div>
 
         {/* Command centre — the centrepiece */}
         <div style={{ marginBottom: 32 }}>
