@@ -24,19 +24,21 @@ const JADE      = '#1F8A4C'
 // or endorses none. Party names from the EC register (as at 1 July 2026); official websites
 // and policy-focus areas taken from each party's own site.
 const REGISTERED_NON_PARLIAMENTARY: { name: string; site: string; focus: string[]; profile?: string }[] = [
-  { name: 'Animal Justice Party Aotearoa New Zealand', site: 'https://animaljustice.org.nz/', focus: ['Animal welfare', 'Environment', 'Climate'] },
-  { name: 'Aotearoa Legalise Cannabis Party', site: 'https://alcp.org.nz/', focus: ['Cannabis law reform', 'Health', 'Justice'] },
-  { name: 'Conservative Party NZ', site: 'https://www.conservatives.nz/', focus: ['Economy', 'Housing', 'Law & order'] },
-  { name: 'NZ Outdoors & Freedom Party', site: 'https://outdoorsparty.co.nz/', focus: ['Environment', 'Outdoors & freedom'] },
+  { name: 'Animal Justice Party Aotearoa New Zealand', site: 'https://animaljustice.org.nz/', focus: ['Animal welfare', 'Environment', 'Climate'], profile: '/parties/animal-justice' },
+  { name: 'Aotearoa Legalise Cannabis Party', site: 'https://alcp.org.nz/', focus: ['Cannabis law reform', 'Health', 'Justice'], profile: '/parties/alcp' },
+  { name: 'Conservative Party NZ', site: 'https://www.conservatives.nz/', focus: ['Economy', 'Housing', 'Law & order'], profile: '/parties/conservative' },
+  { name: 'NZ Outdoors & Freedom Party', site: 'https://outdoorsparty.co.nz/', focus: ['Environment', 'Outdoors & freedom'], profile: '/parties/nz-outdoors' },
   { name: 'The Opportunity Party (TOP)', site: 'https://www.opportunity.org.nz/', focus: ['Economy', 'Climate', 'Housing'], profile: '/parties/top' },
-  { name: 'Vision New Zealand', site: 'https://www.vision.org.nz/', focus: ['Economy', 'Māori affairs', 'Social values'] },
+  { name: 'Vision New Zealand', site: 'https://www.vision.org.nz/', focus: ['Economy', 'Māori affairs', 'Social values'], profile: '/parties/vision-nz' },
   { name: 'Women’s Rights Party', site: 'https://womensrightsparty.nz/', focus: ['Women’s rights', 'Education', 'Health'], profile: '/parties/womens-rights' },
 ]
 const EC_REGISTER_URL = 'https://elections.nz/democracy-in-nz/political-parties-in-new-zealand/register-of-political-parties'
 
 // Non-parliamentary parties that already have a full profile — shown as full
 // PartyCards (identical theme to the six), not neutral list rows.
-const PROFILED_NON_PARL: (keyof typeof PARTY_PROFILES)[] = ['top', 'womens-rights']
+const PROFILED_NON_PARL: (keyof typeof PARTY_PROFILES)[] = [
+  'animal-justice', 'alcp', 'conservative', 'nz-outdoors', 'top', 'vision-nz', 'womens-rights',
+]
 
 export default function PartiesPage() {
   const governing   = PARTY_DIRECTORY_ORDER.filter((s) => PARTY_STATUS[s] === 'governing')
@@ -387,9 +389,11 @@ function OtherRegisteredParties() {
       )}
 
       {/* The rest — neutral rows with official site + policy focus, until they're profiled too */}
+      {REGISTERED_NON_PARLIAMENTARY.some((p) => !p.profile) && (
       <p style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 12px' }}>
         Full profiles for the remaining registered parties are on the way — for now, their official site and policy focus:
       </p>
+      )}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 268px), 1fr))', gap: 12 }}>
         {REGISTERED_NON_PARLIAMENTARY.filter((p) => !p.profile).map((p) => (
           <div key={p.name} style={{ display: 'flex', flexDirection: 'column', gap: 11, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 16px' }}>

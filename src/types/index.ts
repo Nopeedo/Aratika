@@ -9,6 +9,11 @@ export type PartySlug =
   | 'tpm'
   | 'top'
   | 'womens-rights'
+  | 'animal-justice'
+  | 'alcp'
+  | 'conservative'
+  | 'nz-outdoors'
+  | 'vision-nz'
   | 'independent'
 
 export interface Party {

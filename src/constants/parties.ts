@@ -11,6 +11,11 @@ export const PARTY_NAMES: Record<PartySlug, { short: string; full: string }> = {
   tpm:      { short: 'Te Pāti Māori', full: 'Te Pāti Māori' },
   top:      { short: 'TOP', full: 'The Opportunity Party' },
   'womens-rights': { short: 'Women’s Rights', full: 'The New Zealand Women’s Rights Party' },
+  'animal-justice': { short: 'Animal Justice', full: 'Animal Justice Party Aotearoa New Zealand' },
+  'alcp': { short: 'ALCP', full: 'Aotearoa Legalise Cannabis Party' },
+  'conservative': { short: 'Conservative', full: 'Conservative Party NZ' },
+  'nz-outdoors': { short: 'Outdoors & Freedom', full: 'NZ Outdoors & Freedom Party' },
+  'vision-nz': { short: 'Vision NZ', full: 'Vision New Zealand' },
   independent: { short: 'Independent', full: 'Independent' },
 }
 
@@ -28,6 +33,11 @@ export const PARTY_COLORS: Record<PartySlug, { bg: string; text: string; light: 
   tpm:         { bg: '#B11226', text: '#ffffff', light: '#f8e6e8' },
   top:         { bg: '#00E5CC', text: '#06302c', light: '#e5fdfc' },
   'womens-rights': { bg: '#6B3FA0', text: '#ffffff', light: '#efe7f6' },
+  'animal-justice': { bg: '#159A7B', text: '#ffffff', light: '#e7f5f0' },
+  'alcp': { bg: '#3E9B35', text: '#ffffff', light: '#ecf6ea' },
+  'conservative': { bg: '#1FA39A', text: '#ffffff', light: '#e7f6f4' },
+  'nz-outdoors': { bg: '#5F8D2E', text: '#ffffff', light: '#eef4e6' },
+  'vision-nz': { bg: '#163A66', text: '#ffffff', light: '#e7ecf3' },
   independent: { bg: '#6B7280', text: '#ffffff', light: '#f3f4f6' },
 }
 
@@ -43,6 +53,11 @@ export const CURRENT_SEATS: Record<PartySlug, number> = {
   tpm:          6,
   top:          0,
   'womens-rights': 0,
+  'animal-justice': 0,
+  'alcp': 0,
+  'conservative': 0,
+  'nz-outdoors': 0,
+  'vision-nz': 0,
   independent:  0,
 }
 
@@ -62,6 +77,11 @@ export const PARTY_STATUS: Record<PartySlug, 'governing' | 'opposition' | 'suppo
   tpm:         'opposition',
   top:         'none',
   'womens-rights': 'none',
+  'animal-justice': 'none',
+  'alcp': 'none',
+  'conservative': 'none',
+  'nz-outdoors': 'none',
+  'vision-nz': 'none',
   independent: 'none',
 }
 
