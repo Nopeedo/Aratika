@@ -75,12 +75,11 @@ const ELECTION_2023: ElectionData = {
 const ELECTION_2026: ElectionData = {
   year: 2026,
   slug: '2026',
-  date: 'Expected second half of 2026',
-  dateApprox: true,
+  date: 'Saturday 7 November 2026',
   status: 'upcoming',
   headline: 'The next chance for New Zealanders to choose their Parliament.',
   notes: [
-    'The exact election date has not yet been set. It is set by the Governor-General on the Prime Minister’s advice, and is expected in the second half of 2026.',
+    'The election is on Saturday 7 November 2026, announced by the Prime Minister on 21 January 2026.',
     'Results, candidates and the parties contesting will appear here as the campaign unfolds and on election night.',
   ],
   sourceUrl: 'https://www.elections.nz',
@@ -97,5 +96,5 @@ export function getElection(slug: string): ElectionData | undefined {
 /** The most recent completed election — the current baseline to compare against. */
 export const BASELINE_ELECTION = ELECTION_2023
 
-/** Approximate date of the next election (matches the homepage countdown). */
-export const NEXT_ELECTION_DATE = '2026-10-10'
+/** Confirmed date of the next election (matches the homepage countdown). */
+export const NEXT_ELECTION_DATE = '2026-11-07'

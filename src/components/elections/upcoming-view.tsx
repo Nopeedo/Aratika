@@ -10,6 +10,7 @@ import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { PARTY_NAMES, PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
 import { CountdownBig } from './countdown-big'
+import { PollTracker } from './poll-tracker'
 import { SeatHemicycle } from './seat-hemicycle'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
@@ -29,12 +30,15 @@ export function UpcomingView({ e }: { e: ElectionData }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 26 }}>
       <CountdownBig />
 
-      {/* Key dates — TBC */}
+      {/* Poll tracker — sourced snapshot of where the parties are polling */}
+      <PollTracker />
+
+      {/* Key dates */}
       <div style={{ display: 'flex', gap: 10, padding: '14px 16px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 12 }}>
         <CalendarX style={{ width: 17, height: 17, color: '#b45309', flexShrink: 0, marginTop: 1 }} />
         <p style={{ fontSize: 13, color: '#92400e', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-          <b>Key dates are not yet set.</b> The election date, the writ, enrolment deadlines and advance-voting period are
-          confirmed by the Electoral Commission closer to the election. We’ll publish them here as soon as they’re official.
+          <b>Election day is Saturday 7 November 2026.</b> The writ, enrolment deadlines and advance-voting period are
+          set by the Electoral Commission closer to the election — we’ll publish them here as soon as they’re official.
         </p>
       </div>
 

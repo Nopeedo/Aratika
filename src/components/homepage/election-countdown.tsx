@@ -13,11 +13,10 @@
 
 import { useState, useEffect } from 'react'
 
-// ─── Placeholder election date ────────────────────────────────────────────────
-// NZ elections are held on Saturdays. Based on the 3-year cycle from the
-// 14 October 2023 election, the 2026 election is expected around October 2026.
-// Update this constant once the official date is set.
-export const ELECTION_DATE = new Date('2026-10-10T09:00:00+13:00')
+// ─── Election date ────────────────────────────────────────────────────────────
+// Confirmed: the 2026 General Election is on Saturday 7 November 2026 (announced by
+// the Prime Minister on 21 January 2026).
+export const ELECTION_DATE = new Date('2026-11-07T09:00:00+13:00')
 
 export function ElectionCountdown() {
   // Compute the day-count ONLY on the client after mount. Calling new Date()
@@ -37,7 +36,7 @@ export function ElectionCountdown() {
       ● 2026 General Election
       <span style={{ color: '#36e08a', fontWeight: 800 }}> — {days} days to go</span>
       <span style={{ color: '#9aa0aa', fontWeight: 500, fontSize: 11 }}>
-        {' '}(date approximate — official date TBC)
+        {' '}(Saturday 7 November)
       </span>
     </span>
   )
