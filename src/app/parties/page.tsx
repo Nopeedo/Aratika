@@ -23,14 +23,14 @@ const JADE      = '#1F8A4C'
 // seats in the current (54th) Parliament. Listed EQUALLY and alphabetically — Aratika ranks
 // or endorses none. Party names from the EC register (as at 1 July 2026); official websites
 // and policy-focus areas taken from each party's own site.
-const REGISTERED_NON_PARLIAMENTARY: { name: string; site: string; focus: string[] }[] = [
+const REGISTERED_NON_PARLIAMENTARY: { name: string; site: string; focus: string[]; profile?: string }[] = [
   { name: 'Animal Justice Party Aotearoa New Zealand', site: 'https://animaljustice.org.nz/', focus: ['Animal welfare', 'Environment', 'Climate'] },
   { name: 'Aotearoa Legalise Cannabis Party', site: 'https://alcp.org.nz/', focus: ['Cannabis law reform', 'Health', 'Justice'] },
   { name: 'Conservative Party NZ', site: 'https://www.conservatives.nz/', focus: ['Economy', 'Housing', 'Law & order'] },
   { name: 'NZ Outdoors & Freedom Party', site: 'https://outdoorsparty.co.nz/', focus: ['Environment', 'Outdoors & freedom'] },
-  { name: 'The Opportunity Party (TOP)', site: 'https://www.opportunity.org.nz/', focus: ['Economy', 'Climate', 'Housing'] },
+  { name: 'The Opportunity Party (TOP)', site: 'https://www.opportunity.org.nz/', focus: ['Economy', 'Climate', 'Housing'], profile: '/parties/top' },
   { name: 'Vision New Zealand', site: 'https://www.vision.org.nz/', focus: ['Economy', 'Māori affairs', 'Social values'] },
-  { name: 'Women’s Rights Party', site: 'https://womensrightsparty.nz/', focus: ['Women’s rights', 'Education', 'Health'] },
+  { name: 'Women’s Rights Party', site: 'https://womensrightsparty.nz/', focus: ['Women’s rights', 'Education', 'Health'], profile: '/parties/womens-rights' },
 ]
 const EC_REGISTER_URL = 'https://elections.nz/democracy-in-nz/political-parties-in-new-zealand/register-of-political-parties'
 
@@ -387,9 +387,16 @@ function OtherRegisteredParties() {
                 <span key={f} style={{ fontSize: 10.5, fontWeight: 600, background: '#f1efeb', color: SECONDARY, borderRadius: 999, padding: '2px 9px', fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>{f}</span>
               ))}
             </div>
-            <a href={p.site} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: JADE, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}>
-              Official website <ArrowUpRight style={{ width: 13, height: 13 }} />
-            </a>
+            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center' }}>
+              {p.profile && (
+                <Link href={p.profile} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}>
+                  View profile <ArrowRight style={{ width: 13, height: 13 }} />
+                </Link>
+              )}
+              <a href={p.site} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: JADE, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}>
+                Official website <ArrowUpRight style={{ width: 13, height: 13 }} />
+              </a>
+            </div>
           </div>
         ))}
       </div>

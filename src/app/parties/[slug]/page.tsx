@@ -13,7 +13,7 @@ import {
   ArrowLeft, ArrowRight, ArrowUpRight, Users, Calendar, Landmark,
   ScrollText, Star, ExternalLink, Globe, CheckCircle2,
 } from 'lucide-react'
-import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
+import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES } from '@/constants/parties-data'
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
@@ -37,7 +37,7 @@ const DISPLAY   = 'var(--font-space-grotesk), system-ui, sans-serif'
 // ─── Static generation ────────────────────────────────────────────────────────
 
 export function generateStaticParams() {
-  return PARTY_DIRECTORY_ORDER.map((slug) => ({ slug }))
+  return [...PARTY_DIRECTORY_ORDER, ...PROFILED_MINOR_PARTIES].map((slug) => ({ slug }))
 }
 
 export async function generateMetadata(

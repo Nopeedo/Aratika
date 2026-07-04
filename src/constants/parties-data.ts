@@ -347,9 +347,46 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     ],
     keyPolicyAreas: ['economy', 'climate', 'housing'],
   },
+
+  'womens-rights': {
+    slug:          'womens-rights',
+    name:          'Women’s Rights Party',
+    fullName:      'The New Zealand Women’s Rights Party',
+    founded:       2023,
+    color:         '#6B3FA0',
+    textColor:     '#ffffff',
+    leader:        'Jill Ovens',
+    leaderTitle:   'Co-leader',
+    coLeader:      'Chimène de la Varis',
+    coLeaderTitle: 'Co-leader',
+    status:        'extra-parliamentary',
+    seats:         0,
+    electorateSeats: 0,
+    listSeats:       0,
+    founded_note:  'Founded in April 2023 by Jill Ovens and around 20 other women, in the week after a New Zealand visit by UK women’s-rights campaigner Kellie-Jay Keen.',
+    website:       'https://womensrightsparty.nz/',
+    parliamentUrl: 'https://womensrightsparty.nz/',
+    tagline:       'Protecting the sex-based rights of women and girls.',
+    overview:      'The Women’s Rights Party is a registered New Zealand party formed in 2023 to advocate for the sex-based rights of women and girls. It describes itself as women and men who believe in “democracy, equality and biological reality”, and campaigns on single-sex spaces and services, defining “woman” and “man” in law by biological sex, and the welfare of children. It holds no seats in the current Parliament.',
+    history:       'The party was founded in April 2023 by Jill Ovens and around 20 other women, and registered with the Electoral Commission the same year. It contested the 2023 Port Waikato by-election and the 2023 general election, and is standing across the country in 2026. It is co-led by Jill Ovens (also its national secretary) and Chimène de la Varis.',
+    ideology:      ['Women’s rights', 'Sex-based rights', 'Child safeguarding'],
+    coreValues: [
+      'Protect single-sex spaces and services for women and girls',
+      'Define “woman” and “man” in law on the basis of biological sex',
+      'Safeguard the welfare of children in health and education',
+      'Uphold the rights women have historically won, and women’s autonomy',
+      'Base law and policy on what the party calls biological reality',
+    ],
+    keyPolicyAreas: ['education', 'health', 'crime-justice'],
+  },
 }
 
 // Ordered list for directory page — exclude 'independent'
 export const PARTY_DIRECTORY_ORDER: PartySlug[] = [
   'national', 'labour', 'green', 'act', 'nzfirst', 'tpm', 'top',
 ]
+
+// Minor parties that have a full profile PAGE but sit OUTSIDE the head-to-head
+// policy comparison (which stays the parties that hold seats). NOT added to
+// PARTY_DIRECTORY_ORDER, so they don't flood the comparison grid.
+export const PROFILED_MINOR_PARTIES: PartySlug[] = ['womens-rights']

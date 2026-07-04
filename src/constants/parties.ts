@@ -10,6 +10,7 @@ export const PARTY_NAMES: Record<PartySlug, { short: string; full: string }> = {
   nzfirst:  { short: 'NZ First', full: 'New Zealand First' },
   tpm:      { short: 'Te Pāti Māori', full: 'Te Pāti Māori' },
   top:      { short: 'TOP', full: 'The Opportunity Party' },
+  'womens-rights': { short: 'Women’s Rights', full: 'The New Zealand Women’s Rights Party' },
   independent: { short: 'Independent', full: 'Independent' },
 }
 
@@ -26,6 +27,7 @@ export const PARTY_COLORS: Record<PartySlug, { bg: string; text: string; light: 
   nzfirst:     { bg: '#181a1f', text: '#ffffff', light: '#ebebeb' },
   tpm:         { bg: '#B11226', text: '#ffffff', light: '#f8e6e8' },
   top:         { bg: '#00E5CC', text: '#06302c', light: '#e5fdfc' },
+  'womens-rights': { bg: '#6B3FA0', text: '#ffffff', light: '#efe7f6' },
   independent: { bg: '#6B7280', text: '#ffffff', light: '#f3f4f6' },
 }
 
@@ -40,6 +42,7 @@ export const CURRENT_SEATS: Record<PartySlug, number> = {
   nzfirst:      8,
   tpm:          6,
   top:          0,
+  'womens-rights': 0,
   independent:  0,
 }
 
@@ -58,6 +61,7 @@ export const PARTY_STATUS: Record<PartySlug, 'governing' | 'opposition' | 'suppo
   green:       'opposition',
   tpm:         'opposition',
   top:         'none',
+  'womens-rights': 'none',
   independent: 'none',
 }
 
