@@ -154,6 +154,26 @@ export default async function PartyProfilePage(
                 </span>
               </div>
 
+              {/* Leadership — faces up front */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 13, marginBottom: 18 }}>
+                <div style={{ display: 'flex' }}>
+                  <Avatar name={party.leader} party={slug as PartySlug} src={leaderSlug ? MP_PROFILES[leaderSlug].photo : party.leaderPhoto} size="lg" face />
+                  {party.coLeader && (
+                    <div style={{ marginLeft: -16, borderRadius: '50%', boxShadow: '0 0 0 3px #fff' }}>
+                      <Avatar name={party.coLeader} party={slug as PartySlug} src={coLeaderSlug ? MP_PROFILES[coLeaderSlug].photo : undefined} size="lg" face />
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>
+                    {party.coLeader ? 'Co-leaders' : party.leaderTitle}
+                  </div>
+                  <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.25 }}>
+                    {party.leader}{party.coLeader ? ` & ${party.coLeader}` : ''}
+                  </div>
+                </div>
+              </div>
+
               <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, maxWidth: 520, margin: '0 0 18px' }}>
                 {party.tagline}
               </p>
