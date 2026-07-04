@@ -27,7 +27,7 @@ export async function PolicyHubGrid() {
             <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 8 }}>Policy Comparison</div>
             <h2 style={{ fontSize: 'clamp(24px, 5.5vw, 28px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>Where do the parties stand?</h2>
             <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, marginTop: 8, marginBottom: 0, lineHeight: 1.55 }}>
-              Tap any issue to see where every party stands, right here. All sourced from official party documents.
+              Tap any issue to see where every party stands, right here — drawn from each party’s <b style={{ color: INK }}>most recent published policy</b>, not their stance at a past election.
             </p>
           </div>
           <Link href="/policies" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>

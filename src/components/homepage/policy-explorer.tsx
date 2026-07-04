@@ -180,7 +180,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
                   ? `Where ${PARTY_PROFILES[focused as PartySlug].name} stands on ${selTopic.label}`
                   : `Where the parties stand on ${selTopic.label}`}
               </h3>
-              <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Sourced from official party policy.</p>
+              <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Each party’s most recent published policy — not a past-election position.</p>
             </div>
             <button onClick={() => setSel(null)} aria-label="Close" style={{ background: 'none', border: `1px solid ${BORDER}`, borderRadius: 8, padding: 6, cursor: 'pointer', color: SECONDARY, display: 'flex', flexShrink: 0 }}>
               <X style={{ width: 15, height: 15 }} />

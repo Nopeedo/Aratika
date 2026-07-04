@@ -144,7 +144,7 @@ export default async function PolicyTopicPage(
         <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 16, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <SectionDivider type="official" label="Sources" />
           <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
-            Topic framing is editorial; party positions will be sourced from each party&apos;s official policy material.
+            Topic framing is editorial. Party positions reflect each party&apos;s most recent published policy — not their stance at a past election — sourced from official party material.
           </p>
         </div>
       </div>
