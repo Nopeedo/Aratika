@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Users } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Users } from 'lucide-react'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -21,15 +21,16 @@ const JADE      = '#1F8A4C'
 
 // Registered with the Electoral Commission to contest the 2026 party vote, but holding no
 // seats in the current (54th) Parliament. Listed EQUALLY and alphabetically — Aratika ranks
-// or endorses none. Drawn from the EC register of registered parties (as at 1 July 2026).
-const REGISTERED_NON_PARLIAMENTARY: string[] = [
-  'Animal Justice Party Aotearoa New Zealand',
-  'Aotearoa Legalise Cannabis Party',
-  'Conservative Party NZ',
-  'NZ Outdoors & Freedom Party',
-  'The Opportunity Party (TOP)',
-  'Vision New Zealand',
-  'Women’s Rights Party',
+// or endorses none. Party names from the EC register (as at 1 July 2026); official websites
+// and policy-focus areas taken from each party's own site.
+const REGISTERED_NON_PARLIAMENTARY: { name: string; site: string; focus: string[] }[] = [
+  { name: 'Animal Justice Party Aotearoa New Zealand', site: 'https://animaljustice.org.nz/', focus: ['Animal welfare', 'Environment', 'Climate'] },
+  { name: 'Aotearoa Legalise Cannabis Party', site: 'https://alcp.org.nz/', focus: ['Cannabis law reform', 'Health', 'Justice'] },
+  { name: 'Conservative Party NZ', site: 'https://www.conservatives.nz/', focus: ['Economy', 'Housing', 'Law & order'] },
+  { name: 'NZ Outdoors & Freedom Party', site: 'https://outdoorsparty.co.nz/', focus: ['Environment', 'Outdoors & freedom'] },
+  { name: 'The Opportunity Party (TOP)', site: 'https://www.opportunity.org.nz/', focus: ['Economy', 'Climate', 'Housing'] },
+  { name: 'Vision New Zealand', site: 'https://www.vision.org.nz/', focus: ['Economy', 'Māori affairs', 'Social values'] },
+  { name: 'Women’s Rights Party', site: 'https://womensrightsparty.nz/', focus: ['Women’s rights', 'Education', 'Health'] },
 ]
 const EC_REGISTER_URL = 'https://elections.nz/democracy-in-nz/political-parties-in-new-zealand/register-of-political-parties'
 
@@ -369,21 +370,31 @@ function OtherRegisteredParties() {
   return (
     <div>
       <p style={{ fontSize: 14, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, margin: '0 0 18px', maxWidth: 720 }}>
-        About ten parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament. They’re listed here <b style={{ color: INK }}>equally and alphabetically</b> — Aratika doesn’t rank or endorse any party.
+        About ten parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament. They’re listed here <b style={{ color: INK }}>equally and alphabetically</b>, with their official website and the policy areas they focus on — Aratika doesn’t rank or endorse any party.
       </p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))', gap: 12 }}>
-        {REGISTERED_NON_PARLIAMENTARY.map((name) => (
-          <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '14px 16px' }}>
-            <span style={{ width: 10, height: 10, borderRadius: 3, background: '#d8d5cf', flexShrink: 0 }} />
-            <span style={{ flex: 1, minWidth: 0 }}>
-              <span style={{ display: 'block', fontSize: 14, fontWeight: 800, color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.3 }}>{name}</span>
-              <span style={{ display: 'block', fontSize: 11.5, color: TERTIARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginTop: 2 }}>Registered party · no current seats</span>
-            </span>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 268px), 1fr))', gap: 12 }}>
+        {REGISTERED_NON_PARLIAMENTARY.map((p) => (
+          <div key={p.name} style={{ display: 'flex', flexDirection: 'column', gap: 11, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 16px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              <span style={{ width: 10, height: 10, borderRadius: 3, background: '#d8d5cf', flexShrink: 0, marginTop: 5 }} />
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ display: 'block', fontSize: 14, fontWeight: 800, color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.3 }}>{p.name}</span>
+                <span style={{ display: 'block', fontSize: 11.5, color: TERTIARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginTop: 2 }}>Registered party · no current seats</span>
+              </span>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+              {p.focus.map((f) => (
+                <span key={f} style={{ fontSize: 10.5, fontWeight: 600, background: '#f1efeb', color: SECONDARY, borderRadius: 999, padding: '2px 9px', fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>{f}</span>
+              ))}
+            </div>
+            <a href={p.site} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: JADE, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}>
+              Official website <ArrowUpRight style={{ width: 13, height: 13 }} />
+            </a>
           </div>
         ))}
       </div>
       <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, margin: '16px 0 0', maxWidth: 760 }}>
-        Drawn from the Electoral Commission’s register of registered political parties (as at 1 July 2026). Further registered parties will appear here as we verify them; three more — the Alliance Party, New Zealand Loyal and Te Tai Tokerau Party — have applied and are under consideration ahead of the 6 August 2026 registration deadline.{' '}
+        Party names from the Electoral Commission’s register of registered political parties (as at 1 July 2026); official websites and policy-focus areas are taken from each party’s own site. Further registered parties will appear here as we verify them; three more — the Alliance Party, New Zealand Loyal and Te Tai Tokerau Party — have applied and are under consideration ahead of the 6 August 2026 registration deadline.{' '}
         <a href={EC_REGISTER_URL} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>See the full register ↗</a>
       </p>
     </div>
