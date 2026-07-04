@@ -34,6 +34,10 @@ const REGISTERED_NON_PARLIAMENTARY: { name: string; site: string; focus: string[
 ]
 const EC_REGISTER_URL = 'https://elections.nz/democracy-in-nz/political-parties-in-new-zealand/register-of-political-parties'
 
+// Non-parliamentary parties that already have a full profile — shown as full
+// PartyCards (identical theme to the six), not neutral list rows.
+const PROFILED_NON_PARL: (keyof typeof PARTY_PROFILES)[] = ['top', 'womens-rights']
+
 export default function PartiesPage() {
   const governing   = PARTY_DIRECTORY_ORDER.filter((s) => PARTY_STATUS[s] === 'governing')
   const opposition  = PARTY_DIRECTORY_ORDER.filter((s) => PARTY_STATUS[s] === 'opposition')
@@ -370,10 +374,24 @@ function OtherRegisteredParties() {
   return (
     <div>
       <p style={{ fontSize: 14, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, margin: '0 0 18px', maxWidth: 720 }}>
-        About ten parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament. They’re listed here <b style={{ color: INK }}>equally and alphabetically</b>, with their official website and the policy areas they focus on — Aratika doesn’t rank or endorse any party.
+        About ten parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament. They’re listed here <b style={{ color: INK }}>equally and alphabetically</b> — Aratika doesn’t rank or endorse any party.
+      </p>
+
+      {/* Ones we've fully profiled — same card as the parties in Parliament */}
+      {PROFILED_NON_PARL.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 16, marginBottom: 24 }}>
+          {PROFILED_NON_PARL.map((slug) => (
+            <PartyCard key={slug} slug={slug} />
+          ))}
+        </div>
+      )}
+
+      {/* The rest — neutral rows with official site + policy focus, until they're profiled too */}
+      <p style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 12px' }}>
+        Full profiles for the remaining registered parties are on the way — for now, their official site and policy focus:
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 268px), 1fr))', gap: 12 }}>
-        {REGISTERED_NON_PARLIAMENTARY.map((p) => (
+        {REGISTERED_NON_PARLIAMENTARY.filter((p) => !p.profile).map((p) => (
           <div key={p.name} style={{ display: 'flex', flexDirection: 'column', gap: 11, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 16px' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
               <span style={{ width: 10, height: 10, borderRadius: 3, background: '#d8d5cf', flexShrink: 0, marginTop: 5 }} />
