@@ -17,6 +17,21 @@ const SECONDARY = '#6b7078'
 const TERTIARY  = '#9aa0aa'
 const BORDER    = '#e9e7e2'
 const SURFACE   = '#f8fafc'
+const JADE      = '#1F8A4C'
+
+// Registered with the Electoral Commission to contest the 2026 party vote, but holding no
+// seats in the current (54th) Parliament. Listed EQUALLY and alphabetically — Aratika ranks
+// or endorses none. Drawn from the EC register of registered parties (as at 1 July 2026).
+const REGISTERED_NON_PARLIAMENTARY: string[] = [
+  'Animal Justice Party Aotearoa New Zealand',
+  'Aotearoa Legalise Cannabis Party',
+  'Conservative Party NZ',
+  'NZ Outdoors & Freedom Party',
+  'The Opportunity Party (TOP)',
+  'Vision New Zealand',
+  'Women’s Rights Party',
+]
+const EC_REGISTER_URL = 'https://elections.nz/democracy-in-nz/political-parties-in-new-zealand/register-of-political-parties'
 
 export default function PartiesPage() {
   const governing   = PARTY_DIRECTORY_ORDER.filter((s) => PARTY_STATUS[s] === 'governing')
@@ -139,17 +154,9 @@ export default function PartiesPage() {
           ))}
         </div>
 
-        {/* ── Contesting 2026, not currently in Parliament ──────────── */}
-        {others.length > 0 && (
-          <>
-            <SectionTitle label="Contesting 2026 — not currently in Parliament" count={others.length} />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 16 }}>
-              {others.map((slug) => (
-                <PartyCard key={slug} slug={slug} />
-              ))}
-            </div>
-          </>
-        )}
+        {/* ── Registered but not in Parliament — the parties fighting to get in ── */}
+        <SectionTitle label="Contesting 2026 — not currently in Parliament" count={REGISTERED_NON_PARLIAMENTARY.length} />
+        <OtherRegisteredParties />
 
       </div>
     </div>
@@ -353,5 +360,32 @@ function PartyCard({ slug }: { slug: keyof typeof PARTY_PROFILES }) {
         </div>
       </div>
     </Link>
+  )
+}
+
+// ─── Registered parties not in Parliament — neutral, equal, sourced ─────────────
+
+function OtherRegisteredParties() {
+  return (
+    <div>
+      <p style={{ fontSize: 14, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, margin: '0 0 18px', maxWidth: 720 }}>
+        About ten parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament. They’re listed here <b style={{ color: INK }}>equally and alphabetically</b> — Aratika doesn’t rank or endorse any party.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 240px), 1fr))', gap: 12 }}>
+        {REGISTERED_NON_PARLIAMENTARY.map((name) => (
+          <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 12, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '14px 16px' }}>
+            <span style={{ width: 10, height: 10, borderRadius: 3, background: '#d8d5cf', flexShrink: 0 }} />
+            <span style={{ flex: 1, minWidth: 0 }}>
+              <span style={{ display: 'block', fontSize: 14, fontWeight: 800, color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.3 }}>{name}</span>
+              <span style={{ display: 'block', fontSize: 11.5, color: TERTIARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginTop: 2 }}>Registered party · no current seats</span>
+            </span>
+          </div>
+        ))}
+      </div>
+      <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, margin: '16px 0 0', maxWidth: 760 }}>
+        Drawn from the Electoral Commission’s register of registered political parties (as at 1 July 2026). Further registered parties will appear here as we verify them; three more — the Alliance Party, New Zealand Loyal and Te Tai Tokerau Party — have applied and are under consideration ahead of the 6 August 2026 registration deadline.{' '}
+        <a href={EC_REGISTER_URL} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>See the full register ↗</a>
+      </p>
+    </div>
   )
 }
