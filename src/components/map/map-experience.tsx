@@ -172,10 +172,10 @@ export function MapExperience({ initialSearch }: { initialSearch?: string }) {
   const selectedKey = selected ? normalizeElectorateKey(selected) : null
 
   return (
-    <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 24px 48px' }}>
+    <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px clamp(14px, 4vw, 24px) 48px' }}>
 
       {/* Toolbar */}
-      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginBottom: 16 }}>
+      <div className="map-toolbar" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginBottom: 16 }}>
         {/* Layer toggle */}
         <div style={{ display: 'inline-flex', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 3 }}>
           {(['general', 'maori'] as LayerType[]).map((l) => (
@@ -198,7 +198,7 @@ export function MapExperience({ initialSearch }: { initialSearch?: string }) {
         </div>
 
         {/* Search */}
-        <form onSubmit={handleSearch} style={{ flex: 1, minWidth: 220, maxWidth: 380 }}>
+        <form className="map-search" onSubmit={handleSearch} style={{ flex: 1, minWidth: 220, maxWidth: 380 }}>
           <div style={{ display: 'flex', alignItems: 'center', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, overflow: 'hidden' }}>
             <Search style={{ width: 16, height: 16, color: TERTIARY, margin: '0 10px', flexShrink: 0 }} />
             <input
@@ -232,9 +232,9 @@ export function MapExperience({ initialSearch }: { initialSearch?: string }) {
       {/* Map + panel grid */}
       <div className="map-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'stretch' }}>
 
-        {/* Map area */}
+        {/* Map area — enlarged height (scales with the viewport); width unchanged. */}
         <div style={{
-          position: 'relative', height: 620, borderRadius: 18, overflow: 'hidden',
+          position: 'relative', height: 'clamp(600px, 82vh, 840px)', borderRadius: 18, overflow: 'hidden',
           border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)', background: '#eaf2f7',
         }}>
           {status === 'loading' && <MapLoading />}
@@ -269,19 +269,21 @@ export function MapExperience({ initialSearch }: { initialSearch?: string }) {
           )}
         </div>
 
-        {/* Panel */}
-        <div style={{ height: 620, borderRadius: 18, overflow: 'auto', border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
+        {/* Panel — matches the map height on desktop */}
+        <div style={{ height: 'clamp(600px, 82vh, 840px)', borderRadius: 18, overflow: 'auto', border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
           <ElectoratePanel electorateName={selected} />
         </div>
       </div>
 
-      {/* Responsive: stack panel under map on narrow screens */}
+      {/* Responsive: stack panel under map on narrow screens, tighten the toolbar for mobile. */}
       <style>{`
         @media (max-width: 880px) {
+          .map-toolbar { flex-direction: column; align-items: stretch; }
+          .map-search { max-width: none !important; width: 100%; }
           .map-grid { grid-template-columns: 1fr !important; }
           .map-grid > div { height: auto !important; }
-          .map-grid > div:first-child { height: 460px !important; }
-          .map-grid > div:last-child { min-height: 380px; }
+          .map-grid > div:first-child { height: min(72vh, 600px) !important; }
+          .map-grid > div:last-child { height: auto !important; min-height: 440px; }
         }
       `}</style>
     </div>
