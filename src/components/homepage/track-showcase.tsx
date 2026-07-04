@@ -150,10 +150,8 @@ export function TrackShowcase() {
       onMouseLeave={() => setPaused(false)}
       style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 20, overflow: 'hidden', marginTop: 14 }}
     >
-      <style>{`@keyframes pe-track-prog { from { transform: scaleX(0) } to { transform: scaleX(1) } }`}</style>
-
-      {/* Tabs */}
-      <div style={{ display: 'flex', gap: 6, padding: '12px 12px 0', overflowX: 'auto', scrollbarWidth: 'none' }}>
+      {/* Tabs — wrap so every type (incl. Video) is always visible */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, padding: '12px 12px 4px' }}>
         {SLIDES.map((s, idx) => {
           const on = idx === i
           const Icon = s.icon
@@ -168,11 +166,6 @@ export function TrackShowcase() {
             </button>
           )
         })}
-      </div>
-
-      {/* Progress bar */}
-      <div style={{ height: 3, background: SURFACE, margin: '12px 0 0' }}>
-        <div key={i} style={{ height: '100%', background: JADE, transformOrigin: 'left', transform: reduce || paused ? 'scaleX(1)' : 'scaleX(0)', animation: reduce || paused ? 'none' : `pe-track-prog ${DURATION}ms linear forwards` }} />
       </div>
 
       {/* Body */}
