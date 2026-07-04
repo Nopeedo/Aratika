@@ -3,7 +3,15 @@ import Link from 'next/link'
 import { ArrowRight, ArrowUpRight, Users } from 'lucide-react'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
+import { MP_PROFILES } from '@/constants/mps-data'
+import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
+
+// Resolve a leader's photo: MP photo if they're an MP, else the party's own leaderPhoto.
+function mpSlugForName(name: string): string | null {
+  const entry = Object.values(MP_PROFILES).find((mp) => mp.name === name)
+  return entry ? entry.slug : null
+}
 
 export const metadata: Metadata = {
   title: 'Political Parties',
@@ -202,6 +210,10 @@ function PartyCard({ slug }: { slug: keyof typeof PARTY_PROFILES }) {
   const party  = PARTY_PROFILES[slug]
   const seats  = CURRENT_SEATS[slug]
   const status = PARTY_STATUS[slug]
+  const leaderSlug   = mpSlugForName(party.leader)
+  const leaderPhoto  = leaderSlug ? MP_PROFILES[leaderSlug].photo : party.leaderPhoto
+  const coLeaderSlug = party.coLeader ? mpSlugForName(party.coLeader) : null
+  const coLeaderPhoto = coLeaderSlug ? MP_PROFILES[coLeaderSlug].photo : undefined
 
   return (
     <Link href={`/parties/${slug}`} style={{ textDecoration: 'none' }}>
@@ -292,15 +304,14 @@ function PartyCard({ slug }: { slug: keyof typeof PARTY_PROFILES }) {
             background: SURFACE, borderRadius: 10,
             border: `1px solid ${BORDER}`,
           }}>
-            {/* Avatar placeholder */}
-            <div style={{
-              width: 34, height: 34, borderRadius: 10,
-              background: party.color, flexShrink: 0,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 12, fontWeight: 800, color: party.textColor,
-              fontFamily: 'var(--font-manrope), system-ui, sans-serif',
-            }}>
-              {party.leader.split(' ').map(n => n[0]).slice(0, 2).join('')}
+            {/* Leader face — falls back to coloured initials when we have no photo */}
+            <div style={{ display: 'flex', flexShrink: 0 }}>
+              <Avatar name={party.leader} party={slug} src={leaderPhoto} size="md" face />
+              {party.coLeader && (
+                <div style={{ marginLeft: -12, borderRadius: '50%', boxShadow: `0 0 0 2.5px ${SURFACE}` }}>
+                  <Avatar name={party.coLeader} party={slug} src={coLeaderPhoto} size="md" face />
+                </div>
+              )}
             </div>
             <div>
               <div style={{
