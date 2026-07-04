@@ -24,6 +24,7 @@ import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
 import { CompassCta } from '@/components/compass/compass-cta'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { TrackCta } from '@/components/homepage/track-cta'
+import { HomeMap } from '@/components/homepage/home-map'
 import { ElectionCountdown }   from '@/components/homepage/election-countdown'
 import { HomeMapFeature }      from '@/components/homepage/home-map-feature'
 import { PolicyCard }          from '@/components/homepage/policy-card'
@@ -179,6 +180,9 @@ export default function HomePage() {
       {/* ── COMMAND CENTRE — introduce tracking; the news/video/bills that come to you ── */}
       <TrackCta />
 
+      {/* ── ELECTORATE MAP — embedded inline so users find their MP without leaving home ── */}
+      <HomeMap />
+
       {/* ── Credibility strip ── */}
       <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px)', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
@@ -220,7 +224,7 @@ export default function HomePage() {
             {([
               { href: '/start', icon: Compass, accent: true, title: 'Start with you', body: 'Tell us the issues you care about — we’ll point you to what matters for your vote.', cta: 'Find what matters' },
               { href: '/compare', icon: Scale, accent: false, title: 'Line up the parties', body: 'Every party, side by side, on the issues that matter most to you.', cta: 'Compare parties' },
-              { href: '/map', icon: Map, accent: false, title: 'Know the ground', body: 'Find your electorate and see who represents it — and who’s standing in 2026.', cta: 'Open the map' },
+              { href: '#map', icon: Map, accent: false, title: 'Know the ground', body: 'Find your electorate and see who represents it — and who’s standing in 2026.', cta: 'Open the map' },
               { href: '/bills', icon: Gavel, accent: false, title: 'See the record', body: 'What this Parliament has actually passed — bills, budget and the promises behind them.', cta: 'Open the record' },
             ] as const).map((d) => {
               const Icon = d.icon
