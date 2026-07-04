@@ -26,7 +26,6 @@ import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { TrackCta } from '@/components/homepage/track-cta'
 import { HomeMap } from '@/components/homepage/home-map'
 import { ElectionCountdown }   from '@/components/homepage/election-countdown'
-import { HomeMapFeature }      from '@/components/homepage/home-map-feature'
 import { PolicyCard }          from '@/components/homepage/policy-card'
 import { Reveal }              from '@/components/ui/reveal'
 import { SITE }                from '@/constants/site'
@@ -316,65 +315,8 @@ export default function HomePage() {
       </section>
 
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          2a. ELECTORATE MAP — dedicated, interactive feature section
-      ═══════════════════════════════════════════════════════════════════ */}
-      <section style={{ background: '#fff', borderTop: '1px solid rgba(255,255,255,.06)' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px clamp(18px, 5vw, 36px)' }}>
-          <Reveal>
-            <div style={{ display: 'flex', gap: 44, alignItems: 'center', flexWrap: 'wrap' }}>
-
-              {/* Copy + actions */}
-              <div style={{ flex: '1 1 320px', minWidth: 0 }}>
-                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: JADE, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 12 }}>
-                  <Map style={{ width: 15, height: 15 }} /> The Electorate Map
-                </div>
-                <h2 style={{ fontSize: 'clamp(26px, 3.4vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.12, margin: '0 0 14px' }}>
-                  Start where you live.
-                </h2>
-                <p style={{ fontSize: 16.5, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, maxWidth: 460, margin: '0 0 22px' }}>
-                  Every vote is cast in an electorate. Click your patch on the live map to see who
-                  represents it, which party holds it, and how the 2023 race played out — then go deeper.
-                </p>
-
-                {/* Trust bullets */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 26 }}>
-                  {[
-                    { icon: ShieldCheck, t: 'Official Stats NZ 2020 boundaries — never placeholder geometry' },
-                    { icon: Users, t: 'All 72 electorates, coloured by the party that holds them' },
-                    { icon: Scale, t: 'General and Māori electorate layers' },
-                  ].map((b) => {
-                    const Icon = b.icon
-                    return (
-                      <div key={b.t} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <span style={{ width: 28, height: 28, borderRadius: 8, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon style={{ width: 15, height: 15, color: JADE }} /></span>
-                        <span style={{ fontSize: 14, fontWeight: 600, color: '#33373f', fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>{b.t}</span>
-                      </div>
-                    )
-                  })}
-                </div>
-
-                <div style={{ display: 'flex', gap: 11, flexWrap: 'wrap' }}>
-                  <Link href="/map" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '12px 22px', borderRadius: 12, background: JADE, color: '#fff', fontSize: 14.5, fontWeight: 800, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}>
-                    <Map style={{ width: 16, height: 16 }} /> Open the full map
-                  </Link>
-                  <Link href="/learn/electorate-vs-list" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '12px 22px', borderRadius: 12, background: '#fff', border: `1px solid ${BORDER}`, color: INK, fontSize: 14.5, fontWeight: 700, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}>
-                    <Compass style={{ width: 16, height: 16, color: JADE }} /> Learn more
-                  </Link>
-                </div>
-              </div>
-
-              {/* Live interactive map */}
-              <div style={{ flex: '1.4 1 420px', minWidth: 0, alignSelf: 'stretch', display: 'flex' }}>
-                <div style={{ flex: 1 }}>
-                  <HomeMapFeature />
-                </div>
-              </div>
-
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      {/* (Old "Start where you live" electorate-map teaser removed — replaced by the
+          inline HomeMap section (id="map") earlier in the page.) */}
 
 
       {/* ═══════════════════════════════════════════════════════════════════
