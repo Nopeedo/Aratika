@@ -26,6 +26,7 @@ import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { TrackCta } from '@/components/homepage/track-cta'
 import { HomeMap } from '@/components/homepage/home-map'
 import { ElectionAnchor }      from '@/components/homepage/election-anchor'
+import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { PolicyCard }          from '@/components/homepage/policy-card'
 import { Reveal }              from '@/components/ui/reveal'
 import { SITE }                from '@/constants/site'
@@ -177,6 +178,9 @@ export default function HomePage() {
           follows this. (Concept C from the layout review.)
       ═══════════════════════════════════════════════════════════════════ */}
       <ElectionAnchor />
+
+      {/* ── BATTLEGROUNDS — highlighted under the Election Centre; the closest 2023 races ── */}
+      <BattlegroundsTeaser />
 
       {/* ── PERSONAL COMPASS — entry card; background cycles through party colours (non-partisan) ── */}
       <CompassCta />
