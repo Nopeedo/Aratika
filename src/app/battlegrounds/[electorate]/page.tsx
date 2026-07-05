@@ -12,7 +12,9 @@ import { ELECTORATE_SLUGS, getElectorateBySlug, classifyMargin } from '@/lib/bat
 import { getCandidates } from '@/constants/candidates-2026'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
+import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
+import type { PartySlug } from '@/types'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
@@ -40,6 +42,9 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   // match the /mps profile slug convention).
   const resolvedSlug = info.mpSlug ?? (info.mpName ? mpSlugFromName(info.mpName) : undefined)
   const mp = resolvedSlug ? MP_PROFILES[resolvedSlug] : undefined
+  // The incumbent's party colour — used as a strip on every section specific to them,
+  // so it's visually obvious at a glance whose seat this currently is.
+  const incumbentColor = info.party ? PARTY_COLORS[info.party].bg : TERTIARY
 
   return (
     <div style={{ background: '#fff', minHeight: '100vh' }}>
@@ -62,10 +67,10 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '30px 36px 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
 
-        {/* 2023 result + incumbent */}
+        {/* 2023 result + incumbent — both specific to the sitting MP, so both carry their party-colour strip */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
           {/* 2023 result */}
-          <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '20px 22px' }}>
+          <IncumbentCard color={incumbentColor}>
             <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 12 }}>2023 result</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
               {info.party && <span style={{ width: 14, height: 14, borderRadius: '50%', background: PARTY_COLORS[info.party].bg }} />}
@@ -79,16 +84,21 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
                 Won by a majority of <b style={{ color: INK }}>{info.majority.toLocaleString('en-NZ')}</b> — a <b style={{ color: tier.color }}>{tier.label.toLowerCase()}</b> seat.
               </div>
             )}
-          </div>
+          </IncumbentCard>
 
           {/* Incumbent */}
-          <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '20px 22px' }}>
+          <IncumbentCard color={incumbentColor}>
             <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 12 }}>The incumbent</div>
             {mp ? (
               <>
-                <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{mp.name}</div>
-                <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, marginBottom: 10 }}>
-                  {mp.title || `MP for ${info.name}`}{mp.enteredParliament ? ` · in Parliament since ${mp.enteredParliament}` : ''}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
+                  <Avatar name={mp.name} party={info.party ?? undefined} src={mp.photo} size="lg" face />
+                  <div>
+                    <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{mp.name}</div>
+                    <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>
+                      {mp.title || `MP for ${info.name}`}{mp.enteredParliament ? ` · in Parliament since ${mp.enteredParliament}` : ''}
+                    </div>
+                  </div>
                 </div>
                 {mp.bio && <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>{mp.bio}</p>}
                 <Link href={`/mps/${resolvedSlug}`} style={cta}>Full MP profile <ArrowRight style={ic} /></Link>
@@ -96,12 +106,12 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             ) : (
               <div style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE }}>{info.mpName ?? 'The current MP holds this seat.'}</div>
             )}
-          </div>
+          </IncumbentCard>
         </div>
 
         {/* What they've prioritised + where they focus — sourced from parliament.nz roles */}
         {mp && ((mp.portfolios && mp.portfolios.length > 0) || (mp.committees && mp.committees.length > 0)) && (
-          <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '20px 22px' }}>
+          <IncumbentCard color={incumbentColor}>
             <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>What {mp.name.split(' ')[0]} has prioritised this term</div>
             <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 16px' }}>Official roles, sourced from parliament.nz.</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
@@ -122,7 +132,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
                 </div>
               )}
             </div>
-          </div>
+          </IncumbentCard>
         )}
 
         {/* The 2026 contest */}
@@ -147,6 +157,13 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
               {candidates.map((c) => (
                 <div key={c.name} style={{ background: '#fff', border: `1px solid ${BORDER}`, borderLeft: `4px solid ${c.party === 'independent' ? TERTIARY : PARTY_COLORS[c.party].bg}`, borderRadius: 14, padding: '18px 20px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                    <Avatar
+                      name={c.name}
+                      party={c.party === 'independent' ? undefined : c.party}
+                      src={c.mpSlug ? MP_PROFILES[c.mpSlug]?.photo : undefined}
+                      size="sm"
+                      face
+                    />
                     <span style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{c.name}</span>
                     {c.incumbent && <span style={{ fontSize: 10.5, fontWeight: 800, color: '#065f46', background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 999, padding: '2px 8px', fontFamily: MANROPE }}>Incumbent</span>}
                     <span style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>{c.party === 'independent' ? 'Independent' : PARTY_NAMES[c.party].short}</span>
@@ -184,6 +201,18 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
           </p>
         </div>
       </div>
+    </div>
+  )
+}
+
+/** A card carrying the incumbent's party-colour strip along its top — used for every
+ *  section that's specific to them (2023 result, incumbent bio, what they've prioritised),
+ *  so it's visually obvious at a glance whose seat this currently is. */
+function IncumbentCard({ color, children }: { color: string; children: React.ReactNode }) {
+  return (
+    <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, overflow: 'hidden' }}>
+      <div style={{ height: 4, background: color }} />
+      <div style={{ padding: '18px 22px 20px' }}>{children}</div>
     </div>
   )
 }
