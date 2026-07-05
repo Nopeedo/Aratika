@@ -15,6 +15,7 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { MP_MEMBERS_BILLS } from '@/constants/mps-members-bills'
 import { MP_PASSED_BILLS, MP_GOV_BILLS, BILL_ACTIVITY_META } from '@/constants/mps-bill-activity'
 import { MP_EXPENSES } from '@/constants/mps-expenses'
+import { MP_EXPENSES_TERM, TERM_EXPENSES_META } from '@/constants/mps-expenses-term'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import type { PartySlug } from '@/types'
@@ -186,15 +187,50 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
           </IncumbentCard>
         )}
 
-        {/* Taxpayer-funded expenses — one official quarter (see the site-wide note below on going further) */}
-        {resolvedSlug && MP_EXPENSES[resolvedSlug] && (() => {
+        {/* Taxpayer-funded expenses — the whole 54th Parliament term to date */}
+        {resolvedSlug && MP_EXPENSES_TERM[resolvedSlug] ? (() => {
+          const t = MP_EXPENSES_TERM[resolvedSlug]
+          const money = (n: number) => `$${Math.round(n).toLocaleString('en-NZ')}`
+          const maxQ = Math.max(...t.quarters.map((q) => q.total))
+          return (
+            <IncumbentCard color={incumbentColor}>
+              <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>Taxpayer-funded expenses this term</div>
+              <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 16px' }}>
+                Every quarter published since the 2023 election ({t.quarters.length} of {TERM_EXPENSES_META.quarterCount} quarters, up to {TERM_EXPENSES_META.asOf}).
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10, marginBottom: 18 }}>
+                {[{ l: 'Total this term', v: t.termTotal, big: true }, { l: 'Accommodation', v: t.termAccommodation }, { l: 'Travel', v: t.termTravel }].map((x) => (
+                  <div key={x.l} style={{ background: x.big ? '#f1f7f3' : SURFACE, border: `1px solid ${x.big ? '#c9e6d4' : BORDER}`, borderRadius: 12, padding: '12px 14px', minWidth: 0 }}>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1 }}>{money(x.v)}</div>
+                    <div style={{ fontSize: 11.5, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginTop: 6 }}>{x.l}</div>
+                  </div>
+                ))}
+              </div>
+              <Label icon={Receipt} text="By quarter" />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 8 }}>
+                {t.quarters.map((q) => (
+                  <div key={q.period} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <span style={{ width: 150, fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, flexShrink: 0 }}>{q.period}</span>
+                    <div style={{ flex: 1, height: 14, background: SURFACE, borderRadius: 4, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${(q.total / maxQ) * 100}%`, background: incumbentColor, borderRadius: 4 }} />
+                    </div>
+                    <span style={{ width: 70, textAlign: 'right', fontSize: 12, fontWeight: 700, color: INK, fontFamily: MANROPE, flexShrink: 0 }}>{money(q.total)}</span>
+                  </div>
+                ))}
+              </div>
+              <a href={TERM_EXPENSES_META.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginTop: 14 }}>
+                {TERM_EXPENSES_META.sourceLabel} <ArrowUpRight style={{ width: 12, height: 12 }} />
+              </a>
+            </IncumbentCard>
+          )
+        })() : resolvedSlug && MP_EXPENSES[resolvedSlug] && (() => {
           const e = MP_EXPENSES[resolvedSlug]
           const money = (n: number) => `$${Math.round(n).toLocaleString('en-NZ')}`
           return (
             <IncumbentCard color={incumbentColor}>
               <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>Taxpayer-funded expenses</div>
-              <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 16px' }}>Travel and accommodation paid by Parliamentary Service for {e.period}. One quarter — see the note below.</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10, marginBottom: 12 }}>
+              <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 16px' }}>Travel and accommodation paid by Parliamentary Service for {e.period}.</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10 }}>
                 {[{ l: 'Total this quarter', v: e.total, big: true }, { l: 'Accommodation', v: e.accommodation }, { l: 'Travel', v: e.travel }].map((t) => (
                   <div key={t.l} style={{ background: t.big ? '#f1f7f3' : SURFACE, border: `1px solid ${t.big ? '#c9e6d4' : BORDER}`, borderRadius: 12, padding: '12px 14px', minWidth: 0 }}>
                     <div style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1 }}>{money(t.v)}</div>
