@@ -34,6 +34,7 @@ export const NAV_ITEMS: NavItem[] = [
     children: [
       { label: 'Electorate map', href: '/map', description: 'Interactive map — find your MP', feature: 'map' },
       { label: 'Battlegrounds', href: '/battlegrounds', description: 'Electorate races & candidates for 2026', feature: 'battlegrounds' },
+      { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
     ],
   },
   {
