@@ -25,7 +25,7 @@ import { CompassCta } from '@/components/compass/compass-cta'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { TrackCta } from '@/components/homepage/track-cta'
 import { HomeMap } from '@/components/homepage/home-map'
-import { ElectionCountdown }   from '@/components/homepage/election-countdown'
+import { ElectionAnchor }      from '@/components/homepage/election-anchor'
 import { PolicyCard }          from '@/components/homepage/policy-card'
 import { Reveal }              from '@/components/ui/reveal'
 import { SITE }                from '@/constants/site'
@@ -170,55 +170,18 @@ export default function HomePage() {
           point, at its original dimensions. The snapshot panel below it scrolls away normally. ── */}
       <PartyTilesSection />
 
+      {/* ═══════════════════════════════════════════════════════════════════
+          ELECTION CENTRE ANCHOR — the site's central feature, right after the
+          hero/tiles: four sourced stat tiles + a CTA into the full centre.
+          Everything else (compass, policy comparison, command centre, map)
+          follows this. (Concept C from the layout review.)
+      ═══════════════════════════════════════════════════════════════════ */}
+      <ElectionAnchor />
+
       {/* ── PERSONAL COMPASS — entry card; background cycles through party colours (non-partisan) ── */}
       <CompassCta />
 
-      {/* ═══════════════════════════════════════════════════════════════════
-          2026 ELECTIONS — Phase-1 spotlight (moved above the policy comparison)
-      ═══════════════════════════════════════════════════════════════════ */}
-      <section style={{ background: '#0c0e12' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px clamp(18px, 5vw, 36px)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 40, alignItems: 'center' }}>
-            <div>
-              <div className="live-dot" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(54,224,138,.12)', color: '#36e08a', border: '1px solid rgba(54,224,138,.25)', borderRadius: 999, padding: '6px 13px', fontSize: 12.5, fontWeight: 800, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 18 }}>
-                <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#36e08a', display: 'inline-block' }} />
-                <ElectionCountdown />
-              </div>
-              <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: '#fff', fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 12px', lineHeight: 1.12 }}>The 2026 election — let’s get you ready</h2>
-              <p style={{ fontSize: 16, color: 'rgba(255,255,255,.72)', fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, maxWidth: 520, margin: '0 0 24px' }}>
-                Compare the upcoming race with the 2023 result, explore every electorate, and follow who’s standing where — all from official data, no spin.
-              </p>
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-                <Link href="/elections" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 20px', borderRadius: 11, background: JADE, color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}><Vote style={{ width: 16, height: 16 }} /> Explore Elections 2026</Link>
-                <Link href="/battlegrounds" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '11px 20px', borderRadius: 11, background: 'rgba(255,255,255,.08)', border: '1px solid rgba(255,255,255,.16)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'var(--font-manrope), system-ui, sans-serif', textDecoration: 'none' }}><Map style={{ width: 16, height: 16 }} /> See the battlegrounds</Link>
-              </div>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {([
-                { href: '/elections', icon: Vote, t: '2026 vs 2023', d: 'The upcoming race, beside the last result' },
-                { href: '/battlegrounds', icon: Map, t: 'Electorate battlegrounds', d: 'Which seats are on a knife-edge' },
-                { href: '/policies', icon: Scale, t: 'Where parties stand', d: 'Compare positions on the issues you care about' },
-              ] as const).map((c) => {
-                const Icon = c.icon
-                return (
-                  <Link key={c.href} href={c.href} style={{ textDecoration: 'none' }}>
-                    <div className="party-card" style={{ display: 'flex', alignItems: 'center', gap: 13, padding: '15px 17px', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.1)', borderRadius: 14 }}>
-                      <span style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(54,224,138,.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon style={{ width: 19, height: 19, color: '#36e08a' }} /></span>
-                      <span style={{ flex: 1 }}>
-                        <span style={{ display: 'block', fontSize: 14.5, fontWeight: 800, color: '#fff', fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>{c.t}</span>
-                        <span style={{ display: 'block', fontSize: 12.5, color: 'rgba(255,255,255,.6)', fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginTop: 1 }}>{c.d}</span>
-                      </span>
-                      <ArrowRight style={{ width: 16, height: 16, color: 'rgba(255,255,255,.5)' }} />
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHERE DO THE PARTIES STAND? — the policy comparison, right after the elections spotlight ── */}
+      {/* ── WHERE DO THE PARTIES STAND? — the policy comparison, right after the compass ── */}
       <PolicyHubGrid />
 
       {/* ── COMMAND CENTRE — introduce tracking; the news/video/bills that come to you ── */}

@@ -31,7 +31,9 @@ export function UpcomingView({ e }: { e: ElectionData }) {
       <CountdownBig />
 
       {/* Poll tracker — sourced snapshot of where the parties are polling */}
-      <PollTracker />
+      <div id="polls" style={{ scrollMarginTop: 80 }}>
+        <PollTracker />
+      </div>
 
       {/* Key dates */}
       <div style={{ display: 'flex', gap: 10, padding: '14px 16px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 12 }}>
