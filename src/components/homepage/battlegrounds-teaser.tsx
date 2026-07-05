@@ -11,10 +11,9 @@
 import Link from 'next/link'
 import { Swords, ArrowRight } from 'lucide-react'
 import { getBattlegrounds } from '@/lib/battlegrounds'
-import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
-import type { PartySlug } from '@/types'
+import { BattlegroundCard } from './battleground-card'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc'
+const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', SURFACE = '#f8fafc'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function BattlegroundsTeaser() {
@@ -43,25 +42,10 @@ export function BattlegroundsTeaser() {
           </Link>
         </div>
 
-        {/* Ranked closest-races list — the "attract with real data" hook */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+        {/* Closest-races cards — party-coloured, MP photo, verified 2023 majority */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 250px), 1fr))', gap: 12 }}>
           {closest.map((b, i) => (
-            <Link key={b.slug} href={`/battlegrounds/${b.slug}`} style={{ textDecoration: 'none' }}>
-              <div className="party-card" style={{ display: 'flex', alignItems: 'center', gap: 14, background: '#fff', border: `1px solid ${BORDER}`, borderLeft: `4px solid ${b.tier.color}`, borderRadius: 12, padding: '13px 16px' }}>
-                <span style={{ fontSize: 13, fontWeight: 800, color: TERTIARY, fontFamily: MANROPE, width: 18, flexShrink: 0 }}>{i + 1}</span>
-                <span style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{b.info.name}</span>
-                    <span style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.03em', textTransform: 'uppercase', color: b.tier.color, background: `${b.tier.color}17`, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{b.tier.label}</span>
-                  </span>
-                  <span style={{ display: 'block', fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, marginTop: 3 }}>
-                    Held by {b.info.party ? PARTY_NAMES[b.info.party as PartySlug].short : 'an unverified party'} — won by {b.info.majority?.toLocaleString()} votes in 2023
-                  </span>
-                </span>
-                {b.info.party && <span style={{ width: 10, height: 10, borderRadius: 3, background: PARTY_COLORS[b.info.party as PartySlug].bg, flexShrink: 0 }} />}
-                <ArrowRight style={{ width: 15, height: 15, color: TERTIARY, flexShrink: 0 }} />
-              </div>
-            </Link>
+            <BattlegroundCard key={b.slug} b={b} rank={i + 1} />
           ))}
         </div>
       </div>
