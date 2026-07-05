@@ -7,7 +7,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText } from 'lucide-react'
+import { ArrowLeft, ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2 } from 'lucide-react'
 import { ELECTORATE_SLUGS, getElectorateBySlug, classifyMargin } from '@/lib/battlegrounds'
 import { getCandidates } from '@/constants/candidates-2026'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
@@ -87,8 +87,10 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             {mp ? (
               <>
                 <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{mp.name}</div>
-                <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, marginBottom: 10 }}>{mp.title || `MP for ${info.name}`}</div>
-                {mp.bio && <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>{mp.bio.length > 180 ? mp.bio.slice(0, 180) + '…' : mp.bio}</p>}
+                <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, marginBottom: 10 }}>
+                  {mp.title || `MP for ${info.name}`}{mp.enteredParliament ? ` · in Parliament since ${mp.enteredParliament}` : ''}
+                </div>
+                {mp.bio && <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>{mp.bio}</p>}
                 <Link href={`/mps/${resolvedSlug}`} style={cta}>Full MP profile <ArrowRight style={ic} /></Link>
               </>
             ) : (
@@ -96,6 +98,32 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             )}
           </div>
         </div>
+
+        {/* What they've prioritised + where they focus — sourced from parliament.nz roles */}
+        {mp && ((mp.portfolios && mp.portfolios.length > 0) || (mp.committees && mp.committees.length > 0)) && (
+          <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '20px 22px' }}>
+            <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>What {mp.name.split(' ')[0]} has prioritised this term</div>
+            <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 16px' }}>Official roles, sourced from parliament.nz.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+              {mp.portfolios && mp.portfolios.length > 0 && (
+                <div>
+                  <Label icon={Megaphone} text="Spokesperson roles" />
+                  <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>
+                    {mp.portfolios.map((p) => <li key={p} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6 }}>{p.replace(/^Spokesperson — /, '')}</li>)}
+                  </ul>
+                </div>
+              )}
+              {mp.committees && mp.committees.length > 0 && (
+                <div>
+                  <Label icon={Users2} text="Select committees" />
+                  <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>
+                    {mp.committees.map((c) => <li key={c} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6 }}>{c}</li>)}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* The 2026 contest */}
         <div>
