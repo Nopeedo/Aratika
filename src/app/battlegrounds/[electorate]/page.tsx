@@ -7,13 +7,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2, ScrollText } from 'lucide-react'
+import { ArrowLeft, ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2, ScrollText, Receipt, ArrowUpRight } from 'lucide-react'
 import { ELECTORATE_SLUGS, getElectorateBySlug, classifyMargin } from '@/lib/battlegrounds'
 import { getCandidates } from '@/constants/candidates-2026'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { MP_MEMBERS_BILLS } from '@/constants/mps-members-bills'
 import { MP_PASSED_BILLS, MP_GOV_BILLS, BILL_ACTIVITY_META } from '@/constants/mps-bill-activity'
+import { MP_EXPENSES } from '@/constants/mps-expenses'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import type { PartySlug } from '@/types'
@@ -184,6 +185,29 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             )}
           </IncumbentCard>
         )}
+
+        {/* Taxpayer-funded expenses — one official quarter (see the site-wide note below on going further) */}
+        {resolvedSlug && MP_EXPENSES[resolvedSlug] && (() => {
+          const e = MP_EXPENSES[resolvedSlug]
+          const money = (n: number) => `$${Math.round(n).toLocaleString('en-NZ')}`
+          return (
+            <IncumbentCard color={incumbentColor}>
+              <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>Taxpayer-funded expenses</div>
+              <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 16px' }}>Travel and accommodation paid by Parliamentary Service for {e.period}. One quarter — see the note below.</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10, marginBottom: 12 }}>
+                {[{ l: 'Total this quarter', v: e.total, big: true }, { l: 'Accommodation', v: e.accommodation }, { l: 'Travel', v: e.travel }].map((t) => (
+                  <div key={t.l} style={{ background: t.big ? '#f1f7f3' : SURFACE, border: `1px solid ${t.big ? '#c9e6d4' : BORDER}`, borderRadius: 12, padding: '12px 14px', minWidth: 0 }}>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1 }}>{money(t.v)}</div>
+                    <div style={{ fontSize: 11.5, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginTop: 6 }}>{t.l}</div>
+                  </div>
+                ))}
+              </div>
+              <a href={e.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
+                {e.sourceLabel} <ArrowUpRight style={{ width: 12, height: 12 }} />
+              </a>
+            </IncumbentCard>
+          )
+        })()}
 
         {/* The 2026 contest */}
         <div>
