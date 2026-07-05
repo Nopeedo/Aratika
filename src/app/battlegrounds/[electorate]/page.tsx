@@ -7,11 +7,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2 } from 'lucide-react'
+import { ArrowLeft, ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2, ScrollText } from 'lucide-react'
 import { ELECTORATE_SLUGS, getElectorateBySlug, classifyMargin } from '@/lib/battlegrounds'
 import { getCandidates } from '@/constants/candidates-2026'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
+import { MP_MEMBERS_BILLS } from '@/constants/mps-members-bills'
+import { MP_PASSED_BILLS, MP_GOV_BILLS, BILL_ACTIVITY_META } from '@/constants/mps-bill-activity'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import type { PartySlug } from '@/types'
@@ -45,6 +47,14 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   // The incumbent's party colour — used as a strip on every section specific to them,
   // so it's visually obvious at a glance whose seat this currently is.
   const incumbentColor = info.party ? PARTY_COLORS[info.party].bg : TERTIARY
+
+  // Real legislative activity this term, sourced from Parliament's official bills data
+  // (same feed already used on the full MP profile page) — what they've actually done,
+  // not just what they say. Empty is a genuine, checked "nothing before the House".
+  const passedBills = resolvedSlug ? (MP_PASSED_BILLS[resolvedSlug] ?? []) : []
+  const govBills = resolvedSlug ? (MP_GOV_BILLS[resolvedSlug] ?? []) : []
+  const proposedBills = resolvedSlug ? (MP_MEMBERS_BILLS[resolvedSlug] ?? []) : []
+  const hasBillActivity = passedBills.length > 0 || govBills.length > 0 || proposedBills.length > 0
 
   return (
     <div style={{ background: '#fff', minHeight: '100vh' }}>
@@ -132,6 +142,46 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
                 </div>
               )}
             </div>
+          </IncumbentCard>
+        )}
+
+        {/* Legislative activity this term — what they've actually done, sourced from Parliament's bills data */}
+        {mp && (
+          <IncumbentCard color={incumbentColor}>
+            <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>Legislative activity this term</div>
+            <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 16px' }}>From Parliament's official bills record, as at {BILL_ACTIVITY_META.asOf}.</p>
+            {hasBillActivity ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {govBills.length > 0 && (
+                  <div>
+                    <Label icon={FileText} text={`Government bills in charge (${govBills.length})`} />
+                    <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>
+                      {govBills.slice(0, 6).map((b) => <li key={b.title} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6 }}>{b.title}</li>)}
+                    </ul>
+                  </div>
+                )}
+                {passedBills.length > 0 && (
+                  <div>
+                    <Label icon={ScrollText} text={`Members’ bills passed into law (${passedBills.length})`} />
+                    <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>
+                      {passedBills.map((b) => <li key={b.title} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6 }}>{b.title}</li>)}
+                    </ul>
+                  </div>
+                )}
+                {proposedBills.length > 0 && (
+                  <div>
+                    <Label icon={Vote} text={`Members’ bill in the ballot (${proposedBills.length})`} />
+                    <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>
+                      {proposedBills.map((b) => <li key={b.title} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6 }}>{b.title}</li>)}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
+                No government bill in charge, members’ bill passed, or members’ bill currently in the ballot for {mp.name.split(' ')[0]} this term — checked against the official record, not a gap in our data.
+              </p>
+            )}
           </IncumbentCard>
         )}
 

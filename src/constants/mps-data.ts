@@ -147,14 +147,19 @@ export const MP_PROFILES: Record<string, MPProfile> = (() => {
   for (const [slug, detail] of Object.entries(GENERATED_DETAIL)) {
     if (map[slug]) map[slug] = { ...map[slug], ...detail }
   }
+  // Track who has a hand-written bio (MP_DETAIL) BEFORE it's applied — this is the
+  // only bio source that should outrank Wikipedia's, since it's curated/verified.
+  const curatedBioSlugs = new Set(Object.entries(MP_DETAIL).filter(([, d]) => d.bio).map(([slug]) => slug))
   for (const [slug, detail] of Object.entries(MP_DETAIL)) {
     if (map[slug]) map[slug] = { ...map[slug], ...detail }
   }
   map[LUXON.slug] = LUXON   // rich profile overrides the generated basic one
 
-  // Fill biographies from Wikipedia ONLY where no curated bio exists (attributed).
+  // Prefer Wikipedia's fuller narrative bio over the generic templated one
+  // (GENERATED_DETAIL's "X is the MP for Y, first elected in Z..." boilerplate) —
+  // but never override a hand-written MP_DETAIL bio, which is the most authoritative.
   for (const slug in MP_WIKI) {
-    if (map[slug] && !map[slug].bio) {
+    if (map[slug] && !curatedBioSlugs.has(slug)) {
       map[slug] = { ...map[slug], bio: MP_WIKI[slug].bio, bioSourceUrl: MP_WIKI[slug].wikipediaUrl }
     }
   }
