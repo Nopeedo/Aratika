@@ -16,6 +16,7 @@ import { MP_MEMBERS_BILLS } from '@/constants/mps-members-bills'
 import { MP_PASSED_BILLS, MP_GOV_BILLS, BILL_ACTIVITY_META } from '@/constants/mps-bill-activity'
 import { MP_WRITTEN_QUESTIONS, WRITTEN_QUESTIONS_META } from '@/constants/mps-written-questions'
 import { Avatar } from '@/components/ui/avatar'
+import { isLightHex } from '@/components/homepage/battleground-card'
 import { SectionDivider } from '@/components/ui/section-divider'
 import type { PartySlug } from '@/types'
 
@@ -277,37 +278,63 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {candidates.map((c) => (
-                <div key={c.name} style={{ background: '#fff', border: `1px solid ${BORDER}`, borderLeft: `4px solid ${c.party === 'independent' ? TERTIARY : PARTY_COLORS[c.party].bg}`, borderRadius: 14, padding: '18px 20px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                    <Avatar
-                      name={c.name}
-                      party={c.party === 'independent' ? undefined : c.party}
-                      src={c.mpSlug ? MP_PROFILES[c.mpSlug]?.photo : undefined}
-                      size="sm"
-                      face
-                    />
-                    <span style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{c.name}</span>
-                    {c.incumbent && <span style={{ fontSize: 10.5, fontWeight: 800, color: '#065f46', background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 999, padding: '2px 8px', fontFamily: MANROPE }}>Incumbent</span>}
-                    <span style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>{c.party === 'independent' ? 'Independent' : PARTY_NAMES[c.party].short}</span>
-                  </div>
-                  {c.bio && <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>{c.bio}</p>}
-                  {c.priorities && c.priorities.length > 0 && <CandidateList icon={Vote} title="What matters to them" items={c.priorities} />}
-                  {c.keyPolicies && c.keyPolicies.length > 0 && (
-                    <div style={{ marginTop: 10 }}>
-                      <Label icon={Landmark} text="Key policies" />
-                      {c.keyPolicies.map((p) => (
-                        <div key={p.title} style={{ marginTop: 6 }}>
-                          <span style={{ fontSize: 13, fontWeight: 700, color: INK, fontFamily: MANROPE }}>{p.title}: </span>
-                          <span style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>{p.detail}</span>
-                        </div>
-                      ))}
+              {candidates.map((c) => {
+                const color = c.party === 'independent' ? '#6B7280' : PARTY_COLORS[c.party].bg
+                const light = isLightHex(color)
+                const txt = light ? '#1c1605' : '#fff'
+                const sub = light ? 'rgba(28,22,5,.72)' : 'rgba(255,255,255,.8)'
+                const chipBg = light ? 'rgba(28,22,5,.12)' : 'rgba(255,255,255,.18)'
+                const lineBg = light ? 'rgba(28,22,5,.14)' : 'rgba(255,255,255,.22)'
+                return (
+                  <div key={c.name} style={{ background: color, color: txt, borderRadius: 16, padding: '18px 20px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10, flexWrap: 'wrap' }}>
+                      <Avatar
+                        name={c.name}
+                        party={c.party === 'independent' ? undefined : c.party}
+                        src={c.mpSlug ? MP_PROFILES[c.mpSlug]?.photo : undefined}
+                        size="sm"
+                        face
+                      />
+                      <span style={{ fontSize: 16, fontWeight: 800, fontFamily: MANROPE, color: txt }}>{c.name}</span>
+                      {c.incumbent && <span style={{ fontSize: 10.5, fontWeight: 800, color: txt, background: chipBg, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>Incumbent</span>}
+                      <span style={{ fontSize: 12.5, color: sub, fontFamily: MANROPE }}>{c.party === 'independent' ? 'Independent' : PARTY_NAMES[c.party].short}</span>
                     </div>
-                  )}
-                  {c.bills && c.bills.length > 0 && <CandidateList icon={FileText} title="Legislation they want" items={c.bills} />}
-                  {c.mpSlug && <Link href={`/mps/${c.mpSlug}`} style={{ ...cta, marginTop: 12 }}>Full profile <ArrowRight style={ic} /></Link>}
-                </div>
-              ))}
+                    {c.bio && <p style={{ fontSize: 13.5, color: txt, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>{c.bio}</p>}
+                    {c.priorities && c.priorities.length > 0 && (
+                      <div style={{ marginBottom: 10 }}>
+                        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: sub, fontFamily: MANROPE, marginBottom: 6 }}>What matters to them</div>
+                        <ul style={{ margin: 0, paddingLeft: 18 }}>
+                          {c.priorities.map((p) => <li key={p} style={{ fontSize: 13, color: txt, fontFamily: MANROPE, lineHeight: 1.6 }}>{p}</li>)}
+                        </ul>
+                      </div>
+                    )}
+                    {c.keyPolicies && c.keyPolicies.length > 0 && (
+                      <div style={{ marginBottom: 10 }}>
+                        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: sub, fontFamily: MANROPE, marginBottom: 6 }}>Key policies</div>
+                        {c.keyPolicies.map((p) => (
+                          <div key={p.title} style={{ marginTop: 5 }}>
+                            <span style={{ fontSize: 13, fontWeight: 700, color: txt, fontFamily: MANROPE }}>{p.title}: </span>
+                            <span style={{ fontSize: 13, color: sub, fontFamily: MANROPE }}>{p.detail}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {c.bills && c.bills.length > 0 && (
+                      <div style={{ marginBottom: 10 }}>
+                        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: sub, fontFamily: MANROPE, marginBottom: 6 }}>Legislation they want</div>
+                        <ul style={{ margin: 0, paddingLeft: 18 }}>
+                          {c.bills.map((b) => <li key={b} style={{ fontSize: 13, color: txt, fontFamily: MANROPE, lineHeight: 1.6 }}>{b}</li>)}
+                        </ul>
+                      </div>
+                    )}
+                    {c.mpSlug && (
+                      <Link href={`/mps/${c.mpSlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: txt, fontFamily: MANROPE, textDecoration: 'none', borderBottom: `1px solid ${lineBg}`, paddingBottom: 2, marginTop: 4 }}>
+                        Full profile <ArrowRight style={ic} />
+                      </Link>
+                    )}
+                  </div>
+                )
+              })}
             </div>
           )}
         </div>
@@ -361,16 +388,6 @@ function Label({ icon: Icon, text }: { icon: React.ElementType; text: string }) 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>
       <Icon style={{ width: 13, height: 13 }} /> {text}
-    </div>
-  )
-}
-function CandidateList({ icon, title, items }: { icon: React.ElementType; title: string; items: string[] }) {
-  return (
-    <div style={{ marginTop: 10 }}>
-      <Label icon={icon} text={title} />
-      <ul style={{ margin: '5px 0 0', paddingLeft: 18 }}>
-        {items.map((it) => <li key={it} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.5 }}>{it}</li>)}
-      </ul>
     </div>
   )
 }

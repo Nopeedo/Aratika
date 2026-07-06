@@ -17,7 +17,7 @@ import type { PartySlug } from '@/types'
 
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
-function isLightHex(hex: string): boolean {
+export function isLightHex(hex: string): boolean {
   const m = hex.replace('#', '')
   const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
   return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.6
