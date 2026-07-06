@@ -188,28 +188,73 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
           </IncumbentCard>
         )}
 
-        {/* Written parliamentary questions this term — a genuine day-to-day activity measure */}
+        {/* Written parliamentary questions this term — explained, broken down, and shown in full */}
         {resolvedSlug && MP_WRITTEN_QUESTIONS[resolvedSlug] && (() => {
           const wq = MP_WRITTEN_QUESTIONS[resolvedSlug]
+          const firstName = mp?.name.split(' ')[0] ?? 'This MP'
+          const topMinisters = wq.byMinister.slice(0, 4)
+          const otherCount = wq.byMinister.slice(4).reduce((n, m) => n + m.count, 0)
+          const maxM = topMinisters[0]?.count ?? 1
           return (
             <IncumbentCard color={incumbentColor}>
-              <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>Written questions to Ministers this term</div>
-              <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 14px' }}>
-                Every written question {mp?.name.split(' ')[0]} has put to a Minister since the 2023 election, from {WRITTEN_QUESTIONS_META.sourceLabel}.
-              </p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 16 }}>
-                <span style={{ fontSize: 32, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1 }}>{wq.count.toLocaleString('en-NZ')}</span>
-                <span style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE }}>written questions asked</span>
+              <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 10 }}>Written questions to Ministers this term</div>
+
+              {/* Evergreen, non-partisan explainer — same wording for every MP */}
+              <div style={{ display: 'flex', gap: 9, padding: '11px 13px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, marginBottom: 16 }}>
+                <Info style={{ width: 15, height: 15, color: SECONDARY, flexShrink: 0, marginTop: 1 }} />
+                <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+                  <b style={{ color: INK }}>What is this, and why does it matter to you?</b> Any MP can put a written question to a Minister to formally demand information on the record — the Minister must reply, usually within days. It costs nothing and needs no debate, which makes it the main day-to-day tool MPs use to hold the government accountable between bills — especially for opposition MPs, who can’t pass laws but can still force information into the open. Which Ministers an MP questions most, below, is a real, numbers-based picture of what they’re actually watching on your behalf — worth comparing against what they say they prioritise.
+                </p>
               </div>
-              <Label icon={ScrollText} text="Most recent" />
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8 }}>
+
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 18 }}>
+                <span style={{ fontSize: 32, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1 }}>{wq.count.toLocaleString('en-NZ')}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE }}>written questions asked since the 2023 election</span>
+              </div>
+
+              {/* Real, computed breakdown — where the scrutiny has actually gone */}
+              {topMinisters.length > 0 && (
+                <div style={{ marginBottom: 18 }}>
+                  <Label icon={Landmark} text="Where it’s gone — by Minister" />
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginTop: 9 }}>
+                    {topMinisters.map((m) => (
+                      <div key={m.minister} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ flex: '0 0 42%', fontSize: 12, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.35 }}>{m.minister}</span>
+                        <div style={{ flex: 1, height: 12, background: SURFACE, borderRadius: 4, overflow: 'hidden' }}>
+                          <div style={{ height: '100%', width: `${(m.count / maxM) * 100}%`, background: incumbentColor, borderRadius: 4 }} />
+                        </div>
+                        <span style={{ width: 30, textAlign: 'right', fontSize: 12, fontWeight: 700, color: INK, fontFamily: MANROPE, flexShrink: 0 }}>{m.count}</span>
+                      </div>
+                    ))}
+                    {otherCount > 0 && (
+                      <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 2 }}>+ {otherCount} more across other Ministers.</div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* The actual questions and replies, in full — not just who they went to */}
+              <Label icon={ScrollText} text={`Recent questions and replies, in ${firstName}’s and the Minister’s own words`} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 10 }}>
                 {wq.recent.map((q, i) => (
-                  <div key={i} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.5, paddingBottom: 8, borderBottom: i < wq.recent.length - 1 ? `1px solid ${BORDER}` : 'none' }}>
-                    <span style={{ fontWeight: 700, color: INK }}>To the {q.minister}</span>
-                    <span style={{ color: TERTIARY }}> · {q.date}</span>
+                  <div key={i} style={{ paddingBottom: 12, borderBottom: i < wq.recent.length - 1 ? `1px solid ${BORDER}` : 'none' }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: TERTIARY, fontFamily: MANROPE, textTransform: 'uppercase', letterSpacing: '.03em', marginBottom: 4 }}>
+                      To the {q.minister} · {q.date}
+                    </div>
+                    <p style={{ fontSize: 13, color: INK, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 6px', fontStyle: 'italic' }}>
+                      “{q.question}”
+                    </p>
+                    {q.reply ? (
+                      <p style={{ fontSize: 12.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.55, margin: 0, paddingLeft: 10, borderLeft: `3px solid ${BORDER}` }}>
+                        <b style={{ color: SECONDARY }}>Reply: </b>{q.reply}
+                      </p>
+                    ) : (
+                      <p style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, fontStyle: 'italic', margin: 0 }}>Reply not yet due or not yet published.</p>
+                    )}
                   </div>
                 ))}
               </div>
+
               <a href={WRITTEN_QUESTIONS_META.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginTop: 14 }}>
                 {WRITTEN_QUESTIONS_META.sourceLabel} <ArrowUpRight style={{ width: 12, height: 12 }} />
               </a>

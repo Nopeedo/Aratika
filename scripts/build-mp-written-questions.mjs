@@ -11,7 +11,12 @@
  * parliamentNumber field is 54 — this avoids counting a same-named MP from an earlier
  * term, or a question that merely mentions the MP's name in its body text.
  *
- * Nothing invented; every count traces to real records with dates and question text.
+ * Captures, per MP: the total count, a breakdown by Minister/portfolio (so a real
+ * "where their scrutiny has gone" pattern can be shown, not just a raw number), and
+ * the actual question text + actual reply text for the most recent few — so a reader
+ * can see what was really asked and what really came back, not just who it went to.
+ *
+ * Nothing invented or summarised; every field traces to a real official record.
  *
  * Run:  node scripts/build-mp-written-questions.mjs
  */
@@ -29,6 +34,7 @@ const TERM = 54
 const SOURCE_URL = 'https://questions.parliament.nz/'
 const SOURCE_LABEL = "Written Parliamentary Questions (questions.parliament.nz)"
 const RECENT_KEEP = 5
+const REPLY_CAP = 500 // chars — real text, just capped so one huge reply doesn't bloat the bundle
 
 // MPs: slug -> official name (as it appears in question titles)
 const src = readFileSync(GEN, 'utf8')
@@ -43,43 +49,104 @@ while ((sm = slugRe.exec(src))) {
 mps.push({ slug: 'christopher-luxon', name: 'Christopher Luxon' })
 mps.push({ slug: 'judith-collins', name: 'Judith Collins' })
 
-const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
+const sleep = (ms) => new Promise((res) => setTimeout(res, ms))
 
-async function search(keyword, page, pageSize) {
-  const r = await fetch(API, {
-    method: 'POST',
-    headers: { 'User-Agent': UA, Accept: 'application/json', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: null, keyword, pageSize, page, column: 1, direction: 1 }),
-  })
-  if (!r.ok) throw new Error(`HTTP ${r.status}`)
-  return r.json()
+// Retries transient failures/short reads — a long sequential run (125 MPs, some paging
+// 6-7+ times) hit an intermittent server hiccup that silently truncated one MP's results
+// on the first attempt; this makes a genuinely-empty/short page trustworthy before we
+// treat it as "end of data".
+async function search(keyword, page, pageSize, tries = 3) {
+  for (let attempt = 1; attempt <= tries; attempt++) {
+    try {
+      const r = await fetch(API, {
+        method: 'POST',
+        headers: { 'User-Agent': UA, Accept: 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: null, keyword, pageSize, page, column: 1, direction: 1 }),
+      })
+      if (!r.ok) throw new Error(`HTTP ${r.status}`)
+      return await r.json()
+    } catch (e) {
+      if (attempt === tries) throw e
+      await sleep(400 * attempt)
+    }
+  }
 }
 
 const titleRe = (name) => new RegExp(`^\\d+\\s*\\(\\d{4}\\)\\.\\s*(?:Rt\\s+)?(?:Hon\\s+)?${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+to\\s+the\\s+`, 'i')
+
+function clean(s) {
+  return (s || '').replace(/\s+/g, ' ').trim()
+}
+function capReply(s) {
+  const t = clean(s)
+  if (!t) return null
+  if (/^reply due:/i.test(t)) return null // not yet answered — omit rather than show a placeholder as if it were content
+  return t.length > REPLY_CAP ? t.slice(0, REPLY_CAP) + '…' : t
+}
 
 const result = {}
 let done = 0
 for (const mp of mps) {
   try {
     let rows = []
-    // Paginate up to 4 pages (2000 rows) of keyword matches — comfortably above any
-    // single MP's real question volume in one 3-year term.
-    for (let page = 1; page <= 4; page++) {
-      const d = await search(mp.name, page, 500)
+    // No artificial page cap — some MPs (esp. prolific opposition askers) genuinely
+    // exceed 2,000 questions this term. Loop until a page comes back short, with a
+    // generous safety ceiling (40 pages = 20,000 rows) against a runaway loop.
+    for (let page = 1; page <= 40; page++) {
+      let d = await search(mp.name, page, 500)
+      // A partial (not empty, not full) page is ambiguous — could be genuinely the
+      // last page, or a transient short read. Re-confirm once before trusting it,
+      // since a long sequential run over many MPs can hit an intermittent hiccup.
+      if (d.value && d.value.length > 0 && d.value.length < 500) {
+        await sleep(300)
+        const confirm = await search(mp.name, page, 500)
+        if (confirm.value && confirm.value.length > d.value.length) d = confirm
+      }
       if (!d.value || d.value.length === 0) break
       rows.push(...d.value)
       if (d.value.length < 500) break
+      await sleep(80) // be gentle on an undocumented, shared endpoint
     }
     const re = titleRe(mp.name)
     const mine = rows.filter((r) => r.documentType === 'WrittenQuestion' && r.parliamentNumber === TERM && re.test(r.title))
     if (mine.length === 0) { done++; continue }
     mine.sort((a, b) => (b.questionReleasedDate || '').localeCompare(a.questionReleasedDate || ''))
+
+    // Breakdown by Minister/portfolio — a real, computed pattern of where the MP's
+    // written-question scrutiny has actually gone this term.
+    const byMinisterMap = new Map()
+    for (const r of mine) {
+      const m = r.ministerialDisplayName || r.ministerName || 'Unknown'
+      byMinisterMap.set(m, (byMinisterMap.get(m) || 0) + 1)
+    }
+    const byMinister = [...byMinisterMap.entries()]
+      .map(([minister, count]) => ({ minister, count }))
+      .sort((a, b) => b.count - a.count)
+
+    // Pick a mix: the most recent overall (shows current activity) PLUS the most recent
+    // ANSWERED ones (so the card always has at least a couple of real Q&A pairs to show,
+    // not just "reply not yet due" — replies typically take 1-2 weeks, so an MP's newest
+    // questions are almost always still pending).
+    const mostRecent = mine.slice(0, 3)
+    const answered = mine.filter((r) => capReply(r.replyText) !== null)
+    const seen = new Set()
+    const picked = []
+    for (const r of [...mostRecent, ...answered]) {
+      if (seen.has(r.id)) continue
+      seen.add(r.id)
+      picked.push(r)
+      if (picked.length >= RECENT_KEEP) break
+    }
+    picked.sort((a, b) => (b.questionReleasedDate || '').localeCompare(a.questionReleasedDate || ''))
+
     result[mp.slug] = {
       count: mine.length,
-      recent: mine.slice(0, RECENT_KEEP).map((r) => ({
-        title: r.title.replace(/^\d+\s*\(\d{4}\)\.\s*/, ''),
-        date: (r.questionReleasedDate || '').slice(0, 10),
+      byMinister,
+      recent: picked.map((r) => ({
         minister: r.ministerialDisplayName || r.ministerName || '',
+        date: (r.questionReleasedDate || '').slice(0, 10),
+        question: clean(r.questionText),
+        reply: capReply(r.replyText),
       })),
     }
   } catch (e) {
@@ -92,12 +159,13 @@ for (const mp of mps) {
 const banner = `// AUTO-GENERATED by scripts/build-mp-written-questions.mjs. Do not edit by hand.
 // Per-MP written parliamentary questions asked in the 54th Parliament term (since the
 // 2023 election), from questions.parliament.nz's public search API — the same shared
-// platform as bills.parliament.nz's official bills API. Counts are exact matches on the
-// asking MP's name in the question title, restricted to this term; nothing invented.\n`
+// platform as bills.parliament.nz's official bills API. Counts, minister breakdown, and
+// question/reply text are all real official record; nothing invented or summarised.\n`
 
 writeFileSync(OUT, `${banner}
-export interface WrittenQuestion { title: string; date: string; minister: string }
-export interface MPWrittenQuestions { count: number; recent: WrittenQuestion[] }
+export interface WrittenQuestionDetail { minister: string; date: string; question: string; reply: string | null }
+export interface MinisterBreakdown { minister: string; count: number }
+export interface MPWrittenQuestions { count: number; byMinister: MinisterBreakdown[]; recent: WrittenQuestionDetail[] }
 export const WRITTEN_QUESTIONS_META = {
   term: ${TERM},
   sourceUrl: '${SOURCE_URL}',
