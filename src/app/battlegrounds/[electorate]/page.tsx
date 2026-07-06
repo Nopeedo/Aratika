@@ -16,6 +16,7 @@ import { MP_MEMBERS_BILLS } from '@/constants/mps-members-bills'
 import { MP_PASSED_BILLS, MP_GOV_BILLS, BILL_ACTIVITY_META } from '@/constants/mps-bill-activity'
 import { MP_EXPENSES } from '@/constants/mps-expenses'
 import { MP_EXPENSES_TERM, TERM_EXPENSES_META } from '@/constants/mps-expenses-term'
+import { MP_WRITTEN_QUESTIONS, WRITTEN_QUESTIONS_META } from '@/constants/mps-written-questions'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import type { PartySlug } from '@/types'
@@ -186,6 +187,35 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             )}
           </IncumbentCard>
         )}
+
+        {/* Written parliamentary questions this term — a genuine day-to-day activity measure */}
+        {resolvedSlug && MP_WRITTEN_QUESTIONS[resolvedSlug] && (() => {
+          const wq = MP_WRITTEN_QUESTIONS[resolvedSlug]
+          return (
+            <IncumbentCard color={incumbentColor}>
+              <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>Written questions to Ministers this term</div>
+              <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 14px' }}>
+                Every written question {mp?.name.split(' ')[0]} has put to a Minister since the 2023 election, from {WRITTEN_QUESTIONS_META.sourceLabel}.
+              </p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 16 }}>
+                <span style={{ fontSize: 32, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1 }}>{wq.count.toLocaleString('en-NZ')}</span>
+                <span style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE }}>written questions asked</span>
+              </div>
+              <Label icon={ScrollText} text="Most recent" />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8 }}>
+                {wq.recent.map((q, i) => (
+                  <div key={i} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.5, paddingBottom: 8, borderBottom: i < wq.recent.length - 1 ? `1px solid ${BORDER}` : 'none' }}>
+                    <span style={{ fontWeight: 700, color: INK }}>To the {q.minister}</span>
+                    <span style={{ color: TERTIARY }}> · {q.date}</span>
+                  </div>
+                ))}
+              </div>
+              <a href={WRITTEN_QUESTIONS_META.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginTop: 14 }}>
+                {WRITTEN_QUESTIONS_META.sourceLabel} <ArrowUpRight style={{ width: 12, height: 12 }} />
+              </a>
+            </IncumbentCard>
+          )
+        })()}
 
         {/* Taxpayer-funded expenses — the whole 54th Parliament term to date */}
         {resolvedSlug && MP_EXPENSES_TERM[resolvedSlug] ? (() => {
