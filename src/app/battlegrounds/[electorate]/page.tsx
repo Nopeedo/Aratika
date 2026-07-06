@@ -7,15 +7,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2, ScrollText, Receipt, ArrowUpRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2, ScrollText, ArrowUpRight } from 'lucide-react'
 import { ELECTORATE_SLUGS, getElectorateBySlug, classifyMargin } from '@/lib/battlegrounds'
 import { getCandidates } from '@/constants/candidates-2026'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { MP_MEMBERS_BILLS } from '@/constants/mps-members-bills'
 import { MP_PASSED_BILLS, MP_GOV_BILLS, BILL_ACTIVITY_META } from '@/constants/mps-bill-activity'
-import { MP_EXPENSES } from '@/constants/mps-expenses'
-import { MP_EXPENSES_TERM, TERM_EXPENSES_META } from '@/constants/mps-expenses-term'
 import { MP_WRITTEN_QUESTIONS, WRITTEN_QUESTIONS_META } from '@/constants/mps-written-questions'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -80,47 +78,45 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '30px 36px 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
 
-        {/* 2023 result + incumbent — both specific to the sitting MP, so both carry their party-colour strip */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
-          {/* 2023 result */}
-          <IncumbentCard color={incumbentColor}>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 12 }}>2023 result</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-              {info.party && <span style={{ width: 14, height: 14, borderRadius: '50%', background: PARTY_COLORS[info.party].bg }} />}
-              <div style={{ fontFamily: MANROPE }}>
-                <div style={{ fontSize: 17, fontWeight: 800, color: INK }}>{info.mpName ?? 'Result pending'}</div>
-                <div style={{ fontSize: 13, color: SECONDARY }}>{info.party ? PARTY_NAMES[info.party].full : ''}</div>
-              </div>
-            </div>
-            {info.majority != null && (
-              <div style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE }}>
-                Won by a majority of <b style={{ color: INK }}>{info.majority.toLocaleString('en-NZ')}</b> — a <b style={{ color: tier.color }}>{tier.label.toLowerCase()}</b> seat.
-              </div>
-            )}
-          </IncumbentCard>
-
-          {/* Incumbent */}
-          <IncumbentCard color={incumbentColor}>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 12 }}>The incumbent</div>
-            {mp ? (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
-                  <Avatar name={mp.name} party={info.party ?? undefined} src={mp.photo} size="lg" face />
-                  <div>
-                    <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{mp.name}</div>
-                    <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>
-                      {mp.title || `MP for ${info.name}`}{mp.enteredParliament ? ` · in Parliament since ${mp.enteredParliament}` : ''}
-                    </div>
+        {/* 2023 result + incumbent, combined — one seat, one MP, one card */}
+        <IncumbentCard color={incumbentColor}>
+          <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 12 }}>2023 result &amp; incumbent</div>
+          {mp ? (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                <Avatar name={mp.name} party={info.party ?? undefined} src={mp.photo} size="lg" face />
+                <div>
+                  <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{mp.name}</div>
+                  <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>
+                    {info.party ? PARTY_NAMES[info.party].full : ''}{mp.enteredParliament ? ` · in Parliament since ${mp.enteredParliament}` : ''}
                   </div>
                 </div>
-                {mp.bio && <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>{mp.bio}</p>}
-                <Link href={`/mps/${resolvedSlug}`} style={cta}>Full MP profile <ArrowRight style={ic} /></Link>
-              </>
-            ) : (
-              <div style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE }}>{info.mpName ?? 'The current MP holds this seat.'}</div>
-            )}
-          </IncumbentCard>
-        </div>
+              </div>
+              {info.majority != null && (
+                <div style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, marginBottom: 12 }}>
+                  Won {info.name} by a majority of <b style={{ color: INK }}>{info.majority.toLocaleString('en-NZ')}</b> in 2023 — a <b style={{ color: tier.color }}>{tier.label.toLowerCase()}</b> seat.
+                </div>
+              )}
+              {mp.bio && <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>{mp.bio}</p>}
+              <Link href={`/mps/${resolvedSlug}`} style={cta}>Full MP profile <ArrowRight style={ic} /></Link>
+            </>
+          ) : (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                {info.party && <span style={{ width: 14, height: 14, borderRadius: '50%', background: PARTY_COLORS[info.party].bg }} />}
+                <div style={{ fontFamily: MANROPE }}>
+                  <div style={{ fontSize: 17, fontWeight: 800, color: INK }}>{info.mpName ?? 'Result pending'}</div>
+                  <div style={{ fontSize: 13, color: SECONDARY }}>{info.party ? PARTY_NAMES[info.party].full : ''}</div>
+                </div>
+              </div>
+              {info.majority != null && (
+                <div style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE }}>
+                  Won by a majority of <b style={{ color: INK }}>{info.majority.toLocaleString('en-NZ')}</b> — a <b style={{ color: tier.color }}>{tier.label.toLowerCase()}</b> seat.
+                </div>
+              )}
+            </>
+          )}
+        </IncumbentCard>
 
         {/* What they've prioritised + where they focus — sourced from parliament.nz roles */}
         {mp && ((mp.portfolios && mp.portfolios.length > 0) || (mp.committees && mp.committees.length > 0)) && (
@@ -257,64 +253,6 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
 
               <a href={WRITTEN_QUESTIONS_META.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginTop: 14 }}>
                 {WRITTEN_QUESTIONS_META.sourceLabel} <ArrowUpRight style={{ width: 12, height: 12 }} />
-              </a>
-            </IncumbentCard>
-          )
-        })()}
-
-        {/* Taxpayer-funded expenses — the whole 54th Parliament term to date */}
-        {resolvedSlug && MP_EXPENSES_TERM[resolvedSlug] ? (() => {
-          const t = MP_EXPENSES_TERM[resolvedSlug]
-          const money = (n: number) => `$${Math.round(n).toLocaleString('en-NZ')}`
-          const maxQ = Math.max(...t.quarters.map((q) => q.total))
-          return (
-            <IncumbentCard color={incumbentColor}>
-              <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>Taxpayer-funded expenses this term</div>
-              <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 16px' }}>
-                Every quarter published since the 2023 election ({t.quarters.length} of {TERM_EXPENSES_META.quarterCount} quarters, up to {TERM_EXPENSES_META.asOf}).
-              </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10, marginBottom: 18 }}>
-                {[{ l: 'Total this term', v: t.termTotal, big: true }, { l: 'Accommodation', v: t.termAccommodation }, { l: 'Travel', v: t.termTravel }].map((x) => (
-                  <div key={x.l} style={{ background: x.big ? '#f1f7f3' : SURFACE, border: `1px solid ${x.big ? '#c9e6d4' : BORDER}`, borderRadius: 12, padding: '12px 14px', minWidth: 0 }}>
-                    <div style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1 }}>{money(x.v)}</div>
-                    <div style={{ fontSize: 11.5, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginTop: 6 }}>{x.l}</div>
-                  </div>
-                ))}
-              </div>
-              <Label icon={Receipt} text="By quarter" />
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 8 }}>
-                {t.quarters.map((q) => (
-                  <div key={q.period} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ width: 150, fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, flexShrink: 0 }}>{q.period}</span>
-                    <div style={{ flex: 1, height: 14, background: SURFACE, borderRadius: 4, overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${(q.total / maxQ) * 100}%`, background: incumbentColor, borderRadius: 4 }} />
-                    </div>
-                    <span style={{ width: 70, textAlign: 'right', fontSize: 12, fontWeight: 700, color: INK, fontFamily: MANROPE, flexShrink: 0 }}>{money(q.total)}</span>
-                  </div>
-                ))}
-              </div>
-              <a href={TERM_EXPENSES_META.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginTop: 14 }}>
-                {TERM_EXPENSES_META.sourceLabel} <ArrowUpRight style={{ width: 12, height: 12 }} />
-              </a>
-            </IncumbentCard>
-          )
-        })() : resolvedSlug && MP_EXPENSES[resolvedSlug] && (() => {
-          const e = MP_EXPENSES[resolvedSlug]
-          const money = (n: number) => `$${Math.round(n).toLocaleString('en-NZ')}`
-          return (
-            <IncumbentCard color={incumbentColor}>
-              <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>Taxpayer-funded expenses</div>
-              <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 16px' }}>Travel and accommodation paid by Parliamentary Service for {e.period}.</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10 }}>
-                {[{ l: 'Total this quarter', v: e.total, big: true }, { l: 'Accommodation', v: e.accommodation }, { l: 'Travel', v: e.travel }].map((t) => (
-                  <div key={t.l} style={{ background: t.big ? '#f1f7f3' : SURFACE, border: `1px solid ${t.big ? '#c9e6d4' : BORDER}`, borderRadius: 12, padding: '12px 14px', minWidth: 0 }}>
-                    <div style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1 }}>{money(t.v)}</div>
-                    <div style={{ fontSize: 11.5, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginTop: 6 }}>{t.l}</div>
-                  </div>
-                ))}
-              </div>
-              <a href={e.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-                {e.sourceLabel} <ArrowUpRight style={{ width: 12, height: 12 }} />
               </a>
             </IncumbentCard>
           )
