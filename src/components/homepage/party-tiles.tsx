@@ -79,10 +79,17 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
       <div ref={sentinelRef} aria-hidden style={{ height: 1 }} />
 
       {/* THE reference point: the full-size tile row, sticky under the navbar (top:64), so it
-          rides the whole page at its original dimensions. The band itself is TRANSPARENT — the
-          tiles float over the homepage content scrolling behind them, lifting off with a shadow
-          that deepens once they're pinned over the page. */}
-      <div style={{ position: 'sticky', top: 64, zIndex: 40, background: 'transparent', pointerEvents: 'none' }}>
+          rides the whole page at its original dimensions. Over the hero it's TRANSPARENT and the
+          tiles float; once pinned over page content ("stuck") the band turns into a solid,
+          full-width bar so headings scroll cleanly BEHIND it instead of colliding through the gaps. */}
+      <div style={{
+        position: 'sticky', top: 64, zIndex: 40,
+        background: stuck ? '#fff' : 'transparent',
+        borderBottom: `1px solid ${stuck ? LINE : 'transparent'}`,
+        boxShadow: stuck ? '0 6px 16px rgba(12,14,18,.06)' : 'none',
+        pointerEvents: stuck ? 'auto' : 'none',
+        transition: 'background-color .25s ease, border-color .25s ease, box-shadow .25s ease',
+      }}>
         <div style={{ maxWidth: 760, margin: '0 auto', padding: '12px clamp(18px, 5vw, 36px)' }}>
           <div style={{ display: 'flex', gap: 10 }}>
             {parties.map((p) => {
@@ -110,21 +117,48 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
       </div>
 
       {/* Snapshot panel — in flow, directly below the tiles; scrolls away as you move down the page. */}
-      {cur && (
-        <section style={{ background: '#fff' }}>
-          <div style={{ maxWidth: 760, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 40px' }}>
-            <div style={{
-              border: `4px solid ${cur.color}`, borderRadius: 16, background: cur.light,
-              minHeight: 440, padding: '20px 22px',
-              transition: 'border-color .85s ease-in-out, background-color .85s ease-in-out',
-            }}>
-              <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
-                <Panel p={cur} />
+      {cur && (() => {
+        // Speech-bubble caret: a two-layer CSS triangle (party colour behind, panel
+        // fill in front → a bordered "tail") that glides horizontally to sit centred
+        // under the active tile. The tile row and this panel share the same 760-wide
+        // container, horizontal padding and 10px gaps, so the tile-centre formula below
+        // lines the tip up exactly. It re-glides whenever the selection changes.
+        const i = parties.findIndex((p) => p.slug === cur.slug)
+        const n = parties.length
+        const tileW = `((100% - ${(n - 1) * 10}px) / ${n})`
+        const caretLeft = `calc(${i} * (${tileW} + 10px) + ${tileW} / 2)`
+        const glide = 'left .85s cubic-bezier(.4,0,.2,1), border-bottom-color .85s ease-in-out'
+        return (
+          <section style={{ background: '#fff' }}>
+            <div style={{ maxWidth: 760, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 40px', position: 'relative' }}>
+              {/* Caret rail — zero-height, full content width, so left% maps to tile centres. */}
+              <div style={{ position: 'relative', height: 0 }} aria-hidden>
+                {/* outer triangle — party colour (the border) */}
+                <div style={{
+                  position: 'absolute', top: -22, left: caretLeft, marginLeft: -13, width: 0, height: 0,
+                  borderLeft: '13px solid transparent', borderRight: '13px solid transparent',
+                  borderBottom: `24px solid ${cur.color}`, transition: glide,
+                }} />
+                {/* inner triangle — panel fill, sits inside the outer to leave a coloured edge */}
+                <div style={{
+                  position: 'absolute', top: -13, left: caretLeft, marginLeft: -9, width: 0, height: 0,
+                  borderLeft: '9px solid transparent', borderRight: '9px solid transparent',
+                  borderBottom: `18px solid ${cur.light}`, transition: glide,
+                }} />
+              </div>
+              <div style={{
+                border: `4px solid ${cur.color}`, borderRadius: 16, background: cur.light,
+                minHeight: 440, padding: '20px 22px',
+                transition: 'border-color .85s ease-in-out, background-color .85s ease-in-out',
+              }}>
+                <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+                  <Panel p={cur} />
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )
+      })()}
     </>
   )
 }

@@ -65,6 +65,13 @@ export function ElectionAnchor() {
           </Link>
         </div>
 
+        {/* Plain-language read of the numbers — so a newcomer takes meaning from them, not just digits. */}
+        <p style={{ fontSize: 13.5, fontWeight: 500, color: 'rgba(255,255,255,.72)', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 20px', maxWidth: 620 }}>
+          <b style={{ color: '#fff', fontWeight: 700 }}>What this means:</b> {leadingSeatBloc.seats < MAJORITY_SEATS
+            ? `on these polls no single party is near the ${MAJORITY_SEATS} seats needed to govern alone, so parties will likely have to team up to form a government.`
+            : `a party is polling near the ${MAJORITY_SEATS} seats needed to govern.`} That&apos;s MMP — your party vote decides how many seats each party gets.
+        </p>
+
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
           <Link href="/elections/2026" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '12px 22px', borderRadius: 11, background: '#36e08a', color: '#0c0e12', fontSize: 14, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
             Explore the Election Centre <ArrowRight style={{ width: 16, height: 16 }} />
