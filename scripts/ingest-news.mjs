@@ -70,6 +70,39 @@ function tag(map, text) {
   return Object.keys(map).filter((k) => map[k].some((term) => t.includes(term)))
 }
 
+// Stage 1 of electorate-level coverage: tag articles that mention a battleground
+// seat by name or its sitting MP by name. Scoped to the closest 2023 races only
+// (majority < 3500) — a real, sourced signal (name matches), not a fabricated one.
+// Keyed by the electorate's exact display name (matches ElectorateInfo.name in
+// src/constants/electorates-data.ts) so the battleground page can filter by it directly.
+const ELECTORATE_TERMS = {
+  'Mt Albert': ['mt albert', 'mount albert', 'helen white'],
+  'Nelson': ['nelson electorate', 'rachel boyack'],
+  'Te Atatū': ['te atatu', 'te atatū', 'phil twyford'],
+  'Banks Peninsula': ['banks peninsula', 'vanessa weenink'],
+  'West Coast-Tasman': ['west coast-tasman', 'west coast tasman', 'maureen pugh'],
+  'New Lynn': ['new lynn', 'paulo garcia'],
+  'Wigram': ['wigram', 'megan woods'],
+  'Hutt South': ['hutt south', 'chris bishop'],
+  'Taieri': ['taieri', 'ingrid leary'],
+  'Ōhāriu': ['ohariu', 'ōhāriu', "greg o'connor"],
+  'Mt Roskill': ['mt roskill', 'mount roskill', 'carlos cheung'],
+  'Christchurch Central': ['christchurch central', 'duncan webb'],
+  'Te Tai Tokerau': ['te tai tokerau', 'mariameno kapa-kingi'],
+  'Christchurch East': ['christchurch east', 'reuben davidson'],
+  'Rongotai': ['rongotai', 'julie anne genter'],
+  'Te Tai Tonga': ['te tai tonga', 'takuta ferris', 'tākuta ferris'],
+  'Ikaroa-Rāwhiti': ['ikaroa-rawhiti', 'ikaroa-rāwhiti', 'cushla tangaere-manuel'],
+  'Hauraki-Waikato': ['hauraki-waikato', 'hana-rawhiti maipi-clarke'],
+  'Wairarapa': ['wairarapa', 'mike butterick'],
+  'East Coast': ['east coast electorate', 'dana kirkpatrick'],
+  'Palmerston North': ['palmerston north', 'tangi utikere'],
+}
+function tagElectorates(text) {
+  const t = text.toLowerCase()
+  return Object.keys(ELECTORATE_TERMS).filter((name) => ELECTORATE_TERMS[name].some((term) => t.includes(term)))
+}
+
 // Directly about the 2026 election / the contest for votes.
 const ELECTION_TERMS = ['election', 'campaign', 'candidate', 'poll', 'voter', 'ballot', 'coalition', 'preferred prime minister', 'hustings', 'leaders debate', "leaders' debate", '2026', 'on the campaign']
 function isElectionRelevant(text, parties) {
@@ -102,10 +135,11 @@ for (const feed of FEEDS) {
     const snippet = snippetRaw.slice(0, feed.cc ? 400 : 220) // RNZ CC → longer excerpt OK
     const parties = tag(PARTY_TERMS, title + ' ' + snippetRaw)
     const topics = tag(TOPIC_TERMS, title + ' ' + snippetRaw)
+    const electorates = tagElectorates(title + ' ' + snippetRaw)
     rows.push({
       type: 'news', source_id: link, title, summary: snippet, status: 'approved',
       source_url: link,
-      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, featured: false, image: extractImage(it), electionRelevant: isElectionRelevant(title + ' ' + snippetRaw, parties) },
+      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, electorates, featured: false, image: extractImage(it), electionRelevant: isElectionRelevant(title + ' ' + snippetRaw, parties) },
     })
   }
   for (let i = 0; i < rows.length; i += 50) {

@@ -27,6 +27,14 @@ export interface Candidate2026 {
   keyPolicies?: { title: string; detail: string }[]
   bills?: string[]
   confirmed: boolean
+  /**
+   * Illustrative-only poll standing (0-100). NZ has no verified electorate-level
+   * horse-race polling for most seats — only national party-vote polls and, rarely,
+   * a one-off media-commissioned electorate poll for a marquee race. Do NOT populate
+   * this for real, confirmed candidates unless there is a genuinely sourced,
+   * electorate-specific poll to cite. Mock/preview data only until then.
+   */
+  pollPct?: number
 }
 
 export const CANDIDATES_2026: Record<string, Candidate2026[]> = {}

@@ -14,6 +14,8 @@ export interface VideoItem {
   party: string | null
   parties: string[]
   topics: string[]
+  /** Battleground electorates this video names — see ELECTORATE_TERMS in scripts/ingest-videos.mjs. */
+  electorates: string[]
   pubDate: string | null
   thumbnail: string
   electionRelevant: boolean
@@ -38,10 +40,17 @@ export async function getVideos(limit = 48): Promise<VideoItem[]> {
       party: (d.party as string) ?? null,
       parties: Array.isArray(d.parties) ? (d.parties as string[]) : [],
       topics: Array.isArray(d.topics) ? (d.topics as string[]) : [],
+      electorates: Array.isArray(d.electorates) ? (d.electorates as string[]) : [],
       pubDate: (d.pubDate as string) ?? null,
       thumbnail: String(d.thumbnail ?? ''),
       electionRelevant: d.electionRelevant === true,
     }
   })
   return items.sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+}
+
+/** Videos naming a specific battleground electorate — see getNewsForElectorate. */
+export async function getVideosForElectorate(electorateName: string, limit = 3): Promise<VideoItem[]> {
+  const all = await getVideos(200)
+  return all.filter((v) => v.electorates.includes(electorateName)).slice(0, limit)
 }

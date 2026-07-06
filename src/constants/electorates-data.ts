@@ -57,7 +57,7 @@ const M = 'maori' as const
 
 const RAW: ElectorateInfo[] = [
   // ── General electorates (65) ──
-  { name: 'Auckland Central',     type: G, party: 'green',    mpName: 'Chlöe Swarbrick',        majority: 3896,  verified: true },
+  { name: 'Auckland Central',     type: G, party: 'green',    mpName: 'Chlöe Swarbrick', mpSlug: 'chle-swarbrick', majority: 3896,  verified: true },
   { name: 'Banks Peninsula',      type: G, party: 'national', mpName: 'Vanessa Weenink',        majority: 396,   verified: true },
   { name: 'Bay of Plenty',        type: G, party: 'national', mpName: 'Tom Rutherford',         majority: 15405, verified: true },
   { name: 'Botany',               type: G, party: 'national', mpName: 'Christopher Luxon', mpSlug: 'christopher-luxon', majority: 16323, verified: true },

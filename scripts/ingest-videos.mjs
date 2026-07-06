@@ -46,6 +46,33 @@ const TOPIC_TERMS = {
 const ELECTION_TERMS = ['election', 'campaign', 'candidate', 'poll', 'voter', 'coalition', 'debate', '2026', 'leader']
 const tag = (map, t) => Object.keys(map).filter((k) => map[k].some((x) => t.includes(x)))
 
+// Same battleground-scoped electorate tagging as ingest-news.mjs (majority < 3500
+// seats only — real name matches, not fabricated). Keep these two lists in sync.
+const ELECTORATE_TERMS = {
+  'Mt Albert': ['mt albert', 'mount albert', 'helen white'],
+  'Nelson': ['nelson electorate', 'rachel boyack'],
+  'Te Atatū': ['te atatu', 'te atatū', 'phil twyford'],
+  'Banks Peninsula': ['banks peninsula', 'vanessa weenink'],
+  'West Coast-Tasman': ['west coast-tasman', 'west coast tasman', 'maureen pugh'],
+  'New Lynn': ['new lynn', 'paulo garcia'],
+  'Wigram': ['wigram', 'megan woods'],
+  'Hutt South': ['hutt south', 'chris bishop'],
+  'Taieri': ['taieri', 'ingrid leary'],
+  'Ōhāriu': ['ohariu', 'ōhāriu', "greg o'connor"],
+  'Mt Roskill': ['mt roskill', 'mount roskill', 'carlos cheung'],
+  'Christchurch Central': ['christchurch central', 'duncan webb'],
+  'Te Tai Tokerau': ['te tai tokerau', 'mariameno kapa-kingi'],
+  'Christchurch East': ['christchurch east', 'reuben davidson'],
+  'Rongotai': ['rongotai', 'julie anne genter'],
+  'Te Tai Tonga': ['te tai tonga', 'takuta ferris', 'tākuta ferris'],
+  'Ikaroa-Rāwhiti': ['ikaroa-rawhiti', 'ikaroa-rāwhiti', 'cushla tangaere-manuel'],
+  'Hauraki-Waikato': ['hauraki-waikato', 'hana-rawhiti maipi-clarke'],
+  'Wairarapa': ['wairarapa', 'mike butterick'],
+  'East Coast': ['east coast electorate', 'dana kirkpatrick'],
+  'Palmerston North': ['palmerston north', 'tangi utikere'],
+}
+const tagElectorates = (t) => Object.keys(ELECTORATE_TERMS).filter((name) => ELECTORATE_TERMS[name].some((term) => t.includes(term)))
+
 const RESET = process.argv.includes('--reset')
 if (RESET) { const { error } = await sb.from('content_items').delete().eq('type', 'video'); console.log(error ? 'reset err: ' + error.message : 'cleared existing videos') }
 
@@ -70,10 +97,11 @@ for (const ch of CHANNELS) {
     const t = title.toLowerCase()
     const parties = ch.party ? [ch.party] : tag(PARTY_TERMS, t)
     const topics = tag(TOPIC_TERMS, t)
+    const electorates = tagElectorates(t)
     const electionRelevant = parties.length > 0 || ELECTION_TERMS.some((x) => t.includes(x))
     rows.push({
       type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'approved', source_url: link,
-      data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, featured: false },
+      data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, featured: false },
     })
   }
   if (rows.length) { const { error } = await sb.from('content_items').insert(rows); if (error) { console.error(`insert err (${ch.source}): ${error.message}`); continue } }

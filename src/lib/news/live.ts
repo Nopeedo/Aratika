@@ -16,6 +16,8 @@ export interface NewsItem {
   pubDate: string | null
   parties: string[]
   topics: string[]
+  /** Battleground electorates this item names — see ELECTORATE_TERMS in scripts/ingest-news.mjs. */
+  electorates: string[]
   cc: boolean
   featured: boolean
   image: string | null
@@ -34,6 +36,7 @@ function toItem(r: { id: string; title: string; summary: string | null; data: Re
     pubDate: (d.pubDate as string) ?? null,
     parties: Array.isArray(d.parties) ? (d.parties as string[]) : [],
     topics: Array.isArray(d.topics) ? (d.topics as string[]) : [],
+    electorates: Array.isArray(d.electorates) ? (d.electorates as string[]) : [],
     cc: d.cc === true,
     featured: d.featured === true,
     image: (d.image as string) ?? null,
@@ -56,4 +59,15 @@ export async function getNews(limit = 150): Promise<NewsItem[]> {
     .filter((i) => i.electionRelevant)
   // sort by actual publish date where present
   return items.sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+}
+
+/**
+ * News naming a specific battleground electorate (by seat name or sitting MP —
+ * see ELECTORATE_TERMS in scripts/ingest-news.mjs). Only covers the closest
+ * 2023 races for now; most electorates will simply return an empty list, which
+ * is the honest state, not a bug.
+ */
+export async function getNewsForElectorate(electorateName: string, limit = 6): Promise<NewsItem[]> {
+  const all = await getNews(300)
+  return all.filter((i) => i.electorates.includes(electorateName)).slice(0, limit)
 }
