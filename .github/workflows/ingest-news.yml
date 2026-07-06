@@ -1,0 +1,37 @@
+name: News & video ingest
+
+# Runs ingest-news.mjs and ingest-videos.mjs four times a day so the /news feed
+# and battleground electorate tagging stay current. Both scripts are additive
+# and dedup by link, so re-running is always safe.
+#
+# Times are fixed UTC crons tuned for NZST (UTC+12) — 8am / 12pm / 4pm / 7pm NZ.
+# GitHub Actions cron has no DST awareness, so during NZDT (daylight saving,
+# ~late Sep to early Apr) these will fire an hour later than intended
+# (9am/1pm/5pm/8pm NZDT). Adjust the cron values by an hour if that drift matters.
+on:
+  schedule:
+    - cron: '0 20 * * *'  # 8am NZST
+    - cron: '0 0 * * *'   # 12pm NZST
+    - cron: '0 4 * * *'   # 4pm NZST
+    - cron: '0 7 * * *'   # 7pm NZST
+  workflow_dispatch:
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Ingest news
+        run: node scripts/ingest-news.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      - name: Ingest videos
+        run: node scripts/ingest-videos.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
