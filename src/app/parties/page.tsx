@@ -102,7 +102,7 @@ export default function PartiesPage() {
             gap:          24,
             flexWrap:     'wrap',
           }}>
-            <div>
+            <div style={{ flex: '1 1 240px', minWidth: 0 }}>
               <div style={{
                 fontSize: 10.5, fontWeight: 800, letterSpacing: '.12em',
                 textTransform: 'uppercase', color: TERTIARY,
@@ -111,8 +111,8 @@ export default function PartiesPage() {
               }}>
                 54th Parliament — {TOTAL_SEATS} seats total
               </div>
-              {/* Seat bar */}
-              <div style={{ display: 'flex', gap: 2, height: 10, width: 400, maxWidth: '100%', borderRadius: 999, overflow: 'hidden' }}>
+              {/* Seat bar — fills the column up to 400px, shrinks on narrow screens */}
+              <div style={{ display: 'flex', gap: 2, height: 10, width: '100%', maxWidth: 400, borderRadius: 999, overflow: 'hidden' }}>
                 {PARTY_DIRECTORY_ORDER.map((slug) => (
                   <div
                     key={slug}

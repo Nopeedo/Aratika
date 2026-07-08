@@ -62,8 +62,8 @@ export function ResultsView({ e }: { e: ElectionData }) {
       {/* Seat table */}
       <div>
         <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 12px' }}>Full results</h2>
-        <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: MANROPE }}>
+        <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, overflowX: 'auto' }}>
+          <table style={{ width: '100%', minWidth: 420, borderCollapse: 'collapse', fontFamily: MANROPE }}>
             <thead>
               <tr style={{ background: SURFACE }}>
                 {['Party', 'Party votes', '%', 'Elec.', 'List', 'Total'].map((h, i) => (
