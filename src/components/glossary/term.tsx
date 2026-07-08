@@ -45,14 +45,23 @@ export function Term({ name, children }: { name: string; children: React.ReactNo
   // Plain text before hydration, when off, or for an unknown term.
   if (!ready || !enabled || !entry) return <>{children}</>
 
+  const hoverable = () => typeof window !== 'undefined' && window.matchMedia?.('(hover: hover) and (pointer: fine)').matches
+
   return (
-    <span ref={ref} style={{ position: 'relative', display: 'inline' }}>
+    <span
+      ref={ref}
+      style={{ position: 'relative', display: 'inline' }}
+      onMouseEnter={() => { if (hoverable()) setOpen(true) }}
+      onMouseLeave={() => { if (hoverable()) setOpen(false) }}
+    >
       <span
         role="button"
         tabIndex={0}
         aria-expanded={open}
         aria-label={`What is ${entry.term}?`}
-        onClick={(e) => { e.stopPropagation(); setOpen((o) => !o) }}
+        // preventDefault stops the term from following a surrounding link (e.g. a
+        // Term inside a card that is itself a Link) — it shows the definition instead.
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setOpen((o) => !o) }}
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen((o) => !o) } }}
         style={{ borderBottom: `1.5px dotted ${JADE}`, cursor: 'help', borderRadius: 3, padding: '0 1px', background: open ? 'rgba(31,138,76,.12)' : 'transparent' }}
       >
