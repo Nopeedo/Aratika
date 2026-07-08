@@ -101,6 +101,7 @@ export const FOOTER_LINKS: Record<'learn' | 'explore' | 'account' | 'legal', Foo
     { label: 'Upgrade to Premium', href: '/subscription', feature: 'premium' },
   ],
   legal: [
+    { label: 'Help & FAQ', href: '/faq', feature: 'about' },
     { label: 'Privacy Policy', href: '/privacy', feature: 'about' },
     { label: 'Terms of Use', href: '/terms', feature: 'about' },
     { label: 'Submit a Correction', href: '/contact', feature: 'contact' },
