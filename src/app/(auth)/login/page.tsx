@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Mail, Lock } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { AuthShell, Field, SubmitButton, ErrorBox } from '@/components/auth/auth-ui'
+import { AuthShell, Field, SubmitButton, ErrorBox, GoogleButton, OrDivider } from '@/components/auth/auth-ui'
 
 const SECONDARY = '#6b7078', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
@@ -44,8 +44,12 @@ function LoginInner() {
 
   return (
     <AuthShell title="Welcome back" subtitle="Log in to your Aratika account.">
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {error && <ErrorBox message={error} />}
+        <GoogleButton next="/dashboard" onError={setError} />
+        <OrDivider />
+      </div>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 14 }}>
         <Field icon={Mail} type="email" placeholder="Email address" value={email} onChange={setEmail} autoComplete="email" />
         <Field icon={Lock} type="password" placeholder="Password" value={password} onChange={setPassword} autoComplete="current-password" />
         <div style={{ textAlign: 'right', marginTop: -4 }}>

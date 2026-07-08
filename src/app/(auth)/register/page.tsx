@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Mail, Lock, User as UserIcon, MailCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { AuthShell, Field, SubmitButton, ErrorBox } from '@/components/auth/auth-ui'
+import { AuthShell, Field, SubmitButton, ErrorBox, GoogleButton, OrDivider, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
@@ -34,7 +34,8 @@ function RegisterInner() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
-    if (password.length < 6) { setError('Password must be at least 6 characters.'); return }
+    const pwIssue = passwordIssue(password)
+    if (pwIssue) { setError(pwIssue); return }
     setLoading(true)
     const supabase = createClient()
     const { data, error } = await supabase.auth.signUp({
@@ -84,11 +85,16 @@ function RegisterInner() {
       title={isPremium ? 'Start your free trial' : 'Create your free account'}
       subtitle={isPremium ? '14 days of Premium, free. Cancel anytime.' : 'Track MPs, bills and policies that matter to you.'}
     >
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {error && <ErrorBox message={error} />}
+        <GoogleButton next={isPremium ? '/subscription' : '/dashboard'} onError={setError} />
+        <OrDivider />
+      </div>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 14 }}>
         <Field icon={UserIcon} type="text" placeholder="Your name" value={name} onChange={setName} autoComplete="name" />
         <Field icon={Mail} type="email" placeholder="Email address" value={email} onChange={setEmail} autoComplete="email" />
-        <Field icon={Lock} type="password" placeholder="Password (min. 6 characters)" value={password} onChange={setPassword} autoComplete="new-password" />
+        <Field icon={Lock} type="password" placeholder="Password (min. 8 characters)" value={password} onChange={setPassword} autoComplete="new-password" />
+        <PasswordStrength value={password} />
         <SubmitButton loading={loading}>{isPremium ? 'Start free trial' : 'Create account'}</SubmitButton>
       </form>
       <p style={{ fontSize: 11.5, color: '#9aa0aa', fontFamily: MANROPE, textAlign: 'center', marginTop: 14, lineHeight: 1.5 }}>
