@@ -4,8 +4,10 @@
  * thumbnail and EMBED via the privacy-enhanced player; we never host/rebroadcast.
  *
  * Party channels' videos are tagged to that party; Parliament/RNZ videos are
- * tagged by who they mention. Same hybrid model as the news feed (auto-publish,
- * editor can feature/reject). content_items type='video'.
+ * tagged by who they mention. Unlike the news feed, videos are ingested as
+ * status='pending' — they are partisan campaign content, so an editor must
+ * approve (and can fix topic tags) via /editor before they go public.
+ * content_items type='video'.
  *
  * Run: node scripts/ingest-videos.mjs   (--reset to clear existing videos first)
  */
@@ -100,7 +102,7 @@ for (const ch of CHANNELS) {
     const electorates = tagElectorates(t)
     const electionRelevant = parties.length > 0 || ELECTION_TERMS.some((x) => t.includes(x))
     rows.push({
-      type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'approved', source_url: link,
+      type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'pending', source_url: link,
       data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, featured: false },
     })
   }
