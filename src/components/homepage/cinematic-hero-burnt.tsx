@@ -33,14 +33,14 @@ export function CinematicHeroBurnt() {
 
   return (
     <section style={{ position: 'relative', overflow: 'hidden', background: '#ffffff' }}>
-      <div style={{ position: 'relative', maxWidth: 920, margin: '0 auto', padding: 'clamp(24px, 4vh, 44px) clamp(18px, 5vw, 36px) clamp(14px, 2.3vh, 24px)', textAlign: 'center' }}>
+      <div style={{ position: 'relative', maxWidth: 920, margin: '0 auto', padding: 'clamp(16px, 4vh, 44px) clamp(18px, 5vw, 36px) clamp(12px, 2.3vh, 24px)', textAlign: 'center' }}>
         {/* days-to-election flip countdown — above the title */}
-        <motion.div {...rise(0)} style={{ display: 'flex', justifyContent: 'center', marginBottom: 26 }}>
+        <motion.div {...rise(0)} style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(14px, 2.6vh, 26px)' }}>
           <DaysFlipCountdown />
         </motion.div>
 
         {/* headline */}
-        <motion.h1 {...rise(0.16)} style={{ fontSize: 'clamp(32px, 8.5vw, 104px)', fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.03, color: INK, fontFamily: MANROPE, margin: '0 0 20px' }}>
+        <motion.h1 {...rise(0.16)} style={{ fontSize: 'clamp(30px, 8.5vw, 104px)', fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.03, color: INK, fontFamily: MANROPE, margin: '0 0 clamp(12px, 2vh, 20px)' }}>
           The direction
           <br />
           of the country is
@@ -55,7 +55,7 @@ export function CinematicHeroBurnt() {
         </motion.h1>
 
         {/* small subline under the title — two lines, never wider than the headline */}
-        <motion.div {...rise(0.22)} style={{ fontSize: 'clamp(13px, 1.6vw, 15px)', fontWeight: 700, color: '#5b3d2a', fontFamily: MANROPE, margin: '0 auto 30px', maxWidth: 360, lineHeight: 1.5, textAlign: 'center' }}>
+        <motion.div {...rise(0.22)} style={{ fontSize: 'clamp(13px, 1.6vw, 15px)', fontWeight: 700, color: '#5b3d2a', fontFamily: MANROPE, margin: '0 auto clamp(16px, 3vh, 30px)', maxWidth: 360, lineHeight: 1.5, textAlign: 'center' }}>
           <div>Compare Parties, Policies &amp; Electorates</div>
           <div style={{ marginTop: 3 }}>Vote with confidence</div>
         </motion.div>
