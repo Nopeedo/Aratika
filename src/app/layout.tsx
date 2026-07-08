@@ -6,6 +6,8 @@ import { PlanTracker } from '@/components/onboarding/plan-tracker'
 // import { PlanWidget } from '@/components/onboarding/plan-widget' // hidden for now
 import { CompanionWidget } from '@/components/companion/companion-widget'
 import { SoundToggle } from '@/components/homepage/sound-toggle'
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SITE } from '@/constants/site'
 import './globals.css'
 
@@ -99,6 +101,8 @@ export default function RootLayout({
         <CompanionWidget />
         <SoundToggle />
         <Footer />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
