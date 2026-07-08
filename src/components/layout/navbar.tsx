@@ -11,6 +11,7 @@ import { PREMIUM_ENABLED } from '@/constants/features'
 import { SITE } from '@/constants/site'
 import { useUser } from '@/hooks/use-user'
 import { createClient } from '@/lib/supabase/client'
+import { ExplainToggle } from '@/components/glossary/explain-toggle'
 
 const NAV = visibleNav()
 const cleanHref = (href: string) => href.split('#')[0]
@@ -82,6 +83,7 @@ export function Navbar() {
 
           {/* Desktop Auth Actions */}
           <div className="hidden lg:flex items-center gap-2">
+            <ExplainToggle className="mr-1" />
             {isLoggedIn ? (
               <>
                 {PREMIUM_ENABLED && !isPremium && (
@@ -142,6 +144,11 @@ export function Navbar() {
               ),
             )}
           </nav>
+
+          {/* Mobile: explain-terms toggle */}
+          <div className="max-w-7xl mx-auto px-4 pb-2 pt-1">
+            <ExplainToggle className="w-full justify-start" />
+          </div>
 
           {/* Mobile Auth */}
           <div className="max-w-7xl mx-auto px-4 pb-4 pt-2 border-t border-border flex flex-col gap-2">

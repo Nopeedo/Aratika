@@ -7,6 +7,7 @@
 
 import Link from 'next/link'
 import { Vote, Compass, Sparkles, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { Term } from '@/components/glossary/term'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
@@ -32,7 +33,7 @@ export function GetReadyToVote() {
             <div className="party-card" style={{ height: '100%', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 22px' }}>
               <div style={{ width: 40, height: 40, borderRadius: 11, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}><Compass style={{ width: 20, height: 20, color: JADE }} /></div>
               <div style={{ fontSize: 16.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 5 }}>2. Learn how voting works</div>
-              <p style={{ fontSize: 13.5, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 14px' }}>MMP, your two votes, and how to actually cast them — in plain language.</p>
+              <p style={{ fontSize: 13.5, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 14px' }}><Term name="MMP">MMP</Term>, your two votes, and how to actually cast them — in plain language.</p>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>Start learning <ArrowRight style={{ width: 14, height: 14 }} /></span>
             </div>
           </Link>

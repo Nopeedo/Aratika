@@ -15,6 +15,7 @@ import { Vote, ArrowRight, Radio } from 'lucide-react'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { pollOfPolls, seatProjection, MAJORITY_SEATS, POLLS_AS_AT, PREFERRED_PM } from '@/constants/polls-data'
 import { AnchorCountdownTile } from './election-anchor-countdown'
+import { Term } from '@/components/glossary/term'
 
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
@@ -69,7 +70,7 @@ export function ElectionAnchor() {
         <p style={{ fontSize: 13.5, fontWeight: 500, color: 'rgba(255,255,255,.72)', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 20px', maxWidth: 620 }}>
           <b style={{ color: '#fff', fontWeight: 700 }}>What this means:</b> {leadingSeatBloc.seats < MAJORITY_SEATS
             ? `on these polls no single party is near the ${MAJORITY_SEATS} seats needed to govern alone, so parties will likely have to team up to form a government.`
-            : `a party is polling near the ${MAJORITY_SEATS} seats needed to govern.`} That&apos;s MMP — your party vote decides how many seats each party gets.
+            : `a party is polling near the ${MAJORITY_SEATS} seats needed to govern.`} That&apos;s <Term name="MMP">MMP</Term> — your <Term name="Party vote">party vote</Term> decides how many seats each party gets.
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
