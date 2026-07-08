@@ -172,7 +172,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
       </div>
 
       {/* ═══════════════ Body ═══════════════ */}
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '28px 36px 64px', display: 'grid', gridTemplateColumns: '1.7fr 1fr', gap: 28, alignItems: 'start' }}>
+      <div className="detail-two-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '28px 36px 64px' }}>
 
         {/* ── Main column ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>

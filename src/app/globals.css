@@ -188,3 +188,17 @@ body {
   border-left: 3px solid var(--color-sentiment-border);
   background-color: var(--color-sentiment-bg);
 }
+
+/* ─── Detail-page two-column layout (main + "at a glance" sidebar) ─────────
+   Keeps the 1.7 : 1 emphasis on desktop, stacks to one column on phones so the
+   sidebar never runs off-screen. min-width:0 stops wide children overflowing. */
+.detail-two-col {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+.detail-two-col > * { min-width: 0; }
+@media (max-width: 760px) {
+  .detail-two-col { grid-template-columns: 1fr; }
+}
