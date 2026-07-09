@@ -7,6 +7,7 @@
 
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ExternalLink, CheckCircle2, XCircle, Clock } from 'lucide-react'
+import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import type { PolicyTopic } from '@/types'
@@ -41,7 +42,10 @@ export function DefiningBillDetail({ bill }: { bill: DefiningBill }) {
           </span>
         </div>
 
-        <h1 style={{ fontSize: 'clamp(28px, 5.2vw, 38px)', fontWeight: 800, letterSpacing: '-.028em', color: INK, fontFamily: MANROPE, lineHeight: 1.07, margin: '14px 0 16px' }}>{bill.title}</h1>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', margin: '14px 0 16px' }}>
+          <h1 style={{ fontSize: 'clamp(28px, 5.2vw, 38px)', fontWeight: 800, letterSpacing: '-.028em', color: INK, fontFamily: MANROPE, lineHeight: 1.07, margin: 0, flex: 1, minWidth: 240 }}>{bill.title}</h1>
+          <BookmarkButton entity={{ kind: 'bill', refId: bill.slug, label: bill.title, sublabel: 'Bill', href: `/bills/${bill.slug}`, accent: ACCENT }} variant="pill" />
+        </div>
 
         <p style={{ fontSize: 17, color: '#2b332c', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 8px' }}>{bill.overview ?? bill.what}</p>
 

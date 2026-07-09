@@ -8,6 +8,7 @@
 
 import { FileText, ExternalLink, ShieldCheck } from 'lucide-react'
 import type { LiveBill } from '@/lib/bills/live'
+import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { BillBreakdown } from '@/components/bills/bill-breakdown'
 import { StageTracker } from '@/components/bills/stage-tracker'
 import { HaveYourSay } from '@/components/bills/have-your-say'
@@ -31,7 +32,17 @@ export function BillReader({ bill }: { bill: LiveBill }) {
         </span>
       </div>
 
-      <h1 style={{ fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, color: INK, fontFamily: MANROPE, margin: '0 0 22px' }}>{bill.title}</h1>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', margin: '0 0 22px' }}>
+        <h1 style={{ fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, color: INK, fontFamily: MANROPE, margin: 0, flex: 1, minWidth: 240 }}>{bill.title}</h1>
+        <BookmarkButton
+          entity={{
+            kind: 'bill', refId: bill.slug, label: bill.title,
+            sublabel: bill.docType === 'act' ? 'Act' : 'Bill',
+            href: `/legislation/${bill.slug}`, accent: JADE,
+          }}
+          variant="pill"
+        />
+      </div>
 
       {/* shared summary + policy breakdown */}
       <BillBreakdown summary={bill.summary} summaryBasic={bill.summaryBasic} policyLinks={bill.policyLinks} docType={bill.docType} />
