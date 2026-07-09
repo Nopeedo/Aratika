@@ -108,7 +108,7 @@ function demoItems() {
 async function upsertPending(item) {
   const { data: existing, error } = await supabase
     .from('content_items')
-    .select('id, data')
+    .select('id, data, status')
     .eq('type', item.type).eq('source_id', item.source_id)
     .maybeSingle()
   if (error) throw error
@@ -122,11 +122,22 @@ async function upsertPending(item) {
     })
     return 'new'
   }
-  if (JSON.stringify(existing.data) === JSON.stringify(item.data)) return 'unchanged'
-  // Source changed → re-stage for review (drops back to pending until re-approved).
+
+  // Compare ONLY the feed-provided fields — never the editorial enrichment that
+  // an editor added (policy_links, summaryBasic, stage, enriched, …).
+  const ex = existing.data ?? {}
+  const feedFields = ['link', 'published', 'source']
+  const unchanged = feedFields.every((k) => ex[k] === item.data[k])
+  if (unchanged) return 'unchanged'
+
+  // MERGE: overlay the fresh feed fields but preserve everything the editor added.
+  const mergedData = { ...ex, ...item.data }
+  // A bill already approved+enriched stays live; we just refresh its factual feed
+  // fields in place. Only not-yet-approved items sit in the pending queue.
+  const nextStatus = existing.status === 'approved' ? 'approved' : 'pending'
   await supabase.from('content_items').update({
-    title: item.title, data: item.data,
-    status: 'pending', change_kind: 'updated', source_url: item.source_url ?? null,
+    title: item.title, data: mergedData,
+    status: nextStatus, change_kind: 'updated', source_url: item.source_url ?? null,
     fetched_at: new Date().toISOString(), updated_at: new Date().toISOString(),
   }).eq('id', existing.id)
   return 'updated'
