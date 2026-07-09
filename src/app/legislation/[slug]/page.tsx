@@ -5,11 +5,10 @@
  */
 
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
 import { getApprovedBillBySlug } from '@/lib/bills/live'
 import { BillReader } from '@/components/bills/bill-reader'
+import { BackLink } from '@/components/ui/back-link'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,9 +31,7 @@ export default async function LegislationReaderPage({ params }: { params: Promis
     <div style={{ background: '#f5f8f4', minHeight: '100vh' }}>
       <div className="bg-dot-grid" style={{ background: '#f5f8f4', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '28px 36px 48px' }}>
-          <Link href="/legislation" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 24 }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> All legislation
-          </Link>
+          <BackLink fallbackHref="/legislation" label="Back" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 24 }} />
           <BillReader bill={bill} />
         </div>
       </div>
