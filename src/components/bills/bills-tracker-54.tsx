@@ -163,7 +163,7 @@ function BillCard({ b, readerSlug }: { b: Bill54; readerSlug?: string }) {
       )}
     </>
   )
-  const cardStyle: React.CSSProperties = { border: `1px solid ${BORDER}`, borderRadius: 14, padding: '15px 16px', background: '#fff', display: 'flex', flexDirection: 'column', height: '100%', textDecoration: 'none' }
+  const cardStyle: React.CSSProperties = { border: `1.5px solid ${INK}`, borderRadius: 14, padding: '15px 16px', background: '#fff', display: 'flex', flexDirection: 'column', height: '100%', textDecoration: 'none' }
   return readerSlug
     ? <Link href={`/legislation/${readerSlug}`} className="party-card" style={cardStyle}>{inner}</Link>
     : <div style={cardStyle}>{inner}</div>

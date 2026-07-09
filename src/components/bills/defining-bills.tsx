@@ -36,7 +36,7 @@ export function DefiningBills() {
           const st = STATUS[b.statusKind]; const Icon = st.icon
           const topic = b.topic ? POLICY_TOPICS[b.topic as PolicyTopic] : null
           return (
-            <div key={b.title} style={{ border: `1px solid ${BORDER}`, borderRadius: 16, padding: '18px 20px', background: '#fff', display: 'flex', flexDirection: 'column' }}>
+            <div key={b.title} style={{ border: `1.5px solid ${INK}`, borderRadius: 16, padding: '18px 20px', background: '#fff', display: 'flex', flexDirection: 'column' }}>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, color: st.fg, background: st.bg, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE, alignSelf: 'flex-start', marginBottom: 10 }}>
                 <Icon style={{ width: 12, height: 12 }} /> {b.status}
               </span>
