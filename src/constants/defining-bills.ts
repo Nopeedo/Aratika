@@ -183,22 +183,65 @@ export const DEFINING_BILLS: DefiningBill[] = [
     slug: 'resource-management-reform',
     title: 'Replacing the Resource Management Act (RMA)',
     what: 'Repeals and replaces the RMA with new resource-management legislation governing how land, housing and the environment are managed.',
-    status: 'In progress (2025)',
+    status: 'In progress (before select committee)',
     statusKind: 'in-progress',
-    why: 'How New Zealand manages housing growth and the environment — a core election issue.',
-    champion: 'National-led government.',
+    why: 'How New Zealand manages housing growth and the environment — a core election issue, and one of the biggest reforms of the term.',
+    champion: 'National-led government; Minister for RMA Reform Chris Bishop.',
     topic: 'housing',
     source: PARL,
+    overview:
+      'The coalition’s biggest overhaul of how New Zealand manages land, housing and the environment. It scraps the Resource Management Act 1991 — long criticised across the political spectrum as slow and costly — and replaces it with two new laws. (The government first repealed the previous Labour government’s own RMA replacement in 2023, then set about writing its own.)',
+    keyProvisions: [
+      'A Planning Act — focused on enabling development and regulating how land is used.',
+      'A Natural Environment Act — focused on protecting the natural environment, setting environmental “bottom lines” (limits) in advance rather than negotiating them project by project.',
+      'Nationally consistent zones, rules and definitions, to reduce the “postcode lottery” where the same activity is treated differently by each council.',
+    ],
+    timeline: [
+      { date: '9 Dec 2025', event: 'Natural Environment Bill and Planning Bill introduced to Parliament' },
+      { date: '13 Feb 2026', event: 'Public submissions to the select committee close' },
+      { date: 'By 2029', event: 'New planning system intended to be fully operational' },
+    ],
+    publicResponse:
+      'The two replacement bills are before the select committee, with submissions open into February 2026 — so the public debate is still under way. Supporters want a faster, cheaper and more consistent system; critics worry that setting limits up front and speeding development could weaken environmental protections and public input.',
+    outcome:
+      'In progress. The two replacement bills are at the select committee stage; the new system is intended to be fully operational by 2029. Until then, the RMA still applies.',
+    sources: [
+      { label: 'Ministry for the Environment — Resource management reforms', url: 'https://environment.govt.nz/what-government-is-doing/areas-of-work/rma/rmreform/' },
+      { label: 'Beehive — Resource management reform (factsheet)', url: 'https://www.beehive.govt.nz/sites/default/files/2025-03/Factsheet%20--%20Resource%20management%20reform.pdf' },
+      { label: 'NZ Parliament — Bills & laws', url: 'https://www.parliament.nz/en/pb/bills-and-laws/' },
+    ],
   },
   {
     slug: 'local-water-done-well',
     title: 'Local Water Done Well (Three Waters repeal)',
     what: 'Repealed the previous government’s Three Waters / Affordable Water reforms and replaced them with a council-led model.',
-    status: 'Now law (2024)',
+    status: 'Now law (2024–25)',
     statusKind: 'law',
-    why: 'Reverses a major reform; how councils fund and deliver water remains a live issue.',
-    champion: 'National-led government.',
+    why: 'Reverses a major reform; how councils fund and deliver water — and pay for it — remains a live issue.',
+    champion: 'National-led government; Local Government Minister Simeon Brown.',
     source: LEG('water services'),
+    overview:
+      'Reverses the previous Labour government’s Three Waters reforms, which would have moved drinking water, wastewater and stormwater into a small number of large, centralised entities. In its place, the coalition’s “Local Water Done Well” keeps water assets in council ownership and control, while requiring councils to show their water services are financially sustainable.',
+    keyProvisions: [
+      'Repealed Labour’s Three Waters / Affordable Water legislation — done first, under urgency, as part of the government’s 100-day plan.',
+      'Keeps ownership and control of water assets with local councils, rather than centralised entities.',
+      'Lets councils voluntarily set up or join council-controlled organisations and work together, so they can separate water debt from their balance sheets and borrow for infrastructure — but it’s optional, not mandatory.',
+      'Requires councils to show their water services meet financial-sustainability and water-quality rules.',
+    ],
+    timeline: [
+      { date: '14 Feb 2024', event: 'Labour’s Three Waters laws repealed under urgency' },
+      { date: 'Mid 2024', event: 'First Local Water Done Well law enacted (preliminary arrangements)' },
+      { date: 'Dec 2024 – mid 2025', event: 'Second law sets up the enduring council-led framework' },
+    ],
+    publicResponse:
+      'Most councils had opposed Labour’s centralised model, and the government framed the change as restoring local control. The repeal and replacement were opposed by Labour, the Greens and Te Pāti Māori, who argued a centralised model was needed to fund major water upgrades and lift water quality.',
+    outcome:
+      'Now law. Three Waters is repealed and the Local Water Done Well framework is in place; councils are now working through how to deliver and fund water services under it.',
+    sources: [
+      { label: 'Beehive — Labour’s Three Waters legislation repealed', url: 'https://www.beehive.govt.nz/release/labour%E2%80%99s-three-waters-legislation-repealed' },
+      { label: 'Beehive — Government to repeal Three Waters legislation', url: 'https://www.beehive.govt.nz/release/government-repeal-three-waters-legislation' },
+      { label: 'RNZ — Three Waters repeal coverage', url: 'https://www.rnz.co.nz/news/political/509010/three-waters-repeal-it-s-going-to-be-councils-and-mayors-that-cop-it' },
+    ],
   },
   {
     slug: 'pae-ora-maori-health-authority',
