@@ -26,6 +26,7 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
+  { label: 'Election Centre', href: '/elections/2026', description: 'Polls, seat projection, your electorate and live results on the night', feature: 'elections' },
   { label: 'Your Vote', href: '/start', description: 'Find what matters to you, then build your plan', feature: 'onboarding' },
   { label: 'Compare', href: '/compare', description: 'Where every party stands, side by side', feature: 'compare' },
   { label: 'Parties', href: '/parties', description: 'Every party, their leaders and policies', feature: 'parties' },
