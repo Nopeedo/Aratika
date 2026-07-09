@@ -20,7 +20,7 @@ import type { PartySlug } from '@/types'
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
 const normName = normMemberName
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
+const INK = '#17231b', SECONDARY = '#667066', TERTIARY = '#9aa0aa', BORDER = '#e4ebe2', SURFACE = '#eef3ec', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const TYPE_STYLE: Record<string, { fg: string; bg: string }> = {
@@ -163,7 +163,7 @@ function BillCard({ b, readerSlug }: { b: Bill54; readerSlug?: string }) {
       )}
     </>
   )
-  const cardStyle: React.CSSProperties = { border: `1.5px solid ${INK}`, borderRadius: 14, padding: '15px 16px', background: '#fff', display: 'flex', flexDirection: 'column', height: '100%', textDecoration: 'none' }
+  const cardStyle: React.CSSProperties = { border: `1px solid ${BORDER}`, borderRadius: 14, padding: '15px 16px', background: '#fff', display: 'flex', flexDirection: 'column', height: '100%', textDecoration: 'none' }
   return readerSlug
     ? <Link href={`/legislation/${readerSlug}`} className="party-card" style={cardStyle}>{inner}</Link>
     : <div style={cardStyle}>{inner}</div>

@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     'their type, stage, and progress, with plain-language breakdowns.',
 }
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', SURFACE = '#f8fafc', BORDER = '#e9e7e2'
+const INK = '#17231b', SECONDARY = '#667066', TERTIARY = '#9aa0aa', SURFACE = '#eef3ec', BORDER = '#e4ebe2'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const JADE = '#1F8A4C'
 
