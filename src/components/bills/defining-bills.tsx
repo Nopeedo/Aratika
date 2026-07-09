@@ -5,10 +5,8 @@
  */
 
 import Link from 'next/link'
-import { Landmark, ExternalLink, ArrowRight, CheckCircle2, XCircle, Clock } from 'lucide-react'
+import { Landmark, ArrowRight, CheckCircle2, XCircle, Clock } from 'lucide-react'
 import { DEFINING_BILLS, DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
-import { POLICY_TOPICS } from '@/constants/policy-topics'
-import type { PolicyTopic } from '@/types'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
@@ -34,9 +32,8 @@ export function DefiningBills() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))', gap: 14, marginTop: 18 }}>
         {DEFINING_BILLS.map((b) => {
           const st = STATUS[b.statusKind]; const Icon = st.icon
-          const topic = b.topic ? POLICY_TOPICS[b.topic as PolicyTopic] : null
           return (
-            <div key={b.title} style={{ border: `1.5px solid ${INK}`, borderRadius: 16, padding: '18px 20px', background: '#fff', display: 'flex', flexDirection: 'column' }}>
+            <Link key={b.slug} href={`/bills/${b.slug}`} className="party-card" style={{ border: `1.5px solid ${INK}`, borderRadius: 16, padding: '18px 20px', background: '#fff', display: 'flex', flexDirection: 'column', textDecoration: 'none' }}>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, color: st.fg, background: st.bg, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE, alignSelf: 'flex-start', marginBottom: 10 }}>
                 <Icon style={{ width: 12, height: 12 }} /> {b.status}
               </span>
@@ -45,17 +42,10 @@ export function DefiningBills() {
               <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 10px' }}><b style={{ color: INK }}>Why it matters:</b> {b.why}</p>
               <p style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.5, margin: '0 0 14px' }}>{b.champion}</p>
 
-              <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-                {topic && (
-                  <Link href={`/policies/${b.topic}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-                    Where parties stand <ArrowRight style={{ width: 13, height: 13 }} />
-                  </Link>
-                )}
-                <a href={b.source.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
-                  {b.source.label} <ExternalLink style={{ width: 11, height: 11 }} />
-                </a>
-              </div>
-            </div>
+              <span style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>
+                Read the breakdown <ArrowRight style={{ width: 14, height: 14 }} />
+              </span>
+            </Link>
           )
         })}
       </div>

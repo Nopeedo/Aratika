@@ -16,6 +16,7 @@
 import type { PolicyTopic } from '@/types'
 
 export interface DefiningBill {
+  slug: string               // /bills/[slug] — its own breakdown page
   title: string
   what: string
   status: string
@@ -36,6 +37,7 @@ const PARL = { label: 'parliament.nz — Bills & laws', url: 'https://www.parlia
 
 export const DEFINING_BILLS: DefiningBill[] = [
   {
+    slug: 'treaty-principles-bill',
     title: 'Treaty Principles Bill',
     what: 'Proposed to define the principles of the Treaty of Waitangi in legislation.',
     status: 'Defeated at second reading (April 2025)',
@@ -45,6 +47,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
     source: PARL,
   },
   {
+    slug: 'three-strikes-sentencing',
     title: 'Three Strikes sentencing legislation',
     what: 'Reinstates a regime of escalating penalties for repeat serious violent and sexual offending.',
     status: 'Now law (2025)',
@@ -55,6 +58,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
     source: LEG('three strikes'),
   },
   {
+    slug: 'gangs-act-2024',
     title: 'Gangs Act 2024',
     what: 'Bans gang insignia in public places and gives police new dispersal and consorting powers.',
     status: 'Now law (2024)',
@@ -65,6 +69,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
     source: LEG('gangs'),
   },
   {
+    slug: 'fast-track-approvals-act-2024',
     title: 'Fast-track Approvals Act 2024',
     what: 'Creates a one-stop fast-track consenting pathway for nationally and regionally significant projects.',
     status: 'Now law (2024)',
@@ -75,6 +80,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
     source: LEG('fast-track approvals'),
   },
   {
+    slug: 'resource-management-reform',
     title: 'Replacing the Resource Management Act (RMA)',
     what: 'Repeals and replaces the RMA with new resource-management legislation governing how land, housing and the environment are managed.',
     status: 'In progress (2025)',
@@ -85,6 +91,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
     source: PARL,
   },
   {
+    slug: 'local-water-done-well',
     title: 'Local Water Done Well (Three Waters repeal)',
     what: 'Repealed the previous government’s Three Waters / Affordable Water reforms and replaced them with a council-led model.',
     status: 'Now law (2024)',
@@ -94,6 +101,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
     source: LEG('water services'),
   },
   {
+    slug: 'pae-ora-maori-health-authority',
     title: 'Pae Ora (Māori Health Authority) amendment',
     what: 'Disestablished Te Aka Whai Ora, the Māori Health Authority.',
     status: 'Now law (2024)',
@@ -104,6 +112,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
     source: LEG('pae ora'),
   },
   {
+    slug: 'smokefree-environments-repeal',
     title: 'Smokefree environments repeal',
     what: 'Repealed the previous government’s smokefree measures (denicotinisation and the smokefree-generation ban).',
     status: 'Now law (2024)',
@@ -114,3 +123,6 @@ export const DEFINING_BILLS: DefiningBill[] = [
     source: LEG('smokefree'),
   },
 ]
+
+export const getDefiningBill = (slug: string): DefiningBill | undefined =>
+  DEFINING_BILLS.find((b) => b.slug === slug)

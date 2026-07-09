@@ -13,6 +13,8 @@ import {
 import {
   getBill, BILL_SLUGS, BILL_STAGE_PIPELINE, BILLS_SOURCE_URL, BILLS_SNAPSHOT_DATE,
 } from '@/constants/bills-data'
+import { DEFINING_BILLS, getDefiningBill } from '@/constants/defining-bills'
+import { DefiningBillDetail } from '@/components/bills/defining-bill-detail'
 import { BillStatusBadge } from '@/components/ui/badge'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -25,13 +27,15 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
 
 export function generateStaticParams() {
-  return BILL_SLUGS.map((slug) => ({ slug }))
+  return [...BILL_SLUGS, ...DEFINING_BILLS.map((b) => b.slug)].map((slug) => ({ slug }))
 }
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> },
 ): Promise<Metadata> {
   const { slug } = await params
+  const defining = getDefiningBill(slug)
+  if (defining) return { title: `${defining.title} — what it does & why it matters`, description: defining.what }
   const bill = getBill(slug)
   if (!bill) return { title: 'Bill not found' }
   return { title: bill.title, description: bill.summary }
@@ -49,6 +53,11 @@ export default async function BillDetailPage(
   { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params
+
+  // Curated "bills that defined this term" get their own breakdown view.
+  const defining = getDefiningBill(slug)
+  if (defining) return <DefiningBillDetail bill={defining} />
+
   const bill = getBill(slug)
   if (!bill) notFound()
 
