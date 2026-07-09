@@ -59,7 +59,7 @@ export function StageTracker({ stage, selectCommittee }: { stage: string | null;
                 {!last && <div style={{ width: 2, flex: 1, minHeight: 22, background: done ? c.solid : '#e4e6e9' }} />}
               </div>
               <div style={{ paddingBottom: last ? 0 : 14 }}>
-                <div style={{ fontSize: 14, fontWeight: current ? 800 : done ? 700 : 600, color: filled ? c.dark : '#9aa0aa', fontFamily: MANROPE }}>
+                <div style={{ fontSize: 14, fontWeight: current ? 800 : done ? 700 : 600, color: c.dark, opacity: filled ? 1 : 0.55, fontFamily: MANROPE }}>
                   {s.label}
                   {current && <span style={{ fontSize: 11, fontWeight: 700, color: c.dark, marginLeft: 8 }}>● Current stage</span>}
                 </div>
