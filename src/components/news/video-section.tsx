@@ -15,6 +15,15 @@ import type { VideoItem } from '@/lib/news/videos'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+// Deterministic date label (UTC) — SSR/hydration-safe (no Date.now()); matches NewsFeed.
+function fmtDate(iso: string | null): string {
+  if (!iso) return ''
+  const d = new Date(iso)
+  if (isNaN(d.getTime())) return ''
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`
+}
 
 export function VideoSection({ videos }: { videos: VideoItem[] }) {
   const [party, setParty] = useState('all')
@@ -71,7 +80,10 @@ export function VideoSection({ videos }: { videos: VideoItem[] }) {
               )}
             </div>
             <div style={{ padding: '11px 13px' }}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: SECONDARY, marginBottom: 5 }}>{v.source}</div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 5 }}>
+                <span style={{ fontSize: 11, fontWeight: 800, color: SECONDARY }}>{v.source}</span>
+                {v.pubDate && <span style={{ fontSize: 11, fontWeight: 600, color: TERTIARY }}>{fmtDate(v.pubDate)}</span>}
+              </div>
               <div style={{ fontSize: 13.5, fontWeight: 700, color: INK, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{v.title}</div>
               {v.parties.length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 8 }}>

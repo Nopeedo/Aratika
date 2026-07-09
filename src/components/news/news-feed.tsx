@@ -158,9 +158,10 @@ function StoryCard({ it }: { it: NewsItem }) {
       {/* gradient for legibility */}
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,.15) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,.78) 100%)' }} />
 
-      {/* top row: outlet */}
-      <div style={{ position: 'absolute', top: 10, left: 10, right: 10, display: 'flex' }}>
+      {/* top row: outlet + date */}
+      <div style={{ position: 'absolute', top: 10, left: 10, right: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
         <span style={{ fontSize: 10.5, fontWeight: 800, color: '#fff', background: 'rgba(0,0,0,.45)', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE, backdropFilter: 'blur(2px)' }}>{it.outlet}</span>
+        {it.pubDate && <span style={{ fontSize: 10.5, fontWeight: 700, color: '#fff', background: 'rgba(0,0,0,.45)', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE, backdropFilter: 'blur(2px)' }}>{fmtDate(it.pubDate)}</span>}
       </div>
 
       {/* bottom: headline + tags */}
