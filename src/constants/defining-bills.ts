@@ -249,10 +249,31 @@ export const DEFINING_BILLS: DefiningBill[] = [
     what: 'Disestablished Te Aka Whai Ora, the Māori Health Authority.',
     status: 'Now law (2024)',
     statusKind: 'law',
-    why: 'A defining change to how the health system is structured, with strong views on both sides.',
-    champion: 'National-led government.',
+    why: 'A defining change to how the health system is structured, with strong views on both sides — and passed under urgency.',
+    champion: 'National-led government; Health Minister Dr Shane Reti.',
     topic: 'health',
     source: LEG('pae ora'),
+    overview:
+      'Disestablished Te Aka Whai Ora, the Māori Health Authority that the previous Labour government created in 2022 to commission health services for Māori and share decision-making across the health system. The coalition moved its functions and staff into the Ministry of Health and Health New Zealand.',
+    keyProvisions: [
+      'Disestablished Te Aka Whai Ora (the Māori Health Authority).',
+      'Transferred its functions and staff to the Ministry of Health and Health New Zealand (Te Whatu Ora).',
+      'Repealed the joint Māori–Crown decision-making and co-commissioning arrangements in the health system.',
+    ],
+    timeline: [
+      { date: '27 Feb 2024', event: 'Introduced' },
+      { date: '28 Feb 2024', event: 'Passed all three readings in one sitting, under urgency' },
+      { date: '30 Jun 2024', event: 'The Māori Health Authority is disestablished' },
+    ],
+    publicResponse:
+      'Passed under urgency, with limited public submission — itself a point of contention. Opposition parties and many Māori health advocates opposed it, arguing a dedicated authority was needed to address long-standing Māori health inequities. The government argued those services could be delivered, and held accountable, within the main health system.',
+    outcome:
+      'Now law. Te Aka Whai Ora was disestablished on 30 June 2024 and its work absorbed into Health New Zealand and the Ministry of Health.',
+    sources: [
+      { label: 'Ministry of Health — Pae Ora (Healthy Futures) Act', url: 'https://www.health.govt.nz/about-us/new-zealands-health-system/overview-and-statutory-framework/pae-ora-healthy-futures-act' },
+      { label: 'Te Ao Māori News — Parliament passes bill to disestablish Te Aka Whai Ora', url: 'https://www.teaonews.co.nz/2024/02/28/parliament-passes-bill-to-disestablish-te-aka-whai-ora/' },
+      { label: 'NZ Legislation — Pae Ora (Healthy Futures) Act', url: 'https://www.legislation.govt.nz/act/public/2022/0030/latest/versions.aspx' },
+    ],
   },
   {
     slug: 'smokefree-environments-repeal',
@@ -260,10 +281,31 @@ export const DEFINING_BILLS: DefiningBill[] = [
     what: 'Repealed the previous government’s smokefree measures (denicotinisation and the smokefree-generation ban).',
     status: 'Now law (2024)',
     statusKind: 'law',
-    why: 'A reversal that became a flashpoint in public-health policy.',
-    champion: 'National-led government.',
+    why: 'A reversal that became a flashpoint in public-health policy — and over whether health policy was changed for revenue.',
+    champion: 'National-led government; Associate Health Minister Casey Costello.',
     topic: 'health',
     source: LEG('smokefree'),
+    overview:
+      'Repealed the previous government’s 2022 “smokefree generation” law — a world-first set of measures aimed at ending smoking in New Zealand — before its main parts took effect. The repeal was a coalition commitment and was passed under urgency.',
+    keyProvisions: [
+      'Scrapped the “smokefree generation” ban on ever selling tobacco to anyone born on or after 1 January 2009.',
+      'Scrapped the plan to cut the number of tobacco retailers from around 6,000 to about 600.',
+      'Scrapped the requirement to strip most of the nicotine out of cigarettes (denicotinisation).',
+    ],
+    timeline: [
+      { date: '27 Feb 2024', event: 'Introduced' },
+      { date: '28 Feb 2024', event: 'Passed its third reading under urgency' },
+      { date: '6 Mar 2024', event: 'Comes into force' },
+    ],
+    publicResponse:
+      'Health officials and experts urged the government to keep parts of the law, and it drew international attention as a world-first policy being reversed. The government gave two reasons: Associate Health Minister Casey Costello argued the untested regime risked a black market and prohibition-style harms, while Finance Minister Nicola Willis had linked the repeal to the tobacco tax revenue the coalition’s fiscal plan relied on — which critics said meant reversing health policy for revenue.',
+    outcome:
+      'Now law. The three measures were repealed before they took effect. How to keep driving smoking rates down — and how to regulate vaping — remains a live debate.',
+    sources: [
+      { label: 'RNZ — Officials urged minister to retain parts of smokefree laws', url: 'https://www.rnz.co.nz/news/in-depth/510246/officials-urged-associate-health-minister-casey-costello-to-retain-parts-of-smokefree-laws-briefings-reveal' },
+      { label: '1News — Govt to repeal smokefree legislation under urgency', url: 'https://www.1news.co.nz/2024/02/27/smokefree-laws-govt-to-repeal-legislation-under-urgency/' },
+      { label: 'NZ Legislation — Smokefree Environments Amendment', url: 'https://www.legislation.govt.nz/bill/government/2024/0022/latest/whole.html' },
+    ],
   },
 ]
 
