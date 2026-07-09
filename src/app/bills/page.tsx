@@ -30,6 +30,22 @@ const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', SURFACE = '#
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const JADE = '#1F8A4C'
 
+// Bill stage (kebab value from the pipeline) → human label + colour, matching the
+// tracker's scheme (green = law, blue = select committee, amber = in progress).
+const STAGE_META: Record<string, { label: string; fg: string; bg: string }> = {
+  'introduced': { label: 'Introduced', fg: '#92400e', bg: '#fff7e6' },
+  'first-reading': { label: 'First reading', fg: '#92400e', bg: '#fff7e6' },
+  'select-committee': { label: 'Select committee', fg: '#1e40af', bg: '#eef4ff' },
+  'second-reading': { label: 'Second reading', fg: '#92400e', bg: '#fff7e6' },
+  'committee-of-whole-house': { label: 'Committee of the whole House', fg: '#92400e', bg: '#fff7e6' },
+  'third-reading': { label: 'Third reading', fg: '#92400e', bg: '#fff7e6' },
+  'royal-assent': { label: 'Passed into law', fg: '#065f46', bg: '#d1fae5' },
+}
+function stageMeta(stage: string | null): { label: string; fg: string; bg: string } | null {
+  if (!stage) return null
+  return STAGE_META[stage] ?? { label: stage.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()), fg: '#92400e', bg: '#fff7e6' }
+}
+
 export default async function BillsPage({ searchParams }: { searchParams: Promise<{ party?: string }> }) {
   const { party: initialParty } = await searchParams
   const readable = await getApprovedBills()
@@ -91,9 +107,12 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
               {readable.slice(0, 6).map((b) => (
                 <Link key={b.id} href={`/legislation/${b.slug}`} style={{ textDecoration: 'none' }}>
                   <div className="party-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '20px 22px' }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, color: JADE, background: '#ecfdf5', border: '1px solid #cfe9d8', borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE, textTransform: 'capitalize', alignSelf: 'flex-start', marginBottom: 10 }}>
-                      <FileText style={{ width: 11, height: 11 }} /> {b.docType}
-                    </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, color: JADE, background: '#ecfdf5', border: '1px solid #cfe9d8', borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE, textTransform: 'capitalize' }}>
+                        <FileText style={{ width: 11, height: 11 }} /> {b.docType}
+                      </span>
+                      {(() => { const sm = stageMeta(b.stage); return sm ? <span style={{ fontSize: 11, fontWeight: 800, color: sm.fg, background: sm.bg, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{sm.label}</span> : null })()}
+                    </div>
                     <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.3, marginBottom: 8 }}>{b.title}</div>
                     <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 14px', flex: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{b.summary}</p>
                     {b.policyLinks.length > 0 && (
