@@ -85,23 +85,67 @@ export const DEFINING_BILLS: DefiningBill[] = [
     slug: 'three-strikes-sentencing',
     title: 'Three Strikes sentencing legislation',
     what: 'Reinstates a regime of escalating penalties for repeat serious violent and sexual offending.',
-    status: 'Now law (2025)',
+    status: 'Now law (in force June 2025)',
     statusKind: 'law',
-    why: 'A flagship law-and-order policy that parties take clearly different positions on.',
-    champion: 'National-led government (National, ACT, NZ First).',
+    why: 'A flagship law-and-order policy that the parties take clearly different positions on — a dividing line between deterrence and rehabilitation.',
+    champion: 'National-led government (National, ACT, NZ First); Justice Minister Paul Goldsmith.',
     topic: 'crime-justice',
     source: LEG('three strikes'),
+    overview:
+      'Reinstates the “three strikes” sentencing regime that the previous government repealed in 2022, with changes intended to make it more workable. Led by Justice Minister Paul Goldsmith, it was a law-and-order commitment of the National-led coalition and a long-standing ACT policy. It sets escalating, harsher consequences for people repeatedly convicted of serious violent and sexual offending.',
+    keyProvisions: [
+      'Applies to 42 serious violent and sexual offences, including new strangulation and suffocation offences.',
+      'First strike: the offender is formally warned of the consequences of re-offending.',
+      'Second strike: the sentence is served without parole.',
+      'Third strike: the maximum penalty for the offence, without parole — with a narrow exception where a court finds that would be manifestly unjust.',
+      'Warnings from the earlier three-strikes regime carry over where they meet the new threshold.',
+    ],
+    timeline: [
+      { date: '25 Jun 2024', event: 'Introduced and passed its first reading' },
+      { date: '17 Dec 2024', event: 'Receives royal assent' },
+      { date: '17 Jun 2025', event: 'The three-strikes regime comes into force' },
+    ],
+    publicResponse:
+      'The government argued the regime delivers justice for victims — noting Māori make up a large share of violent-crime victims. Opposition parties and many legal and academic submitters argued three-strikes laws do not reduce crime and fall disproportionately on Māori, who are over-represented in the justice system.',
+    outcome:
+      'Now law — the reinstated regime has applied to qualifying offences since 17 June 2025.',
+    sources: [
+      { label: 'Ministry of Justice — Three strikes law', url: 'https://www.justice.govt.nz/justice-sector-policy/key-initiatives/three-strikes-law/' },
+      { label: 'Beehive — Three Strikes Bill passes third reading', url: 'https://www.beehive.govt.nz/release/three-strikes-bill-passes-third-reading' },
+      { label: 'NZ Legislation — Reinstating Three Strikes', url: 'https://www.legislation.govt.nz/bill/government/2024/0065/latest/whole.html' },
+    ],
   },
   {
     slug: 'gangs-act-2024',
     title: 'Gangs Act 2024',
     what: 'Bans gang insignia in public places and gives police new dispersal and consorting powers.',
-    status: 'Now law (2024)',
+    status: 'Now law (in force Nov 2024)',
     statusKind: 'law',
-    why: 'Central to the government’s crime agenda and a key dividing line on policing.',
-    champion: 'National-led government.',
+    why: 'Central to the government’s crime agenda and a key dividing line on policing versus civil liberties.',
+    champion: 'National-led government; Justice Minister Paul Goldsmith.',
     topic: 'crime-justice',
     source: LEG('gangs'),
+    overview:
+      'A law-and-order commitment of the National-led coalition that gives police and the courts new powers to target criminal gangs — most visibly by banning gang insignia in public places. Police began enforcing the patch ban within minutes of the law taking effect.',
+    keyProvisions: [
+      'Makes it an offence to display gang insignia in a public place — up to 6 months’ imprisonment or a $5,000 fine. Insignia covers patches and the items they’re on, such as jackets or vehicles.',
+      'Gives police dispersal powers: they can order gang members to leave and not associate in public for 7 days where three or more are gathering.',
+      'Lets the courts make non-consorting orders stopping specified gang offenders from associating for up to 3 years.',
+      'Applies to a scheduled list of 35 gangs.',
+    ],
+    timeline: [
+      { date: '19 Sep 2024', event: 'Passed its third reading' },
+      { date: '21 Nov 2024', event: 'Comes into force; police enforce the patch ban from day one' },
+    ],
+    publicResponse:
+      'Supporters argue the ban curbs the public intimidation gangs use to assert control. Critics — including some legal groups — question whether it will reduce gang harm or simply displace it, and raise civil-liberties concerns about criminalising the display of insignia.',
+    outcome:
+      'Now law and in force since 21 November 2024.',
+    sources: [
+      { label: 'NZ Police — The Gangs Act 2024', url: 'https://www.police.govt.nz/about-us/programmes-and-initiatives/gangs-act-2024' },
+      { label: 'Ministry of Justice — Gang laws come into effect', url: 'https://www.justice.govt.nz/about/news-and-media/news/gang-laws-come-into-effect/' },
+      { label: 'NZ Legislation — Gangs Act 2024', url: 'https://www.legislation.govt.nz/act/public/2024/36/en/latest/' },
+    ],
   },
   {
     slug: 'fast-track-approvals-act-2024',
@@ -109,10 +153,31 @@ export const DEFINING_BILLS: DefiningBill[] = [
     what: 'Creates a one-stop fast-track consenting pathway for nationally and regionally significant projects.',
     status: 'Now law (2024)',
     statusKind: 'law',
-    why: 'Defines the debate between speeding up development and maintaining environmental safeguards.',
-    champion: 'National-led government.',
+    why: 'Defines the debate between speeding up development and maintaining environmental safeguards — and became a flashpoint over ministerial conflicts of interest.',
+    champion: 'National-led government; Ministers Chris Bishop (National) and Shane Jones (NZ First).',
     topic: 'climate',
     source: LEG('fast-track approvals'),
+    overview:
+      'Creates a permanent “one-stop shop” to speed up approvals for building and development projects of national or regional significance — from roads and renewable energy to mining and housing. Led by Infrastructure and RMA Reform Minister Chris Bishop with Regional Development and Resources Minister Shane Jones, it was a flagship growth policy of the coalition and one of its most contested.',
+    keyProvisions: [
+      'Sets up a single fast-track consenting pathway that can override the usual approvals required under several environmental laws.',
+      '149 “listed” projects, chosen by ministers, can use the pathway directly; other projects can apply to the Infrastructure Minister to be referred in.',
+      'Expert panels — not ministers — make the final approval decisions, after the government dropped an earlier plan to give three ministers sign-off power.',
+    ],
+    timeline: [
+      { date: '2024', event: 'Introduced as the Fast-track Approvals Bill' },
+      { date: 'During passage', event: 'Government drops the plan for three ministers to have the final say; expert panels decide instead' },
+      { date: '23 Dec 2024', event: 'Receives royal assent and becomes law' },
+    ],
+    publicResponse:
+      'Backers say it removes red tape holding up infrastructure and housing. Environmental groups and opposition parties opposed it, warning it weakens environmental safeguards and public input. The scheme also drew scrutiny over ministerial conflicts of interest — including from the Office of the Auditor-General — after reporting on links between some listed projects and party donations.',
+    outcome:
+      'Now law. The fast-track regime is operating, with the 149 listed projects able to use it and others applying to be referred in.',
+    sources: [
+      { label: 'Ministry for the Environment — Fast-track Approvals Act', url: 'https://environment.govt.nz/acts-and-regulations/acts/fast-track-approvals/' },
+      { label: 'NZ Legislation — Fast-track Approvals Act 2024', url: 'https://www.legislation.govt.nz/act/public/2024/56/en/latest/' },
+      { label: 'Office of the Auditor-General — Fast-track conflicts', url: 'https://www.oag.parliament.nz/2025/fast-track-conflicts/part1.htm' },
+    ],
   },
   {
     slug: 'resource-management-reform',
