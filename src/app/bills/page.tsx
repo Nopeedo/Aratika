@@ -61,10 +61,10 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
   const memberParty = memberPartyMap()
 
   return (
-    <div style={{ background: '#ffffff', minHeight: '100vh' }}>
+    <div style={{ background: '#f5f8f4', minHeight: '100vh' }}>
 
       {/* Header */}
-      <div className="bg-dot-grid" style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}>
+      <div className="bg-dot-grid" style={{ background: '#f5f8f4', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 36px 40px' }}>
           <div style={{ marginBottom: 8 }}>
             <SectionDivider type="official" label="Official Parliament Data" />
