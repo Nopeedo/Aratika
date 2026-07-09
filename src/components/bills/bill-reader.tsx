@@ -13,8 +13,8 @@ import { StageTracker } from '@/components/bills/stage-tracker'
 import { HaveYourSay } from '@/components/bills/have-your-say'
 import { BillFullText } from '@/components/bills/bill-full-text'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', JADE = '#1F8A4C'
+const INK = '#17231b', SECONDARY = '#667066', TERTIARY = '#9aa0aa'
+const BORDER = '#e4ebe2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function BillReader({ bill }: { bill: LiveBill }) {

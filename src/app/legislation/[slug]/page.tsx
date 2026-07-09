@@ -13,7 +13,7 @@ import { BillReader } from '@/components/bills/bill-reader'
 
 export const dynamic = 'force-dynamic'
 
-const BORDER = '#e9e7e2', SECONDARY = '#6b7078'
+const BORDER = '#e4ebe2', SECONDARY = '#667066'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -29,8 +29,8 @@ export default async function LegislationReaderPage({ params }: { params: Promis
   if (!bill) notFound()
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={{ background: '#f5f8f4', minHeight: '100vh' }}>
+      <div className="bg-dot-grid" style={{ background: '#f5f8f4', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '28px 36px 48px' }}>
           <Link href="/legislation" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 24 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All legislation
