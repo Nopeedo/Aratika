@@ -8,13 +8,14 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
-  ArrowLeft, ArrowUpRight, Landmark, Users, Info, Check, FileText, Vote, Lock, PenLine,
+  ArrowLeft, ArrowUpRight, Landmark, Users, Info, FileText, Lock, PenLine,
 } from 'lucide-react'
 import {
-  getBill, BILL_SLUGS, BILL_STAGE_PIPELINE, BILLS_SOURCE_URL, BILLS_SNAPSHOT_DATE,
+  getBill, BILL_SLUGS, BILLS_SOURCE_URL, BILLS_SNAPSHOT_DATE,
 } from '@/constants/bills-data'
 import { DEFINING_BILLS, getDefiningBill } from '@/constants/defining-bills'
 import { DefiningBillDetail } from '@/components/bills/defining-bill-detail'
+import { StageTracker } from '@/components/bills/stage-tracker'
 import { BillStatusBadge } from '@/components/ui/badge'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -60,8 +61,6 @@ export default async function BillDetailPage(
 
   const bill = getBill(slug)
   if (!bill) notFound()
-
-  const currentIdx = BILL_STAGE_PIPELINE.findIndex((s) => s.key === bill.stage)
 
   return (
     <div style={{ background: '#fff', minHeight: '100vh' }}>
@@ -127,51 +126,8 @@ export default async function BillDetailPage(
           </p>
         </Card>
 
-        {/* Stage progress */}
-        <Card>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 18 }}>
-            <Vote style={{ width: 17, height: 17, color: JADE }} />
-            <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Progress through Parliament</h2>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {BILL_STAGE_PIPELINE.map((s, i) => {
-              const done    = i < currentIdx
-              const current = i === currentIdx
-              const last    = i === BILL_STAGE_PIPELINE.length - 1
-              const color   = done ? JADE : current ? INK : '#cbd0d6'
-              return (
-                <div key={s.key} style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-                  {/* Marker + line */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', alignSelf: 'stretch' }}>
-                    <div style={{
-                      width: 24, height: 24, borderRadius: '50%', flexShrink: 0,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      background: done ? JADE : current ? INK : '#fff',
-                      border: `2px solid ${done ? JADE : current ? INK : '#cbd0d6'}`,
-                    }}>
-                      {done ? <Check style={{ width: 13, height: 13, color: '#fff' }} />
-                        : current ? <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#fff' }} />
-                        : <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#cbd0d6' }} />}
-                    </div>
-                    {!last && <div style={{ width: 2, flex: 1, minHeight: 22, background: done ? JADE : '#e4e6e9' }} />}
-                  </div>
-                  {/* Label */}
-                  <div style={{ paddingBottom: last ? 0 : 14 }}>
-                    <div style={{ fontSize: 14, fontWeight: current ? 800 : 600, color, fontFamily: MANROPE }}>
-                      {s.label}
-                      {current && <span style={{ fontSize: 11, fontWeight: 700, color: JADE, marginLeft: 8 }}>● Current stage</span>}
-                    </div>
-                    {current && s.key === 'select-committee' && bill.selectCommittee && (
-                      <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, marginTop: 2 }}>
-                        {bill.selectCommittee} Committee — open for public submissions at this stage.
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </Card>
+        {/* Stage progress — shared component with the per-stage colour scheme */}
+        <StageTracker stage={bill.stage} selectCommittee={bill.selectCommittee} />
 
         {/* Have your say — submission CTA (bills open at select committee) */}
         {bill.stage === 'select-committee' && (
