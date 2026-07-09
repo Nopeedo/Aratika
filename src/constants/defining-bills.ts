@@ -25,6 +25,16 @@ export interface DefiningBill {
   champion: string
   topic?: PolicyTopic        // links to /policies/[topic] — only where a clean match exists
   source: { label: string; url: string }
+
+  // ── Optional in-depth breakdown (shown on /bills/[slug] when present) ────────
+  // Populated bill-by-bill from credible, cited sources. Every fact must be
+  // verifiable from `sources`; leave a field out rather than guess.
+  overview?: string                                   // fuller what + context
+  keyProvisions?: string[]                            // what it does / how it works
+  timeline?: { date: string; event: string }[]        // when — dated milestones
+  publicResponse?: string                             // where/who — submissions, protests, engagement
+  outcome?: string                                    // current status, in detail
+  sources?: { label: string; url: string }[]          // credible sources to verify
 }
 
 export const DEFINING_BILLS_META = {
@@ -42,9 +52,34 @@ export const DEFINING_BILLS: DefiningBill[] = [
     what: 'Proposed to define the principles of the Treaty of Waitangi in legislation.',
     status: 'Defeated at second reading (April 2025)',
     statusKind: 'defeated',
-    why: 'One of the most debated bills of the term — it drew a record number of select-committee submissions and a large national hīkoi.',
+    why: 'One of the most debated bills of the term — it drew the largest public response to any bill in New Zealand history and a national hīkoi to Parliament.',
     champion: 'Championed by ACT; supported by National and NZ First only to select committee under the coalition agreement.',
     source: PARL,
+    overview:
+      'A Member’s Bill in the name of ACT leader David Seymour, introduced under the ACT–National coalition agreement. It sought to set out the principles of the Treaty of Waitangi in statute — replacing principles that have been developed over decades by the courts and the Waitangi Tribunal — and define them in three parts. ACT had campaigned to ultimately put the principles to a public referendum, but its coalition partners committed only to supporting the bill to the select committee stage.',
+    keyProvisions: [
+      'Principle 1 — Civil government: the New Zealand Government has the right to govern all New Zealanders.',
+      'Principle 2 — Rights of hapū and iwi Māori: the Crown would honour the rights hapū and iwi held when they signed the Treaty (the exact wording, and its treatment of rangatiratanga, was heavily debated).',
+      'Principle 3 — Right to equality: all New Zealanders are equal under the law, with the same rights and duties.',
+      'The principles would be interpreted from the Act itself, rather than continuing to be shaped by the courts and the Waitangi Tribunal.',
+    ],
+    timeline: [
+      { date: '7 Nov 2024', event: 'Introduced to Parliament' },
+      { date: '14 Nov 2024', event: 'Passed its first reading 68–54 (ACT, National, NZ First)' },
+      { date: '19 Nov 2024', event: 'Tens of thousands join the Hīkoi mō te Tiriti at Parliament' },
+      { date: 'Nov 2024 – Jan 2025', event: 'Record public submissions to the Justice Committee' },
+      { date: '4 Apr 2025', event: 'Justice Committee reports back, recommending the bill not proceed' },
+      { date: '10 Apr 2025', event: 'Defeated at second reading 112–11 — only ACT in favour' },
+    ],
+    publicResponse:
+      'The bill drew the largest public response to any bill in New Zealand’s history. The Justice Committee received more than 300,000 submissions; of those analysed, about 90% opposed the bill and 8% supported it. On 19 November 2024, tens of thousands of people marched on Parliament in the Hīkoi mō te Tiriti — described as one of the largest demonstrations in the country’s history.',
+    outcome:
+      'Defeated at its second reading on 10 April 2025 by 112 votes to 11 — only ACT voted in favour, as National and NZ First had committed to supporting it only to the select committee. The bill will not become law, but the debate over how the Treaty’s principles are defined remains a live election issue.',
+    sources: [
+      { label: 'NZ Parliament — Bills & laws', url: 'https://www.parliament.nz/en/pb/bills-and-laws/' },
+      { label: 'Ministry of Justice — A Treaty Principles Bill', url: 'https://www.justice.govt.nz/justice-sector-policy/key-initiatives/a-treaty-principles-bill/' },
+      { label: 'RNZ — Treaty Principles Bill coverage', url: 'https://www.rnz.co.nz/news/political/534907/treaty-principles-bill-david-seymour-s-acknowledgement-of-rangatiratanga-raises-a-whole-lot-of-questions' },
+    ],
   },
   {
     slug: 'three-strikes-sentencing',
