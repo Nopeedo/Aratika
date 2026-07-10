@@ -19,6 +19,8 @@ export interface VideoItem {
   pubDate: string | null
   thumbnail: string
   electionRelevant: boolean
+  /** Leaders'/minor-party debate or long-form leader interview — see DEBATE_TERMS. */
+  debate: boolean
 }
 
 export async function getVideos(limit = 48): Promise<VideoItem[]> {
@@ -44,9 +46,16 @@ export async function getVideos(limit = 48): Promise<VideoItem[]> {
       pubDate: (d.pubDate as string) ?? null,
       thumbnail: String(d.thumbnail ?? ''),
       electionRelevant: d.electionRelevant === true,
+      debate: d.debate === true,
     }
   })
   return items.sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+}
+
+/** Debate videos only (leaders'/minor-party debates, long-form leader interviews). */
+export async function getDebateVideos(limit = 12): Promise<VideoItem[]> {
+  const all = await getVideos(200)
+  return all.filter((v) => v.debate).slice(0, limit)
 }
 
 /** Videos naming a specific battleground electorate — see getNewsForElectorate. */

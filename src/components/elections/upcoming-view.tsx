@@ -1,17 +1,21 @@
 /**
- * UpcomingView — the prepped 2026 election page. Countdown, key dates (TBC),
- * how to take part, the 2023 baseline ("the Parliament you're voting to change"),
- * parties likely contesting, and a results scaffold for election night.
+ * UpcomingView — the 2026 Election Centre. Reprioritised for the everyday voter:
+ * decide (compass + compare) → get ready → your electorate (battlegrounds + map)
+ * → leaders & debates → the shape of the next Parliament → polls (demoted) →
+ * parties → election-night scaffold. Polls are context, not the headline.
  */
 
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, UserPlus, Vote, Clock, Info, CalendarX, Swords } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, UserPlus, Vote, Clock, Info, CalendarX, Swords, Sparkles, Scale, MapPin, MessageSquare } from 'lucide-react'
 import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { PARTY_NAMES, PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
+import { getDebateVideos, getVideos } from '@/lib/news/videos'
 import { CountdownBig } from './countdown-big'
 import { PollTracker } from './poll-tracker'
 import { SeatHemicycle } from './seat-hemicycle'
+import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
+import { VideoSection } from '@/components/news/video-section'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
@@ -23,19 +27,16 @@ const STEPS = [
   { icon: Clock, title: 'Vote early or on the day', body: 'Advance voting usually opens about two weeks before election day. Dates confirmed closer to the time.', href: null, cta: null },
 ]
 
-export function UpcomingView({ e }: { e: ElectionData }) {
+export async function UpcomingView({ e }: { e: ElectionData }) {
   const base = BASELINE_ELECTION
+  const debates = await getDebateVideos(12)
+  const railVideos = debates.length > 0 ? debates : await getVideos(18)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 26 }}>
       <CountdownBig />
 
-      {/* Poll tracker — sourced snapshot of where the parties are polling */}
-      <div id="polls" style={{ scrollMarginTop: 80 }}>
-        <PollTracker />
-      </div>
-
-      {/* Key dates */}
+      {/* Key date */}
       <div style={{ display: 'flex', gap: 10, padding: '14px 16px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 12 }}>
         <CalendarX style={{ width: 17, height: 17, color: '#b45309', flexShrink: 0, marginTop: 1 }} />
         <p style={{ fontSize: 13, color: '#92400e', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
@@ -44,9 +45,32 @@ export function UpcomingView({ e }: { e: ElectionData }) {
         </p>
       </div>
 
-      {/* How to take part */}
+      {/* ── DECIDE — the reason most people are here ─────────────────────────── */}
       <div>
-        <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 14px' }}>How to have your say</h2>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
+          <Sparkles style={{ width: 16, height: 16, color: JADE }} />
+          <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Not sure who to vote for?</span>
+        </div>
+        <h2 style={{ fontSize: 'clamp(20px, 4vw, 26px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 14px' }}>Start here — find your fit</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
+          <Link href="/start" style={decideCard}>
+            <div style={decideIcon}><Sparkles style={{ width: 22, height: 22, color: JADE }} /></div>
+            <div style={{ fontSize: 16.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Take the 60-second compass</div>
+            <div style={{ flex: 1, fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55 }}>Answer a few quick questions and see which parties line up with what matters to you — no sign-up, no score.</div>
+            <span style={decideCta}>Start the compass <ArrowRight style={ic} /></span>
+          </Link>
+          <Link href="/compare" style={decideCard}>
+            <div style={decideIcon}><Scale style={{ width: 22, height: 22, color: JADE }} /></div>
+            <div style={{ fontSize: 16.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Compare the parties, side by side</div>
+            <div style={{ flex: 1, fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55 }}>Pick an issue and see every party’s stance next to each other — summarised neutrally, with the sources.</div>
+            <span style={decideCta}>Compare policies <ArrowRight style={ic} /></span>
+          </Link>
+        </div>
+      </div>
+
+      {/* ── GET READY ────────────────────────────────────────────────────────── */}
+      <div>
+        <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 14px' }}>Get ready to vote</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
           {STEPS.map((s) => (
             <div key={s.title} style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -67,11 +91,37 @@ export function UpcomingView({ e }: { e: ElectionData }) {
         </div>
       </div>
 
-      {/* The Parliament you're voting to change (2023 baseline) */}
+      {/* ── YOUR ELECTORATE — battlegrounds + map ────────────────────────────── */}
+      <BattlegroundsTeaser />
+      <Link href="/map" style={{ textDecoration: 'none' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '18px 22px' }}>
+          <div style={{ width: 46, height: 46, borderRadius: 12, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <MapPin style={{ width: 22, height: 22, color: JADE }} />
+          </div>
+          <div style={{ flex: 1, minWidth: 220, fontFamily: MANROPE }}>
+            <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>Find your electorate</div>
+            <div style={{ fontSize: 13, color: SECONDARY, marginTop: 2 }}>Search the interactive map to find your seat, your MP, and the 2026 race where you live.</div>
+          </div>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>Open the map <ArrowRight style={{ width: 15, height: 15 }} /></span>
+        </div>
+      </Link>
+
+      {/* ── LEADERS & DEBATES ────────────────────────────────────────────────── */}
+      {railVideos.length > 0 && (
+        <div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
+            <MessageSquare style={{ width: 16, height: 16, color: JADE }} />
+            <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>{debates.length > 0 ? 'Debates & leader interviews' : 'Leaders & the press'}</span>
+          </div>
+          <VideoSection videos={railVideos} />
+        </div>
+      )}
+
+      {/* ── THE SHAPE OF THE NEXT PARLIAMENT ─────────────────────────────────── */}
       <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden' }}>
         <div style={{ padding: '14px 18px', borderBottom: `1px solid ${BORDER}`, background: SURFACE }}>
           <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>The Parliament you’re voting to change</div>
-          <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>The current make-up, from the {base.year} General Election — your baseline for comparison.</div>
+          <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>The current make-up, from the {base.year} General Election — your baseline for 2026.</div>
         </div>
         <div style={{ padding: 18, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 18, alignItems: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -90,19 +140,10 @@ export function UpcomingView({ e }: { e: ElectionData }) {
         </div>
       </div>
 
-      {/* Battlegrounds CTA */}
-      <Link href="/battlegrounds" style={{ textDecoration: 'none' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', background: 'linear-gradient(135deg,#fef2f2,#fff7ed)', border: '1px solid #fecaca', borderRadius: 16, padding: '18px 22px' }}>
-          <div style={{ width: 46, height: 46, borderRadius: 12, background: '#fff', border: '1px solid #fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <Swords style={{ width: 22, height: 22, color: '#dc2626' }} />
-          </div>
-          <div style={{ flex: 1, minWidth: 220, fontFamily: MANROPE }}>
-            <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>Battlegrounds — the seats to watch</div>
-            <div style={{ fontSize: 13, color: SECONDARY, marginTop: 2 }}>See which electorates are most likely to change hands, and follow each contest seat by seat.</div>
-          </div>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: '#b91c1c', fontFamily: MANROPE }}>Explore <ArrowRight style={{ width: 15, height: 15 }} /></span>
-        </div>
-      </Link>
+      {/* ── POLLS — demoted to context ───────────────────────────────────────── */}
+      <div id="polls" style={{ scrollMarginTop: 80 }}>
+        <PollTracker />
+      </div>
 
       {/* Parties likely contesting */}
       <div>
@@ -140,7 +181,7 @@ export function UpcomingView({ e }: { e: ElectionData }) {
 }
 
 const ic: React.CSSProperties = { width: 14, height: 14 }
-const cta: React.CSSProperties = {
-  display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE,
-  fontFamily: MANROPE, textDecoration: 'none',
-}
+const cta: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }
+const decideCard: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: 9, background: '#fff', border: `1.5px solid #cfe9d8`, borderRadius: 18, padding: '20px 22px', textDecoration: 'none' }
+const decideIcon: React.CSSProperties = { width: 44, height: 44, borderRadius: 12, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }
+const decideCta: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: JADE, fontFamily: MANROPE, marginTop: 2 }
