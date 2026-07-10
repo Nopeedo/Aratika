@@ -12,8 +12,13 @@ import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { PARTY_NAMES, PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
 import { getAllApprovedPositions } from '@/lib/positions/live'
+import {
+  pollOfPolls, seatProjection, RECENT_POLLS, POLL_PARTIES, PREFERRED_PM,
+  TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, POLLS_AS_AT, POLLS_SOURCE,
+} from '@/constants/polls-data'
 import { CountdownBig } from './countdown-big'
-import { PollTracker } from './poll-tracker'
+import { PollSnapshot } from './poll-snapshot'
+import { CoalitionExplorer } from './coalition-explorer'
 import { SeatHemicycle } from './seat-hemicycle'
 import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { VideoSection } from '@/components/news/video-section'
@@ -35,6 +40,9 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const debates = await getDebateVideos(12)
   const railVideos = debates.length > 0 ? debates : await getVideos(18)
   const positions = await getAllApprovedPositions()
+  const pop = pollOfPolls()
+  const projection = seatProjection()
+  const projectionTotal = projection.reduce((n, s) => n + s.seats, 0)
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 26 }}>
@@ -125,10 +133,24 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
         </div>
       </div>
 
-      {/* ── POLLS — demoted to context ───────────────────────────────────────── */}
+      {/* ── POLLS — condensed to a snapshot; detail behind an expander ────────── */}
       <div id="polls" style={{ scrollMarginTop: 80 }}>
-        <PollTracker />
+        <PollSnapshot
+          pop={pop}
+          pollCount={RECENT_POLLS.length}
+          asAt={POLLS_AS_AT}
+          pollParties={POLL_PARTIES}
+          polls={RECENT_POLLS}
+          preferredPM={PREFERRED_PM}
+          turnout={TURNOUT_2023}
+          enrolment={ENROLMENT_2023}
+          enrolmentUrl={ENROLMENT_LIVE_URL}
+          pollsSource={POLLS_SOURCE}
+        />
       </div>
+
+      {/* ── WHO COULD GOVERN — interactive coalition builder ──────────────────── */}
+      <CoalitionExplorer seats={projection} total={projectionTotal} asAt={POLLS_AS_AT} />
 
       {/* Parties likely contesting */}
       <div>
