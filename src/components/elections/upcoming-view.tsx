@@ -16,6 +16,7 @@ import { PollTracker } from './poll-tracker'
 import { SeatHemicycle } from './seat-hemicycle'
 import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { VideoSection } from '@/components/news/video-section'
+import { MapExperience } from '@/components/map/map-experience'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
@@ -93,18 +94,19 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
 
       {/* ── YOUR ELECTORATE — battlegrounds + map ────────────────────────────── */}
       <BattlegroundsTeaser />
-      <Link href="/map" style={{ textDecoration: 'none' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '18px 22px' }}>
-          <div style={{ width: 46, height: 46, borderRadius: 12, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <MapPin style={{ width: 22, height: 22, color: JADE }} />
+      <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px 18px', borderBottom: `1px solid ${BORDER}`, background: SURFACE }}>
+          <div style={{ width: 40, height: 40, borderRadius: 11, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <MapPin style={{ width: 20, height: 20, color: JADE }} />
           </div>
-          <div style={{ flex: 1, minWidth: 220, fontFamily: MANROPE }}>
+          <div style={{ flex: 1, minWidth: 0, fontFamily: MANROPE }}>
             <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>Find your electorate</div>
-            <div style={{ fontSize: 13, color: SECONDARY, marginTop: 2 }}>Search the interactive map to find your seat, your MP, and the 2026 race where you live.</div>
+            <div style={{ fontSize: 13, color: SECONDARY, marginTop: 2 }}>Search or tap the map to find your seat, your MP, and the 2026 race where you live.</div>
           </div>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>Open the map <ArrowRight style={{ width: 15, height: 15 }} /></span>
+          <Link href="/map" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none', flexShrink: 0 }}>Full map <ArrowRight style={{ width: 14, height: 14 }} /></Link>
         </div>
-      </Link>
+        <MapExperience />
+      </div>
 
       {/* ── LEADERS & DEBATES ────────────────────────────────────────────────── */}
       {railVideos.length > 0 && (
