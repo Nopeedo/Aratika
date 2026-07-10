@@ -32,6 +32,13 @@ const CHANNELS = [
   { id: 'UC8PPX2ej6D_77czqEJp46dA', source: 'NZ First', party: 'nzfirst' },
   { id: 'UCRdKSAr6go-3bTSJUZMoXGg', source: 'Te Pāti Māori', party: 'tpm' },
   { id: 'UCkV9-rENFpIihiBnePk5imA', source: 'The Opportunity Party', party: 'top' },
+  // ── Broadcaster channels that host the leaders'/minor-party DEBATES ──────────
+  // Add once each channel_id is VERIFIED (paste the value from the channel's
+  // page source: "channelId":"UC…"). party=null → tagged by who's mentioned;
+  // debate videos are auto-flagged (DEBATE_TERMS) and reviewed in /editor.
+  //   { id: 'UC…', source: '1News (TVNZ) — Q+A / Jack Tame', party: null },
+  //   { id: 'UC…', source: 'ThreeNews', party: null },
+  //   { id: 'UC…', source: 'NZ Herald — Herald NOW / Ryan Bridge', party: null },
 ]
 
 const PARTY_TERMS = {
@@ -46,6 +53,10 @@ const TOPIC_TERMS = {
   climate: ['climate', 'emissions', 'environment', 'rma', 'conservation'], 'crime-justice': ['crime', 'police', 'gang', 'court', 'sentenc', 'justice'],
 }
 const ELECTION_TERMS = ['election', 'campaign', 'candidate', 'poll', 'voter', 'coalition', 'debate', '2026', 'leader']
+// Leaders'/minor-party debates and long-form leader interviews — surfaced as a
+// dedicated "Debates" rail in the Election Centre. Broadcast by media channels
+// (see CHANNELS), reviewed in /editor before showing.
+const DEBATE_TERMS = ['debate', 'q+a', 'q&a', 'head to head', 'head-to-head', 'the great debate', 'minor party', 'leaders interview']
 const tag = (map, t) => Object.keys(map).filter((k) => map[k].some((x) => t.includes(x)))
 
 // Same battleground-scoped electorate tagging as ingest-news.mjs (majority < 3500
@@ -101,9 +112,10 @@ for (const ch of CHANNELS) {
     const topics = tag(TOPIC_TERMS, t)
     const electorates = tagElectorates(t)
     const electionRelevant = parties.length > 0 || ELECTION_TERMS.some((x) => t.includes(x))
+    const debate = DEBATE_TERMS.some((x) => t.includes(x))
     rows.push({
       type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'pending', source_url: link,
-      data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, featured: false },
+      data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, debate, featured: false },
     })
   }
   if (rows.length) { const { error } = await sb.from('content_items').insert(rows); if (error) { console.error(`insert err (${ch.source}): ${error.message}`); continue } }
