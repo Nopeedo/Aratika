@@ -33,12 +33,13 @@ const CHANNELS = [
   { id: 'UCRdKSAr6go-3bTSJUZMoXGg', source: 'Te Pāti Māori', party: 'tpm' },
   { id: 'UCkV9-rENFpIihiBnePk5imA', source: 'The Opportunity Party', party: 'top' },
   // ── Broadcaster channels that host the leaders'/minor-party DEBATES ──────────
-  // Add once each channel_id is VERIFIED (paste the value from the channel's
-  // page source: "channelId":"UC…"). party=null → tagged by who's mentioned;
-  // debate videos are auto-flagged (DEBATE_TERMS) and reviewed in /editor.
-  //   { id: 'UC…', source: '1News (TVNZ) — Q+A / Jack Tame', party: null },
-  //   { id: 'UC…', source: 'ThreeNews', party: null },
-  //   { id: 'UC…', source: 'NZ Herald — Herald NOW / Ryan Bridge', party: null },
+  // IDs verified from each channel's own "externalId" in ytInitialData
+  // (@1NewsNZ / @ThreeNowNZ / @nzheraldtv). party=null → tagged by who's
+  // mentioned; debate videos are auto-flagged (DEBATE_TERMS) and reviewed in
+  // /editor before going public.
+  { id: 'UCxPAYgO8OpFev3PUTKbsxNw', source: '1News (TVNZ) — Q+A / Jack Tame', party: null },
+  { id: 'UCBTMdHIU_I0KLPDmWCqTbYg', source: 'ThreeNews', party: null },
+  { id: 'UCG0xyRVgb5Yf1lvQxkRrYYQ', source: 'NZ Herald — Herald NOW / Ryan Bridge', party: null },
 ]
 
 const PARTY_TERMS = {
