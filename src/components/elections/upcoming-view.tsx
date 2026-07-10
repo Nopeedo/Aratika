@@ -6,17 +6,19 @@
  */
 
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, UserPlus, Vote, Clock, Info, CalendarX, Swords, Sparkles, Scale, MapPin, MessageSquare } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, UserPlus, Vote, Clock, Info, CalendarX, MapPin, MessageSquare } from 'lucide-react'
 import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { PARTY_NAMES, PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
+import { getAllApprovedPositions } from '@/lib/positions/live'
 import { CountdownBig } from './countdown-big'
 import { PollTracker } from './poll-tracker'
 import { SeatHemicycle } from './seat-hemicycle'
 import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { VideoSection } from '@/components/news/video-section'
 import { MapExperience } from '@/components/map/map-experience'
+import { PolicyFaceoff } from './policy-faceoff'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
@@ -32,6 +34,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const base = BASELINE_ELECTION
   const debates = await getDebateVideos(12)
   const railVideos = debates.length > 0 ? debates : await getVideos(18)
+  const positions = await getAllApprovedPositions()
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 26 }}>
@@ -46,28 +49,8 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
         </p>
       </div>
 
-      {/* ── DECIDE — the reason most people are here ─────────────────────────── */}
-      <div>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
-          <Sparkles style={{ width: 16, height: 16, color: JADE }} />
-          <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Not sure who to vote for?</span>
-        </div>
-        <h2 style={{ fontSize: 'clamp(20px, 4vw, 26px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 14px' }}>Start here — find your fit</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
-          <Link href="/start" style={decideCard}>
-            <div style={decideIcon}><Sparkles style={{ width: 22, height: 22, color: JADE }} /></div>
-            <div style={{ fontSize: 16.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Take the 60-second compass</div>
-            <div style={{ flex: 1, fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55 }}>Answer a few quick questions and see which parties line up with what matters to you — no sign-up, no score.</div>
-            <span style={decideCta}>Start the compass <ArrowRight style={ic} /></span>
-          </Link>
-          <Link href="/compare" style={decideCard}>
-            <div style={decideIcon}><Scale style={{ width: 22, height: 22, color: JADE }} /></div>
-            <div style={{ fontSize: 16.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Compare the parties, side by side</div>
-            <div style={{ flex: 1, fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55 }}>Pick an issue and see every party’s stance next to each other — summarised neutrally, with the sources.</div>
-            <span style={decideCta}>Compare policies <ArrowRight style={ic} /></span>
-          </Link>
-        </div>
-      </div>
+      {/* ── DECIDE — an interactive head-to-head, not a link-out ──────────────── */}
+      <PolicyFaceoff positions={positions} />
 
       {/* ── GET READY ────────────────────────────────────────────────────────── */}
       <div>
@@ -184,6 +167,3 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
 
 const ic: React.CSSProperties = { width: 14, height: 14 }
 const cta: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }
-const decideCard: React.CSSProperties = { display: 'flex', flexDirection: 'column', gap: 9, background: '#fff', border: `1.5px solid #cfe9d8`, borderRadius: 18, padding: '20px 22px', textDecoration: 'none' }
-const decideIcon: React.CSSProperties = { width: 44, height: 44, borderRadius: 12, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 2 }
-const decideCta: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: JADE, fontFamily: MANROPE, marginTop: 2 }
