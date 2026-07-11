@@ -58,9 +58,9 @@ export function PolicyFaceoff({ positions }: { positions: PartyPosition[] }) {
     (topic: string): string[] => {
       const set = byTopic.get(topic)
       if (!set) return []
-      return PARTY_ORDER.filter((p) => set.has(p)).concat(
-        [...set.keys()].filter((p) => !PARTY_ORDER.includes(p as PartySlug)),
-      )
+      const ordered = PARTY_ORDER.filter((p) => set.has(p)) as string[]
+      const extras = [...set.keys()].filter((p) => !PARTY_ORDER.includes(p as PartySlug))
+      return [...ordered, ...extras]
     },
     [byTopic],
   )
@@ -124,7 +124,7 @@ export function PolicyFaceoff({ positions }: { positions: PartyPosition[] }) {
     setFlash(side)
     window.setTimeout(() => setFlash(null), 200)
     // roll to the next issue that has data, keeping the momentum going
-    const idx = topics.indexOf(topic)
+    const idx = topics.indexOf(topic as PolicyTopic)
     const next = topics[(idx + 1) % topics.length]
     if (topics.length > 1) setTopic(next)
     else newMatchup()
