@@ -12,10 +12,13 @@
 import * as React from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import Image from 'next/image'
 import { Loader2, ArrowRight, ShieldCheck, MapPinOff, Layers } from 'lucide-react'
 import type { FeatureCollection } from 'geojson'
 import { normalizeElectorateKey, getElectorate } from '@/constants/electorates-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
+import { MP_PROFILES } from '@/constants/mps-data'
+import { toSlug } from '@/lib/utils/format'
 import { MARGIN_TIERS, classifyMargin, marginColorByName } from '@/lib/battlegrounds'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
@@ -53,6 +56,10 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
   const selectedKey = selected ? normalizeElectorateKey(selected) : null
   const info = selected ? getElectorate(selected) : null
   const tier = info ? classifyMargin(info.majority) : null
+  // Resolve the incumbent's profile (and free-licensed photo) the same way the map
+  // panel does: prefer an explicit mpSlug, else derive it from the MP's name.
+  const mpSlug = info?.mpSlug ?? (info?.mpName ? toSlug(info.mpName) : undefined)
+  const mp = mpSlug ? MP_PROFILES[mpSlug] ?? null : null
 
   const switchLayer = (l: Layer) => { setLayer(l); setSelected(null) }
   const mapHeight = embedded ? 'clamp(380px, 54vh, 540px)' : 600
@@ -126,29 +133,67 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
               <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests — the seats most likely to change hands.</div>
             </div>
           ) : (
-            <div style={{ fontFamily: MANROPE }}>
-              {tier && <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 800, color: '#fff', background: tier.color, borderRadius: 999, padding: '3px 10px', marginBottom: 10 }}>{tier.label}</span>}
-              <h3 style={{ fontSize: 20, fontWeight: 800, color: INK, margin: '0 0 2px' }}>{selected}</h3>
-              <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14 }}>{info?.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info?.region ? ` · ${info.region}` : ''}</div>
-              {info ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <Row label="2023 winner" value={info.mpName ?? '—'} />
-                  <Row label="Party" value={info.party ? PARTY_NAMES[info.party].short : '—'} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
-                  <Row label="Majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : '—'} />
-                  <Link href={`/battlegrounds/${selectedKey}`} style={{ marginTop: 8, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 14, fontWeight: 800, color: '#fff', background: INK, borderRadius: 11, padding: '11px 16px', textDecoration: 'none' }}>
-                    View this battle <ArrowRight style={{ width: 15, height: 15 }} />
+            info ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 12, alignItems: 'stretch', fontFamily: MANROPE }}>
+                {/* Tile 1 — the numbers */}
+                <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column' }}>
+                  {tier && <span style={{ alignSelf: 'flex-start', fontSize: 11, fontWeight: 800, color: '#fff', background: tier.color, borderRadius: 999, padding: '3px 10px', marginBottom: 10 }}>{tier.label}</span>}
+                  <h3 style={{ fontSize: 19, fontWeight: 800, color: INK, margin: '0 0 2px' }}>{selected}</h3>
+                  <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14 }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <Row label="2023 winner" value={info.mpName ?? '—'} />
+                    <Row label="Party" value={info.party ? PARTY_NAMES[info.party].short : '—'} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
+                    <Row label="Majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : '—'} />
+                  </div>
+                  <Link href={`/battlegrounds/${selectedKey}`} style={{ marginTop: 'auto', paddingTop: 12, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 14, fontWeight: 800, color: '#fff', textDecoration: 'none' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px' }}>View this battle <ArrowRight style={{ width: 15, height: 15 }} /></span>
                   </Link>
                 </div>
-              ) : (
-                <p style={{ fontSize: 13, color: SECONDARY }}>Result data pending for this seat.</p>
-              )}
-            </div>
+
+                {/* Tile 2 — the incumbent */}
+                <MpTile info={info} mp={mp} />
+              </div>
+            ) : (
+              <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>Result data pending for this seat.</p>
+            )
           )}
         </div>
         )}
       </div>
 
       <style>{`@media (max-width: 880px){ .map-grid{ grid-template-columns:1fr !important } .map-grid > div{ height:auto !important } .map-grid > div:first-child{ height:440px !important } }`}</style>
+    </div>
+  )
+}
+
+function MpTile({ info, mp }: {
+  info: NonNullable<ReturnType<typeof getElectorate>>
+  mp: (typeof MP_PROFILES)[string] | null
+}) {
+  const name = info.mpName ?? 'To be confirmed'
+  const initials = name.split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase()
+  const pc = info.party ? PARTY_COLORS[info.party] : null
+
+  const inner = (
+    <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 200, aspectRatio: '1 / 1', background: pc ? pc.light : '#eef1f4' }}>
+      {mp?.photo ? (
+        <Image src={mp.photo} alt={name} fill sizes="(max-width: 880px) 90vw, 260px" style={{ objectFit: 'cover', objectPosition: '50% 15%' }} />
+      ) : (
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: pc ? pc.bg : '#e2e8f0', color: pc ? pc.text : '#475569', fontSize: 46, fontWeight: 800, fontFamily: MANROPE }}>{initials}</div>
+      )}
+      <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '22px 13px 11px', background: 'linear-gradient(transparent, rgba(0,0,0,.78))', color: '#fff', fontFamily: MANROPE }}>
+        <div style={{ fontSize: 14.5, fontWeight: 800, lineHeight: 1.2 }}>{name}</div>
+        <div style={{ fontSize: 11.5, opacity: 0.85, marginTop: 2 }}>2023 MP{mp ? ' · view profile →' : ''}</div>
+        {mp?.photoCredit && (
+          <div style={{ fontSize: 9.5, opacity: 0.62, marginTop: 4 }}>Photo: {mp.photoCredit}{mp.photoLicense ? ` (${mp.photoLicense})` : ''}</div>
+        )}
+      </div>
+    </div>
+  )
+
+  return (
+    <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden' }}>
+      {mp ? <Link href={`/mps/${mp.slug}`} aria-label={`${name} profile`} style={{ display: 'block', height: '100%' }}>{inner}</Link> : inner}
     </div>
   )
 }
