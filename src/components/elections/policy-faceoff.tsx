@@ -312,6 +312,8 @@ function FaceoffShell({ children }: { children: React.ReactNode }) {
         .ff-pointshead{ color:${TERTIARY}; }
         .ff-src{ color:#9aa0aa; }
         .ff-select{ color:${INK}; background:#fff; border:1px solid ${BORDER}; }
+        /* Keep the open dropdown list dark-on-white even when the closed control goes white on hover. */
+        .ff-select option{ color:${INK}; background:#fff; font-weight:700; }
         .ff-pick{ background:#0c0e12; color:#fff; border:1px solid #0c0e12; }
         .ff-card:hover .ff-stance, .ff-card:hover .ff-points{ color:#fff; }
         .ff-card:hover .ff-pointshead{ color:rgba(255,255,255,.72); }
