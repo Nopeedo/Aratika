@@ -13,9 +13,10 @@ import { PARTY_NAMES, PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import {
-  pollOfPolls, seatProjection, RECENT_POLLS, POLL_PARTIES, PREFERRED_PM,
+  pollOfPolls, seatProjection, POLL_PARTIES, PREFERRED_PM,
   TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, POLLS_AS_AT, POLLS_SOURCE,
 } from '@/constants/polls-data'
+import { getPolls, pollsAsAt } from '@/lib/polls/live'
 import { CountdownBig } from './countdown-big'
 import { PollSnapshot } from './poll-snapshot'
 import { CoalitionExplorer } from './coalition-explorer'
@@ -40,9 +41,11 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const debates = await getDebateVideos(12)
   const railVideos = debates.length > 0 ? debates : await getVideos(18)
   const positions = await getAllApprovedPositions()
-  const pop = pollOfPolls()
-  const projection = seatProjection()
+  const polls = await getPolls()
+  const pop = pollOfPolls(polls)
+  const projection = seatProjection(polls)
   const projectionTotal = projection.reduce((n, s) => n + s.seats, 0)
+  const asAt = pollsAsAt(polls) || POLLS_AS_AT
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 26 }}>
@@ -139,10 +142,10 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       <div id="polls" style={{ scrollMarginTop: 80 }}>
         <PollSnapshot
           pop={pop}
-          pollCount={RECENT_POLLS.length}
-          asAt={POLLS_AS_AT}
+          pollCount={polls.length}
+          asAt={asAt}
           pollParties={POLL_PARTIES}
-          polls={RECENT_POLLS}
+          polls={polls}
           preferredPM={PREFERRED_PM}
           turnout={TURNOUT_2023}
           enrolment={ENROLMENT_2023}
@@ -152,7 +155,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       </div>
 
       {/* ── WHO COULD GOVERN — interactive coalition builder ──────────────────── */}
-      <CoalitionExplorer seats={projection} total={projectionTotal} asAt={POLLS_AS_AT} />
+      <CoalitionExplorer seats={projection} total={projectionTotal} asAt={asAt} />
 
       {/* Parties likely contesting */}
       <div>

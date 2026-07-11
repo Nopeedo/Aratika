@@ -35,10 +35,11 @@ export const RECENT_POLLS: Poll[] = [
 
 export const POLL_PARTIES: PartySlug[] = ['national', 'labour', 'green', 'act', 'nzfirst', 'tpm', 'top']
 
-/** Poll of polls — simple mean per party across RECENT_POLLS (over the polls that report it). */
-export function pollOfPolls(): { slug: PartySlug; pct: number }[] {
+/** Poll of polls — simple mean per party across the given polls (over the polls that report it).
+ *  Defaults to the bundled RECENT_POLLS so callers that don't pass live data still work. */
+export function pollOfPolls(polls: Poll[] = RECENT_POLLS): { slug: PartySlug; pct: number }[] {
   return POLL_PARTIES.map((slug) => {
-    const vals = RECENT_POLLS.map((p) => p.parties[slug]).filter((v): v is number => typeof v === 'number')
+    const vals = polls.map((p) => p.parties[slug]).filter((v): v is number => typeof v === 'number')
     const avg = vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0
     return { slug, pct: Math.round(avg * 10) / 10 }
   }).sort((a, b) => b.pct - a.pct)
@@ -51,8 +52,8 @@ export const PROJECTION_SEATS = 120
 export const MAJORITY_SEATS   = 61
 
 /** MMP seat projection — Sainte-Laguë over qualifying parties' poll-of-polls averages. */
-export function seatProjection(): { slug: PartySlug; seats: number; pct: number }[] {
-  const pop = pollOfPolls()
+export function seatProjection(polls: Poll[] = RECENT_POLLS): { slug: PartySlug; seats: number; pct: number }[] {
+  const pop = pollOfPolls(polls)
   const qualifying = pop.filter((p) => p.pct >= THRESHOLD || ELECTORATE_LIFEBOAT.includes(p.slug))
   const seats: Record<string, number> = Object.fromEntries(qualifying.map((p) => [p.slug, 0]))
   for (let s = 0; s < PROJECTION_SEATS; s++) {

@@ -1,43 +1,42 @@
 /**
- * /editor — the editorial review queue. Gated to members of the editorial team
- * (public.editors). Editors review pipeline-pulled items, refine the neutral
- * summary, and approve/reject. Only approved items appear on the public site.
+ * /editor/polls — where editors enter the published polls that drive the Election
+ * Centre's poll-of-polls and seat projection. Gated to the editorial team. Polls
+ * are entered manually (Aratika reports what pollsters publish) and go live on
+ * approval — which, since an editor is entering them, is immediate.
  */
 
 import Link from 'next/link'
-import { Lock, BarChart3 } from 'lucide-react'
+import { Lock, ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getEditor } from '@/lib/editor/auth'
-import { ReviewList, type PendingItem } from '@/components/editor/review-list'
+import { PollAdmin, type EditorPoll } from '@/components/editor/poll-admin'
 
 export const dynamic = 'force-dynamic'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
-export default async function EditorPage() {
+export default async function EditorPollsPage() {
   const { user, isEditor } = await getEditor()
 
   return (
     <div style={{ background: '#fff', minHeight: '100vh' }}>
       <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 860, margin: '0 auto', padding: '44px 36px 36px' }}>
-          <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>Editorial review</h1>
+          <Link href="/editor" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginBottom: 14 }}>
+            <ArrowLeft style={{ width: 14, height: 14 }} /> Editorial review
+          </Link>
+          <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>Polls</h1>
           <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-            Items the daily pipeline pulled from official sources, awaiting an editor’s check. Nothing here is on the public
-            site until it’s approved — make sure each reads factually and neutrally.
+            Enter each published poll as it comes out. The Election Centre averages these into the poll-of-polls and seat
+            projection — so keep every figure to what the pollster actually published, with a source link.
           </p>
-          <div style={{ marginTop: 16 }}>
-            <Link href="/editor/polls" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 15px', borderRadius: 10, border: `1px solid ${BORDER}`, background: '#fff', color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
-              <BarChart3 style={{ width: 15, height: 15, color: JADE }} /> Enter polls
-            </Link>
-          </div>
         </div>
       </div>
 
       <div style={{ maxWidth: 860, margin: '0 auto', padding: '28px 36px 64px' }}>
         {!user ? (
-          <Gate title="Sign in required" body="The editorial review queue is for the Aratika editorial team.">
+          <Gate title="Sign in required" body="Entering polls is for the Aratika editorial team.">
             <Link href="/login" style={btn}>Log in</Link>
           </Gate>
         ) : !isEditor ? (
@@ -45,26 +44,34 @@ export default async function EditorPage() {
             <Link href="/" style={btn}>Back to site</Link>
           </Gate>
         ) : (
-          <ReviewList initial={await loadPending()} />
+          <PollAdmin initial={await loadPolls()} />
         )}
       </div>
     </div>
   )
 }
 
-async function loadPending(): Promise<PendingItem[]> {
+async function loadPolls(): Promise<EditorPoll[]> {
   const supabase = await createClient()
   const { data } = await supabase
     .from('content_items')
-    .select('id, type, title, data, summary, change_kind, source_url, fetched_at')
-    .eq('status', 'pending')
-    .order('fetched_at', { ascending: false })
-    .limit(400)
-  // Only show items that are READY for editorial review — i.e. legislation that's
-  // been AI-drafted (has a summary + breakdown). Raw, un-enriched feed items are
-  // "pending enrichment", not "pending review", so they're hidden here.
-  const items = (data as (PendingItem & { data: { enriched?: boolean } })[] | null) ?? []
-  return items.filter((it) => it.type !== 'legislation' || it.data?.enriched === true).slice(0, 100)
+    .select('id, data')
+    .eq('type', 'poll')
+    .limit(100)
+  const rows = (data as { id: string; data: Record<string, unknown> | null }[] | null) ?? []
+  return rows
+    .map((r) => {
+      const d = r.data ?? {}
+      return {
+        id: r.id,
+        pollster: String(d.pollster ?? ''),
+        fieldwork: String(d.fieldwork ?? ''),
+        date: String(d.date ?? ''),
+        sourceUrl: String(d.sourceUrl ?? ''),
+        parties: (d.parties && typeof d.parties === 'object' ? d.parties : {}) as Record<string, number>,
+      }
+    })
+    .sort((a, b) => b.date.localeCompare(a.date))
 }
 
 function Gate({ title, body, children }: { title: string; body: string; children: React.ReactNode }) {
