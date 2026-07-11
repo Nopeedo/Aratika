@@ -22,7 +22,7 @@ import { CoalitionExplorer } from './coalition-explorer'
 import { SeatHemicycle } from './seat-hemicycle'
 import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { VideoSection } from '@/components/news/video-section'
-import { MapExperience } from '@/components/map/map-experience'
+import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
 import { PolicyFaceoff } from './policy-faceoff'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
@@ -83,7 +83,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
         </div>
       </div>
 
-      {/* ── YOUR ELECTORATE — battlegrounds + map ────────────────────────────── */}
+      {/* ── YOUR ELECTORATE — battlegrounds teaser + the marginality map ─────── */}
       <BattlegroundsTeaser />
       <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '16px 18px', borderBottom: `1px solid ${BORDER}`, background: SURFACE }}>
@@ -91,12 +91,14 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             <MapPin style={{ width: 20, height: 20, color: JADE }} />
           </div>
           <div style={{ flex: 1, minWidth: 0, fontFamily: MANROPE }}>
-            <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>Find your electorate</div>
-            <div style={{ fontSize: 13, color: SECONDARY, marginTop: 2 }}>Search or tap the map to find your seat, your MP, and the 2026 race where you live.</div>
+            <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>The seats in play</div>
+            <div style={{ fontSize: 13, color: SECONDARY, marginTop: 2 }}>Coloured by how close the 2023 contest was — hotter seats are the most likely to change hands. Tap one for the race.</div>
           </div>
-          <Link href="/map" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none', flexShrink: 0 }}>Full map <ArrowRight style={{ width: 14, height: 14 }} /></Link>
+          <Link href="/battlegrounds" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none', flexShrink: 0 }}>All battlegrounds <ArrowRight style={{ width: 14, height: 14 }} /></Link>
         </div>
-        <MapExperience embedded />
+        <div style={{ padding: 18 }}>
+          <BattlegroundsMap embedded />
+        </div>
       </div>
 
       {/* ── LEADERS & DEBATES ────────────────────────────────────────────────── */}

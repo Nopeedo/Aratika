@@ -30,7 +30,7 @@ const PATHS: Record<Layer, string> = {
 
 const ElectorateMap = dynamic(() => import('@/components/map/electorate-map'), { ssr: false, loading: () => <Loading /> })
 
-export function BattlegroundsMap() {
+export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
   const [layer, setLayer] = React.useState<Layer>('general')
   const [sets, setSets] = React.useState<Record<Layer, FeatureCollection | null>>({ general: null, maori: null })
   const [status, setStatus] = React.useState<'loading' | 'ready' | 'error'>('loading')
@@ -55,6 +55,7 @@ export function BattlegroundsMap() {
   const tier = info ? classifyMargin(info.majority) : null
 
   const switchLayer = (l: Layer) => { setLayer(l); setSelected(null) }
+  const mapHeight = embedded ? 'clamp(380px, 54vh, 540px)' : 600
 
   return (
     <div>
@@ -77,9 +78,14 @@ export function BattlegroundsMap() {
         </span>
       </div>
 
-      <div className="map-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 16, alignItems: 'stretch' }}>
+      <div
+        className={embedded ? 'map-grid-embed' : 'map-grid'}
+        style={embedded
+          ? { display: 'flex', flexDirection: 'column', gap: 14 }
+          : { display: 'grid', gridTemplateColumns: '1fr 340px', gap: 16, alignItems: 'stretch' }}
+      >
         {/* Map */}
-        <div style={{ position: 'relative', height: 600, borderRadius: 18, overflow: 'hidden', border: `1px solid ${BORDER}`, background: '#eaf2f7' }}>
+        <div style={{ position: 'relative', height: mapHeight, borderRadius: 18, overflow: 'hidden', border: `1px solid ${BORDER}`, background: '#eaf2f7' }}>
           {status === 'loading' && <Loading />}
           {status === 'ready' && data && <ElectorateMap key={layer} data={data} selectedKey={selectedKey} onSelect={setSelected} colorOf={marginColorByName} />}
           {status === 'ready' && !data && (
@@ -110,8 +116,9 @@ export function BattlegroundsMap() {
           )}
         </div>
 
-        {/* Panel */}
-        <div style={{ height: 600, borderRadius: 18, border: `1px solid ${BORDER}`, background: '#fff', padding: 20, overflow: 'auto' }}>
+        {/* Panel — full side column normally; embedded shows it below the map only once a seat is picked. */}
+        {embedded && !selected ? null : (
+        <div style={{ height: embedded ? 'auto' : 600, maxHeight: embedded ? 420 : undefined, borderRadius: 18, border: `1px solid ${BORDER}`, background: '#fff', padding: 20, overflow: 'auto' }}>
           {!selected ? (
             <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: TERTIARY, fontFamily: MANROPE }}>
               <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
@@ -138,6 +145,7 @@ export function BattlegroundsMap() {
             </div>
           )}
         </div>
+        )}
       </div>
 
       <style>{`@media (max-width: 880px){ .map-grid{ grid-template-columns:1fr !important } .map-grid > div{ height:auto !important } .map-grid > div:first-child{ height:440px !important } }`}</style>
