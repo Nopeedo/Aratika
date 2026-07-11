@@ -83,7 +83,7 @@ async function geocodeNZ(q: string): Promise<{ pt: LngLat; label: string } | nul
   return { pt: [parseFloat(arr[0].lon), parseFloat(arr[0].lat)], label: arr[0].display_name?.split(',')[0] ?? q }
 }
 
-export function MapExperience({ initialSearch }: { initialSearch?: string }) {
+export function MapExperience({ initialSearch, embedded = false }: { initialSearch?: string; embedded?: boolean }) {
   const [layer, setLayer]           = React.useState<LayerType>('general')
   const [data, setData]             = React.useState<FeatureCollection | null>(null)
   const [status, setStatus]         = React.useState<'loading' | 'ready' | 'missing' | 'error'>('loading')
@@ -171,8 +171,10 @@ export function MapExperience({ initialSearch }: { initialSearch?: string }) {
 
   const selectedKey = selected ? normalizeElectorateKey(selected) : null
 
+  const mapHeight = embedded ? 'clamp(380px, 54vh, 540px)' : 'clamp(600px, 82vh, 840px)'
+
   return (
-    <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px clamp(14px, 4vw, 24px) 48px' }}>
+    <div style={embedded ? { padding: 0 } : { maxWidth: 1280, margin: '0 auto', padding: '20px clamp(14px, 4vw, 24px) 48px' }}>
 
       {/* Toolbar */}
       <div className="map-toolbar" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginBottom: 16 }}>
@@ -229,12 +231,17 @@ export function MapExperience({ initialSearch }: { initialSearch?: string }) {
         </div>
       )}
 
-      {/* Map + panel grid */}
-      <div className="map-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'stretch' }}>
+      {/* Map + panel grid. Embedded: single column, panel drops below on select. */}
+      <div
+        className={embedded ? 'map-grid-embed' : 'map-grid'}
+        style={embedded
+          ? { display: 'flex', flexDirection: 'column', gap: 14 }
+          : { display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'stretch' }}
+      >
 
         {/* Map area — enlarged height (scales with the viewport); width unchanged. */}
         <div style={{
-          position: 'relative', height: 'clamp(600px, 82vh, 840px)', borderRadius: 18, overflow: 'hidden',
+          position: 'relative', height: mapHeight, borderRadius: 18, overflow: 'hidden',
           border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)', background: '#eaf2f7',
         }}>
           {status === 'loading' && <MapLoading />}
@@ -269,10 +276,18 @@ export function MapExperience({ initialSearch }: { initialSearch?: string }) {
           )}
         </div>
 
-        {/* Panel — matches the map height on desktop */}
-        <div style={{ height: 'clamp(600px, 82vh, 840px)', borderRadius: 18, overflow: 'auto', border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
-          <ElectoratePanel electorateName={selected} />
-        </div>
+        {/* Panel — full side column normally; embedded shows it below the map only once a seat is picked. */}
+        {embedded ? (
+          selected && (
+            <div style={{ maxHeight: 460, borderRadius: 18, overflow: 'auto', border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
+              <ElectoratePanel electorateName={selected} />
+            </div>
+          )
+        ) : (
+          <div style={{ height: 'clamp(600px, 82vh, 840px)', borderRadius: 18, overflow: 'auto', border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
+            <ElectoratePanel electorateName={selected} />
+          </div>
+        )}
       </div>
 
       {/* Responsive: stack panel under map on narrow screens, tighten the toolbar for mobile. */}

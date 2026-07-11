@@ -96,7 +96,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
           </div>
           <Link href="/map" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none', flexShrink: 0 }}>Full map <ArrowRight style={{ width: 14, height: 14 }} /></Link>
         </div>
-        <MapExperience />
+        <MapExperience embedded />
       </div>
 
       {/* ── LEADERS & DEBATES ────────────────────────────────────────────────── */}
