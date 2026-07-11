@@ -21,7 +21,7 @@ import { PARTY_COLORS, PARTY_NAMES, PARTY_ORDER } from '@/constants/parties'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import type { PartySlug, PolicyTopic } from '@/types'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', JADE = '#1F8A4C'
+const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 type Side = 'a' | 'b'
@@ -261,20 +261,33 @@ function ContenderCard({
           value={party}
           onChange={(e) => onSelect(side, e.target.value)}
           aria-label={`Party ${side === 'a' ? 'one' : 'two'}`}
-          style={{ flex: 1, minWidth: 0, height: 38, borderRadius: 9, border: `1px solid ${BORDER}`, padding: '0 10px', fontFamily: MANROPE, fontSize: 17, fontWeight: 800, color: INK, background: '#fff', cursor: 'pointer' }}
+          style={{ flex: 1, minWidth: 0, height: 38, borderRadius: 9, padding: '0 10px', fontFamily: MANROPE, fontSize: 17, fontWeight: 800, cursor: 'pointer' }}
         >
           {list.map((p) => (
             <option key={p} value={p}>{partyName(p)}</option>
           ))}
         </select>
       </div>
-      <p className="ff-stance" style={{ flex: 1, fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.65, margin: 0, minHeight: 84 }}>
+      <p className="ff-stance" style={{ fontSize: 15.5, fontFamily: MANROPE, lineHeight: 1.65, margin: 0 }}>
         {pos ? plain(pos) : '—'}
       </p>
-      {pos?.sourceLabel && (
-        <span className="ff-src" style={{ fontSize: 12.5, color: '#9aa0aa', fontFamily: MANROPE }}>Source: {pos.sourceLabel}</span>
+      {pos && pos.keyProposals.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+          <span className="ff-pointshead" style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.07em', textTransform: 'uppercase', fontFamily: MANROPE }}>Key points</span>
+          <ul className="ff-points" style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {pos.keyProposals.slice(0, 3).map((kp, i) => (
+              <li key={i} style={{ display: 'flex', gap: 9, fontSize: 13.5, fontFamily: MANROPE, lineHeight: 1.5 }}>
+                <span className="ff-bullet" style={{ marginTop: 6, width: 5, height: 5, borderRadius: '50%', flexShrink: 0 }} />
+                <span>{kp}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
-      <button className="ff-pick" onClick={() => onPick(side)} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, marginTop: 'auto', padding: '12px 14px', borderRadius: 10, cursor: 'pointer', fontFamily: MANROPE, fontSize: 15, fontWeight: 800, border: '1px solid #0c0e12', background: '#0c0e12', color: '#fff', transition: 'background .2s ease, color .2s ease' }}>
+      {pos?.sourceLabel && (
+        <span className="ff-src" style={{ fontSize: 12.5, fontFamily: MANROPE, marginTop: 2 }}>Source: {pos.sourceLabel}</span>
+      )}
+      <button className="ff-pick" onClick={() => onPick(side)} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, marginTop: 'auto', padding: '12px 14px', borderRadius: 10, cursor: 'pointer', fontFamily: MANROPE, fontSize: 15, fontWeight: 800, transition: 'background .2s ease, color .2s ease' }}>
         <Hand style={{ width: 16, height: 16 }} /> This speaks to me
       </button>
     </div>
@@ -292,10 +305,20 @@ function FaceoffShell({ children }: { children: React.ReactNode }) {
         .ff-card:hover{ background:var(--pc);
           background-image:linear-gradient(155deg, rgba(255,255,255,.16), rgba(0,0,0,.18));
           border-color:var(--pc); transform:translateY(-3px); box-shadow:0 12px 26px rgba(12,14,18,.16); }
-        .ff-card:hover .ff-name, .ff-card:hover .ff-stance{ color:#fff; }
+        /* Default colours live here (not inline) so :hover can override them. */
+        .ff-stance{ color:${SECONDARY}; }
+        .ff-points{ color:${INK}; }
+        .ff-bullet{ background:var(--pc); }
+        .ff-pointshead{ color:${TERTIARY}; }
+        .ff-src{ color:#9aa0aa; }
+        .ff-select{ color:${INK}; background:#fff; border:1px solid ${BORDER}; }
+        .ff-pick{ background:#0c0e12; color:#fff; border:1px solid #0c0e12; }
+        .ff-card:hover .ff-stance, .ff-card:hover .ff-points{ color:#fff; }
+        .ff-card:hover .ff-pointshead{ color:rgba(255,255,255,.72); }
+        .ff-card:hover .ff-bullet{ background:#fff; }
         .ff-card:hover .ff-src{ color:rgba(255,255,255,.82); }
         .ff-card:hover .ff-dot{ background:#fff; }
-        .ff-card:hover .ff-select{ color:#fff; background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.5); }
+        .ff-card:hover .ff-select{ color:#fff; background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.5); }
         .ff-card:hover .ff-pick{ background:#fff; color:#0c0e12; border-color:#fff; }
         @media (hover:none){ .ff-card{ background:var(--pcl); } }
       `}</style>
