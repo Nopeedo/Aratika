@@ -31,6 +31,7 @@ function plain(p: PartyPosition): string {
 }
 const partyName = (slug: string) => PARTY_NAMES[slug as PartySlug]?.short ?? slug
 const partyColor = (slug: string) => PARTY_COLORS[slug as PartySlug]?.bg ?? '#6b7280'
+const partyLight = (slug: string) => PARTY_COLORS[slug as PartySlug]?.light ?? '#f1f3f5'
 
 export function PolicyFaceoff({ positions }: { positions: PartyPosition[] }) {
   // topic -> party -> the best (usable) position for it
@@ -158,7 +159,7 @@ export function PolicyFaceoff({ positions }: { positions: PartyPosition[] }) {
               key={t}
               onClick={() => setTopic(t)}
               style={{
-                padding: '8px 14px', borderRadius: 999, cursor: 'pointer', fontFamily: MANROPE, fontSize: 13, fontWeight: 700,
+                padding: '9px 16px', borderRadius: 999, cursor: 'pointer', fontFamily: MANROPE, fontSize: 14, fontWeight: 700,
                 border: `1px solid ${on ? INK : BORDER}`, background: on ? INK : '#fff', color: on ? '#fff' : SECONDARY,
               }}
             >
@@ -191,11 +192,11 @@ export function PolicyFaceoff({ positions }: { positions: PartyPosition[] }) {
       {/* Leaning */}
       <div style={{ marginTop: 16, paddingTop: 16, borderTop: `1px solid ${BORDER}` }}>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 8 }}>
-          <span style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Your leaning so far</span>
-          <span style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE }}>{totalPicks} {totalPicks === 1 ? 'pick' : 'picks'}</span>
+          <span style={{ fontSize: 15.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Your leaning so far</span>
+          <span style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>{totalPicks} {totalPicks === 1 ? 'pick' : 'picks'}</span>
         </div>
         {totalPicks === 0 ? (
-          <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
+          <p style={{ fontSize: 14.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
             Tap the stance that speaks to you in either card. Your leaning builds up here — no sign-up, nothing leaves the page.
           </p>
         ) : (
@@ -220,14 +221,14 @@ export function PolicyFaceoff({ positions }: { positions: PartyPosition[] }) {
             </div>
             {leader && (
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
-                <span style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE }}>
+                <span style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE }}>
                   You’re leaning <b style={{ color: INK }}>{partyName(leader)}</b> so far.
                 </span>
                 <Link href="/compare" style={pickBtn(false)}>
-                  See the full comparison <ArrowRight style={{ width: 14, height: 14 }} />
+                  See the full comparison <ArrowRight style={{ width: 15, height: 15 }} />
                 </Link>
-                <Link href="/start" style={{ ...cta, fontSize: 13 }}>
-                  Or take the compass <ArrowRight style={{ width: 13, height: 13 }} />
+                <Link href="/start" style={{ ...cta, fontSize: 14 }}>
+                  Or take the compass <ArrowRight style={{ width: 14, height: 14 }} />
                 </Link>
               </div>
             )}
@@ -246,33 +247,35 @@ function ContenderCard({
 }) {
   return (
     <div
+      className="ff-card"
       style={{
-        background: '#fff', border: `1px solid ${flash ? JADE : BORDER}`, borderRadius: 14, padding: 15,
-        display: 'flex', flexDirection: 'column', gap: 11, transform: flash ? 'scale(0.99)' : 'scale(1)',
-        transition: 'transform .18s ease, border-color .18s ease',
-      }}
+        ['--pc' as string]: partyColor(party),
+        ['--pcl' as string]: partyLight(party),
+        boxShadow: flash ? '0 0 0 3px rgba(31,138,76,.55)' : undefined,
+      } as React.CSSProperties}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-        <span style={{ width: 12, height: 12, borderRadius: '50%', background: partyColor(party), flexShrink: 0 }} />
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span className="ff-dot" style={{ width: 13, height: 13, borderRadius: '50%', background: partyColor(party), flexShrink: 0 }} />
         <select
+          className="ff-select"
           value={party}
           onChange={(e) => onSelect(side, e.target.value)}
           aria-label={`Party ${side === 'a' ? 'one' : 'two'}`}
-          style={{ flex: 1, minWidth: 0, height: 34, borderRadius: 9, border: `1px solid ${BORDER}`, padding: '0 8px', fontFamily: MANROPE, fontSize: 14.5, fontWeight: 800, color: INK, background: '#fff', cursor: 'pointer' }}
+          style={{ flex: 1, minWidth: 0, height: 38, borderRadius: 9, border: `1px solid ${BORDER}`, padding: '0 10px', fontFamily: MANROPE, fontSize: 17, fontWeight: 800, color: INK, background: '#fff', cursor: 'pointer' }}
         >
           {list.map((p) => (
             <option key={p} value={p}>{partyName(p)}</option>
           ))}
         </select>
       </div>
-      <p style={{ flex: 1, fontSize: 14, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0, minHeight: 72 }}>
+      <p className="ff-stance" style={{ flex: 1, fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.65, margin: 0, minHeight: 84 }}>
         {pos ? plain(pos) : '—'}
       </p>
       {pos?.sourceLabel && (
-        <span style={{ fontSize: 11.5, color: '#9aa0aa', fontFamily: MANROPE }}>Source: {pos.sourceLabel}</span>
+        <span className="ff-src" style={{ fontSize: 12.5, color: '#9aa0aa', fontFamily: MANROPE }}>Source: {pos.sourceLabel}</span>
       )}
-      <button onClick={() => onPick(side)} style={pickBtn(false)}>
-        <Hand style={{ width: 15, height: 15 }} /> This speaks to me
+      <button className="ff-pick" onClick={() => onPick(side)} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, marginTop: 'auto', padding: '12px 14px', borderRadius: 10, cursor: 'pointer', fontFamily: MANROPE, fontSize: 15, fontWeight: 800, border: '1px solid #0c0e12', background: '#0c0e12', color: '#fff', transition: 'background .2s ease, color .2s ease' }}>
+        <Hand style={{ width: 16, height: 16 }} /> This speaks to me
       </button>
     </div>
   )
@@ -281,12 +284,27 @@ function ContenderCard({
 function FaceoffShell({ children }: { children: React.ReactNode }) {
   return (
     <div>
+      <style>{`
+        .ff-card{ background:#fff; border:1px solid ${BORDER}; border-radius:14px; padding:16px;
+          display:flex; flex-direction:column; gap:12px; position:relative; overflow:hidden;
+          transition: background .4s ease, transform .22s ease, box-shadow .22s ease, border-color .2s ease; }
+        .ff-card::before{ content:''; position:absolute; left:0; top:0; right:0; height:4px; background:var(--pc); }
+        .ff-card:hover{ background:var(--pc);
+          background-image:linear-gradient(155deg, rgba(255,255,255,.16), rgba(0,0,0,.18));
+          border-color:var(--pc); transform:translateY(-3px); box-shadow:0 12px 26px rgba(12,14,18,.16); }
+        .ff-card:hover .ff-name, .ff-card:hover .ff-stance{ color:#fff; }
+        .ff-card:hover .ff-src{ color:rgba(255,255,255,.82); }
+        .ff-card:hover .ff-dot{ background:#fff; }
+        .ff-card:hover .ff-select{ color:#fff; background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.5); }
+        .ff-card:hover .ff-pick{ background:#fff; color:#0c0e12; border-color:#fff; }
+        @media (hover:none){ .ff-card{ background:var(--pcl); } }
+      `}</style>
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
-        <Sparkles style={{ width: 16, height: 16, color: JADE }} />
-        <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Not sure who to vote for?</span>
+        <Sparkles style={{ width: 17, height: 17, color: JADE }} />
+        <span style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Not sure who to vote for?</span>
       </div>
-      <h2 style={{ fontSize: 'clamp(20px, 4vw, 26px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Face them off — find your fit</h2>
-      <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 16px', maxWidth: 560, lineHeight: 1.55 }}>
+      <h2 style={{ fontSize: 'clamp(23px, 4.5vw, 30px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Face them off — find your fit</h2>
+      <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 18px', maxWidth: 580, lineHeight: 1.6 }}>
         Pick an issue, read where two parties stand, and tap the one you agree with. We’ll build your leaning as you go — summarised neutrally, with sources.
       </p>
       {children}
@@ -300,7 +318,7 @@ const ghostBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'cen
 function pickBtn(solid: boolean): React.CSSProperties {
   return {
     display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7, marginTop: 'auto',
-    padding: '10px 14px', borderRadius: 10, cursor: 'pointer', fontFamily: MANROPE, fontSize: 13.5, fontWeight: 800,
+    padding: '11px 16px', borderRadius: 10, cursor: 'pointer', fontFamily: MANROPE, fontSize: 15, fontWeight: 800,
     textDecoration: 'none', border: `1px solid ${solid ? JADE : '#cfe9d8'}`,
     background: solid ? JADE : '#ecfdf5', color: solid ? '#fff' : JADE,
   }
