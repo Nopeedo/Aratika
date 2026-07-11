@@ -125,7 +125,7 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
 
         {/* Panel — full side column normally; embedded shows it below the map only once a seat is picked. */}
         {embedded && !selected ? null : (
-        <div style={{ height: embedded ? 'auto' : 600, maxHeight: embedded ? 420 : undefined, borderRadius: 18, border: `1px solid ${BORDER}`, background: '#fff', padding: 20, overflow: 'auto' }}>
+        <div style={{ height: embedded ? 'auto' : 600, borderRadius: 18, border: `1px solid ${BORDER}`, background: '#fff', padding: 20, overflow: embedded ? 'visible' : 'auto' }}>
           {!selected ? (
             <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: TERTIARY, fontFamily: MANROPE }}>
               <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
@@ -175,7 +175,7 @@ function MpTile({ info, mp }: {
   const pc = info.party ? PARTY_COLORS[info.party] : null
 
   const inner = (
-    <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 200, aspectRatio: '1 / 1', background: pc ? pc.light : '#eef1f4' }}>
+    <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 190, background: pc ? pc.light : '#eef1f4' }}>
       {mp?.photo ? (
         <Image src={mp.photo} alt={name} fill sizes="(max-width: 880px) 90vw, 260px" style={{ objectFit: 'cover', objectPosition: '50% 15%' }} />
       ) : (
