@@ -55,14 +55,12 @@ export function HomeMap() {
         </div>
       </div>
 
-      <div ref={ref}>
+      <div ref={ref} style={{ maxWidth: 1280, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 48px' }}>
         {show ? (
-          <MapExperience />
+          <MapExperience embedded />
         ) : (
-          <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px clamp(14px, 4vw, 24px) 48px' }}>
-            <div style={{ height: 'clamp(600px, 82vh, 840px)', borderRadius: 18, border: `1px solid ${BORDER}`, background: '#eaf2f7', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: TERTIARY, fontFamily: MANROPE, fontSize: 13, fontWeight: 600 }}>
-              <Loader2 className="animate-spin" style={{ width: 18, height: 18, color: JADE }} /> The electorate map loads as you reach it…
-            </div>
+          <div style={{ height: 'clamp(380px, 54vh, 540px)', borderRadius: 18, border: `1px solid ${BORDER}`, background: '#eaf2f7', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: TERTIARY, fontFamily: MANROPE, fontSize: 13, fontWeight: 600 }}>
+            <Loader2 className="animate-spin" style={{ width: 18, height: 18, color: JADE }} /> The electorate map loads as you reach it…
           </div>
         )}
       </div>
