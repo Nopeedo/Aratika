@@ -37,7 +37,7 @@ export function PartyPositions({ parties, getPos, detailed, topic, topicLabel }:
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
           <button
             onClick={() => setOpen(allOpen ? new Set() : new Set(withData))}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none', cursor: 'pointer', fontSize: 12.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE }}
           >
             {allOpen ? 'Collapse all' : 'Expand all'}
             <ChevronDown style={{ width: 14, height: 14, transform: allOpen ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
@@ -60,13 +60,13 @@ export function PartyPositions({ parties, getPos, detailed, topic, topicLabel }:
               >
                 <span style={{ flex: 1, minWidth: 0 }}>
                   <span style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: 15, fontWeight: 800, color: INK }}>{party.name}</span>
-                    {pos && <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY }}>{pos.periodLabel}</span>}
+                    <span style={{ fontSize: 17, fontWeight: 800, color: INK }}>{party.name}</span>
+                    {pos && <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY }}>{pos.periodLabel}</span>}
                   </span>
                   {pos ? (
-                    <span style={{ display: 'block', fontSize: 14, fontWeight: 700, color: INK, lineHeight: 1.4, marginTop: 3 }}>{pos.stance || body}</span>
+                    <span style={{ display: 'block', fontSize: 16, fontWeight: 700, color: INK, lineHeight: 1.4, marginTop: 3 }}>{pos.stance || body}</span>
                   ) : (
-                    <span style={{ display: 'block', fontSize: 12.5, color: TERTIARY, lineHeight: 1.5, marginTop: 3 }}>
+                    <span style={{ display: 'block', fontSize: 14, color: TERTIARY, lineHeight: 1.5, marginTop: 3 }}>
                       No {topicLabel.toLowerCase()} position captured yet — being sourced from {party.name}’s official policy, then editor-checked.
                     </span>
                   )}
@@ -77,21 +77,21 @@ export function PartyPositions({ parties, getPos, detailed, topic, topicLabel }:
               {pos && isOpen && (
                 <div style={{ padding: '0 14px 14px' }}>
                   {body && pos.stance && (
-                    <p style={{ fontSize: 13, color: '#33373f', lineHeight: 1.6, margin: '0 0 10px', fontFamily: MANROPE }}>{body}</p>
+                    <p style={{ fontSize: 15, color: '#33373f', lineHeight: 1.6, margin: '0 0 10px', fontFamily: MANROPE }}>{body}</p>
                   )}
                   {pos.quote && (
-                    <p style={{ fontSize: 12.5, color: SECONDARY, lineHeight: 1.5, margin: '0 0 10px', paddingLeft: 10, borderLeft: `3px solid ${party.color}`, fontStyle: 'italic', fontFamily: MANROPE }}>“{pos.quote}”</p>
+                    <p style={{ fontSize: 14, color: SECONDARY, lineHeight: 1.5, margin: '0 0 10px', paddingLeft: 10, borderLeft: `3px solid ${party.color}`, fontStyle: 'italic', fontFamily: MANROPE }}>“{pos.quote}”</p>
                   )}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', paddingTop: 10, borderTop: `1px solid ${BORDER}` }}>
-                    <Link href={`/policies/${topic}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800, color: INK, textDecoration: 'none', fontFamily: MANROPE }}>
+                    <Link href={`/policies/${topic}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 14, fontWeight: 800, color: INK, textDecoration: 'none', fontFamily: MANROPE }}>
                       Full breakdown <ArrowRight style={{ width: 14, height: 14 }} />
                     </Link>
                     {pos.sourceUrl && (
-                      <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE }}>
+                      <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE }}>
                         {pos.sourceLabel} <ExternalLink style={{ width: 11, height: 11 }} />
                       </a>
                     )}
-                    {pos.asOf && <span style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE }}>· as at {pos.asOf}</span>}
+                    {pos.asOf && <span style={{ fontSize: 13, color: TERTIARY, fontFamily: MANROPE }}>· as at {pos.asOf}</span>}
                   </div>
                 </div>
               )}

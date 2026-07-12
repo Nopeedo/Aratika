@@ -80,10 +80,10 @@ export function Term({ name, children }: { name: string; children: React.ReactNo
             fontFamily: 'var(--font-manrope), system-ui, sans-serif',
           }}
         >
-          <span style={{ display: 'block', fontSize: 11, fontWeight: 700, letterSpacing: '.03em', textTransform: 'uppercase', color: JADE, marginBottom: 4 }}>{entry.term}</span>
-          <span style={{ display: 'block', fontSize: 13.5, lineHeight: 1.5, color: INK }}>{entry.def}</span>
+          <span style={{ display: 'block', fontSize: 13, fontWeight: 700, letterSpacing: '.03em', textTransform: 'uppercase', color: JADE, marginBottom: 4 }}>{entry.term}</span>
+          <span style={{ display: 'block', fontSize: 16, lineHeight: 1.5, color: INK }}>{entry.def}</span>
           {entry.learn && (
-            <Link href={entry.learn.href} style={{ display: 'inline-block', marginTop: 9, fontSize: 13, fontWeight: 700, color: JADE, textDecoration: 'none' }}>
+            <Link href={entry.learn.href} style={{ display: 'inline-block', marginTop: 9, fontSize: 15, fontWeight: 700, color: JADE, textDecoration: 'none' }}>
               {entry.learn.label} →
             </Link>
           )}

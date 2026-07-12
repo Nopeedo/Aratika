@@ -163,7 +163,7 @@ function StatusRow() {
         display: 'inline-flex', alignItems: 'center', gap: 8,
         background: '#0c0e12', color: '#fff',
         borderRadius: 999, padding: '7px 14px 7px 12px',
-        fontSize: 12, fontWeight: 700, letterSpacing: '.01em',
+        fontSize: 14, fontWeight: 700, letterSpacing: '.01em',
         fontFamily: 'var(--font-manrope), system-ui, sans-serif',
       }}>
         <span className="live-dot" style={{
@@ -175,7 +175,7 @@ function StatusRow() {
 
       {/* Meta */}
       <span style={{
-        fontSize: 13, color: '#6b7078', fontWeight: 500,
+        fontSize: 15, color: '#6b7078', fontWeight: 500,
         fontFamily: 'var(--font-manrope), system-ui, sans-serif',
       }}>
         <b style={{ color: '#0c0e12', fontWeight: 700 }}>{META.parliament}</b>
@@ -212,7 +212,7 @@ function HemicycleSVG() {
       }}>
         {/* 123 */}
         <div style={{
-          fontSize: 50, fontWeight: 700, lineHeight: 0.9,
+          fontSize: 57, fontWeight: 700, lineHeight: 0.9,
           letterSpacing: '-.02em', color: '#0c0e12',
           fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
           fontVariantNumeric: 'tabular-nums',
@@ -222,7 +222,7 @@ function HemicycleSVG() {
 
         {/* SEATS label */}
         <div style={{
-          fontSize: 11, fontWeight: 800, letterSpacing: '.18em',
+          fontSize: 13, fontWeight: 800, letterSpacing: '.18em',
           textTransform: 'uppercase', color: '#9aa0aa', marginTop: 4,
           fontFamily: 'var(--font-manrope), system-ui, sans-serif',
         }}>
@@ -233,7 +233,7 @@ function HemicycleSVG() {
         <div style={{ display: 'flex', gap: 7, justifyContent: 'center', marginTop: 12 }}>
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
-            fontSize: 11.5, fontWeight: 700,
+            fontSize: 13, fontWeight: 700,
             border: '1px solid #e9e7e2', borderRadius: 999,
             padding: '4px 10px', color: '#3a3f49',
             fontFamily: 'var(--font-manrope), system-ui, sans-serif',
@@ -244,7 +244,7 @@ function HemicycleSVG() {
           </span>
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
-            fontSize: 11.5, fontWeight: 700,
+            fontSize: 13, fontWeight: 700,
             border: '1px solid #e9e7e2', borderRadius: 999,
             padding: '4px 10px', color: '#3a3f49',
             fontFamily: 'var(--font-manrope), system-ui, sans-serif',
@@ -284,7 +284,7 @@ function PartyList() {
             {/* Name + mini bar */}
             <div>
               <div style={{
-                fontSize: 14, fontWeight: 700, color: '#1a1d24',
+                fontSize: 16, fontWeight: 700, color: '#1a1d24',
                 fontFamily: 'var(--font-manrope), system-ui, sans-serif',
               }}>
                 {p.name}
@@ -306,7 +306,7 @@ function PartyList() {
 
             {/* Seat count */}
             <div style={{
-              fontSize: 22, fontWeight: 700,
+              fontSize: 25, fontWeight: 700,
               letterSpacing: '-.02em',
               textAlign: 'right',
               minWidth: 40,
@@ -342,7 +342,7 @@ function HeroCard() {
         marginBottom: 6,
       }}>
         <div style={{
-          fontSize: 17, fontWeight: 800,
+          fontSize: 20, fontWeight: 800,
           letterSpacing: '-.01em',
           whiteSpace: 'nowrap',
           color: '#0c0e12',
@@ -354,7 +354,7 @@ function HeroCard() {
           href="/parliament"
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
-            color: '#0c0e12', fontWeight: 800, fontSize: 13,
+            color: '#0c0e12', fontWeight: 800, fontSize: 15,
             textDecoration: 'none', whiteSpace: 'nowrap',
             fontFamily: 'var(--font-manrope), system-ui, sans-serif',
           }}
@@ -381,7 +381,7 @@ function HeroCard() {
 function TileLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{
-      fontSize: 10.5, fontWeight: 800,
+      fontSize: 12, fontWeight: 800,
       letterSpacing: '.14em', textTransform: 'uppercase',
       color: '#9aa0aa', marginBottom: 14,
       fontFamily: 'var(--font-manrope), system-ui, sans-serif',
@@ -421,7 +421,7 @@ function PMTile() {
         </Link>
         <div>
           <Link href={`/mps/${META.pmSlug}`} style={{
-            fontSize: 18, fontWeight: 800,
+            fontSize: 21, fontWeight: 800,
             letterSpacing: '-.01em', lineHeight: 1.1,
             color: '#0c0e12', textDecoration: 'none', display: 'block',
             fontFamily: 'var(--font-manrope), system-ui, sans-serif',
@@ -432,7 +432,7 @@ function PMTile() {
             display: 'inline-flex', alignItems: 'center', gap: 6,
             borderRadius: 999,
             padding: '3px 10px',
-            fontSize: 11.5, fontWeight: 700,
+            fontSize: 13, fontWeight: 700,
             marginTop: 7,
             background: pm.color,
             color: pm.ink,
@@ -456,7 +456,7 @@ function CoalitionTile() {
           const p = PARTIES[key]
           return (
             <span key={key} style={{
-              fontSize: 13, fontWeight: 700, color: '#1a1d24',
+              fontSize: 15, fontWeight: 700, color: '#1a1d24',
               display: 'inline-flex', alignItems: 'center', gap: 6,
               fontFamily: 'var(--font-manrope), system-ui, sans-serif',
             }}>
@@ -483,14 +483,14 @@ function CoalitionTile() {
       </div>
       {/* Combined total */}
       <div style={{
-        fontSize: 27, fontWeight: 700,
+        fontSize: 31, fontWeight: 700,
         letterSpacing: '-.02em', marginTop: 14,
         color: '#0c0e12',
         fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
         fontVariantNumeric: 'tabular-nums',
       }}>
         {COALITION_SEATS}{' '}
-        <small style={{ fontSize: 14, color: '#9aa0aa', fontWeight: 600, fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>
+        <small style={{ fontSize: 16, color: '#9aa0aa', fontWeight: 600, fontFamily: 'var(--font-manrope), system-ui, sans-serif' }}>
           / {TOTAL} seats
         </small>
       </div>
@@ -504,7 +504,7 @@ function SessionTile() {
     <div style={tileStyle}>
       <TileLabel>Current Session</TileLabel>
       <div style={{
-        fontSize: 27, fontWeight: 700,
+        fontSize: 31, fontWeight: 700,
         letterSpacing: '-.02em', color: '#0c0e12',
         fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif',
         fontVariantNumeric: 'tabular-nums',
@@ -512,7 +512,7 @@ function SessionTile() {
         {META.parliament}
       </div>
       <div style={{
-        fontSize: 13, color: '#6b7078', fontWeight: 600,
+        fontSize: 15, color: '#6b7078', fontWeight: 600,
         marginTop: 12,
         display: 'flex', justifyContent: 'space-between',
         fontFamily: 'var(--font-manrope), system-ui, sans-serif',
@@ -530,7 +530,7 @@ function SessionTile() {
           href="/parliament"
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
-            color: '#0c0e12', fontWeight: 800, fontSize: 13,
+            color: '#0c0e12', fontWeight: 800, fontSize: 15,
             textDecoration: 'none',
             fontFamily: 'var(--font-manrope), system-ui, sans-serif',
           }}

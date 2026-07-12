@@ -29,7 +29,7 @@ const SLIDES: { key: Key; tab: string; icon: React.ElementType; title: string; w
 
 function TrackPill() {
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', borderRadius: 10, fontSize: 13, fontWeight: 800, fontFamily: MANROPE, background: '#ecfdf5', border: '1px solid #a7f3d0', color: JADE, boxShadow: '0 0 0 4px rgba(31,138,76,.16)' }}>
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 14px', borderRadius: 10, fontSize: 15, fontWeight: 800, fontFamily: MANROPE, background: '#ecfdf5', border: '1px solid #a7f3d0', color: JADE, boxShadow: '0 0 0 4px rgba(31,138,76,.16)' }}>
       <Bookmark style={{ width: 15, height: 15 }} /> Track
     </span>
   )
@@ -37,7 +37,7 @@ function TrackPill() {
 
 function InFeedBadge() {
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, color: JADE, background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
       <Check style={{ width: 12, height: 12 }} /> In your feed
     </span>
   )
@@ -51,8 +51,8 @@ function Preview({ k }: { k: Key }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
           <span style={{ width: 46, height: 46, borderRadius: '50%', background: '#e7ecf3', flexShrink: 0 }} />
           <span style={{ flex: 1, minWidth: 0 }}>
-            <span style={{ display: 'block', fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Casey Ihaka</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: '#1F8A4C' }} /> MP for Rongotai</span>
+            <span style={{ display: 'block', fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Casey Ihaka</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, color: TERTIARY, fontFamily: MANROPE }}><span style={{ width: 8, height: 8, borderRadius: '50%', background: '#1F8A4C' }} /> MP for Rongotai</span>
           </span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}><TrackPill /></div>
@@ -65,8 +65,8 @@ function Preview({ k }: { k: Key }) {
         <div style={{ height: 5, background: '#1F8A4C' }} />
         <div style={{ padding: '16px 16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
-            <span style={{ width: 44, height: 44, borderRadius: '50%', background: '#1F8A4C', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, fontWeight: 800, fontFamily: MANROPE, flexShrink: 0 }}>G</span>
-            <span><span style={{ display: 'block', fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Green Party</span><span style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>15 seats · in opposition</span></span>
+            <span style={{ width: 44, height: 44, borderRadius: '50%', background: '#1F8A4C', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, fontWeight: 800, fontFamily: MANROPE, flexShrink: 0 }}>G</span>
+            <span><span style={{ display: 'block', fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Green Party</span><span style={{ fontSize: 14, color: TERTIARY, fontFamily: MANROPE }}>15 seats · in opposition</span></span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}><TrackPill /></div>
         </div>
@@ -78,7 +78,7 @@ function Preview({ k }: { k: Key }) {
       <div style={card}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
           <span style={{ width: 44, height: 44, borderRadius: 12, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Scale style={{ width: 21, height: 21, color: JADE }} /></span>
-          <span><span style={{ display: 'block', fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Housing</span><span style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>Where every party stands</span></span>
+          <span><span style={{ display: 'block', fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Housing</span><span style={{ fontSize: 14, color: TERTIARY, fontFamily: MANROPE }}>Where every party stands</span></span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}><TrackPill /></div>
       </div>
@@ -88,13 +88,13 @@ function Preview({ k }: { k: Key }) {
     const stages = ['1st', 'Select', '2nd', '3rd']
     return (
       <div style={card}>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 10.5, fontWeight: 800, color: '#1e40af', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE, marginBottom: 8 }}>Government Bill</span>
-        <div style={{ fontSize: 14.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 12, lineHeight: 1.3 }}>Fair Trading Amendment Bill</div>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 800, color: '#1e40af', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE, marginBottom: 8 }}>Government Bill</span>
+        <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 12, lineHeight: 1.3 }}>Fair Trading Amendment Bill</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14 }}>
           {stages.map((s, i) => (
             <span key={s} style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
               <span style={{ width: 12, height: 12, borderRadius: '50%', flexShrink: 0, background: i <= 1 ? JADE : '#fff', border: `2px solid ${i <= 1 ? JADE : '#cbd0d6'}` }} />
-              <span style={{ fontSize: 10.5, fontWeight: 700, color: i === 1 ? INK : TERTIARY, fontFamily: MANROPE }}>{s}</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: i === 1 ? INK : TERTIARY, fontFamily: MANROPE }}>{s}</span>
             </span>
           ))}
         </div>
@@ -106,13 +106,13 @@ function Preview({ k }: { k: Key }) {
     return (
       <div style={card}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-          <span style={{ fontSize: 11.5, fontWeight: 800, color: TERTIARY, fontFamily: MANROPE }}>RNZ · 2h ago</span>
+          <span style={{ fontSize: 13, fontWeight: 800, color: TERTIARY, fontFamily: MANROPE }}>RNZ · 2h ago</span>
           <InFeedBadge />
         </div>
-        <div style={{ fontSize: 14.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.4, marginBottom: 10 }}>Parties clash over housing plan as election nears</div>
+        <div style={{ fontSize: 17, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.4, marginBottom: 10 }}>Parties clash over housing plan as election nears</div>
         <div style={{ display: 'flex', gap: 6 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>Housing</span>
-          <span style={{ fontSize: 11, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>Labour</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>Housing</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>Labour</span>
         </div>
       </div>
     )
@@ -122,10 +122,10 @@ function Preview({ k }: { k: Key }) {
     <div style={{ ...card, padding: 0, overflow: 'hidden' }}>
       <div style={{ position: 'relative', aspectRatio: '16 / 9', background: 'linear-gradient(135deg,#1b2430,#0c0e12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <span style={{ width: 46, height: 46, borderRadius: '50%', background: 'rgba(255,255,255,.92)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Play style={{ width: 20, height: 20, color: '#0c0e12', marginLeft: 2 }} /></span>
-        <span style={{ position: 'absolute', bottom: 8, right: 8, fontSize: 11, fontWeight: 700, color: '#fff', background: 'rgba(0,0,0,.6)', borderRadius: 5, padding: '2px 6px', fontFamily: MANROPE }}>12:04</span>
+        <span style={{ position: 'absolute', bottom: 8, right: 8, fontSize: 13, fontWeight: 700, color: '#fff', background: 'rgba(0,0,0,.6)', borderRadius: 5, padding: '2px 6px', fontFamily: MANROPE }}>12:04</span>
       </div>
       <div style={{ padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
-        <span style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35 }}>Leaders’ debate — full</span>
+        <span style={{ fontSize: 16, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35 }}>Leaders’ debate — full</span>
         <InFeedBadge />
       </div>
     </div>
@@ -160,7 +160,7 @@ export function TrackShowcase() {
               key={s.key}
               onClick={() => setI(idx)}
               aria-pressed={on}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, flexShrink: 0, cursor: 'pointer', fontSize: 13, fontWeight: 800, fontFamily: MANROPE, padding: '8px 13px', borderRadius: 10, border: `1px solid ${on ? INK : BORDER}`, background: on ? INK : '#fff', color: on ? '#fff' : SECONDARY }}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 6, flexShrink: 0, cursor: 'pointer', fontSize: 15, fontWeight: 800, fontFamily: MANROPE, padding: '8px 13px', borderRadius: 10, border: `1px solid ${on ? INK : BORDER}`, background: on ? INK : '#fff', color: on ? '#fff' : SECONDARY }}
             >
               <Icon style={{ width: 15, height: 15 }} /> {s.tab}
             </button>
@@ -171,19 +171,19 @@ export function TrackShowcase() {
       {/* Body */}
       <div key={slide.key} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))', gap: 22, padding: 'clamp(20px, 4vw, 30px)', alignItems: 'center', animation: reduce ? 'none' : 'pe-fade .4s ease' }}>
         <div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 12 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 14, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 12 }}>
             <slide.icon style={{ width: 15, height: 15 }} /> {slide.tab}
           </div>
-          <h3 style={{ fontSize: 'clamp(20px, 3.5vw, 24px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 10px', letterSpacing: '-.01em' }}>{slide.title}</h3>
-          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px', lineHeight: 1.6 }}>{slide.what}</p>
+          <h3 style={{ fontSize: 'clamp(23px,3.5vw,28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 10px', letterSpacing: '-.01em' }}>{slide.title}</h3>
+          <p style={{ fontSize: 17, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px', lineHeight: 1.6 }}>{slide.what}</p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div style={{ display: 'flex', gap: 9, alignItems: 'flex-start' }}>
               <Check style={{ width: 16, height: 16, color: JADE, flexShrink: 0, marginTop: 2 }} />
-              <span style={{ fontSize: 13.5, color: INK, fontWeight: 600, fontFamily: MANROPE, lineHeight: 1.5 }}>{slide.impact}</span>
+              <span style={{ fontSize: 16, color: INK, fontWeight: 600, fontFamily: MANROPE, lineHeight: 1.5 }}>{slide.impact}</span>
             </div>
             <div style={{ display: 'flex', gap: 9, alignItems: 'flex-start' }}>
               <Bookmark style={{ width: 15, height: 15, color: TERTIARY, flexShrink: 0, marginTop: 2 }} />
-              <span style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5 }}>{slide.where}</span>
+              <span style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5 }}>{slide.where}</span>
             </div>
           </div>
         </div>

@@ -35,7 +35,7 @@ function daysToElection() {
 }
 
 const numStyle: React.CSSProperties = {
-  height: H, lineHeight: `${H}px`, fontSize: 34, fontWeight: 800, color: INK,
+  height: H, lineHeight: `${H}px`, fontSize: 39, fontWeight: 800, color: INK,
   fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums', textAlign: 'center', width: W,
 }
 
@@ -126,7 +126,7 @@ export function DaysFlipCountdown() {
       <div style={{ display: 'flex', gap: 7 }}>
         {digits.map((d, i) => <SplitFlapDigit key={i} target={d} startDelay={i * STAGGER} animate={animate} />)}
       </div>
-      <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.04em', color: '#9a8a7a', fontFamily: MANROPE }}>
+      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: '.04em', color: '#9a8a7a', fontFamily: MANROPE }}>
         Days until 2026 elections
       </div>
     </div>

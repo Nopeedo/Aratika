@@ -19,9 +19,9 @@ const STATS = [
 function StatTile({ value, label, sublabel }: { value: string; label: string; sublabel: string }) {
   return (
     <div style={{ background: '#ffffff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '14px 18px', boxShadow: '0 2px 4px rgba(12,14,18,.03)', minWidth: 0 }}>
-      <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: '-.02em', color: INK, lineHeight: 1, fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif', fontVariantNumeric: 'tabular-nums' }}>{value}</div>
-      <div style={{ fontSize: 13, fontWeight: 700, color: INK, marginTop: 4, fontFamily: MANROPE }}>{label}</div>
-      <div style={{ fontSize: 11, fontWeight: 500, color: TERTIARY, marginTop: 2, fontFamily: MANROPE }}>{sublabel}</div>
+      <div style={{ fontSize: 32, fontWeight: 700, letterSpacing: '-.02em', color: INK, lineHeight: 1, fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif', fontVariantNumeric: 'tabular-nums' }}>{value}</div>
+      <div style={{ fontSize: 15, fontWeight: 700, color: INK, marginTop: 4, fontFamily: MANROPE }}>{label}</div>
+      <div style={{ fontSize: 13, fontWeight: 500, color: TERTIARY, marginTop: 2, fontFamily: MANROPE }}>{sublabel}</div>
     </div>
   )
 }
@@ -37,7 +37,7 @@ export function CredibilityStrip() {
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 18px' }}>
           {['NZ Parliament', 'Electoral Commission', 'Stats NZ', 'Non-partisan & independent'].map((label) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 500, color: TERTIARY, fontFamily: MANROPE }}>
+            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 500, color: TERTIARY, fontFamily: MANROPE }}>
               <ShieldCheck style={{ width: 13, height: 13, color: JADE, flexShrink: 0 }} />
               {label}
             </div>

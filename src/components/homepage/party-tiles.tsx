@@ -169,15 +169,15 @@ function Panel({ p }: { p: TileParty }) {
       {/* identity (left) + seats (pulled to the right, party-coloured) */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', minWidth: 0 }}>
-          <span style={{ fontSize: 'clamp(21px, 5.2vw, 38px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.05 }}>{p.name}</span>
+          <span style={{ fontSize: 'clamp(24px,5.2vw,44px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.05 }}>{p.name}</span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0, textAlign: 'right' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <Armchair style={{ width: 21, height: 21, color: seatColor(p.color) }} strokeWidth={2.4} aria-hidden />
-            <span style={{ fontSize: 30, fontWeight: 800, lineHeight: 1, color: seatColor(p.color), fontFamily: MANROPE }}>{p.seats}</span>
+            <span style={{ fontSize: 35, fontWeight: 800, lineHeight: 1, color: seatColor(p.color), fontFamily: MANROPE }}>{p.seats}</span>
           </div>
-          <div style={{ fontSize: 10.5, fontWeight: 700, color: SUB, marginTop: 4, textTransform: 'uppercase', letterSpacing: '.04em', fontFamily: MANROPE }}>Seats in Parliament</div>
+          <div style={{ fontSize: 12, fontWeight: 700, color: SUB, marginTop: 4, textTransform: 'uppercase', letterSpacing: '.04em', fontFamily: MANROPE }}>Seats in Parliament</div>
         </div>
       </div>
 
@@ -185,40 +185,40 @@ function Panel({ p }: { p: TileParty }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '13px 0 14px', borderTop: `1px solid ${LINE}` }}>
         <Avatar name={p.leader} party={p.slug} src={p.leaderPhoto} size="md" face />
         <span>
-          <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>
+          <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE }}>
             {p.leaderHref ? <Link href={p.leaderHref} style={{ color: INK, textDecoration: 'none' }}>{p.leader}</Link> : p.leader}
           </div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: SUB, marginTop: 1, fontFamily: MANROPE }}>{p.leaderTitle}</div>
+          <div style={{ fontSize: 14, fontWeight: 600, color: SUB, marginTop: 1, fontFamily: MANROPE }}>{p.leaderTitle}</div>
         </span>
       </div>
 
       {/* where they stand */}
-      <p style={{ fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', color: SUB, margin: '6px 0 9px', fontFamily: MANROPE }}>Where they stand · in their words</p>
+      <p style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', color: SUB, margin: '6px 0 9px', fontFamily: MANROPE }}>Where they stand · in their words</p>
       {p.positions.map((pos, i) => (
         <div key={pos.topic} style={{ display: 'flex', gap: 10, padding: '9px 0', borderTop: i === 0 ? 'none' : `1px solid ${LINE}` }}>
           <span style={{ width: 9, height: 9, borderRadius: 3, background: p.color, marginTop: 5, flexShrink: 0 }} />
-          <span style={{ fontSize: 12, fontWeight: 800, width: 98, flexShrink: 0, color: INK, fontFamily: MANROPE }}>{pos.label}</span>
-          <span style={{ fontSize: 13, fontWeight: 500, color: '#3f372f', lineHeight: 1.45, flex: 1, fontFamily: MANROPE }}>
+          <span style={{ fontSize: 14, fontWeight: 800, width: 98, flexShrink: 0, color: INK, fontFamily: MANROPE }}>{pos.label}</span>
+          <span style={{ fontSize: 15, fontWeight: 500, color: '#3f372f', lineHeight: 1.45, flex: 1, fontFamily: MANROPE }}>
             {pos.stance}{' '}
             {pos.fromProfile
-              ? <Link href={pos.href} style={{ fontSize: 11, fontWeight: 700, fontStyle: 'italic', color: MUTE, whiteSpace: 'nowrap', textDecoration: 'none' }}>· stated priority</Link>
-              : pos.sourceUrl && <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, fontWeight: 700, color: p.color, whiteSpace: 'nowrap', textDecoration: 'none' }}>· source ↗</a>}
+              ? <Link href={pos.href} style={{ fontSize: 13, fontWeight: 700, fontStyle: 'italic', color: MUTE, whiteSpace: 'nowrap', textDecoration: 'none' }}>· stated priority</Link>
+              : pos.sourceUrl && <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, fontWeight: 700, color: p.color, whiteSpace: 'nowrap', textDecoration: 'none' }}>· source ↗</a>}
           </span>
         </div>
       ))}
       {p.positions.length < p.topicsTotal && (
-        <p style={{ fontSize: 11.5, color: MUTE, fontStyle: 'italic', margin: '10px 0 0', fontFamily: MANROPE }}>
+        <p style={{ fontSize: 13, color: MUTE, fontStyle: 'italic', margin: '10px 0 0', fontFamily: MANROPE }}>
           {p.positions.length} of {p.topicsTotal} policy topics captured so far — more being added.
         </p>
       )}
 
       {/* footer links */}
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginTop: 14, paddingTop: 12, borderTop: `1px solid ${LINE}` }}>
-        <Link href="/compare" style={{ fontSize: 12.5, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Compare topics →</Link>
-        <Link href={p.profileHref} style={{ fontSize: 12.5, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Full profile →</Link>
-        <a href={p.website} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Official website ↗</a>
+        <Link href="/compare" style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Compare topics →</Link>
+        <Link href={p.profileHref} style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Full profile →</Link>
+        <a href={p.website} target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Official website ↗</a>
       </div>
-      <p style={{ fontSize: 11, color: MUTE, margin: '9px 0 0', fontFamily: MANROPE }}>
+      <p style={{ fontSize: 13, color: MUTE, margin: '9px 0 0', fontFamily: MANROPE }}>
         Founded {p.founded}. Seats: NZ Parliament. Stances summarised from each party’s official policy pages.
       </p>
     </div>

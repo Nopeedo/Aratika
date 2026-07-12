@@ -35,7 +35,7 @@ export function ElectionCountdown() {
     <span>
       ● 2026 General Election
       <span style={{ color: '#36e08a', fontWeight: 800 }}> — {days} days to go</span>
-      <span style={{ color: '#9aa0aa', fontWeight: 500, fontSize: 11 }}>
+      <span style={{ color: '#9aa0aa', fontWeight: 500, fontSize: 13 }}>
         {' '}(Saturday 7 November)
       </span>
     </span>

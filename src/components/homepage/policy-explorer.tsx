@@ -82,9 +82,9 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
       {focused && !sel && PARTY_PROFILES[focused as PartySlug] && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 14, padding: '10px 14px', border: `1px solid ${BORDER}`, borderLeft: `4px solid ${PARTY_COLORS[focused as PartySlug].bg}`, borderRadius: 12, background: '#fff' }}>
           <Target style={{ width: 15, height: 15, color: PARTY_COLORS[focused as PartySlug].bg, flexShrink: 0 }} />
-          <span style={{ fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Focused on {PARTY_PROFILES[focused as PartySlug].name}</span>
-          <span style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, flex: 1, minWidth: 130 }}>Tap an issue below to see where they stand.</span>
-          <button onClick={() => select(null)} style={{ fontSize: 12, fontWeight: 700, color: SECONDARY, background: 'none', border: `1px solid ${BORDER}`, borderRadius: 7, padding: '5px 10px', cursor: 'pointer', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>Clear focus</button>
+          <span style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Focused on {PARTY_PROFILES[focused as PartySlug].name}</span>
+          <span style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, flex: 1, minWidth: 130 }}>Tap an issue below to see where they stand.</span>
+          <button onClick={() => select(null)} style={{ fontSize: 14, fontWeight: 700, color: SECONDARY, background: 'none', border: `1px solid ${BORDER}`, borderRadius: 7, padding: '5px 10px', cursor: 'pointer', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>Clear focus</button>
         </div>
       )}
 
@@ -106,7 +106,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           .pe-rail-arrow { display: flex; }
         }
       `}</style>
-      <div className="pe-rail-hint" style={{ alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, margin: '-2px 0 10px' }}>
+      <div className="pe-rail-hint" style={{ alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, margin: '-2px 0 10px' }}>
         Swipe issues, tap one to compare <ArrowRight style={{ width: 13, height: 13 }} />
       </div>
       <div style={{ position: 'relative' }}>
@@ -152,8 +152,8 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
                 {Icon && <Icon className={`size-5 ${t.textColor}`} />}
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 15, fontWeight: 800, color: INK, marginBottom: 4 }}>{t.label}</div>
-                <div style={{ fontSize: 12, color: SECONDARY, lineHeight: 1.5 }}>{t.description}</div>
+                <div style={{ fontSize: 17, fontWeight: 800, color: INK, marginBottom: 4 }}>{t.label}</div>
+                <div style={{ fontSize: 14, color: SECONDARY, lineHeight: 1.5 }}>{t.description}</div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', gap: 4 }}>
@@ -161,7 +161,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
                     <span key={s} style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[s].bg, border: '1.5px solid rgba(255,255,255,.6)', display: 'inline-block', flexShrink: 0 }} />
                   ))}
                 </div>
-                <span style={{ fontSize: 11, fontWeight: 700, color: on ? INK : JADE, display: 'flex', alignItems: 'center', gap: 3 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: on ? INK : JADE, display: 'flex', alignItems: 'center', gap: 3 }}>
                   {on ? 'Hide' : 'Compare'} <ChevronDown style={{ width: 12, height: 12, transform: on ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
                 </span>
               </div>
@@ -175,12 +175,12 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
         <div ref={panelRef} style={{ marginTop: 18, border: `1px solid ${BORDER}`, borderRadius: 18, background: '#fff', padding: '18px clamp(14px, 4vw, 22px)', scrollMarginTop: 80 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 14, flexWrap: 'wrap' }}>
             <div style={{ minWidth: 0 }}>
-              <h3 style={{ fontSize: 'clamp(16px, 4.5vw, 18px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px', lineHeight: 1.25 }}>
+              <h3 style={{ fontSize: 'clamp(18px,4.5vw,21px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px', lineHeight: 1.25 }}>
                 {focused && PARTY_PROFILES[focused as PartySlug] && !showAll
                   ? `Where ${PARTY_PROFILES[focused as PartySlug].name} stands on ${selTopic.label}`
                   : `Where the parties stand on ${selTopic.label}`}
               </h3>
-              <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Each party’s most recent published policy — not a past-election position.</p>
+              <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Each party’s most recent published policy — not a past-election position.</p>
             </div>
             <button onClick={() => setSel(null)} aria-label="Close" style={{ background: 'none', border: `1px solid ${BORDER}`, borderRadius: 8, padding: 6, cursor: 'pointer', color: SECONDARY, display: 'flex', flexShrink: 0 }}>
               <X style={{ width: 15, height: 15 }} />
@@ -195,7 +195,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
                   <>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '18px 0 11px' }}>
                       <span style={{ flex: 1, height: 1, background: BORDER }} />
-                      <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, whiteSpace: 'nowrap', fontFamily: MANROPE }}>The other parties</span>
+                      <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, whiteSpace: 'nowrap', fontFamily: MANROPE }}>The other parties</span>
                       <span style={{ flex: 1, height: 1, background: BORDER }} />
                     </div>
                     <PartyPositions parties={PARTY_DIRECTORY_ORDER.filter((s) => s !== focused)} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
@@ -208,20 +208,20 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 11, padding: '18px 16px', border: `1px dashed ${BORDER}`, borderRadius: 14, background: '#fbfaf8' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                   <Target style={{ width: 16, height: 16, color: JADE, flexShrink: 0 }} />
-                  <span style={{ fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Pick a party from the tiles above</span>
+                  <span style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Pick a party from the tiles above</span>
                 </span>
-                <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Tap a party tile to see just their stance on {selTopic.label.toLowerCase()} here — or see everyone at once.</p>
-                <button onClick={() => setShowAll(true)} style={{ fontSize: 12.5, fontWeight: 800, color: INK, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 9, padding: '8px 13px', cursor: 'pointer', fontFamily: MANROPE }}>Show all parties</button>
+                <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Tap a party tile to see just their stance on {selTopic.label.toLowerCase()} here — or see everyone at once.</p>
+                <button onClick={() => setShowAll(true)} style={{ fontSize: 14, fontWeight: 800, color: INK, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 9, padding: '8px 13px', cursor: 'pointer', fontFamily: MANROPE }}>Show all parties</button>
               </div>
             )
           ) : (
-            <p style={{ fontSize: 13, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
+            <p style={{ fontSize: 15, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
               Party positions on {selTopic.label.toLowerCase()} are being sourced from official policy and editor-checked — they’ll appear here soon.
             </p>
           )}
 
           <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
-            <Link href={`/policies/${sel}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
+            <Link href={`/policies/${sel}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
               Full {selTopic.label} comparison <ArrowRight style={{ width: 14, height: 14 }} />
             </Link>
           </div>
@@ -259,12 +259,12 @@ function FocusedCard({ slug, pos, topic, topicLabel, showAll, onToggleAll }: {
     <div style={{ border: `1.5px solid ${c}`, borderRadius: 14, overflow: 'hidden' }}>
       <div style={{ background: c, padding: '11px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-          <span style={{ fontSize: 15, fontWeight: 800, color: txt, fontFamily: MANROPE }}>{party.name}</span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 9.5, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: txt, background: overlay, padding: '3px 8px', borderRadius: 20 }}>
+          <span style={{ fontSize: 17, fontWeight: 800, color: txt, fontFamily: MANROPE }}>{party.name}</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: txt, background: overlay, padding: '3px 8px', borderRadius: 20 }}>
             <Target style={{ width: 11, height: 11 }} /> Focused
           </span>
         </span>
-        <button onClick={onToggleAll} aria-expanded={showAll} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11.5, fontWeight: 700, color: txt, background: overlay, border: 'none', borderRadius: 7, padding: '5px 9px', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: MANROPE }}>
+        <button onClick={onToggleAll} aria-expanded={showAll} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 13, fontWeight: 700, color: txt, background: overlay, border: 'none', borderRadius: 7, padding: '5px 9px', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: MANROPE }}>
           {showAll ? 'Hide other parties' : 'Show all parties'}
           <ChevronDown style={{ width: 13, height: 13, transform: showAll ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
         </button>
@@ -272,27 +272,27 @@ function FocusedCard({ slug, pos, topic, topicLabel, showAll, onToggleAll }: {
       <div style={{ padding: '13px 14px', background: '#fff' }}>
         {pos ? (
           <>
-            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY, marginBottom: 6, fontFamily: MANROPE }}>On {topicLabel}</div>
-            <p style={{ fontSize: 14.5, fontWeight: 700, color: INK, lineHeight: 1.45, margin: '0 0 8px', fontFamily: MANROPE }}>{pos.stance || body}</p>
+            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY, marginBottom: 6, fontFamily: MANROPE }}>On {topicLabel}</div>
+            <p style={{ fontSize: 17, fontWeight: 700, color: INK, lineHeight: 1.45, margin: '0 0 8px', fontFamily: MANROPE }}>{pos.stance || body}</p>
             {body && pos.stance && (
-              <p style={{ fontSize: 13, color: '#33373f', lineHeight: 1.6, margin: '0 0 10px', fontFamily: MANROPE }}>{body}</p>
+              <p style={{ fontSize: 15, color: '#33373f', lineHeight: 1.6, margin: '0 0 10px', fontFamily: MANROPE }}>{body}</p>
             )}
             {pos.quote && (
-              <p style={{ fontSize: 12.5, color: SECONDARY, lineHeight: 1.5, margin: '0 0 10px', paddingLeft: 10, borderLeft: `3px solid ${c}`, fontStyle: 'italic', fontFamily: MANROPE }}>“{pos.quote}”</p>
+              <p style={{ fontSize: 14, color: SECONDARY, lineHeight: 1.5, margin: '0 0 10px', paddingLeft: 10, borderLeft: `3px solid ${c}`, fontStyle: 'italic', fontFamily: MANROPE }}>“{pos.quote}”</p>
             )}
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', paddingTop: 10, borderTop: `1px solid ${BORDER}` }}>
-              <Link href={`/policies/${topic}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800, color: INK, textDecoration: 'none', fontFamily: MANROPE }}>
+              <Link href={`/policies/${topic}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 14, fontWeight: 800, color: INK, textDecoration: 'none', fontFamily: MANROPE }}>
                 Full breakdown <ArrowRight style={{ width: 14, height: 14 }} />
               </Link>
               {pos.sourceUrl && (
-                <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE }}>
+                <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE }}>
                   {pos.sourceLabel} <ExternalLink style={{ width: 11, height: 11 }} />
                 </a>
               )}
             </div>
           </>
         ) : (
-          <p style={{ fontSize: 13, color: TERTIARY, lineHeight: 1.55, margin: 0, fontFamily: MANROPE }}>
+          <p style={{ fontSize: 15, color: TERTIARY, lineHeight: 1.55, margin: 0, fontFamily: MANROPE }}>
             No {topicLabel.toLowerCase()} position captured yet for {party.name} — being sourced from official policy, then editor-checked.
           </p>
         )}

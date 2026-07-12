@@ -15,10 +15,10 @@ export function GoDeeperDivider() {
     <section style={{ background: '#fff' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 8px', textAlign: 'center' }}>
         <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: SECONDARY, fontFamily: MANROPE }}>
+          <span style={{ fontSize: 14, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: SECONDARY, fontFamily: MANROPE }}>
             Following the race? Go deeper
           </span>
-          <span style={{ fontSize: 13.5, fontWeight: 500, color: INK, fontFamily: MANROPE, maxWidth: 460, lineHeight: 1.55 }}>
+          <span style={{ fontSize: 16, fontWeight: 500, color: INK, fontFamily: MANROPE, maxWidth: 460, lineHeight: 1.55 }}>
             You&apos;ve got the essentials. Below is where things stand, what to keep an eye on, and how to follow it all the way to election day.
           </span>
           <ChevronDown style={{ width: 20, height: 20, color: TERTIARY, marginTop: 4 }} />

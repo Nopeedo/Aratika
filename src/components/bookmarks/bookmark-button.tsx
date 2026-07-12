@@ -57,7 +57,7 @@ export function BookmarkButton({
       aria-pressed={saved}
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 7, cursor: authLoading ? 'default' : 'pointer',
-        padding: '9px 16px', borderRadius: 10, fontSize: 13.5, fontWeight: 800, fontFamily: MANROPE,
+        padding: '9px 16px', borderRadius: 10, fontSize: 16, fontWeight: 800, fontFamily: MANROPE,
         background: saved ? '#ecfdf5' : '#fff', border: `1px solid ${saved ? '#a7f3d0' : BORDER}`,
         color: saved ? JADE : INK, transition: 'all .15s ease', whiteSpace: 'nowrap',
       }}

@@ -12,10 +12,10 @@ export function StartHereCta() {
   return (
     <section style={{ background: '#fff' }}>
       <div style={{ maxWidth: 640, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) clamp(18px, 3vh, 26px)', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 'clamp(18px, 3.4vw, 22px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>
+        <h2 style={{ fontSize: 'clamp(21px,3.4vw,25px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>
           Start here
         </h2>
-        <p style={{ fontSize: 'clamp(13px, 1.8vw, 14.5px)', fontWeight: 500, color: SUB, fontFamily: MANROPE, lineHeight: 1.5, margin: 0 }}>
+        <p style={{ fontSize: 'clamp(15px,1.8vw,17px)', fontWeight: 500, color: SUB, fontFamily: MANROPE, lineHeight: 1.5, margin: 0 }}>
           Use the tiles below to compare the parties.
         </p>
       </div>
