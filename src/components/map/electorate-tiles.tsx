@@ -28,7 +28,11 @@ export function ElectorateTiles({ name }: { name: string }) {
   const party = info.party ?? undefined
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 12, alignItems: 'stretch', fontFamily: MANROPE }}>
+    <div className="el-tiles" style={{ fontFamily: MANROPE }}>
+      <style>{`
+        .el-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: stretch; }
+        @media (max-width: 480px) { .el-tiles { grid-template-columns: 1fr; } }
+      `}</style>
       {/* Tile 1 — the numbers */}
       <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column' }}>
         <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY }}>
