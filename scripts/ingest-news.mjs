@@ -110,6 +110,16 @@ function isElectionRelevant(text, parties) {
   return parties.length > 0 || ELECTION_TERMS.some((term) => t.includes(term))
 }
 
+// Obvious non-political categories to drop from the general feeds (denylist). Only
+// applied when an item is NOT election-relevant and touches no policy topic, so a
+// political story that happens to mention sport/weather is never dropped.
+const NEWS_NOISE_TERMS = [
+  'weather', 'metservice', 'forecast', 'rain warning', 'daily quiz', 'the quiz', 'horoscope',
+  'recipe', 'good as gold', 'lotto', 'powerball', 'matariki', 'all blacks', 'super rugby',
+  'rugby', 'league', 'netball', 'cricket', 'warriors', 'silver ferns', 'black caps', 'football',
+  'movie review', 'tv review', 'what to watch', 'travel guide',
+]
+
 const RESET = process.argv.includes('--reset')
 if (RESET) {
   const { error } = await sb.from('content_items').delete().eq('type', 'news')
@@ -136,10 +146,20 @@ for (const feed of FEEDS) {
     const parties = tag(PARTY_TERMS, title + ' ' + snippetRaw)
     const topics = tag(TOPIC_TERMS, title + ' ' + snippetRaw)
     const electorates = tagElectorates(title + ' ' + snippetRaw)
+    const electionRelevant = isElectionRelevant(title + ' ' + snippetRaw, parties)
+    // Noise gate — a DENYLIST, not an allowlist: keyword-based political detection
+    // misses MP/minister surnames, so an allowlist would wrongly drop real coverage
+    // (e.g. a minister on a policy). Instead we drop only obvious non-political
+    // categories (weather, sport, quizzes, lifestyle) — and even then only when the
+    // item mentions no party, hits no election term, and touches no policy topic.
+    // Match noise in the TITLE only — a stray sport/weather word in the body of a
+    // political story shouldn't drop it.
+    const isNoise = NEWS_NOISE_TERMS.some((x) => title.toLowerCase().includes(x))
+    if (isNoise && !electionRelevant && topics.length === 0) { skipped++; continue }
     rows.push({
       type: 'news', source_id: link, title, summary: snippet, status: 'approved',
       source_url: link,
-      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, electorates, featured: false, image: extractImage(it), electionRelevant: isElectionRelevant(title + ' ' + snippetRaw, parties) },
+      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, electorates, featured: false, image: extractImage(it), electionRelevant },
     })
   }
   for (let i = 0; i < rows.length; i += 50) {

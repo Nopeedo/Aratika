@@ -37,9 +37,11 @@ const CHANNELS = [
   // (@1NewsNZ / @ThreeNowNZ / @nzheraldtv). party=null → tagged by who's
   // mentioned; debate videos are auto-flagged (DEBATE_TERMS) and reviewed in
   // /editor before going public.
-  { id: 'UCxPAYgO8OpFev3PUTKbsxNw', source: '1News (TVNZ) — Q+A / Jack Tame', party: null },
-  { id: 'UCBTMdHIU_I0KLPDmWCqTbYg', source: 'ThreeNews', party: null },
-  { id: 'UCG0xyRVgb5Yf1lvQxkRrYYQ', source: 'NZ Herald — Herald NOW / Ryan Bridge', party: null },
+  // debatesOnly: general broadcasters — we only want their debate/leader-interview
+  // clips, not their weather/sport/general-news feed.
+  { id: 'UCxPAYgO8OpFev3PUTKbsxNw', source: '1News (TVNZ) — Q+A / Jack Tame', party: null, debatesOnly: true },
+  { id: 'UCBTMdHIU_I0KLPDmWCqTbYg', source: 'ThreeNews', party: null, debatesOnly: true },
+  { id: 'UCG0xyRVgb5Yf1lvQxkRrYYQ', source: 'NZ Herald — Herald NOW / Ryan Bridge', party: null, debatesOnly: true },
 ]
 
 const PARTY_TERMS = {
@@ -58,6 +60,9 @@ const ELECTION_TERMS = ['election', 'campaign', 'candidate', 'poll', 'voter', 'c
 // dedicated "Debates" rail in the Election Centre. Broadcast by media channels
 // (see CHANNELS), reviewed in /editor before showing.
 const DEBATE_TERMS = ['debate', 'q+a', 'q&a', 'head to head', 'head-to-head', 'the great debate', 'minor party', 'leaders interview']
+// Obvious non-political categories dropped from political channels (Parliament/RNZ)
+// — only when the clip also mentions no party, no election term and no policy topic.
+const VIDEO_NOISE_TERMS = ['gardener', 'once were', 'matariki', 'trailer', 'weather', 'forecast', 'recipe', 'all blacks', 'super rugby', 'silver ferns', 'black caps', 'good as gold', 'episode ']
 const tag = (map, t) => Object.keys(map).filter((k) => map[k].some((x) => t.includes(x)))
 
 // Same battleground-scoped electorate tagging as ingest-news.mjs (majority < 3500
@@ -114,6 +119,17 @@ for (const ch of CHANNELS) {
     const electorates = tagElectorates(t)
     const electionRelevant = parties.length > 0 || ELECTION_TERMS.some((x) => t.includes(x))
     const debate = DEBATE_TERMS.some((x) => t.includes(x))
+    // Noise gate. Keyword relevance detection is too weak to use as an allowlist
+    // (it misses bare party names and minister surnames, e.g. "National promises…",
+    // "ACT announces…", "…Chris Bishop"), so we DON'T filter political channels by it.
+    // Instead:
+    //  • Broadcaster channels are here ONLY for debates → stage a clip only if it's
+    //    flagged as a debate. This drops their general weather/sport/Ryan-Bridge feed.
+    //  • Political sources (Parliament, RNZ) and party channels stage as before, minus
+    //    obvious lifestyle/sport noise via a denylist.
+    if (ch.debatesOnly && !debate && !electionRelevant) continue
+    const isNoise = VIDEO_NOISE_TERMS.some((x) => t.includes(x))
+    if (isNoise && !debate && !electionRelevant && topics.length === 0) continue
     rows.push({
       type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'pending', source_url: link,
       data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, debate, featured: false },
