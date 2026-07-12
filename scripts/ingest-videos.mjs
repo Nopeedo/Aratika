@@ -15,6 +15,7 @@ import { createClient } from '@supabase/supabase-js'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { PARTY_TERMS, isPolitical } from './political-terms.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -44,12 +45,9 @@ const CHANNELS = [
   { id: 'UCG0xyRVgb5Yf1lvQxkRrYYQ', source: 'NZ Herald — Herald NOW / Ryan Bridge', party: null, debatesOnly: true },
 ]
 
-const PARTY_TERMS = {
-  national: ['national party', 'luxon', 'nicola willis', 'simeon brown'], labour: ['labour', 'hipkins', 'edmonds'],
-  green: ['green party', 'swarbrick', 'davidson'], act: ['act party', 'seymour'],
-  nzfirst: ['nz first', 'new zealand first', 'winston peters', 'shane jones'], tpm: ['te pāti māori', 'te pati maori', 'māori party', 'maori party', 'waititi', 'ngarewa-packer'],
-  top: ['opportunity party', 'qiulae wong'],
-}
+// Party + political term lists — generated from the current MP roster
+// (scripts/gen-political-terms.mjs). Every current MP is mapped to their party by
+// full name, so "…Chris Bishop", "Cushla Tangaere-Manuel" etc. tag correctly.
 const TOPIC_TERMS = {
   economy: ['econom', 'tax', 'budget', 'inflation', 'cost of living', 'wages'], housing: ['housing', 'rent', 'tenan', 'homeless'],
   health: ['health', 'hospital', 'pharmac', 'doctor'], education: ['school', 'educat', 'teacher', 'ncea'],
@@ -129,7 +127,7 @@ for (const ch of CHANNELS) {
     //    obvious lifestyle/sport noise via a denylist.
     if (ch.debatesOnly && !debate && !electionRelevant) continue
     const isNoise = VIDEO_NOISE_TERMS.some((x) => t.includes(x))
-    if (isNoise && !debate && !electionRelevant && topics.length === 0) continue
+    if (isNoise && !debate && !electionRelevant && !isPolitical(t, parties) && topics.length === 0) continue
     rows.push({
       type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'pending', source_url: link,
       data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, debate, featured: false },

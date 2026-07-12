@@ -17,6 +17,7 @@ import Parser from 'rss-parser'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { PARTY_TERMS, isPolitical } from './political-terms.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -48,15 +49,9 @@ const FEEDS = [
 ]
 
 // Party detection — name + leaders/notable figures, lowercase.
-const PARTY_TERMS = {
-  national: ['national party', 'luxon', 'nicola willis', 'simeon brown', 'national-led', 'national mp'],
-  labour: ['labour party', 'hipkins', 'chris hipkins', 'barbara edmonds', 'labour mp', 'labour leader'],
-  green: ['green party', 'the greens', 'swarbrick', 'marama davidson', 'green mp', 'greens'],
-  act: ['act party', 'act new zealand', 'david seymour', 'act mp'],
-  nzfirst: ['nz first', 'new zealand first', 'winston peters', 'shane jones'],
-  tpm: ['te pāti māori', 'te pati maori', 'māori party', 'maori party', 'waititi', 'ngarewa-packer'],
-  top: ['opportunity party', 'qiulae wong'],
-}
+// Party + political term lists — generated from the current MP roster
+// (scripts/gen-political-terms.mjs). Every current MP is mapped to their party by
+// full name, so "…Chris Bishop", "Cushla Tangaere-Manuel" etc. tag correctly.
 const TOPIC_TERMS = {
   economy: ['econom', 'tax', 'budget', 'inflation', 'cost of living', 'gdp', 'wages'],
   housing: ['housing', 'rent', 'tenan', 'house price', 'homeless'],
@@ -153,9 +148,10 @@ for (const feed of FEEDS) {
     // categories (weather, sport, quizzes, lifestyle) — and even then only when the
     // item mentions no party, hits no election term, and touches no policy topic.
     // Match noise in the TITLE only — a stray sport/weather word in the body of a
-    // political story shouldn't drop it.
+    // political story shouldn't drop it. Also spare anything politically relevant
+    // (a party, MP/minister, or political signal term anywhere in title+body).
     const isNoise = NEWS_NOISE_TERMS.some((x) => title.toLowerCase().includes(x))
-    if (isNoise && !electionRelevant && topics.length === 0) { skipped++; continue }
+    if (isNoise && !electionRelevant && !isPolitical(title + ' ' + snippetRaw, parties) && topics.length === 0) { skipped++; continue }
     rows.push({
       type: 'news', source_id: link, title, summary: snippet, status: 'approved',
       source_url: link,
