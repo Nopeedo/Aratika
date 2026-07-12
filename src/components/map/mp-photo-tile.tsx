@@ -36,7 +36,7 @@ export function MpPhotoTile({ name, party, mp, caption }: {
   const inner = (
     <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 190, background: pc ? pc.light : '#eef1f4' }}>
       {mp?.photo ? (
-        <Image src={mp.photo} alt={name} fill sizes="(max-width: 880px) 90vw, 260px" style={{ objectFit: 'cover', objectPosition: '50% 15%' }} />
+        <Image src={mp.photo} alt={name} fill sizes="(max-width: 880px) 90vw, 240px" style={{ objectFit: 'cover', objectPosition: '50% 22%' }} />
       ) : (
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: pc ? pc.bg : '#e2e8f0', color: pc ? pc.text : '#475569', fontSize: 46, fontWeight: 800, fontFamily: MANROPE }}>{initials}</div>
       )}

@@ -134,7 +134,11 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
             </div>
           ) : (
             info ? (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: 12, alignItems: 'stretch', fontFamily: MANROPE }}>
+              <div className="bg-tiles" style={{ fontFamily: MANROPE }}>
+                <style>{`
+                  .bg-tiles { display: grid; grid-template-columns: 1fr minmax(190px, 230px); gap: 12px; align-items: stretch; }
+                  @media (max-width: 520px) { .bg-tiles { grid-template-columns: 1fr; } }
+                `}</style>
                 {/* Tile 1 — the numbers */}
                 <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column' }}>
                   {tier && <span style={{ alignSelf: 'flex-start', fontSize: 11, fontWeight: 800, color: '#fff', background: tier.color, borderRadius: 999, padding: '3px 10px', marginBottom: 10 }}>{tier.label}</span>}

@@ -30,7 +30,7 @@ export function ElectorateTiles({ name }: { name: string }) {
   return (
     <div className="el-tiles" style={{ fontFamily: MANROPE }}>
       <style>{`
-        .el-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: stretch; }
+        .el-tiles { display: grid; grid-template-columns: 1fr minmax(190px, 230px); gap: 12px; align-items: stretch; }
         @media (max-width: 480px) { .el-tiles { grid-template-columns: 1fr; } }
       `}</style>
       {/* Tile 1 — the numbers */}
