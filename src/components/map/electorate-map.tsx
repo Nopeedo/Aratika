@@ -25,11 +25,13 @@ interface ElectorateMapProps {
   onSelect:    (name: string) => void
   /** Optional custom fill per electorate name (e.g. by marginality). Falls back to party colour. */
   colorOf?:    (name: string) => string | null
+  /** Zoom on scroll wheel. Off for inline embeds so the wheel scrolls the page, not the map. */
+  scrollZoom?: boolean
 }
 
 const NEUTRAL_FILL = '#d8d5cf'   // electorate with no verified holder yet
 
-export default function ElectorateMap({ data, selectedKey, onSelect, colorOf }: ElectorateMapProps) {
+export default function ElectorateMap({ data, selectedKey, onSelect, colorOf, scrollZoom = true }: ElectorateMapProps) {
 
   // Style each electorate polygon by holding party (or custom colorOf) + selection state
   function styleFeature(feature?: Feature<Geometry>): PathOptions {
@@ -79,7 +81,7 @@ export default function ElectorateMap({ data, selectedKey, onSelect, colorOf }: 
       minZoom={5}
       maxZoom={12}
       style={{ height: '100%', width: '100%', background: '#eaf2f7' }}
-      scrollWheelZoom
+      scrollWheelZoom={scrollZoom}
       attributionControl
     >
       <TileLayer

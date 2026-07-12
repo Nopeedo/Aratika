@@ -12,13 +12,13 @@
 import * as React from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Loader2, ArrowRight, ShieldCheck, MapPinOff, Layers } from 'lucide-react'
 import type { FeatureCollection } from 'geojson'
 import { normalizeElectorateKey, getElectorate } from '@/constants/electorates-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { toSlug } from '@/lib/utils/format'
+import { MpPhotoTile } from '@/components/map/mp-photo-tile'
 import { MARGIN_TIERS, classifyMargin, marginColorByName } from '@/lib/battlegrounds'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
@@ -94,7 +94,7 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
         {/* Map */}
         <div style={{ position: 'relative', height: mapHeight, borderRadius: 18, overflow: 'hidden', border: `1px solid ${BORDER}`, background: '#eaf2f7' }}>
           {status === 'loading' && <Loading />}
-          {status === 'ready' && data && <ElectorateMap key={layer} data={data} selectedKey={selectedKey} onSelect={setSelected} colorOf={marginColorByName} />}
+          {status === 'ready' && data && <ElectorateMap key={layer} data={data} selectedKey={selectedKey} onSelect={setSelected} colorOf={marginColorByName} scrollZoom={!embedded} />}
           {status === 'ready' && !data && (
             <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', justifyContent: 'center', color: TERTIARY }}>
               <MapPinOff style={{ width: 26, height: 26 }} />
@@ -151,7 +151,7 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
                 </div>
 
                 {/* Tile 2 — the incumbent */}
-                <MpTile info={info} mp={mp} />
+                <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" />
               </div>
             ) : (
               <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>Result data pending for this seat.</p>
@@ -162,38 +162,6 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
       </div>
 
       <style>{`@media (max-width: 880px){ .map-grid{ grid-template-columns:1fr !important } .map-grid > div{ height:auto !important } .map-grid > div:first-child{ height:440px !important } }`}</style>
-    </div>
-  )
-}
-
-function MpTile({ info, mp }: {
-  info: NonNullable<ReturnType<typeof getElectorate>>
-  mp: (typeof MP_PROFILES)[string] | null
-}) {
-  const name = info.mpName ?? 'To be confirmed'
-  const initials = name.split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase()
-  const pc = info.party ? PARTY_COLORS[info.party] : null
-
-  const inner = (
-    <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 190, background: pc ? pc.light : '#eef1f4' }}>
-      {mp?.photo ? (
-        <Image src={mp.photo} alt={name} fill sizes="(max-width: 880px) 90vw, 260px" style={{ objectFit: 'cover', objectPosition: '50% 15%' }} />
-      ) : (
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: pc ? pc.bg : '#e2e8f0', color: pc ? pc.text : '#475569', fontSize: 46, fontWeight: 800, fontFamily: MANROPE }}>{initials}</div>
-      )}
-      <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: '22px 13px 11px', background: 'linear-gradient(transparent, rgba(0,0,0,.78))', color: '#fff', fontFamily: MANROPE }}>
-        <div style={{ fontSize: 14.5, fontWeight: 800, lineHeight: 1.2 }}>{name}</div>
-        <div style={{ fontSize: 11.5, opacity: 0.85, marginTop: 2 }}>2023 MP{mp ? ' · view profile →' : ''}</div>
-        {mp?.photoCredit && (
-          <div style={{ fontSize: 9.5, opacity: 0.62, marginTop: 4 }}>Photo: {mp.photoCredit}{mp.photoLicense ? ` (${mp.photoLicense})` : ''}</div>
-        )}
-      </div>
-    </div>
-  )
-
-  return (
-    <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden' }}>
-      {mp ? <Link href={`/mps/${mp.slug}`} aria-label={`${name} profile`} style={{ display: 'block', height: '100%' }}>{inner}</Link> : inner}
     </div>
   )
 }

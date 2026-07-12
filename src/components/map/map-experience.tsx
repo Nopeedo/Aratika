@@ -16,6 +16,7 @@ import dynamic from 'next/dynamic'
 import { Search, Layers, Loader2, MapPinOff, ShieldCheck } from 'lucide-react'
 import type { Feature, FeatureCollection } from 'geojson'
 import { ElectoratePanel } from './electorate-panel'
+import { ElectorateTiles } from './electorate-tiles'
 import {
   electorateNameFromProps, normalizeElectorateKey,
 } from '@/constants/electorates-data'
@@ -246,7 +247,7 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
         }}>
           {status === 'loading' && <MapLoading />}
           {status === 'ready' && data && (
-            <ElectorateMap data={data} selectedKey={selectedKey} onSelect={setSelected} />
+            <ElectorateMap data={data} selectedKey={selectedKey} onSelect={setSelected} scrollZoom={!embedded} />
           )}
           {(status === 'missing' || status === 'error') && <MapMissing layer={layer} error={status === 'error'} />}
 
@@ -278,11 +279,7 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
 
         {/* Panel — full side column normally; embedded shows it below the map only once a seat is picked. */}
         {embedded ? (
-          selected && (
-            <div style={{ maxHeight: 460, borderRadius: 18, overflow: 'auto', border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
-              <ElectoratePanel electorateName={selected} />
-            </div>
-          )
+          selected && <ElectorateTiles name={selected} />
         ) : (
           <div style={{ height: 'clamp(600px, 82vh, 840px)', borderRadius: 18, overflow: 'auto', border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
             <ElectoratePanel electorateName={selected} />
