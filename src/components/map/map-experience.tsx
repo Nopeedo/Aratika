@@ -238,14 +238,16 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
         style={embedded ? undefined : { display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'stretch' }}
       >
 
-        {/* Map area — enlarged height (scales with the viewport); width unchanged. */}
+        {/* Map area. translateZ(0) puts it on its own GPU layer so Leaflet's big
+            off-screen zoom-proxy can't smear/ghost adjacent content while scrolling. */}
         <div style={{
           position: 'relative', height: mapHeight, borderRadius: 18, overflow: 'hidden',
           border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)', background: '#eaf2f7',
+          transform: 'translateZ(0)', isolation: 'isolate',
         }}>
           {status === 'loading' && <MapLoading />}
           {status === 'ready' && data && (
-            <ElectorateMap data={data} selectedKey={selectedKey} onSelect={setSelected} scrollZoom={!embedded} />
+            <ElectorateMap data={data} selectedKey={selectedKey} onSelect={setSelected} />
           )}
           {(status === 'missing' || status === 'error') && <MapMissing layer={layer} error={status === 'error'} />}
 

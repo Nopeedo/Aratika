@@ -123,10 +123,11 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
         className={embedded ? 'bg-embed-split' : 'map-grid'}
         style={embedded ? undefined : { display: 'grid', gridTemplateColumns: '1fr 340px', gap: 16, alignItems: 'stretch' }}
       >
-        {/* Map */}
-        <div style={{ position: 'relative', height: mapHeight, borderRadius: 18, overflow: 'hidden', border: `1px solid ${BORDER}`, background: '#eaf2f7' }}>
+        {/* Map. translateZ(0) isolates it on its own GPU layer so Leaflet's off-screen
+            zoom-proxy can't smear/ghost adjacent content while the page scrolls. */}
+        <div style={{ position: 'relative', height: mapHeight, borderRadius: 18, overflow: 'hidden', border: `1px solid ${BORDER}`, background: '#eaf2f7', transform: 'translateZ(0)', isolation: 'isolate' }}>
           {status === 'loading' && <Loading />}
-          {status === 'ready' && data && <ElectorateMap key={layer} data={data} selectedKey={selectedKey} onSelect={setSelected} colorOf={marginColorByName} scrollZoom={!embedded} />}
+          {status === 'ready' && data && <ElectorateMap key={layer} data={data} selectedKey={selectedKey} onSelect={setSelected} colorOf={marginColorByName} />}
           {status === 'ready' && !data && (
             <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', justifyContent: 'center', color: TERTIARY }}>
               <MapPinOff style={{ width: 26, height: 26 }} />
