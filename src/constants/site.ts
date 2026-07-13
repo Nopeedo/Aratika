@@ -3,8 +3,8 @@ export const SITE = {
   tagline: 'Navigating New Zealand Politics',
   description:
     'Your one-stop resource for clear, credible information on New Zealand\'s parliament, MPs, parties, and policies — all in one place.',
-  url: 'https://arapono.nz',
-  email: 'hello@arapono.nz',
+  url: 'https://arapono.org.nz',
+  email: 'hello@arapono.org.nz',
   social: {
     twitter: 'https://twitter.com/aratikatnz',
     facebook: 'https://facebook.com/aratikatnz',
