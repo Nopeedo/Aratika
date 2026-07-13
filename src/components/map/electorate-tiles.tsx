@@ -28,13 +28,9 @@ export function ElectorateTiles({ name }: { name: string }) {
   const party = info.party ?? undefined
 
   return (
-    <div className="el-tiles" style={{ fontFamily: MANROPE }}>
-      <style>{`
-        .el-tiles { display: grid; grid-template-columns: 1fr minmax(190px, 230px); gap: 12px; align-items: stretch; }
-        @media (max-width: 480px) { .el-tiles { grid-template-columns: 1fr; } }
-      `}</style>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0, fontFamily: MANROPE }}>
       {/* Tile 1 — the numbers */}
-      <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
         <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY }}>
           {info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}
         </span>
@@ -47,7 +43,7 @@ export function ElectorateTiles({ name }: { name: string }) {
           {info.majority != null && <Row label="2023 majority" value={formatNumber(info.majority)} />}
         </div>
         {slug && mp && (
-          <Link href={`/mps/${slug}`} style={{ marginTop: 'auto', paddingTop: 12, textDecoration: 'none' }}>
+          <Link href={`/mps/${slug}`} style={{ marginTop: 12, textDecoration: 'none' }}>
             <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: INK, color: '#fff', borderRadius: 11, padding: '11px 16px', fontSize: 14, fontWeight: 800 }}>
               View full profile <ArrowRight style={{ width: 15, height: 15 }} />
             </span>
@@ -55,15 +51,8 @@ export function ElectorateTiles({ name }: { name: string }) {
         )}
       </div>
 
-      {/* Tile 2 — the incumbent */}
-      <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={party} mp={mp} caption="Your electorate MP" />
-
-      {/* MMP note spans both tiles */}
-      <div style={{ gridColumn: '1 / -1', display: 'flex', gap: 8, padding: '10px 12px', background: '#f8fafc', border: `1px solid ${BORDER}`, borderRadius: 10 }}>
-        <p style={{ fontSize: 11.5, color: SECONDARY, margin: 0, lineHeight: 1.55 }}>
-          Under MMP your <b style={{ color: INK }}>party vote</b> also elects list MPs — you’re represented by more than just your electorate MP.
-        </p>
-      </div>
+      {/* Tile 2 — the incumbent, fills the rest of the column */}
+      <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={party} mp={mp} caption="Your electorate MP" fill />
     </div>
   )
 }

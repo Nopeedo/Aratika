@@ -62,7 +62,31 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
   const mp = mpSlug ? MP_PROFILES[mpSlug] ?? null : null
 
   const switchLayer = (l: Layer) => { setLayer(l); setSelected(null) }
-  const mapHeight = embedded ? 'clamp(380px, 54vh, 540px)' : 600
+  const mapHeight = embedded ? 'clamp(560px, 76vh, 740px)' : 600
+
+  // Shared bits so the embedded (stacked) and standalone (side-by-side) layouts match.
+  const infoTile = info ? (
+    <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+      {tier && <span style={{ alignSelf: 'flex-start', fontSize: 11, fontWeight: 800, color: '#fff', background: tier.color, borderRadius: 999, padding: '3px 10px', marginBottom: 10 }}>{tier.label}</span>}
+      <h3 style={{ fontSize: 19, fontWeight: 800, color: INK, margin: '0 0 2px' }}>{selected}</h3>
+      <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14 }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <Row label="2023 winner" value={info.mpName ?? '—'} />
+        <Row label="Party" value={info.party ? PARTY_NAMES[info.party].short : '—'} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
+        <Row label="Majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : '—'} />
+      </div>
+      <Link href={`/battlegrounds/${selectedKey}`} style={{ marginTop: 12, textDecoration: 'none' }}>
+        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px', color: '#fff', fontSize: 14, fontWeight: 800 }}>View this battle <ArrowRight style={{ width: 15, height: 15 }} /></span>
+      </Link>
+    </div>
+  ) : null
+  const promptCol = (
+    <div style={{ height: '100%', minHeight: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', border: `1px solid ${BORDER}`, borderRadius: 14, background: SURFACE, padding: 24, color: TERTIARY, fontFamily: MANROPE }}>
+      <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
+      <div style={{ fontSize: 14, fontWeight: 700, color: SECONDARY }}>Tap a seat</div>
+      <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests — the seats most likely to change hands.</div>
+    </div>
+  )
 
   return (
     <div>
@@ -85,11 +109,19 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
         </span>
       </div>
 
+      {embedded && (
+        <style>{`
+          .bg-embed-split { display: grid; grid-template-columns: 1fr minmax(260px, 330px); gap: 14px; align-items: stretch; }
+          @media (max-width: 760px) {
+            .bg-embed-split { grid-template-columns: 1fr; }
+            .bg-embed-split > div:first-child { height: min(70vh, 520px) !important; }
+            .bg-embed-split > div:last-child { min-height: 420px; }
+          }
+        `}</style>
+      )}
       <div
-        className={embedded ? 'map-grid-embed' : 'map-grid'}
-        style={embedded
-          ? { display: 'flex', flexDirection: 'column', gap: 14 }
-          : { display: 'grid', gridTemplateColumns: '1fr 340px', gap: 16, alignItems: 'stretch' }}
+        className={embedded ? 'bg-embed-split' : 'map-grid'}
+        style={embedded ? undefined : { display: 'grid', gridTemplateColumns: '1fr 340px', gap: 16, alignItems: 'stretch' }}
       >
         {/* Map */}
         <div style={{ position: 'relative', height: mapHeight, borderRadius: 18, overflow: 'hidden', border: `1px solid ${BORDER}`, background: '#eaf2f7' }}>
@@ -123,45 +155,36 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
           )}
         </div>
 
-        {/* Panel — full side column normally; embedded shows it below the map only once a seat is picked. */}
-        {embedded && !selected ? null : (
-        <div style={{ height: embedded ? 'auto' : 600, borderRadius: 18, border: `1px solid ${BORDER}`, background: '#fff', padding: 20, overflow: embedded ? 'visible' : 'auto' }}>
-          {!selected ? (
-            <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: TERTIARY, fontFamily: MANROPE }}>
-              <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
-              <div style={{ fontSize: 14, fontWeight: 700, color: SECONDARY }}>Tap a seat</div>
-              <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests — the seats most likely to change hands.</div>
-            </div>
-          ) : (
-            info ? (
+        {/* Panel. Embedded: right column, tiles stacked to fill it. Standalone: bordered card. */}
+        {embedded ? (
+          <div style={{ height: '100%', minHeight: 0, fontFamily: MANROPE }}>
+            {!selected ? promptCol : info ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0 }}>
+                {infoTile}
+                <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" fill />
+              </div>
+            ) : (
+              <p style={{ fontSize: 13, color: SECONDARY }}>Result data pending for this seat.</p>
+            )}
+          </div>
+        ) : (
+          <div style={{ height: 600, borderRadius: 18, border: `1px solid ${BORDER}`, background: '#fff', padding: 20, overflow: 'auto' }}>
+            {!selected ? (
+              <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: TERTIARY, fontFamily: MANROPE }}>
+                <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
+                <div style={{ fontSize: 14, fontWeight: 700, color: SECONDARY }}>Tap a seat</div>
+                <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests — the seats most likely to change hands.</div>
+              </div>
+            ) : info ? (
               <div className="bg-tiles" style={{ fontFamily: MANROPE }}>
-                <style>{`
-                  .bg-tiles { display: grid; grid-template-columns: 1fr minmax(190px, 230px); gap: 12px; align-items: stretch; }
-                  @media (max-width: 520px) { .bg-tiles { grid-template-columns: 1fr; } }
-                `}</style>
-                {/* Tile 1 — the numbers */}
-                <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column' }}>
-                  {tier && <span style={{ alignSelf: 'flex-start', fontSize: 11, fontWeight: 800, color: '#fff', background: tier.color, borderRadius: 999, padding: '3px 10px', marginBottom: 10 }}>{tier.label}</span>}
-                  <h3 style={{ fontSize: 19, fontWeight: 800, color: INK, margin: '0 0 2px' }}>{selected}</h3>
-                  <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14 }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    <Row label="2023 winner" value={info.mpName ?? '—'} />
-                    <Row label="Party" value={info.party ? PARTY_NAMES[info.party].short : '—'} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
-                    <Row label="Majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : '—'} />
-                  </div>
-                  <Link href={`/battlegrounds/${selectedKey}`} style={{ marginTop: 'auto', paddingTop: 12, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, fontSize: 14, fontWeight: 800, color: '#fff', textDecoration: 'none' }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px' }}>View this battle <ArrowRight style={{ width: 15, height: 15 }} /></span>
-                  </Link>
-                </div>
-
-                {/* Tile 2 — the incumbent */}
+                <style>{`.bg-tiles { display: grid; grid-template-columns: 1fr minmax(190px, 230px); gap: 12px; align-items: stretch; } @media (max-width: 520px) { .bg-tiles { grid-template-columns: 1fr; } }`}</style>
+                {infoTile}
                 <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" />
               </div>
             ) : (
               <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>Result data pending for this seat.</p>
-            )
-          )}
-        </div>
+            )}
+          </div>
         )}
       </div>
 

@@ -23,12 +23,14 @@ export interface MpLite {
 const BORDER = '#e9e7e2'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
-export function MpPhotoTile({ name, party, mp, caption }: {
+export function MpPhotoTile({ name, party, mp, caption, fill }: {
   name: string
   party?: PartySlug
   mp: MpLite | null
   /** Small line under the name, e.g. "2023 MP" or "Your electorate MP". */
   caption?: string
+  /** Stretch to fill remaining height in a flex column (stacked side panel). */
+  fill?: boolean
 }) {
   const initials = name.split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase()
   const pc = party ? PARTY_COLORS[party] : null
@@ -51,7 +53,7 @@ export function MpPhotoTile({ name, party, mp, caption }: {
   )
 
   return (
-    <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden' }}>
+    <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden', ...(fill ? { flex: '1 1 auto', minHeight: 0 } : {}) }}>
       {mp ? <Link href={`/mps/${mp.slug}`} aria-label={`${name} profile`} style={{ display: 'block', height: '100%' }}>{inner}</Link> : inner}
     </div>
   )

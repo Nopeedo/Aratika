@@ -172,7 +172,7 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
 
   const selectedKey = selected ? normalizeElectorateKey(selected) : null
 
-  const mapHeight = embedded ? 'clamp(380px, 54vh, 540px)' : 'clamp(600px, 82vh, 840px)'
+  const mapHeight = embedded ? 'clamp(560px, 76vh, 740px)' : 'clamp(600px, 82vh, 840px)'
 
   return (
     <div style={embedded ? { padding: 0 } : { maxWidth: 1280, margin: '0 auto', padding: '20px clamp(14px, 4vw, 24px) 48px' }}>
@@ -232,12 +232,10 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
         </div>
       )}
 
-      {/* Map + panel grid. Embedded: single column, panel drops below on select. */}
+      {/* Map + panel grid. Embedded: map left (portrait), stacked tiles fill the right column. */}
       <div
-        className={embedded ? 'map-grid-embed' : 'map-grid'}
-        style={embedded
-          ? { display: 'flex', flexDirection: 'column', gap: 14 }
-          : { display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'stretch' }}
+        className={embedded ? 'map-embed-split' : 'map-grid'}
+        style={embedded ? undefined : { display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'stretch' }}
       >
 
         {/* Map area — enlarged height (scales with the viewport); width unchanged. */}
@@ -277,9 +275,19 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
           )}
         </div>
 
-        {/* Panel — full side column normally; embedded shows it below the map only once a seat is picked. */}
+        {/* Panel. Embedded: a right-hand column with the two tiles stacked to fill it. */}
         {embedded ? (
-          selected && <ElectorateTiles name={selected} />
+          <div style={{ height: '100%', minHeight: 0 }}>
+            {selected ? (
+              <ElectorateTiles name={selected} />
+            ) : (
+              <div style={{ height: '100%', minHeight: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 8, border: `1px solid ${BORDER}`, borderRadius: 14, background: SURFACE, padding: 24 }}>
+                <MapPinOff style={{ width: 26, height: 26, color: '#cbd0d6' }} />
+                <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Tap your electorate</div>
+                <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, maxWidth: 200, lineHeight: 1.5 }}>Search or tap the map to see your MP and their photo here.</div>
+              </div>
+            )}
+          </div>
         ) : (
           <div style={{ height: 'clamp(600px, 82vh, 840px)', borderRadius: 18, overflow: 'auto', border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
             <ElectoratePanel electorateName={selected} />
@@ -289,6 +297,12 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
 
       {/* Responsive: stack panel under map on narrow screens, tighten the toolbar for mobile. */}
       <style>{`
+        .map-embed-split { display: grid; grid-template-columns: 1fr minmax(260px, 330px); gap: 14px; align-items: stretch; }
+        @media (max-width: 760px) {
+          .map-embed-split { grid-template-columns: 1fr; }
+          .map-embed-split > div:first-child { height: min(70vh, 520px) !important; }
+          .map-embed-split > div:last-child { min-height: 420px; }
+        }
         @media (max-width: 880px) {
           .map-toolbar { flex-direction: column; align-items: stretch; }
           .map-search { max-width: none !important; width: 100%; }
