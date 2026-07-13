@@ -62,7 +62,7 @@ export default async function NewsPage() {
         <div style={{ marginTop: 32, padding: '16px 18px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14 }}>
           <div style={{ fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 6 }}>How this works</div>
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>
-            Aratika aggregates headlines from credible outlets’ own news feeds and links straight to the original — we don’t republish articles. Party/issue tags are automatic. We’re non-partisan: stories come from a spread of sources and cover every party.
+            Arapono aggregates headlines from credible outlets’ own news feeds and links straight to the original — we don’t republish articles. Party/issue tags are automatic. We’re non-partisan: stories come from a spread of sources and cover every party.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
             {SOURCES.map((s) => (

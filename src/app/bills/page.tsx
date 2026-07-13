@@ -1,6 +1,6 @@
 /**
  * /bills — Bills tracker.
- * Top: Aratika's plain-language, editor-reviewed breakdowns (the immersive
+ * Top: Arapono's plain-language, editor-reviewed breakdowns (the immersive
  * reader entry points), pulled live from approved content_items. Below: the
  * full current-bills snapshot.
  */
@@ -91,7 +91,7 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 6 }}>
                   <Sparkles style={{ width: 16, height: 16, color: JADE }} />
-                  <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Explained by Aratika</span>
+                  <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Explained by Arapono</span>
                 </div>
                 <h2 style={{ fontSize: 22, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Bills, in plain language</h2>
                 <p style={{ fontSize: 14.5, color: SECONDARY, fontFamily: MANROPE, margin: '6px 0 0', maxWidth: 560, lineHeight: 1.55 }}>

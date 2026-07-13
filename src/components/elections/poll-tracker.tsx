@@ -51,7 +51,7 @@ export function PollTracker() {
         <h2 style={{ fontSize: 'clamp(20px, 4vw, 26px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>2026 poll tracker</h2>
         <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6, maxWidth: 620 }}>
           A snapshot of published polls as at <b style={{ color: INK }}>{POLLS_AS_AT}</b>. We show the average across the most recent poll
-          from each company — Aratika reports what pollsters publish and <b style={{ color: INK }}>does not predict the result</b>.
+          from each company — Arapono reports what pollsters publish and <b style={{ color: INK }}>does not predict the result</b>.
         </p>
       </div>
 

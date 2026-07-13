@@ -1,9 +1,9 @@
 /**
- * POST /api/ask — the "Ask Aratika" companion endpoint.
+ * POST /api/ask — the "Ask Arapono" companion endpoint.
  *
  * - Requires a signed-in user (login-gated, per product decision).
  * - Enforces a per-user daily limit (free vs premium).
- * - Grounds every answer in Aratika's own data (retrieval + current page),
+ * - Grounds every answer in Arapono's own data (retrieval + current page),
  *   and instructs the model to answer only from that, cite it, and never give
  *   voting recommendations.
  */
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
-    return NextResponse.json({ error: 'auth', message: 'Please sign in to use Ask Aratika.' }, { status: 401 })
+    return NextResponse.json({ error: 'auth', message: 'Please sign in to use Ask Arapono.' }, { status: 401 })
   }
 
   // ── parse ──
@@ -91,11 +91,11 @@ export async function POST(req: Request) {
   } catch (e) {
     console.error('[ask] model error', e)
     const message = e instanceof Error && /ANTHROPIC_API_KEY/.test(e.message)
-      ? 'Ask Aratika isn’t configured yet (missing API key).'
+      ? 'Ask Arapono isn’t configured yet (missing API key).'
       : 'Sorry — I had trouble answering just then. Please try again in a moment.'
     return NextResponse.json({ error: 'model', message }, { status: 502 })
   }
-  if (!answer) answer = 'I’m not sure about that one. Try rephrasing it, or have a look around the site — I can only answer from Aratika’s own information.'
+  if (!answer) answer = 'I’m not sure about that one. Try rephrasing it, or have a look around the site — I can only answer from Arapono’s own information.'
 
   // ── count it (after a successful answer) ──
   let remaining = Math.max(0, limit - used - 1)

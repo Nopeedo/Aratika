@@ -13,7 +13,7 @@ import { SITE } from '@/constants/site'
 
 export const metadata: Metadata = {
   title: 'Help & FAQ',
-  description: 'How Aratika stays non-partisan, where our information comes from, how we’re funded, and how to get started.',
+  description: 'How Arapono stays non-partisan, where our information comes from, how we’re funded, and how to get started.',
 }
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
@@ -57,23 +57,23 @@ export default function FaqPage() {
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '30px 36px 64px', display: 'flex', flexDirection: 'column', gap: 34 }}>
 
         <Section label="Trust & independence">
-          <QA q="Is Aratika politically neutral?" first>
+          <QA q="Is Arapono politically neutral?" first>
             Yes — non-partisanship is the whole point. We present every party the same way, in their own words, and we never
             tell you who to vote for. We don’t take positions on issues, endorse candidates, or run opinion pieces, and every
             claim is sourced to an official record you can check yourself.
           </QA>
           <QA q="Do you tell me who to vote for?">
-            Never. Aratika exists to help you understand your choices and feel confident — the decision is entirely yours.
+            Never. Arapono exists to help you understand your choices and feel confident — the decision is entirely yours.
             Even the personal <Link href="/start" style={linkS}>compass</Link> shows where you overlap with each party without
             picking a winner.
           </QA>
-          <QA q="Who is behind Aratika?">
-            Aratika is an independent, non-partisan platform — not affiliated with any political party, candidate, or lobby
+          <QA q="Who is behind Arapono?">
+            Arapono is an independent, non-partisan platform — not affiliated with any political party, candidate, or lobby
             group. We are working to formalise it as a registered charitable trust with an independent board, so that its
             independence and governance are structurally guaranteed rather than just promised.
           </QA>
-          <QA q="How is Aratika funded — and will it stay free?">
-            Aratika is free, with no ads and no paywall, and we’re committed to keeping it that way. Our model is civic and
+          <QA q="How is Arapono funded — and will it stay free?">
+            Arapono is free, with no ads and no paywall, and we’re committed to keeping it that way. Our model is civic and
             philanthropic grant funding — not advertising, subscriptions, or selling your data — so the platform can stay open
             to everyone. We’ll always be transparent about where our support comes from.
           </QA>
@@ -87,13 +87,13 @@ export default function FaqPage() {
             is updated regularly. Where a figure has an “as at” date, we show it, so you always know how fresh it is.
           </QA>
           <QA q="What if you get something wrong?">
-            Tell us and we’ll fix it fast. Accuracy is what makes Aratika worth using, so we check every report against the
+            Tell us and we’ll fix it fast. Accuracy is what makes Arapono worth using, so we check every report against the
             official source and correct it promptly. Use <Link href="/contact" style={linkS}>submit a correction</Link> — and
             thank you, it keeps the platform trustworthy.
           </QA>
         </Section>
 
-        <Section label="Using Aratika">
+        <Section label="Using Arapono">
           <QA q="Do I need an account? Is it really free?" first>
             The whole platform is free, and you don’t need an account to use it. An optional free account lets you track the
             parties, MPs and issues you care about — but everything essential works without signing in.
@@ -104,7 +104,7 @@ export default function FaqPage() {
             on <strong>Explain terms</strong> in the menu — it adds plain-language definitions to key words across the site.
           </QA>
           <QA q="Does it work on my phone?">
-            Yes — Aratika works on phones, tablets and computers.
+            Yes — Arapono works on phones, tablets and computers.
           </QA>
           <QA q="What data do you collect about me?">
             As little as possible. We use privacy-respecting analytics to understand what’s useful, and if you create an
@@ -124,14 +124,14 @@ export default function FaqPage() {
               We’d genuinely like to hear from you — questions, feedback, partnerships, or media.
             </p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-              <a href={`mailto:${SITE.email}?subject=Aratika%20enquiry`} style={btn(true)}><Mail style={ic} /> Email us</a>
+              <a href={`mailto:${SITE.email}?subject=Arapono%20enquiry`} style={btn(true)}><Mail style={ic} /> Email us</a>
               <Link href="/contact" style={btn(false)}>Contact &amp; corrections <ArrowUpRight style={ic} /></Link>
             </div>
           </div>
         </div>
 
         <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-          Aratika is an independent platform and can’t help with official or urgent matters. To enrol or vote, use the
+          Arapono is an independent platform and can’t help with official or urgent matters. To enrol or vote, use the
           official service at{' '}
           <a href="https://www.vote.nz" target="_blank" rel="noopener noreferrer" style={linkS}>vote.nz</a>.
         </p>

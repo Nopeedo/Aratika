@@ -98,7 +98,7 @@ export function PartyGrid() {
         </div>
 
         <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '16px 0 0', lineHeight: 1.5 }}>
-          Photos from official sources &amp; Wikimedia Commons under open licences. Seats in the 54th Parliament. Parties in order of size; Aratika is non-partisan.
+          Photos from official sources &amp; Wikimedia Commons under open licences. Seats in the 54th Parliament. Parties in order of size; Arapono is non-partisan.
         </p>
       </div>
 

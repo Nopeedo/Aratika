@@ -107,7 +107,7 @@ export function CompareTool({ positions, topics }: { positions: PartyPosition[];
       )}
 
       <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '16px 0 0', lineHeight: 1.5 }}>
-        Positions are summarised neutrally from each party’s official policy and checked by an editor before publishing — never paraphrased without the source linked. Aratika is non-partisan.{' '}
+        Positions are summarised neutrally from each party’s official policy and checked by an editor before publishing — never paraphrased without the source linked. Arapono is non-partisan.{' '}
         <Link href={`/policies/${topic}`} style={{ color: JADE, fontWeight: 700 }}>Open the {topicLabel} topic page →</Link>
       </p>
     </div>

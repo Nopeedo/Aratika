@@ -115,7 +115,7 @@ export function DefiningBillDetail({ bill }: { bill: DefiningBill }) {
         )}
 
         <p style={{ fontSize: 12, color: '#8a8f86', fontFamily: MANROPE, lineHeight: 1.55, margin: '26px 0 0', background: SOFT, border: `1px solid ${LINE}`, borderRadius: 12, padding: '12px 15px' }}>
-          Neutral summary, {DEFINING_BILLS_META.asOf} knowledge cut-off — confirm any later changes at the official source. Aratika does not take a side.
+          Neutral summary, {DEFINING_BILLS_META.asOf} knowledge cut-off — confirm any later changes at the official source. Arapono does not take a side.
         </p>
       </div>
     </div>

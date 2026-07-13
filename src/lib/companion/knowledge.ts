@@ -1,5 +1,5 @@
 /**
- * The "Ask Aratika" knowledge base. A flat corpus assembled from Aratika's own
+ * The "Ask Arapono" knowledge base. A flat corpus assembled from Arapono's own
  * data (parties, MPs, bills, policies, learn modules, glossary, and a site map).
  * The companion answers ONLY from retrieved items here — this is what keeps it
  * grounded and citable rather than relying on the model's memory.
@@ -39,7 +39,7 @@ const PAGES: KnowledgeItem[] = [
   { id: 'page-parliament', type: 'page', title: 'Parliament overview', text: 'A snapshot of the current Parliament — seat distribution, the government, and the opposition.', href: '/parliament' },
   { id: 'page-glossary', type: 'page', title: 'Glossary', text: 'Plain-language definitions of New Zealand political terms.', href: '/glossary' },
   { id: 'page-start', type: 'page', title: 'Find what matters to you', text: 'A short walkthrough that finds the issues you care about and builds you a personalised plan.', href: '/start' },
-  { id: 'page-plan', type: 'page', title: 'Your plan', text: 'Your personalised, tick-as-you-go plan of the parts of Aratika that help you most.', href: '/plan' },
+  { id: 'page-plan', type: 'page', title: 'Your plan', text: 'Your personalised, tick-as-you-go plan of the parts of Arapono that help you most.', href: '/plan' },
 ]
 
 // ─── build the corpus once ────────────────────────────────────────────────────
@@ -131,6 +131,6 @@ export function retrieve(query: string, limit = 8): KnowledgeItem[] {
 
 /** Format retrieved items as a CONTEXT block for the model. */
 export function formatContext(items: KnowledgeItem[]): string {
-  if (items.length === 0) return '(no matching Aratika content found)'
+  if (items.length === 0) return '(no matching Arapono content found)'
   return items.map((it, i) => `[${i + 1}] ${it.title} — ${it.text} (link: ${it.href})`).join('\n')
 }

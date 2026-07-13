@@ -118,7 +118,7 @@ export default async function DashboardPage() {
             Kia ora, {name}
           </h1>
           <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
-            Welcome to your Aratika dashboard. Signed in as {user.email}.
+            Welcome to your Arapono dashboard. Signed in as {user.email}.
           </p>
         </div>
       </div>

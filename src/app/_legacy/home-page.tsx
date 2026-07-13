@@ -1,5 +1,5 @@
 /**
- * Aratika — Homepage
+ * Arapono — Homepage
  *
  * Hybrid layout (Options 1 + 2):
  *  1. Hero      — Election urgency + personal MP finder search
@@ -634,7 +634,7 @@ export default function HomePage() {
                   color: 'rgba(255,255,255,.8)',
                   fontFamily: 'var(--font-manrope), system-ui, sans-serif',
                 }}>
-                  Pick what you care about and how much you already know — and Aratika
+                  Pick what you care about and how much you already know — and Arapono
                   will pitch everything at your level. No account needed.
                 </p>
                 <Link

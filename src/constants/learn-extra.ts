@@ -168,7 +168,7 @@ export const HAVE_YOUR_SAY: LearnModule = {
         { heading: 'Make a submission', body: 'When a bill is being examined by a select committee, anyone can send a submission saying what they think — for, against, or suggesting changes. You can even speak to the committee.' },
         { heading: 'Petitions & your MP', body: 'You can start or sign a petition to Parliament, and you can write to or meet your local MP at their electorate clinic.' },
         { heading: 'Ask for information (OIA)', body: 'Under the Official Information Act, anyone can ask a government department for information, and they must usually reply within 20 working days.' },
-        { heading: 'Aratika can help', body: 'Aratika’s Take Action studio helps you draft a submission, a letter to your MP, or an OIA request.' },
+        { heading: 'Arapono can help', body: 'Arapono’s Take Action studio helps you draft a submission, a letter to your MP, or an OIA request.' },
       ],
       quiz: [
         { q: 'Who can make a submission on a bill?', options: ['Only experts', 'Anyone', 'Only MPs'], answer: 1, explain: 'Anyone can make a submission to a select committee.' },
@@ -197,7 +197,7 @@ export const HAVE_YOUR_SAY: LearnModule = {
         { body: 'Beyond triennial elections, participation rights are embedded across several statutes and Parliament’s Standing Orders, making New Zealand’s legislative process unusually open to public input.' },
         { heading: 'Submissions and Standing Orders', body: 'Standing Orders require most bills to be referred to a select committee that invites submissions and hears evidence; committees may recommend amendments before the second reading.' },
         { heading: 'Official information regime', body: 'The OIA 1982 (central) and LGOIMA 1987 (local) establish a principle of availability — information must be released unless a specified withholding ground applies, with Ombudsman review of refusals.' },
-        { heading: 'Practical leverage', body: 'Coordinated, specific, evidence-based submissions are more influential than volume alone; committees weigh substance. Aratika’s Take Action tools help structure these.' },
+        { heading: 'Practical leverage', body: 'Coordinated, specific, evidence-based submissions are more influential than volume alone; committees weigh substance. Arapono’s Take Action tools help structure these.' },
       ],
       quiz: [
         { q: 'What governs referral of bills to select committees?', options: ['The Constitution Act', 'Parliament’s Standing Orders', 'The Electoral Act'], answer: 1, explain: 'Standing Orders set the committee process.' },
@@ -233,28 +233,28 @@ export const POLICY_TOPICS_MOD: LearnModule = {
       intro: [
         { body: 'A “policy” is a party’s plan or position on an issue — like housing, health, or climate. Policies are how parties say what they’d actually do if you vote for them.' },
         { heading: 'From idea to action', body: 'Policies turn into real changes through laws (bills), the Budget (how money is spent), and rules made by government departments.' },
-        { heading: 'Aratika’s policy topics', body: 'Aratika sorts the big issues into topics — like housing, health, the economy, education, and climate — so you can compare where each party stands, side by side.' },
-        { heading: 'Find what matters to you', body: 'There’s no “right” set of priorities. Use Aratika’s walkthrough to find the issues you care about, then compare the parties’ positions on them.' },
+        { heading: 'Arapono’s policy topics', body: 'Arapono sorts the big issues into topics — like housing, health, the economy, education, and climate — so you can compare where each party stands, side by side.' },
+        { heading: 'Find what matters to you', body: 'There’s no “right” set of priorities. Use Arapono’s walkthrough to find the issues you care about, then compare the parties’ positions on them.' },
       ],
       quiz: [
         { q: 'A policy is…', options: ['A party’s plan/position on an issue', 'A type of election', 'A government building'], answer: 0, explain: 'A policy is a party’s position on an issue.' },
         { q: 'How do policies become real changes?', options: ['Through laws, the Budget, and rules', 'Automatically', 'Only through protests'], answer: 0, explain: 'Via legislation, spending, and regulation.' },
-        { q: 'What does Aratika do with the issues?', options: ['Sorts them into topics to compare parties', 'Hides them', 'Ranks parties best to worst'], answer: 0, explain: 'It groups issues into topics so you can compare positions.' },
-        { q: 'Who decides which issues matter most?', options: ['Aratika tells you', 'You do', 'The government'], answer: 1, explain: 'You decide what matters — Aratika just shows the facts.' },
+        { q: 'What does Arapono do with the issues?', options: ['Sorts them into topics to compare parties', 'Hides them', 'Ranks parties best to worst'], answer: 0, explain: 'It groups issues into topics so you can compare positions.' },
+        { q: 'Who decides which issues matter most?', options: ['Arapono tells you', 'You do', 'The government'], answer: 1, explain: 'You decide what matters — Arapono just shows the facts.' },
       ],
     },
     intermediate: {
       intro: [
         { body: 'Public policy is a party’s or government’s settled approach to an issue. A position becomes a manifesto commitment, then — if the party is in government — is delivered through legislation, the Budget, or regulation.' },
         { heading: 'Why parties differ', body: 'Parties weigh values (e.g. individual choice vs collective provision) and evidence differently, so they reach different policies on the same issue. Comparing them is how voters judge fit.' },
-        { heading: 'Topics on Aratika', body: 'Aratika organises positions into policy topics — housing, health, economy, education, climate, environment, crime & justice, Treaty & Māori affairs, immigration, foreign policy — drawn from official party material.' },
-        { heading: 'Using them well', body: 'Identify your priority issues, read each party’s stated position, and check it against their record. Aratika presents positions factually — it does not recommend a vote.' },
+        { heading: 'Topics on Arapono', body: 'Arapono organises positions into policy topics — housing, health, economy, education, climate, environment, crime & justice, Treaty & Māori affairs, immigration, foreign policy — drawn from official party material.' },
+        { heading: 'Using them well', body: 'Identify your priority issues, read each party’s stated position, and check it against their record. Arapono presents positions factually — it does not recommend a vote.' },
       ],
       quiz: [
         { q: 'A manifesto is…', options: ['A party’s set of policy commitments', 'A type of vote', 'A government department'], answer: 0, explain: 'A manifesto sets out a party’s policy commitments.' },
         { q: 'Policies are delivered mainly through…', options: ['Legislation, the Budget, and regulation', 'Press releases only', 'Opinion polls'], answer: 0, explain: 'Laws, spending, and rules.' },
         { q: 'Why do parties reach different policies?', options: ['They weigh values and evidence differently', 'One party is always right', 'Random chance'], answer: 0, explain: 'Different values and readings of evidence.' },
-        { q: 'Aratika’s policy pages…', options: ['Tell you who to vote for', 'Show positions factually so you decide', 'Only show one party'], answer: 1, explain: 'Aratika is non-partisan — it shows positions; you decide.' },
+        { q: 'Arapono’s policy pages…', options: ['Tell you who to vote for', 'Show positions factually so you decide', 'Only show one party'], answer: 1, explain: 'Arapono is non-partisan — it shows positions; you decide.' },
       ],
     },
     expert: {
@@ -262,7 +262,7 @@ export const POLICY_TOPICS_MOD: LearnModule = {
         { body: 'Policy is the link between political values and state action. A position articulated in opposition or a manifesto is converted, in office, into instruments: primary legislation, appropriations, secondary legislation, and administrative practice.' },
         { heading: 'The policy cycle', body: 'Typically: problem definition → options and advice (often from the public service) → decision → implementation → evaluation. Manifesto commitments enter this cycle, shaped by feasibility, cost, and coalition agreements.' },
         { heading: 'Constraints', body: 'Policy is bounded by fiscal limits (the Budget), legal constraints (including the Bill of Rights and Treaty considerations), coalition compromises, and the advice of officials.' },
-        { heading: 'Reading positions critically', body: 'Compare a party’s stated position with its revealed preferences — sponsored bills, votes, and spending. Stated and enacted policy can diverge, especially under coalition. Aratika surfaces positions, neutrally.' },
+        { heading: 'Reading positions critically', body: 'Compare a party’s stated position with its revealed preferences — sponsored bills, votes, and spending. Stated and enacted policy can diverge, especially under coalition. Arapono surfaces positions, neutrally.' },
       ],
       quiz: [
         { q: 'Policy converts values into…', options: ['State action (laws, spending, rules)', 'Television ads', 'Election dates'], answer: 0, explain: 'Into legislation, appropriations, and administrative practice.' },

@@ -122,7 +122,7 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
   const stage = typeof item.data?.stage === 'string' ? item.data.stage : null
   const selectCommittee = typeof item.data?.selectCommittee === 'string' ? item.data.selectCommittee : null
   const isLegislation = item.type === 'legislation'
-  const previewUrl = `aratika.nz/legislation/${billSlugFromLink(link) ?? '…'}`
+  const previewUrl = `arapono.nz/legislation/${billSlugFromLink(link) ?? '…'}`
 
   async function act(action: 'approve' | 'reject') {
     setBusy(action); setErr(null)

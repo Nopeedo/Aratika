@@ -11,14 +11,14 @@ import { SITE } from '@/constants/site'
 
 export const metadata: Metadata = {
   title: 'Contact & Corrections',
-  description: 'Get in touch with Aratika, or report a correction. Accuracy matters to us.',
+  description: 'Get in touch with Arapono, or report a correction. Accuracy matters to us.',
 }
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
-const EMAIL = SITE.email // hello@aratika.nz
+const EMAIL = SITE.email // hello@arapono.nz
 
 export default function ContactPage() {
   return (
@@ -43,7 +43,7 @@ export default function ContactPage() {
             </div>
             <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>General enquiries</div>
             <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '4px 0 14px' }}>Questions, feedback, partnerships, or media — drop us a line.</p>
-            <a href={`mailto:${EMAIL}?subject=Aratika%20enquiry`} style={btn(true)}>Email us <ArrowUpRight style={ic} /></a>
+            <a href={`mailto:${EMAIL}?subject=Arapono%20enquiry`} style={btn(true)}>Email us <ArrowUpRight style={ic} /></a>
           </div>
 
           <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '22px 24px' }}>
@@ -63,7 +63,7 @@ export default function ContactPage() {
             <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>How we handle corrections</h2>
           </div>
           <p style={{ fontSize: 14, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.7, margin: '0 0 10px' }}>
-            Accuracy and non-partisanship are the whole point of Aratika. When you report an error, we check it against the
+            Accuracy and non-partisanship are the whole point of Arapono. When you report an error, we check it against the
             official source — the New Zealand Parliament, the Electoral Commission, Stats NZ, or legislation.govt.nz — and
             correct it promptly if it’s wrong. We’re grateful for the help: it keeps the platform trustworthy.
           </p>
@@ -74,7 +74,7 @@ export default function ContactPage() {
 
         {/* Official matters note */}
         <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-          Aratika is an independent platform and can’t help with official or urgent matters. To enrol, vote, or contact an
+          Arapono is an independent platform and can’t help with official or urgent matters. To enrol, vote, or contact an
           agency directly, use the official services at{' '}
           <a href="https://www.vote.nz" target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>vote.nz</a>{' '}or{' '}
           <a href="https://www.parliament.nz" target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>parliament.nz</a>.

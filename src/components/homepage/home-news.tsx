@@ -72,7 +72,7 @@ export function HomeNews() {
               </div>
               <div style={{ fontSize: 20, fontWeight: 800, color: '#fff', fontFamily: MANROPE, marginBottom: 8 }}>Find your issues</div>
               <p style={{ fontSize: 16, fontWeight: 500, lineHeight: 1.55, margin: '0 0 18px', color: 'rgba(255,255,255,.8)', fontFamily: MANROPE }}>
-                Pick what you care about and how much you already know — and Aratika will pitch everything at your level. No account needed.
+                Pick what you care about and how much you already know — and Arapono will pitch everything at your level. No account needed.
               </p>
               <Link href="/start" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '11px 0', borderRadius: 11, background: '#fff', color: '#0c0e12', fontSize: 16, fontWeight: 800, textDecoration: 'none', fontFamily: MANROPE }}>
                 <Compass style={{ width: 16, height: 16 }} /> Start the walkthrough

@@ -1,10 +1,10 @@
 export const SITE = {
-  name: 'Aratika',
+  name: 'Arapono',
   tagline: 'Navigating New Zealand Politics',
   description:
     'Your one-stop resource for clear, credible information on New Zealand\'s parliament, MPs, parties, and policies — all in one place.',
-  url: 'https://aratika.nz',
-  email: 'hello@aratika.nz',
+  url: 'https://arapono.nz',
+  email: 'hello@arapono.nz',
   social: {
     twitter: 'https://twitter.com/aratikatnz',
     facebook: 'https://facebook.com/aratikatnz',
@@ -72,4 +72,4 @@ export const DATA_SOURCES = [
 ] as const
 
 export const POLL_DISCLAIMER =
-  'This poll is not a scientific survey. Results reflect the views of Aratika users only and are not representative of the New Zealand population. They should not be interpreted as a political opinion poll.'
+  'This poll is not a scientific survey. Results reflect the views of Arapono users only and are not representative of the New Zealand population. They should not be interpreted as a political opinion poll.'

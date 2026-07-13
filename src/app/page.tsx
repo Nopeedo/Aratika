@@ -1,5 +1,5 @@
 /**
- * Aratika — Homepage
+ * Arapono — Homepage
  *
  * Ordered as a beginner → intermediate → expert reading ladder, so a first-timer
  * only meets the essentials before building confidence, and the horse-race,

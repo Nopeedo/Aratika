@@ -1,7 +1,7 @@
 /**
  * /editor/polls — where editors enter the published polls that drive the Election
  * Centre's poll-of-polls and seat projection. Gated to the editorial team. Polls
- * are entered manually (Aratika reports what pollsters publish) and go live on
+ * are entered manually (Arapono reports what pollsters publish) and go live on
  * approval — which, since an editor is entering them, is immediate.
  */
 
@@ -36,7 +36,7 @@ export default async function EditorPollsPage() {
 
       <div style={{ maxWidth: 860, margin: '0 auto', padding: '28px 36px 64px' }}>
         {!user ? (
-          <Gate title="Sign in required" body="Entering polls is for the Aratika editorial team.">
+          <Gate title="Sign in required" body="Entering polls is for the Arapono editorial team.">
             <Link href="/login" style={btn}>Log in</Link>
           </Gate>
         ) : !isEditor ? (

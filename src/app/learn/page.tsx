@@ -1,5 +1,5 @@
 /**
- * /learn — Aratika Learn hub.
+ * /learn — Arapono Learn hub.
  * Interactive civics modules with four difficulty tiers. MMP is live; more follow.
  */
 
@@ -36,7 +36,7 @@ export default function LearnHubPage() {
       <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '48px 36px 42px' }}>
           <div style={{ marginBottom: 10 }}>
-            <SectionDivider type="official" label="Aratika Learn" />
+            <SectionDivider type="official" label="Arapono Learn" />
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
             <div style={{ width: 54, height: 54, borderRadius: 15, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>

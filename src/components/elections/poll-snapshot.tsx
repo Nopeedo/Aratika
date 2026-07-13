@@ -60,7 +60,7 @@ export function PollSnapshot({
           </div>
         ))}
         <div style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, marginTop: 2 }}>
-          The line marks the <b>5%</b> a party needs (or one electorate) to enter Parliament. Aratika reports polls — it doesn’t predict the result.
+          The line marks the <b>5%</b> a party needs (or one electorate) to enter Parliament. Arapono reports polls — it doesn’t predict the result.
         </div>
       </div>
 

@@ -45,11 +45,11 @@ export function BillBreakdown({ summary, summaryBasic = null, policyLinks, docTy
 
   return (
     <div>
-      {/* Aratika summary */}
+      {/* Arapono summary */}
       <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 24px', marginBottom: 22, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 12, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>
-            <Sparkles style={{ width: 16, height: 16, color: JADE }} /> In short — Aratika’s summary
+            <Sparkles style={{ width: 16, height: 16, color: JADE }} /> In short — Arapono’s summary
           </span>
           {hasBasic && <LevelToggle level={level} setLevel={setLevel} />}
         </div>

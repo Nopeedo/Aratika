@@ -1,5 +1,5 @@
 /**
- * /polls — Aratika community polls (non-scientific). The voting feature needs
+ * /polls — Arapono community polls (non-scientific). The voting feature needs
  * vote storage, so this is an honest "coming soon" with the disclaimer up front.
  */
 
@@ -11,7 +11,7 @@ import { POLL_DISCLAIMER } from '@/constants/site'
 
 export const metadata: Metadata = {
   title: 'Public Polls',
-  description: 'Aratika community polls — share your view on the issues. Non-scientific; for engagement, not measurement.',
+  description: 'Arapono community polls — share your view on the issues. Non-scientific; for engagement, not measurement.',
 }
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
@@ -26,7 +26,7 @@ export default function PollsPage() {
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Public Polls" /></div>
           <h1 style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Have your say</h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
-            Quick community polls on the issues in front of Parliament — a way to see how Aratika readers are feeling.
+            Quick community polls on the issues in front of Parliament — a way to see how Arapono readers are feeling.
           </p>
         </div>
       </div>

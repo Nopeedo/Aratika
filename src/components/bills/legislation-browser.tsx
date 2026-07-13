@@ -63,7 +63,7 @@ export function LegislationBrowser({ bills }: { bills: LiveBill[] }) {
         </div>
         <h2 style={{ fontSize: 22, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Breakdowns are on the way</h2>
         <p style={{ fontSize: 15, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-          We pull bills daily from the official register and draft a plain-language breakdown of each. They appear here once an Aratika editor has reviewed them for accuracy and neutrality. Check back shortly.
+          We pull bills daily from the official register and draft a plain-language breakdown of each. They appear here once an Arapono editor has reviewed them for accuracy and neutrality. Check back shortly.
         </p>
       </div>
     )

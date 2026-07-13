@@ -202,7 +202,7 @@ export function LetterStudio({ templateId, ctx: ctx0 }: { templateId: LetterTemp
           {/* Privacy */}
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
             <ShieldCheck style={{ width: 14, height: 14, color: JADE, flexShrink: 0 }} />
-            <span style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE }}>Drafted in your browser. Aratika never stores or sends your letter.</span>
+            <span style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE }}>Drafted in your browser. Arapono never stores or sends your letter.</span>
           </div>
         </div>
       </div>

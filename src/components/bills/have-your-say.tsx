@@ -29,7 +29,7 @@ export function HaveYourSay({ stage, selectCommittee, slug, preview = false }: {
       </div>
       <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 14px' }}>
         {open
-          ? <>This bill is at the select committee stage — the time when the public can make submissions{selectCommittee ? ` to the ${selectCommittee} Committee` : ''}. Draft yours with Aratika, then lodge it through the official Parliament process before the closing date.</>
+          ? <>This bill is at the select committee stage — the time when the public can make submissions{selectCommittee ? ` to the ${selectCommittee} Committee` : ''}. Draft yours with Arapono, then lodge it through the official Parliament process before the closing date.</>
           : <>Submissions open once a bill reaches the select committee stage. In the meantime, you can write to your local MP about it.</>}
       </p>
       {preview ? (

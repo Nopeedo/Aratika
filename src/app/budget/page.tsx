@@ -187,7 +187,7 @@ export default function BudgetPage() {
           <div style={{ fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 6 }}>Source</div>
           <p style={{ fontSize: 12.5, lineHeight: 1.6, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 10px' }}>
             All figures from {BUDGET_META.sourceLabel}, Budget {BUDGET_META.year} (delivered {BUDGET_META.deliveredOn}).
-            Aratika summarises the official material and does not reproduce it in full. Always verify against the original.
+            Arapono summarises the official material and does not reproduce it in full. Always verify against the original.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
             <a href={BUDGET_META.sourceUrl} target="_blank" rel="noopener noreferrer" style={verifyLink()}>

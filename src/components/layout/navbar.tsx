@@ -16,9 +16,9 @@ import { ExplainToggle } from '@/components/glossary/explain-toggle'
 const NAV = visibleNav()
 const cleanHref = (href: string) => href.split('#')[0]
 
-// ─── Aratika Logo ─────────────────────────────────────────────────────────────
+// ─── Arapono Logo ─────────────────────────────────────────────────────────────
 
-function AratikaLogo() {
+function AraponoLogo() {
   return (
     <Link href="/" className="flex items-center shrink-0">
       <span className="font-semibold text-lg text-foreground tracking-tight">
@@ -57,7 +57,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <AratikaLogo />
+          <AraponoLogo />
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">

@@ -1,6 +1,6 @@
 /**
  * /plan — the persistent "Your Plan" page. Reads the saved survey answers
- * (client-side) and shows a tick-as-you-go checklist of how Aratika helps this
+ * (client-side) and shows a tick-as-you-go checklist of how Arapono helps this
  * person, so they never have to revisit /start to find their next step.
  */
 
@@ -9,7 +9,7 @@ import { PlanView } from '@/components/onboarding/plan-view'
 
 export const metadata: Metadata = {
   title: 'Your plan',
-  description: 'Your personalised, tick-as-you-go plan — the issues you care about and the parts of Aratika that help you most.',
+  description: 'Your personalised, tick-as-you-go plan — the issues you care about and the parts of Arapono that help you most.',
 }
 
 const BORDER = '#e9e7e2'

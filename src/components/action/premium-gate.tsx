@@ -50,11 +50,11 @@ export function PremiumGate({
           <Lock style={{ width: 22, height: 22, color: JADE }} />
         </div>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 6 }}>
-          <Sparkles style={{ width: 13, height: 13 }} /> Aratika Premium
+          <Sparkles style={{ width: 13, height: 13 }} /> Arapono Premium
         </div>
         <h3 style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>{featureName} is a Premium feature</h3>
         <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 16px' }}>
-          Upgrade to draft and export letters and submissions. You write every word — Aratika gives you the
+          Upgrade to draft and export letters and submissions. You write every word — Arapono gives you the
           right structure and official-channel links.
         </p>
 

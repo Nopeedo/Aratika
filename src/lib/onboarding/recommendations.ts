@@ -1,6 +1,6 @@
 /**
  * buildPlan — turns a person's survey answers into a prioritised, reasoned set of
- * "here's how Aratika helps YOU" recommendations.
+ * "here's how Arapono helps YOU" recommendations.
  *
  * Each rule fires off a specific answer and yields a recommendation with a
  * `reason` that quotes that answer back, plus a `weight` for ordering. We then

@@ -10,7 +10,7 @@
 
 import type { MPProfile } from './mps-data'
 
-// Keyed by Aratika profile slug (firstname-lastname). Each value is a partial
+// Keyed by Arapono profile slug (firstname-lastname). Each value is a partial
 // override merged over that MP's basic profile.
 export const MP_DETAIL: Record<string, Partial<MPProfile>> = {
 

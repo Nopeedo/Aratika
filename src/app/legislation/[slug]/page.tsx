@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const bill = await getApprovedBillBySlug(slug)
   if (!bill) return { title: 'Legislation not found' }
-  return { title: bill.title, description: bill.summary?.slice(0, 155) ?? `Read ${bill.title} — Aratika's plain-language breakdown.` }
+  return { title: bill.title, description: bill.summary?.slice(0, 155) ?? `Read ${bill.title} — Arapono's plain-language breakdown.` }
 }
 
 export default async function LegislationReaderPage({ params }: { params: Promise<{ slug: string }> }) {

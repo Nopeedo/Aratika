@@ -75,7 +75,7 @@ export function PartyLeaders() {
         {/* Attribution — credibility */}
         <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '16px 0 0', lineHeight: 1.5 }}>
           Photos from official sources &amp; Wikimedia Commons under open licences — full credit on each{' '}
-          <Link href="/mps" style={{ color: SECONDARY, fontWeight: 700 }}>profile</Link>. Parties shown in order of size; Aratika is non-partisan.
+          <Link href="/mps" style={{ color: SECONDARY, fontWeight: 700 }}>profile</Link>. Parties shown in order of size; Arapono is non-partisan.
         </p>
       </div>
     </section>

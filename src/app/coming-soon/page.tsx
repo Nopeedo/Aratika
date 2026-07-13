@@ -21,7 +21,7 @@ export default function ComingSoonPage() {
         </div>
         <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 12px' }}>Coming soon</h1>
         <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 26px' }}>
-          Right now Aratika is focused on one thing: helping you understand and be ready for the <b style={{ color: INK }}>2026 election</b>.
+          Right now Arapono is focused on one thing: helping you understand and be ready for the <b style={{ color: INK }}>2026 election</b>.
           This feature is part of a later phase — we’ll switch it on soon. In the meantime, here’s where to start:
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>

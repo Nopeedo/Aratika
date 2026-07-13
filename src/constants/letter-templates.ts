@@ -1,7 +1,7 @@
 /**
- * Aratika "Take Action" — letter & submission templates.
+ * Arapono "Take Action" — letter & submission templates.
  *
- * These are guided scaffolds: Aratika supplies the correct structure, salutation,
+ * These are guided scaffolds: Arapono supplies the correct structure, salutation,
  * legal framing (OIA) and helpful prompts, and the citizen writes the letter in
  * their own words. Nothing is auto-sent — the studio produces a draft the person
  * reviews and then sends through official channels.

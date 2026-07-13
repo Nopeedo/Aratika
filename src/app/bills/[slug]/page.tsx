@@ -138,7 +138,7 @@ export default async function BillDetailPage(
             </div>
             <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 14px' }}>
               This bill is at the select committee stage — the time when the public can make submissions
-              {bill.selectCommittee ? ` to the ${bill.selectCommittee} Committee` : ''}. Draft your submission with Aratika,
+              {bill.selectCommittee ? ` to the ${bill.selectCommittee} Committee` : ''}. Draft your submission with Arapono,
               then lodge it through the official Parliament process before the closing date.
             </p>
             <Link

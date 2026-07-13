@@ -37,7 +37,7 @@ export function PlanView() {
         </div>
         <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>You don’t have a plan yet</h1>
         <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 22px' }}>
-          Take the quick walkthrough and Aratika will build you a personalised, tick-as-you-go plan — the issues you care
+          Take the quick walkthrough and Arapono will build you a personalised, tick-as-you-go plan — the issues you care
           about and the parts of the site that help you most.
         </p>
         <Link href="/start" style={primaryLink}><Compass style={ic} /> Take the walkthrough <ArrowRight style={ic} /></Link>

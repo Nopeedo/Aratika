@@ -28,7 +28,7 @@ const SURFACE   = '#f8fafc'
 const JADE      = '#1F8A4C'
 
 // Registered with the Electoral Commission to contest the 2026 party vote, but holding no
-// seats in the current (54th) Parliament. Listed EQUALLY and alphabetically — Aratika ranks
+// seats in the current (54th) Parliament. Listed EQUALLY and alphabetically — Arapono ranks
 // or endorses none. Party names from the EC register (as at 1 July 2026); official websites
 // and policy-focus areas taken from each party's own site.
 const REGISTERED_NON_PARLIAMENTARY: { name: string; site: string; focus: string[]; profile?: string }[] = [
@@ -387,7 +387,7 @@ function OtherRegisteredParties() {
   return (
     <div>
       <p style={{ fontSize: 14, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, margin: '0 0 18px', maxWidth: 720 }}>
-        About ten parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament. They’re listed here <b style={{ color: INK }}>equally and alphabetically</b> — Aratika doesn’t rank or endorse any party.
+        About ten parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament. They’re listed here <b style={{ color: INK }}>equally and alphabetically</b> — Arapono doesn’t rank or endorse any party.
       </p>
 
       {/* Ones we've fully profiled — same card as the parties in Parliament */}

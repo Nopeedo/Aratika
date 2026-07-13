@@ -1,8 +1,8 @@
 'use client'
 
 /**
- * CompanionWidget — "Ask Aratika". A floating chat helper (bottom-right) that
- * answers questions grounded in Aratika's own data, knows which page you're on,
+ * CompanionWidget — "Ask Arapono". A floating chat helper (bottom-right) that
+ * answers questions grounded in Arapono's own data, knows which page you're on,
  * and pitches answers at your saved level. Login-gated; shows source links and
  * a clear "can make mistakes" note.
  */
@@ -84,7 +84,7 @@ export function CompanionWidget() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                 <span style={{ width: 30, height: 30, borderRadius: 9, background: 'rgba(255,255,255,.16)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Sparkles style={{ width: 16, height: 16, color: '#fff' }} /></span>
                 <div>
-                  <div style={{ fontSize: 14.5, fontWeight: 800, color: '#fff' }}>Ask Aratika</div>
+                  <div style={{ fontSize: 14.5, fontWeight: 800, color: '#fff' }}>Ask Arapono</div>
                   <div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)' }}>Non-partisan · sourced</div>
                 </div>
               </div>
@@ -130,7 +130,7 @@ export function CompanionWidget() {
                     <button type="submit" disabled={!input.trim() || sending} aria-label="Send" style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 11, border: 'none', background: input.trim() && !sending ? JADE : '#cdd2d8', color: '#fff', cursor: input.trim() && !sending ? 'pointer' : 'default', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Send style={{ width: 17, height: 17 }} /></button>
                   </form>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 7 }}>
-                    <span style={{ fontSize: 10.5, color: TERTIARY, display: 'inline-flex', alignItems: 'center', gap: 4 }}><ShieldCheck style={{ width: 11, height: 11, color: JADE }} /> Sourced from Aratika · can make mistakes — check sources</span>
+                    <span style={{ fontSize: 10.5, color: TERTIARY, display: 'inline-flex', alignItems: 'center', gap: 4 }}><ShieldCheck style={{ width: 11, height: 11, color: JADE }} /> Sourced from Arapono · can make mistakes — check sources</span>
                     {remaining !== null && <span style={{ fontSize: 10.5, color: TERTIARY }}>{remaining} left today</span>}
                   </div>
                 </div>
@@ -141,9 +141,9 @@ export function CompanionWidget() {
       </AnimatePresence>
 
       {/* FAB */}
-      <button onClick={() => setOpen((o) => !o)} aria-label="Ask Aratika" style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer', background: JADE, color: '#fff', border: 'none', borderRadius: 999, padding: '11px 18px 11px 13px', boxShadow: '0 8px 24px rgba(31,138,76,.4)' }}>
+      <button onClick={() => setOpen((o) => !o)} aria-label="Ask Arapono" style={{ display: 'flex', alignItems: 'center', gap: 9, cursor: 'pointer', background: JADE, color: '#fff', border: 'none', borderRadius: 999, padding: '11px 18px 11px 13px', boxShadow: '0 8px 24px rgba(31,138,76,.4)' }}>
         <Sparkles style={{ width: 19, height: 19 }} />
-        <span style={{ fontSize: 14, fontWeight: 800 }}>Ask Aratika</span>
+        <span style={{ fontSize: 14, fontWeight: 800 }}>Ask Arapono</span>
       </button>
     </div>
   )
@@ -181,7 +181,7 @@ function SignedOut() {
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '28px 26px' }}>
       <div style={{ width: 48, height: 48, borderRadius: 13, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}><Lock style={{ width: 22, height: 22, color: JADE }} /></div>
-      <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 7 }}>Sign in to ask Aratika</div>
+      <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 7 }}>Sign in to ask Arapono</div>
       <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 18px' }}>
         Your free account unlocks the assistant — ask questions, get guidance, and understand any page, all in plain language.
       </p>

@@ -5,7 +5,7 @@
  * IMPORTANT: every number here is a real, published, dated, attributed figure —
  * nothing is estimated or invented. The poll-of-polls and seat projection are
  * transparent computations (simple average; Sainte-Laguë) over these sourced
- * polls, clearly labelled as such — Aratika does not predict the result.
+ * polls, clearly labelled as such — Arapono does not predict the result.
  *
  * Refresh RECENT_POLLS (and POLLS_AS_AT) as new polls are published.
  */

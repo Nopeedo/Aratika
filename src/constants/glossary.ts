@@ -1,6 +1,6 @@
 /**
  * Plain-language political glossary. Shared by the /glossary page and the
- * "Ask Aratika" companion's knowledge base.
+ * "Ask Arapono" companion's knowledge base.
  */
 
 export interface GlossaryTerm {

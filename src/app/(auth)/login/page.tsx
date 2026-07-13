@@ -43,7 +43,7 @@ function LoginInner() {
   }
 
   return (
-    <AuthShell title="Welcome back" subtitle="Log in to your Aratika account.">
+    <AuthShell title="Welcome back" subtitle="Log in to your Arapono account.">
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {error && <ErrorBox message={error} />}
         <GoogleButton next="/dashboard" onError={setError} />

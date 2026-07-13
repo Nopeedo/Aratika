@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: 'Take Action — Write to an MP or make a submission',
   description:
     'Draft letters to MPs and Ministers, make select committee submissions, and file Official Information ' +
-    'Act requests — with guided templates and official-channel links. An Aratika Premium feature.',
+    'Act requests — with guided templates and official-channel links. An Arapono Premium feature.',
 }
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
@@ -54,7 +54,7 @@ export default function TakeActionHub() {
               <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.6, margin: 0 }}>
                 Draft a letter to your MP or a Minister, make a submission on a bill, or request official
                 information — properly structured and addressed. <b style={{ color: INK }}>You write every word</b>;
-                Aratika gives you the format and the official channels to send it through.
+                Arapono gives you the format and the official channels to send it through.
               </p>
             </div>
           </div>
@@ -104,7 +104,7 @@ export default function TakeActionHub() {
         <div style={{ marginTop: 24, display: 'flex', gap: 10, alignItems: 'flex-start', padding: '14px 16px', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 12 }}>
           <ShieldCheck style={{ width: 17, height: 17, color: JADE, flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
-            Aratika never sends anything on your behalf and never stores your letter — drafting happens entirely in your browser.
+            Arapono never sends anything on your behalf and never stores your letter — drafting happens entirely in your browser.
             We help with structure and official-channel links; the words and the decision to send are always yours. Non-partisan, always.
           </p>
         </div>

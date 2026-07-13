@@ -138,7 +138,7 @@ export function Footer() {
             © {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>
           <p className="text-xs text-slate-600 text-center sm:text-right max-w-md">
-            Aratika is an independent platform. All information is sourced from official NZ government
+            Arapono is an independent platform. All information is sourced from official NZ government
             and electoral sources. We are not affiliated with any political party.
           </p>
         </div>

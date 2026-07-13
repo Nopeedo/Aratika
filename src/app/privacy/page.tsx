@@ -3,7 +3,7 @@ import { LegalPage } from '@/components/legal/legal-page'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'How Aratika handles your personal information, under the New Zealand Privacy Act 2020.',
+  description: 'How Arapono handles your personal information, under the New Zealand Privacy Act 2020.',
 }
 
 export default function PrivacyPage() {
@@ -15,7 +15,7 @@ export default function PrivacyPage() {
     >
       <h2>Who we are</h2>
       <p>
-        Aratika is an independent, non-partisan platform that helps New Zealanders understand Parliament, MPs, parties,
+        Arapono is an independent, non-partisan platform that helps New Zealanders understand Parliament, MPs, parties,
         policies and elections. We are not affiliated with the Government or any political party. This policy explains how
         we handle personal information under the <strong>Privacy Act 2020</strong>.
       </p>
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
       <h2>What we deliberately do not collect</h2>
       <ul>
         <li><strong>Your letters and submissions.</strong> The Take Action studio works entirely in your browser. We never receive, store, or send the content of anything you draft.</li>
-        <li><strong>Your card details.</strong> Payments are processed by Stripe. Your card number never touches Aratika’s servers.</li>
+        <li><strong>Your card details.</strong> Payments are processed by Stripe. Your card number never touches Arapono’s servers.</li>
         <li><strong>Sensitive information.</strong> We don’t ask for it and don’t want it.</li>
       </ul>
 

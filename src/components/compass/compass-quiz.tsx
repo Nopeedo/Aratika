@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * CompassQuiz — Aratika's personal compass. ~12 questions:
+ * CompassQuiz — Arapono's personal compass. ~12 questions:
  *   Part 1 (about you):  goal · voting status · knowledge level · learning style
  *   Part 2 (where you stand): 8 neutral policy statements, rated on a 5-point scale
  *
@@ -132,7 +132,7 @@ export function CompassQuiz() {
         )}
 
         {step === 1 && (
-          <Slide k="goal"><Head title="What brings you to Aratika?" sub="Pick whatever fits — more than one is fine." />
+          <Slide k="goal"><Head title="What brings you to Arapono?" sub="Pick whatever fits — more than one is fine." />
             <Grid>{GOALS.map((o) => <Choice key={o.key} Icon={o.Icon} label={o.label} blurb={o.blurb} selected={goals.includes(o.key)} onClick={() => toggle(goals, setGoals, o.key)} />)}</Grid>
           </Slide>
         )}

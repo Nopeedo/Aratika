@@ -1,5 +1,5 @@
 /**
- * /command-centre — the PUBLIC explainer for Aratika's tracking feature.
+ * /command-centre — the PUBLIC explainer for Arapono's tracking feature.
  * Works logged-out: teaches what you can track (MPs, parties, policies, bills)
  * and how news + video come to you, lets a visitor try tracking on the spot
  * (anonymous — see CommandCentreTryIt), shows a live sample of the real feed,
@@ -26,7 +26,7 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export const metadata: Metadata = {
   title: 'Your Command Centre — track what matters',
-  description: 'Track the MPs, parties, issues and bills that matter to you, and Aratika keeps you current with news and video on exactly those things — live through the 2026 election.',
+  description: 'Track the MPs, parties, issues and bills that matter to you, and Arapono keeps you current with news and video on exactly those things — live through the 2026 election.',
 }
 
 function shortDate(iso: string | null): string {
@@ -77,7 +77,7 @@ export default async function CommandCentrePage() {
           </h1>
           <p style={{ fontSize: 'clamp(15px, 2.4vw, 18px)', fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px', lineHeight: 1.55, maxWidth: 640 }}>
             Politics is scattered across a dozen sources. Pick the MPs, parties, issues and bills you care about —
-            and Aratika brings the news, video and votes on exactly those things into one place, kept up to date all
+            and Arapono brings the news, video and votes on exactly those things into one place, kept up to date all
             the way to the 2026 election.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
@@ -221,7 +221,7 @@ export default async function CommandCentrePage() {
       <section style={{ background: '#fff' }}>
         <div style={{ maxWidth: 760, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px)', textAlign: 'center' }}>
           <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Start with one thing you care about</h2>
-          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Track an MP, a party, or an issue — and let Aratika keep you current all the way to the vote.</p>
+          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Track an MP, a party, or an issue — and let Arapono keep you current all the way to the vote.</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
             <Link href="/parties" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 800, color: '#fff', background: JADE, borderRadius: 11, padding: '12px 20px', textDecoration: 'none', fontFamily: MANROPE }}>
               Browse parties <ArrowRight style={{ width: 15, height: 15 }} />

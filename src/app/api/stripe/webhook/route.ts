@@ -1,6 +1,6 @@
 /**
  * POST /api/stripe/webhook
- * Stripe → Aratika. Verifies the signature against the RAW body, then keeps the
+ * Stripe → Arapono. Verifies the signature against the RAW body, then keeps the
  * subscriptions table in sync. Writes use the service-role client (bypasses RLS).
  *
  * Local testing:  stripe listen --forward-to localhost:3000/api/stripe/webhook
