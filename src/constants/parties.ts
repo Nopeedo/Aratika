@@ -95,3 +95,24 @@ export const PARTY_ORDER: PartySlug[] = [
   'nzfirst',
   'tpm',
 ]
+
+// ─── 2026 contesting field — fair, registration-based inclusion ───────────────
+// Inclusion is decided by ELECTORAL COMMISSION REGISTRATION, not by polling — so
+// every party able to contest the party vote gets equal structural presence, and
+// smaller parties are never erased by poll thresholds. Poll-derived figures are
+// labelled as such and never inferred for a party polls don't measure.
+// The parliamentary group is ordered by current seats (a fact); the rest are
+// alphabetical (neutral — not ranked by size or poll standing).
+
+export const PARLIAMENTARY_PARTIES: PartySlug[] = [
+  'national', 'labour', 'green', 'act', 'nzfirst', 'tpm',
+]
+
+export const NON_PARLIAMENTARY_CONTESTING: PartySlug[] = [
+  'alcp', 'animal-justice', 'conservative', 'nz-outdoors', 'top', 'vision-nz', 'womens-rights',
+]
+
+// Every registered party contesting 2026 (excludes 'independent').
+export const CONTESTING_PARTIES: PartySlug[] = [
+  ...PARLIAMENTARY_PARTIES, ...NON_PARLIAMENTARY_CONTESTING,
+]

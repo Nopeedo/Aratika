@@ -136,6 +136,8 @@ export function CoalitionExplorer({ seats, total, asAt }: { seats: SeatEntry[]; 
         <p style={{ fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
           A teaching tool, not a prediction. Seats are a Sainte-Laguë estimate from current poll averages; the real result depends on
           the vote, electorate wins and each poll’s margin of error. Which parties would actually work together is their decision, not ours.
+          Only parties currently polling at or above the <b>5%</b> threshold (or holding an electorate seat) can be projected seats here —
+          other registered parties are contesting but don’t yet register enough in polling to model, not a judgement on their standing.
         </p>
       </div>
     </div>

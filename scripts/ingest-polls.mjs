@@ -80,6 +80,7 @@ async function main() {
   header.forEach((h, i) => { if (h in ABBR) colToSlug.set(i, ABBR[h]) })
   const dateIdx = header.findIndex((h) => h.startsWith('date'))
   const pollsterIdx = header.findIndex((h) => h.includes('polling') || h.includes('pollster') || h.includes('organisation'))
+  const othersIdx = header.findIndex((h) => h === 'others' || h === 'other')
   if (dateIdx < 0 || pollsterIdx < 0) throw new Error('date/pollster columns not found — aborting')
 
   const cutoff = new Date(Date.now() - RECENCY_DAYS * 864e5).toISOString().slice(0, 10)
@@ -94,7 +95,8 @@ async function main() {
     const parties = {}
     for (const [idx, slug] of colToSlug) { const v = num(cells[idx]?.text); if (v != null) parties[slug] = v }
     if (parties.national == null || parties.labour == null) continue   // confidence guard
-    parsed.push({ pollster, fieldwork: (cells[dateIdx]?.text || '').replace(/\s+/g, ' ').trim(), date: iso, parties })
+    const others = othersIdx >= 0 ? num(cells[othersIdx]?.text) : null
+    parsed.push({ pollster, fieldwork: (cells[dateIdx]?.text || '').replace(/\s+/g, ' ').trim(), date: iso, parties, others })
   }
 
   // Keep only each pollster's most recent poll (one per company, like the average).
@@ -127,7 +129,7 @@ async function main() {
       summary: `Party-vote poll, fieldwork ${p.fieldwork}.`,
       status: 'approved',
       source_url: SOURCE,
-      data: { pollster: p.pollster, fieldwork: p.fieldwork, date: p.date, sourceUrl: SOURCE, parties: p.parties },
+      data: { pollster: p.pollster, fieldwork: p.fieldwork, date: p.date, sourceUrl: SOURCE, parties: p.parties, ...(p.others != null ? { others: p.others } : {}) },
     }))
     .filter((r) => !have.has(r.source_id))
 

@@ -9,11 +9,11 @@ import Link from 'next/link'
 import { ArrowRight, ArrowUpRight, UserPlus, Vote, Clock, Info, CalendarX, MapPin, MessageSquare } from 'lucide-react'
 import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
-import { PARTY_NAMES, PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
+import { PARTY_NAMES, PARTY_COLORS, PARLIAMENTARY_PARTIES, NON_PARLIAMENTARY_CONTESTING } from '@/constants/parties'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import {
-  pollOfPolls, seatProjection, POLL_PARTIES, PREFERRED_PM,
+  pollOfPolls, pollOfPollsOthers, seatProjection, POLL_PARTIES, PREFERRED_PM,
   TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, POLLS_AS_AT, POLLS_SOURCE,
 } from '@/constants/polls-data'
 import { getPolls, pollsAsAt } from '@/lib/polls/live'
@@ -43,6 +43,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const positions = await getAllApprovedPositions()
   const polls = await getPolls()
   const pop = pollOfPolls(polls)
+  const othersPct = pollOfPollsOthers(polls)
   const projection = seatProjection(polls)
   const projectionTotal = projection.reduce((n, s) => n + s.seats, 0)
   const asAt = pollsAsAt(polls) || POLLS_AS_AT
@@ -142,6 +143,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       <div id="polls" style={{ scrollMarginTop: 80 }}>
         <PollSnapshot
           pop={pop}
+          othersPct={othersPct}
           pollCount={polls.length}
           asAt={asAt}
           pollParties={POLL_PARTIES}
@@ -157,18 +159,31 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       {/* ── WHO COULD GOVERN — interactive coalition builder ──────────────────── */}
       <CoalitionExplorer seats={projection} total={projectionTotal} asAt={asAt} />
 
-      {/* Parties likely contesting */}
+      {/* Parties contesting 2026 — every registered party, grouped by fact (do they
+          hold seats?), not ranked by size or polling. Inclusion is by registration. */}
       <div>
-        <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Parties contesting</h2>
-        <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 12px' }}>
-          The parties currently in Parliament. Others may register to contest — the final list is confirmed when nominations close.
+        <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Parties contesting 2026</h2>
+        <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px' }}>
+          Every party currently registered with the Electoral Commission to contest the party vote — grouped by whether they
+          hold seats now, not ranked. The final list is confirmed when nominations close.{' '}
+          <Link href="/party-inclusion" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>How we decide who’s included →</Link>
         </p>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          {PARTY_ORDER.map((p) => (
-            <Link key={p} href={`/parties/${p}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 13px', borderRadius: 999, border: `1px solid ${BORDER}`, background: '#fff', textDecoration: 'none', fontFamily: MANROPE }}>
-              <span style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[p].bg }} />
-              <span style={{ fontSize: 13, fontWeight: 700, color: INK }}>{PARTY_NAMES[p].short}</span>
-            </Link>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {[
+            { label: 'In Parliament', parties: PARLIAMENTARY_PARTIES },
+            { label: 'Also registered to contest', parties: NON_PARLIAMENTARY_CONTESTING },
+          ].map((grp) => (
+            <div key={grp.label}>
+              <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 8 }}>{grp.label}</div>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {grp.parties.map((p) => (
+                  <Link key={p} href={`/parties/${p}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 13px', borderRadius: 999, border: `1px solid ${BORDER}`, background: '#fff', textDecoration: 'none', fontFamily: MANROPE }}>
+                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[p].bg }} />
+                    <span style={{ fontSize: 13, fontWeight: 700, color: INK }}>{PARTY_NAMES[p].short}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>

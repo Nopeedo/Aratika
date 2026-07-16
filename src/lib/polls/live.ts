@@ -27,6 +27,7 @@ function toPoll(r: Row): Poll | null {
     date: typeof d.date === 'string' ? d.date : '',
     sourceUrl: typeof d.sourceUrl === 'string' ? d.sourceUrl : (r.source_url ?? ''),
     parties: clean,
+    ...(typeof d.others === 'number' && isFinite(d.others) ? { others: d.others } : {}),
   }
 }
 

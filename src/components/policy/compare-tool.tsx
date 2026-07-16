@@ -11,6 +11,7 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
+import { CONTESTING_PARTIES } from '@/constants/parties'
 import { PartyPositions } from '@/components/policy/party-positions'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
@@ -25,6 +26,13 @@ export function CompareTool({ positions, topics }: { positions: PartyPosition[];
   const [topic, setTopic] = useState(firstWithData)
   const [detailed, setDetailed] = useState(false)
   const [hidden, setHidden] = useState<Set<string>>(new Set())
+  const [showAll, setShowAll] = useState(false)
+
+  // Inclusion by registration: default to the parties holding seats (+TOP) to keep
+  // the grid scannable, but every registered contesting party is one toggle away —
+  // equal in structure, with an honest "no position captured yet" where they haven't
+  // published one. The line is registration, never poll standing.
+  const partySet = showAll ? CONTESTING_PARTIES : PARTY_DIRECTORY_ORDER
 
   const byParty = useMemo(() => {
     const m = new Map<string, PartyPosition>()
@@ -39,7 +47,7 @@ export function CompareTool({ positions, topics }: { positions: PartyPosition[];
   const toggleParty = (slug: string) =>
     setHidden((prev) => { const n = new Set(prev); n.has(slug) ? n.delete(slug) : n.add(slug); return n })
 
-  const visibleParties = PARTY_DIRECTORY_ORDER.filter((s) => !hidden.has(s))
+  const visibleParties = partySet.filter((s) => !hidden.has(s))
   const topicLabel = topics.find((t) => t.slug === topic)?.label ?? topic
 
   return (
@@ -72,7 +80,7 @@ export function CompareTool({ positions, topics }: { positions: PartyPosition[];
       {/* Controls: party filter + plain/detailed */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
-          {PARTY_DIRECTORY_ORDER.map((slug) => {
+          {partySet.map((slug) => {
             const party = PARTY_PROFILES[slug as PartySlug]
             const on = !hidden.has(slug)
             return (
@@ -86,6 +94,16 @@ export function CompareTool({ positions, topics }: { positions: PartyPosition[];
               </button>
             )
           })}
+          <button
+            onClick={() => { setShowAll((v) => !v); setHidden(new Set()) }}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 11px', borderRadius: 999,
+              fontSize: 12, fontWeight: 700, fontFamily: MANROPE, cursor: 'pointer',
+              border: `1px dashed ${showAll ? INK : BORDER}`, background: showAll ? INK : '#fff', color: showAll ? '#fff' : JADE,
+            }}
+          >
+            {showAll ? 'Parties in Parliament only' : `+ All contesting parties (${CONTESTING_PARTIES.length})`}
+          </button>
         </div>
         <div style={{ display: 'inline-flex', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 3 }}>
           {[{ k: false, label: 'Plain' }, { k: true, label: 'Detailed' }].map((o) => (
@@ -108,6 +126,7 @@ export function CompareTool({ positions, topics }: { positions: PartyPosition[];
 
       <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '16px 0 0', lineHeight: 1.5 }}>
         Positions are summarised neutrally from each party’s official policy and checked by an editor before publishing — never paraphrased without the source linked. Arapono is non-partisan.{' '}
+        <Link href="/party-inclusion" style={{ color: JADE, fontWeight: 700 }}>How we decide who’s included →</Link>{' · '}
         <Link href={`/policies/${topic}`} style={{ color: JADE, fontWeight: 700 }}>Open the {topicLabel} topic page →</Link>
       </p>
     </div>

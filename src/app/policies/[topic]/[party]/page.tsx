@@ -9,7 +9,8 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, Info } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
-import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
+import { PARTY_PROFILES } from '@/constants/parties-data'
+import { CONTESTING_PARTIES } from '@/constants/parties'
 import { PolicyTopic, PartySlug } from '@/types'
 import { getApprovedPosition } from '@/lib/positions/live'
 import { PositionReader } from '@/components/policy/position-reader'
@@ -32,7 +33,7 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
   const { topic, party } = await params
   const t = POLICY_TOPICS[topic as PolicyTopic]
   const p = PARTY_PROFILES[party as PartySlug]
-  if (!t || !p || party === 'independent' || !PARTY_DIRECTORY_ORDER.includes(party as PartySlug)) notFound()
+  if (!t || !p || party === 'independent' || !CONTESTING_PARTIES.includes(party as PartySlug)) notFound()
 
   const pos = await getApprovedPosition(topic, party)
 
@@ -59,8 +60,8 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
           <div style={{ display: 'flex', gap: 10, padding: '16px 18px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 14 }}>
             <Info style={{ width: 18, height: 18, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 13.5, color: '#1e3a8a', fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
-              <b>{p.name}’s position on {t.label.toLowerCase()} isn’t published here yet.</b> It’s being summarised neutrally
-              from their official policy and editor-checked before it appears.{' '}
+              <b>We haven’t recorded {p.name}’s position on {t.label.toLowerCase()} yet.</b> When they’ve published one, we’ll
+              summarise it neutrally with the source — every contesting party is covered the same way.{' '}
               <Link href={`/policies/${topic}`} style={{ color: JADE, fontWeight: 700 }}>See the other parties →</Link>
             </p>
           </div>

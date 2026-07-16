@@ -8,6 +8,7 @@
  */
 
 import * as React from 'react'
+import Link from 'next/link'
 import { TrendingUp, ChevronDown, UserRound, Users2, ArrowUpRight } from 'lucide-react'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
@@ -20,9 +21,10 @@ export interface PollRow { pollster: string; fieldwork: string; parties: Partial
 export interface PreferredPMData { asOf: string; pollster: string; candidates: { name: string; party: PartySlug; pct: number }[] }
 
 export function PollSnapshot({
-  pop, pollCount, asAt, pollParties, polls, preferredPM, turnout, enrolment, enrolmentUrl, pollsSource,
+  pop, othersPct, pollCount, asAt, pollParties, polls, preferredPM, turnout, enrolment, enrolmentUrl, pollsSource,
 }: {
   pop: PollOfPollsEntry[]
+  othersPct: number | null
   pollCount: number
   asAt: string
   pollParties: PartySlug[]
@@ -59,8 +61,19 @@ export function PollSnapshot({
             <span style={{ width: 42, textAlign: 'right', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, flexShrink: 0 }}>{p.pct}%</span>
           </div>
         ))}
-        <div style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, marginTop: 2 }}>
-          The line marks the <b>5%</b> a party needs (or one electorate) to enter Parliament. Arapono reports polls — it doesn’t predict the result.
+        {othersPct != null && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ width: 72, fontSize: 12, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, flexShrink: 0 }}>Others</span>
+            <div style={{ flex: 1, position: 'relative', height: 16, background: SURFACE, borderRadius: 4, overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${(othersPct / maxPct) * 100}%`, background: '#9aa0aa', borderRadius: 4 }} />
+              <div title="5% threshold" style={{ position: 'absolute', left: `${(5 / maxPct) * 100}%`, top: -2, bottom: -2, width: 2, background: 'rgba(12,14,18,.3)' }} />
+            </div>
+            <span style={{ width: 42, textAlign: 'right', fontSize: 12.5, fontWeight: 800, color: SECONDARY, fontFamily: MANROPE, flexShrink: 0 }}>{othersPct}%</span>
+          </div>
+        )}
+        <div style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.6 }}>
+          The line marks the <b>5%</b> a party needs (or one electorate) to enter Parliament. <b>Others</b> is the smaller
+          registered parties pollsters group together and don’t report individually — <Link href="/party-inclusion" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>see every contesting party</Link>. Arapono reports polls — it doesn’t predict the result.
         </div>
       </div>
 

@@ -18,6 +18,7 @@ export interface Poll {
   date:      string   // ISO date of the last fieldwork day (recency/sorting)
   sourceUrl: string
   parties:   Partial<Record<PartySlug, number>>  // party-vote %
+  others?:   number   // pollster's "Others" bucket % (smaller parties not listed individually)
 }
 
 // Compiled from the published-polls aggregate (which cites each pollster's release).
@@ -35,6 +36,22 @@ export const RECENT_POLLS: Poll[] = [
 ]
 
 export const POLL_PARTIES: PartySlug[] = ['national', 'labour', 'green', 'act', 'nzfirst', 'tpm', 'top']
+
+/** The "Others" share of the poll-of-polls — smaller registered parties that
+ *  pollsters group together and don't report individually. Uses each poll's
+ *  reported Others where available; otherwise the residual (100 − sum of the
+ *  parties above), clamped to ≥0. Honest by construction: it never attributes a
+ *  figure to a named party polls don't measure. Returns null if it rounds to 0. */
+export function pollOfPollsOthers(polls: Poll[] = RECENT_POLLS): number | null {
+  const vals = polls.map((p) => {
+    if (typeof p.others === 'number') return p.others
+    const sum = POLL_PARTIES.reduce((n, s) => n + (p.parties[s] ?? 0), 0)
+    return Math.max(0, 100 - sum)
+  })
+  if (!vals.length) return null
+  const avg = Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 10) / 10
+  return avg > 0 ? avg : null
+}
 
 /** Poll of polls — simple mean per party across the given polls (over the polls that report it).
  *  Defaults to the bundled RECENT_POLLS so callers that don't pass live data still work. */
