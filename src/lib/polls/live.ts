@@ -30,7 +30,10 @@ function toPoll(r: Row): Poll | null {
   }
 }
 
-/** Approved polls, newest first. Falls back to the bundled set if none entered. */
+/** Approved polls, newest first, ONE per pollster (their most recent). Keeps the
+ *  poll-of-polls methodologically sound as polls accumulate — a prolific pollster
+ *  is never double-counted, matching the bundled "latest per company" snapshot.
+ *  Falls back to the bundled set if none have been entered. */
 export async function getPolls(): Promise<Poll[]> {
   const supabase = await createClient()
   const { data } = await supabase
@@ -38,10 +41,18 @@ export async function getPolls(): Promise<Poll[]> {
     .select('data, source_url')
     .eq('type', 'poll')
     .eq('status', 'approved')
-    .limit(50)
+    .limit(100)
   const polls = (data as Row[] | null ?? []).map(toPoll).filter((p): p is Poll => !!p)
   if (polls.length === 0) return RECENT_POLLS
-  return polls.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
+
+  // Keep only each pollster's most recent poll.
+  const latestByPollster = new Map<string, Poll>()
+  for (const p of polls) {
+    const key = p.pollster.trim().toLowerCase()
+    const prev = latestByPollster.get(key)
+    if (!prev || (p.date ?? '') > (prev.date ?? '')) latestByPollster.set(key, p)
+  }
+  return [...latestByPollster.values()].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
 }
 
 /** "As at" label — the most recent poll's date, formatted, or '' if unknown. */

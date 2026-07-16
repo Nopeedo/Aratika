@@ -21,16 +21,17 @@ export interface Poll {
 }
 
 // Compiled from the published-polls aggregate (which cites each pollster's release).
-export const POLLS_AS_AT   = '21 June 2026'
+export const POLLS_AS_AT   = '9 July 2026'
 export const POLLS_SOURCE  = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_2026_New_Zealand_general_election'
 
-// The most recent poll from each of the five main companies (party-vote %).
+// The most recent poll from each of the main polling companies (party-vote %).
 export const RECENT_POLLS: Poll[] = [
+  { pollster: 'RNZ–Reid Research', fieldwork: '2–9 Jul 2026', date: '2026-07-09', sourceUrl: POLLS_SOURCE, parties: { national: 28.7, labour: 34, green: 10.3, act: 7.8, nzfirst: 11.5, tpm: 2.3, top: 4.7 } },
+  { pollster: 'Taxpayers’ Union–Curia', fieldwork: '1–5 Jul 2026', date: '2026-07-05', sourceUrl: POLLS_SOURCE, parties: { national: 30.5, labour: 31.5, green: 10.4, act: 6.9, nzfirst: 10.8, tpm: 3.4, top: 3.3 } },
   { pollster: 'Roy Morgan', fieldwork: '25 May – 21 Jun 2026', date: '2026-06-21', sourceUrl: 'https://www.roymorgan.com/findings/10271-nz-national-voting-intention-june-2026', parties: { national: 31, labour: 25.5, green: 13.5, act: 9.5, nzfirst: 10.5, tpm: 3, top: 6.5 } },
   { pollster: '1News–Verian', fieldwork: '13–17 Jun 2026', date: '2026-06-17', sourceUrl: POLLS_SOURCE, parties: { national: 29, labour: 32, green: 13, act: 6, nzfirst: 11, tpm: 1.8, top: 4.6 } },
   { pollster: 'The Post–Freshwater', fieldwork: '5–11 Jun 2026', date: '2026-06-11', sourceUrl: POLLS_SOURCE, parties: { national: 29, labour: 35, green: 10, act: 8, nzfirst: 12, tpm: 2 } },
   { pollster: 'Talbot Mills', fieldwork: '1–10 Jun 2026', date: '2026-06-10', sourceUrl: POLLS_SOURCE, parties: { national: 29, labour: 34, green: 13, act: 6, nzfirst: 12, tpm: 2.6, top: 3.3 } },
-  { pollster: 'Taxpayers’ Union–Curia', fieldwork: '4–8 Jun 2026', date: '2026-06-08', sourceUrl: POLLS_SOURCE, parties: { national: 30.1, labour: 32.2, green: 11.5, act: 7.8, nzfirst: 11.4, tpm: 3.1, top: 3.2 } },
 ]
 
 export const POLL_PARTIES: PartySlug[] = ['national', 'labour', 'green', 'act', 'nzfirst', 'tpm', 'top']
