@@ -87,7 +87,7 @@ const PARTIES = [
   { slug: 'green',    name: 'Green',          sources: { default: 'https://www.greens.org.nz/policy', manifesto: 'https://assets.nationbuilder.com/beachheroes/pages/17789/attachments/original/1688864858/Final-online-PDF-pages.pdf' } },
   { slug: 'act',      name: 'ACT',            sources: { default: 'https://www.act.org.nz/policies', economy: 'https://www.act.org.nz/economy' } },
   { slug: 'nzfirst',  name: 'NZ First',       sources: { default: 'https://www.nzfirst.nz/2023_policies', manifesto: 'https://www.nzfirst.nz/2023_policies' } },
-  { slug: 'tpm',      name: 'Te Pāti Māori',  sources: { default: 'https://www.maoriparty.org/' } },
+  { slug: 'tpm',      name: 'Te Pāti Māori',  sources: { default: 'https://www.maoriparty.org.nz/policy' } },
   // TOP keeps one page per policy (opportunity.org.nz, formerly top.org.nz) — point each topic at its dedicated page.
   { slug: 'top',      name: 'The Opportunities Party', sources: {
     default:        'https://www.opportunity.org.nz/policy',
