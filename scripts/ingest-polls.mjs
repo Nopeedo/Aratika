@@ -1,14 +1,14 @@
 /**
  * ingest-polls.mjs — pull the latest NZ party-vote polls from the published
- * Wikipedia aggregate and STAGE them to the editor queue (content_items,
- * type='poll', status='pending') for a one-click approve.
+ * Wikipedia aggregate into content_items (type='poll', status='approved').
  *
- * Why staged, not auto-published: polls are the most sensitive numbers on the
- * site, and a table on Wikipedia is hand-edited HTML — if its structure ever
- * shifts, we must never silently publish a mis-parsed figure. So this only ever
- * proposes; a human approves at /editor/polls. It also refuses to stage anything
- * unless the column mapping is confidently recognised (NAT+LAB present), so a
- * broken parse stages nothing rather than garbage.
+ * Approved on entry, matching how manual /editor/polls entry already works (an
+ * editor entering a poll IS the approval). The safety valve is the Remove button
+ * on /editor/polls — pull any poll that looks wrong. To reduce the chance of ever
+ * publishing a bad figure, this refuses to write anything unless the party-vote
+ * table is confidently recognised (NAT+LAB present); a shifted Wikipedia layout
+ * writes nothing rather than garbage. Only the most recent poll per pollster is
+ * kept (matching the poll-of-polls "latest per company" methodology).
  *
  * Source: the same Wikipedia aggregate the site already cites (POLLS_SOURCE),
  * which links each poll to the pollster's own release. We only ever store the
@@ -97,6 +97,17 @@ async function main() {
     parsed.push({ pollster, fieldwork: (cells[dateIdx]?.text || '').replace(/\s+/g, ' ').trim(), date: iso, parties })
   }
 
+  // Keep only each pollster's most recent poll (one per company, like the average).
+  const latest = new Map()
+  for (const p of parsed) {
+    const key = p.pollster.toLowerCase()
+    const prev = latest.get(key)
+    if (!prev || p.date > prev.date) latest.set(key, p)
+  }
+  const unique = [...latest.values()].sort((a, b) => b.date.localeCompare(a.date))
+  parsed.length = 0
+  parsed.push(...unique)
+
   if (DRY) {
     console.log(`Parsed ${parsed.length} poll(s) within ${RECENCY_DAYS} days (table score ${bestScore}):`)
     parsed.forEach((p) => console.log(`  ${p.date}  ${p.pollster}  ${JSON.stringify(p.parties)}`))
@@ -114,16 +125,16 @@ async function main() {
       source_id: `poll:${p.pollster.toLowerCase()}|${p.date}`,
       title: `${p.pollster} — ${p.fieldwork}`,
       summary: `Party-vote poll, fieldwork ${p.fieldwork}.`,
-      status: 'pending',
+      status: 'approved',
       source_url: SOURCE,
       data: { pollster: p.pollster, fieldwork: p.fieldwork, date: p.date, sourceUrl: SOURCE, parties: p.parties },
     }))
     .filter((r) => !have.has(r.source_id))
 
-  if (!rowsToInsert.length) { console.log('All recent polls already staged/approved — nothing new.'); return }
+  if (!rowsToInsert.length) { console.log('All recent polls already present — nothing new.'); return }
   const { error } = await sb.from('content_items').insert(rowsToInsert)
   if (error) throw new Error(`insert: ${error.message}`)
-  console.log(`Staged ${rowsToInsert.length} new poll(s) as pending for editor review:`)
+  console.log(`Added ${rowsToInsert.length} new poll(s) (approved, live):`)
   rowsToInsert.forEach((r) => console.log(`  ${r.title}`))
 }
 
