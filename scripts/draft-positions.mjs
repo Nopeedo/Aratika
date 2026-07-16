@@ -98,6 +98,15 @@ const PARTIES = [
     climate:        'https://www.opportunity.org.nz/climate_action',
     'crime-justice':'https://www.opportunity.org.nz/smart_on_crime',
   } },
+  // Registered minor parties (non-parliamentary). Sources are each party's own
+  // official policy page (verified). Many are single-issue or thin, so most topics
+  // will honestly return {found:false} — recorded as a gap, never invented.
+  { slug: 'alcp',           name: 'Aotearoa Legalise Cannabis Party', sources: { default: 'https://alcp.org.nz/policy/' } },
+  { slug: 'animal-justice', name: 'Animal Justice Party Aotearoa NZ',  sources: { default: 'https://animaljustice.org.nz/policy/' } },
+  { slug: 'conservative',   name: 'Conservative Party NZ',             sources: { default: 'https://www.conservatives.nz/' } },
+  { slug: 'nz-outdoors',    name: 'NZ Outdoors & Freedom Party',       sources: { default: 'https://outdoorsparty.co.nz/policy/' } },
+  { slug: 'vision-nz',      name: 'Vision New Zealand',                sources: { default: 'https://www.vision.org.nz/' } },
+  { slug: 'womens-rights',  name: 'The New Zealand Women’s Rights Party', sources: { default: 'https://womensrightsparty.nz/policy/' } },
 ]
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
