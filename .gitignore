@@ -42,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Scraped source-capture working files for draft-positions.mjs (not source code)
+scripts/.cache/

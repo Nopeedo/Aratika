@@ -73,6 +73,10 @@ const TOPICS = {
   education: { label: 'Education', desc: 'schools, curriculum, tertiary, teachers and student support' },
   climate: { label: 'Climate', desc: 'emissions, climate targets, energy transition and adaptation' },
   'crime-justice': { label: 'Crime & Justice', desc: 'policing, sentencing, courts, prisons and community safety' },
+  environment: { label: 'Environment', desc: 'conservation, biodiversity, water quality, pollution, oceans, waste and protecting natural habitats' },
+  'treaty-maori-affairs': { label: 'Treaty & Māori Affairs', desc: 'Te Tiriti o Waitangi, Māori rights and representation, co-governance, and Māori wellbeing' },
+  immigration: { label: 'Immigration', desc: 'visa and migration settings, the border, work and skills migration, refugees and citizenship' },
+  'foreign-policy': { label: 'Foreign Policy', desc: 'international relations, trade agreements, defence, security and foreign affairs' },
 }
 
 // Each party's official policy source(s). `default` is used unless a
@@ -116,6 +120,10 @@ const TOPIC_KEYWORDS = {
   education: ['education', 'school', 'student', 'teacher', 'curriculum'],
   climate: ['climate', 'emission', 'carbon', 'clean-energy', 'clean_energy'],
   'crime-justice': ['crime', 'justice', 'law-and-order', 'law_and_order', 'sentenc', 'police', 'corrections', 'gang'],
+  environment: ['environment', 'conservation', 'biodiversity', 'water', 'freshwater', 'ocean', 'marine', 'pollution', 'waste', 'nature'],
+  'treaty-maori-affairs': ['maori', 'māori', 'treaty', 'tiriti', 'waitangi', 'iwi', 'co-governance', 'cogovernance', 'indigenous', 'te-ao'],
+  immigration: ['immigration', 'visa', 'migrant', 'migration', 'border', 'refugee', 'citizenship'],
+  'foreign-policy': ['foreign', 'trade', 'defence', 'defense', 'international', 'diplomacy', 'security', 'affairs'],
 }
 function discoverTopicUrl(indexUrl, topic) {
   let html; try { html = curlHtml(indexUrl) } catch { return null }
