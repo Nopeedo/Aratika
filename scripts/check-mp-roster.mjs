@@ -120,13 +120,30 @@ function localRoster() {
   return out.filter((m) => { const k = norm(m.name); if (seen.has(k)) return false; seen.add(k); return true })
 }
 
-// Differences we've checked and deliberately accepted — e.g. where OUR data is
-// more current than the source (Wikipedia's party tables can lag a defection by
-// weeks). Without this, one known divergence leaves the alarm permanently red
-// and everyone learns to ignore it. Add an entry only after verifying, with the
-// reason and date. Key: the normalised MP name.
+// Differences we've checked and deliberately accepted, so one known divergence
+// doesn't leave the alarm permanently red and train everyone to ignore it.
+//
+// Reviewed 20 Jul 2026: our roster was extracted from the OFFICIAL parliament.nz
+// members directory, which we treat as authoritative over Wikipedia. These are
+// accepted on that basis.
+//
+// Deliberately precise, not a blanket mute: a `sourceParty` entry silences only
+// that exact divergence, so if the source later reports something DIFFERENT for
+// the same MP, it fires again. Presence entries (in one list but not the other)
+// are keyed by name. Key = the normalised name (lowercase, no macrons/punctuation).
 const ACCEPTED = {
-  // 'example mp': 'we verified they left the party on 1 Jan 2026; source not yet updated',
+  // Present in the source but not our roster — official directory doesn't list
+  // them as sitting members; keeping ours.
+  'peeni henare':   { note: 'not in the official parliament.nz directory extract; ours follows the official source' },
+  'adrian rurawhe': { note: 'not in the official parliament.nz directory extract; ours follows the official source' },
+  // In our roster but not the source's current tables — ours follows the official directory.
+  'georgie dansey': { note: 'official parliament.nz directory lists them as a sitting member' },
+  'dan rosewarne':  { note: 'official parliament.nz directory lists them as a sitting member' },
+  // Party divergence: we record them as independent per the official directory;
+  // Wikipedia's party tables still group them under Te Pāti Māori (and its own
+  // electorate table contradicts that, listing Kapa-Kingi as Independent).
+  'takuta ferris':       { sourceParty: 'tpm', note: 'we hold independent per the official directory; source party table lags' },
+  'mariameno kapakingi': { sourceParty: 'tpm', note: 'we hold independent per the official directory; source party table lags' },
 }
 
 const live = await liveRoster()
@@ -143,14 +160,18 @@ if (live.length < MIN_EXPECTED) {
 const liveBy = new Map(live.map((m) => [norm(m.name), m]))
 const localBy = new Map(local.map((m) => [norm(m.name), m]))
 
-const ok = (name) => Object.prototype.hasOwnProperty.call(ACCEPTED, norm(name))
+const accepted = (name) => ACCEPTED[norm(name)]
+// A presence difference is accepted outright; a party difference only when it
+// matches the divergence we recorded — anything new still fires.
+const presenceOk = (name) => Boolean(accepted(name))
+const partyOk = (name, theirs) => accepted(name)?.sourceParty === theirs
 
-const added = live.filter((m) => !localBy.has(norm(m.name)) && !ok(m.name))
-const gone = local.filter((m) => !liveBy.has(norm(m.name)) && !ok(m.name))
+const added = live.filter((m) => !localBy.has(norm(m.name)) && !presenceOk(m.name))
+const gone = local.filter((m) => !liveBy.has(norm(m.name)) && !presenceOk(m.name))
 const changed = local
-  .filter((m) => liveBy.has(norm(m.name)) && !ok(m.name))
+  .filter((m) => liveBy.has(norm(m.name)))
   .map((m) => ({ name: m.name, ours: m.party, theirs: liveBy.get(norm(m.name)).party }))
-  .filter((c) => c.ours !== c.theirs)
+  .filter((c) => c.ours !== c.theirs && !partyOk(c.name, c.theirs))
 
 const acceptedCount = Object.keys(ACCEPTED).length
 if (acceptedCount) console.log(`(${acceptedCount} known difference(s) accepted — see ACCEPTED in this script)\n`)
