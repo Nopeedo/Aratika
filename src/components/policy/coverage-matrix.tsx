@@ -26,11 +26,17 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
 
   return (
     <div>
-      <div style={{ overflowX: 'auto', border: `1px solid ${BORDER}`, borderRadius: 14 }}>
+      {/* On a phone only about a third of this grid fits, so say so — otherwise
+          people assume what they can see is all there is. Hidden on wider
+          screens where the whole table is visible. */}
+      <p className="scroll-x-hint" style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 8px' }}>
+        Swipe across to see all {topics.length} topics — the party column stays put.
+      </p>
+      <div className="scroll-x" style={{ overflowX: 'auto', border: `1px solid ${BORDER}`, borderRadius: 14 }}>
         <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 720, fontFamily: MANROPE }}>
           <thead>
             <tr>
-              <th style={{ ...thBase, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, minWidth: 96 }}>Party</th>
+              <th style={{ ...thBase, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, minWidth: 96, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }}>Party</th>
               {topics.map((t) => (
                 <th key={t.slug} style={{ ...thBase, textAlign: 'center' }}>
                   <Link href={`/policies/${t.slug}`} style={{ color: SECONDARY, textDecoration: 'none' }}>{t.label}</Link>
@@ -43,7 +49,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
               const party = PARTY_PROFILES[slug as PartySlug]
               return (
                 <tr key={slug}>
-                  <td style={{ ...tdBase, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1 }}>
+                  <td style={{ ...tdBase, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }}>
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
                       <span style={{ width: 9, height: 9, borderRadius: 3, background: party.color, flexShrink: 0 }} />
                       <span style={{ fontSize: 13, fontWeight: 800, color: INK }}>{party.name}</span>

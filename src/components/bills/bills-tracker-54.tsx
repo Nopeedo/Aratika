@@ -9,9 +9,9 @@
  * by policy area, bill type, stage, or keyword.
  */
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight } from 'lucide-react'
+import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, ExternalLink, PenLine } from 'lucide-react'
 import { BILLS_54, BILL_CATEGORIES, BILLS_54_META, type Bill54 } from '@/constants/bills-54'
 import { PARTY_NAMES } from '@/constants/parties'
 import { normMemberName } from '@/lib/bills/normalize-member'
@@ -42,7 +42,23 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
   const [type, setType] = useState('All')
   const [status, setStatus] = useState('All')
   const [party, setParty] = useState<string>(initialParty || 'All')
+  const [subsOnly, setSubsOnly] = useState(false)
   const partyOf = (m?: string | null) => (m ? memberParty[normName(m)] : undefined)
+
+  // Today's date is resolved AFTER mount, never during render: the server and the
+  // browser can straddle midnight (and sit in different timezones), and a date
+  // computed in render is a classic hydration mismatch. Until it resolves we
+  // simply don't claim submissions are open.
+  const [today, setToday] = useState<string | null>(null)
+  useEffect(() => {
+    setToday(new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })) // en-CA gives YYYY-MM-DD
+  }, [])
+
+  /** A bill is open for submissions only while the committee has called for them
+   *  AND the closing date hasn't passed. Inviting someone to submit to a closed
+   *  committee would waste their time and cost us their trust. */
+  const isOpen = (b: Bill54) => Boolean(today && b.submissionsCalled && b.submissionsClose && b.submissionsClose >= today)
+  const openCount = useMemo(() => (today ? BILLS_54.filter(isOpen).length : 0), [today])
 
   const stats = useMemo(() => ({
     total: BILLS_54.length,
@@ -71,12 +87,13 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
       (type === 'All' || b.type === type) &&
       (status === 'All' || b.status === status) &&
       (party === 'All' || (b.member ? memberParty[normName(b.member)] === party : false)) &&
+      (!subsOnly || isOpen(b)) &&
       (!ql || b.title.toLowerCase().includes(ql) || (b.member || '').toLowerCase().includes(ql)),
     ).sort((a, b) => (b.date || '').localeCompare(a.date || ''))
-  }, [q, cat, type, status, party, memberParty])
+  }, [q, cat, type, status, party, memberParty, subsOnly, today])
 
-  const active = cat !== 'All' || type !== 'All' || status !== 'All' || party !== 'All' || q !== ''
-  const reset = () => { setQ(''); setCat('All'); setType('All'); setStatus('All'); setParty('All') }
+  const active = cat !== 'All' || type !== 'All' || status !== 'All' || party !== 'All' || q !== '' || subsOnly
+  const reset = () => { setQ(''); setCat('All'); setType('All'); setStatus('All'); setParty('All'); setSubsOnly(false) }
 
   return (
     <div>
@@ -97,11 +114,33 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
         </div>
       </div>
 
+      {/* Open submissions — the one point in a bill's life where the public can
+          actually act. Silently advancing a bill to "select committee" without
+          telling anyone they can have their say wastes the moment, so surface it
+          up front with the deadline. Only shown while something is genuinely open. */}
+      {openCount > 0 && (
+        <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', background: '#eef4ff', border: '1px solid #bfd4fe', borderRadius: 14, padding: '14px 16px', marginBottom: 18 }}>
+          <PenLine style={{ width: 18, height: 18, color: '#1e40af', flexShrink: 0, marginTop: 2 }} />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, marginBottom: 3 }}>
+              {openCount} {openCount === 1 ? 'bill is' : 'bills are'} open for public submissions right now
+            </div>
+            <p style={{ fontSize: 13, color: '#1e40af', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+              When a bill reaches a select committee, anyone can tell MPs what they think of it — you don’t need to be an expert.{' '}
+              <button onClick={() => setSubsOnly(true)} style={{ background: 'none', border: 'none', padding: 0, color: '#1e3a8a', fontWeight: 800, fontFamily: MANROPE, fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
+                Show me those bills
+              </button>
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Stat chips (click to filter by stage) */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 18 }}>
-        <StatChip icon={Landmark} value={stats.total} label="Bills this term" active={status === 'All' && type === 'All'} onClick={reset} />
+        <StatChip icon={Landmark} value={stats.total} label="Bills this term" active={status === 'All' && type === 'All' && !subsOnly} onClick={reset} />
         <StatChip icon={BadgeCheck} value={stats.passed} label="Passed into law" active={status === 'Royal Assent'} onClick={() => setStatus('Royal Assent')} />
         <StatChip icon={Megaphone} value={stats.committee} label="At select committee" active={status === 'Select Committee'} onClick={() => setStatus('Select Committee')} />
+        {openCount > 0 && <StatChip icon={PenLine} value={openCount} label="Open for submissions" active={subsOnly} onClick={() => setSubsOnly((v) => !v)} />}
         <StatChip icon={Users} value={stats.members} label="Member’s bills" active={type === "Member's"} onClick={() => setType((t) => (t === "Member's" ? 'All' : "Member's"))} />
       </div>
 
@@ -134,39 +173,80 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))', gap: 12 }}>
-          {filtered.map((b) => <BillCard key={b.slug + b.number} b={b} readerSlug={readerSlugs[normTitle(b.title)]} />)}
+          {filtered.map((b) => <BillCard key={b.slug + b.number} b={b} readerSlug={readerSlugs[normTitle(b.title)]} submissionsOpen={isOpen(b)} />)}
         </div>
       )}
     </div>
   )
 }
 
-function BillCard({ b, readerSlug }: { b: Bill54; readerSlug?: string }) {
+/** Card is a <div>, not one big <Link>: it now carries several distinct
+ *  destinations (our breakdown, the official page, the submission call), and
+ *  anchors can't legally nest inside one another. */
+function BillCard({ b, readerSlug, submissionsOpen }: { b: Bill54; readerSlug?: string; submissionsOpen?: boolean }) {
   const ts = TYPE_STYLE[b.type] ?? TYPE_STYLE.Private
   const ss = statusStyle(b.status)
-  const inner = (
-    <>
+  const cardStyle: React.CSSProperties = {
+    border: `1px solid ${submissionsOpen ? '#bfd4fe' : BORDER}`, borderRadius: 14, padding: '15px 16px',
+    background: '#fff', display: 'flex', flexDirection: 'column', height: '100%',
+  }
+  return (
+    <div className="party-card" style={cardStyle}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 9 }}>
         <span style={{ fontSize: 10.5, fontWeight: 800, color: ts.fg, background: ts.bg, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{b.type}</span>
         <span style={{ fontSize: 10.5, fontWeight: 800, color: ss.fg, background: ss.bg, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{ss.label}</span>
         <span style={{ fontSize: 10.5, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{b.category}</span>
       </div>
-      <div style={{ fontSize: 14.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35, marginBottom: 8 }}>{b.title}</div>
-      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 3 }}>
+
+      {readerSlug ? (
+        <Link href={`/legislation/${readerSlug}`} style={{ fontSize: 14.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35, marginBottom: 8, textDecoration: 'none' }}>{b.title}</Link>
+      ) : (
+        <div style={{ fontSize: 14.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35, marginBottom: 8 }}>{b.title}</div>
+      )}
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {b.member && <div style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE }}>In charge: <b style={{ color: '#3f444c' }}>{b.member}</b></div>}
         {b.committee && <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE }}>{b.committee} committee</div>}
       </div>
-      {readerSlug && (
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 10, fontSize: 12, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>
-          Read the breakdown <ArrowRight style={{ width: 13, height: 13 }} />
-        </span>
+
+      {/* Have your say — only while submissions are genuinely open. */}
+      {submissionsOpen && (
+        <div style={{ marginTop: 10, background: '#eef4ff', border: '1px solid #bfd4fe', borderRadius: 10, padding: '9px 11px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE }}>
+            <PenLine style={{ width: 13, height: 13 }} /> You can have your say on this bill
+          </div>
+          <div style={{ fontSize: 11.5, color: '#1e40af', fontFamily: MANROPE, marginTop: 3 }}>
+            Submissions close {fmtDate(b.submissionsClose)}
+          </div>
+          <a href={b.officialUrl} target="_blank" rel="noopener noreferrer"
+             style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 12, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, textDecoration: 'none' }}>
+            How to make a submission <ExternalLink style={{ width: 11, height: 11 }} />
+          </a>
+        </div>
       )}
-    </>
+
+      <div style={{ marginTop: 'auto', paddingTop: 10, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+        {readerSlug && (
+          <Link href={`/legislation/${readerSlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
+            Read the breakdown <ArrowRight style={{ width: 13, height: 13 }} />
+          </Link>
+        )}
+        {/* Every bill links to its exact page on Parliament's site, so any claim
+            here can be checked at source rather than taken on trust. */}
+        <a href={b.officialUrl} target="_blank" rel="noopener noreferrer"
+           style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
+          Official page <ExternalLink style={{ width: 11, height: 11 }} />
+        </a>
+      </div>
+    </div>
   )
-  const cardStyle: React.CSSProperties = { border: `1px solid ${BORDER}`, borderRadius: 14, padding: '15px 16px', background: '#fff', display: 'flex', flexDirection: 'column', height: '100%', textDecoration: 'none' }
-  return readerSlug
-    ? <Link href={`/legislation/${readerSlug}`} className="party-card" style={cardStyle}>{inner}</Link>
-    : <div style={cardStyle}>{inner}</div>
+}
+
+/** "13 August 2026" — plain and unambiguous; ISO dates read as jargon. */
+function fmtDate(iso?: string | null) {
+  if (!iso) return 'soon'
+  const d = new Date(`${iso}T00:00:00Z`)
+  return isNaN(d.getTime()) ? iso : d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 }
 
 function StatChip({ icon: Icon, value, label, active, onClick }: { icon: React.ElementType; value: number; label: string; active: boolean; onClick: () => void }) {

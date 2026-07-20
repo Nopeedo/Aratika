@@ -238,3 +238,34 @@ body {
 @media (max-width: 600px) {
   button { min-height: 44px; }
 }
+
+/* ─── Horizontal scroll affordance ───────────────────────────────────────────
+   Wide tables (the policy coverage matrix, topic chip rows) scroll inside their
+   own container so the page never overflows. But on a phone you can see only a
+   third of them, with nothing indicating there's more — so people miss content
+   that is right there. This fades the right edge to signal "keep going", and is
+   paired with a visible swipe hint in the component.
+
+   The fade is a static overlay rather than a scroll-aware one: it costs no JS,
+   and a faint edge at the very end is a far smaller sin than hidden content. */
+.scroll-x {
+  position: relative;
+}
+
+/* Both the fade and the swipe hint are scoped to narrow screens: on desktop the
+   whole grid fits, so a permanent edge gradient and a "swipe across" line that
+   isn't true would just be noise. */
+.scroll-x-hint { display: none; }
+
+@media (max-width: 760px) {
+  .scroll-x-hint { display: block; }
+  .scroll-x::after {
+    content: '';
+    position: absolute;
+    top: 1px; right: 1px; bottom: 1px;
+    width: 34px;
+    pointer-events: none;
+    border-radius: 0 13px 13px 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.92));
+  }
+}
