@@ -7,12 +7,22 @@
  * dashboard. Empty state nudges the user toward the things worth tracking.
  */
 
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon } from 'lucide-react'
+import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
+import { BILLS_54, type Bill54 } from '@/constants/bills-54'
 import type { PartySlug } from '@/types'
 import type { Bookmark } from '@/hooks/use-bookmarks'
+
+const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+
+/** "13 August 2026" — a deadline should read like a date, not an ISO string. */
+function fmtDate(iso?: string | null) {
+  if (!iso) return 'soon'
+  const d = new Date(`${iso}T00:00:00Z`)
+  return isNaN(d.getTime()) ? iso : d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+}
 
 // Server enriches MP/party bookmarks with display details (photo, party, leader).
 export type TrackedItem = Bookmark & { photo?: string; party?: string; role?: string; leader?: string }
@@ -45,6 +55,36 @@ function hrefFor(b: Bookmark): string {
 export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
   const [items, setItems] = useState<TrackedItem[]>(initial)
 
+  // Resolved after mount, never in render: server and browser can straddle
+  // midnight, and a date computed during render is a hydration mismatch.
+  const [today, setToday] = useState<string | null>(null)
+  useEffect(() => { setToday(new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })) }, [])
+
+  // Match a tracked bill to the dataset by slug, falling back to its title.
+  // Bill bookmarks are saved from pages backed by different datasets, so slugs
+  // don't always line up: measured against bills-data.ts, slug matches 8/10 but
+  // title matches 10/10 — the fallback is what actually carries it.
+  //
+  // Known limitation: bills tracked from the "defining bills" pages use
+  // editorial names ("Treaty Principles Bill", "Local Water Done Well") rather
+  // than official titles, so they match on neither and won't show a submission
+  // prompt. Largely harmless — those are mostly Acts already passed, which can't
+  // be open for submissions — but it would need a hand-written mapping to fix.
+  const billIndex = useMemo(() => {
+    const bySlug = new Map<string, Bill54>(), byTitle = new Map<string, Bill54>()
+    for (const b of BILLS_54) { bySlug.set(b.slug, b); byTitle.set(normTitle(b.title), b) }
+    return { bySlug, byTitle }
+  }, [])
+  const billFor = (b: TrackedItem) =>
+    b.kind === 'bill' ? (billIndex.bySlug.get(b.ref_id) || billIndex.byTitle.get(normTitle(b.label))) : undefined
+
+  /** Open only while submissions were called AND the deadline hasn't passed. */
+  const openBill = (b: TrackedItem): Bill54 | undefined => {
+    const bill = billFor(b)
+    return bill && today && bill.submissionsCalled && bill.submissionsClose && bill.submissionsClose >= today ? bill : undefined
+  }
+  const openTracked = items.filter((b) => openBill(b))
+
   async function remove(b: TrackedItem) {
     setItems((prev) => prev.filter((x) => !(x.kind === b.kind && x.ref_id === b.ref_id)))
     try {
@@ -75,6 +115,24 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+      {/* The point of tracking a bill is to know when you can act on it. Select
+          committee is that moment, and it passes on a deadline — so lead with it
+          rather than letting someone discover it after the window shut. */}
+      {openTracked.length > 0 && (
+        <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', background: '#eef4ff', border: '1px solid #bfd4fe', borderRadius: 14, padding: '14px 16px' }}>
+          <PenLine style={{ width: 18, height: 18, color: '#1e40af', flexShrink: 0, marginTop: 2 }} />
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, marginBottom: 3 }}>
+              You can have your say on {openTracked.length} {openTracked.length === 1 ? 'bill you’re tracking' : 'bills you’re tracking'}
+            </div>
+            <p style={{ fontSize: 13, color: '#1e40af', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+              {openTracked.map((b) => b.label).join(' · ')} {openTracked.length === 1 ? 'is' : 'are'} open for public submissions.
+              Anyone can tell the select committee what they think — you don’t need to be an expert.
+            </p>
+          </div>
+        </div>
+      )}
+
       {GROUPS.map(({ kind, label, icon: Icon }) => {
         const group = items.filter((b) => b.kind === kind)
         if (group.length === 0) return null
@@ -88,9 +146,11 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 10 }}>
               {group.map((b) => {
                 const sub = b.role || b.sublabel
+                const open = openBill(b)
                 return (
-                  <div key={b.id} className="party-card" style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 12, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '12px 14px', background: '#fff', overflow: 'hidden' }}>
+                  <div key={b.id} className="party-card" style={{ position: 'relative', border: `1px solid ${open ? '#bfd4fe' : BORDER}`, borderRadius: 14, background: '#fff', overflow: 'hidden' }}>
                     <span style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, background: b.accent || JADE }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px' }}>
                     <Link href={hrefFor(b)} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', paddingLeft: 4 }}>
                       {b.kind === 'mp' ? (
                         <Avatar name={b.label} party={b.party as PartySlug | undefined} src={b.photo} size="md" />
@@ -113,6 +173,22 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
                     >
                       <X style={{ width: 14, height: 14 }} />
                     </button>
+                    </div>
+
+                    {open && (
+                      <div style={{ borderTop: '1px solid #bfd4fe', background: '#eef4ff', padding: '9px 14px 10px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE }}>
+                          <PenLine style={{ width: 13, height: 13 }} /> Open for your submission
+                        </div>
+                        <div style={{ fontSize: 11.5, color: '#1e40af', fontFamily: MANROPE, marginTop: 3 }}>
+                          Closes {fmtDate(open.submissionsClose)}
+                        </div>
+                        <a href={open.officialUrl} target="_blank" rel="noopener noreferrer"
+                           style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 12, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, textDecoration: 'none' }}>
+                          How to make a submission <ExternalLink style={{ width: 11, height: 11 }} />
+                        </a>
+                      </div>
+                    )}
                   </div>
                 )
               })}
