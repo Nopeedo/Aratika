@@ -11,6 +11,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
+import { track } from '@vercel/analytics'
 import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, ExternalLink, PenLine } from 'lucide-react'
 import { BILLS_54, BILL_CATEGORIES, BILLS_54_META, type Bill54 } from '@/constants/bills-54'
 import { PARTY_NAMES } from '@/constants/parties'
@@ -218,7 +219,10 @@ function BillCard({ b, readerSlug, submissionsOpen }: { b: Bill54; readerSlug?: 
           <div style={{ fontSize: 11.5, color: '#1e40af', fontFamily: MANROPE, marginTop: 3 }}>
             Submissions close {fmtDate(b.submissionsClose)}
           </div>
+          {/* The strongest outcome we can evidence: not that someone read about a
+              bill, but that they went on to have their say. Bill slug only. */}
           <a href={b.officialUrl} target="_blank" rel="noopener noreferrer"
+             onClick={() => track('submission_click', { bill: b.slug })}
              style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 12, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, textDecoration: 'none' }}>
             How to make a submission <ExternalLink style={{ width: 11, height: 11 }} />
           </a>

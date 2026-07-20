@@ -16,6 +16,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { track } from '@vercel/analytics'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowRight, ArrowLeft, Check, Compass, Sparkles, Vote, BookOpen, Eye, Baby,
@@ -89,6 +90,10 @@ export function CompassQuiz() {
   const finish = () => {
     const { issues, topIssues } = engagedTopics(stances)
     save({ goals, mood: null, votingStatus: voting, issues: issues as PolicyTopic[], topIssues: topIssues as PolicyTopic[], level, learnStyles: styles, compass: stances, completed: true })
+    // Outcome signal for funders and reporting: how many people actually finish
+    // the compass, and how engaged they were when they arrived. Deliberately no
+    // personal data and no party leaning — only counts and self-reported status.
+    track('compass_complete', { issues: issues.length, votingStatus: voting ?? 'unknown' })
     setStep(RESULT)
   }
   const next = () => (step === LAST ? finish() : setStep(step + 1))

@@ -10,6 +10,7 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import { track } from '@vercel/analytics'
 import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
 import { CONTESTING_PARTIES } from '@/constants/parties'
 import { PartyPositions } from '@/components/policy/party-positions'
@@ -60,7 +61,14 @@ export function CompareTool({ positions, topics }: { positions: PartyPosition[];
             return (
               <button
                 key={t.slug}
-                onClick={() => t.hasData && setTopic(t.slug)}
+                onClick={() => {
+                  if (!t.hasData) return
+                  // Engagement signal, and the one that turns into a reportable
+                  // sentence: "N people compared parties on housing". Topic slug
+                  // only — no user data, and never which party they leaned to.
+                  track('compare_topic', { topic: t.slug })
+                  setTopic(t.slug)
+                }}
                 disabled={!t.hasData}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 6, padding: '8px 14px', borderRadius: 999, whiteSpace: 'nowrap', flexShrink: 0,
