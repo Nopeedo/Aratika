@@ -140,4 +140,4 @@ async function main() {
   rowsToInsert.forEach((r) => console.log(`  ${r.title}`))
 }
 
-main().catch((e) => { console.error('ingest-polls failed:', e.message); process.exit(1) })
+main().then(() => process.exit(0)).catch((e) => { console.error('ingest-polls failed:', e.message); process.exit(1) })

@@ -138,3 +138,5 @@ for (const ch of CHANNELS) {
   console.log(`✓ ${ch.source}: +${rows.length}`)
 }
 console.log(`\nDone. Staged ${staged} videos.`)
+// Supabase client keeps the event loop alive — exit explicitly so the step ends.
+process.exit(0)

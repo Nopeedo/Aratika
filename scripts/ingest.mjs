@@ -161,4 +161,4 @@ async function main() {
   console.log(`Ingest done — new: ${counts.new}, updated: ${counts.updated}, unchanged: ${counts.unchanged}. New/updated await review at /editor.`)
 }
 
-main().catch((e) => { console.error(e); process.exit(1) })
+main().then(() => process.exit(0)).catch((e) => { console.error(e); process.exit(1) })

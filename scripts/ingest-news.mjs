@@ -166,3 +166,6 @@ for (const feed of FEEDS) {
   console.log(`✓ ${feed.outlet}: +${rows.length} new`)
 }
 console.log(`\nDone. Staged ${staged} news items, skipped ${skipped} dupes, ${failedFeeds} feeds failed.`)
+// The Supabase client keeps the event loop alive (open keep-alive sockets), so a
+// one-shot script won't exit on its own — exit explicitly once the work is done.
+process.exit(0)
