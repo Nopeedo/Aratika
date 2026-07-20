@@ -202,3 +202,39 @@ body {
 @media (max-width: 760px) {
   .detail-two-col { grid-template-columns: 1fr; }
 }
+
+/* ─── Mobile readability floor ───────────────────────────────────────────────
+   The UI is built with inline styles, so an ordinary stylesheet can't reach the
+   ~373 places that set small type. An attribute selector can: React serialises
+   inline styles as `font-size:10.5px` (no space after the colon), so we match
+   the exact declaration and raise it.
+
+   Scoped to phones only, so the desktop design is untouched. This lifts the
+   small end of the type scale to a ~12px readable floor — labels, meta text and
+   stage badges were rendering at 10–11.5px, which is below what's comfortable
+   on a handset (the /bills tracker had over a thousand such elements).
+
+   These are deliberately modest bumps: enough to read, small enough not to
+   reflow the layouts they sit in.
+
+   Both spacings are matched: React serialises inline styles without a space
+   (`font-size:11px`), while styles set imperatively from JS — e.g. the animated
+   bill spotlight — are normalised by the DOM with one (`font-size: 11px`). */
+@media (max-width: 600px) {
+  [style*="font-size:10px"],   [style*="font-size: 10px"]   { font-size: 12px !important; }
+  [style*="font-size:10.5px"], [style*="font-size: 10.5px"] { font-size: 12px !important; }
+  [style*="font-size:11px"],   [style*="font-size: 11px"]   { font-size: 12.5px !important; }
+  [style*="font-size:11.5px"], [style*="font-size: 11.5px"] { font-size: 13px !important; }
+}
+
+/* ─── Mobile tap targets ─────────────────────────────────────────────────────
+   Filter chips, toggles and segmented controls were rendering 28–41px tall,
+   under the 44px finger-sized minimum (Apple 44pt / Google 48dp) — fiddly to
+   hit on a phone and easy to mis-tap.
+
+   Deliberately limited to <button>: inline <a> links sit inside prose, where
+   forcing a 44px box would wreck line spacing. Buttons that already wrap a
+   whole card are unaffected, since min-height only raises the short ones. */
+@media (max-width: 600px) {
+  button { min-height: 44px; }
+}
