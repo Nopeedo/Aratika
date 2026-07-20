@@ -1,0 +1,26 @@
+name: MP roster drift check
+
+# Our MP roster is a static file whose `slug` values act as foreign keys for
+# mp-photos, mps-bill-activity, electorates-data and the ingest's electorate
+# tagging — so we deliberately do NOT auto-overwrite it from a scrape. This
+# compares it to the live list weekly and fails (→ GitHub emails us) when an MP
+# is added, gone, or has changed party, so a human makes the controlled update.
+#
+# Separate from the data-freshness alarm on purpose: "an MP defected" and "the
+# ingest is broken" need different responses and shouldn't mask each other.
+on:
+  schedule:
+    - cron: '0 22 * * 1'   # 10am NZST Mondays
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - name: Compare our MP roster against the live list
+        run: node scripts/check-mp-roster.mjs
