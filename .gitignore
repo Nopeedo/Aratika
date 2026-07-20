@@ -55,3 +55,7 @@ docs/~$*
 scripts/build-trust-deed.cjs
 scripts/build-board-pack.cjs
 scripts/build-eoi.cjs
+scripts/build-ec-enquiry.cjs
+scripts/build-funder-targets.cjs
+scripts/build-ec-compliance.cjs
+*.bak
