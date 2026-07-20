@@ -1,0 +1,27 @@
+name: Data freshness check
+
+# The staleness alarm. In July 2026 the ingest silently died for nine days and
+# nothing noticed — this is what notices. It fails the run when any live feed is
+# past its age limit, which makes GitHub email the repo owner.
+#
+# Runs at 9am NZ, an hour after the 8am ingest, so it checks the result of the
+# most recent run rather than racing it.
+on:
+  schedule:
+    - cron: '0 21 * * *'   # 9am NZST
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - name: Check data freshness
+        run: node scripts/check-freshness.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

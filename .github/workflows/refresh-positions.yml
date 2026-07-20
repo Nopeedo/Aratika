@@ -1,0 +1,42 @@
+name: Refresh party positions
+
+# Re-runs the sourced position drafter across every topic so newly-published
+# party policy gets picked up during the campaign. Cheap by design: the drafter
+# SKIPS any party/topic already approved (no model call), so it only spends
+# tokens on genuinely missing positions, and everything it writes lands as
+# `pending` for editor approval — it can never publish itself.
+#
+# Requires ANTHROPIC_API_KEY in repo secrets. If that isn't set the job skips
+# cleanly rather than failing every week and training us to ignore red runs.
+on:
+  schedule:
+    - cron: '0 5 * * 1'    # 5pm NZST Mondays
+  workflow_dispatch:
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+
+      - name: Draft any missing positions (all topics, all parties)
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY not set — skipping the position refresh."
+            echo "Add it in Settings > Secrets and variables > Actions to enable this."
+            exit 0
+          fi
+          for t in economy housing health education climate crime-justice \
+                   environment treaty-maori-affairs immigration foreign-policy; do
+            echo "--- $t ---"
+            node scripts/draft-positions.mjs --topic="$t" || echo "(topic $t had no new positions)"
+          done
+          echo "Done. Review anything new at /editor."

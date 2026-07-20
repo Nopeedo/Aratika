@@ -29,7 +29,9 @@ const TOPIC_CATS = {
 }
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
 const API = 'https://bills.parliament.nz/api/data'
-const AS_OF = '24 June 2026'
+// Stamp the ACTUAL run date, not a hardcoded one — this now runs on a daily
+// schedule, and a stale "as at" label on freshly-pulled data misleads readers.
+const AS_OF = new Date().toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Pacific/Auckland' })
 
 const norm = (s) => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '')
 

@@ -1,0 +1,43 @@
+name: Refresh bills dataset
+
+# Rebuilds src/constants/bills-54.ts (and the MP bill-activity constants) from
+# the official NZ Parliament bills API. This is what stops the /bills tracker
+# freezing at a hand-generated snapshot: bill STATUS and COMMITTEE come straight
+# from the API, so stage changes (reading -> committee -> passed) now advance on
+# their own instead of waiting for someone to re-run the script by hand.
+#
+# Generated files are committed back to main only when something actually
+# changed, which then triggers a normal Vercel redeploy.
+on:
+  schedule:
+    - cron: '0 18 * * *'   # 6am NZST, clear of the ingest crons
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+
+      - name: Rebuild bills dataset from Parliament API
+        run: node scripts/build-bills-54.mjs
+
+      - name: Commit only if the data actually changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain src/constants)" ]; then
+            git add src/constants
+            git commit -m "Auto-refresh: 54th Parliament bills dataset from the Parliament API"
+            git push
+            echo "Committed refreshed bill data."
+          else
+            echo "No change in bill data — nothing to commit."
+          fi
