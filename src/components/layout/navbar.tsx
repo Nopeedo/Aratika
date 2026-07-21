@@ -22,7 +22,9 @@ const cleanHref = (href: string) => href.split('#')[0]
 function AraponoLogo() {
   return (
     <Link href="/" className="flex items-center gap-2 shrink-0" aria-label={`${SITE.name} — home`}>
-      <LogoMark size={26} />
+      <span className="flex items-center justify-center size-8 rounded-lg bg-brand-jade shrink-0">
+        <LogoMark size={19} reversed />
+      </span>
       <span className="font-semibold text-lg text-foreground tracking-tight">
         {SITE.name}
       </span>

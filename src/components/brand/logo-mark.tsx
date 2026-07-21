@@ -27,8 +27,8 @@ export function LogoMark({
     >
       <g stroke={stroke} strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round">
         <path d="M5 8 L14 2 L23 8" />
-        <path d="M5 15 L14 9 L23 15" opacity={0.62} />
-        <path d="M5 22 L14 16 L23 22" opacity={0.38} />
+        <path d="M5 15 L14 9 L23 15" opacity={0.72} />
+        <path d="M5 22 L14 16 L23 22" opacity={0.5} />
       </g>
     </svg>
   )
