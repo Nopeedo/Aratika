@@ -5,10 +5,9 @@ export const SITE = {
     'Your one-stop resource for clear, credible information on New Zealand\'s parliament, MPs, parties, and policies — all in one place.',
   url: 'https://arapono.org.nz',
   email: 'hello@arapono.org.nz',
-  social: {
-    twitter: 'https://twitter.com/aratikatnz',
-    facebook: 'https://facebook.com/aratikatnz',
-  },
+  // No social accounts yet — re-add { twitter, facebook, … } here (and render them
+  // in footer.tsx) once real @arapono handles exist. The old aratikatnz placeholders
+  // were removed at launch prep: they rendered nowhere and pointed at the old name.
   pricing: {
     monthly: {
       amountNZD: 20,

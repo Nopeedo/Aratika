@@ -12,6 +12,7 @@ import { SITE } from '@/constants/site'
 import { useUser } from '@/hooks/use-user'
 import { createClient } from '@/lib/supabase/client'
 import { ExplainToggle } from '@/components/glossary/explain-toggle'
+import { LogoMark } from '@/components/brand/logo-mark'
 
 const NAV = visibleNav()
 const cleanHref = (href: string) => href.split('#')[0]
@@ -20,7 +21,8 @@ const cleanHref = (href: string) => href.split('#')[0]
 
 function AraponoLogo() {
   return (
-    <Link href="/" className="flex items-center shrink-0">
+    <Link href="/" className="flex items-center gap-2 shrink-0" aria-label={`${SITE.name} — home`}>
+      <LogoMark size={26} />
       <span className="font-semibold text-lg text-foreground tracking-tight">
         {SITE.name}
       </span>

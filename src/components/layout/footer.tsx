@@ -4,6 +4,7 @@ import { ShieldCheck, ExternalLink } from 'lucide-react'
 import { SITE, DATA_SOURCES } from '@/constants/site'
 import { FOOTER_LINKS } from '@/constants/nav-links'
 import { isEnabled } from '@/constants/features'
+import { LogoMark } from '@/components/brand/logo-mark'
 
 export function Footer() {
   return (
@@ -40,8 +41,8 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2.5 mb-3">
-              <div className="flex items-center justify-center size-8 rounded-lg bg-brand-jade text-white font-bold text-lg leading-none select-none">
-                A
+              <div className="flex items-center justify-center size-8 rounded-lg bg-brand-jade select-none">
+                <LogoMark size={20} reversed />
               </div>
               <span className="font-semibold text-white text-lg">{SITE.name}</span>
             </div>
