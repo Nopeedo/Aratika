@@ -111,7 +111,7 @@ export function MPCard({ mp, party }: { mp: MPProfile; party: PartyProfile }) {
 
       {/* ── Info grid (repurposed stat grid) ── */}
       <div style={{ padding: '16px 18px 18px', background: '#fff' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 18px' }}>
+        <div className="mp-stat-grid">
           {fields.map((f) => (
             <div key={f.label} style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
               <span style={{

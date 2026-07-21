@@ -269,3 +269,18 @@ body {
     background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.92));
   }
 }
+
+/* ─── MP card stat grid ──────────────────────────────────────────────────────
+   Two columns on wider screens; stacks to one on phones so long electorate
+   names (e.g. "Palmerston North") show in full instead of being clipped by the
+   card's rounded overflow. min-width:0 lets each cell shrink and ellipsise the
+   value rather than push the column off the edge. */
+.mp-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+}
+.mp-stat-grid > * { min-width: 0; }
+@media (max-width: 480px) {
+  .mp-stat-grid { grid-template-columns: 1fr; }
+}
