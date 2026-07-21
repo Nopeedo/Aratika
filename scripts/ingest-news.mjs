@@ -1,14 +1,18 @@
 /**
  * ingest-news.mjs — aggregate NZ political news into content_items (type='news').
  *
- * HYBRID model: the raw feed auto-publishes (status='approved') — these are just
- * headlines + outlet + link from credible outlets' OWN RSS feeds (the intended
- * syndication use). We NEVER republish article text; we show the feed-provided
- * title/snippet and link out. An editor can later reject any item or mark it
- * "featured" for the "what matters" highlight.
+ * HYBRID model: outside the regulated election period the raw feed auto-publishes
+ * (status='approved') — these are just headlines + outlet + link from credible
+ * outlets' OWN RSS feeds (the intended syndication use). We NEVER republish article
+ * text; we show the feed-provided title/snippet and link out. An editor can later
+ * reject any item or mark it "featured" for the "what matters" highlight.
  *
- * Each item is tagged with the parties / topics it mentions so the /latest feed
- * and the command-centre tracking can filter to what a user follows.
+ * During the regulated period (7 Aug–7 Nov 2026) news is held for editor review
+ * (status='pending') instead, so a human clears each item before it goes public —
+ * see the "Publish mode" block below.
+ *
+ * Each item is tagged with the parties / MPs / topics / electorates it mentions so
+ * the /latest feed and the command-centre tracking can filter to what a user follows.
  *
  * Run: node scripts/ingest-news.mjs   (add --reset to clear existing news first)
  */
@@ -17,7 +21,7 @@ import Parser from 'rss-parser'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { PARTY_TERMS, isPolitical } from './political-terms.mjs'
+import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -125,6 +129,23 @@ if (RESET) {
 const { data: existing } = await sb.from('content_items').select('source_id').eq('type', 'news')
 const have = new Set((existing || []).map((r) => r.source_id))
 
+// ── Publish mode ──────────────────────────────────────────────────────────────
+// News auto-publishes (status='approved') OUTSIDE the regulated election period.
+// From 7 Aug 2026 (regulated period opens) through election day 7 Nov 2026, news is
+// instead held for editor review (status='pending') so a human clears each item
+// before it goes public — third-party election content is exactly what the
+// Electoral Commission scrutinises. Held items surface in /editor automatically.
+// Overrides (for testing / emergencies): NEWS_HOLD=1 forces review, and
+// NEWS_AUTOPUBLISH=1 forces immediate publish, regardless of the date.
+const REGULATED_START = '2026-08-07', ELECTION_DAY = '2026-11-07'
+const nzToday = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })
+const inRegulatedPeriod = nzToday >= REGULATED_START && nzToday <= ELECTION_DAY
+const holdForReview = process.env.NEWS_AUTOPUBLISH === '1' ? false
+  : process.env.NEWS_HOLD === '1' ? true
+  : inRegulatedPeriod
+const NEWS_STATUS = holdForReview ? 'pending' : 'approved'
+console.log(`Publish mode: ${NEWS_STATUS}${inRegulatedPeriod ? ' — regulated election period' : ''} (NZ date ${nzToday})`)
+
 let staged = 0, skipped = 0, failedFeeds = 0
 for (const feed of FEEDS) {
   let parsed
@@ -140,6 +161,7 @@ for (const feed of FEEDS) {
     const snippet = snippetRaw.slice(0, feed.cc ? 400 : 220) // RNZ CC → longer excerpt OK
     const parties = tag(PARTY_TERMS, title + ' ' + snippetRaw)
     const topics = tag(TOPIC_TERMS, title + ' ' + snippetRaw)
+    const mps = tagMPs(title + ' ' + snippetRaw)
     const electorates = tagElectorates(title + ' ' + snippetRaw)
     const electionRelevant = isElectionRelevant(title + ' ' + snippetRaw, parties)
     // Noise gate — a DENYLIST, not an allowlist: keyword-based political detection
@@ -153,9 +175,9 @@ for (const feed of FEEDS) {
     const isNoise = NEWS_NOISE_TERMS.some((x) => title.toLowerCase().includes(x))
     if (isNoise && !electionRelevant && !isPolitical(title + ' ' + snippetRaw, parties) && topics.length === 0) { skipped++; continue }
     rows.push({
-      type: 'news', source_id: link, title, summary: snippet, status: 'approved',
-      source_url: link,
-      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, electorates, featured: false, image: extractImage(it), electionRelevant },
+      type: 'news', source_id: link, title, summary: snippet, status: NEWS_STATUS,
+      change_kind: 'new', source_url: link,
+      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, mps, electorates, featured: false, image: extractImage(it), electionRelevant },
     })
   }
   for (let i = 0; i < rows.length; i += 50) {

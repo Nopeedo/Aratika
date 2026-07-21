@@ -81,17 +81,28 @@ export default async function DashboardPage() {
     return b
   })
 
-  // What is the user following? Parties (directly or via a tracked MP) AND policy topics.
+  // What is the user following? Parties, policy topics, individual MPs and
+  // electorates — each matched against the tags on a news/video item.
   const trackedParties = new Set<string>()
   const trackedTopics = new Set<string>()
+  const trackedMps = new Set<string>()          // MP slugs — matches item.mps
+  const trackedElectorates = new Set<string>()  // ref_id + display label — matches item.electorates (tagged by name)
   for (const b of bookmarks) {
     if (b.kind === 'party') trackedParties.add(b.ref_id)
-    else if (b.kind === 'mp') { const p = MP_PROFILES[b.ref_id]?.party; if (p) trackedParties.add(p) }
+    else if (b.kind === 'mp') {
+      trackedMps.add(b.ref_id)
+      // Also follow the MP's party, so an MP with no by-name coverage still gets their party's news.
+      const p = MP_PROFILES[b.ref_id]?.party; if (p) trackedParties.add(p)
+    }
     else if (b.kind === 'policy') trackedTopics.add(b.ref_id)
+    else if (b.kind === 'electorate') { trackedElectorates.add(b.ref_id); if (b.label) trackedElectorates.add(b.label) }
   }
-  const following = trackedParties.size + trackedTopics.size
-  const matches = (parties: string[], topics: string[]) =>
-    parties.some((p) => trackedParties.has(p)) || topics.some((t) => trackedTopics.has(t))
+  const following = trackedParties.size + trackedTopics.size + trackedMps.size + trackedElectorates.size
+  const matches = (parties: string[], topics: string[], mps: string[] = [], electorates: string[] = []) =>
+    parties.some((p) => trackedParties.has(p)) ||
+    topics.some((t) => trackedTopics.has(t)) ||
+    mps.some((m) => trackedMps.has(m)) ||
+    electorates.some((e) => trackedElectorates.has(e))
 
   // Election module — the parties they follow with their 2023 baseline seats, and their tracked electorates.
   const seatByParty = Object.fromEntries((BASELINE_ELECTION.results ?? []).map((r) => [r.party, r.seats]))
@@ -102,10 +113,10 @@ export default async function DashboardPage() {
   const electionElectorates = bookmarks
     .filter((b) => b.kind === 'electorate')
     .map((b) => ({ label: b.label, href: b.href || `/map?search=${encodeURIComponent(b.ref_id)}` }))
-  // Personalised feed — news + videos tagged to anything they follow (party or issue).
+  // Personalised feed — news + videos tagged to anything they follow (party, issue, MP or electorate).
   const [allNews, allVideos] = following ? await Promise.all([getNews(), getVideos()]) : [[], []]
-  const feedNews = allNews.filter((n) => matches(n.parties, n.topics)).slice(0, 6)
-  const feedVideos = allVideos.filter((v) => matches(v.parties, v.topics)).slice(0, 10)
+  const feedNews = allNews.filter((n) => matches(n.parties, n.topics, n.mps, n.electorates)).slice(0, 6)
+  const feedVideos = allVideos.filter((v) => matches(v.parties, v.topics, v.mps, v.electorates)).slice(0, 10)
 
   // Bill highlights are a Phase-2 feature; only surface them once legislation ships.
   const showHighlights = isEnabled('legislation')

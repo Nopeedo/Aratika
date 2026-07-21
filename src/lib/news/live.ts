@@ -16,6 +16,8 @@ export interface NewsItem {
   pubDate: string | null
   parties: string[]
   topics: string[]
+  /** MP slugs this item names — see MP_TERMS in scripts/political-terms.mjs. */
+  mps: string[]
   /** Battleground electorates this item names — see ELECTORATE_TERMS in scripts/ingest-news.mjs. */
   electorates: string[]
   cc: boolean
@@ -36,6 +38,7 @@ function toItem(r: { id: string; title: string; summary: string | null; data: Re
     pubDate: (d.pubDate as string) ?? null,
     parties: Array.isArray(d.parties) ? (d.parties as string[]) : [],
     topics: Array.isArray(d.topics) ? (d.topics as string[]) : [],
+    mps: Array.isArray(d.mps) ? (d.mps as string[]) : [],
     electorates: Array.isArray(d.electorates) ? (d.electorates as string[]) : [],
     cc: d.cc === true,
     featured: d.featured === true,

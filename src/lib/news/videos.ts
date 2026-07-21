@@ -14,6 +14,8 @@ export interface VideoItem {
   party: string | null
   parties: string[]
   topics: string[]
+  /** MP slugs this video names — see MP_TERMS in scripts/political-terms.mjs. */
+  mps: string[]
   /** Battleground electorates this video names — see ELECTORATE_TERMS in scripts/ingest-videos.mjs. */
   electorates: string[]
   pubDate: string | null
@@ -42,6 +44,7 @@ export async function getVideos(limit = 48): Promise<VideoItem[]> {
       party: (d.party as string) ?? null,
       parties: Array.isArray(d.parties) ? (d.parties as string[]) : [],
       topics: Array.isArray(d.topics) ? (d.topics as string[]) : [],
+      mps: Array.isArray(d.mps) ? (d.mps as string[]) : [],
       electorates: Array.isArray(d.electorates) ? (d.electorates as string[]) : [],
       pubDate: (d.pubDate as string) ?? null,
       thumbnail: String(d.thumbnail ?? ''),

@@ -122,7 +122,19 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
   const stage = typeof item.data?.stage === 'string' ? item.data.stage : null
   const selectCommittee = typeof item.data?.selectCommittee === 'string' ? item.data.selectCommittee : null
   const isLegislation = item.type === 'legislation'
+  const isNews = item.type === 'news'
   const previewUrl = `arapono.nz/legislation/${billSlugFromLink(link) ?? '…'}`
+
+  // News tags, for the reviewer to see who an item will reach before publishing.
+  const asArr = (k: string) => (Array.isArray(item.data?.[k]) ? (item.data[k] as string[]) : [])
+  const newsTags = [
+    ...asArr('parties').map((p) => ({ t: p, c: '#eef4ff', b: '#bfd4fe', fg: '#1e3a8a' })),
+    ...asArr('mps').map((m) => ({ t: m.replace(/-/g, ' '), c: '#f5f3ff', b: '#ddd6fe', fg: '#5b21b6' })),
+    ...asArr('topics').map((x) => ({ t: x, c: '#ecfdf5', b: '#cfe9d8', fg: '#166638' })),
+    ...asArr('electorates').map((e) => ({ t: e, c: '#fff7ed', b: '#fed7aa', fg: '#9a3412' })),
+  ]
+  const outlet = typeof item.data?.outlet === 'string' ? item.data.outlet : 'Source'
+  const image = typeof item.data?.image === 'string' ? item.data.image : null
 
   async function act(action: 'approve' | 'reject') {
     setBusy(action); setErr(null)
@@ -174,6 +186,27 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
             </div>
           </div>
         </>
+      ) : isNews ? (
+        <>
+          <div style={{ display: 'flex', gap: 14, marginBottom: 12 }}>
+            {image && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={image} alt="" style={{ width: 92, height: 92, objectFit: 'cover', borderRadius: 12, border: `1px solid ${BORDER}`, flexShrink: 0 }} />
+            )}
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 4 }}>{outlet}</div>
+              <h2 style={{ fontSize: 16.5, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.25 }}>{item.title}</h2>
+              {item.summary && <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>{item.summary}</p>}
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 4 }}>
+            {newsTags.length === 0
+              ? <span style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE }}>No party / MP / topic tags — won’t reach any tracked dashboard.</span>
+              : newsTags.map((tg, i) => (
+                  <span key={i} style={{ fontSize: 11, fontWeight: 700, color: tg.fg, background: tg.c, border: `1px solid ${tg.b}`, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE, textTransform: 'capitalize' }}>{tg.t}</span>
+                ))}
+          </div>
+        </>
       ) : (
         <>
           <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 12px' }}>{item.title}</h2>
@@ -192,13 +225,21 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
 
       {/* EDITOR CONTROLS */}
       <div style={{ background: '#fbfaf8', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 16px' }}>
+        {isNews ? (
+          <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.5 }}>
+            Headline + snippet + link from the outlet’s own feed — nothing is rewritten. <b style={{ color: INK }}>Approve</b> to publish it to the live feed, or <b style={{ color: '#b42318' }}>Reject</b> to keep it off the site.
+          </p>
+        ) : (
+        <>
         <label style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Basic summary — plain, no jargon (what readers see by default)</label>
         <textarea value={summaryBasic} onChange={(e) => setSummaryBasic(e.target.value)} rows={3} placeholder="Plain-language summary anyone can understand, no jargon…" style={{ width: '100%', marginTop: 6, resize: 'vertical', fontFamily: MANROPE, fontSize: 13.5, color: INK, border: `1px solid ${BORDER}`, borderRadius: 11, padding: '10px 12px', outline: 'none', lineHeight: 1.5, background: '#fff' }} />
         <label style={{ display: 'block', marginTop: 12, fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Detailed summary — fuller, still plain</label>
         <textarea value={summary} onChange={(e) => setSummary(e.target.value)} rows={4} placeholder="Fuller neutral, factual summary…" style={{ width: '100%', marginTop: 6, resize: 'vertical', fontFamily: MANROPE, fontSize: 13.5, color: INK, border: `1px solid ${BORDER}`, borderRadius: 11, padding: '10px 12px', outline: 'none', lineHeight: 1.5, background: '#fff' }} />
         <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '8px 0 0' }}>Toggle <b>Basic / Detailed</b> in the preview above to check both. Editing here updates the preview live.</p>
+        </>
+        )}
 
-        {policyLinks.length > 0 && (
+        {!isNews && policyLinks.length > 0 && (
           <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '8px 0 0', lineHeight: 1.5 }}>
             The policy breakdown ({policyLinks.map((p) => p.topic).join(', ')}) is AI-drafted from the bill. Check it reads accurately in the preview above; if it&apos;s off, Reject and it can be re-generated.
           </p>

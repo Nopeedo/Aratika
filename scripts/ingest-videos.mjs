@@ -15,7 +15,7 @@ import { createClient } from '@supabase/supabase-js'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
-import { PARTY_TERMS, isPolitical } from './political-terms.mjs'
+import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -114,6 +114,7 @@ for (const ch of CHANNELS) {
     const t = title.toLowerCase()
     const parties = ch.party ? [ch.party] : tag(PARTY_TERMS, t)
     const topics = tag(TOPIC_TERMS, t)
+    const mps = tagMPs(t)
     const electorates = tagElectorates(t)
     const electionRelevant = parties.length > 0 || ELECTION_TERMS.some((x) => t.includes(x))
     const debate = DEBATE_TERMS.some((x) => t.includes(x))
@@ -130,7 +131,7 @@ for (const ch of CHANNELS) {
     if (isNoise && !debate && !electionRelevant && !isPolitical(t, parties) && topics.length === 0) continue
     rows.push({
       type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'pending', source_url: link,
-      data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, debate, featured: false },
+      data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, mps, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, debate, featured: false },
     })
   }
   if (rows.length) { const { error } = await sb.from('content_items').insert(rows); if (error) { console.error(`insert err (${ch.source}): ${error.message}`); continue } }
