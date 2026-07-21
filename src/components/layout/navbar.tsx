@@ -99,9 +99,11 @@ export function Navbar() {
             )}
           </nav>
 
-          {/* Desktop Auth Actions */}
+          {/* Desktop Auth Actions.
+              "Explain terms" was removed from this desktop row to reduce header
+              density; it remains in the mobile menu (below). Re-add <ExplainToggle />
+              here to restore it. */}
           <div className="hidden lg:flex items-center gap-2">
-            <ExplainToggle className="mr-1" />
             {isLoggedIn ? (
               <>
                 {PREMIUM_ENABLED && !isPremium && (
