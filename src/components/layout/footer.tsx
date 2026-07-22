@@ -132,6 +132,19 @@ export function Footer() {
         </div>
       </div>
 
+      {/* Promoter statement (Electoral Act 1993 s204F) — rendered only when an
+          address is configured, so an incomplete statement never goes public.
+          Kept clearly legible (not tiny) per Electoral Commission guidance. */}
+      {SITE.promoter.address && (
+        <div className="border-t border-slate-700/60">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <p className="text-xs sm:text-[13px] text-slate-400 text-center">
+              Promoted by {SITE.promoter.name}, {SITE.promoter.address}.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Bottom Bar */}
       <div className="border-t border-slate-700/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">

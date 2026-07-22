@@ -8,6 +8,16 @@ export const SITE = {
   // No social accounts yet — re-add { twitter, facebook, … } here (and render them
   // in footer.tsx) once real @arapono handles exist. The old aratikatnz placeholders
   // were removed at launch prep: they rendered nowhere and pointed at the old name.
+
+  // Promoter statement (Electoral Act 1993 s204F). An election advertisement must
+  // be "Promoted/authorised by NAME, FULL STREET ADDRESS", clearly displayed, at all
+  // times. The footer renders this ONLY when `address` is set — so nothing incomplete
+  // ever goes public. Fill `address` (trust registered office / PO box / street) to
+  // publish it. The EC recommended adding one (Ticket 182285, Jul 2026).
+  promoter: {
+    name: 'Tawhiao Watene',
+    address: '', // ← set this to publish the promoter statement
+  },
   pricing: {
     monthly: {
       amountNZD: 20,
