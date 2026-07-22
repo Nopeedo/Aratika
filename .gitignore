@@ -61,3 +61,4 @@ scripts/build-ec-compliance.cjs
 *.bak
 scripts/build-call-notes.cjs
 scripts/build-research-concept.cjs
+scripts/build-internetnz-eoi.cjs
