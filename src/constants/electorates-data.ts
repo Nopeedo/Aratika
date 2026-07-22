@@ -26,7 +26,7 @@ export interface ElectorateInfo {
   party:      PartySlug | null       // holding party (null = not yet verified)
   mpSlug?:    string                 // links to /mps/[slug] if a profile exists
   mpName?:    string
-  majority?:  number                 // winning margin (example until verified)
+  majority?:  number                 // 2023 winning margin (all rows verified vs elections.nz, Jul 2026)
   verified:   boolean                // true once cross-checked vs elections.nz
 }
 

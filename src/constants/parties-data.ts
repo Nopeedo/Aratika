@@ -1,9 +1,10 @@
 /**
  * Extended party data for profile pages.
  *
- * Leadership details are best-effort placeholders based on available
- * information and will be overridden by live NZ Parliament API data
- * once Phase 2 API integration is complete.
+ * Leadership details were verified against official party sources and
+ * parliament.nz in July 2026 (incl. Green + Te Pāti Māori co-leaders and
+ * the registered minor-party leaders). Phase 2 will additionally sync from
+ * the live NZ Parliament API.
  *
  * Founding dates, ideology descriptions, and historical facts are
  * sourced from official party records and parliament.nz.
@@ -19,7 +20,7 @@ export interface PartyProfile {
   founded:        number
   color:          string
   textColor:      string          // text on party color background
-  /** Leadership — placeholder until Parliament API */
+  /** Leadership — verified July 2026; Phase 2 will also sync from Parliament API */
   leader:         string
   leaderTitle:    string          // 'Leader' | 'Co-leader'
   coLeader?:      string
@@ -178,7 +179,9 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     color:         '#1F8A4C',
     textColor:     '#ffffff',
     leader:        'Chlöe Swarbrick',
-    leaderTitle:   'Leader',
+    leaderTitle:   'Co-leader',
+    coLeader:      'Marama Davidson',
+    coLeaderTitle: 'Co-leader',
     status:        'opposition',
     seats:         15,
     electorateSeats: 1,
