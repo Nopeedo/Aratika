@@ -181,6 +181,7 @@ ABSOLUTE RULES:
 - GROUNDED: use ONLY the provided text. Do not use outside knowledge. Do not invent policies, numbers, or promises. If the text does not contain a clear position on ${t.label}, return {"found": false}.
 - NEUTRAL: describe what the party says it will do. Never say whether it is good or bad; no opinion, endorsement, prediction, or loaded language.
 - PLAIN: assume the reader knows nothing about politics. The basic summary uses NO jargon. NZ English. Be concrete.
+- VERBATIM QUOTES: "excerpts" and "quote" must be copied CHARACTER-FOR-CHARACTER from the provided text — never paraphrase, compress, stitch sentences, or change words inside them. If you cannot find a suitable exact quote, use an empty string / fewer excerpts. A paraphrase inside quotation marks is a serious error. (Any excerpt or quote that is not an exact substring of the provided text is discarded automatically.)
 
 Return ONLY a JSON object (no markdown) of this exact shape:
 {
@@ -210,6 +211,25 @@ async function callModel(system, user) {
     }
   }
   throw lastErr
+}
+
+// ── Verbatim guardrail ────────────────────────────────────────────────────────
+// The model is told to copy quotes exactly, but LLMs drift — an audit (Jul 2026)
+// found paraphrases, stitched sentences and altered wording presented inside
+// quotation marks. This deterministically drops any excerpt/quote that is not an
+// actual substring of the scraped source, so a fabricated quote can never ship.
+function normText(s) {
+  return String(s)
+    .toLowerCase()
+    .replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+function isVerbatim(source, s) {
+  // Strip wrapping quotes / ellipsis so a legitimately trimmed excerpt still matches.
+  const q = normText(s).replace(/^["'….\s]+|["'….\s]+$/g, '')
+  if (q.length < 12) return false
+  return normText(source).includes(q)
 }
 
 async function draftOne(party, topic) {
@@ -248,7 +268,13 @@ async function draftOne(party, topic) {
   const whoAffected = Array.isArray(parsed.who_affected)
     ? parsed.who_affected.filter((x) => x && (x.group || x.detail)).map((x) => ({ group: String(x.group || '').trim(), detail: String(x.detail || '').trim() })).slice(0, 6)
     : []
-  const excerpts = Array.isArray(parsed.excerpts) ? parsed.excerpts.map((s) => String(s).trim()).filter(Boolean).slice(0, 3) : []
+  // Verbatim guardrail: keep only excerpts/quote that actually appear in the source.
+  const rawExcerpts = Array.isArray(parsed.excerpts) ? parsed.excerpts.map((s) => String(s).trim()).filter(Boolean) : []
+  const excerpts = rawExcerpts.filter((s) => isVerbatim(text, s)).slice(0, 3)
+  const droppedExcerpts = rawExcerpts.length - excerpts.length
+  let quote = String(parsed.quote || '').trim()
+  if (quote && !isVerbatim(text, quote)) { quote = ''; console.warn(`  ⚠ ${party.slug}/${topic}: dropped non-verbatim quote`) }
+  if (droppedExcerpts > 0) console.warn(`  ⚠ ${party.slug}/${topic}: dropped ${droppedExcerpts} non-verbatim excerpt(s)`)
 
   if (existing) {
     // Preserve the editor-approved text; only ADD the deeper breakdown; back to pending for a quick re-review.
@@ -270,7 +296,7 @@ async function draftOne(party, topic) {
       party: party.slug, partyName: party.name, topic, topicLabel: TOPICS[topic].label,
       period: PERIOD, periodLabel,
       stance: String(parsed.stance || '').trim(),
-      quote: String(parsed.quote || '').trim(),
+      quote,
       summaryBasic: String(parsed.summary_basic || '').trim(),
       keyProposals, whoAffected, excerpts,
       source_label: PERIOD === '2023' ? `${party.name} — 2023 manifesto` : `${party.name} — official policy page`,
