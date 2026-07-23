@@ -170,10 +170,19 @@ for (const feed of FEEDS) {
     // categories (weather, sport, quizzes, lifestyle) — and even then only when the
     // item mentions no party, hits no election term, and touches no policy topic.
     // Match noise in the TITLE only — a stray sport/weather word in the body of a
-    // political story shouldn't drop it. Also spare anything politically relevant
-    // (a party, MP/minister, or political signal term anywhere in title+body).
+    // political story shouldn't drop it.
+    //
+    // IMPORTANT: a bare party/MP name must NOT by itself rescue an obviously
+    // non-political story (an MP photographed at a rugby game, a recipe that says
+    // "greens"). Previously any party match set electionRelevant = true, which
+    // bypassed this denylist entirely. So we require a REAL political or election
+    // signal — passing [] to isPolitical deliberately ignores the party short-circuit.
     const isNoise = NEWS_NOISE_TERMS.some((x) => title.toLowerCase().includes(x))
-    if (isNoise && !electionRelevant && !isPolitical(title + ' ' + snippetRaw, parties) && topics.length === 0) { skipped++; continue }
+    const body = title + ' ' + snippetRaw
+    const strongSignal = ELECTION_TERMS.some((t) => body.toLowerCase().includes(t))
+      || isPolitical(body, [])
+      || topics.length > 0
+    if (isNoise && !strongSignal) { skipped++; continue }
     rows.push({
       type: 'news', source_id: link, title, summary: snippet, status: NEWS_STATUS,
       change_kind: 'new', source_url: link,

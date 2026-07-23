@@ -18,8 +18,18 @@ const root = join(here, '..')
 
 // ── 1. Pull every MP's full name + party from the roster files ────────────────
 const files = ['src/constants/mps-generated.ts', 'src/constants/mps-data.ts']
-// TOP is extra-parliamentary (no MPs in the roster) but still taggable via CURATED.
-const byParty = { national: new Set(), labour: new Set(), green: new Set(), act: new Set(), nzfirst: new Set(), tpm: new Set(), top: new Set() }
+// Every party the site covers must be taggable, or the news/video feeds quietly
+// revert to inclusion-by-prominence while the policy pages use inclusion-by-
+// registration. The extra-parliamentary parties have no MPs in the roster, so they
+// are taggable via CURATED alone. `independent` picks up MPs who now sit as
+// independents (e.g. the Nov-2025 Te Pāti Māori expulsions) — without it, their
+// names tag to no party at all.
+const byParty = {
+  national: new Set(), labour: new Set(), green: new Set(), act: new Set(),
+  nzfirst: new Set(), tpm: new Set(), top: new Set(), independent: new Set(),
+  alcp: new Set(), 'animal-justice': new Set(), conservative: new Set(),
+  'nz-outdoors': new Set(), 'vision-nz': new Set(), 'womens-rights': new Set(),
+}
 // Christopher Luxon is intentionally excluded from mps-generated.ts (rich profile).
 byParty.national.add('christopher luxon')
 
@@ -33,7 +43,7 @@ addMp('christopher-luxon', 'christopher luxon') // excluded from the roster file
 for (const rel of files) {
   const text = readFileSync(join(root, rel), 'utf8')
   for (const line of text.split('\n')) {
-    const m = line.match(/name:\s*'([^']+)'[^\n]*?party:\s*'([a-z]+)'/)
+    const m = line.match(/name:\s*'([^']+)'[^\n]*?party:\s*'([a-z-]+)'/)
     if (!m) continue
     const name = m[1].trim().toLowerCase()
     const party = m[2]
@@ -48,21 +58,38 @@ for (const rel of files) {
 }
 
 // ── 2. Curated party terms (unambiguous multi-word forms + distinctive leaders) ─
+// Deliberately NO bare ambiguous words. "peters" is a very common surname,
+// and a bare "greens" matches leafy greens / bowling greens — a party match makes
+// an item election-relevant, which would let obvious noise past the denylist.
 const CURATED = {
   national: ['national party', "national's", 'national government', 'national-led', 'national mp', 'national minister', 'luxon', 'nicola willis'],
   labour:   ['labour party', "labour's", 'labour government', 'labour-led', 'labour mp', 'hipkins'],
-  green:    ['green party', 'greens', "greens'", 'green mp', 'swarbrick', 'chlöe swarbrick', 'chloe swarbrick'],
+  green:    ['green party', "greens'", 'green mp', 'the greens', 'swarbrick', 'chlöe swarbrick', 'chloe swarbrick', 'marama davidson'],
   act:      ['act party', 'act new zealand', "act's", 'act mp', 'seymour', 'david seymour'],
-  nzfirst:  ['nz first', 'new zealand first', 'winston peters', 'peters', 'shane jones'],
+  nzfirst:  ['nz first', 'new zealand first', 'winston peters', 'shane jones'],
   tpm:      ['te pāti māori', 'te pati maori', 'māori party', 'maori party', 'waititi', 'rawiri waititi', 'ngarewa-packer'],
   top:      ['opportunity party', 'top party', 'qiulae wong'],
+  // ── Registered extra-parliamentary parties (no MPs) — full names only, never a
+  //    bare common word ("conservative", "outdoors", "women's rights" are topics). ──
+  alcp:             ['aotearoa legalise cannabis', 'legalise cannabis party', 'alcp', 'maki herbert', 'michael appleby'],
+  'animal-justice': ['animal justice party', 'animal justice', 'danette wereta', 'rob mcneil'],
+  conservative:     ['conservative party nz', 'conservative party', 'helen houghton'],
+  'nz-outdoors':    ['outdoors & freedom', 'outdoors and freedom', 'nz outdoors', 'sue grey'],
+  'vision-nz':      ['vision nz', 'vision new zealand', 'hannah tamaki'],
+  'womens-rights':  ["women's rights party", 'womens rights party', 'jill ovens'],
+  // `independent` has no party phrases — it is populated from the roster with the
+  // names of MPs currently sitting as independents.
+  independent: [],
 }
 
 // Subject-led headline phrases: "National promises…", "ACT announces…" — catches a
 // bare party name used as the sentence subject, WITHOUT matching "national team",
 // "national park", etc. (only party-name + an action verb qualifies).
 const VERBS = ['promises', 'announces', 'pledges', 'unveils', 'proposes', 'reveals', 'commits to', 'vows', 'confirms', 'plans to', 'wants', 'says', 'rules out', 'hits out', 'slams', 'defends', 'backs']
-const SUBJECTS = { national: ['national'], labour: ['labour'], act: ['act'], nzfirst: ['nz first'], tpm: ['te pāti māori', 'māori party'], top: ['top'] }
+// NB: 'act' and 'top' are deliberately NOT subjects. Both are ordinary English words —
+// "the Act says…" (a statute, on a site full of legislation coverage) would tag ACT,
+// and "a top official says…" would tag TOP. The curated multi-word forms cover them.
+const SUBJECTS = { national: ['national'], labour: ['labour'], nzfirst: ['nz first'], tpm: ['te pāti māori', 'māori party'] }
 const PLURAL = { green: ['greens', 'the greens'] }
 const PLURAL_VERBS = ['promise', 'announce', 'pledge', 'unveil', 'propose', 'reveal', 'want', 'say', 'rule out', 'hit out', 'slam', 'defend', 'back']
 
