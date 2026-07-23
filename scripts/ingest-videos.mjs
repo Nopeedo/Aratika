@@ -33,6 +33,14 @@ const CHANNELS = [
   { id: 'UC8PPX2ej6D_77czqEJp46dA', source: 'NZ First', party: 'nzfirst' },
   { id: 'UCRdKSAr6go-3bTSJUZMoXGg', source: 'Te Pāti Māori', party: 'tpm' },
   { id: 'UCkV9-rENFpIihiBnePk5imA', source: 'The Opportunity Party', party: 'top' },
+  // Registered extra-parliamentary parties. ID verified from the channel's own
+  // externalId (linked from animaljustice.org.nz). Of the six registered minor
+  // parties the site covers, this is the only one with a discoverable YouTube
+  // channel — ALCP's site blocks fetching, NZ Outdoors' site did not resolve, and
+  // Conservative / Vision NZ / Women's Rights link no channel. Add the others here
+  // ONLY with an externalId-verified ID: a guessed ID would attribute another
+  // entity's videos to a party.
+  { id: 'UCYUv8NyJLUeEGWdRJKk-1Jg', source: 'Animal Justice Party', party: 'animal-justice' },
   // ── Broadcaster channels that host the leaders'/minor-party DEBATES ──────────
   // IDs verified from each channel's own "externalId" in ytInitialData
   // (@1NewsNZ / @ThreeNowNZ / @nzheraldtv). party=null → tagged by who's
