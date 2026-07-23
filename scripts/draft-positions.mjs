@@ -82,7 +82,22 @@ const TOPICS = {
 // Each party's official policy source(s). `default` is used unless a
 // topic-specific URL is listed (some parties keep each topic on its own page).
 const PARTIES = [
-  { slug: 'national', name: 'National',       sources: { default: 'https://www.national.org.nz/' } },
+  // National publishes ~50 individual policy pages but no single manifesto, and the
+  // homepage (the old default) carries almost no policy text — which is why coverage
+  // was thin and why Housing once picked up a commercial building-consent release.
+  // Point each topic at the actual policy page. NB: National has no dedicated
+  // Treaty/Māori Affairs policy page — that gap is real, not a capture failure.
+  { slug: 'national', name: 'National', sources: {
+    default:          'https://www.national.org.nz/policy-2023',
+    economy:          'https://www.national.org.nz/policies/fiscal-plan',
+    housing:          'https://www.national.org.nz/policies/housing-growth',
+    education:        'https://www.national.org.nz/policies/teaching-the-basics-brilliantly',
+    health:           'https://www.national.org.nz/policies/better-health-outcomes',
+    'crime-justice':  'https://www.national.org.nz/lawandorder',
+    environment:      'https://www.national.org.nz/policies/blueprint-for-a-better-environment',
+    immigration:      'https://www.national.org.nz/policies/parent-visa-boost',
+    'foreign-policy': 'https://www.national.org.nz/policies/foreign-affairs-defence-and-veterans',
+  } },
   { slug: 'labour',   name: 'Labour',         sources: { default: 'https://www.labour.org.nz/policy' } },
   { slug: 'green',    name: 'Green',          sources: { default: 'https://www.greens.org.nz/policy', manifesto: 'https://assets.nationbuilder.com/beachheroes/pages/17789/attachments/original/1688864858/Final-online-PDF-pages.pdf' } },
   { slug: 'act',      name: 'ACT',            sources: { default: 'https://www.act.org.nz/policies', economy: 'https://www.act.org.nz/economy' } },
