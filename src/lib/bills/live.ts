@@ -26,6 +26,17 @@ export interface LiveBill {
   policyLinks: PolicyLink[]
   stage: string | null
   selectCommittee: string | null
+  /** MP in charge of the bill, e.g. "Chris Bishop" — backfilled from the
+   *  Parliament API dataset by scripts/backfill-bill-members.mjs. */
+  member: string | null
+  /** Their MP profile slug, when they have one, so the reader can link through. */
+  memberSlug: string | null
+  /** The bill's page on bills.parliament.nz — where submissions are actually lodged. */
+  officialUrl: string | null
+  /** True only while a select committee has actually called for submissions. */
+  submissionsCalled: boolean
+  /** ISO date submissions close — check before inviting anyone to submit. */
+  submissionsClose: string | null
   fullText: string | null
 }
 
@@ -33,7 +44,7 @@ interface Row {
   id: string
   title: string
   summary: string | null
-  data: { link?: string; published?: string; policy_links?: PolicyLink[]; enriched?: boolean; stage?: string; selectCommittee?: string; summaryBasic?: string } | null
+  data: { link?: string; published?: string; policy_links?: PolicyLink[]; enriched?: boolean; stage?: string; selectCommittee?: string; summaryBasic?: string; member?: string; memberSlug?: string | null; officialUrl?: string | null; submissionsCalled?: boolean; submissionsClose?: string | null } | null
 }
 
 function toLiveBill(r: Row): LiveBill | null {
@@ -52,6 +63,11 @@ function toLiveBill(r: Row): LiveBill | null {
     policyLinks: Array.isArray(r.data?.policy_links) ? r.data!.policy_links! : [],
     stage: r.data?.stage ?? null,
     selectCommittee: r.data?.selectCommittee ?? null,
+    member: r.data?.member ?? null,
+    memberSlug: r.data?.memberSlug ?? null,
+    officialUrl: r.data?.officialUrl ?? null,
+    submissionsCalled: r.data?.submissionsCalled === true,
+    submissionsClose: r.data?.submissionsClose ?? null,
     fullText: null, // loaded per-bill in getApprovedBillBySlug (kept out of list queries)
   }
 }

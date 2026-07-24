@@ -6,7 +6,8 @@
  * link. The breakdown visual is shared with the editor preview via BillBreakdown.
  */
 
-import { FileText, ExternalLink, ShieldCheck } from 'lucide-react'
+import Link from 'next/link'
+import { FileText, ExternalLink, ShieldCheck, UserRound } from 'lucide-react'
 import type { LiveBill } from '@/lib/bills/live'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { BillBreakdown } from '@/components/bills/bill-breakdown'
@@ -44,6 +45,26 @@ export function BillReader({ bill }: { bill: LiveBill }) {
         />
       </div>
 
+      {/* Who put this bill forward. The /bills tracker has always had this, but the
+          reader page — where someone actually goes to understand a bill — did not,
+          so there was no way to see who is accountable for it. Links to the MP so a
+          reader can go straight to their record and track them. */}
+      {bill.member && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 9, margin: '0 0 22px', padding: '10px 14px', background: '#f7faf6', border: `1px solid ${BORDER}`, borderRadius: 12 }}>
+          <UserRound style={{ width: 15, height: 15, color: JADE, flexShrink: 0 }} />
+          <span style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE }}>
+            Member in charge:{' '}
+            {bill.memberSlug ? (
+              <Link href={`/mps/${bill.memberSlug}`} style={{ fontWeight: 800, color: INK, textDecoration: 'none', borderBottom: `1.5px solid ${JADE}` }}>
+                {bill.member}
+              </Link>
+            ) : (
+              <b style={{ color: INK }}>{bill.member}</b>
+            )}
+          </span>
+        </div>
+      )}
+
       {/* shared summary + policy breakdown */}
       <BillBreakdown summary={bill.summary} summaryBasic={bill.summaryBasic} policyLinks={bill.policyLinks} docType={bill.docType} />
 
@@ -51,7 +72,14 @@ export function BillReader({ bill }: { bill: LiveBill }) {
       <StageTracker stage={bill.stage} selectCommittee={bill.selectCommittee} />
 
       {/* have your say */}
-      <HaveYourSay stage={bill.stage} selectCommittee={bill.selectCommittee} slug={bill.slug} />
+      <HaveYourSay
+        stage={bill.stage}
+        selectCommittee={bill.selectCommittee}
+        slug={bill.slug}
+        officialUrl={bill.officialUrl}
+        submissionsCalled={bill.submissionsCalled}
+        submissionsClose={bill.submissionsClose}
+      />
 
       {/* embedded full text with highlighted policy sections */}
       <BillFullText fullText={bill.fullText} policyLinks={bill.policyLinks} docType={bill.docType} contentItemId={bill.id} billSlug={bill.slug} billTitle={bill.title} />

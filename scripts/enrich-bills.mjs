@@ -56,6 +56,16 @@ async function callModel(system, user) {
     catch (e) {
       lastErr = e
       const msg = String(e?.message || '')
+      // A quota/billing 429 is NOT transient — the run cannot recover, and retrying
+      // just burns time. Gemini's free tier returns "exceeded your current quota".
+      // Previously this was treated as retriable, so a run that hit the daily cap
+      // ground through every remaining bill with 4 retries each and looked "stuck".
+      // Fail fast and loudly instead.
+      if (/quota|billing details|insufficient.{0,10}credit|unpaid/i.test(msg)) {
+        const err = new Error(`AI quota/billing limit reached — ${msg}`)
+        err.quotaExhausted = true
+        throw err
+      }
       const retriable = /HTTP (429|500|502|503|504)/.test(msg) || /overloaded|UNAVAILABLE|high demand/i.test(msg)
       if (!retriable || attempt === 4) break
       const wait = attempt * 4000
@@ -297,6 +307,13 @@ async function main() {
       ok++
       console.log(`✓ ${item.title} — ${r.summaryLen} char summary, topics: ${r.topics.join(', ') || '(none)'}`)
     } catch (e) {
+      // Quota exhaustion affects every remaining item — stop the whole run rather
+      // than failing each one in turn. Anything already enriched is saved.
+      if (e?.quotaExhausted) {
+        console.error(`\n✗ ABORTING — ${e.message}`)
+        console.error(`Enriched ${ok}/${candidates.length} before the limit was hit; the rest remain queued for the next run.`)
+        process.exit(1)
+      }
       console.error(`✗ ${item.title} — ${e.message}`)
     }
   }
