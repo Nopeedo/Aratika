@@ -69,6 +69,24 @@ function tidyMember(raw) {
 
 const normTitle = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '')
 
+/**
+ * bills-54 status → the stage slug the tracker renders.
+ *
+ * The ingest feed's own `stage` goes stale: every one of the bills currently open
+ * for submissions was still showing an earlier stage, so the page said "First
+ * Reading" while also (correctly) inviting submissions — which only happen at
+ * select committee. bills-54 is rebuilt daily from the Parliament API, so it wins.
+ */
+const STAGE_MAP = {
+  'first reading': 'first-reading',
+  'select committee': 'select-committee',
+  'second reading': 'second-reading',
+  'committee of whole house': 'committee-of-whole-house',
+  'third reading': 'third-reading',
+  'royal assent': 'royal-assent',
+}
+const stageFor = (status) => STAGE_MAP[String(status || '').trim().toLowerCase()] ?? null
+
 const bills = loadBills()
 const mpByName = loadMps()
 
@@ -82,7 +100,7 @@ const { data, error } = await sb.from('content_items').select('id, title, data')
 if (error) { console.error(error.message); process.exit(1) }
 const rows = data || []
 
-let matchedNum = 0, matchedTitle = 0, unmatched = 0, linked = 0, updated = 0
+let matchedNum = 0, matchedTitle = 0, unmatched = 0, linked = 0, updated = 0, stageFixed = 0
 const updates = []
 for (const r of rows) {
   const num = r.data?.billNumber ? String(r.data.billNumber).trim() : null
@@ -102,17 +120,26 @@ for (const r of rows) {
   // submit" from the stage alone, and had no link to Parliament's own submission
   // page — so it could invite a submission after the window had closed, and then
   // give nowhere to lodge it.
+  // Only override the stage when the API gives us one we recognise; otherwise keep
+  // whatever the item already had rather than blanking a known stage.
+  const mappedStage = stageFor(bill.status)
+  if (mappedStage && r.data?.stage && r.data.stage !== mappedStage) stageFixed++
+
   const next = {
     ...r.data,
     member, memberSlug, memberRaw: bill.member,
     officialUrl: bill.officialUrl ?? r.data?.officialUrl ?? null,
     submissionsCalled: bill.submissionsCalled ?? false,
     submissionsClose: bill.submissionsClose ?? null,
+    stage: mappedStage ?? r.data?.stage ?? null,
+    selectCommittee: bill.committee ?? r.data?.selectCommittee ?? null,
   }
   const same = r.data?.member === member && r.data?.memberSlug === memberSlug
     && r.data?.officialUrl === next.officialUrl
     && (r.data?.submissionsCalled ?? false) === next.submissionsCalled
     && (r.data?.submissionsClose ?? null) === next.submissionsClose
+    && (r.data?.stage ?? null) === next.stage
+    && (r.data?.selectCommittee ?? null) === next.selectCommittee
   if (same) continue
   updates.push({ id: r.id, data: next })
 }
@@ -122,6 +149,7 @@ console.log(`  matched by bill number: ${matchedNum}`)
 console.log(`  matched by title:       ${matchedTitle}`)
 console.log(`  no match / no member:   ${unmatched}`)
 console.log(`  member links to an MP profile: ${linked}`)
+console.log(`  stale stages corrected: ${stageFixed}`)
 console.log(`  needing update: ${updates.length}`)
 
 if (DRY) { console.log('\n(dry run — re-run without --dry-run to write)'); process.exit(0) }
