@@ -23,3 +23,17 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           PARLIAMENT_API_KEY: ${{ secrets.PARLIAMENT_API_KEY }}
           LEGISLATION_RSS_URLS: ${{ secrets.LEGISLATION_RSS_URLS }}
+
+      # Step 2 of the reader. Ingest alone only stages RAW bills, which stay
+      # invisible to /editor (it hides un-enriched legislation as "pending
+      # enrichment", not "pending review"). Without this step bills accumulate
+      # silently and never reach /legislation — 109 had piled up before it was
+      # added. Runs on Gemini's free tier; falls back to Anthropic if that key
+      # is the only one set.
+      - name: Enrich new bills
+        run: node scripts/enrich-bills.mjs --all
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

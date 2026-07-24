@@ -303,4 +303,7 @@ async function main() {
   console.log(`Done. Enriched ${ok}/${candidates.length}. Review at /editor.`)
 }
 
-main().catch((e) => { console.error(e); process.exit(1) })
+// Exit explicitly on success too: the Supabase client holds keep-alive sockets open,
+// so without this the process finishes its work but never exits — which in CI means
+// the step hangs instead of completing (it once blocked a run for 2h39m).
+main().then(() => process.exit(0)).catch((e) => { console.error(e); process.exit(1) })
