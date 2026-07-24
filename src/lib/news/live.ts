@@ -5,6 +5,7 @@
  */
 
 import { createClient } from '@/lib/supabase/server'
+import { MP_PROFILES } from '@/constants/mps-data'
 
 export interface NewsItem {
   id: string
@@ -23,7 +24,25 @@ export interface NewsItem {
   cc: boolean
   featured: boolean
   image: string | null
+  /**
+   * Fallback visual when the outlet publishes no picture — a portrait of an MP the
+   * item names. The Beehive's releases are text-only (0 of 142 have an image), so
+   * without this they all render as the same generic icon. Resolved server-side so
+   * the MP dataset never reaches the browser. It is a PORTRAIT, not a photo from
+   * the story, so the card labels it with the person's name rather than passing it
+   * off as news photography.
+   */
+  portrait: { src: string; name: string } | null
   electionRelevant: boolean
+}
+
+/** First tagged MP who has a (freely licensed, self-hosted) portrait. */
+function portraitFor(mps: string[]): { src: string; name: string } | null {
+  for (const slug of mps) {
+    const mp = MP_PROFILES[slug]
+    if (mp?.photo) return { src: mp.photo, name: mp.name }
+  }
+  return null
 }
 
 function toItem(r: { id: string; title: string; summary: string | null; data: Record<string, unknown> }): NewsItem {
@@ -43,6 +62,7 @@ function toItem(r: { id: string; title: string; summary: string | null; data: Re
     cc: d.cc === true,
     featured: d.featured === true,
     image: (d.image as string) ?? null,
+    portrait: portraitFor(Array.isArray(d.mps) ? (d.mps as string[]) : []),
     electionRelevant: d.electionRelevant === true,
   }
 }

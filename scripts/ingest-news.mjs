@@ -31,6 +31,29 @@ const rss = new Parser({
   customFields: { item: [['media:content', 'mediaContent', { keepArray: true }], ['content:encoded', 'contentEncoded']] },
 })
 
+// Some feeds carry no image at all in their RSS (RNZ and the Beehive give none),
+// so fall back to the article's own OpenGraph image — the same picture the outlet
+// publishes for social shares. RNZ and Newsroom both expose a real photo this way;
+// the Beehive genuinely has none (text-only releases), which the UI handles by
+// falling back to a portrait of the MP the item is tagged to.
+async function fetchOgImage(url) {
+  try {
+    const res = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(12000) })
+    if (!res.ok) return null
+    const html = await res.text()
+    const pats = [
+      /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i,
+      /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i,
+      /<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i,
+    ]
+    for (const p of pats) {
+      const m = html.match(p)
+      if (m && /^https?:\/\//.test(m[1])) return m[1]
+    }
+  } catch { /* a missing picture must never fail the ingest */ }
+  return null
+}
+
 // Pull a thumbnail from the feed item: media:content → enclosure → first <img> in content.
 function extractImage(it) {
   const mc = it.mediaContent
@@ -183,10 +206,13 @@ for (const feed of FEEDS) {
       || isPolitical(body, [])
       || topics.length > 0
     if (isNoise && !strongSignal) { skipped++; continue }
+    // Prefer the image the feed gave us; only pay for a page fetch when there isn't one.
+    let image = extractImage(it)
+    if (!image) image = await fetchOgImage(link)
     rows.push({
       type: 'news', source_id: link, title, summary: snippet, status: NEWS_STATUS,
       change_kind: 'new', source_url: link,
-      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, mps, electorates, featured: false, image: extractImage(it), electionRelevant },
+      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, mps, electorates, featured: false, image, electionRelevant },
     })
   }
   for (let i = 0; i < rows.length; i += 50) {

@@ -88,7 +88,7 @@ export function NewsFeed({ items, videos = [] }: { items: NewsItem[]; videos?: V
           const gov = it.kind === 'government'
           return (
             <a key={it.id} href={it.link} target="_blank" rel="noopener noreferrer" className="party-card" style={{ display: 'flex', gap: 14, textDecoration: 'none', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '14px 15px', background: '#fff' }}>
-              <Thumb src={it.image} gov={gov} outlet={it.outlet} />
+              <Thumb src={it.image} gov={gov} outlet={it.outlet} portrait={it.portrait} />
               <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, flexWrap: 'wrap' }}>
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, color: gov ? '#92400e' : '#1e40af', background: gov ? '#fff7e6' : '#eef4ff', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
@@ -150,6 +150,17 @@ function StoryCard({ it }: { it: NewsItem }) {
       {hasImg ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={it.image!} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setErr(true)} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+      ) : it.portrait ? (
+        // No published picture (the Beehive's releases carry none), so show a
+        // portrait of an MP the item names. Labelled with their name so it reads as
+        // a portrait, not as a photograph taken from the story.
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={it.portrait.src} alt={it.portrait.name} loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
+          <span style={{ position: 'absolute', top: 10, left: 10, zIndex: 2, fontSize: 10.5, fontWeight: 700, color: '#fff', background: 'rgba(0,0,0,.55)', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
+            {it.portrait.name}
+          </span>
+        </>
       ) : (
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {gov ? <Landmark style={{ width: 40, height: 40, color: 'rgba(255,255,255,.5)' }} /> : <Newspaper style={{ width: 40, height: 40, color: 'rgba(255,255,255,.5)' }} />}
@@ -187,7 +198,7 @@ function StoryCard({ it }: { it: NewsItem }) {
 
 const arrowBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: 999, border: `1px solid ${BORDER}`, background: '#fff', color: INK, cursor: 'pointer' }
 
-function Thumb({ src, gov, outlet }: { src: string | null; gov: boolean; outlet: string }) {
+function Thumb({ src, gov, outlet, portrait }: { src: string | null; gov: boolean; outlet: string; portrait?: { src: string; name: string } | null }) {
   const [err, setErr] = useState(false)
   const box: React.CSSProperties = { width: 116, height: 88, flexShrink: 0, borderRadius: 10, overflow: 'hidden', background: gov ? '#fff7e6' : '#eef4ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }
   if (src && !err) {
@@ -195,6 +206,16 @@ function Thumb({ src, gov, outlet }: { src: string | null; gov: boolean; outlet:
       <div style={box}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setErr(true)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      </div>
+    )
+  }
+  // No published picture — fall back to a portrait of an MP the item names, with
+  // their name as alt text so it is announced as a person, not a story photo.
+  if (portrait) {
+    return (
+      <div style={box} title={portrait.name}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={portrait.src} alt={portrait.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
       </div>
     )
   }
