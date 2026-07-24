@@ -37,3 +37,13 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      # The ingest feed doesn't carry the member in charge, the official bill page,
+      # or the submission window — bills-54.ts (Parliament API) does. Without this
+      # join a new bill reaches the reader with no one accountable named and no way
+      # to lodge a submission. Deterministic, no AI, so it is cheap to run daily.
+      - name: Backfill bill member in charge + submission details
+        run: node scripts/backfill-bill-members.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
