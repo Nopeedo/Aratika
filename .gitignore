@@ -63,3 +63,4 @@ scripts/build-call-notes.cjs
 scripts/build-research-concept.cjs
 scripts/build-internetnz-eoi.cjs
 scripts/build-internetnz-call-notes.cjs
+scripts/build-platform-reference.cjs
