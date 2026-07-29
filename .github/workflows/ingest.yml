@@ -47,3 +47,30 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      # Email users when a bill they track opens for public submissions — the one
+      # proactive notification we send: rare, actionable, and mission-core. Sends
+      # from hello@arapono.org.nz via Zoho SMTP; exits cleanly (no send, no state
+      # change) while the SMTP secrets are absent. Dedupe state is a committed
+      # file of opaque hashes — see the commit-back step below.
+      - name: Send submission alerts
+        run: node scripts/alert-submission-emails.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ZOHO_SMTP_USER: ${{ secrets.ZOHO_SMTP_USER }}
+          ZOHO_SMTP_PASS: ${{ secrets.ZOHO_SMTP_PASS }}
+
+      # Persist the sent-alert hashes so tomorrow's run doesn't re-email anyone.
+      - name: Commit alert state
+        run: |
+          if [ -n "$(git status --porcelain scripts/.state/)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add scripts/.state/
+            git commit -m "Record sent submission alerts"
+            git pull --rebase origin main
+            git push
+          else
+            echo "No new alerts recorded."
+          fi
