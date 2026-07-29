@@ -39,7 +39,10 @@ const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY
 // Override with AI_PROVIDER=gemini|anthropic.
 const PROVIDER = process.env.AI_PROVIDER || (GEMINI_KEY ? 'gemini' : (ANTHROPIC_KEY ? 'anthropic' : null))
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6'
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash'
+// Default matched .env.local's override after CI kept failing while local runs
+// passed: gemini-2.0-flash's free tier now 429s on the very first request (model
+// retired from the free tier), while 2.5-flash works on the same key.
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash'
 
 if (!URL || !SERVICE_KEY) { console.error('Missing Supabase env'); process.exit(1) }
 if (!PROVIDER) { console.error('No AI key found — add GEMINI_API_KEY (free) or ANTHROPIC_API_KEY to .env.local.'); process.exit(1) }
