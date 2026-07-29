@@ -42,7 +42,12 @@ jobs:
       # or the submission window — bills-54.ts (Parliament API) does. Without this
       # join a new bill reaches the reader with no one accountable named and no way
       # to lodge a submission. Deterministic, no AI, so it is cheap to run daily.
+      # `!cancelled()` on the two steps below: enrichment failing (bad AI key,
+      # quota) must not take down the deterministic backfill or the submission
+      # alerts — they don't depend on it. Exactly that coupling silently blocked
+      # every alert while the enrich step was failing on missing API keys.
       - name: Backfill bill member in charge + submission details
+        if: ${{ !cancelled() }}
         run: node scripts/backfill-bill-members.mjs
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -54,6 +59,7 @@ jobs:
       # change) while the SMTP secrets are absent. Dedupe state is a committed
       # file of opaque hashes — see the commit-back step below.
       - name: Send submission alerts
+        if: ${{ !cancelled() }}
         run: node scripts/alert-submission-emails.mjs
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
@@ -63,6 +69,7 @@ jobs:
 
       # Persist the sent-alert hashes so tomorrow's run doesn't re-email anyone.
       - name: Commit alert state
+        if: ${{ !cancelled() }}
         run: |
           if [ -n "$(git status --porcelain scripts/.state/)" ]; then
             git config user.name "github-actions[bot]"
