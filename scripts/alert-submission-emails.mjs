@@ -53,13 +53,24 @@ console.log(`bills currently open for submissions: ${openBills.length}`)
 const bySlug = new Map(openBills.map((b) => [b.slug, b]))
 const byTitle = new Map(openBills.map((b) => [normTitle(b.title), b]))
 
+// Editorial "defining bills" pages use names that match nothing in the
+// Parliament dataset — resolve those through the shared hand-written map.
+// One editorial topic can span several bills; alert on every open one.
+const DEFINING_MAP = JSON.parse(readFileSync(join(root, 'src/constants/defining-bill-map.json'), 'utf8'))
+
 // ── Who tracks them ──────────────────────────────────────────────────────────
 const { data: bms, error: e1 } = await sb.from('bookmarks').select('user_id, ref_id, label').eq('kind', 'bill')
 if (e1) { console.error(e1.message); process.exit(1) }
 const pairs = []
 for (const bm of bms || []) {
-  const bill = bySlug.get(bm.ref_id) || byTitle.get(normTitle(bm.label))
-  if (bill) pairs.push({ userId: bm.user_id, bill })
+  const direct = bySlug.get(bm.ref_id) || byTitle.get(normTitle(bm.label))
+  if (direct) { pairs.push({ userId: bm.user_id, bill: direct }); continue }
+  const mapped = DEFINING_MAP[bm.ref_id]
+  if (!Array.isArray(mapped)) continue
+  for (const slug of mapped) {
+    const bill = bySlug.get(slug)
+    if (bill) pairs.push({ userId: bm.user_id, bill })
+  }
 }
 console.log(`tracked-bill bookmarks: ${(bms || []).length} → matches on open bills: ${pairs.length}`)
 

@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { BILLS_54, type Bill54 } from '@/constants/bills-54'
+import DEFINING_BILL_MAP from '@/constants/defining-bill-map.json'
 import type { PartySlug } from '@/types'
 import type { Bookmark } from '@/hooks/use-bookmarks'
 
@@ -65,18 +66,27 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
   // don't always line up: measured against bills-data.ts, slug matches 8/10 but
   // title matches 10/10 — the fallback is what actually carries it.
   //
-  // Known limitation: bills tracked from the "defining bills" pages use
-  // editorial names ("Treaty Principles Bill", "Local Water Done Well") rather
-  // than official titles, so they match on neither and won't show a submission
-  // prompt. Largely harmless — those are mostly Acts already passed, which can't
-  // be open for submissions — but it would need a hand-written mapping to fix.
+  // Bills tracked from the "defining bills" pages use editorial names ("Local
+  // Water Done Well") that match on neither, so they resolve through the
+  // hand-written defining-bill-map (editorial slug → real Parliament slug(s)).
+  // An editorial topic can span several bills — prefer whichever is currently
+  // open for submissions, since that's the one the reader can act on.
   const billIndex = useMemo(() => {
     const bySlug = new Map<string, Bill54>(), byTitle = new Map<string, Bill54>()
     for (const b of BILLS_54) { bySlug.set(b.slug, b); byTitle.set(normTitle(b.title), b) }
     return { bySlug, byTitle }
   }, [])
-  const billFor = (b: TrackedItem) =>
-    b.kind === 'bill' ? (billIndex.bySlug.get(b.ref_id) || billIndex.byTitle.get(normTitle(b.label))) : undefined
+  const billFor = (b: TrackedItem): Bill54 | undefined => {
+    if (b.kind !== 'bill') return undefined
+    const direct = billIndex.bySlug.get(b.ref_id) || billIndex.byTitle.get(normTitle(b.label))
+    if (direct) return direct
+    // `string | string[]` because the JSON carries a _comment key; Array.isArray narrows.
+    const mapped = (DEFINING_BILL_MAP as Record<string, string[] | string>)[b.ref_id]
+    if (!Array.isArray(mapped)) return undefined
+    const bills = mapped.map((s) => billIndex.bySlug.get(s)).filter((x): x is Bill54 => !!x)
+    const open = bills.find((x) => today && x.submissionsCalled && x.submissionsClose && x.submissionsClose >= today)
+    return open ?? bills[0]
+  }
 
   /** Open only while submissions were called AND the deadline hasn't passed. */
   const openBill = (b: TrackedItem): Bill54 | undefined => {

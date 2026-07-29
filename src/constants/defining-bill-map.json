@@ -1,0 +1,11 @@
+{
+  "_comment": "Editorial defining-bill slug -> the real bills.parliament.nz slug(s) in bills-54.ts. The defining-bills pages use editorial names ('Local Water Done Well') that match nothing in the Parliament dataset, so bookmarks taken from those pages could never surface submission windows or alerts. Shared by command-centre.tsx and scripts/alert-submission-emails.mjs. treaty-principles-bill maps to [] because the Principles of the Treaty of Waitangi Bill was defeated at second reading (April 2025) and no longer appears in the dataset.",
+  "treaty-principles-bill": [],
+  "three-strikes-sentencing": ["sentencing-reinstating-three-strikes-amendment-bill"],
+  "gangs-act-2024": ["gangs-bill"],
+  "fast-track-approvals-act-2024": ["fast-track-approvals-bill", "fast-track-approvals-amendment-bill"],
+  "resource-management-reform": ["planning-bill", "natural-environment-bill", "resource-management-consenting-and-other-system-changes-amendment-bill"],
+  "local-water-done-well": ["local-government-water-services-bill", "local-government-water-services-preliminary-arrangements-bill", "local-government-water-services-repeals-and-amendments-bill", "water-services-acts-repeal-bill"],
+  "pae-ora-maori-health-authority": ["pae-ora-disestablishment-of-m-ori-health-authority-amendment-bill"],
+  "smokefree-environments-repeal": ["smokefree-environments-and-regulated-products-amendment-bill"]
+}
