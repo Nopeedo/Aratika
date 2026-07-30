@@ -14,7 +14,9 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function GetReadyToVote() {
   return (
-    <section style={{ background: SURFACE, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
+    // bg-lattice: background-texture trial — backgroundColor (not the shorthand)
+    // so the class's background-image isn't reset by the inline style.
+    <section className="bg-lattice" style={{ backgroundColor: SURFACE, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px clamp(18px, 5vw, 36px)' }}>
         <h2 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Get ready to vote</h2>
         <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px' }}>Three quick steps to feel confident heading into 2026.</p>
