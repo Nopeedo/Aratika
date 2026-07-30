@@ -1,0 +1,64 @@
+name: Refresh MP profile data
+
+# The MP profile sections (Wikipedia bios, declared interests, quarterly
+# expenses, written questions) were originally filled by one-off local script
+# runs — strong coverage, but frozen at whenever someone last remembered to run
+# them, and blind to new MPs. This runs the same four scripts weekly so the
+# data drifts no further than seven days behind the official sources:
+#   bios      — Wikipedia lead summaries (CC BY-SA, attributed), only where no
+#               curated parliament.nz bio exists
+#   interests — Register of Pecuniary Interests (new register published ~May)
+#   expenses  — quarterly Members' Expense Disclosures (parliament.nz)
+#   questions — questions.parliament.nz public search API
+#
+# Each step is independent: `!cancelled()` keeps one flaky source from blocking
+# the rest (the lesson from the ingest workflow, where a failing enrich step
+# silently skipped everything after it). Generated constants are committed back
+# only when something actually changed, which triggers a normal Vercel redeploy.
+on:
+  schedule:
+    - cron: '0 17 * * 6'   # ~5am NZST Sunday, clear of the daily crons
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+
+      - name: Wikipedia bios
+        run: node scripts/enrich-mps-wikipedia.mjs
+
+      - name: Declared interests (official register)
+        if: ${{ !cancelled() }}
+        run: node scripts/enrich-mp-interests.mjs
+
+      - name: Quarterly expenses (official disclosures)
+        if: ${{ !cancelled() }}
+        run: node scripts/build-mp-expenses-term.mjs
+
+      - name: Written questions (questions.parliament.nz)
+        if: ${{ !cancelled() }}
+        run: node scripts/build-mp-written-questions.mjs
+
+      - name: Commit only if the data actually changed
+        if: ${{ !cancelled() }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain src/constants)" ]; then
+            git add src/constants
+            git commit -m "Auto-refresh: MP profile data (bios, interests, expenses, written questions)"
+            git pull --rebase origin main
+            git push
+            echo "Committed refreshed MP data."
+          else
+            echo "No change in MP data — nothing to commit."
+          fi

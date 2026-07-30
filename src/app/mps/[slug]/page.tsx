@@ -331,7 +331,11 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
                   ))}
                 </div>
               ) : (
-                <ComingNote>{mp.name}’s conscience votes and key divisions this term are being added from the official record (Hansard / parliamentary divisions).</ComingNote>
+                // Honest, not promissory: Parliament publishes conscience votes only
+                // inside Hansard text (no per-MP source — see the Information Gaps
+                // Register), so this can't be auto-backfilled. They're also genuinely
+                // rare, so "none recorded" is usually the true state.
+                <ComingNote>No conscience (personal) votes are recorded for {mp.name} this term. These votes are rare — Parliament decides most matters by party vote — and we record them from Hansard as they occur.</ComingNote>
               )}
               {PREMIUM_ENABLED && (
                 <div style={{ marginTop: 16, padding: '12px 14px', borderRadius: 10, background: 'linear-gradient(145deg,#fff9e6,#fffdf5)', border: '1px solid #fde68a', display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -469,7 +473,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
           <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
             Details sourced from{' '}
             <a href={mp.parliamentUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>parliament.nz <ArrowUpRight style={{ width: 11, height: 11, display: 'inline' }} /></a>{' '}
-            and the public record. Bills, written questions, speeches and voting records are being added from Parliament’s official register and Hansard.
+            and the public record. Bills, written questions, declared interests and expenses refresh automatically from Parliament’s official sources; conscience votes are recorded from Hansard as they occur.
             {mp.photo && mp.photoCredit && (
               <>{' '}Photo: {mp.photoCredit}{mp.photoLicense ? `, ${mp.photoLicense}` : ''}{mp.photoSourceUrl && (<>{' '}<a href={mp.photoSourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>(source <ArrowUpRight style={{ width: 10, height: 10, display: 'inline' }} />)</a></>)}.</>
             )}
