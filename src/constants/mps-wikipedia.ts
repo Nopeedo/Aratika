@@ -297,7 +297,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Tamatha_Paul"
   },
   "chris-penk": {
-    "bio": "Christopher Aidan Penk is a New Zealand politician who has been a Member of Parliament in the House of Representatives for the National Party since 2017. Following the 2023 New Zealand general election, he assumed the building and construction, land and information, veterans, associate defence, and associate immigration portfolios, and later the small business and manufacturing portfolio in 2025. In 2026, Penk gained the defence and space portfolios, along with the portfolios for the intelligence agencies New Zealand Security Intelligence Service (NZSIS) and the Government Communications…",
+    "bio": "Christopher Aidan Penk is a New Zealand politician who has been a member of Parliament in the House of Representatives for the National Party since 2017. Following the 2023 New Zealand general election, he assumed the building and construction, land and information, veterans, associate defence, and associate immigration portfolios, and later the small business and manufacturing portfolio in 2025. In 2026, Penk gained the defence and space portfolios, along with the portfolios for the intelligence agencies New Zealand Security Intelligence Service (NZSIS) and the Government Communications…",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Chris_Penk"
   },
   "winston-peters": {
@@ -473,7 +473,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Megan_Woods"
   },
   "lawrence-xu-nan": {
-    "bio": "Lawrence Xi Xu-Nan is a New Zealand politician and Green Party member of the New Zealand House of Representatives.",
+    "bio": "Lawrence Xi Xu-Nan is a New Zealand politician and member of parliament in the New Zealand House of Representatives for the Green Party.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Lawrence_Xu-Nan"
   }
 }
