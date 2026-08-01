@@ -289,7 +289,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "byMinister": [
       {
         "minister": "Minister of Police",
-        "count": 2457
+        "count": 2456
       },
       {
         "minister": "Associate Minister of Police",
@@ -341,7 +341,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Prime Minister",
-        "count": 42
+        "count": 43
       },
       {
         "minister": "Minister for Infrastructure",
@@ -464,16 +464,16 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "reply": null
       },
       {
-        "minister": "Minister of Police",
-        "date": "2026-07-16",
-        "question": "Further to Written Question 29641; are there any advancement requests in the pipeline which will not progress by the end of the year, if so, which?",
-        "reply": "I am advised that the advancement request pipeline contains requests at various stages of assessment, prioritisation and planning. As progression depends on funding, resource availability, governance decisions and competing operational priorities, Police cannot determine at this time which requests may or may not progress before the end of the year."
+        "minister": "Prime Minister",
+        "date": "2026-07-17",
+        "question": "Has he asked Cabinet officials to meet with Hon Nicole McKee to remind her of her Cabinet Manual responsibilities to manage her conflicts of interest to protect the integrity of the decision-making process of executive government and to maintain public trust in the Executive and if not, why not?",
+        "reply": "I refer the member to my response to Written Parliamentary Question 32207 (2026)."
       },
       {
-        "minister": "Minister of Police",
-        "date": "2026-07-16",
-        "question": "Further to Written Parliamentary Question 29640 (2026); what enhancements have been categorised as low prioritity, if any?",
-        "reply": "I am advised that advancement requests are periodically prioritised and reprioritised using agreed operational, strategic and legislative criteria. Police does not maintain a permanent category of enhancements classified as \"low priority\", as priority can change over time depending on operational need, legislative requirements, funding availability and resource capacity."
+        "minister": "Prime Minister",
+        "date": "2026-07-17",
+        "question": "Has he received an assurance from Hon Nicole McKee that in future she will improve her assessment of her conflicts of interest before making decisions to avoid the need to rescind decisions already made and if not, why not?",
+        "reply": "I refer the member to my response to Written Parliamentary Question 32207 (2026)."
       }
     ]
   },
@@ -514,7 +514,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Local Government",
-        "count": 210
+        "count": 212
       },
       {
         "minister": "Prime Minister",
@@ -529,15 +529,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 199
       },
       {
-        "minister": "Minister for Regulation",
-        "count": 198
-      },
-      {
         "minister": "Minister of Finance",
         "count": 196
       },
       {
         "minister": "Minister of Education",
+        "count": 196
+      },
+      {
+        "minister": "Minister for Regulation",
         "count": 196
       },
       {
@@ -1504,16 +1504,16 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "reply": null
       },
       {
-        "minister": "Minister for Infrastructure",
-        "date": "2026-07-15",
-        "question": "Has any grocery or supermarket retailer not currently operating in New Zealand applied for referral of a project under the Fast-track Approvals Act?",
-        "reply": "No."
+        "minister": "Minister of Finance",
+        "date": "2026-07-16",
+        "question": "How many projects, if any, listed by project name, received a red rating through Treasury's Gateway Review process in the last 12 months?",
+        "reply": "One investment undertook a Gateway review between 1 July 2025 and 30 June 2026 and received a Red rating: • NZ Police – Arms Transformation Programme."
       },
       {
-        "minister": "Minister for Infrastructure",
-        "date": "2026-07-15",
-        "question": "How many, if any, applications for a grocery or supermarket project have been made under the Fast-track Approvals Act?",
-        "reply": "None."
+        "minister": "Minister of Finance",
+        "date": "2026-07-16",
+        "question": "How many projects, listed by project name, received an amber/red rating through Treasury's Gateway Review process in the last 12 months?",
+        "reply": "Nine investments undertook a Gateway review between 1 July 2025 and 30 June 2026 and received an Amber/Red rating. These included: • Ministry of Social Development: Disability Support Services – High and Complex Framework (HCF): Capital Investment for ID Forensic Services • Health NZ – Nelson Hospital • Ministry for the Environment – Resource Management System Transformation • Stats NZ – Deliver 2030 Programme • Health NZ – National Lung Screening Programme • New Zealand Transport Agency – Melli…"
       }
     ]
   },
@@ -2537,11 +2537,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 45
       },
       {
-        "minister": "Minister for Small Business and Manufacturing",
+        "minister": "Minister for the Environment",
         "count": 45
       },
       {
-        "minister": "Minister for the Environment",
+        "minister": "Minister for Small Business and Manufacturing",
         "count": 45
       },
       {
@@ -2792,14 +2792,14 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Minister of Health",
         "date": "2026-04-10",
-        "question": "What is the current number of practising gynaecological oncologists in the Southern region, expressed in full-time equivalents, and how has this changed over the past five years?",
-        "reply": "I refer the Member to the attached table."
+        "question": "What advice has the Minister received on the clinical impact of delays beyond four weeks for aggressive gynaecological cancers, including effects on staging, treatment options, and survival outcomes?",
+        "reply": "Titles of advice that I have received that support delivering access to timely, quality healthcare for all New Zealanders have been, or will be, proactively released on the Ministry of Health, Health New Zealand and Pharmac websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers https://www.tewhatuora.govt.nz/publications https://pharmac.govt.nz/news-and-resources/official-information-act/list-of-ministerial-briefings."
       },
       {
         "minister": "Minister of Health",
         "date": "2026-04-10",
-        "question": "What advice has the Minister received on the clinical impact of delays beyond four weeks for aggressive gynaecological cancers, including effects on staging, treatment options, and survival outcomes?",
-        "reply": "Titles of advice that I have received that support delivering access to timely, quality healthcare for all New Zealanders have been, or will be, proactively released on the Ministry of Health, Health New Zealand and Pharmac websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers https://www.tewhatuora.govt.nz/publications https://pharmac.govt.nz/news-and-resources/official-information-act/list-of-ministerial-briefings."
+        "question": "What is the current number of practising gynaecological oncologists in the Southern region, expressed in full-time equivalents, and how has this changed over the past five years?",
+        "reply": "I refer the Member to the attached table."
       },
       {
         "minister": "Minister of Health",
@@ -3274,27 +3274,27 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "byMinister": [
       {
         "minister": "Minister for Vocational Education",
-        "count": 639
+        "count": 634
       },
       {
         "minister": "Minister for Regulation",
-        "count": 536
+        "count": 533
       },
       {
         "minister": "Minister of Statistics",
-        "count": 464
+        "count": 461
       },
       {
         "minister": "Minister of Customs",
-        "count": 452
+        "count": 449
       },
       {
         "minister": "Minister for the Public Service",
-        "count": 450
+        "count": 444
       },
       {
         "minister": "Associate Minister of Health",
-        "count": 387
+        "count": 381
       },
       {
         "minister": "Minister of Health",
@@ -3302,59 +3302,59 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Education",
-        "count": 358
+        "count": 359
       },
       {
         "minister": "Minister for Emergency Management and Recovery",
-        "count": 324
+        "count": 325
       },
       {
         "minister": "Minister of Climate Change",
-        "count": 321
+        "count": 322
       },
       {
         "minister": "Minister for Small Business and Manufacturing",
-        "count": 321
+        "count": 318
       },
       {
         "minister": "Minister for Social Development and Employment",
-        "count": 304
+        "count": 305
       },
       {
         "minister": "Minister for the Environment",
-        "count": 293
+        "count": 294
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 291
       },
       {
         "minister": "Minister of Finance",
         "count": 288
       },
       {
-        "minister": "Minister of Corrections",
-        "count": 288
+        "minister": "Minister of Foreign Affairs",
+        "count": 284
       },
       {
         "minister": "Minister for Universities",
-        "count": 288
-      },
-      {
-        "minister": "Minister of Housing",
-        "count": 285
-      },
-      {
-        "minister": "Minister of Foreign Affairs",
-        "count": 283
-      },
-      {
-        "minister": "Minister of Internal Affairs",
-        "count": 278
+        "count": 282
       },
       {
         "minister": "Prime Minister",
+        "count": 277
+      },
+      {
+        "minister": "Minister of Internal Affairs",
         "count": 276
       },
       {
         "minister": "Minister for Economic Growth",
-        "count": 275
+        "count": 276
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 273
       },
       {
         "minister": "Minister of Justice",
@@ -3362,42 +3362,54 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Transport",
-        "count": 265
-      },
-      {
-        "minister": "Minister for ACC",
-        "count": 263
+        "count": 267
       },
       {
         "minister": "Minister of Agriculture",
-        "count": 261
+        "count": 263
       },
       {
         "minister": "Associate Minister of Education",
-        "count": 261
+        "count": 262
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 262
       },
       {
         "minister": "Minister of Defence",
-        "count": 260
+        "count": 262
       },
       {
         "minister": "Minister for Arts, Culture and Heritage",
-        "count": 259
+        "count": 260
       },
       {
         "minister": "Minister of Conservation",
         "count": 257
       },
       {
-        "minister": "Associate Minister of Transport",
+        "minister": "Minister for Children",
         "count": 256
       },
       {
-        "minister": "Minister for Children",
-        "count": 254
+        "minister": "Minister for Māori Development",
+        "count": 255
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 255
       },
       {
         "minister": "Minister for Pacific Peoples",
+        "count": 255
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 255
+      },
+      {
+        "minister": "Minister for Social Investment",
         "count": 254
       },
       {
@@ -3405,88 +3417,76 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 254
       },
       {
-        "minister": "Minister for Women",
-        "count": 253
-      },
-      {
-        "minister": "Minister for Social Investment",
-        "count": 253
-      },
-      {
-        "minister": "Minister for Māori Development",
-        "count": 252
-      },
-      {
         "minister": "Minister of Police",
-        "count": 252
+        "count": 254
       },
       {
         "minister": "Minister for Land Information",
-        "count": 252
+        "count": 253
       },
       {
         "minister": "Minister of Revenue",
-        "count": 250
+        "count": 252
       },
       {
         "minister": "Minister for Disability Issues",
-        "count": 249
+        "count": 251
       },
       {
         "minister": "Minister for Ethnic Communities",
-        "count": 247
+        "count": 249
       },
       {
         "minister": "Minister for the Prevention of Family and Sexual Violence",
-        "count": 243
+        "count": 244
       },
       {
         "minister": "Minister for Sport and Recreation",
-        "count": 236
+        "count": 240
       },
       {
         "minister": "Minister for Workplace Relations and Safety",
-        "count": 235
+        "count": 237
       },
       {
         "minister": "Minister for Infrastructure",
-        "count": 231
+        "count": 235
       },
       {
         "minister": "Minister for Tourism and Hospitality",
-        "count": 225
+        "count": 227
       },
       {
         "minister": "Minister for Energy",
-        "count": 209
-      },
-      {
-        "minister": "Minister responsible for the NZSIS",
-        "count": 198
+        "count": 212
       },
       {
         "minister": "Associate Minister of Justice",
-        "count": 197
+        "count": 200
       },
       {
         "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 198
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
         "count": 196
       },
       {
         "minister": "Minister responsible for the GCSB",
-        "count": 193
+        "count": 191
       },
       {
         "minister": "Associate Minister of Finance",
-        "count": 190
+        "count": 187
       },
       {
         "minister": "Minister for the South Island",
-        "count": 189
+        "count": 186
       },
       {
         "minister": "Minister of Local Government",
-        "count": 182
+        "count": 184
       },
       {
         "minister": "Minister of Science, Innovation and Technology",
@@ -3494,47 +3494,47 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Courts",
-        "count": 175
+        "count": 177
       },
       {
         "minister": "Associate Minister of Agriculture",
-        "count": 175
-      },
-      {
-        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
         "count": 173
       },
       {
-        "minister": "Minister for Whānau Ora",
-        "count": 162
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 170
       },
       {
         "minister": "Minister of Commerce and Consumer Affairs",
-        "count": 157
+        "count": 161
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 158
       },
       {
         "minister": "Minister for Media and Communications",
-        "count": 149
+        "count": 153
       },
       {
         "minister": "Minister for Rail",
-        "count": 147
+        "count": 149
       },
       {
         "minister": "Minister for Mental Health",
-        "count": 145
+        "count": 147
       },
       {
         "minister": "Minister for Trade and Investment",
-        "count": 141
+        "count": 145
       },
       {
         "minister": "Minister for Tertiary Education",
-        "count": 124
+        "count": 128
       },
       {
         "minister": "Associate Minister of Immigration",
-        "count": 118
+        "count": 115
       },
       {
         "minister": "Minister for Child Poverty Reduction",
@@ -3542,43 +3542,39 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Associate Minister of Housing",
-        "count": 104
+        "count": 102
       },
       {
         "minister": "Minister for Building and Construction",
-        "count": 99
-      },
-      {
-        "minister": "Minister for Seniors",
-        "count": 96
+        "count": 101
       },
       {
         "minister": "Minister of Immigration",
-        "count": 95
+        "count": 94
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 94
       },
       {
         "minister": "Minister for the Public Service and Digitising Government",
-        "count": 89
+        "count": 93
       },
       {
         "minister": "Minister for Youth",
-        "count": 83
+        "count": 86
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 82
       },
       {
         "minister": "Minister for State Owned Enterprises",
         "count": 82
       },
       {
-        "minister": "Minister responsible for RMA Reform",
-        "count": 80
-      },
-      {
         "minister": "Minister for Resources",
-        "count": 80
-      },
-      {
-        "minister": "Minister responsible for Ministerial Services",
-        "count": 78
+        "count": 79
       },
       {
         "minister": "Minister of State for Trade and Investment",
@@ -3586,46 +3582,50 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Regional Development",
-        "count": 76
+        "count": 75
       },
       {
-        "minister": "Minister for National Security and Intelligence",
-        "count": 70
-      },
-      {
-        "minister": "Minister of Forestry",
-        "count": 69
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 74
       },
       {
         "minister": "Minister for Racing",
         "count": 68
       },
       {
+        "minister": "Minister of Forestry",
+        "count": 67
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 67
+      },
+      {
         "minister": "Minister for Rural Communities",
-        "count": 66
+        "count": 64
       },
       {
         "minister": "Minister for Digitising Government",
-        "count": 65
-      },
-      {
-        "minister": "Associate Minister of Police",
         "count": 63
       },
       {
-        "minister": "Minister for Space",
+        "minister": "Associate Minister of Police",
         "count": 62
       },
       {
-        "minister": "Deputy Prime Minister",
-        "count": 62
+        "minister": "Minister for Auckland",
+        "count": 61
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 61
       },
       {
         "minister": "Associate Minister for Energy",
         "count": 61
       },
       {
-        "minister": "Minister for Biosecurity",
+        "minister": "Deputy Prime Minister",
         "count": 60
       },
       {
@@ -3645,11 +3645,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 60
       },
       {
-        "minister": "Associate Minister for ACC",
-        "count": 59
-      },
-      {
-        "minister": "Minister for Auckland",
+        "minister": "Minister for Biosecurity",
         "count": 59
       },
       {
@@ -3657,12 +3653,20 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 58
       },
       {
-        "minister": "Minister for Food Safety",
+        "minister": "Minister for Science, Innovation and Technology",
+        "count": 57
+      },
+      {
+        "minister": "Associate Minister for ACC",
         "count": 57
       },
       {
         "minister": "Associate Minister for Social Development and Employment",
         "count": 57
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 56
       },
       {
         "minister": "Associate Minister of Foreign Affairs",
@@ -3682,15 +3686,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Acting Attorney-General",
-        "count": 55
+        "count": 54
       },
       {
         "minister": "Associate Minister of Defence",
-        "count": 55
-      },
-      {
-        "minister": "Minister for Science, Innovation and Technology",
-        "count": 53
+        "count": 54
       },
       {
         "minister": "Acting Minister of Commerce and Consumer Affairs (Grocery Sector)",
@@ -3698,7 +3698,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister responsible for the GCSB and NZSIS",
-        "count": 45
+        "count": 49
       },
       {
         "minister": "Associate Minister for Emergency Management and Recovery",
@@ -3715,34 +3715,34 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister of Health",
-        "date": "2026-07-30",
-        "question": "How many physiotherapy students, if any, were in placements between 1 January - 1 July 2025 at Health New Zealand?",
+        "minister": "Minister for Mental Health",
+        "date": "2026-07-31",
+        "question": "What public engagement surveys, if any, have been completed regarding the use of artificial intelligence in the Minister’s departments, agencies, crown entities and any other bodies that the Minister is responsible for, if any, since 27 November 2023?",
         "reply": null
       },
       {
-        "minister": "Minister of Health",
-        "date": "2026-07-30",
-        "question": "How many trainee doctors, if any, were in placements between 1 January - 1 July 2025 at Health New Zealand?",
+        "minister": "Minister for Mental Health",
+        "date": "2026-07-31",
+        "question": "What algorithm impact assessments, if any, have been done in the Minister’s departments, agencies, crown entities and any other bodies that the Minister is responsible for, if any, since 27 November 2023?",
         "reply": null
       },
       {
-        "minister": "Minister for the Public Service and Digitising Government",
-        "date": "2026-07-30",
-        "question": "Did the then Public Service Commissioner issue an email or communication to agencies or departments or ministries directing them to withdraw election material from agency or departments or ministries in 2020?",
+        "minister": "Minister of Agriculture",
+        "date": "2026-07-31",
+        "question": "What procurement process, if any, was used for purchasing artificial intelligence tools, if any, currently being used within the Minister’s departments, agencies, crown entities and any other bodies that the Minister is responsible for, if any?",
         "reply": null
       },
       {
-        "minister": "Minister of Statistics",
-        "date": "2026-07-09",
-        "question": "How much in total, if any, was spent on renumeration of Crown appointees in the Minister's departments, crown entities and any other bodies that the Minister is responsible for, if any, for the 2023-24 financial year?",
-        "reply": "There are no crown appointees that I am responsible for as the Minister of Statistics."
-      },
-      {
-        "minister": "Minister of Education",
+        "minister": "Minister of Immigration",
         "date": "2026-07-09",
         "question": "How much in total, if any, was spent on renumeration of Crown appointees in the Minister's departments, crown entities and any other bodies that the Minister is responsible for, if any, for the 2022-2023 financial year?",
-        "reply": "I refer the Member to the attached table showing the amount spent on remuneration of Crown Appointees by departments that I am responsible for. This is also my response to written parliamentary questions 31063 (2026), 31065 (2026), and 31066 (2026)."
+        "reply": "As Minister for Immigration, I have no responsibility for any government departments, Ministries, agencies, crown entities or other bodies. Immigration New Zealand is a branch of the Ministry of Business, Innovation and Employment (MBIE). I refer the Member to Written Parliamentary Question 31227 (2026)."
+      },
+      {
+        "minister": "Minister for Land Information",
+        "date": "2026-07-09",
+        "question": "How much in total, if any, was spent on renumeration of Crown appointees in the Minister's departments, crown entities and any other bodies that the Minister is responsible for, if any, for the 2023-24 financial year?",
+        "reply": "I am responsible for appointments to the Valuers Registration Board (VRB), Cadastral Surveyors Licensing Board (CSLB) and the Ngā Pou Taunaha o Aotearoa New Zealand Geographic Board (NZGB). Land Information New Zealand (LINZ) does not pay board member fees for the CSLB and VRB as these are directly funded from professional registration fees paid by practitioners in those industries. In 2023/24, a total of $14,321.25 in board fees was paid to Crown-appointed members of the NZGB. NB: LINZ staff in…"
       }
     ]
   },
@@ -3851,15 +3851,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Prime Minister",
-        "date": "2026-07-16",
-        "question": "Further to his answer to written question 30392 (2026): why was he made aware at this time?",
-        "reply": "I was made aware as part of the release of an Official Information Act request in June 2026."
+        "date": "2026-07-17",
+        "question": "Further to his answer to written question 30393 (2026): who made his Chief of Staff aware?",
+        "reply": "I refer the Member to reply number 32904 (2026)."
       },
       {
         "minister": "Prime Minister",
-        "date": "2026-07-16",
-        "question": "Further to his replies to Questions 30393 and 30392 (2026), did he approve Minister Jones’s request for additional funding for the Minister’s travel to Toronto in March 2025 or did his Chief of Staff approve that additional funding?",
-        "reply": "My Chief of Staff confirmed additional costs could be met from the Ministerial Services budget."
+        "date": "2026-07-17",
+        "question": "Further to his answer to written question 30393 (2026): why was his Chief of Staff made aware of the overspend at this time?",
+        "reply": "As the Audit Office identified on page 1 of its letter dated 6 July 2026, and as provided in answer to the member’s Written Parliamentary Question 12198 (2026), the Cabinet Office has previously defined “advocacy” to mean making strong public statements in support of or opposition to a project or category of projects or taking active steps in support of a project (usually more than just writing a letter of support). The Audit Office’s observation was that this definition was not repeated in Hon …"
       }
     ]
   },
@@ -4909,11 +4909,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "kieran-mcanulty": {
-    "count": 4204,
+    "count": 4227,
     "byMinister": [
       {
         "minister": "Minister of Housing",
-        "count": 1726
+        "count": 1749
       },
       {
         "minister": "Associate Minister of Housing",
@@ -5063,33 +5063,33 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister of Housing",
-        "date": "2026-07-28",
-        "question": "How much, if anything, has Kainga Ora spent on new appliances since 1 June 2024?",
+        "date": "2026-07-31",
+        "question": "Why was Kāinga Ora's tender for Real Estate Agency Services for Don McKinnon Drive, tender ID number 33631566, cancelled and then reissued?",
         "reply": null
       },
       {
         "minister": "Minister of Housing",
-        "date": "2026-07-28",
-        "question": "How much, if anything, did Kāinga Ora pay for new appliances for its Carlton Gore, Newmarket, Auckland offices since 1 June 2025 and for each item valued at over $1500, if any, what was it and what was its value?",
+        "date": "2026-07-31",
+        "question": "How many meetings, if any, did Kāinga Ora’s Chief Executive have with representatives of Bayleys Real Estate between 1 April 2024 and 30 October 2025 and for each such meeting what was the date, attendees and purpose?",
         "reply": null
       },
       {
         "minister": "Minister of Housing",
-        "date": "2026-07-28",
-        "question": "How much, if anything, did Kāinga Ora pay for new audio-visual and conferencing equipment for its Carlton Gore, Newmarket, Auckland offices since 1 June 2025 and for each item valued at over $1500, if any, what was it and what was its value?",
+        "date": "2026-07-31",
+        "question": "Who provided the independent oversight on the procurement process that Kāinga Ora followed that resulted in Bayleys Real Estate being appointed as its master agent and how was that oversight provided?",
         "reply": null
       },
       {
-        "minister": "Minister for Social Development and Employment",
+        "minister": "Associate Minister of Housing",
         "date": "2026-07-17",
-        "question": "Further to reply 29748 (2026), were any Regional Commissioners subject to any other form of performance management, whether formal or informal, short of a targeted performance improvement plan during the 2025/26 financial year, and if so, how many?",
-        "reply": "No. I am advised that no Regional Commissioners were subject to any other form of performance management, whether formal or informal, short of a targeted performance improvement plan during the 2025/26 financial year."
+        "question": "What proportion of Section 55A notices issued between December 2023 and June 2026 went to tenancies whose main tenant identifies as Māori, broken down by month?",
+        "reply": "I refer the Member to the attachment provided by Kāinga Ora – Homes and Communities."
       },
       {
-        "minister": "Minister for Social Development and Employment",
+        "minister": "Associate Minister of Housing",
         "date": "2026-07-17",
-        "question": "Further to reply 29737 (2026), did any other people in Regional Commissioner roles at the Ministry of Social Development leave the role or the Ministry during or at the end of the 2025/26 financial year by any means other than retirement, including resignation, transfer, the end of a fixed term, or dismissal, and if so, how many?",
-        "reply": "No. I am advised that no other people, apart from the two who retired, left Regional Commissioner roles or the Ministry during or at the end of the 2025/26 financial year through resignation, transfer, the end of a fixed-term appointment, dismissal, or any other means."
+        "question": "What proportion of Kāinga Ora tenancies terminated between December 2023 and June 2026 had a main tenant who identifies as Māori, broken down by month?",
+        "reply": "I refer the Member to the attachment provided by Kāinga Ora – Homes and Communities."
       }
     ]
   },
@@ -5486,20 +5486,14 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Minister of Conservation",
         "date": "2026-07-16",
-        "question": "Has the Minister assessed the impact of the Conservation Amendment Bill on Te Papakura o Taranaki, Whanganui National Park, and Whareorino Conservation Area; if so, what were those assessments?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Conservation",
-        "date": "2026-07-16",
         "question": "Has the Minister obtained advice regarding the consistency of the Conservation Amendment Bill with Treaty settlement obligations?",
-        "reply": null
+        "reply": "I have publicly stated the Government’s commitment that amendments to the conservation system will uphold Treaty settlements. I have received advice on how redress obligations can be transferred into the new conservation system. For more complex redress, the Government will continue to engage with Post-Settlement Governance Entities on how to uphold their redress in the new system. The Conservation Amendment Bill sets out a process for reaching agreement with PSGEs and that, until agreement is r…"
       },
       {
         "minister": "Minister of Conservation",
         "date": "2026-07-16",
-        "question": "How many additional concessions, if any, does the Minister expect the Conservation Amendment Bill to enable over the next five years?",
-        "reply": null
+        "question": "Has the Minister assessed the impact of the Conservation Amendment Bill on Te Papakura o Taranaki, Whanganui National Park, and Whareorino Conservation Area; if so, what were those assessments?",
+        "reply": "I have received advice on how to uphold the Taranaki Maunga arrangements as set out in the Te Kāhui Tupua Act 2025. I, along with Department of Conservation officials, am continuing to engage with both Te Tōpuni Kōkōrangi and Te Tōpuni Ngārahu on how best to uphold those arrangements through the Conservation Amendment Bill and the National Conservation Policy Statement. The Whanganui National Park will be subject to future collective negotiations, in the context of the revised conservation syste…"
       },
       {
         "minister": "Minister for Energy",
@@ -5508,10 +5502,16 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "reply": "The Government is focussed on ensuring an affordable and secure supply of energy, which is a key enabler of economic growth across New Zealand, including in Taranaki."
       },
       {
-        "minister": "Minister for Energy",
+        "minister": "Minister of Conservation",
         "date": "2026-07-16",
-        "question": "Does the Minister consider the discontinuation of Crown funding for Ara Ake to be consistent with the Government's objective of increasing energy affordability, resilience, and security; if so, why?",
-        "reply": "Reprioritisation of Ara Ake’s funding reduces duplication with the Energy Efficiency and Conservation Authority and creates opportunities for more efficient use of resources to deliver Government objectives."
+        "question": "What advice, if any, has the Minister received on whether the Conservation Amendment Bill changes the legal hierarchy from conservation being the primary purpose of public conservation land to one where economic use is given greater weight?",
+        "reply": "I have been advised that the proposed changes do not create an obligation on the Department of Conservation to balance conservation outcomes with economic opportunities. Conservation will remain the overarching purpose of the Act. For more information on the continued primacy of conservation, I refer the member to the advice contained in 26-M-0046 - EDS meeting memo - 20 May, which has been released on the Department’s website under reference OIAD-9292 available here: https://www.doc.govt.nz/new…"
+      },
+      {
+        "minister": "Minister of Conservation",
+        "date": "2026-07-16",
+        "question": "How many hectares, if any, of Department of Conservation land within the Te Tai Hauāuru electorate are expected to be affected by the Conservation Amendment Bill?",
+        "reply": "The Conservation Amendment Bill introduces new national conservation settings that will apply across all public conservation land. However, the impact on any particular area will vary depending on factors such as the purposes for which the land is managed and any applicable Treaty settlement arrangements."
       }
     ]
   },
@@ -5652,20 +5652,20 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Housing",
-        "date": "2026-07-09",
-        "question": "Does he accept the findings published by the Ministry of Social Development that the 1992 reforms to remove the rent subsidy and introduce the Accommodation Supplement failed to improve horizontal equity and instead worsened vertical equity, and if so, how did that factor into the government’s decision to reduce the Income-Related Rent Subsidy and increase the Accommodation Supplement?",
-        "reply": "I am aware of the findings about the 1992 reforms which have informed the Review of Social Housing. There are no plans to remove the rent subsidy for social housing tenants and to extend the Accommodation Supplement (AS) to social housing tenants. The gap between the income-related rent subsidy (IRRS) and AS has grown over time, since the re-introduction of IRRS in 2000. Budget 2026 changes will retain income-related rent (IRR) at a more generous level than the AS, with tenants in comparable fin…"
+        "date": "2026-07-15",
+        "question": "How many, if any, private rental homes are currently available in the lower quartile of the rental market, and is it greater or less than the 29% of social housing households that he claims currently have sufficient income to manage private rental costs in the lower quartile of the rental market?",
+        "reply": "As of 20 July 2026, there were 2,569 rentals listed on TradeMe that were below the lower quartile rent MBIE published for May 2026 (latest available). This will not include any rentals listed on other sites or those available but not on any listing site. This figure is a point in time view of the number of rentals available. Tenancy services data shows that around 13-14,000 new tenancies are started each month nationally with roughly 3,500 being lower quartile rentals. The analysis which showed …"
       },
       {
         "minister": "Minister of Housing",
         "date": "2026-07-09",
-        "question": "What evidence, if any, did the government use to inform his claim that 29% of social housing households currently have sufficient income to manage private rental costs in the lower quartile of the rental market?",
-        "reply": "The data underpinning this figure was measured by analysing private market housing options for any household currently residing in social housing based on Census 2023 data. It compares their household income without any form of housing assistance – including income-related rent (IRR), Accommodation Supplement (AS) and/or Temporary Additional Support (TAS) – to the cost of renting lower quartile private housing of the appropriate size within their Territorial Authority. The analysis looked at the…"
+        "question": "Does he accept the findings published by the Ministry of Social Development that the 1992 reforms to remove the rent subsidy and introduce the Accommodation Supplement failed to improve horizontal equity and instead worsened vertical equity, and if so, how did that factor into the government’s decision to reduce the Income-Related Rent Subsidy and increase the Accommodation Supplement?",
+        "reply": "I am aware of the findings about the 1992 reforms which have informed the Review of Social Housing. There are no plans to remove the rent subsidy for social housing tenants and to extend the Accommodation Supplement (AS) to social housing tenants. The gap between the income-related rent subsidy (IRRS) and AS has grown over time, since the re-introduction of IRRS in 2000. Budget 2026 changes will retain income-related rent (IRR) at a more generous level than the AS, with tenants in comparable fin…"
       }
     ]
   },
   "lan-pham": {
-    "count": 1663,
+    "count": 1669,
     "byMinister": [
       {
         "minister": "Minister responsible for RMA Reform",
@@ -5716,12 +5716,12 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 31
       },
       {
-        "minister": "Prime Minister",
-        "count": 23
+        "minister": "Minister of Education",
+        "count": 28
       },
       {
-        "minister": "Minister of Education",
-        "count": 22
+        "minister": "Prime Minister",
+        "count": 23
       },
       {
         "minister": "Minister for Oceans and Fisheries",
@@ -5822,21 +5822,21 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister responsible for RMA Reform",
-        "date": "2026-07-29",
-        "question": "Following Reply 32893 (2026), what issues in the Natural Environment and Planning Bills does the Minister intend to address with amendment papers?",
+        "minister": "Minister of Education",
+        "date": "2026-07-31",
+        "question": "What were the findings of the work that was noted in the 'Rapid Response...' briefing on drinking water in schools (dated 2 April 2026) as \"currently underway to assess the next tranche of schools (164) and identify work required\"?",
         "reply": null
       },
       {
         "minister": "Minister of Education",
-        "date": "2026-07-28",
-        "question": "Following response 29681 (2026), was the Minister's request for a \"rapid\" briefing on drinking water in rural schools, which was provided on 2 April 2026, prompted by the Green Party's release of information on the morning of 2 April that 9,000 students faced unsafe drinking water at school in 2025?",
+        "date": "2026-07-31",
+        "question": "What was the total cost of the \"urgent remediation work\" at the 64 \"highest priority schools\" where drinking water issues were identified in the 'Rapid Response' briefing dated 2 April 2026?",
         "reply": null
       },
       {
-        "minister": "Minister for Regional Development",
-        "date": "2026-07-28",
-        "question": "Following Reply 31923 (2026), does the conflict of interest noted, in relation to the Kānoa investment in the Tukituki Water Security Project, relate to a staff member from the Ministry of Business, Innovation, and Employment?",
+        "minister": "Minister of Education",
+        "date": "2026-07-31",
+        "question": "Does the Minister intend to further fund work on providing safe drinking water at schools if the $30 million included in Budget 2026 is insufficient to ensure safe supplies?",
         "reply": null
       },
       {
@@ -5846,19 +5846,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "reply": "No."
       },
       {
-        "minister": "Minister for Regional Development",
-        "date": "2026-07-16",
-        "question": "Who, specifically, will be required to pay back the $18.13 million loan provided by Kānoa – Regional Economic Development & Investment Unit to the \"Tukituki Water Security Project (TSWP) Pre-Construction\" if the project does not proceed to construction or does not make a profit?",
-        "reply": "Information regarding loan terms and conditions are commercially sensitive, and I do not consider it is in the public interest to release."
+        "minister": "Minister responsible for RMA Reform",
+        "date": "2026-07-17",
+        "question": "Following 28221, does the Minister expect to make further changes to the Natural Environment Bill in relation to the range of matters the sector wanted to discuss, following report back from Select Committee, including goals, environmental limits, fresh-water farm plans, allocation and natural resource levies?",
+        "reply": "I expect to make further changes to the Planning Bill and Natural Environment Bill through an amendment paper at the Committee of the Whole House stage. Specific changes to the Bills are yet to be finalised."
       }
     ]
   },
   "willow-jean-prime": {
-    "count": 4521,
+    "count": 4531,
     "byMinister": [
       {
         "minister": "Minister for Children",
-        "count": 1447
+        "count": 1457
       },
       {
         "minister": "Minister of Education",
@@ -5996,20 +5996,20 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister for Children",
-        "date": "2026-07-27",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "date": "2026-07-31",
+        "question": "What actions, if any, did the Minister take on what dates following her becoming aware, if at all, of the incident at Korowai Manaaki, if any, whereby young people were lined up on two sides and a young person walked through the two lines while he was hit?",
         "reply": null
       },
       {
-        "minister": "Associate Minister for Social Development and Employment",
-        "date": "2026-07-27",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "minister": "Minister for Children",
+        "date": "2026-07-31",
+        "question": "Is an Oranga Tamariki practice review being undertaken regarding the Korowai Manaaki incident, if any, whereby young people lined up on two sides and a young person walked through the two lines while he was hit?",
         "reply": null
       },
       {
-        "minister": "Associate Minister for Social Development and Employment",
-        "date": "2026-07-27",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "minister": "Minister for Children",
+        "date": "2026-07-31",
+        "question": "What has been ascertained regarding staff involvement, if any, in the Korowai Manaaki incident, if any, whereby young people lined up on two sides and a young person walked through the two lines while he was hit?",
         "reply": null
       },
       {
@@ -6039,11 +6039,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister responsible for the GCSB",
-        "count": 306
+        "count": 305
       },
       {
         "minister": "Minister responsible for the NZSIS",
-        "count": 290
+        "count": 291
       },
       {
         "minister": "Prime Minister",
@@ -6463,7 +6463,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "lemauga-lydia-sosene": {
-    "count": 1732,
+    "count": 1734,
     "byMinister": [
       {
         "minister": "Minister of Internal Affairs",
@@ -6471,7 +6471,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister responsible for Ministerial Services",
-        "count": 273
+        "count": 275
       },
       {
         "minister": "Minister of Statistics",
@@ -6829,20 +6829,20 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister responsible for Ministerial Services",
-        "date": "2026-07-30",
-        "question": "How many home electric vehicle charging units, if any, have been installed at Ministers' private residences at Crown expense, broken down by Minister?",
+        "date": "2026-07-31",
+        "question": "What was the cost of accessories or modifications fitted to ministerial self-drive vehicles in the last three financial years, if any, broken down by Minister and by item?",
+        "reply": null
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "date": "2026-07-31",
+        "question": "How many ministerial self-drive vehicles were returned following the ministerial reshuffle of April 2026, and what was the average number of days between a Minister ceasing to hold the relevant office and the return of the vehicle?",
         "reply": null
       },
       {
         "minister": "Minister responsible for Ministerial Services",
         "date": "2026-07-30",
-        "question": "How many vehicles were in the Crown VIP fleet as at 30 June in each of 2024, 2025 and 2026, broken down by vehicle class?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Internal Affairs",
-        "date": "2026-07-30",
-        "question": "On what date, if any, did she first receive a copy of the Digital Violent Extremism Transparency Report?",
+        "question": "How many home electric vehicle charging units, if any, have been installed at Ministers' private residences at Crown expense, broken down by Minister?",
         "reply": null
       },
       {
@@ -7618,11 +7618,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 33
       },
       {
-        "minister": "Minister for Resources",
+        "minister": "Minister for the Environment",
         "count": 32
       },
       {
-        "minister": "Minister for the Environment",
+        "minister": "Minister for Resources",
         "count": 32
       },
       {
@@ -8252,16 +8252,16 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "reply": null
       },
       {
-        "minister": "Minister for Rail",
-        "date": "2026-07-16",
-        "question": "Further to reply 30344 (2026), does a programmed delivery date for each vessel exist within the shipbuilding contract or the programme schedule, and if so, will the Minister release those dates; if not, why not?",
-        "reply": "Yes, and no. Rest assured, however, when we are in a position to announce the commencement dates the member will be among the first to know."
+        "minister": "Minister of Transport",
+        "date": "2026-07-20",
+        "question": "What assurances has he sought or received that conflicts of interest have been managed, if any, after Arup has acted as a client-side adviser to NZTA on the Warkworth to Te Hana public-private partnership, formed part of the unsuccessful Go North bidding consortium, and is part of the preferred independent reviewer joint venture for that project?",
+        "reply": "I have received assurances from NZTA that any potential conflicts of interest arising from Arup's involvement in the Warkworth to Te Hana public-private partnership have been appropriately managed. NZTA has advised that the procurement process was subject to oversight by an independent probity adviser and a separate probity auditor, and that it remains confident that any potential conflicts have been effectively addressed."
       },
       {
-        "minister": "Minister for Rail",
-        "date": "2026-07-16",
-        "question": "Further to reply 30354 (2026), has Ferry Holdings Limited issued a formal notice to proceed, or equivalent instruction, authorising Guangzhou Shipyard International to begin building the two new Cook Strait ferries, as distinct from the signing of the shipbuilding contract, and if so, on what date?",
-        "reply": "Refer to the reply to 30354 (2026). The entire point of the contract is to build the two Cook Strait ferries."
+        "minister": "Minister of Transport",
+        "date": "2026-07-20",
+        "question": "What ringfencing arrangements has he been advised are in place to separate the Arup personnel who worked on the client side of the Warkworth to Te Hana transaction from those who may form part of the independent reviewer team, if any?",
+        "reply": "I am advised by NZTA that a small ringfenced Arup team supported NZTA during the transaction. Those personnel were prohibited from being involved in the independent reviewer procurement process on either side and will have no involvement in the project beyond financial close."
       }
     ]
   },
