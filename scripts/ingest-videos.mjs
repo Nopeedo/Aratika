@@ -16,6 +16,7 @@ import dotenv from 'dotenv'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
+import { buildElectorateTerms, addCandidateTerms } from './electorate-terms.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -71,31 +72,10 @@ const DEBATE_TERMS = ['debate', 'q+a', 'q&a', 'head to head', 'head-to-head', 't
 const VIDEO_NOISE_TERMS = ['gardener', 'once were', 'matariki', 'trailer', 'weather', 'forecast', 'recipe', 'all blacks', 'super rugby', 'silver ferns', 'black caps', 'good as gold', 'episode ']
 const tag = (map, t) => Object.keys(map).filter((k) => map[k].some((x) => t.includes(x)))
 
-// Same battleground-scoped electorate tagging as ingest-news.mjs (majority < 3500
-// seats only — real name matches, not fabricated). Keep these two lists in sync.
-const ELECTORATE_TERMS = {
-  'Mt Albert': ['mt albert', 'mount albert', 'helen white'],
-  'Nelson': ['nelson electorate', 'rachel boyack'],
-  'Te Atatū': ['te atatu', 'te atatū', 'phil twyford'],
-  'Banks Peninsula': ['banks peninsula', 'vanessa weenink'],
-  'West Coast-Tasman': ['west coast-tasman', 'west coast tasman', 'maureen pugh'],
-  'New Lynn': ['new lynn', 'paulo garcia'],
-  'Wigram': ['wigram', 'megan woods'],
-  'Hutt South': ['hutt south', 'chris bishop'],
-  'Taieri': ['taieri', 'ingrid leary'],
-  'Ōhāriu': ['ohariu', 'ōhāriu', "greg o'connor"],
-  'Mt Roskill': ['mt roskill', 'mount roskill', 'carlos cheung'],
-  'Christchurch Central': ['christchurch central', 'duncan webb'],
-  'Te Tai Tokerau': ['te tai tokerau', 'mariameno kapa-kingi'],
-  'Christchurch East': ['christchurch east', 'reuben davidson'],
-  'Rongotai': ['rongotai', 'julie anne genter'],
-  'Te Tai Tonga': ['te tai tonga', 'takuta ferris', 'tākuta ferris'],
-  'Ikaroa-Rāwhiti': ['ikaroa-rawhiti', 'ikaroa-rāwhiti', 'cushla tangaere-manuel'],
-  'Hauraki-Waikato': ['hauraki-waikato', 'hana-rawhiti maipi-clarke'],
-  'Wairarapa': ['wairarapa', 'mike butterick'],
-  'East Coast': ['east coast electorate', 'dana kirkpatrick'],
-  'Palmerston North': ['palmerston north', 'tangi utikere'],
-}
+// Shared electorate tagging (all 72 seats + curated battleground judgement +
+// announced 2026 challengers) — the same map ingest-news.mjs uses.
+const ELECTORATE_TERMS = buildElectorateTerms()
+await addCandidateTerms(ELECTORATE_TERMS, sb)
 const tagElectorates = (t) => Object.keys(ELECTORATE_TERMS).filter((name) => ELECTORATE_TERMS[name].some((term) => t.includes(term)))
 
 const RESET = process.argv.includes('--reset')

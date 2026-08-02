@@ -22,6 +22,7 @@ import dotenv from 'dotenv'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
+import { buildElectorateTerms, addCandidateTerms } from './electorate-terms.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -92,34 +93,15 @@ function tag(map, text) {
   return Object.keys(map).filter((k) => map[k].some((term) => t.includes(term)))
 }
 
-// Stage 1 of electorate-level coverage: tag articles that mention a battleground
-// seat by name or its sitting MP by name. Scoped to the closest 2023 races only
-// (majority < 3500) — a real, sourced signal (name matches), not a fabricated one.
-// Keyed by the electorate's exact display name (matches ElectorateInfo.name in
-// src/constants/electorates-data.ts) so the battleground page can filter by it directly.
-const ELECTORATE_TERMS = {
-  'Mt Albert': ['mt albert', 'mount albert', 'helen white'],
-  'Nelson': ['nelson electorate', 'rachel boyack'],
-  'Te Atatū': ['te atatu', 'te atatū', 'phil twyford'],
-  'Banks Peninsula': ['banks peninsula', 'vanessa weenink'],
-  'West Coast-Tasman': ['west coast-tasman', 'west coast tasman', 'maureen pugh'],
-  'New Lynn': ['new lynn', 'paulo garcia'],
-  'Wigram': ['wigram', 'megan woods'],
-  'Hutt South': ['hutt south', 'chris bishop'],
-  'Taieri': ['taieri', 'ingrid leary'],
-  'Ōhāriu': ['ohariu', 'ōhāriu', "greg o'connor"],
-  'Mt Roskill': ['mt roskill', 'mount roskill', 'carlos cheung'],
-  'Christchurch Central': ['christchurch central', 'duncan webb'],
-  'Te Tai Tokerau': ['te tai tokerau', 'mariameno kapa-kingi'],
-  'Christchurch East': ['christchurch east', 'reuben davidson'],
-  'Rongotai': ['rongotai', 'julie anne genter'],
-  'Te Tai Tonga': ['te tai tonga', 'takuta ferris', 'tākuta ferris'],
-  'Ikaroa-Rāwhiti': ['ikaroa-rawhiti', 'ikaroa-rāwhiti', 'cushla tangaere-manuel'],
-  'Hauraki-Waikato': ['hauraki-waikato', 'hana-rawhiti maipi-clarke'],
-  'Wairarapa': ['wairarapa', 'mike butterick'],
-  'East Coast': ['east coast electorate', 'dana kirkpatrick'],
-  'Palmerston North': ['palmerston north', 'tangi utikere'],
-}
+// Electorate tagging: ALL 72 seats (generated from the site's dataset, with the
+// original hand-tuned battleground judgement preserved) plus announced 2026
+// challengers' names from the candidate ingest — so a story naming a challenger
+// tags their battle even when the seat itself isn't mentioned. Previously only
+// the 21 closest 2023 races were taggable, leaving 51 battle pages unable to
+// ever receive news.
+const ELECTORATE_TERMS = buildElectorateTerms()
+const challengerTerms = await addCandidateTerms(ELECTORATE_TERMS, sb)
+console.log(`Electorate tagging: ${Object.keys(ELECTORATE_TERMS).length} seats, +${challengerTerms} challenger names`)
 function tagElectorates(text) {
   const t = text.toLowerCase()
   return Object.keys(ELECTORATE_TERMS).filter((name) => ELECTORATE_TERMS[name].some((term) => t.includes(term)))
