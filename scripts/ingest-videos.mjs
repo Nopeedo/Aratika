@@ -69,6 +69,14 @@ const ELECTION_TERMS = ['election', 'campaign', 'candidate', 'poll', 'voter', 'c
 // No bare 'debate' — "bitter medical debate" is not a leaders' debate. Only
 // phrases that specifically mean an election debate / leader interview.
 const DEBATE_TERMS = ['leaders debate', "leaders' debate", 'leaders’ debate', 'election debate', 'the great debate', 'head to head', 'head-to-head', 'q+a', 'q&a', 'minor party', 'leaders interview', 'leader interview', 'young voters debate', 'finance debate']
+
+// "Leaders & the press" rail: its subtitle promises press standups, leader
+// updates AND debates, but only debate-flagged clips ever qualified — so it sat
+// nearly empty until debate season (Sep–Oct). The presser flag admits official-
+// channel clips that are leader press events or name a party leader.
+const PRESS_TERMS = ['press conference', 'media conference', 'post-cabinet', 'standup', 'stand-up', 'press standup', 'state of the nation', 'campaign launch', 'speech to', 'address to']
+const LEADER_NAMES = ['luxon', 'hipkins', 'swarbrick', 'marama davidson', 'seymour', 'winston peters', 'waititi', 'ngarewa-packer', 'qiulae wong']
+const isPresser = (t) => PRESS_TERMS.some((x) => t.includes(x)) || LEADER_NAMES.some((x) => t.includes(x))
 // Obvious non-political categories dropped from political channels (Parliament/RNZ)
 // — only when the clip also mentions no party, no election term and no policy topic.
 const VIDEO_NOISE_TERMS = ['gardener', 'once were', 'matariki', 'trailer', 'weather', 'forecast', 'recipe', 'all blacks', 'super rugby', 'silver ferns', 'black caps', 'good as gold', 'episode ']
@@ -121,7 +129,7 @@ for (const ch of CHANNELS) {
     if (isNoise && !debate && !electionRelevant && !isPolitical(t, parties) && topics.length === 0) continue
     rows.push({
       type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'pending', source_url: link,
-      data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, mps, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, debate, featured: false },
+      data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, mps, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, debate, presser: isPresser(t), featured: false },
     })
   }
   if (rows.length) { const { error } = await sb.from('content_items').insert(rows); if (error) { console.error(`insert err (${ch.source}): ${error.message}`); continue } }

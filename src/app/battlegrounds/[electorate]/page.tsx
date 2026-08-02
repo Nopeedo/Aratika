@@ -155,12 +155,17 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
           <div>
             <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 10 }}>Written questions to Ministers this term</div>
 
-            <div style={{ display: 'flex', gap: 9, padding: '11px 13px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, marginBottom: 16 }}>
-              <Info style={{ width: 15, height: 15, color: SECONDARY, flexShrink: 0, marginTop: 1 }} />
-              <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-                <b style={{ color: INK }}>What is this, and why does it matter to you?</b> Any MP can put a written question to a Minister to formally demand information on the record — the Minister must reply, usually within days. It costs nothing and needs no debate, which makes it the main day-to-day tool MPs use to hold the government accountable between bills — especially for opposition MPs, who can't pass laws but can still force information into the open. Which Ministers an MP questions most, below, is a real, numbers-based picture of what they're actually watching on your behalf — worth comparing against what they say they prioritise.
+            {/* Collapsed by default: on a phone this explainer + the Q&A list pushed
+                the challengers ~3,700px down the page — the contest a first-time
+                visitor came for was buried under the incumbent's paperwork. */}
+            <details style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, marginBottom: 16, padding: '11px 13px' }}>
+              <summary style={{ fontSize: 12.5, fontWeight: 700, color: INK, fontFamily: MANROPE, cursor: 'pointer' }}>
+                What is this, and why does it matter to you?
+              </summary>
+              <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '8px 0 0', lineHeight: 1.55 }}>
+                Any MP can put a written question to a Minister to formally demand information on the record — the Minister must reply, usually within days. It costs nothing and needs no debate, which makes it the main day-to-day tool MPs use to hold the government accountable between bills — especially for opposition MPs, who can't pass laws but can still force information into the open. Which Ministers an MP questions most, below, is a real, numbers-based picture of what they're actually watching on your behalf — worth comparing against what they say they prioritise.
               </p>
-            </div>
+            </details>
 
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 18 }}>
               <span style={{ fontSize: 30, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1 }}>{wq.count.toLocaleString('en-NZ')}</span>
@@ -187,7 +192,12 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
               </div>
             )}
 
-            <Label icon={ScrollText} text={`Recent questions and replies, in ${firstName}'s and the Minister's own words`} />
+            <details>
+              <summary style={{ cursor: 'pointer', listStyle: 'none' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>
+                  <ScrollText style={{ width: 14, height: 14 }} /> Read {wq.recent.length} recent questions &amp; replies, in {firstName}&rsquo;s and the Minister&rsquo;s own words
+                </span>
+              </summary>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 10 }}>
               {wq.recent.map((q, i) => (
                 <div key={i} style={{ paddingBottom: 12, borderBottom: i < wq.recent.length - 1 ? `1px solid ${BORDER}` : 'none' }}>
@@ -207,6 +217,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
                 </div>
               ))}
             </div>
+            </details>
 
             <a href={WRITTEN_QUESTIONS_META.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginTop: 14 }}>
               {WRITTEN_QUESTIONS_META.sourceLabel} <ArrowUpRight style={{ width: 12, height: 12 }} />

@@ -23,6 +23,8 @@ export interface VideoItem {
   electionRelevant: boolean
   /** Leaders'/minor-party debate or long-form leader interview — see DEBATE_TERMS. */
   debate: boolean
+  /** Leader press event / update (standup, post-cabinet, or names a party leader). */
+  presser: boolean
 }
 
 export async function getVideos(limit = 48): Promise<VideoItem[]> {
@@ -50,15 +52,24 @@ export async function getVideos(limit = 48): Promise<VideoItem[]> {
       thumbnail: String(d.thumbnail ?? ''),
       electionRelevant: d.electionRelevant === true,
       debate: d.debate === true,
+      presser: d.presser === true,
     }
   })
   return items.sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
 }
 
-/** Debate videos only (leaders'/minor-party debates, long-form leader interviews). */
+/**
+ * The "Leaders & the press" rail: debates AND leader press events / updates —
+ * the section's subtitle always promised standups and leader updates, but only
+ * debate-flagged clips qualified, so it sat nearly empty outside debate season.
+ * Debates pin first; the rest follow newest-first.
+ */
 export async function getDebateVideos(limit = 12): Promise<VideoItem[]> {
   const all = await getVideos(200)
-  return all.filter((v) => v.debate).slice(0, limit)
+  return all
+    .filter((v) => v.debate || v.presser)
+    .sort((a, b) => Number(b.debate) - Number(a.debate) || (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+    .slice(0, limit)
 }
 
 /** Videos naming a specific battleground electorate — see getNewsForElectorate. */
