@@ -26,3 +26,18 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      # Policy.nz (The Spinoff) ran the most credible independent candidate
+      # database in 2023 but hasn't launched a 2026 general-election edition yet
+      # (currently on the 2025 locals). The moment it flips, this warns in the
+      # run summary so we can cross-check or switch candidate sources.
+      - name: Watch for policy.nz 2026 launch
+        if: ${{ !cancelled() }}
+        run: |
+          title=$(curl -sL --max-time 20 -A "Mozilla/5.0" https://policy.nz/ | grep -oE '<title>[^<]*</title>' | head -1)
+          echo "policy.nz title: $title"
+          if echo "$title" | grep -qiE "2026|general"; then
+            echo "::warning::policy.nz appears to have launched its 2026 general-election edition — consider cross-checking or switching the candidate source (currently Wikipedia announcements)."
+          else
+            echo "policy.nz still on its previous edition — no action."
+          fi

@@ -75,6 +75,32 @@ console.log(`electorates in site dataset: ${allowed.size}`)
 
 const html = await fetch(SOURCE, { headers: { 'User-Agent': UA } }).then((r) => r.text())
 
+// ── Citations: resolve each row's [n] footnotes to their underlying URLs ──────
+// Wikipedia rows cite the actual announcement (party site / news report) via
+// <sup><a href="#cite_note-X">. The references list at the bottom holds the
+// external link for each note. Attaching those URLs to every staged candidate
+// means the editor approves against the PRIMARY source, not "Wikipedia says so"
+// — and the /editor card's "Official source" link goes to the announcement.
+// NB: this page serves Wikipedia's Parsoid markup, where reference bodies are
+// `<span id="mw-reference-text-cite_note-X">…<a href="https://…">`, not the
+// classic `<li id="cite_note-X">` — match both so a rendering switch can't
+// silently zero the citations again.
+const noteUrl = new Map()
+for (const [, id, body] of html.matchAll(/id="(?:mw-reference-text-)?cite_note-([^"]+)"[^>]*>([\s\S]*?)(?=id="(?:mw-reference-text-)?cite_note-|$)/g)) {
+  if (noteUrl.has(id)) continue
+  const m = body.match(/href="(https?:\/\/[^"]+)"/)
+  if (m) noteUrl.set(id, m[1].replace(/&amp;/g, '&'))
+}
+console.log(`reference notes with external URLs: ${noteUrl.size}`)
+const rowCitations = (rowHtml) => {
+  const urls = []
+  for (const [, id] of rowHtml.matchAll(/#cite_note-([^"]+)"/g)) {
+    const u = noteUrl.get(id)
+    if (u && !urls.includes(u)) urls.push(u)
+  }
+  return urls.slice(0, 3)
+}
+
 // Split into h3 sections; each battleground-relevant one has a candidates table.
 const sections = [...html.matchAll(/<h3[^>]*id="([^"]+)"[^>]*>([\s\S]*?)<\/h3>([\s\S]*?)(?=<h[23][^>]*id=|$)/g)]
 const found = []
@@ -96,6 +122,7 @@ for (const [, , headingHtml, body] of sections) {
     found.push({
       electorate: allowed.get(slug), electorateSlug: slug,
       name: candidate, party: slugP, partyLabel, notes: notes || '',
+      citations: rowCitations(row),
     })
   }
 }
@@ -104,28 +131,42 @@ console.log(`parsed ${found.length} candidate rows across ${new Set(found.map((f
 // Sanity guard: a page-layout change should write nothing, not garbage.
 if (found.length < 10) { console.error('Too few candidates parsed — page layout may have changed. Writing nothing.'); process.exit(1) }
 
-const { data: existing, error: e1 } = await sb.from('content_items').select('source_id').eq('type', 'candidate')
+const { data: existing, error: e1 } = await sb.from('content_items').select('id, source_id, data').eq('type', 'candidate')
 if (e1) { console.error(e1.message); process.exit(1) }
-const have = new Set((existing || []).map((r) => r.source_id))
+const byId = new Map((existing || []).map((r) => [r.source_id, r]))
 
 const today = new Date().toISOString().slice(0, 10)
-const rows = []
+// The "Official source" link an editor clicks should be the primary
+// announcement where we have one, the aggregate page only as fallback.
+const primaryUrl = (f) => f.citations[0] || SOURCE
+
+const rows = [], updates = []
 for (const f of found) {
   const source_id = `cand:${f.electorateSlug}|${norm(f.name)}`
-  if (have.has(source_id)) continue
-  have.add(source_id)
+  const prior = byId.get(source_id)
+  if (prior) {
+    // Idempotent enrichment: backfill citations onto items staged before the
+    // citation extraction existed (or when Wikipedia gains better sourcing).
+    const had = Array.isArray(prior.data?.citations) ? prior.data.citations : []
+    if (f.citations.length > 0 && f.citations.join('|') !== had.join('|')) {
+      updates.push({ id: prior.id, data: { ...prior.data, citations: f.citations }, source_url: primaryUrl(f) })
+    }
+    continue
+  }
+  byId.set(source_id, { source_id })
   rows.push({
     type: 'candidate', source_id, status: 'pending', change_kind: 'new',
     title: `${f.name} — ${f.electorate} (${f.partyLabel})`,
     summary: f.notes || null,
-    source_url: SOURCE,
-    data: { ...f, asOf: today, sourceLabel: 'Wikipedia — candidates by electorate (party announcements)' },
+    source_url: primaryUrl(f),
+    data: { ...f, asOf: today, sourceLabel: 'Party announcement (via Wikipedia candidates-by-electorate)' },
   })
 }
-console.log(`new (not previously staged): ${rows.length}`)
+const withCite = found.filter((f) => f.citations.length > 0).length
+console.log(`rows with at least one citation URL: ${withCite}/${found.length}`)
+console.log(`new (not previously staged): ${rows.length} | existing needing citation backfill: ${updates.length}`)
 if (DRY) {
-  for (const r of rows.slice(0, 12)) console.log(`  · ${r.title}`)
-  if (rows.length > 12) console.log(`  … and ${rows.length - 12} more`)
+  for (const r of rows.slice(0, 8)) console.log(`  · ${r.title}  →  ${r.source_url}`)
   console.log('(dry run — nothing written)')
   process.exit(0)
 }
@@ -133,5 +174,10 @@ for (let i = 0; i < rows.length; i += 50) {
   const { error } = await sb.from('content_items').insert(rows.slice(i, i + 50))
   if (error) { console.error('insert error: ' + error.message); process.exit(1) }
 }
-console.log(`Staged ${rows.length} candidates as pending → review at /editor.`)
+let updated = 0
+for (const u of updates) {
+  const { error } = await sb.from('content_items').update({ data: u.data, source_url: u.source_url }).eq('id', u.id)
+  if (!error) updated++
+}
+console.log(`Staged ${rows.length} new; backfilled citations on ${updated}. Review at /editor.`)
 process.exit(0)
