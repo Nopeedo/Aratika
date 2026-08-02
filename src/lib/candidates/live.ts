@@ -16,10 +16,16 @@
 import { createClient } from '@/lib/supabase/server'
 import type { Candidate2026 } from '@/constants/candidates-2026'
 import { PARTY_NAMES } from '@/constants/parties'
+import { MP_PROFILES } from '@/constants/mps-data'
 import type { PartySlug } from '@/types'
 
 const isKnownParty = (p: unknown): p is PartySlug | 'independent' =>
   p === 'independent' || (typeof p === 'string' && p in PARTY_NAMES)
+
+// 82 of the announced candidates are sitting MPs (list MPs contesting seats,
+// MPs switching electorates). Matching them to their profile wires up the
+// freely-licensed portrait we already hold — the card renders it via mpSlug.
+const MP_BY_NAME = new Map(Object.values(MP_PROFILES).map((mp) => [mp.name.toLowerCase(), mp.slug]))
 
 export async function getApprovedCandidates(electorateSlug: string, opts?: { excludeName?: string }): Promise<Candidate2026[]> {
   const supabase = await createClient()
@@ -35,7 +41,8 @@ export async function getApprovedCandidates(electorateSlug: string, opts?: { exc
   for (const d of rows) {
     if (!isKnownParty(d.party)) continue
     if (opts?.excludeName && d.name!.toLowerCase() === opts.excludeName.toLowerCase()) continue
-    out.push({ name: d.name!, party: d.party, confirmed: true })
+    const mpSlug = MP_BY_NAME.get(d.name!.toLowerCase())
+    out.push({ name: d.name!, party: d.party, confirmed: true, ...(mpSlug ? { mpSlug } : {}) })
   }
   return out.sort((a, b) => a.name.localeCompare(b.name))
 }
