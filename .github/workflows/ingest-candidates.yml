@@ -1,0 +1,28 @@
+name: Ingest 2026 candidates
+
+# Weekly scrape of announced 2026 electorate candidates (Wikipedia's
+# candidates-by-electorate page, each row traceable to a party announcement),
+# staged as PENDING for editor review — nothing reaches a battleground page
+# without approval in /editor. Only electorates present in the site's own
+# dataset are staged, and a layout-change sanity guard writes nothing rather
+# than garbage. The official Electoral Commission nominations list supersedes
+# this when it lands (~October).
+on:
+  schedule:
+    - cron: '0 18 * * 2'   # ~6am NZST Wednesday
+  workflow_dispatch:
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - name: Stage newly announced candidates for review
+        run: node scripts/ingest-candidates.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

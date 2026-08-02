@@ -10,6 +10,7 @@ import { notFound } from 'next/navigation'
 import { ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2, ScrollText, ArrowUpRight } from 'lucide-react'
 import { ELECTORATE_SLUGS, getElectorateBySlug, classifyMargin } from '@/lib/battlegrounds'
 import { getCandidates } from '@/constants/candidates-2026'
+import { getApprovedCandidates } from '@/lib/candidates/live'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { MP_MEMBERS_BILLS } from '@/constants/mps-members-bills'
@@ -43,7 +44,13 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   if (!info) notFound()
 
   const tier = classifyMargin(info.majority)
-  const candidates = getCandidates(electorate)
+  // Curated profiles first (richer), then editor-approved announced candidates
+  // from the weekly ingest — deduped by name, incumbent excluded (they render
+  // separately as "the defender").
+  const curated = getCandidates(electorate)
+  const live = await getApprovedCandidates(electorate, { excludeName: info.mpName })
+  const curatedNames = new Set(curated.map((c) => c.name.toLowerCase()))
+  const candidates = [...curated, ...live.filter((c) => !curatedNames.has(c.name.toLowerCase()))]
   // Resolve the incumbent's profile slug (stored, or derived from their name to
   // match the /mps profile slug convention).
   const resolvedSlug = info.mpSlug ?? (info.mpName ? mpSlugFromName(info.mpName) : undefined)

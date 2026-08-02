@@ -1,0 +1,41 @@
+/**
+ * candidates/live.ts — editor-approved 2026 candidates for an electorate.
+ *
+ * Fed by scripts/ingest-candidates.mjs (weekly scrape of announced candidates,
+ * staged as pending) + the /editor gate: only status='approved' items ever
+ * reach a battleground page. Curated entries in candidates-2026.ts always win
+ * over these (richer profiles), and the sitting MP is excluded — the battle
+ * page renders the incumbent separately as "the defender", and Wikipedia lists
+ * incumbents as candidates too, which would double them up.
+ *
+ * Items whose party label couldn't be mapped to a known PartySlug are skipped
+ * here (never mislabelled); they stay visible in /editor until the ingest's
+ * PARTY_MAP learns their label.
+ */
+
+import { createClient } from '@/lib/supabase/server'
+import type { Candidate2026 } from '@/constants/candidates-2026'
+import { PARTY_NAMES } from '@/constants/parties'
+import type { PartySlug } from '@/types'
+
+const isKnownParty = (p: unknown): p is PartySlug | 'independent' =>
+  p === 'independent' || (typeof p === 'string' && p in PARTY_NAMES)
+
+export async function getApprovedCandidates(electorateSlug: string, opts?: { excludeName?: string }): Promise<Candidate2026[]> {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('content_items')
+    .select('data')
+    .eq('type', 'candidate')
+    .eq('status', 'approved')
+  const rows = (data ?? [])
+    .map((r) => r.data as { electorateSlug?: string; name?: string; party?: string | null })
+    .filter((d) => d?.electorateSlug === electorateSlug && typeof d.name === 'string')
+  const out: Candidate2026[] = []
+  for (const d of rows) {
+    if (!isKnownParty(d.party)) continue
+    if (opts?.excludeName && d.name!.toLowerCase() === opts.excludeName.toLowerCase()) continue
+    out.push({ name: d.name!, party: d.party, confirmed: true })
+  }
+  return out.sort((a, b) => a.name.localeCompare(b.name))
+}
