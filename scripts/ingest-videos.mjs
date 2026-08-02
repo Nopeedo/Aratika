@@ -66,7 +66,9 @@ const ELECTION_TERMS = ['election', 'campaign', 'candidate', 'poll', 'voter', 'c
 // Leaders'/minor-party debates and long-form leader interviews — surfaced as a
 // dedicated "Debates" rail in the Election Centre. Broadcast by media channels
 // (see CHANNELS), reviewed in /editor before showing.
-const DEBATE_TERMS = ['debate', 'q+a', 'q&a', 'head to head', 'head-to-head', 'the great debate', 'minor party', 'leaders interview']
+// No bare 'debate' — "bitter medical debate" is not a leaders' debate. Only
+// phrases that specifically mean an election debate / leader interview.
+const DEBATE_TERMS = ['leaders debate', "leaders' debate", 'leaders’ debate', 'election debate', 'the great debate', 'head to head', 'head-to-head', 'q+a', 'q&a', 'minor party', 'leaders interview', 'leader interview', 'young voters debate', 'finance debate']
 // Obvious non-political categories dropped from political channels (Parliament/RNZ)
 // — only when the clip also mentions no party, no election term and no policy topic.
 const VIDEO_NOISE_TERMS = ['gardener', 'once were', 'matariki', 'trailer', 'weather', 'forecast', 'recipe', 'all blacks', 'super rugby', 'silver ferns', 'black caps', 'good as gold', 'episode ']
