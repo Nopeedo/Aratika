@@ -1,0 +1,24 @@
+name: Smoke test (live)
+
+# Post-deploy health + safety check against the live site — catches what a
+# compile can't: a page that builds but 500s, a route that vanished, or the
+# editor auth gate silently opening (issue: UI-only security). Also doubles as a
+# lightweight uptime check. Runs a few times a day and on demand; goes red (and
+# GitHub emails) on any failure.
+on:
+  schedule:
+    - cron: '0 */6 * * *'   # every 6 hours
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Smoke the live site
+        run: node scripts/smoke.mjs
+        env:
+          BASE: https://arapono.org.nz

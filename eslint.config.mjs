@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local-only Node scripts + backups aren't part of the app lint surface.
+    "scripts/**",
+    "backups/**",
   ]),
 ]);
 
