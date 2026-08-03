@@ -1,0 +1,51 @@
+name: Backup content
+
+# Belt-and-braces snapshot of the public content tables (content_items), on top
+# of Supabase's own daily/PITR backups. The full gzipped snapshot is uploaded as
+# a workflow artifact (90-day retention, downloadable from the run); a tiny
+# manifest — row counts, per-type breakdown, content hash — is committed to the
+# repo as a permanent audit trail so "a backup ran, here's what was in it" is in
+# git history without bloating it. Restore steps: docs/RESTORE-RUNBOOK.md.
+on:
+  schedule:
+    - cron: '0 16 * * *'   # ~4am NZST daily, clear of the other crons
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+
+      - name: Export content_items
+        run: node scripts/backup-content.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+      - name: Upload full snapshot (artifact, 90-day retention)
+        uses: actions/upload-artifact@v4
+        with:
+          name: content-backup-${{ github.run_id }}
+          path: backups/content_items.latest.json.gz
+          retention-days: 90
+
+      - name: Commit the manifest (tiny audit trail)
+        run: |
+          if [ -n "$(git status --porcelain backups/content_items.manifest.json)" ]; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add backups/content_items.manifest.json
+            git commit -m "Backup: content_items snapshot manifest"
+            git pull --rebase origin main
+            git push
+          else
+            echo "Manifest unchanged — nothing to commit."
+          fi
