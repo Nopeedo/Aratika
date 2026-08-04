@@ -1,81 +1,52 @@
 /**
  * Arapono — Homepage
  *
- * "Default to less." A first-timer meets only FOUR things before the "go deeper"
- * divider — a single clear choice (guided vs. explore), the parties, how to vote,
- * and why to trust us. Everything else (explore-by-issue, the map, the horse-race,
- * tracking, news, battlegrounds) sits BELOW the divider for people who want it.
- * Nothing is deleted — only demoted. The competing "start" prompts (floating
- * compass, a separate "Start here" line) were removed in favour of the hero's one
- * "Help me get started" action, which opens the skippable guide at /guide.
- *
- *  ESSENTIALS    hero (guide vs. explore) · party tiles · get ready to vote · credibility
- *  — go deeper —
- *  EXPLORE       by issue · find your electorate
- *  THE RACE      state of the race (explained) · track what matters · news
- *  EXPERT        battlegrounds
- *  (gated)       parliament snapshot · premium
+ * Shrunk to the core purpose: help someone figure out who to vote for and where
+ * they vote. The page is built around three things and nothing more —
+ *   1. the party tiles  (who stands for what)
+ *   2. the policy topics (explore by issue)
+ *   3. the map           (your electorate)
+ * — bookended by the hero's one clear choice (guided vs. explore) and a slim
+ * trust strip. Every OTHER feature (the race, news, battlegrounds, bills,
+ * budget, tracking, learn) is demoted to a single carousel at the end, each a
+ * card that links out to its full page. Those sections/components still exist
+ * and their pages are untouched — they're just no longer stacked on the home.
  */
 
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
 import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
-import { GetReadyToVote } from '@/components/homepage/get-ready-to-vote'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { HomeMap } from '@/components/homepage/home-map'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
-import { GoDeeperDivider } from '@/components/homepage/go-deeper-divider'
-import { ElectionAnchor } from '@/components/homepage/election-anchor'
-import { TrackCta } from '@/components/homepage/track-cta'
-import { HomeNews } from '@/components/homepage/home-news'
-import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
-import { ParliamentSnapshot } from '@/components/parliament/parliament-snapshot'
-import { PremiumCta } from '@/components/homepage/premium-cta'
-import { isEnabled } from '@/constants/features'
+import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 
 export default function HomePage() {
   return (
     <PartyCycleProvider>
-      {/* One continuous weave texture behind the whole homepage. Individual
-          sections are transparent so this shows through; the dark bands (state
-          of the race) stay opaque as a deliberate contrast. */}
+      {/* One continuous weave texture behind the whole homepage; sections are
+          transparent so it shows through. */}
       <div className="bg-weave" style={{ backgroundColor: '#f8fafc' }}>
 
-      {/* ═══════════════════════ ESSENTIALS ═══════════════════════
-          The four things a first-timer needs, and no more: one clear choice
-          (guided help vs. explore) → the parties → how to actually vote →
-          why you can trust it. The deeper surfaces wait below the divider. */}
-      <CinematicHero />
-      {/* #parties — target of the hero's "I'll look around myself" jump. */}
-      <div id="parties" style={{ scrollMarginTop: 72 }}>
-        <PartyTilesSection />
-      </div>
-      <GetReadyToVote />
-      <CredibilityStrip />
+        {/* ── The choice: guided help, or explore ── */}
+        <CinematicHero />
 
-      {/* ── Signpost: essentials done, deeper sections below when you want them ── */}
-      <GoDeeperDivider />
+        {/* ═══ CORE 1 — the parties (also the target of the hero's "look around" jump) ═══ */}
+        <div id="parties" style={{ scrollMarginTop: 72 }}>
+          <PartyTilesSection />
+        </div>
 
-      {/* ═══════════════════════ EXPLORE ═══════════════════════
-          Self-directed depth for the reader who chose to look around: browse
-          the issues, then find their own electorate. */}
-      <PolicyHubGrid />
-      <HomeMap />
+        {/* ═══ CORE 2 — explore by issue ═══ */}
+        <PolicyHubGrid />
 
-      {/* ═══════════════════════ THE RACE ═══════════════════════
-          For the reader following the contest: where things stand (with the poll
-          numbers explained in plain language), what to keep tabs on, the news. */}
-      <ElectionAnchor />
-      <TrackCta />
-      {isEnabled('news') && <HomeNews />}
+        {/* ═══ CORE 3 — your electorate ═══ */}
+        <HomeMap />
 
-      {/* ═══════════════════════ EXPERT ═══════════════════════
-          The strategic detail — the marginal seats that decide the election. */}
-      <BattlegroundsTeaser />
+        {/* ── Why you can trust it (slim) ── */}
+        <CredibilityStrip />
 
-      {/* ── Gated (Phase 2) — hidden until the phase flips ── */}
-      {isEnabled('parliament') && <ParliamentSnapshot />}
-      {isEnabled('premium') && <PremiumCta />}
+        {/* ── Everything else, in one carousel of links ── */}
+        <ExploreCarousel />
 
       </div>
     </PartyCycleProvider>
