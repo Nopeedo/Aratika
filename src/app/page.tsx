@@ -1,23 +1,24 @@
 /**
  * Arapono — Homepage
  *
- * Ordered as a beginner → intermediate → expert reading ladder, so a first-timer
- * only meets the essentials before building confidence, and the horse-race,
- * tracking and battlegrounds depth sits below for the engaged reader. Every
- * reader still gets the whole page; this only controls what hits them first.
+ * "Default to less." A first-timer meets only FOUR things before the "go deeper"
+ * divider — a single clear choice (guided vs. explore), the parties, how to vote,
+ * and why to trust us. Everything else (explore-by-issue, the map, the horse-race,
+ * tracking, news, battlegrounds) sits BELOW the divider for people who want it.
+ * Nothing is deleted — only demoted. The competing "start" prompts (floating
+ * compass, a separate "Start here" line) were removed in favour of the hero's one
+ * "Help me get started" action, which opens the skippable guide at /guide.
  *
- *  BEGINNER      hero · start here · party tiles · get ready to vote ·
- *                explore by issue · find your electorate · credibility
+ *  ESSENTIALS    hero (guide vs. explore) · party tiles · get ready to vote · credibility
  *  — go deeper —
- *  INTERMEDIATE  state of the race (explained) · track what matters · news
+ *  EXPLORE       by issue · find your electorate
+ *  THE RACE      state of the race (explained) · track what matters · news
  *  EXPERT        battlegrounds
  *  (gated)       parliament snapshot · premium
  */
 
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
-import { StartHereCta } from '@/components/homepage/start-here-cta'
-import { CornerCompass } from '@/components/homepage/corner-compass'
 import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
 import { GetReadyToVote } from '@/components/homepage/get-ready-to-vote'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
@@ -36,24 +37,29 @@ export default function HomePage() {
   return (
     <PartyCycleProvider>
 
-      {/* ═══════════════════════ BEGINNER ═══════════════════════
-          The essentials, in the order a first-timer actually needs them:
-          you belong here → start here → understand the parties → learn to
-          vote and find your issues → find your local area → you can trust it. */}
+      {/* ═══════════════════════ ESSENTIALS ═══════════════════════
+          The four things a first-timer needs, and no more: one clear choice
+          (guided help vs. explore) → the parties → how to actually vote →
+          why you can trust it. The deeper surfaces wait below the divider. */}
       <CinematicHero />
-      <StartHereCta />
-      <CornerCompass />
-      <PartyTilesSection />
+      {/* #parties — target of the hero's "I'll look around myself" jump. */}
+      <div id="parties" style={{ scrollMarginTop: 72 }}>
+        <PartyTilesSection />
+      </div>
       <GetReadyToVote />
-      <PolicyHubGrid />
-      <HomeMap />
       <CredibilityStrip />
 
       {/* ── Signpost: essentials done, deeper sections below when you want them ── */}
       <GoDeeperDivider />
 
-      {/* ═══════════════════════ INTERMEDIATE ═══════════════════════
-          For the reader following the race: where things stand (with the poll
+      {/* ═══════════════════════ EXPLORE ═══════════════════════
+          Self-directed depth for the reader who chose to look around: browse
+          the issues, then find their own electorate. */}
+      <PolicyHubGrid />
+      <HomeMap />
+
+      {/* ═══════════════════════ THE RACE ═══════════════════════
+          For the reader following the contest: where things stand (with the poll
           numbers explained in plain language), what to keep tabs on, the news. */}
       <ElectionAnchor />
       <TrackCta />

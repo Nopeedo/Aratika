@@ -8,7 +8,9 @@
  * decide to adopt it. Respects prefers-reduced-motion.
  */
 
+import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
+import { ArrowRight } from 'lucide-react'
 import { DaysFlipCountdown } from '@/components/homepage/days-flip-countdown'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 
@@ -54,19 +56,20 @@ export function CinematicHeroBurnt() {
           <DaysFlipCountdown />
         </motion.div>
 
-        {/* subline under the countdown — one line, points the reader at the tiles */}
-        <motion.div {...rise(0.26)} style={{ fontSize: 'clamp(15px,1.6vw,17px)', fontWeight: 600, fontStyle: 'italic', color: '#5b3d2a', fontFamily: MANROPE, margin: '0 auto clamp(16px, 3vh, 30px)', maxWidth: 520, lineHeight: 1.5, textAlign: 'center' }}>
-          Compare Parties, Policies &amp; Electorate Votes using the tiles below and vote with confidence
+        {/* subline — frames the two ways in: a guided hand, or explore freely */}
+        <motion.div {...rise(0.26)} style={{ fontSize: 'clamp(15px,1.7vw,18px)', fontWeight: 600, color: '#5b3d2a', fontFamily: MANROPE, margin: '0 auto clamp(20px, 3vh, 30px)', maxWidth: 540, lineHeight: 1.5, textAlign: 'center' }}>
+          Understand the election in minutes, not hours — as simple or as deep as you want.
         </motion.div>
 
-        {/* subline — PARKED for possible later use. To restore, delete this
-            comment wrapper (the two lines below and the closing line) so the
-            <motion.p> renders again:
-        <motion.p {...rise(0.24)} style={{ fontSize: 'clamp(18px,2.2vw,23px)', fontWeight: 500, color: '#5b3d2a', fontFamily: MANROPE, lineHeight: 1.6, maxWidth: 540, margin: '0 auto 38px' }}>
-          Six parties. 72 electorates. One decision — yours. Walk in
-          <b style={{ color: INK }}> ready</b>.
-        </motion.p>
-        */}
+        {/* the single clear choice: a guided hand for first-timers, or free exploration */}
+        <motion.div {...rise(0.34)} style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', alignItems: 'center' }}>
+          <Link href="/guide" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 26px', borderRadius: 14, background: INK, color: '#fff', fontSize: 'clamp(15px,1.7vw,17px)', fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none', boxShadow: '0 6px 20px rgba(42,18,6,.18)' }}>
+            Help me get started <ArrowRight style={{ width: 18, height: 18 }} />
+          </Link>
+          <a href="#parties" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '14px 20px', borderRadius: 14, background: 'transparent', color: INK, fontSize: 'clamp(14px,1.6vw,16px)', fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none', border: '1.5px solid rgba(42,18,6,.18)' }}>
+            I&rsquo;ll look around myself
+          </a>
+        </motion.div>
 
       </div>
     </section>
