@@ -64,6 +64,16 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
   const switchLayer = (l: Layer) => { setLayer(l); setSelected(null) }
   const mapHeight = embedded ? 'clamp(560px, 76vh, 740px)' : 600
 
+  // On narrow screens the panel stacks BELOW the map, so a tap can look like
+  // nothing happened. Scroll the selected MP panel into view when a seat is picked.
+  const panelRef = React.useRef<HTMLDivElement>(null)
+  React.useEffect(() => {
+    if (!selected || typeof window === 'undefined') return
+    if (window.matchMedia('(max-width: 880px)').matches) {
+      panelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [selected])
+
   // Shared bits so the embedded (stacked) and standalone (side-by-side) layouts match.
   const infoTile = info ? (
     <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
@@ -158,7 +168,7 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
 
         {/* Panel. Embedded: right column, tiles stacked to fill it. Standalone: bordered card. */}
         {embedded ? (
-          <div style={{ height: '100%', minHeight: 0, fontFamily: MANROPE }}>
+          <div ref={panelRef} style={{ height: '100%', minHeight: 0, fontFamily: MANROPE }}>
             {!selected ? promptCol : info ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0 }}>
                 {infoTile}
@@ -169,18 +179,19 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
             )}
           </div>
         ) : (
-          <div style={{ height: 600, borderRadius: 18, border: `1px solid ${BORDER}`, background: '#fff', padding: 20, overflow: 'auto' }}>
+          <div ref={panelRef} style={{ height: 600, borderRadius: 18, border: `1px solid ${BORDER}`, background: '#fff', padding: 20, overflow: 'hidden' }}>
             {!selected ? (
-              <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: TERTIARY, fontFamily: MANROPE }}>
+              <div style={{ height: '100%', minHeight: 260, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: TERTIARY, fontFamily: MANROPE }}>
                 <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
                 <div style={{ fontSize: 14, fontWeight: 700, color: SECONDARY }}>Tap a seat</div>
                 <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests — the seats most likely to change hands.</div>
               </div>
             ) : info ? (
-              <div className="bg-tiles" style={{ fontFamily: MANROPE }}>
-                <style>{`.bg-tiles { display: grid; grid-template-columns: 1fr minmax(190px, 230px); gap: 12px; align-items: stretch; } @media (max-width: 520px) { .bg-tiles { grid-template-columns: 1fr; } }`}</style>
+              // Stack info tile above the photo — a 340px column is too narrow for
+              // two side-by-side tiles (the photo used to overflow the card).
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0, fontFamily: MANROPE }}>
                 {infoTile}
-                <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" />
+                <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" fill />
               </div>
             ) : (
               <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>Result data pending for this seat.</p>
