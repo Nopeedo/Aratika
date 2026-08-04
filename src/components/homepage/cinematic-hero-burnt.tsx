@@ -34,30 +34,29 @@ export function CinematicHeroBurnt() {
   return (
     <section style={{ position: 'relative', overflow: 'hidden', background: '#ffffff' }}>
       <div style={{ position: 'relative', maxWidth: 920, margin: '0 auto', padding: 'clamp(16px, 4vh, 44px) clamp(18px, 5vw, 36px) clamp(12px, 2.3vh, 24px)', textAlign: 'center' }}>
-        {/* days-to-election flip countdown — above the title */}
-        <motion.div {...rise(0)} style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(14px, 2.6vh, 26px)' }}>
-          <DaysFlipCountdown />
-        </motion.div>
-
         {/* headline */}
-        <motion.h1 {...rise(0.16)} style={{ fontSize: 'clamp(35px,8.5vw,120px)', fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.03, color: INK, fontFamily: MANROPE, margin: '0 0 clamp(12px, 2vh, 20px)' }}>
+        <motion.h1 {...rise(0.06)} style={{ fontSize: 'clamp(35px,8.5vw,120px)', fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.03, color: INK, fontFamily: MANROPE, margin: '0 0 clamp(14px, 2.6vh, 26px)' }}>
           The direction
           <br />
           of the country is
           <br />
           {reduce ? (
-            <span style={{ color: TERRACOTTA }}>in your hands.</span>
+            <span style={{ color: TERRACOTTA }}>in your hands</span>
           ) : (
             <span style={{ color: fading ? ACCENT_BLACK : accentColor, transition: 'color 1s ease-in-out' }}>
-              in your hands.
+              in your hands
             </span>
           )}
         </motion.h1>
 
-        {/* small subline under the title — two lines, never wider than the headline */}
-        <motion.div {...rise(0.22)} style={{ fontSize: 'clamp(15px,1.6vw,17px)', fontWeight: 700, color: '#5b3d2a', fontFamily: MANROPE, margin: '0 auto clamp(16px, 3vh, 30px)', maxWidth: 360, lineHeight: 1.5, textAlign: 'center' }}>
-          <div>Compare Parties, Policies &amp; Electorates</div>
-          <div style={{ marginTop: 3 }}>Vote with confidence</div>
+        {/* days-to-election flip countdown — now BELOW the title (per redesign) */}
+        <motion.div {...rise(0.18)} style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(14px, 2.6vh, 24px)' }}>
+          <DaysFlipCountdown />
+        </motion.div>
+
+        {/* subline under the countdown — one line, points the reader at the tiles */}
+        <motion.div {...rise(0.26)} style={{ fontSize: 'clamp(15px,1.6vw,17px)', fontWeight: 600, fontStyle: 'italic', color: '#5b3d2a', fontFamily: MANROPE, margin: '0 auto clamp(16px, 3vh, 30px)', maxWidth: 520, lineHeight: 1.5, textAlign: 'center' }}>
+          Compare Parties, Policies &amp; Electorate Votes using the tiles below and vote with confidence
         </motion.div>
 
         {/* subline — PARKED for possible later use. To restore, delete this
