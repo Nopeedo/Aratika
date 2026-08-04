@@ -23,6 +23,11 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const INK = '#0c0e12', SUB = '#5b6067', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', JADE = '#1F8A4C'
 
+// Left/right inset that lines the rail up with the centred 1280 container while
+// letting the rail itself run full-bleed to the viewport edges — so cards scroll
+// off the screen edge cleanly instead of being sliced inside the container.
+const GUTTER = 'calc(max(0px, (100% - 1280px) / 2) + clamp(18px, 5vw, 36px))'
+
 interface Feature {
   feature: string
   title: string
@@ -57,7 +62,7 @@ export function ExploreCarousel() {
 
   return (
     <section style={{ background: 'transparent', borderTop: `1px solid ${BORDER}` }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 60px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 22px' }}>
         {/* Header + desktop arrows */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
           <div>
@@ -70,9 +75,12 @@ export function ExploreCarousel() {
             <button onClick={() => scroll(1)} aria-label="Scroll right" style={arrowBtn}><ArrowRight style={{ width: 18, height: 18 }} /></button>
           </div>
         </div>
+      </div>
 
-        {/* Rail */}
-        <div ref={railRef} className="ec-rail" style={{ display: 'flex', gap: 14, overflowX: 'auto', scrollSnapType: 'x mandatory', scrollbarWidth: 'none', paddingBottom: 4 }}>
+      {/* Rail — full-bleed to the viewport edge (padding lines the first/last
+          card up with the header), so cards scroll off-screen cleanly instead
+          of being sliced inside the centred container. */}
+      <div ref={railRef} className="ec-rail" style={{ display: 'flex', gap: 14, overflowX: 'auto', scrollSnapType: 'x mandatory', scrollbarWidth: 'none', paddingLeft: GUTTER, paddingRight: GUTTER, paddingBottom: 60, scrollPaddingLeft: GUTTER }}>
           {cards.map((f) => (
             <Link key={f.href} href={f.href} className="ec-card" style={{
               flex: '0 0 auto', width: 262, scrollSnapAlign: 'start', textDecoration: 'none',
@@ -91,7 +99,6 @@ export function ExploreCarousel() {
             </Link>
           ))}
         </div>
-      </div>
 
       <style>{`
         .ec-rail::-webkit-scrollbar { display: none; }
