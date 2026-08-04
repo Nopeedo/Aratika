@@ -4,6 +4,44 @@ Portable context so another Claude Code session can continue the recent design
 work. Covers commits `eb71dc5` … `b79855d`. (Full chat transcripts are local
 per-machine and don't transfer — this doc is the hand-off.)
 
+## Setup (first run on a new machine)
+Cloning gets the source, but two things are kept out of git on purpose
+(`node_modules` and secrets), so you need a few steps beyond `git clone`:
+
+1. **Install Node.js** — v20 or newer (the project was built on v24). Includes
+   `npm`.
+2. **Clone + install dependencies** (rebuilds the gitignored `node_modules`):
+   ```bash
+   git clone https://github.com/Nopeedo/Aratika.git
+   cd Aratika
+   npm install
+   ```
+3. **Create `.env.local`** — copy the template and fill in the real values:
+   ```bash
+   cp .env.example .env.local
+   ```
+   `.env.local` is **gitignored** (the repo is public — secrets must never be
+   committed), so the actual values have to be shared **out-of-band** (a
+   password manager or an encrypted message — never via GitHub or plain email).
+   The keys that matter most:
+   - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` — so live
+     content (party positions, news) loads.
+   - `SUPABASE_SERVICE_ROLE_KEY` — for the editor / write features.
+   - Stripe, Anthropic, and Sentry keys are optional for most design work.
+4. **Run it:**
+   ```bash
+   npm run dev
+   ```
+   Opens on `http://localhost:3000`.
+
+**Design work needs almost none of this:** even with an empty `.env.local`,
+`npm install && npm run dev` renders the full layout, hero, tiles, carousel and
+styling. Only the *data* stays empty until the Supabase keys are in place — so
+you can start on design immediately.
+
+If you're developing with **Claude Code**, install and sign in separately; this
+handoff auto-loads via `CLAUDE.md`, so a fresh session already has this context.
+
 ## The problem we were solving
 Real users — especially people who don't usually vote — said the site showed
 too much at once. The homepage was ~12 stacked sections (~13 phone-screens) and
