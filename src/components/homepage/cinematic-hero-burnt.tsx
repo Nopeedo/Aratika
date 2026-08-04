@@ -34,7 +34,7 @@ export function CinematicHeroBurnt() {
   })
 
   return (
-    <section style={{ position: 'relative', overflow: 'hidden', background: '#ffffff' }}>
+    <section style={{ position: 'relative', overflow: 'hidden', background: 'transparent' }}>
       <div style={{ position: 'relative', maxWidth: 920, margin: '0 auto', padding: 'clamp(16px, 4vh, 44px) clamp(18px, 5vw, 36px) clamp(12px, 2.3vh, 24px)', textAlign: 'center' }}>
         {/* headline */}
         <motion.h1 {...rise(0.06)} style={{ fontSize: 'clamp(35px,8.5vw,120px)', fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.03, color: INK, fontFamily: MANROPE, margin: '0 0 clamp(14px, 2.6vh, 26px)' }}>

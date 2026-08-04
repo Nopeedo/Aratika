@@ -12,7 +12,7 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function GoDeeperDivider() {
   return (
-    <section style={{ background: '#fff' }}>
+    <section style={{ background: 'transparent' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 8px', textAlign: 'center' }}>
         <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
           <span style={{ fontSize: 14, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: SECONDARY, fontFamily: MANROPE }}>

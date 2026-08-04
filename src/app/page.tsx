@@ -36,6 +36,10 @@ import { isEnabled } from '@/constants/features'
 export default function HomePage() {
   return (
     <PartyCycleProvider>
+      {/* One continuous weave texture behind the whole homepage. Individual
+          sections are transparent so this shows through; the dark bands (state
+          of the race) stay opaque as a deliberate contrast. */}
+      <div className="bg-weave" style={{ backgroundColor: '#f8fafc' }}>
 
       {/* ═══════════════════════ ESSENTIALS ═══════════════════════
           The four things a first-timer needs, and no more: one clear choice
@@ -73,6 +77,7 @@ export default function HomePage() {
       {isEnabled('parliament') && <ParliamentSnapshot />}
       {isEnabled('premium') && <PremiumCta />}
 
+      </div>
     </PartyCycleProvider>
   )
 }

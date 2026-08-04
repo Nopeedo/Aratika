@@ -22,7 +22,7 @@ export function BattlegroundsTeaser() {
     .slice(0, 5)
 
   return (
-    <section style={{ background: SURFACE, borderBottom: `1px solid ${BORDER}` }}>
+    <section style={{ background: 'transparent', borderBottom: `1px solid ${BORDER}` }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16, flexWrap: 'wrap', marginBottom: 22 }}>
           <div>

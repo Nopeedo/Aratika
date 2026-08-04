@@ -35,7 +35,7 @@ function NewsSourceCard({ item }: { item: typeof NEWS_SOURCES[number] }) {
 
 export function HomeNews() {
   return (
-    <section style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}>
+    <section style={{ background: 'transparent', borderBottom: `1px solid ${BORDER}` }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px clamp(18px, 5vw, 36px)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: 48, alignItems: 'start' }}>
 

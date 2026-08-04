@@ -28,7 +28,7 @@ function StatTile({ value, label, sublabel }: { value: string; label: string; su
 
 export function CredibilityStrip() {
   return (
-    <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <section style={{ background: 'transparent', borderBottom: `1px solid ${BORDER}` }}>
       <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px)', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(116px, 1fr))', gap: 12, flex: 1, minWidth: 0, maxWidth: 560 }}>
           {STATS.map((s) => (

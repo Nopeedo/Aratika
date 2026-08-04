@@ -129,7 +129,7 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
         const caretLeft = `calc(${i} * (${tileW} + 10px) + ${tileW} / 2)`
         const glide = 'left .85s cubic-bezier(.4,0,.2,1), border-bottom-color .85s ease-in-out'
         return (
-          <section style={{ background: '#fff' }}>
+          <section style={{ background: 'transparent' }}>
             <div style={{ maxWidth: 760, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 40px', position: 'relative' }}>
               {/* Caret rail — zero-height, full content width, so left% maps to tile centres. */}
               <div style={{ position: 'relative', height: 0 }} aria-hidden>

@@ -31,7 +31,7 @@ export function TrackCta() {
   ]
 
   return (
-    <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <section style={{ background: 'transparent', borderBottom: `1px solid ${BORDER}` }}>
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '52px clamp(18px, 5vw, 36px)' }}>
         {/* Pitch */}
         <div style={{ background: '#0c0e12', borderRadius: 22, padding: 'clamp(24px, 4vw, 40px)' }}>

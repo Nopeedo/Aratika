@@ -20,9 +20,9 @@ export async function PolicyHubGrid() {
   const positions = await getAllApprovedPositions()
 
   return (
-    // bg-weave: background-texture trial — backgroundColor (not the shorthand)
-    // so the class's background-image isn't reset by the inline style.
-    <section className="bg-weave" style={{ backgroundColor: SURFACE, borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
+    // Transparent — the weave now lives on the page wrapper (one continuous
+    // texture across the whole homepage), so this section inherits it.
+    <section style={{ background: 'transparent', borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px clamp(18px, 5vw, 36px)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
           <div>
