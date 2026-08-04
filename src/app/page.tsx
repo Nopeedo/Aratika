@@ -31,10 +31,14 @@ export default function HomePage() {
         {/* ── The choice: guided help, or explore ── */}
         <CinematicHero />
 
-        {/* ═══ CORE 1 — the parties (also the target of the hero's "look around" jump) ═══ */}
-        <div id="parties" style={{ scrollMarginTop: 72 }}>
-          <PartyTilesSection />
-        </div>
+        {/* Anchor for the hero's "I'll look around myself" jump. Kept as a
+            zero-height marker (NOT a wrapper) so it doesn't become the sticky
+            tile row's containing block — the tiles must stay a direct child of
+            the page wrapper to ride the whole page (see party-tiles.tsx). */}
+        <div id="parties" aria-hidden style={{ scrollMarginTop: 72 }} />
+
+        {/* ═══ CORE 1 — the parties (sticky tile row rides the page) ═══ */}
+        <PartyTilesSection />
 
         {/* ═══ CORE 2 — explore by issue ═══ */}
         <PolicyHubGrid />
