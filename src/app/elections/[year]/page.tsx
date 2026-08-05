@@ -33,6 +33,10 @@ export default async function ElectionYearPage({ params }: { params: Promise<{ y
 
   const upcoming = e.status === 'upcoming'
 
+  // The upcoming (2026) Election Centre owns its own full-bleed cinematic hero,
+  // so it renders standalone — no generic document header wrapped around it.
+  if (upcoming) return <UpcomingView e={e} />
+
   return (
     <div style={{ background: '#fff', minHeight: '100vh' }}>
       <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
@@ -45,9 +49,8 @@ export default async function ElectionYearPage({ params }: { params: Promise<{ y
             <span style={{
               fontSize: 11, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', fontFamily: MANROPE,
               padding: '3px 10px', borderRadius: 999,
-              color: upcoming ? '#92400e' : '#065f46', background: upcoming ? '#fef3c7' : '#ecfdf5',
-              border: `1px solid ${upcoming ? '#fde68a' : '#a7f3d0'}`,
-            }}>{upcoming ? 'Upcoming' : 'Final result'}</span>
+              color: '#065f46', background: '#ecfdf5', border: '1px solid #a7f3d0',
+            }}>Final result</span>
           </div>
           <h1 style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.05 }}>
             {e.year} General Election
@@ -59,7 +62,7 @@ export default async function ElectionYearPage({ params }: { params: Promise<{ y
       </div>
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '30px 36px 64px' }}>
-        {upcoming ? <UpcomingView e={e} /> : <ResultsView e={e} />}
+        <ResultsView e={e} />
       </div>
     </div>
   )
