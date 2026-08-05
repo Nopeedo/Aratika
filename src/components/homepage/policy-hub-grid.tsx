@@ -5,8 +5,6 @@
  * and hands them to the client explorer. Placed directly under the compass.
  */
 
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
 import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { PARTY_COLORS } from '@/constants/parties'
 import { getAllApprovedPositions } from '@/lib/positions/live'
@@ -32,9 +30,9 @@ export async function PolicyHubGrid() {
           <div>
             <PolicyHubHeading />
           </div>
-          <Link href="/policies" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>
-            All policy comparisons <ArrowRight style={{ width: 14, height: 14 }} />
-          </Link>
+          <span style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
+            Tap an issue below
+          </span>
         </div>
 
         {/* The topic boxes come right after the heading now — the explanatory

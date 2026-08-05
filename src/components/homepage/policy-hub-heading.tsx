@@ -36,8 +36,21 @@ export function PolicyHubHeading() {
         transition: 'background .3s ease-in-out', pointerEvents: 'none', zIndex: -1,
       }} />
       <h2 style={{ position: 'relative', fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>
-        {name ? `What does ${name} stand for?` : 'Where do the parties stand?'}
+        {name ? (
+          <>
+            What does {name}
+            <br className="pe-heading-break" />
+            {' '}stand for?
+          </>
+        ) : 'Where do the parties stand?'}
       </h2>
+      {/* On mobile "stand for?" always sits on its own second line, so the
+          heading's height/shape stays consistent as the party name cycles
+          through different lengths — only "What does {name}" reflows. */}
+      <style>{`
+        .pe-heading-break { display: inline; }
+        @media (min-width: 768px) { .pe-heading-break { display: none; } }
+      `}</style>
     </div>
   )
 }

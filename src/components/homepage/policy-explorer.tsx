@@ -26,6 +26,26 @@ const TOPIC_ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
+// Deep border colours for the mobile topic chips, keyed by the Tailwind hue
+// used in each topic's textColor (e.g. "text-orange-700" → "orange"). Real
+// hex values, NOT a Tailwind class string built with .replace() — Tailwind's
+// scanner only generates CSS for class names that appear literally in source,
+// so a runtime-built "border-orange-700" string never gets compiled and the
+// border silently fell back to plain black. `active` is a shade darker so the
+// selected chip visibly stands out from the resting state.
+const TOPIC_BORDER_HEX: Record<string, { rest: string; active: string }> = {
+  blue: { rest: '#1d4ed8', active: '#1e3a8a' },
+  orange: { rest: '#c2410c', active: '#7c2d12' },
+  red: { rest: '#b91c1c', active: '#7f1d1d' },
+  green: { rest: '#15803d', active: '#14532d' },
+  purple: { rest: '#7e22ce', active: '#581c87' },
+  slate: { rest: '#334155', active: '#0f172a' },
+  cyan: { rest: '#0e7490', active: '#164e63' },
+  amber: { rest: '#b45309', active: '#78350f' },
+  teal: { rest: '#0f766e', active: '#134e4a' },
+  indigo: { rest: '#4338ca', active: '#312e81' },
+}
+
 // Desktop-only rail nav buttons (‹ ›). `display` is set by the .pe-rail-arrow class (hidden on mobile).
 const ARROW_BASE: React.CSSProperties = {
   position: 'absolute', top: 'calc(50% - 3px)', transform: 'translateY(-50%)',
@@ -77,8 +97,14 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
 
   return (
     <div>
-      {/* One focused issue at a time: a horizontal rail on every screen. Mobile swipes it;
-          desktop (no swipe) cycles it with the ‹ › arrow buttons. */}
+      {/* Two different topic pickers, swapped by breakpoint (mobile-only redesign —
+          desktop keeps the original card rail untouched):
+          - Mobile: small bordered rectangles (styled like the party identity card —
+            solid colour border, tinted fill), title + an "imprinted" icon only (no
+            icon background chip), wrapping naturally so titles of different lengths
+            create an organic, non-gridded stacked look. All topics fit on screen at
+            once — no swipe needed.
+          - Desktop: unchanged horizontal rail with ‹ › arrow buttons. */}
       <style>{`
         .pe-topic-rail {
           display: flex; gap: 14px; overflow-x: auto;
@@ -90,68 +116,106 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
         .pe-topic-card { flex: 0 0 auto; width: 200px; scroll-snap-align: start; }
         .pe-rail-hint { display: flex; }
         .pe-rail-arrow { display: none; }
+        .pe-topic-rail-wrap { display: none; }
+        .pe-topic-mobile-grid { display: flex; }
         @media (min-width: 768px) {
           .pe-rail-hint { display: none; }
           .pe-rail-arrow { display: flex; }
+          .pe-topic-rail-wrap { display: block; }
+          .pe-topic-mobile-grid { display: none; }
         }
       `}</style>
-      <div className="pe-rail-hint" style={{ alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, margin: '-2px 0 10px' }}>
-        Swipe issues, tap one to compare <ArrowRight style={{ width: 13, height: 13 }} />
-      </div>
-      <div style={{ position: 'relative' }}>
-        <button
-          className="pe-rail-arrow"
-          aria-label="Previous topics"
-          onClick={() => scrollRail(-1)}
-          style={{ ...ARROW_BASE, left: -6, opacity: arrows.left ? 1 : 0, pointerEvents: arrows.left ? 'auto' : 'none' }}
-        >
-          <ChevronLeft style={{ width: 20, height: 20 }} />
-        </button>
-        <button
-          className="pe-rail-arrow"
-          aria-label="More topics"
-          onClick={() => scrollRail(1)}
-          style={{ ...ARROW_BASE, right: -6, opacity: arrows.right ? 1 : 0, pointerEvents: arrows.right ? 'auto' : 'none' }}
-        >
-          <ChevronRight style={{ width: 20, height: 20 }} />
-        </button>
-        <div className="pe-topic-rail" ref={railRef} onScroll={updateArrows}>
+
+      {/* Mobile — organic wrap of small rectangles. Left fully flexible (plain
+          flex-wrap, no forced pairing) so it reflows naturally per device. */}
+      <div className="pe-topic-mobile-grid" style={{ flexWrap: 'wrap', gap: 8 }}>
         {topicKeys.map((key) => {
           const t = POLICY_TOPICS[key as keyof typeof POLICY_TOPICS]
           const Icon = TOPIC_ICONS[t.icon]
           const on = sel === key
+          const hue = t.textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
+          const borderHex = TOPIC_BORDER_HEX[hue] ?? TOPIC_BORDER_HEX.slate
           return (
             <button
               key={key}
-              className="pe-topic-card"
-              onClick={(e) => {
-                setSel(on ? null : key)
-                if (!on) e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
-              }}
+              onClick={() => setSel(on ? null : key)}
               aria-expanded={on}
+              className={t.color}
               style={{
-                textAlign: 'left', cursor: 'pointer', background: '#fff', fontFamily: MANROPE,
-                border: `1px solid ${on ? INK : BORDER}`, borderRadius: 20, padding: '22px 20px 18px',
-                boxShadow: on ? '0 6px 18px rgba(12,14,18,.10)' : '0 2px 4px rgba(12,14,18,.03)',
-                display: 'flex', flexDirection: 'column', gap: 10, height: '100%',
-                transition: 'box-shadow .15s, border-color .15s',
+                display: 'inline-flex', alignItems: 'center', gap: 7,
+                padding: '9px 14px', borderRadius: 12, borderWidth: on ? 3 : 2, borderStyle: 'solid',
+                borderColor: on ? borderHex.active : borderHex.rest,
+                cursor: 'pointer', fontFamily: MANROPE, transition: 'border-width .15s, border-color .15s',
               }}
             >
-              <div className={t.color} style={{ width: 40, height: 40, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                {Icon && <Icon className={`size-5 ${t.textColor}`} />}
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 17, fontWeight: 800, color: INK, marginBottom: 4 }}>{t.label}</div>
-                <div style={{ fontSize: 14, color: SECONDARY, lineHeight: 1.5 }}>{t.description}</div>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: on ? INK : JADE, display: 'flex', alignItems: 'center', gap: 3 }}>
-                  {on ? 'Hide' : 'Compare'} <ChevronDown style={{ width: 12, height: 12, transform: on ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
-                </span>
-              </div>
+              {/* "Imprinted" icon — no background box, just the outline colour. */}
+              {Icon && <Icon className={`size-4 ${t.textColor}`} />}
+              <span style={{ fontSize: 14, fontWeight: 800, color: INK }}>{t.label}</span>
             </button>
           )
         })}
+      </div>
+
+      {/* Desktop — original horizontal rail, unchanged. */}
+      <div className="pe-topic-rail-wrap">
+        <div className="pe-rail-hint" style={{ alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, margin: '-2px 0 10px' }}>
+          Swipe issues, tap one to compare <ArrowRight style={{ width: 13, height: 13 }} />
+        </div>
+        <div style={{ position: 'relative' }}>
+          <button
+            className="pe-rail-arrow"
+            aria-label="Previous topics"
+            onClick={() => scrollRail(-1)}
+            style={{ ...ARROW_BASE, left: -6, opacity: arrows.left ? 1 : 0, pointerEvents: arrows.left ? 'auto' : 'none' }}
+          >
+            <ChevronLeft style={{ width: 20, height: 20 }} />
+          </button>
+          <button
+            className="pe-rail-arrow"
+            aria-label="More topics"
+            onClick={() => scrollRail(1)}
+            style={{ ...ARROW_BASE, right: -6, opacity: arrows.right ? 1 : 0, pointerEvents: arrows.right ? 'auto' : 'none' }}
+          >
+            <ChevronRight style={{ width: 20, height: 20 }} />
+          </button>
+          <div className="pe-topic-rail" ref={railRef} onScroll={updateArrows}>
+          {topicKeys.map((key) => {
+            const t = POLICY_TOPICS[key as keyof typeof POLICY_TOPICS]
+            const Icon = TOPIC_ICONS[t.icon]
+            const on = sel === key
+            return (
+              <button
+                key={key}
+                className="pe-topic-card"
+                onClick={(e) => {
+                  setSel(on ? null : key)
+                  if (!on) e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+                }}
+                aria-expanded={on}
+                style={{
+                  textAlign: 'left', cursor: 'pointer', background: '#fff', fontFamily: MANROPE,
+                  border: `1px solid ${on ? INK : BORDER}`, borderRadius: 20, padding: '22px 20px 18px',
+                  boxShadow: on ? '0 6px 18px rgba(12,14,18,.10)' : '0 2px 4px rgba(12,14,18,.03)',
+                  display: 'flex', flexDirection: 'column', gap: 10, height: '100%',
+                  transition: 'box-shadow .15s, border-color .15s',
+                }}
+              >
+                <div className={t.color} style={{ width: 40, height: 40, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  {Icon && <Icon className={`size-5 ${t.textColor}`} />}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 17, fontWeight: 800, color: INK, marginBottom: 4 }}>{t.label}</div>
+                  <div style={{ fontSize: 14, color: SECONDARY, lineHeight: 1.5 }}>{t.description}</div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: on ? INK : JADE, display: 'flex', alignItems: 'center', gap: 3 }}>
+                    {on ? 'Hide' : 'Compare'} <ChevronDown style={{ width: 12, height: 12, transform: on ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
+                  </span>
+                </div>
+              </button>
+            )
+          })}
+          </div>
         </div>
       </div>
 

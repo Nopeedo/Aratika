@@ -60,7 +60,9 @@ export function CinematicHeroBurnt() {
 
         {/* subline — frames the two ways in: a guided hand, or explore freely */}
         <motion.div {...rise(0.26)} style={{ fontSize: 'clamp(15px,1.7vw,18px)', fontWeight: 600, color: '#5b3d2a', fontFamily: MANROPE, margin: '0 auto', maxWidth: 540, lineHeight: 1.5, textAlign: 'center' }}>
-          Understand the election in minutes, not hours — as simple or as deep as you want.
+          Get confident with your Vote for 2026 Election
+          <br />
+          Compare parties below
         </motion.div>
 
       </div>
