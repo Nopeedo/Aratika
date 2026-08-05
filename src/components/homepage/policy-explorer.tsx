@@ -46,6 +46,39 @@ const TOPIC_BORDER_HEX: Record<string, { rest: string; active: string }> = {
   indigo: { rest: '#4338ca', active: '#312e81' },
 }
 
+/** One mobile topic chip. Shared by the wrap-grid and by the open-state head row
+ *  (where the chosen issue sits to the right of the "Other issues" back button),
+ *  so the chip you tapped is literally the same object that travels up there. */
+function TopicChip({ topicKey, active, onClick, style }: {
+  topicKey: string
+  active: boolean
+  onClick: () => void
+  style?: React.CSSProperties
+}) {
+  const t = POLICY_TOPICS[topicKey as keyof typeof POLICY_TOPICS]
+  const Icon = TOPIC_ICONS[t.icon]
+  const hue = t.textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
+  const b = TOPIC_BORDER_HEX[hue] ?? TOPIC_BORDER_HEX.slate
+  return (
+    <button
+      onClick={onClick}
+      aria-expanded={active}
+      className={t.color}
+      style={{
+        display: 'inline-flex', alignItems: 'center', gap: 7,
+        padding: '9px 14px', borderRadius: 12, borderStyle: 'solid',
+        borderWidth: active ? 3 : 2, borderColor: active ? b.active : b.rest,
+        cursor: 'pointer', fontFamily: MANROPE, transformOrigin: '0 0',
+        ...style,
+      }}
+    >
+      {/* "Imprinted" icon — no background box, just the outline colour. */}
+      {Icon && <Icon className={`size-4 ${t.textColor}`} />}
+      <span style={{ fontSize: 14, fontWeight: 800, color: INK, whiteSpace: 'nowrap' }}>{t.label}</span>
+    </button>
+  )
+}
+
 // Desktop-only rail nav buttons (‹ ›). `display` is set by the .pe-rail-arrow class (hidden on mobile).
 const ARROW_BASE: React.CSSProperties = {
   position: 'absolute', top: 'calc(50% - 3px)', transform: 'translateY(-50%)',
@@ -57,7 +90,7 @@ const ARROW_BASE: React.CSSProperties = {
 export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; positions: PartyPosition[] }) {
   const [sel, setSel] = useState<string | null>(null)
   const [showAll, setShowAll] = useState(false) // by default show only the focused party; opt in to the full comparison
-  const { selectedSlug: focused } = usePartyCycle() // the party chosen in the command bar / hero tiles
+  const { selectedSlug: focused, accentColor } = usePartyCycle() // the party chosen in the command bar / hero tiles
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -99,11 +132,11 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
     <div>
       {/* Two different topic pickers, swapped by breakpoint (mobile-only redesign —
           desktop keeps the original card rail untouched):
-          - Mobile: small bordered rectangles (styled like the party identity card —
-            solid colour border, tinted fill), title + an "imprinted" icon only (no
-            icon background chip), wrapping naturally so titles of different lengths
-            create an organic, non-gridded stacked look. All topics fit on screen at
-            once — no swipe needed.
+          - Mobile: small bordered rectangles, title + an "imprinted" icon only,
+            wrapping naturally. Tapping one collapses the whole grid away (each
+            chip shrinks toward its top-left, bottom-right chips leaving first)
+            and the comparison container bubbles open in its place, headed by a
+            back chip on the left and the chosen issue on the right.
           - Desktop: unchanged horizontal rail with ‹ › arrow buttons. */}
       <style>{`
         .pe-topic-rail {
@@ -117,43 +150,101 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
         .pe-rail-hint { display: flex; }
         .pe-rail-arrow { display: none; }
         .pe-topic-rail-wrap { display: none; }
-        .pe-topic-mobile-grid { display: flex; }
+        .pe-mobile { display: block; }
+        /* Mobile panel borrows the party identity card's look: thick border in
+           the live party colour (fed in as --pe-accent). Bubbles open from its
+           top-left corner, so it grows into the space the chips just vacated. */
+        .pe-panel {
+          margin-top: 10px;
+          border: 4px solid var(--pe-accent, #e9e7e2); border-radius: 16px;
+          transform-origin: 0 0;
+          animation: pe-bubble-in .5s cubic-bezier(.34, 1.5, .64, 1) 240ms both;
+        }
+        .pe-panel-close { display: none; }
+        .pe-open-head {
+          display: flex; align-items: center; justify-content: space-between;
+          gap: 10px; flex-wrap: wrap; transform-origin: 0 0;
+          animation: pe-bubble-in .44s cubic-bezier(.34, 1.56, .64, 1) 170ms both;
+        }
+        @keyframes pe-bubble-in {
+          0%   { opacity: 0; transform: scale(.72) translate(-10px, -10px); }
+          55%  { opacity: 1; }
+          100% { opacity: 1; transform: scale(1) translate(0, 0); }
+        }
         @media (min-width: 768px) {
           .pe-rail-hint { display: none; }
           .pe-rail-arrow { display: flex; }
           .pe-topic-rail-wrap { display: block; }
-          .pe-topic-mobile-grid { display: none; }
+          .pe-mobile { display: none; }
+          .pe-panel-close { display: flex; }
+          .pe-panel {
+            margin-top: 18px; border: 1px solid ${BORDER}; border-radius: 18px;
+            animation: none;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .pe-panel, .pe-open-head { animation: none; }
+          /* !important because the collapse/expand timings are inline styles
+             (they flip direction per state), which a plain rule can't beat. */
+          .pe-mobile, .pe-mobile * { transition: none !important; }
         }
       `}</style>
 
-      {/* Mobile — organic wrap of small rectangles. Left fully flexible (plain
-          flex-wrap, no forced pairing) so it reflows naturally per device. */}
-      <div className="pe-topic-mobile-grid" style={{ flexWrap: 'wrap', gap: 8 }}>
-        {topicKeys.map((key) => {
-          const t = POLICY_TOPICS[key as keyof typeof POLICY_TOPICS]
-          const Icon = TOPIC_ICONS[t.icon]
-          const on = sel === key
-          const hue = t.textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
-          const borderHex = TOPIC_BORDER_HEX[hue] ?? TOPIC_BORDER_HEX.slate
-          return (
+      {/* ── Mobile picker ─────────────────────────────────────────────────── */}
+      <div className="pe-mobile">
+        {/* The full grid. Collapses to zero height (grid-template-rows 1fr → 0fr)
+            while every chip scales down toward its own top-left, staggered in
+            reverse so the bottom-right of the block empties first. */}
+        <div style={{
+          display: 'grid',
+          gridTemplateRows: sel ? '0fr' : '1fr',
+          transition: sel
+            ? 'grid-template-rows .40s cubic-bezier(.4, 0, .2, 1) 120ms'
+            : 'grid-template-rows .44s cubic-bezier(.34, 1.4, .64, 1)',
+        }}>
+          <div style={{ overflow: 'hidden' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              {topicKeys.map((key, i) => {
+                const out = sel !== null
+                const delay = out ? (topicKeys.length - 1 - i) * 14 : 100 + i * 15
+                return (
+                  <TopicChip
+                    key={key}
+                    topicKey={key}
+                    active={false}
+                    onClick={() => setSel(key)}
+                    style={{
+                      transform: out ? 'scale(.34) translate(-14px, -14px)' : 'scale(1) translate(0, 0)',
+                      opacity: out ? 0 : 1,
+                      pointerEvents: out ? 'none' : 'auto',
+                      transition: out
+                        ? `transform .24s cubic-bezier(.45, 0, .75, .5) ${delay}ms, opacity .2s linear ${delay}ms`
+                        : `transform .44s cubic-bezier(.34, 1.56, .64, 1) ${delay}ms, opacity .26s ease ${delay}ms`,
+                    }}
+                  />
+                )
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Open state — back chip on the left, the issue you tapped on the right. */}
+        {sel && (
+          <div className="pe-open-head">
             <button
-              key={key}
-              onClick={() => setSel(on ? null : key)}
-              aria-expanded={on}
-              className={t.color}
+              onClick={() => setSel(null)}
               style={{
-                display: 'inline-flex', alignItems: 'center', gap: 7,
-                padding: '9px 14px', borderRadius: 12, borderWidth: on ? 3 : 2, borderStyle: 'solid',
-                borderColor: on ? borderHex.active : borderHex.rest,
-                cursor: 'pointer', fontFamily: MANROPE, transition: 'border-width .15s, border-color .15s',
+                display: 'inline-flex', alignItems: 'center', gap: 5,
+                padding: '9px 13px', borderRadius: 12, border: `2px solid ${INK}`,
+                background: '#fff', cursor: 'pointer', fontFamily: MANROPE,
+                fontSize: 14, fontWeight: 800, color: INK, whiteSpace: 'nowrap',
               }}
             >
-              {/* "Imprinted" icon — no background box, just the outline colour. */}
-              {Icon && <Icon className={`size-4 ${t.textColor}`} />}
-              <span style={{ fontSize: 14, fontWeight: 800, color: INK }}>{t.label}</span>
+              <ChevronLeft style={{ width: 15, height: 15 }} /> Other issues
             </button>
-          )
-        })}
+            <TopicChip topicKey={sel} active onClick={() => setSel(null)} />
+          </div>
+        )}
       </div>
 
       {/* Desktop — original horizontal rail, unchanged. */}
@@ -220,7 +311,16 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
       </div>
 
       {sel && selTopic && (
-        <div ref={panelRef} style={{ marginTop: 18, border: `1px solid ${BORDER}`, borderRadius: 18, background: '#fff', padding: '18px clamp(14px, 4vw, 22px)', scrollMarginTop: 80 }}>
+        <div
+          ref={panelRef}
+          className="pe-panel"
+          style={{
+            // Consumed by .pe-panel's mobile border rule — keeps the container
+            // in step with the party colour cycling at the top of the page.
+            ['--pe-accent' as string]: accentColor,
+            background: '#fff', padding: '18px clamp(14px, 4vw, 22px)', scrollMarginTop: 80,
+          } as React.CSSProperties}
+        >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 14, flexWrap: 'wrap' }}>
             <div style={{ minWidth: 0 }}>
               <h3 style={{ fontSize: 'clamp(18px,4.5vw,21px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px', lineHeight: 1.25 }}>
@@ -230,7 +330,9 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
               </h3>
               <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Each party’s most recent published policy — not a past-election position.</p>
             </div>
-            <button onClick={() => setSel(null)} aria-label="Close" style={{ background: 'none', border: `1px solid ${BORDER}`, borderRadius: 8, padding: 6, cursor: 'pointer', color: SECONDARY, display: 'flex', flexShrink: 0 }}>
+            {/* Hidden on mobile — the "Other issues" back chip above the container
+                is the close affordance there, so two would just be clutter. */}
+            <button onClick={() => setSel(null)} aria-label="Close" className="pe-panel-close" style={{ background: 'none', border: `1px solid ${BORDER}`, borderRadius: 8, padding: 6, cursor: 'pointer', color: SECONDARY, flexShrink: 0 }}>
               <X style={{ width: 15, height: 15 }} />
             </button>
           </div>
