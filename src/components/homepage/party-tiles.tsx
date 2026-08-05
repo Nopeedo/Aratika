@@ -251,7 +251,7 @@ export function PartyStanceSummary({ parties }: { parties: TileParty[] }) {
   const cur = parties.find((p) => p.slug === panelSlug) || null
   if (!cur) return null
   return (
-    <section style={{ background: 'transparent' }}>
+    <section id="party-stance" style={{ background: 'transparent' }}>
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
         {/* Fixed-size box: every party's stance is stacked in the SAME grid cell,
             so the card is always as tall as the party with the most content.
