@@ -38,7 +38,7 @@ export const TOPIC_BORDER_HEX: Record<string, { rest: string; active: string }> 
 export function TopicChip({ topicKey, active, onClick, style }: {
   topicKey: string
   active: boolean
-  onClick: () => void
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
   style?: React.CSSProperties
 }) {
   const t = POLICY_TOPICS[topicKey as keyof typeof POLICY_TOPICS]

@@ -9,7 +9,7 @@
  * (see all-parties-compare.tsx), not behind a toggle in here.
  */
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import {
   ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink,
@@ -43,6 +43,34 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
   const { panelSlug, accentColor, fading, fadeMs } = usePartyCycle()
   const shown = panelSlug && PARTY_PROFILES[panelSlug as PartySlug] ? (panelSlug as PartySlug) : null
   const panelRef = useRef<HTMLDivElement>(null)
+
+  // Where on screen the tapped chip was, so the copy in the head row can start
+  // there and travel — rather than one chip vanishing and another appearing.
+  const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null)
+  const headChipRef = useRef<HTMLDivElement>(null)
+
+  const openTopic = (key: string, el: HTMLElement) => {
+    const r = el.getBoundingClientRect()
+    setOrigin({ x: r.left, y: r.top })
+    setSel(key)
+  }
+
+  // FLIP: the head chip has already been laid out in its final slot, so invert
+  // it back onto the tapped chip's position and play it forward to identity.
+  // Runs in useLayoutEffect so the inverted transform is painted on the first
+  // frame — in a plain useEffect the chip would flash at its destination first.
+  useLayoutEffect(() => {
+    const el = headChipRef.current
+    if (!el || !origin) return
+    const r = el.getBoundingClientRect()
+    const dx = origin.x - r.left, dy = origin.y - r.top
+    if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return
+    el.style.transition = 'none'
+    el.style.transform = `translate(${dx}px, ${dy}px)`
+    void el.offsetWidth // flush the inverted position before playing forward
+    el.style.transition = 'transform .46s cubic-bezier(.34, 1.32, .64, 1)'
+    el.style.transform = 'translate(0, 0)'
+  }, [sel, origin])
 
   useEffect(() => {
     // Desktop only. There the rail stays put and the panel opens underneath it,
@@ -112,13 +140,23 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           margin-top: 10px;
           border: 4px solid var(--pe-accent, #e9e7e2); border-radius: 16px;
           transform-origin: 0 0;
-          animation: pe-bubble-in .5s cubic-bezier(.34, 1.5, .64, 1) 240ms both;
+          /* Delayed past the grid collapse (300ms) on purpose. If it opens
+             while the chips are still closing, the layout is sliding upward
+             underneath it and the whole thing reads as growing UP from the
+             bottom. Starting after the collapse settles, the only motion left
+             is the scale from its own top-left corner: it grows DOWN. */
+          animation: pe-bubble-in .46s cubic-bezier(.34, 1.5, .64, 1) 320ms both;
         }
         .pe-panel-close { display: none; }
         .pe-open-head {
           display: flex; align-items: center; justify-content: space-between;
-          gap: 10px; flex-wrap: wrap; transform-origin: 0 0;
-          animation: pe-bubble-in .44s cubic-bezier(.34, 1.56, .64, 1) 170ms both;
+          gap: 10px; flex-wrap: wrap;
+        }
+        /* Only the back button fades in — the issue chip beside it travels up
+           from wherever it was tapped, so it must NOT be animated here. */
+        .pe-back-chip {
+          transform-origin: 0 0;
+          animation: pe-bubble-in .4s cubic-bezier(.34, 1.56, .64, 1) 60ms both;
         }
         @keyframes pe-bubble-in {
           0%   { opacity: 0; transform: scale(.72) translate(-10px, -10px); }
@@ -137,7 +175,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           }
         }
         @media (prefers-reduced-motion: reduce) {
-          .pe-panel, .pe-open-head { animation: none; }
+          .pe-panel, .pe-back-chip { animation: none; }
           /* !important because the collapse/expand timings are inline styles
              (they flip direction per state), which a plain rule can't beat. */
           .pe-mobile, .pe-mobile * { transition: none !important; }
@@ -146,46 +184,14 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
 
       {/* ── Mobile picker ─────────────────────────────────────────────────── */}
       <div className="pe-mobile">
-        {/* The full grid. Collapses to zero height (grid-template-rows 1fr → 0fr)
-            while every chip scales down toward its own top-left, staggered in
-            reverse so the bottom-right of the block empties first. */}
-        <div style={{
-          display: 'grid',
-          gridTemplateRows: sel ? '0fr' : '1fr',
-          transition: sel
-            ? 'grid-template-rows .40s cubic-bezier(.4, 0, .2, 1) 120ms'
-            : 'grid-template-rows .44s cubic-bezier(.34, 1.4, .64, 1)',
-        }}>
-          <div style={{ overflow: 'hidden' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {topicKeys.map((key, i) => {
-                const out = sel !== null
-                const delay = out ? (topicKeys.length - 1 - i) * 14 : 100 + i * 15
-                return (
-                  <TopicChip
-                    key={key}
-                    topicKey={key}
-                    active={false}
-                    onClick={() => setSel(key)}
-                    style={{
-                      transform: out ? 'scale(.34) translate(-14px, -14px)' : 'scale(1) translate(0, 0)',
-                      opacity: out ? 0 : 1,
-                      pointerEvents: out ? 'none' : 'auto',
-                      transition: out
-                        ? `transform .24s cubic-bezier(.45, 0, .75, .5) ${delay}ms, opacity .2s linear ${delay}ms`
-                        : `transform .44s cubic-bezier(.34, 1.56, .64, 1) ${delay}ms, opacity .26s ease ${delay}ms`,
-                    }}
-                  />
-                )
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Open state — back chip on the left, the issue you tapped on the right. */}
+        {/* Open state FIRST in the DOM, deliberately. Sitting above the grid
+            means its layout position is already final the moment it mounts —
+            nothing below it can push it around — which is what makes the FLIP
+            below land on the right target. */}
         {sel && (
           <div className="pe-open-head">
             <button
+              className="pe-back-chip"
               onClick={() => setSel(null)}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 5,
@@ -196,9 +202,56 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
             >
               <ChevronLeft style={{ width: 15, height: 15 }} /> Other issues
             </button>
-            <TopicChip topicKey={sel} active onClick={() => setSel(null)} />
+            {/* Not a second chip that fades in — this one starts life at the
+                exact screen position of the chip you tapped and glides up into
+                place (see the FLIP in useLayoutEffect). */}
+            <div ref={headChipRef} style={{ display: 'inline-flex' }}>
+              <TopicChip topicKey={sel} active onClick={() => setSel(null)} />
+            </div>
           </div>
         )}
+
+        {/* The full grid. Collapses to zero height (grid-template-rows 1fr → 0fr)
+            while every chip scales down toward its own top-left, staggered in
+            reverse so the bottom-right of the block empties first. */}
+        <div style={{
+          display: 'grid',
+          gridTemplateRows: sel ? '0fr' : '1fr',
+          transition: sel
+            ? 'grid-template-rows .30s cubic-bezier(.4, 0, .2, 1)'
+            : 'grid-template-rows .44s cubic-bezier(.34, 1.4, .64, 1) 60ms',
+        }}>
+          <div style={{ overflow: 'hidden' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              {topicKeys.map((key, i) => {
+                const out = sel !== null
+                // The tapped chip vanishes instantly: the flying copy in the
+                // head row is already covering it pixel-for-pixel, so animating
+                // this one too would just look like a duplicate.
+                const tapped = out && sel === key
+                const delay = out ? (topicKeys.length - 1 - i) * 12 : 90 + i * 15
+                return (
+                  <TopicChip
+                    key={key}
+                    topicKey={key}
+                    active={false}
+                    onClick={(e) => openTopic(key, e.currentTarget)}
+                    style={{
+                      transform: out ? 'scale(.34) translate(-14px, -14px)' : 'scale(1) translate(0, 0)',
+                      opacity: out ? 0 : 1,
+                      pointerEvents: out ? 'none' : 'auto',
+                      transition: tapped
+                        ? 'none'
+                        : out
+                          ? `transform .2s cubic-bezier(.45, 0, .75, .5) ${delay}ms, opacity .17s linear ${delay}ms`
+                          : `transform .44s cubic-bezier(.34, 1.56, .64, 1) ${delay}ms, opacity .26s ease ${delay}ms`,
+                    }}
+                  />
+                )
+              })}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Desktop — original horizontal rail, unchanged. */}
@@ -316,6 +369,20 @@ function toBullets(text: string | null | undefined): string[] {
     .filter(Boolean)
 }
 
+/** Party colours are chosen to work as big fills, not as small text. ACT's
+ *  yellow on a white panel is effectively invisible at 12px, so anything too
+ *  light gets scaled down to a readable version of the same hue rather than
+ *  swapped for a different colour. Dark party colours pass through untouched. */
+function readableOnWhite(hex: string): string {
+  const m = hex.replace('#', '')
+  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
+  const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+  if (lum <= 0.5) return hex
+  const k = 0.42 / lum
+  const hx = (v: number) => Math.max(0, Math.min(255, Math.round(v * k))).toString(16).padStart(2, '0')
+  return `#${hx(r)}${hx(g)}${hx(b)}`
+}
+
 /** The chosen party's stance on the open topic. Sits directly in the panel —
  *  no nested card of its own, since the panel already carries the party's
  *  colour on its border and names the party in its heading. */
@@ -340,7 +407,7 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
 
   return (
     <div>
-      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY, marginBottom: 7, fontFamily: MANROPE }}>On {topicLabel}</div>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 7, fontFamily: MANROPE }}>{party.name}: {topicLabel}</div>
       <p style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, margin: '0 0 12px', fontFamily: MANROPE }}>{pos.stance || body}</p>
 
       {/* One bullet per sentence — easier to scan than a wall of prose, which
