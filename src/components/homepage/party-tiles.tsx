@@ -253,10 +253,31 @@ export function PartyStanceSummary({ parties }: { parties: TileParty[] }) {
   return (
     <section style={{ background: 'transparent' }}>
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
-        <div style={{ border: `1.5px solid ${LINE}`, borderRadius: 16, background: '#fff', padding: '20px 22px' }}>
-          <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
-            <PanelStance p={cur} />
-          </div>
+        {/* Fixed-size box: every party's stance is stacked in the SAME grid cell,
+            so the card is always as tall as the party with the most content.
+            Switching parties never changes its height, so the page never jumps.
+            Only the active party is visible; the rest stay hidden but still hold
+            the height open. */}
+        <div style={{ border: `1.5px solid ${LINE}`, borderRadius: 16, background: '#fff', padding: '20px 22px', display: 'grid' }}>
+          {parties.map((p) => {
+            const active = p.slug === cur.slug
+            return (
+              <div
+                key={p.slug}
+                aria-hidden={!active}
+                style={{
+                  gridColumn: 1,
+                  gridRow: 1,
+                  opacity: active ? (fading ? 0 : 1) : 0,
+                  visibility: active ? 'visible' : 'hidden',
+                  pointerEvents: active ? 'auto' : 'none',
+                  transition: `opacity ${fadeMs}ms ease-in-out`,
+                }}
+              >
+                <PanelStance p={p} />
+              </div>
+            )
+          })}
         </div>
       </div>
     </section>
