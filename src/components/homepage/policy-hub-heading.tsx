@@ -48,7 +48,7 @@ export function PolicyHubHeading() {
           </>
         ) : 'Where do the parties stand?'}
       </h2>{' '}
-      <span style={{ position: 'relative', marginLeft: 12, fontSize: 15, fontWeight: 800, color: 'rgba(255,255,255,.75)', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
+      <span style={{ position: 'relative', marginLeft: 12, fontSize: 15, fontWeight: 800, color: 'rgba(255,255,255,.9)', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
         Tap an issue below
       </span>
       {/* On mobile "stand for?" always sits on its own second line, so the

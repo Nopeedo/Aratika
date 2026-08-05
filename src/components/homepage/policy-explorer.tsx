@@ -2,22 +2,22 @@
 
 /**
  * PolicyExplorer — the homepage policy grid, but INLINE. Tapping a topic card
- * doesn't leave the page: it opens a panel below the grid with the simplified
- * party positions for that topic (the scannable PartyPositions list — stance up
- * front, tap a party for the breakdown), plus a link to the full topic page for
- * the deep dive. One topic open at a time; the panel scrolls into view.
+ * doesn't leave the page: it opens a panel below the grid with the stance of
+ * whichever party is on screen right now (auto-cycling until the reader taps a
+ * tile), plus a link to the full topic page for the deep dive. One topic open at
+ * a time. Comparing ALL parties lives in its own section further down the page
+ * (see all-parties-compare.tsx), not behind a toggle in here.
  */
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import {
-  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink, Target,
+  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink,
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
-import { PARTY_COLORS } from '@/constants/parties'
-import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
-import { PartyPositions } from '@/components/policy/party-positions'
+import { PARTY_PROFILES } from '@/constants/parties-data'
+import { TopicChip } from '@/components/homepage/topic-chip'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
@@ -25,59 +25,6 @@ import type { PartyPosition } from '@/lib/positions/live'
 const TOPIC_ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-
-// Deep border colours for the mobile topic chips, keyed by the Tailwind hue
-// used in each topic's textColor (e.g. "text-orange-700" → "orange"). Real
-// hex values, NOT a Tailwind class string built with .replace() — Tailwind's
-// scanner only generates CSS for class names that appear literally in source,
-// so a runtime-built "border-orange-700" string never gets compiled and the
-// border silently fell back to plain black. `active` is a shade darker so the
-// selected chip visibly stands out from the resting state.
-const TOPIC_BORDER_HEX: Record<string, { rest: string; active: string }> = {
-  blue: { rest: '#1d4ed8', active: '#1e3a8a' },
-  orange: { rest: '#c2410c', active: '#7c2d12' },
-  red: { rest: '#b91c1c', active: '#7f1d1d' },
-  green: { rest: '#15803d', active: '#14532d' },
-  purple: { rest: '#7e22ce', active: '#581c87' },
-  slate: { rest: '#334155', active: '#0f172a' },
-  cyan: { rest: '#0e7490', active: '#164e63' },
-  amber: { rest: '#b45309', active: '#78350f' },
-  teal: { rest: '#0f766e', active: '#134e4a' },
-  indigo: { rest: '#4338ca', active: '#312e81' },
-}
-
-/** One mobile topic chip. Shared by the wrap-grid and by the open-state head row
- *  (where the chosen issue sits to the right of the "Other issues" back button),
- *  so the chip you tapped is literally the same object that travels up there. */
-function TopicChip({ topicKey, active, onClick, style }: {
-  topicKey: string
-  active: boolean
-  onClick: () => void
-  style?: React.CSSProperties
-}) {
-  const t = POLICY_TOPICS[topicKey as keyof typeof POLICY_TOPICS]
-  const Icon = TOPIC_ICONS[t.icon]
-  const hue = t.textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
-  const b = TOPIC_BORDER_HEX[hue] ?? TOPIC_BORDER_HEX.slate
-  return (
-    <button
-      onClick={onClick}
-      aria-expanded={active}
-      className={t.color}
-      style={{
-        display: 'inline-flex', alignItems: 'center', gap: 7,
-        padding: '9px 14px', borderRadius: 12, borderStyle: 'solid',
-        borderWidth: active ? 3 : 2, borderColor: active ? b.active : b.rest,
-        cursor: 'pointer', fontFamily: MANROPE, transformOrigin: '0 0',
-        ...style,
-      }}
-    >
-      {/* "Imprinted" icon — no background box, just the outline colour. */}
-      {Icon && <Icon className={`size-4 ${t.textColor}`} />}
-      <span style={{ fontSize: 14, fontWeight: 800, color: INK, whiteSpace: 'nowrap' }}>{t.label}</span>
-    </button>
-  )
-}
 
 // Desktop-only rail nav buttons (‹ ›). `display` is set by the .pe-rail-arrow class (hidden on mobile).
 const ARROW_BASE: React.CSSProperties = {
@@ -89,12 +36,11 @@ const ARROW_BASE: React.CSSProperties = {
 
 export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; positions: PartyPosition[] }) {
   const [sel, setSel] = useState<string | null>(null)
-  const [showAll, setShowAll] = useState(false) // by default show only the focused party; opt in to the full comparison
   // panelSlug is whichever party is on screen right now: the auto-cycling one
   // until the user taps a tile, their pick afterwards. Using it (rather than
   // selectedSlug) means opening an issue always lands on content — it rolls
   // along with the tiles instead of asking the reader to pick a party first.
-  const { selectedSlug: focused, panelSlug, accentColor, fading, fadeMs } = usePartyCycle()
+  const { panelSlug, accentColor, fading, fadeMs } = usePartyCycle()
   const shown = panelSlug && PARTY_PROFILES[panelSlug as PartySlug] ? (panelSlug as PartySlug) : null
   const panelRef = useRef<HTMLDivElement>(null)
 
@@ -107,9 +53,6 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
     if (window.matchMedia('(max-width: 767px)').matches) return
     panelRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   }, [sel])
-
-  // Collapse back to focused-only whenever the topic or the chosen party changes.
-  useEffect(() => { setShowAll(false) }, [sel, focused])
 
   // Desktop has no swipe — arrow buttons cycle the topic rail. Track which way it can scroll.
   const railRef = useRef<HTMLDivElement>(null)
@@ -343,34 +286,11 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           </div>
 
           {topicsWithData.has(sel) ? (
-            shown ? (
-              <>
-                {/* Crossfades on the cycle's own clock, so while the tiles are
-                    still rolling the stance swaps mid-fade rather than hard-cutting. */}
-                <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
-                  <FocusedCard slug={shown} pos={getPos(shown)} topic={sel} topicLabel={selTopic.label} showAll={showAll} onToggleAll={() => setShowAll((v) => !v)} />
-                </div>
-                {showAll && (
-                  <>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '18px 0 11px' }}>
-                      <span style={{ flex: 1, height: 1, background: BORDER }} />
-                      <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, whiteSpace: 'nowrap', fontFamily: MANROPE }}>The other parties</span>
-                      <span style={{ flex: 1, height: 1, background: BORDER }} />
-                    </div>
-                    <PartyPositions parties={PARTY_DIRECTORY_ORDER.filter((s) => s !== shown)} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
-                  </>
-                )}
-              </>
-            ) : showAll ? (
-              <PartyPositions parties={PARTY_DIRECTORY_ORDER} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 11, padding: '18px 16px', border: `1px dashed ${BORDER}`, borderRadius: 14, background: '#fbfaf8' }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                  <Target style={{ width: 16, height: 16, color: JADE, flexShrink: 0 }} />
-                  <span style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Pick a party from the tiles above</span>
-                </span>
-                <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Tap a party tile to see just their stance on {selTopic.label.toLowerCase()} here — or see everyone at once.</p>
-                <button onClick={() => setShowAll(true)} style={{ fontSize: 14, fontWeight: 800, color: INK, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 9, padding: '8px 13px', cursor: 'pointer', fontFamily: MANROPE }}>Show all parties</button>
+            shown && (
+              // Crossfades on the cycle's own clock, so while the tiles are
+              // still rolling the stance swaps mid-fade rather than hard-cutting.
+              <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+                <FocusedCard slug={shown} pos={getPos(shown)} topic={sel} topicLabel={selTopic.label} />
               </div>
             )
           ) : (
@@ -399,13 +319,11 @@ function toBullets(text: string | null | undefined): string[] {
 /** The chosen party's stance on the open topic. Sits directly in the panel —
  *  no nested card of its own, since the panel already carries the party's
  *  colour on its border and names the party in its heading. */
-function FocusedCard({ slug, pos, topic, topicLabel, showAll, onToggleAll }: {
+function FocusedCard({ slug, pos, topic, topicLabel }: {
   slug: PartySlug
   pos: PartyPosition | undefined
   topic: string
   topicLabel: string
-  showAll: boolean
-  onToggleAll: () => void
 }) {
   const party = PARTY_PROFILES[slug]
   const c = party.color
@@ -446,10 +364,6 @@ function FocusedCard({ slug, pos, topic, topicLabel, showAll, onToggleAll }: {
         <Link href={`/policies/${topic}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: INK, textDecoration: 'none', fontFamily: MANROPE }}>
           Full breakdown <ArrowRight style={{ width: 15, height: 15 }} />
         </Link>
-        <button onClick={onToggleAll} aria-expanded={showAll} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 14, fontWeight: 800, color: INK, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 9, padding: '7px 12px', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: MANROPE }}>
-          {showAll ? 'Hide other parties' : 'Show all parties'}
-          <ChevronDown style={{ width: 13, height: 13, transform: showAll ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
-        </button>
       </div>
 
       {/* Source link sits last — it's the footnote for everything above it. */}

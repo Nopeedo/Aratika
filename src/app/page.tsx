@@ -19,6 +19,7 @@ import { HomeBackground } from '@/components/homepage/home-background'
 import { PartyTilesSection, PartyStanceSection } from '@/components/homepage/party-tiles-section'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { HomeMap } from '@/components/homepage/home-map'
+import { AllPartiesSection } from '@/components/homepage/all-parties-section'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 
@@ -51,6 +52,10 @@ export default function HomePage() {
 
         {/* ═══ CORE 3 — your electorate ═══ */}
         <HomeMap />
+
+        {/* Every party side by side, with its own issue picker. Used to be a
+            "Show all parties" toggle buried inside the issue panel above. */}
+        <AllPartiesSection />
 
         {/* ── Why you can trust it (slim) ── */}
         <CredibilityStrip />
