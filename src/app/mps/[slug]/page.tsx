@@ -27,6 +27,8 @@ import { MP_PROFILES, MP_SLUGS } from '@/constants/mps-data'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { CURRENT_TERM } from '@/constants/term'
 import { policiesForMP } from '@/lib/mps/policy-links'
+import { getApprovedBills } from '@/lib/bills/live'
+import { resolveBillLink, normBillTitle, type BillLink } from '@/lib/bills/bill-links'
 import { StatusBadge } from '@/components/ui/badge'
 import { MPCard } from '@/components/mp/mp-card'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -119,10 +121,24 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
   const hasBills = passedBills.length > 0 || govBills.length > 0 || ballotBills.length > 0
   const notableVotes = mp.notableVotes ?? []
 
+  // Resolve each listed bill to a page: an internal plain-language reader when one
+  // is published (/legislation/[slug]), else the official parliament.nz page. The
+  // 54th-Parliament dataset shares titles with the MP activity, so title-match is
+  // reliable; anything not found simply stays plain text.
+  const readable = await getApprovedBills()
+  const readerSlugs: Record<string, string> = {}
+  for (const b of readable) readerSlugs[normBillTitle(b.title)] = b.slug
+  const billLink = (title: string): BillLink | null => resolveBillLink(title, readerSlugs)
+
   const hasAnyDetail = !!(mp.bio || mp.portfolios?.length || mp.committees?.length)
 
   return (
     <div style={{ background: '#fff', minHeight: '100vh' }}>
+      <style>{`
+        .bill-row-caret { color: #c2c6cd; transition: transform .15s ease, color .15s ease; }
+        .bill-link:hover .bill-row-caret { color: ${JADE}; transform: translateX(2px); }
+        .bill-link:hover { background: ${SURFACE}; border-radius: 8px; }
+      `}</style>
 
       {/* ═══════════════ Header band ═══════════════ */}
       <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
@@ -263,9 +279,19 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
                           Members’ bill{passedBills.length > 1 ? 's' : ''} passed into law
                         </span>
                       </div>
-                      {passedBills.map((b) => (
-                        <div key={b.title} style={{ fontSize: 13.5, fontWeight: 600, color: INK, fontFamily: MANROPE, lineHeight: 1.45, paddingLeft: 23 }}>{b.title} <span style={{ fontSize: 11, fontWeight: 700, color: '#166638' }}>· now an Act</span></div>
-                      ))}
+                      {passedBills.map((b) => {
+                        const l = billLink(b.title)
+                        const label = <>{b.title} <span style={{ fontSize: 11, fontWeight: 700, color: '#166638' }}>· now an Act</span></>
+                        return (
+                          <div key={b.title} style={{ fontSize: 13.5, fontWeight: 600, color: INK, fontFamily: MANROPE, lineHeight: 1.45, paddingLeft: 23 }}>
+                            {l ? (
+                              l.external
+                                ? <a href={l.href} target="_blank" rel="noopener noreferrer" style={{ color: INK, textDecoration: 'none' }} className="bill-link">{label}</a>
+                                : <Link href={l.href} style={{ color: INK, textDecoration: 'none' }} className="bill-link">{label}</Link>
+                            ) : label}
+                          </div>
+                        )
+                      })}
                     </div>
                   )}
 
@@ -274,9 +300,10 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
                     <div>
                       <div style={billGroupLabel}>Government bills — member in charge ({govBills.length})</div>
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        {govBills.slice(0, 8).map((b, i) => (
-                          <BillRow key={`g-${b.title}`} title={b.title} tag={b.status ?? 'In progress'} tagColor="#3730a3" tagBg="#eef2ff" first={i === 0} />
-                        ))}
+                        {govBills.slice(0, 8).map((b, i) => {
+                          const l = billLink(b.title)
+                          return <BillRow key={`g-${b.title}`} title={b.title} tag={b.status ?? 'In progress'} tagColor="#3730a3" tagBg="#eef2ff" href={l?.href} external={l?.external} first={i === 0} />
+                        })}
                       </div>
                       {govBills.length > 8 && (
                         <div style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, marginTop: 8 }}>
@@ -291,9 +318,10 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
                     <div>
                       <div style={billGroupLabel}>Members’ bill in the ballot (awaiting a first-reading draw)</div>
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        {ballotBills.map((b, i) => (
-                          <BillRow key={`m-${b.title}`} title={b.title} tag={b.status} tagColor="#166638" tagBg="#e6f4ec" first={i === 0} />
-                        ))}
+                        {ballotBills.map((b, i) => {
+                          const l = billLink(b.title)
+                          return <BillRow key={`m-${b.title}`} title={b.title} tag={b.status} tagColor="#166638" tagBg="#e6f4ec" href={l?.href} external={l?.external} first={i === 0} />
+                        })}
                       </div>
                     </div>
                   )}
@@ -485,14 +513,22 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
 }
 
 // ─── Bill row ─────────────────────────────────────────────────────────────────
-function BillRow({ title, tag, tagColor, tagBg, href, first }: { title: string; tag: string; tagColor: string; tagBg: string; href?: string; first: boolean }) {
+function BillRow({ title, tag, tagColor, tagBg, href, external, first }: { title: string; tag: string; tagColor: string; tagBg: string; href?: string; external?: boolean; first: boolean }) {
   const inner = (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, padding: '12px 0', borderTop: first ? 'none' : `1px solid ${BORDER}` }}>
-      <div style={{ fontSize: 13.5, fontWeight: 600, color: INK, fontFamily: MANROPE, lineHeight: 1.4 }}>{title}</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+        <span style={{ fontSize: 13.5, fontWeight: 600, color: INK, fontFamily: MANROPE, lineHeight: 1.4 }}>{title}</span>
+        {href && (external
+          ? <ArrowUpRight className="bill-row-caret" style={{ width: 13, height: 13, flexShrink: 0 }} />
+          : <ArrowRight className="bill-row-caret" style={{ width: 13, height: 13, flexShrink: 0 }} />)}
+      </div>
       <span style={{ fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap', background: tagBg, color: tagColor, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>{tag}</span>
     </div>
   )
-  return href ? <Link href={href} style={{ textDecoration: 'none' }} className="party-card">{inner}</Link> : inner
+  if (!href) return inner
+  return external
+    ? <a href={href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block' }} className="bill-link">{inner}</a>
+    : <Link href={href} style={{ textDecoration: 'none', display: 'block' }} className="bill-link">{inner}</Link>
 }
 
 // ─── Sidebar stat row ─────────────────────────────────────────────────────────
