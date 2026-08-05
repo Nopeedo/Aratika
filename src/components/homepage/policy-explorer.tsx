@@ -375,27 +375,27 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
               Party positions on {selTopic.label.toLowerCase()} are being sourced from official policy and editor-checked — they’ll appear here soon.
             </p>
           )}
-
-          <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
-            <Link href={`/policies/${sel}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-              Full {selTopic.label} comparison <ArrowRight style={{ width: 14, height: 14 }} />
-            </Link>
-          </div>
         </div>
       )}
     </div>
   )
 }
 
-/** Light party colours (e.g. ACT yellow) need dark text/tick on the coloured header. */
-function isLightHex(hex: string): boolean {
-  const m = hex.replace('#', '')
-  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
-  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 > 0.6
+/** Break a plain-language summary into one bullet per sentence.
+ *  Splits only where a sentence really ends — punctuation preceded by a
+ *  lowercase letter/digit and followed by a capital — so initialisms like
+ *  "N.Z." stay in one piece instead of becoming their own bullets. */
+function toBullets(text: string | null | undefined): string[] {
+  if (!text) return []
+  return text
+    .split(/(?<=[a-z0-9)”"'][.!?])\s+(?=[A-Z“"'])/)
+    .map((s) => s.trim())
+    .filter(Boolean)
 }
 
-/** The chosen party, pulled to the top of the panel and shown in full for the open topic.
- *  Its header button toggles the rest of the parties in/out (default: focused party only). */
+/** The chosen party's stance on the open topic. Sits directly in the panel —
+ *  no nested card of its own, since the panel already carries the party's
+ *  colour on its border and names the party in its heading. */
 function FocusedCard({ slug, pos, topic, topicLabel, showAll, onToggleAll }: {
   slug: PartySlug
   pos: PartyPosition | undefined
@@ -406,53 +406,55 @@ function FocusedCard({ slug, pos, topic, topicLabel, showAll, onToggleAll }: {
 }) {
   const party = PARTY_PROFILES[slug]
   const c = party.color
-  const light = isLightHex(c)
-  const txt = light ? '#2A1206' : '#fff'
-  const overlay = light ? 'rgba(0,0,0,.13)' : 'rgba(255,255,255,.22)'
   const body = pos?.summaryBasic || pos?.summary
+  const bullets = pos?.stance ? toBullets(body) : []
+
+  if (!pos) {
+    return (
+      <p style={{ fontSize: 16, color: TERTIARY, lineHeight: 1.55, margin: 0, fontFamily: MANROPE }}>
+        No {topicLabel.toLowerCase()} position captured yet for {party.name} — being sourced from official policy, then editor-checked.
+      </p>
+    )
+  }
 
   return (
-    <div style={{ border: `1.5px solid ${c}`, borderRadius: 14, overflow: 'hidden' }}>
-      <div style={{ background: c, padding: '11px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-          <span style={{ fontSize: 17, fontWeight: 800, color: txt, fontFamily: MANROPE }}>{party.name}</span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: txt, background: overlay, padding: '3px 8px', borderRadius: 20 }}>
-            <Target style={{ width: 11, height: 11 }} /> Focused
-          </span>
-        </span>
-        <button onClick={onToggleAll} aria-expanded={showAll} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 13, fontWeight: 700, color: txt, background: overlay, border: 'none', borderRadius: 7, padding: '5px 9px', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: MANROPE }}>
+    <div>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY, marginBottom: 7, fontFamily: MANROPE }}>On {topicLabel}</div>
+      <p style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, margin: '0 0 12px', fontFamily: MANROPE }}>{pos.stance || body}</p>
+
+      {/* One bullet per sentence — easier to scan than a wall of prose, which
+          is the whole point for a reader who doesn't follow politics closely. */}
+      {bullets.length > 0 && (
+        <ul style={{ listStyle: 'none', margin: '0 0 14px', padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {bullets.map((b, i) => (
+            <li key={i} style={{ display: 'flex', gap: 11, fontSize: 17, color: '#33373f', lineHeight: 1.55, fontFamily: MANROPE }}>
+              <span aria-hidden style={{ width: 7, height: 7, borderRadius: '50%', background: c, flexShrink: 0, marginTop: 9 }} />
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {pos.quote && (
+        <p style={{ fontSize: 15, color: SECONDARY, lineHeight: 1.5, margin: '0 0 12px', paddingLeft: 11, borderLeft: `3px solid ${c}`, fontStyle: 'italic', fontFamily: MANROPE }}>“{pos.quote}”</p>
+      )}
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
+        <Link href={`/policies/${topic}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: INK, textDecoration: 'none', fontFamily: MANROPE }}>
+          Full breakdown <ArrowRight style={{ width: 15, height: 15 }} />
+        </Link>
+        <button onClick={onToggleAll} aria-expanded={showAll} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 14, fontWeight: 800, color: INK, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 9, padding: '7px 12px', cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: MANROPE }}>
           {showAll ? 'Hide other parties' : 'Show all parties'}
           <ChevronDown style={{ width: 13, height: 13, transform: showAll ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
         </button>
       </div>
-      <div style={{ padding: '13px 14px', background: '#fff' }}>
-        {pos ? (
-          <>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY, marginBottom: 6, fontFamily: MANROPE }}>On {topicLabel}</div>
-            <p style={{ fontSize: 17, fontWeight: 700, color: INK, lineHeight: 1.45, margin: '0 0 8px', fontFamily: MANROPE }}>{pos.stance || body}</p>
-            {body && pos.stance && (
-              <p style={{ fontSize: 15, color: '#33373f', lineHeight: 1.6, margin: '0 0 10px', fontFamily: MANROPE }}>{body}</p>
-            )}
-            {pos.quote && (
-              <p style={{ fontSize: 14, color: SECONDARY, lineHeight: 1.5, margin: '0 0 10px', paddingLeft: 10, borderLeft: `3px solid ${c}`, fontStyle: 'italic', fontFamily: MANROPE }}>“{pos.quote}”</p>
-            )}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', paddingTop: 10, borderTop: `1px solid ${BORDER}` }}>
-              <Link href={`/policies/${topic}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 14, fontWeight: 800, color: INK, textDecoration: 'none', fontFamily: MANROPE }}>
-                Full breakdown <ArrowRight style={{ width: 14, height: 14 }} />
-              </Link>
-              {pos.sourceUrl && (
-                <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE }}>
-                  {pos.sourceLabel} <ExternalLink style={{ width: 11, height: 11 }} />
-                </a>
-              )}
-            </div>
-          </>
-        ) : (
-          <p style={{ fontSize: 15, color: TERTIARY, lineHeight: 1.55, margin: 0, fontFamily: MANROPE }}>
-            No {topicLabel.toLowerCase()} position captured yet for {party.name} — being sourced from official policy, then editor-checked.
-          </p>
-        )}
-      </div>
+
+      {/* Source link sits last — it's the footnote for everything above it. */}
+      {pos.sourceUrl && (
+        <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 14, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE, marginTop: 12 }}>
+          {pos.sourceLabel} <ExternalLink style={{ width: 12, height: 12 }} />
+        </a>
+      )}
     </div>
   )
 }
