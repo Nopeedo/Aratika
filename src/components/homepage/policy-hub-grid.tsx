@@ -26,13 +26,10 @@ export async function PolicyHubGrid() {
     // never causes the page itself to overflow/shift sideways on mobile.
     <section style={{ background: 'transparent', overflowX: 'hidden' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 56px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
-          <div>
-            <PolicyHubHeading />
-          </div>
-          <span style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
-            Tap an issue below
-          </span>
+        {/* "Tap an issue below" now rides inline off the end of the heading —
+            see PolicyHubHeading. */}
+        <div style={{ marginBottom: 28 }}>
+          <PolicyHubHeading />
         </div>
 
         {/* The topic boxes come right after the heading now — the explanatory

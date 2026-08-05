@@ -35,7 +35,11 @@ export function PolicyHubHeading() {
         background: `radial-gradient(ellipse at center, ${rgba(accentColor, 0.2)}, ${rgba(accentColor, 0)} 70%)`,
         transition: 'background .3s ease-in-out', pointerEvents: 'none', zIndex: -1,
       }} />
-      <h2 style={{ position: 'relative', fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>
+      {/* display:inline so the "Tap an issue below" label below flows onto the
+          same line as "stand for?" instead of dropping beneath the whole block.
+          It stays a SIBLING of the h2, not a child — it isn't heading text and
+          shouldn't be read as part of one. */}
+      <h2 style={{ position: 'relative', display: 'inline', fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>
         {name ? (
           <>
             What does {name}
@@ -43,7 +47,10 @@ export function PolicyHubHeading() {
             {' '}stand for?
           </>
         ) : 'Where do the parties stand?'}
-      </h2>
+      </h2>{' '}
+      <span style={{ position: 'relative', marginLeft: 12, fontSize: 15, fontWeight: 800, color: 'rgba(255,255,255,.75)', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
+        Tap an issue below
+      </span>
       {/* On mobile "stand for?" always sits on its own second line, so the
           heading's height/shape stays consistent as the party name cycles
           through different lengths — only "What does {name}" reflows. */}

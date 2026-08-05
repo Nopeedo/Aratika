@@ -90,7 +90,12 @@ const ARROW_BASE: React.CSSProperties = {
 export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; positions: PartyPosition[] }) {
   const [sel, setSel] = useState<string | null>(null)
   const [showAll, setShowAll] = useState(false) // by default show only the focused party; opt in to the full comparison
-  const { selectedSlug: focused, accentColor } = usePartyCycle() // the party chosen in the command bar / hero tiles
+  // panelSlug is whichever party is on screen right now: the auto-cycling one
+  // until the user taps a tile, their pick afterwards. Using it (rather than
+  // selectedSlug) means opening an issue always lands on content — it rolls
+  // along with the tiles instead of asking the reader to pick a party first.
+  const { selectedSlug: focused, panelSlug, accentColor, fading, fadeMs } = usePartyCycle()
+  const shown = panelSlug && PARTY_PROFILES[panelSlug as PartySlug] ? (panelSlug as PartySlug) : null
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -327,26 +332,24 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
             background: '#fff', padding: '18px clamp(14px, 4vw, 22px)', scrollMarginTop: 80,
           } as React.CSSProperties}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 14, flexWrap: 'wrap' }}>
-            <div style={{ minWidth: 0 }}>
-              <h3 style={{ fontSize: 'clamp(18px,4.5vw,21px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px', lineHeight: 1.25 }}>
-                {focused && PARTY_PROFILES[focused as PartySlug] && !showAll
-                  ? `Where ${PARTY_PROFILES[focused as PartySlug].name} stands on ${selTopic.label}`
-                  : `Where the parties stand on ${selTopic.label}`}
-              </h3>
-              <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Each party’s most recent published policy — not a past-election position.</p>
-            </div>
-            {/* Hidden on mobile — the "Other issues" back chip above the container
-                is the close affordance there, so two would just be clutter. */}
-            <button onClick={() => setSel(null)} aria-label="Close" className="pe-panel-close" style={{ background: 'none', border: `1px solid ${BORDER}`, borderRadius: 8, padding: 6, cursor: 'pointer', color: SECONDARY, flexShrink: 0 }}>
+          {/* No title/subtitle here — the chip above the container already names
+              the issue, and the "ON {TOPIC}" eyebrow names it again inside.
+              Hidden on mobile: the "Other issues" back chip is the close
+              affordance there, so two would just be clutter. */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <button onClick={() => setSel(null)} aria-label="Close" className="pe-panel-close" style={{ background: 'none', border: `1px solid ${BORDER}`, borderRadius: 8, padding: 6, cursor: 'pointer', color: SECONDARY, flexShrink: 0, marginBottom: 10 }}>
               <X style={{ width: 15, height: 15 }} />
             </button>
           </div>
 
           {topicsWithData.has(sel) ? (
-            focused && PARTY_PROFILES[focused as PartySlug] ? (
+            shown ? (
               <>
-                <FocusedCard slug={focused as PartySlug} pos={getPos(focused)} topic={sel} topicLabel={selTopic.label} showAll={showAll} onToggleAll={() => setShowAll((v) => !v)} />
+                {/* Crossfades on the cycle's own clock, so while the tiles are
+                    still rolling the stance swaps mid-fade rather than hard-cutting. */}
+                <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+                  <FocusedCard slug={shown} pos={getPos(shown)} topic={sel} topicLabel={selTopic.label} showAll={showAll} onToggleAll={() => setShowAll((v) => !v)} />
+                </div>
                 {showAll && (
                   <>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '18px 0 11px' }}>
@@ -354,7 +357,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
                       <span style={{ fontSize: 13, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, whiteSpace: 'nowrap', fontFamily: MANROPE }}>The other parties</span>
                       <span style={{ flex: 1, height: 1, background: BORDER }} />
                     </div>
-                    <PartyPositions parties={PARTY_DIRECTORY_ORDER.filter((s) => s !== focused)} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
+                    <PartyPositions parties={PARTY_DIRECTORY_ORDER.filter((s) => s !== shown)} getPos={getPos} detailed={false} topic={sel} topicLabel={selTopic.label} />
                   </>
                 )}
               </>
