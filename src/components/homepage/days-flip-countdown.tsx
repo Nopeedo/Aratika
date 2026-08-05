@@ -22,7 +22,7 @@ const CARD_TOP = '#ffffff'
 const CARD_BOT = '#f4f1ec'
 const BORDER = '#e6e2da'
 
-const W = 46, H = 58, HALF = H / 2
+const W = 58, H = 74, HALF = H / 2
 const ROLL = 70                   // ms per fold — CONSTANT speed for the roll
 const TAIL = [140, 340, 1750]     // EASE into the slow final landing fold
 const HEAD = 6                    // constant-speed folds before the easing tail (more roll on every ticker)
@@ -35,7 +35,7 @@ function daysToElection() {
 }
 
 const numStyle: React.CSSProperties = {
-  height: H, lineHeight: `${H}px`, fontSize: 39, fontWeight: 800, color: INK,
+  height: H, lineHeight: `${H}px`, fontSize: 50, fontWeight: 800, color: INK,
   fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums', textAlign: 'center', width: W,
 }
 
@@ -82,7 +82,7 @@ function SplitFlapDigit({ target, startDelay, animate }: { target: string; start
   const flipping = flip > 0
 
   return (
-    <div style={{ position: 'relative', width: W, height: H, borderRadius: 9, border: `1px solid ${BORDER}`, boxShadow: '0 3px 8px rgba(42,18,6,.10)', perspective: 340 }}>
+    <div style={{ position: 'relative', width: W, height: H, borderRadius: 9, border: `1px solid ${BORDER}`, boxShadow: '0 3px 8px rgba(42,18,6,.10)', perspective: 430 }}>
       <Half d={cur} side="top" />
       <Half d={prev} side="bottom" />
 
@@ -126,7 +126,7 @@ export function DaysFlipCountdown() {
       <div style={{ display: 'flex', gap: 7 }}>
         {digits.map((d, i) => <SplitFlapDigit key={i} target={d} startDelay={i * STAGGER} animate={animate} />)}
       </div>
-      <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: '.04em', color: '#5b3d2a', fontFamily: MANROPE }}>
+      <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '.04em', color: '#5b3d2a', fontFamily: MANROPE }}>
         Days until 2026 elections
       </div>
     </div>

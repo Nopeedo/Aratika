@@ -33,9 +33,11 @@ export function CinematicHeroBurnt() {
 
   return (
     <section style={{ position: 'relative', overflow: 'hidden', background: 'transparent' }}>
-      <div style={{ position: 'relative', maxWidth: 920, margin: '0 auto', padding: 'clamp(16px, 4vh, 44px) clamp(18px, 5vw, 36px) clamp(12px, 2.3vh, 24px)', textAlign: 'center' }}>
-        {/* headline */}
-        <motion.h1 {...rise(0.06)} style={{ fontSize: 'clamp(35px,8.5vw,120px)', fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.03, color: INK, fontFamily: MANROPE, margin: '0 0 clamp(14px, 2.6vh, 26px)' }}>
+      <div style={{ position: 'relative', maxWidth: 920, margin: '0 auto', padding: 'clamp(12px, 2.5vh, 28px) clamp(18px, 5vw, 36px) clamp(10px, 1.8vh, 18px)', textAlign: 'center' }}>
+        {/* headline — capped well under the old 120px max so "of the country is"
+            never wraps onto its own extra line on wide desktop screens, and the
+            whole hero (headline + countdown + subline) fits above the fold. */}
+        <motion.h1 {...rise(0.06)} style={{ fontSize: 'clamp(32px,5.2vw,64px)', fontWeight: 800, letterSpacing: '-.03em', lineHeight: 1.05, color: INK, fontFamily: MANROPE, margin: '0 0 clamp(10px, 1.8vh, 20px)' }}>
           The direction
           <br />
           of the country is
@@ -49,8 +51,10 @@ export function CinematicHeroBurnt() {
           )}
         </motion.h1>
 
-        {/* days-to-election flip countdown — now BELOW the title (per redesign) */}
-        <motion.div {...rise(0.18)} style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(14px, 2.6vh, 24px)' }}>
+        {/* days-to-election flip countdown — now BELOW the title (per redesign).
+            Scaled up (see DaysFlipCountdown) so it reads as a co-equal element
+            next to the now-smaller headline, instead of looking tiny under it. */}
+        <motion.div {...rise(0.18)} style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(10px, 1.8vh, 20px)' }}>
           <DaysFlipCountdown />
         </motion.div>
 
