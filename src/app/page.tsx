@@ -15,7 +15,8 @@
 
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
-import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
+import { HomeBackground } from '@/components/homepage/home-background'
+import { PartyTilesSection, PartyStanceSection } from '@/components/homepage/party-tiles-section'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { HomeMap } from '@/components/homepage/home-map'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
@@ -24,9 +25,10 @@ import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 export default function HomePage() {
   return (
     <PartyCycleProvider>
-      {/* One continuous weave texture behind the whole homepage; sections are
-          transparent so it shows through. */}
-      <div className="bg-weave" style={{ backgroundColor: '#f8fafc' }}>
+      {/* One continuous weave texture behind the whole homepage, tinted with the
+          current party's accent colour; sections are transparent so it shows
+          through. */}
+      <HomeBackground>
 
         {/* ── The choice: guided help, or explore ── */}
         <CinematicHero />
@@ -43,6 +45,10 @@ export default function HomePage() {
         {/* ═══ CORE 2 — explore by issue ═══ */}
         <PolicyHubGrid />
 
+        {/* Summary of Party Stance — moved below "Where do the parties stand?"
+            instead of directly under the tiles. */}
+        <PartyStanceSection />
+
         {/* ═══ CORE 3 — your electorate ═══ */}
         <HomeMap />
 
@@ -52,7 +58,7 @@ export default function HomePage() {
         {/* ── Everything else, in one carousel of links ── */}
         <ExploreCarousel />
 
-      </div>
+      </HomeBackground>
     </PartyCycleProvider>
   )
 }

@@ -11,8 +11,9 @@ import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { PARTY_COLORS } from '@/constants/parties'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { PolicyExplorer } from '@/components/homepage/policy-explorer'
+import { PolicyHubHeading } from '@/components/homepage/policy-hub-heading'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
+const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const PARTY_DOT_ORDER = ['green', 'labour', 'tpm', 'nzfirst', 'national', 'act'] as const
 
@@ -22,22 +23,24 @@ export async function PolicyHubGrid() {
   return (
     // Transparent — the weave now lives on the page wrapper (one continuous
     // texture across the whole homepage), so this section inherits it.
-    <section style={{ background: 'transparent', borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px clamp(18px, 5vw, 36px)' }}>
+    <section style={{ background: 'transparent' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 56px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <div style={{ fontSize: 14, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 8 }}>Policy Comparison</div>
-            <h2 style={{ fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>Where do the parties stand?</h2>
-            <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, marginTop: 8, marginBottom: 0, lineHeight: 1.55 }}>
-              Tap any issue to see where every party stands, right here — drawn from each party’s <b style={{ color: INK }}>most recent published policy</b>, not their stance at a past election.
-            </p>
+            <PolicyHubHeading />
           </div>
           <Link href="/policies" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>
             All policy comparisons <ArrowRight style={{ width: 14, height: 14 }} />
           </Link>
         </div>
 
+        {/* The topic boxes come right after the heading now — the explanatory
+            copy moved below, out of the way (see bottom of this section). */}
         <PolicyExplorer topicKeys={POLICY_TOPIC_ORDER} positions={positions} />
+
+        <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, marginTop: 24, marginBottom: 0, lineHeight: 1.55 }}>
+          Tap any issue to see where every party stands, right here — drawn from each party’s <b style={{ color: INK }}>most recent published policy</b>, not their stance at a past election.
+        </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', marginTop: 20, paddingTop: 16, borderTop: `1px solid ${BORDER}` }}>
           <span style={{ fontSize: 13, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, alignSelf: 'center', marginRight: 4 }}>Party positions shown for:</span>

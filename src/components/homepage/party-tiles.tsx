@@ -42,6 +42,13 @@ export interface TileParty {
 const INK = '#2A1206', SUB = '#6b5f54', MUTE = '#a99d8f', LINE = '#ece8e1'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
+/** hex → rgba string, for the party-coloured tile-row backing. */
+function rgba(hex: string, a: number): string {
+  const m = hex.replace('#', '')
+  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
+  return `rgba(${r},${g},${b},${a})`
+}
+
 /** Darken party colours that are too light (e.g. ACT's yellow) so the seat
  *  number/icon stays legible on the pale panel. Dark colours pass through. */
 function seatColor(hex: string): string {
@@ -59,36 +66,113 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
   const { panelSlug, fading, fadeMs, select } = usePartyCycle()
   const cur = parties.find((p) => p.slug === panelSlug) || null
 
-  // Detect when the tile row is "stuck" under the navbar, to add a header shadow.
-  const sentinelRef = useRef<HTMLDivElement>(null)
-  const [stuck, setStuck] = useState(false)
+  // Measure the tile row's own height (it varies with viewport width, since the
+  // tiles are square) so the identity card above it can sit flush against it —
+  // both are fixed to the bottom of the screen now, always, at every scroll position.
+  const tileRowRef = useRef<HTMLDivElement>(null)
+  const [tileRowHeight, setTileRowHeight] = useState(0)
   useEffect(() => {
-    const el = sentinelRef.current
+    const el = tileRowRef.current
     if (!el) return
-    const io = new IntersectionObserver(
-      ([e]) => setStuck(!e.isIntersecting && e.boundingClientRect.top < 64),
-      { threshold: 0, rootMargin: '-64px 0px 0px 0px' },
-    )
-    io.observe(el)
-    return () => io.disconnect()
+    const measure = () => setTileRowHeight(el.offsetHeight)
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  // Measure every party name (off-screen, same font as the tab) so the title tab
+  // can be a single fixed width — sized to the longest name ("Te Pāti Māori") —
+  // instead of resizing per party. Shorter names right-align within that width.
+  const nameMeasureRefs = useRef<Record<string, HTMLSpanElement | null>>({})
+  const [tabWidth, setTabWidth] = useState<number | null>(null)
+  useEffect(() => {
+    const measure = () => {
+      const widths = parties.map((p) => nameMeasureRefs.current[p.slug]?.getBoundingClientRect().width ?? 0)
+      const max = Math.max(...widths, 0)
+      if (max > 0) setTabWidth(Math.ceil(max) + 32) // + the tab's own 16px/side padding
+    }
+    measure()
+    document.fonts?.ready?.then(measure)
+  }, [parties])
+
+  // The title tab is redundant while the big in-page identity card (name + leader)
+  // is on screen, so it stays hidden until that card scrolls behind the sticky
+  // navbar (64px) at the top — then it fades in as a reminder of which party is
+  // selected, and hides again once scrolling back up brings the card back below
+  // the navbar. A direct scroll-position check (rAF-throttled) instead of
+  // IntersectionObserver — the observer version was prone to getting stuck out
+  // of sync with the actual scroll position.
+  const identityCardRef = useRef<HTMLDivElement>(null)
+  const [cardVisible, setCardVisible] = useState(true)
+  useEffect(() => {
+    let raf = 0
+    const check = () => {
+      raf = 0
+      const el = identityCardRef.current
+      if (!el) return
+      setCardVisible(el.getBoundingClientRect().top >= 64)
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(check)
+    }
+    check()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
   }, [])
 
   return (
     <>
-      {/* Sentinel just above the sticky bar — flags the stuck state for the header shadow. */}
-      <div ref={sentinelRef} aria-hidden style={{ height: 1 }} />
+      {/* Hidden measuring rack — one span per party name, same font/weight/size as
+          the tab, used only to compute the fixed tab width above. */}
+      <div aria-hidden style={{ position: 'absolute', visibility: 'hidden', height: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+        {parties.map((p) => (
+          <span
+            key={p.slug}
+            ref={(el) => { nameMeasureRefs.current[p.slug] = el }}
+            style={{ fontSize: 15, fontWeight: 800, letterSpacing: '-.01em', fontFamily: MANROPE, whiteSpace: 'nowrap' }}
+          >
+            {p.name}
+          </span>
+        ))}
+      </div>
 
-      {/* THE reference point: the full-size tile row, sticky under the navbar (top:64), so it
-          rides the whole page at its original dimensions. Over the hero it's TRANSPARENT and the
-          tiles float; once pinned over page content ("stuck") the band turns into a solid,
-          full-width bar so headings scroll cleanly BEHIND it instead of colliding through the gaps. */}
-      <div style={{
-        position: 'sticky', top: 64, zIndex: 40,
-        background: stuck ? '#fff' : 'transparent',
-        borderBottom: `1px solid ${stuck ? LINE : 'transparent'}`,
-        boxShadow: stuck ? '0 6px 16px rgba(12,14,18,.06)' : 'none',
-        pointerEvents: stuck ? 'auto' : 'none',
-        transition: 'background-color .25s ease, border-color .25s ease, box-shadow .25s ease',
+      {/* Title tab — its own small container that sits ABOVE the tile row, indented
+          outward like a filing tab attached to the bar below it. Always one flat line
+          (nowrap — never stacks/wraps, even for "Te Pāti Māori"). Fixed in place at
+          the rightmost tile's slot (Te Pāti Māori's position) always — it does NOT
+          glide to track the selected tile, only its label/colour change. Fixed width
+          (sized to the longest party name) so it never resizes as parties change;
+          shorter names just right-align within that same width. */}
+      {cur && (
+        <section style={{ background: 'transparent', position: 'fixed', left: 0, right: 0, bottom: tileRowHeight, zIndex: 44, pointerEvents: 'none' }}>
+          <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px)', position: 'relative', height: 0 }}>
+            <div style={{
+              position: 'absolute', bottom: 0, right: 0,
+              width: tabWidth ?? undefined, textAlign: 'center', boxSizing: 'border-box',
+              whiteSpace: 'nowrap', background: cur.color, borderRadius: '10px 10px 0 0',
+              padding: '8px 16px', boxShadow: '0 -4px 10px rgba(0,0,0,.15)',
+              opacity: cardVisible ? 0 : 1,
+              transition: 'background-color .3s ease-in-out, opacity .3s ease-in-out',
+            }}>
+              <span style={{ fontSize: 15, fontWeight: 800, letterSpacing: '-.01em', color: '#fff', fontFamily: MANROPE, lineHeight: 1.25 }}>{cur.name}</span>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* THE reference point: the full-size tile row, fixed to the bottom edge of the
+          screen ALWAYS — not just once scrolled — so it's reachable one-handed at any
+          scroll position. Back to its original height/padding now that the title tab
+          lives in its own container above instead of inside this bar. */}
+      <div ref={tileRowRef} style={{
+        position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 45,
+        background: '#fff', borderTop: `1px solid ${LINE}`, boxShadow: '0 -6px 16px rgba(12,14,18,.08)',
       }}>
         <div style={{ maxWidth: 760, margin: '0 auto', padding: '12px clamp(18px, 5vw, 36px)' }}>
           <div style={{ display: 'flex', gap: 10 }}>
@@ -102,12 +186,15 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
                   aria-expanded={on}
                   title={p.name}
                   style={{
-                    flex: '1 1 0', minWidth: 0, aspectRatio: '1 / 1', borderRadius: 14, border: 'none', padding: 0,
+                    flex: '1 1 0', minWidth: 0, aspectRatio: '1 / 1', borderRadius: 14, padding: 0,
                     cursor: 'pointer', background: p.color, pointerEvents: 'auto',
+                    // Selected tile gets a white-then-colour ring so it reads as one
+                    // continuous shape with the title tab sitting above it.
+                    border: on ? '3px solid #fff' : 'none',
                     boxShadow: on
-                      ? '0 16px 30px rgba(0,0,0,.34)'
-                      : stuck ? '0 10px 24px rgba(0,0,0,.24)' : '0 2px 6px rgba(0,0,0,.10)',
-                    transform: on ? 'translateY(-6px)' : 'none', transition: 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .35s ease',
+                      ? `0 0 0 4px ${p.color}, 0 16px 30px rgba(0,0,0,.34)`
+                      : '0 10px 24px rgba(0,0,0,.24)',
+                    transition: 'box-shadow .35s ease',
                   }}
                 />
               )
@@ -116,84 +203,110 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
         </div>
       </div>
 
-      {/* Snapshot panel — in flow, directly below the tiles; scrolls away as you move down the page. */}
-      {cur && (() => {
-        // Speech-bubble caret: a two-layer CSS triangle (party colour behind, panel
-        // fill in front → a bordered "tail") that glides horizontally to sit centred
-        // under the active tile. The tile row and this panel share the same 760-wide
-        // container, horizontal padding and 10px gaps, so the tile-centre formula below
-        // lines the tip up exactly. It re-glides whenever the selection changes.
-        const i = parties.findIndex((p) => p.slug === cur.slug)
-        const n = parties.length
-        const tileW = `((100% - ${(n - 1) * 10}px) / ${n})`
-        const caretLeft = `calc(${i} * (${tileW} + 10px) + ${tileW} / 2)`
-        const glide = 'left .85s cubic-bezier(.4,0,.2,1), border-bottom-color .85s ease-in-out'
-        return (
-          <section style={{ background: 'transparent' }}>
-            <div style={{ maxWidth: 760, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 40px', position: 'relative' }}>
-              {/* Caret rail — zero-height, full content width, so left% maps to tile centres. */}
-              <div style={{ position: 'relative', height: 0 }} aria-hidden>
-                {/* outer triangle — party colour (the border) */}
-                <div style={{
-                  position: 'absolute', top: -22, left: caretLeft, marginLeft: -13, width: 0, height: 0,
-                  borderLeft: '13px solid transparent', borderRight: '13px solid transparent',
-                  borderBottom: `24px solid ${cur.color}`, transition: glide,
-                }} />
-                {/* inner triangle — panel fill, sits inside the outer to leave a coloured edge */}
-                <div style={{
-                  position: 'absolute', top: -13, left: caretLeft, marginLeft: -9, width: 0, height: 0,
-                  borderLeft: '9px solid transparent', borderRight: '9px solid transparent',
-                  borderBottom: `18px solid ${cur.light}`, transition: glide,
-                }} />
-              </div>
-              <div style={{
-                border: `4px solid ${cur.color}`, borderRadius: 16, background: cur.light,
-                minHeight: 440, padding: '20px 22px',
-                transition: 'border-color .85s ease-in-out, background-color .85s ease-in-out',
-              }}>
-                <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
-                  <Panel p={cur} />
-                </div>
+      {/* In-flow identity card — name + leader, in normal document flow, right above
+          the seats row. Separate from the fixed dock/tab at the bottom. A thin
+          sentinel sits right at its top edge (not the whole box) so the tab fades
+          in the instant the NAME crosses behind the navbar, not once the entire
+          card has scrolled away. */}
+      {cur && (
+        <section style={{ background: 'transparent' }}>
+          <div style={{ maxWidth: 760, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 32px' }}>
+            <div ref={identityCardRef} aria-hidden style={{ height: 1 }} />
+            <div style={{
+              border: `4px solid ${cur.color}`, borderRadius: 16, background: cur.light,
+              padding: '20px 22px',
+              transition: 'border-color .25s ease-in-out, background-color .25s ease-in-out',
+            }}>
+              <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+                <PanelHeader p={cur} />
               </div>
             </div>
-          </section>
-        )
-      })()}
+          </div>
+        </section>
+      )}
+
+      {/* Seats in Parliament — its own standalone row, between the identity card and
+          the "Where they stand" box, instead of stacked inside that box. */}
+      {cur && (
+        <section style={{ background: 'transparent' }}>
+          <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 32px' }}>
+            <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+              <SeatsRow p={cur} />
+            </div>
+          </div>
+        </section>
+      )}
+
     </>
   )
 }
 
-function Panel({ p }: { p: TileParty }) {
+/** Summary of Party Stance — every VERIFIED policy stance, sourced, in its own
+ *  card. Deliberately a SEPARATE component from <PartyTiles> so it can be placed
+ *  further down the homepage (after "Where do the parties stand?") instead of
+ *  immediately below the tiles — while still reading the same shared party-cycle
+ *  selection, so it stays in sync with whichever party is currently picked. */
+export function PartyStanceSummary({ parties }: { parties: TileParty[] }) {
+  const { panelSlug, fading, fadeMs } = usePartyCycle()
+  const cur = parties.find((p) => p.slug === panelSlug) || null
+  if (!cur) return null
+  return (
+    <section style={{ background: 'transparent' }}>
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
+        <div style={{ border: `1.5px solid ${LINE}`, borderRadius: 16, background: '#fff', padding: '20px 22px' }}>
+          <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+            <PanelStance p={cur} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/** Identity card contents — party name + leader. Used by the in-flow card above
+ *  the seats row. Seats lives outside in SeatsRow; policy stance detail lives
+ *  in PanelStance (rendered by PartyStanceSummary). */
+function PanelHeader({ p }: { p: TileParty }) {
   return (
     <div>
-      {/* identity (left) + seats (pulled to the right, party-coloured) */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 12, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', minWidth: 0 }}>
-          <span style={{ fontSize: 'clamp(24px,5.2vw,44px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.05 }}>{p.name}</span>
-        </div>
+      <span style={{ display: 'block', fontSize: 'clamp(30px,6.4vw,56px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.05 }}>{p.name}</span>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0, textAlign: 'right' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-            <Armchair style={{ width: 21, height: 21, color: seatColor(p.color) }} strokeWidth={2.4} aria-hidden />
-            <span style={{ fontSize: 35, fontWeight: 800, lineHeight: 1, color: seatColor(p.color), fontFamily: MANROPE }}>{p.seats}</span>
-          </div>
-          <div style={{ fontSize: 12, fontWeight: 700, color: SUB, marginTop: 4, textTransform: 'uppercase', letterSpacing: '.04em', fontFamily: MANROPE }}>Seats in Parliament</div>
-        </div>
-      </div>
-
-      {/* leader — moved up now the stat box is gone */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '13px 0 14px', borderTop: `1px solid ${LINE}` }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 12 }}>
         <Avatar name={p.leader} party={p.slug} src={p.leaderPhoto} size="md" face />
-        <span>
-          <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE }}>
+        <span style={{ textAlign: 'left' }}>
+          <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>
             {p.leaderHref ? <Link href={p.leaderHref} style={{ color: INK, textDecoration: 'none' }}>{p.leader}</Link> : p.leader}
           </div>
-          <div style={{ fontSize: 14, fontWeight: 600, color: SUB, marginTop: 1, fontFamily: MANROPE }}>{p.leaderTitle}</div>
+          <div style={{ fontSize: 12.5, fontWeight: 600, color: SUB, marginTop: 1, fontFamily: MANROPE }}>{p.leaderTitle}</div>
         </span>
       </div>
+    </div>
+  )
+}
 
-      {/* where they stand */}
-      <p style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', color: SUB, margin: '6px 0 9px', fontFamily: MANROPE }}>Where they stand · in their words</p>
+/** Seats in Parliament — its own standalone row, above the "Where they stand" box. */
+function SeatsRow({ p }: { p: TileParty }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+      <Armchair style={{ width: 64, height: 64, marginLeft: 10, color: seatColor(p.color) }} strokeWidth={2} aria-hidden />
+      <span style={{ fontSize: 72, fontWeight: 800, lineHeight: 1, color: seatColor(p.color), fontFamily: MANROPE }}>{p.seats}</span>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', textAlign: 'left' }}>
+        <span style={{ fontSize: 20, fontWeight: 800, color: SUB, textTransform: 'uppercase', letterSpacing: '.02em', lineHeight: 1.15, fontFamily: MANROPE }}>Seats in</span>
+        <span style={{ fontSize: 20, fontWeight: 800, color: SUB, textTransform: 'uppercase', letterSpacing: '.02em', lineHeight: 1.15, fontFamily: MANROPE }}>Parliament</span>
+        <span style={{ fontSize: 15, fontWeight: 600, color: '#5b3d2a', marginTop: 4, fontFamily: MANROPE }}>As of 2023 election</span>
+      </div>
+    </div>
+  )
+}
+
+/** Every VERIFIED policy stance, sourced — plus the footer links. Its own
+ *  section below the (sticky) identity card, in normal document flow.
+ *  Seats in Parliament lives outside, in its own standalone SeatsRow section. */
+function PanelStance({ p }: { p: TileParty }) {
+  return (
+    <div>
+      <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: p.color, fontFamily: MANROPE, marginBottom: 10 }}>Summary of Party Stance</div>
+      <p style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', color: SUB, margin: '0 0 9px', fontFamily: MANROPE }}>Where they stand · in their words</p>
       {p.positions.map((pos, i) => (
         <div key={pos.topic} style={{ display: 'flex', gap: 10, padding: '9px 0', borderTop: i === 0 ? 'none' : `1px solid ${LINE}` }}>
           <span style={{ width: 9, height: 9, borderRadius: 3, background: p.color, marginTop: 5, flexShrink: 0 }} />

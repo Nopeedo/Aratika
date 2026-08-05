@@ -23,7 +23,6 @@ import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
 
 const TOPIC_ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
-const PARTY_DOT_ORDER = ['green', 'labour', 'tpm', 'nzfirst', 'national', 'act'] as const
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
@@ -38,7 +37,7 @@ const ARROW_BASE: React.CSSProperties = {
 export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; positions: PartyPosition[] }) {
   const [sel, setSel] = useState<string | null>(null)
   const [showAll, setShowAll] = useState(false) // by default show only the focused party; opt in to the full comparison
-  const { selectedSlug: focused, select } = usePartyCycle() // the party chosen in the command bar / hero tiles
+  const { selectedSlug: focused } = usePartyCycle() // the party chosen in the command bar / hero tiles
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -78,16 +77,6 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
 
   return (
     <div>
-      {/* When a party is chosen (command bar / hero tiles) but no issue is open yet — nudge them to pick one. */}
-      {focused && !sel && PARTY_PROFILES[focused as PartySlug] && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 14, padding: '10px 14px', border: `1px solid ${BORDER}`, borderLeft: `4px solid ${PARTY_COLORS[focused as PartySlug].bg}`, borderRadius: 12, background: '#fff' }}>
-          <Target style={{ width: 15, height: 15, color: PARTY_COLORS[focused as PartySlug].bg, flexShrink: 0 }} />
-          <span style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Focused on {PARTY_PROFILES[focused as PartySlug].name}</span>
-          <span style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, flex: 1, minWidth: 130 }}>Tap an issue below to see where they stand.</span>
-          <button onClick={() => select(null)} style={{ fontSize: 14, fontWeight: 700, color: SECONDARY, background: 'none', border: `1px solid ${BORDER}`, borderRadius: 7, padding: '5px 10px', cursor: 'pointer', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>Clear focus</button>
-        </div>
-      )}
-
       {/* One focused issue at a time: a horizontal rail on every screen. Mobile swipes it;
           desktop (no swipe) cycles it with the ‹ › arrow buttons. */}
       <style>{`
@@ -155,12 +144,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
                 <div style={{ fontSize: 17, fontWeight: 800, color: INK, marginBottom: 4 }}>{t.label}</div>
                 <div style={{ fontSize: 14, color: SECONDARY, lineHeight: 1.5 }}>{t.description}</div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', gap: 4 }}>
-                  {PARTY_DOT_ORDER.map((s) => (
-                    <span key={s} style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[s].bg, border: '1.5px solid rgba(255,255,255,.6)', display: 'inline-block', flexShrink: 0 }} />
-                  ))}
-                </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
                 <span style={{ fontSize: 13, fontWeight: 700, color: on ? INK : JADE, display: 'flex', alignItems: 'center', gap: 3 }}>
                   {on ? 'Hide' : 'Compare'} <ChevronDown style={{ width: 12, height: 12, transform: on ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
                 </span>

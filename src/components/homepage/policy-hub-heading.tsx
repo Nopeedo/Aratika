@@ -1,0 +1,43 @@
+'use client'
+
+/**
+ * PolicyHubHeading — the "Where do the parties stand?" H2, but personalised to
+ * whichever party is currently selected (auto-cycling or tapped) via the shared
+ * PartyCycle clock: "What does {party} stand for?" Falls back to the generic
+ * plural heading if no party is active yet.
+ */
+
+import { usePartyCycle } from '@/components/homepage/party-cycle'
+import { PARTY_PROFILES } from '@/constants/parties-data'
+import type { PartySlug } from '@/types'
+
+const INK = '#0c0e12'
+const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+
+/** hex → rgba string, for the feathered wash behind the heading. */
+function rgba(hex: string, a: number): string {
+  const m = hex.replace('#', '')
+  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
+  return `rgba(${r},${g},${b},${a})`
+}
+
+export function PolicyHubHeading() {
+  const { panelSlug, accentColor } = usePartyCycle()
+  const name = panelSlug ? PARTY_PROFILES[panelSlug as PartySlug]?.name : null
+
+  return (
+    <div style={{ position: 'relative', isolation: 'isolate' }}>
+      {/* Feathered wash behind the heading, in the current party's colour, so it
+          stands out from the page. Radial + centred so it fades on every edge
+          instead of stopping on a hard line. */}
+      <div aria-hidden style={{
+        position: 'absolute', left: '-12%', right: '-12%', top: '-40%', bottom: '-40%',
+        background: `radial-gradient(ellipse at center, ${rgba(accentColor, 0.2)}, ${rgba(accentColor, 0)} 70%)`,
+        transition: 'background .3s ease-in-out', pointerEvents: 'none', zIndex: -1,
+      }} />
+      <h2 style={{ position: 'relative', fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>
+        {name ? `What does ${name} stand for?` : 'Where do the parties stand?'}
+      </h2>
+    </div>
+  )
+}

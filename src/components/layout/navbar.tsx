@@ -22,8 +22,8 @@ const cleanHref = (href: string) => href.split('#')[0]
 function AraponoLogo() {
   return (
     <Link href="/" className="flex items-center gap-2 shrink-0" aria-label={`${SITE.name} — home`}>
-      <span className="flex items-center justify-center size-8 rounded-lg bg-brand-jade shrink-0">
-        <LogoMark size={19} reversed />
+      <span className="flex items-center justify-center size-8 rounded-lg bg-white shadow-md shrink-0">
+        <LogoMark size={19} />
       </span>
       <span className="font-semibold text-lg text-foreground tracking-tight">
         {SITE.name}
@@ -56,7 +56,15 @@ export function Navbar() {
     item.children ? item.children.some((c) => isActive(c.href)) : isActive(item.href)
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 w-full bg-white/30 backdrop-blur-md relative">
+      {/* Bottom fade — extends the header's own translucency a little further down
+          into the page, so it blends smoothly into the white wash behind the party
+          tiles below instead of ending on a hard edge. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-0 right-0 top-full h-16"
+        style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.65), rgba(255,255,255,0))', zIndex: 60 }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 

@@ -10,7 +10,7 @@ import { PARTY_PROFILES } from '@/constants/parties-data'
 import { PARTY_COLORS } from '@/constants/parties'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { MP_PROFILES } from '@/constants/mps-data'
-import { PartyTiles, type TileParty, type TilePosition } from '@/components/homepage/party-tiles'
+import { PartyTiles, PartyStanceSummary, type TileParty, type TilePosition } from '@/components/homepage/party-tiles'
 import type { PartySlug, PolicyTopic } from '@/types'
 
 // The six parties in Parliament, in current-seat order (TOP is extra-parliamentary).
@@ -40,10 +40,13 @@ function mpSlugForName(name: string): string | null {
   return entry ? entry[0] : null
 }
 
-export async function PartyTilesSection() {
+// Shared by PartyTilesSection and PartyStanceSection so both server components
+// build the identical parties array from one place, instead of duplicating this
+// assembly logic — they just render different pieces of UI from the same data.
+async function buildTileParties(): Promise<TileParty[]> {
   const all = await getAllApprovedPositions()
 
-  const parties: TileParty[] = TILE_ORDER.map((slug) => {
+  return TILE_ORDER.map((slug) => {
     const prof = PARTY_PROFILES[slug]
     const col = PARTY_COLORS[slug]
 
@@ -90,6 +93,17 @@ export async function PartyTilesSection() {
       topicsTotal: ACTIVE_TOPICS.length,
     }
   })
+}
 
+export async function PartyTilesSection() {
+  const parties = await buildTileParties()
   return <PartyTiles parties={parties} />
+}
+
+/** Renders just the "Summary of Party Stance" card, using the same party data —
+ *  placed lower on the homepage (after "Where do the parties stand?") instead of
+ *  directly under the tiles. Stays in sync via the shared party-cycle selection. */
+export async function PartyStanceSection() {
+  const parties = await buildTileParties()
+  return <PartyStanceSummary parties={parties} />
 }
