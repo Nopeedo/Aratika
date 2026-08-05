@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono, Manrope, Space_Grotesk } from 'next/font/google'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
@@ -74,6 +74,17 @@ export const metadata: Metadata = {
     description: SITE.description,
   },
   robots: { index: true, follow: true },
+}
+
+// Locks pinch-zoom (userScalable: false / maximumScale: 1) — the fixed bottom
+// tile dock and navbar are sized for a fixed viewport; letting mobile Safari/
+// Chrome zoom in/out was part of what made the page feel like it was
+// "glitching" and shifting around.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 // ─── Root Layout ──────────────────────────────────────────────────────────────

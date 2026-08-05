@@ -93,7 +93,11 @@
 } */
 
 /* ─── Base ───────────────────────────────────────────────────────────────── */
-html { scroll-behavior: smooth; }
+/* overflow-x: hidden on both html and body — belt-and-braces against any single
+   element (a fixed-position bar, a full-bleed rail, etc.) being a hair wider
+   than the viewport and causing the whole page to shift/scroll sideways on
+   mobile. Neither element is meant to scroll horizontally on its own. */
+html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
 
 body {
   background-color: var(--background);
@@ -101,6 +105,8 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* ─── Focus ──────────────────────────────────────────────────────────────── */

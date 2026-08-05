@@ -23,7 +23,10 @@ export async function PolicyHubGrid() {
   return (
     // Transparent — the weave now lives on the page wrapper (one continuous
     // texture across the whole homepage), so this section inherits it.
-    <section style={{ background: 'transparent' }}>
+    // overflow-x: hidden clips the heading's feathered glow (which deliberately
+    // extends past its own box via negative inset) at the section edge, so it
+    // never causes the page itself to overflow/shift sideways on mobile.
+    <section style={{ background: 'transparent', overflowX: 'hidden' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 56px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 28, flexWrap: 'wrap', gap: 12 }}>
           <div>
