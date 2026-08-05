@@ -94,7 +94,13 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (sel && panelRef.current) panelRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    // Desktop only. There the rail stays put and the panel opens underneath it,
+    // so it can land off-screen. On mobile NOTHING may move the page: tapping
+    // an issue has to leave the viewport exactly where it was, same rule as the
+    // party tiles (tapping one swaps text, never scroll position).
+    if (!sel || !panelRef.current) return
+    if (window.matchMedia('(max-width: 767px)').matches) return
+    panelRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   }, [sel])
 
   // Collapse back to focused-only whenever the topic or the chosen party changes.
