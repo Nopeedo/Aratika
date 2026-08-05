@@ -1,9 +1,10 @@
 'use client'
 
 /**
- * HomeBackground — wraps the homepage in the shared weave texture and tints it
- * with the current party's accent colour (from PartyCycleProvider), so the page
- * background shifts in lockstep with the hero title and party tiles.
+ * HomeBackground — wraps the homepage in the back2.jpg background graphic
+ * (public/back2.jpg, tiled vertically / repeat-y, scaled to full width) and
+ * tints it with the current party's accent colour (from PartyCycleProvider), so
+ * the page background shifts in lockstep with the hero title and party tiles.
  *
  * The tint feathers in vertically: it holds at ~5% through the top of the hero,
  * then starts ramping partway down, reaching ~30% by the time the party tiles
@@ -45,7 +46,7 @@ export function HomeBackground({ children }: { children: ReactNode }) {
   const maskGradient = `linear-gradient(to bottom, rgba(0,0,0,${TOP_ALPHA}) 0px, rgba(0,0,0,${TOP_ALPHA}) ${rampStart}px, rgba(0,0,0,${TILE_ALPHA}) ${tileOffset}px, rgba(0,0,0,${TILE_ALPHA}) 100%)`
 
   return (
-    <div className="bg-weave" style={{ backgroundColor: '#f8fafc', position: 'relative', isolation: 'isolate' }}>
+    <div style={{ backgroundColor: '#f8fafc', backgroundImage: 'url(/back2.jpg)', backgroundRepeat: 'repeat-y', backgroundSize: '100% auto', backgroundPosition: 'top center', position: 'relative', isolation: 'isolate' }}>
       <div
         aria-hidden
         style={{
