@@ -56,6 +56,17 @@ export function NotifyToggle() {
     setBusy(false); setState('off')
   }
 
+  const [testMsg, setTestMsg] = useState<string | null>(null)
+  async function sendTest() {
+    setBusy(true); setTestMsg(null)
+    try {
+      const res = await fetch('/api/push/test', { method: 'POST' })
+      const j = await res.json().catch(() => ({}))
+      setTestMsg(res.ok ? (j.sent ? 'Sent — check your device 🔔' : 'No devices found for this account.') : 'Couldn’t send a test.')
+    } catch { setTestMsg('Couldn’t send a test.') }
+    setBusy(false)
+  }
+
   return (
     <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px', background: '#fff', fontFamily: MANROPE }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
@@ -93,9 +104,13 @@ export function NotifyToggle() {
               ) : (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                   <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: JADE }}><Check style={ic} /> On for this device</span>
+                  <button onClick={sendTest} disabled={busy} style={btn(false)}>
+                    {busy ? <Loader2 className="live-dot" style={ic} /> : <BellRing style={ic} />} Send a test
+                  </button>
                   <button onClick={turnOff} disabled={busy} style={btn(false)}>
                     {busy ? <Loader2 className="live-dot" style={ic} /> : <BellOff style={ic} />} Turn off
                   </button>
+                  {testMsg && <span style={{ fontSize: 13, color: SUB, width: '100%' }}>{testMsg}</span>}
                 </div>
               )}
             </div>

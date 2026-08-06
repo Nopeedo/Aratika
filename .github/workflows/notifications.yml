@@ -1,0 +1,61 @@
+name: Send notifications
+
+# Delivers queued push notifications. Detection jobs (e.g. refresh-bills) enqueue
+# rows; this drains the queue.
+#   - Daily "digest" sweep  (~7am NZ) — one batched push per user.
+#   - "Immediate" sweeps through the NZ day — time-sensitive items. The script's
+#     quiet-hours guard (9pm–8am NZ) skips night runs on its own.
+# Scheduled runs always deliver (--send). The manual trigger defaults to a DRY
+# run so you can eyeball what would go out; tick "send" to actually deliver.
+on:
+  schedule:
+    - cron: '0 19 * * *'       # ~7am NZ — daily digest
+    - cron: '0 21,3,7 * * *'   # immediate sweeps (night runs are skipped by quiet hours)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'immediate or digest'
+        type: choice
+        options: [immediate, digest]
+        default: immediate
+      send:
+        description: 'actually deliver? (off = dry run)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+
+      - name: Deliver
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_SUBJECT: ${{ secrets.VAPID_SUBJECT }}
+        run: |
+          MODE=immediate
+          SEND=
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            SEND=--send
+            if [ "${{ github.event.schedule }}" = "0 19 * * *" ]; then MODE=digest; fi
+          else
+            MODE="${{ github.event.inputs.mode }}"
+            if [ "${{ github.event.inputs.send }}" = "true" ]; then SEND=--send; fi
+          fi
+          echo "mode=$MODE send=${SEND:-'(dry run)'}"
+          if [ "$MODE" = "digest" ]; then
+            node scripts/send-notifications.mjs --digest $SEND
+          else
+            node scripts/send-notifications.mjs $SEND
+          fi

@@ -29,15 +29,26 @@ jobs:
       - name: Rebuild bills dataset from Parliament API
         run: node scripts/build-bills-54.mjs
 
-      - name: Commit only if the data actually changed
+      # Diff the fresh statuses against the committed baseline and ENQUEUE
+      # notifications for anyone tracking a bill that moved. Enqueue only — the
+      # send job delivers. Non-blocking so a notification hiccup never stops the
+      # data refresh.
+      - name: Detect tracked-bill status changes → enqueue
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/detect-bill-changes.mjs
+
+      - name: Commit refreshed data + notification baseline if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain src/constants)" ]; then
-            git add src/constants
-            git commit -m "Auto-refresh: 54th Parliament bills dataset from the Parliament API"
+          if [ -n "$(git status --porcelain src/constants scripts/.state)" ]; then
+            git add src/constants scripts/.state
+            git commit -m "Auto-refresh: 54th Parliament bills dataset + notification baseline"
             git push
-            echo "Committed refreshed bill data."
+            echo "Committed refreshed bill data + baseline."
           else
-            echo "No change in bill data — nothing to commit."
+            echo "No change — nothing to commit."
           fi
