@@ -19,6 +19,7 @@ import { getVideos } from '@/lib/news/videos'
 import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { CommandCentreTryIt } from '@/components/command-centre/try-it'
+import { NotifyToggle } from '@/components/notifications/notify-toggle'
 import type { BookmarkEntity } from '@/hooks/use-bookmarks'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
@@ -137,6 +138,9 @@ export default async function CommandCentrePage() {
           <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Try it now — no sign-up</h2>
           <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Tap Track on a few and watch your command centre take shape. Sign up later to keep it across devices.</p>
           <CommandCentreTryIt options={trackOptions} />
+          <div style={{ marginTop: 20 }}>
+            <NotifyToggle />
+          </div>
         </div>
       </section>
 

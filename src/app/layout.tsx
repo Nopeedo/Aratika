@@ -6,6 +6,7 @@ import { PlanTracker } from '@/components/onboarding/plan-tracker'
 // import { PlanWidget } from '@/components/onboarding/plan-widget' // hidden for now
 import { CompanionWidget } from '@/components/companion/companion-widget'
 import { SoundToggle } from '@/components/homepage/sound-toggle'
+import { SWRegister } from '@/components/notifications/sw-register'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SITE } from '@/constants/site'
@@ -60,6 +61,12 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: SITE.name }],
   metadataBase: new URL(SITE.url),
+  manifest: '/manifest.webmanifest',
+  appleWebApp: { capable: true, statusBarStyle: 'default', title: SITE.name },
+  icons: {
+    icon: [{ url: '/icon-192.png', sizes: '192x192', type: 'image/png' }, { url: '/icon-512.png', sizes: '512x512', type: 'image/png' }],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
   openGraph: {
     type: 'website',
     locale: 'en_NZ',
@@ -85,6 +92,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: '#1F8A4C',
 }
 
 // ─── Root Layout ──────────────────────────────────────────────────────────────
@@ -104,6 +112,7 @@ export default function RootLayout({
       `}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <SWRegister />
         <Navbar />
         <PlanTracker />
         <main className="flex-1">{children}</main>
