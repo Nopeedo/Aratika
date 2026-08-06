@@ -26,6 +26,13 @@ const TOPIC_ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
+// Mobile open sequence. The chip that flies up into the head row and the panel
+// that opens below it must SETTLE ON THE SAME FRAME, so the chip's flight time
+// is the panel's delay plus its duration. Derived, not hand-tuned twice — the
+// two drift apart the moment anyone edits one of them in isolation.
+const PANEL_DELAY = 240, PANEL_DUR = 500
+const CHIP_FLIGHT = PANEL_DELAY + PANEL_DUR
+
 // Desktop-only rail nav buttons (‹ ›). `display` is set by the .pe-rail-arrow class (hidden on mobile).
 const ARROW_BASE: React.CSSProperties = {
   position: 'absolute', top: 'calc(50% - 3px)', transform: 'translateY(-50%)',
@@ -68,7 +75,9 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
     el.style.transition = 'none'
     el.style.transform = `translate(${dx}px, ${dy}px)`
     void el.offsetWidth // flush the inverted position before playing forward
-    el.style.transition = 'transform .46s cubic-bezier(.34, 1.32, .64, 1)'
+    // Starts on tap (immediate feedback) and runs the panel's full delay +
+    // duration, so chip and container come to rest together.
+    el.style.transition = `transform ${CHIP_FLIGHT}ms cubic-bezier(.34, 1.32, .64, 1)`
     el.style.transform = 'translate(0, 0)'
   }, [sel, origin])
 
@@ -145,7 +154,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
              while it scales in, and that rising motion is what makes it read
              as popping up from the bottom. Delaying it past the collapse kills
              that and it grows downward instead — which we tried and reverted. */
-          animation: pe-bubble-in .5s cubic-bezier(.34, 1.5, .64, 1) 240ms both;
+          animation: pe-bubble-in ${PANEL_DUR}ms cubic-bezier(.34, 1.5, .64, 1) ${PANEL_DELAY}ms both;
         }
         .pe-panel-close { display: none; }
         .pe-open-head {
