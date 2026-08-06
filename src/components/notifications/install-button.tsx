@@ -24,6 +24,7 @@ export function InstallButton() {
   const [isIOS, setIsIOS] = useState(false)
   const [installed, setInstalled] = useState(false)
   const [showIOS, setShowIOS] = useState(false)
+  const [needsSafari, setNeedsSafari] = useState(false)
 
   useEffect(() => {
     const standalone = window.matchMedia('(display-mode: standalone)').matches
@@ -33,6 +34,11 @@ export function InstallButton() {
     const ua = navigator.userAgent
     const ios = /iP(hone|ad|od)/.test(ua) || (navigator.platform === 'MacIntel' && (navigator as unknown as { maxTouchPoints?: number }).maxTouchPoints! > 1)
     setIsIOS(ios)
+    // On iOS, Add-to-Home-Screen only works in Safari — not Chrome/Firefox on
+    // iOS, and not the in-app browsers inside Facebook / Instagram / Gmail etc.
+    const inApp = /FBAN|FBAV|Instagram|Line\/|Twitter|Snapchat|Pinterest|LinkedInApp|Messenger|MicroMessenger/i.test(ua)
+    const iosOtherBrowser = ios && /CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua)
+    if (ios && (inApp || iosOtherBrowser)) setNeedsSafari(true)
 
     const onBIP = (e: Event) => { e.preventDefault(); setDeferred(e as BIPEvent) }
     const onInstalled = () => setInstalled(true)
@@ -64,14 +70,16 @@ export function InstallButton() {
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>Install the Arapono app</div>
           <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.5, margin: '3px 0 0' }}>
-            Add Arapono to your home screen — opens like an app, and lets you get notifications{isIOS ? ' (required on iPhone)' : ''}.
+            {needsSafari
+              ? <>It&rsquo;s not in the App Store — on iPhone you add it straight from <b>Safari</b>. This browser can&rsquo;t, so open <b>arapono.org.nz in Safari</b> first.</>
+              : <>Add Arapono to your home screen — opens like an app, and lets you get notifications{isIOS ? ' (required on iPhone)' : ''}. It&rsquo;s not an App Store download.</>}
           </p>
 
           <div style={{ marginTop: 14 }}>
             {deferred ? (
               <button onClick={install} style={btn(true)}><Download style={ic} /> Install app</button>
             ) : (
-              <button onClick={() => setShowIOS((v) => !v)} style={btn(true)}><Share style={ic} /> How to add to Home Screen</button>
+              <button onClick={() => setShowIOS((v) => !v)} style={btn(true)}><Share style={ic} /> {needsSafari ? 'How to install on iPhone' : 'How to add to Home Screen'}</button>
             )}
           </div>
 
@@ -79,9 +87,10 @@ export function InstallButton() {
             <div style={{ marginTop: 12, padding: '12px 14px', borderRadius: 12, background: '#f4f6f8', position: 'relative' }}>
               <button onClick={() => setShowIOS(false)} aria-label="Close" style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', cursor: 'pointer', color: SUB }}><X style={{ width: 15, height: 15 }} /></button>
               <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13.5, color: INK, lineHeight: 1.7 }}>
-                <li>Tap the <b>Share</b> button <Share style={{ width: 13, height: 13, verticalAlign: '-2px' }} /> at the bottom of Safari.</li>
-                <li>Scroll down and tap <b>Add to Home Screen</b> <SquarePlus style={{ width: 13, height: 13, verticalAlign: '-2px' }} />.</li>
-                <li>Tap <b>Add</b> — then open Arapono from your Home Screen.</li>
+                {needsSafari && <li>First open <b>arapono.org.nz in Safari</b> (this in-app browser can&rsquo;t install). Tap the <b>•••</b> or share icon → <b>Open in Safari</b>.</li>}
+                <li>In Safari, tap the <b>Share</b> button <Share style={{ width: 13, height: 13, verticalAlign: '-2px' }} /> (the box with an ↑).</li>
+                <li>Scroll down, tap <b>Add to Home Screen</b> <SquarePlus style={{ width: 13, height: 13, verticalAlign: '-2px' }} />, then <b>Add</b>.</li>
+                <li>Open Arapono from your Home Screen — now it&rsquo;s an app.</li>
               </ol>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, fontSize: 12.5, color: JADE, fontWeight: 700 }}>
                 <Check style={{ width: 14, height: 14 }} /> Then you can turn on notifications.

@@ -20,6 +20,7 @@ interface BIPEvent extends Event { prompt: () => Promise<void>; userChoice: Prom
 export function InstallBanner() {
   const [deferred, setDeferred] = useState<BIPEvent | null>(null)
   const [isIOS, setIsIOS] = useState(false)
+  const [needsSafari, setNeedsSafari] = useState(false)
   const [show, setShow] = useState(false)
   const [hint, setHint] = useState(false)
 
@@ -31,7 +32,11 @@ export function InstallBanner() {
 
     const ua = navigator.userAgent
     const ios = /iP(hone|ad|od)/.test(ua) || (navigator.platform === 'MacIntel' && (navigator as unknown as { maxTouchPoints?: number }).maxTouchPoints! > 1)
-    if (ios) { setIsIOS(true); setShow(true) }
+    if (ios) {
+      setIsIOS(true); setShow(true)
+      const inApp = /FBAN|FBAV|Instagram|Line\/|Twitter|Snapchat|Pinterest|LinkedInApp|Messenger|MicroMessenger/i.test(ua)
+      if (inApp || /CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua)) setNeedsSafari(true)
+    }
 
     const onBIP = (e: Event) => { e.preventDefault(); setDeferred(e as BIPEvent); setShow(true) }
     window.addEventListener('beforeinstallprompt', onBIP)
@@ -61,9 +66,11 @@ export function InstallBanner() {
         {hint && isIOS && (
           <div style={{ maxWidth: 320, padding: '10px 12px', borderRadius: 12, background: '#fff', border: `1px solid ${JADE}22`, boxShadow: '0 6px 18px rgba(12,14,18,.10)', fontFamily: MANROPE }}>
             <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: INK, lineHeight: 1.7 }}>
+              {needsSafari && <li>Open <b>arapono.org.nz in Safari</b> (this browser can&rsquo;t install it).</li>}
               <li>Tap <b>Share</b> <Share style={{ width: 12, height: 12, verticalAlign: '-1px' }} /> in Safari.</li>
               <li>Tap <b>Add to Home Screen</b> <SquarePlus style={{ width: 12, height: 12, verticalAlign: '-1px' }} />.</li>
             </ol>
+            <div style={{ fontSize: 11.5, color: SUB, marginTop: 8 }}>Arapono isn&rsquo;t in the App Store — you add it from Safari.</div>
           </div>
         )}
       </div>
