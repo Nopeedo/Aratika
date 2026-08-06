@@ -140,12 +140,12 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           margin-top: 10px;
           border: 4px solid var(--pe-accent, #e9e7e2); border-radius: 16px;
           transform-origin: 0 0;
-          /* Delayed past the grid collapse (300ms) on purpose. If it opens
-             while the chips are still closing, the layout is sliding upward
-             underneath it and the whole thing reads as growing UP from the
-             bottom. Starting after the collapse settles, the only motion left
-             is the scale from its own top-left corner: it grows DOWN. */
-          animation: pe-bubble-in .46s cubic-bezier(.34, 1.5, .64, 1) 320ms both;
+          /* Opens DURING the grid collapse on purpose. Because the chips above
+             are still closing, the panel's whole layout box is sliding upward
+             while it scales in, and that rising motion is what makes it read
+             as popping up from the bottom. Delaying it past the collapse kills
+             that and it grows downward instead — which we tried and reverted. */
+          animation: pe-bubble-in .5s cubic-bezier(.34, 1.5, .64, 1) 240ms both;
         }
         .pe-panel-close { display: none; }
         .pe-open-head {
@@ -218,8 +218,8 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           display: 'grid',
           gridTemplateRows: sel ? '0fr' : '1fr',
           transition: sel
-            ? 'grid-template-rows .30s cubic-bezier(.4, 0, .2, 1)'
-            : 'grid-template-rows .44s cubic-bezier(.34, 1.4, .64, 1) 60ms',
+            ? 'grid-template-rows .40s cubic-bezier(.4, 0, .2, 1) 120ms'
+            : 'grid-template-rows .44s cubic-bezier(.34, 1.4, .64, 1)',
         }}>
           <div style={{ overflow: 'hidden' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -229,7 +229,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
                 // head row is already covering it pixel-for-pixel, so animating
                 // this one too would just look like a duplicate.
                 const tapped = out && sel === key
-                const delay = out ? (topicKeys.length - 1 - i) * 12 : 90 + i * 15
+                const delay = out ? (topicKeys.length - 1 - i) * 14 : 100 + i * 15
                 return (
                   <TopicChip
                     key={key}
@@ -243,7 +243,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
                       transition: tapped
                         ? 'none'
                         : out
-                          ? `transform .2s cubic-bezier(.45, 0, .75, .5) ${delay}ms, opacity .17s linear ${delay}ms`
+                          ? `transform .24s cubic-bezier(.45, 0, .75, .5) ${delay}ms, opacity .2s linear ${delay}ms`
                           : `transform .44s cubic-bezier(.34, 1.56, .64, 1) ${delay}ms, opacity .26s ease ${delay}ms`,
                     }}
                   />
