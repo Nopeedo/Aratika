@@ -1,0 +1,46 @@
+name: Weekly newsletter
+
+# Builds and sends the Arapono Weekly. Manual for now — no scheduled cron until
+# it's been tested (send-to-self) and signed off. The "mode" input controls it:
+#   dry  → renders + logs, sends nothing (default)
+#   self → sends ONE real email to the address in "self_email"
+#   send → sends to every subscribed account
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry (default) | self | send'
+        type: choice
+        options: [dry, self, send]
+        default: dry
+      self_email:
+        description: 'for mode=self — the email to send the test to'
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  newsletter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+
+      - name: Build & send
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ZOHO_SMTP_USER: ${{ secrets.ZOHO_SMTP_USER }}
+          ZOHO_SMTP_PASS: ${{ secrets.ZOHO_SMTP_PASS }}
+          NEXT_PUBLIC_APP_URL: https://arapono.org.nz
+        run: |
+          case "${{ github.event.inputs.mode }}" in
+            self) node scripts/newsletter.mjs --self "${{ github.event.inputs.self_email }}" ;;
+            send) node scripts/newsletter.mjs --send ;;
+            *)    node scripts/newsletter.mjs ;;
+          esac
