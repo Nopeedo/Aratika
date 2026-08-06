@@ -22,6 +22,7 @@ import { HomeMap } from '@/components/homepage/home-map'
 import { AllPartiesSection } from '@/components/homepage/all-parties-section'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
+import { InstallBanner } from '@/components/notifications/install-banner'
 
 export default function HomePage() {
   return (
@@ -33,6 +34,9 @@ export default function HomePage() {
 
         {/* ── The choice: guided help, or explore ── */}
         <CinematicHero />
+
+        {/* Slim, dismissible "install the app" strip — only shows when installable. */}
+        <InstallBanner />
 
         {/* Anchor for the hero's "I'll look around myself" jump. Kept as a
             zero-height marker (NOT a wrapper) so it doesn't become the sticky
