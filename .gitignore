@@ -68,3 +68,9 @@ scripts/build-platform-reference.cjs
 # Backup snapshots — the gz is uploaded as a workflow artifact, not committed
 # (it would add ~1MB/night to history). The small manifest IS committed.
 backups/*.gz
+
+# Local secret dumps — never commit
+VapidKeys.txt
+*vapid*.txt
+*apikey*.txt
+*.keys
