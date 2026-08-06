@@ -54,21 +54,39 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
   // Where on screen the tapped chip was, so the copy in the head row can start
   // there and travel — rather than one chip vanishing and another appearing.
   const [origin, setOrigin] = useState<{ x: number; y: number } | null>(null)
+  // A topic whose chip is currently flying back down to its slot in the grid.
+  // The head row stays mounted (and out of flow) for the length of that flight.
+  const [returning, setReturning] = useState<string | null>(null)
+  const [pinTop, setPinTop] = useState(0)
   const headChipRef = useRef<HTMLDivElement>(null)
+  const headRowRef = useRef<HTMLDivElement>(null)
+  const gridChipRefs = useRef<Record<string, HTMLDivElement | null>>({})
 
   const openTopic = (key: string, el: HTMLElement) => {
     const r = el.getBoundingClientRect()
     setOrigin({ x: r.left, y: r.top })
+    setReturning(null)
     setSel(key)
   }
 
-  // FLIP: the head chip has already been laid out in its final slot, so invert
-  // it back onto the tapped chip's position and play it forward to identity.
-  // Runs in useLayoutEffect so the inverted transform is painted on the first
-  // frame — in a plain useEffect the chip would flash at its destination first.
+  const closeTopic = () => {
+    const row = headRowRef.current
+    if (!sel || !row) { setSel(null); return }
+    // Take the head row out of flow, pinned where it already is, so the grid
+    // can reclaim its space without the row jumping — and so the grid chips
+    // measure at their true final positions while the flight is in progress.
+    setPinTop(row.offsetTop)
+    setReturning(sel)
+    setSel(null)
+  }
+
+  // FLIP out: the head chip has already been laid out in its final slot, so
+  // invert it back onto the tapped chip's position and play it forward to
+  // identity. Runs in useLayoutEffect so the inverted transform is painted on
+  // the first frame — in a plain useEffect it would flash at the destination.
   useLayoutEffect(() => {
     const el = headChipRef.current
-    if (!el || !origin) return
+    if (!el || !origin || !sel) return
     const r = el.getBoundingClientRect()
     const dx = origin.x - r.left, dy = origin.y - r.top
     if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return
@@ -80,6 +98,43 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
     el.style.transition = `transform ${CHIP_FLIGHT}ms cubic-bezier(.34, 1.32, .64, 1)`
     el.style.transform = 'translate(0, 0)'
   }, [sel, origin])
+
+  // FLIP back: same trick in reverse. The grid chips report their true resting
+  // rects even while the grid is still clipped open — the row is out of flow by
+  // now, and the chips are laid out at full size inside an overflow:hidden box,
+  // so their offsets are already final. That's what makes this measurable up
+  // front instead of having to wait for the expand to finish.
+  useLayoutEffect(() => {
+    if (!returning) return
+    const el = headChipRef.current
+    const target = gridChipRefs.current[returning]
+    if (!el || !target) { setReturning(null); return }
+    const from = el.getBoundingClientRect(), to = target.getBoundingClientRect()
+    el.style.transition = 'none'
+    el.style.transform = 'translate(0, 0)'
+    void el.offsetWidth
+    el.style.transition = `transform ${CHIP_FLIGHT}ms cubic-bezier(.34, 1.32, .64, 1)`
+    el.style.transform = `translate(${to.left - from.left}px, ${to.top - from.top}px)`
+    const id = setTimeout(() => {
+      // Reveal the real chip in the same frame the flyer is unmounted. Done on
+      // the node rather than by state alone because the re-render re-applies
+      // the grid's staggered fade-in transition — the chip would ease from 0
+      // over ~half a second and leave a visible hole where it just landed.
+      // Writing opacity:1 first means that render is a no-op for opacity.
+      const btn = gridChipRefs.current[returning]?.querySelector('button')
+      if (btn instanceof HTMLElement) {
+        btn.style.transition = 'none'
+        btn.style.opacity = '1'
+        // Flush it. Without a forced recalc the browser folds this write and
+        // React's re-render into a single style resolution, sees opacity go
+        // 0 → 1 with the staggered transition already reattached, and fades
+        // it in anyway — which is the hole this is meant to close.
+        void btn.offsetWidth
+      }
+      setReturning(null)
+    }, CHIP_FLIGHT)
+    return () => clearTimeout(id)
+  }, [returning])
 
   useEffect(() => {
     // Desktop only. There the rail stays put and the panel opens underneath it,
@@ -141,7 +196,9 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
         .pe-rail-hint { display: flex; }
         .pe-rail-arrow { display: none; }
         .pe-topic-rail-wrap { display: none; }
-        .pe-mobile { display: block; }
+        /* relative so the head row can be pinned out of flow while its chip
+           flies back down into the grid on close. */
+        .pe-mobile { display: block; position: relative; }
         /* Mobile panel borrows the party identity card's look: thick border in
            the live party colour (fed in as --pe-accent). Bubbles open from its
            top-left corner, so it grows into the space the chips just vacated. */
@@ -197,25 +254,35 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
             means its layout position is already final the moment it mounts —
             nothing below it can push it around — which is what makes the FLIP
             below land on the right target. */}
-        {sel && (
-          <div className="pe-open-head">
+        {(sel || returning) && (
+          <div
+            className="pe-open-head"
+            ref={headRowRef}
+            style={returning ? { position: 'absolute', top: pinTop, left: 0, right: 0 } : undefined}
+          >
             <button
               className="pe-back-chip"
-              onClick={() => setSel(null)}
+              onClick={closeTopic}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 5,
                 padding: '9px 13px', borderRadius: 12, border: `2px solid ${INK}`,
                 background: '#fff', cursor: 'pointer', fontFamily: MANROPE,
                 fontSize: 14, fontWeight: 800, color: INK, whiteSpace: 'nowrap',
+                opacity: returning ? 0 : 1, transition: 'opacity .18s ease',
+                // Kill the entrance animation on the way out: a finished
+                // animation with fill-mode:both keeps asserting opacity:1 and
+                // outranks inline styles, so the fade would never happen.
+                animation: returning ? 'none' : undefined,
               }}
             >
               <ChevronLeft style={{ width: 15, height: 15 }} /> Other issues
             </button>
             {/* Not a second chip that fades in — this one starts life at the
                 exact screen position of the chip you tapped and glides up into
-                place (see the FLIP in useLayoutEffect). */}
+                place, then flies back down into that same slot on close (see
+                the two FLIPs in useLayoutEffect). */}
             <div ref={headChipRef} style={{ display: 'inline-flex' }}>
-              <TopicChip topicKey={sel} active onClick={() => setSel(null)} />
+              <TopicChip topicKey={(sel ?? returning) as string} active onClick={closeTopic} />
             </div>
           </div>
         )}
@@ -234,28 +301,38 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {topicKeys.map((key, i) => {
                 const out = sel !== null
-                // The tapped chip vanishes instantly: the flying copy in the
-                // head row is already covering it pixel-for-pixel, so animating
-                // this one too would just look like a duplicate.
-                const tapped = out && sel === key
+                // Instant, no transition, in both directions: on the way out the
+                // flying copy already covers this chip pixel-for-pixel, and on
+                // the way back the flight lands on it before it's revealed. Any
+                // animation here would just read as a duplicate.
+                const swapped = (out && sel === key) || returning === key
                 const delay = out ? (topicKeys.length - 1 - i) * 14 : 100 + i * 15
                 return (
-                  <TopicChip
+                  <div
                     key={key}
-                    topicKey={key}
-                    active={false}
-                    onClick={(e) => openTopic(key, e.currentTarget)}
-                    style={{
-                      transform: out ? 'scale(.34) translate(-14px, -14px)' : 'scale(1) translate(0, 0)',
-                      opacity: out ? 0 : 1,
-                      pointerEvents: out ? 'none' : 'auto',
-                      transition: tapped
-                        ? 'none'
-                        : out
-                          ? `transform .24s cubic-bezier(.45, 0, .75, .5) ${delay}ms, opacity .2s linear ${delay}ms`
-                          : `transform .44s cubic-bezier(.34, 1.56, .64, 1) ${delay}ms, opacity .26s ease ${delay}ms`,
-                    }}
-                  />
+                    // Measured as the flight target on close. The wrapper hugs
+                    // the chip and carries no transform of its own, so its rect
+                    // is the chip's true resting position even while the chip
+                    // inside is scaled down mid-animation.
+                    ref={(el) => { gridChipRefs.current[key] = el }}
+                    style={{ display: 'inline-flex' }}
+                  >
+                    <TopicChip
+                      topicKey={key}
+                      active={false}
+                      onClick={(e) => openTopic(key, e.currentTarget)}
+                      style={{
+                        transform: out ? 'scale(.34) translate(-14px, -14px)' : 'scale(1) translate(0, 0)',
+                        opacity: out || returning === key ? 0 : 1,
+                        pointerEvents: out ? 'none' : 'auto',
+                        transition: swapped
+                          ? 'none'
+                          : out
+                            ? `transform .24s cubic-bezier(.45, 0, .75, .5) ${delay}ms, opacity .2s linear ${delay}ms`
+                            : `transform .44s cubic-bezier(.34, 1.56, .64, 1) ${delay}ms, opacity .26s ease ${delay}ms`,
+                      }}
+                    />
+                  </div>
                 )
               })}
             </div>
@@ -416,7 +493,7 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
 
   return (
     <div>
-      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 7, fontFamily: MANROPE }}>{party.name}: {topicLabel}</div>
+      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 7, fontFamily: MANROPE }}>{party.name} on {topicLabel}</div>
       <p style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, margin: '0 0 12px', fontFamily: MANROPE }}>{pos.stance || body}</p>
 
       {/* One bullet per sentence — easier to scan than a wall of prose, which
