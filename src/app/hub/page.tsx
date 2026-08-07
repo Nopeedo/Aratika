@@ -51,18 +51,20 @@ export default async function HubPage() {
   const leader = [...pop].sort((a, b) => b.pct - a.pct)[0] ?? null
   const leaderLabel = leader ? `${PARTY_NAMES[leader.slug].short} ${leader.pct}%` : 'poll of polls'
 
+  // `ink` = deep 700-level hue used for border + icon + title, matching the
+  // homepage TopicChip strength (see topic-chip.tsx TOPIC_BORDER_HEX).
   const forYou: Tile[] = [
-    { href: '/command-centre', title: 'Your Command Centre', desc: 'The MPs, parties and bills you follow — news gathered for you.', Icon: Compass, tint: '#ecfdf3', ink: '#1F8A4C', stat: tracked > 0 ? `${tracked} tracked` : 'Start tracking' },
-    { href: '/map', title: 'Your electorate', desc: 'Find your seat, your MP and the 2026 race.', Icon: MapPin, tint: '#fef1f2', ink: '#e11d48' },
-    { href: '/guide', title: 'Get ready to vote', desc: 'Enrol, and how your two votes work.', Icon: Vote, tint: '#ecfeff', ink: '#0891b2' },
+    { href: '/command-centre', title: 'Your Command Centre', desc: 'The MPs, parties and bills you follow — news gathered for you.', Icon: Compass, tint: '#ecfdf3', ink: '#15803d', stat: tracked > 0 ? `${tracked} tracked` : 'Start tracking' },
+    { href: '/map', title: 'Your electorate', desc: 'Find your seat, your MP and the 2026 race.', Icon: MapPin, tint: '#fef1f2', ink: '#be123c' },
+    { href: '/guide', title: 'Get ready to vote', desc: 'Enrol, and how your two votes work.', Icon: Vote, tint: '#ecfeff', ink: '#0e7490' },
   ]
   const election: Tile[] = [
     { href: '/elections/2026', title: 'Election Centre', desc: 'Polls, projection and live results on the night.', Icon: BarChart3, tint: '#eff4ff', ink: '#1d4ed8', stat: leaderLabel },
-    { href: '/compare', title: 'Compare parties', desc: 'Every party, side by side on the issues.', Icon: Scale, tint: '#f5f3ff', ink: '#7c3aed' },
-    { href: '/battlegrounds', title: 'Battlegrounds', desc: 'The marginal seats to watch.', Icon: Swords, tint: '#fff1f1', ink: '#dc2626', stat: `${ultra} ultra-marginal` },
+    { href: '/compare', title: 'Compare parties', desc: 'Every party, side by side on the issues.', Icon: Scale, tint: '#f5f3ff', ink: '#6d28d9' },
+    { href: '/battlegrounds', title: 'Battlegrounds', desc: 'The marginal seats to watch.', Icon: Swords, tint: '#fff1f1', ink: '#b91c1c', stat: `${ultra} ultra-marginal` },
     { href: '/bills', title: 'The Record', desc: 'Bills and what this Parliament has done.', Icon: FileText, tint: '#fdf3ff', ink: '#a21caf', stat: submissions > 0 ? `${submissions} open for submissions` : undefined },
     { href: '/budget', title: 'Budget 2026', desc: 'Where the Government is spending.', Icon: Wallet, tint: '#fff6ed', ink: '#c2410c' },
-    { href: '/news', title: 'Latest', desc: 'Election news and video.', Icon: Newspaper, tint: '#f0fdfa', ink: '#0d9488' },
+    { href: '/news', title: 'Latest', desc: 'Election news and video.', Icon: Newspaper, tint: '#f0fdfa', ink: '#0f766e' },
     { href: '/learn', title: 'Learn the basics', desc: 'How voting and Parliament work.', Icon: GraduationCap, tint: '#fffbeb', ink: '#b45309' },
   ]
 
@@ -113,11 +115,11 @@ function Grid({ tiles }: { tiles: Tile[] }) {
         <Link key={t.href} href={t.href} className="party-card" style={{
           flex: '1 1 240px', minWidth: 0,
           display: 'block', textDecoration: 'none', borderRadius: 16, padding: '16px 16px 15px',
-          background: t.tint, border: `1.5px solid ${t.ink}`, color: INK,
+          background: t.tint, border: `2px solid ${t.ink}`, color: INK,
         }}>
           <t.Icon style={{ width: 24, height: 24, color: t.ink, marginBottom: 12 }} />
           <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-.01em', color: t.ink, fontFamily: MANROPE }}>{t.title}</div>
-          <div style={{ fontSize: 13, color: SUB, lineHeight: 1.45, marginTop: 3, fontFamily: MANROPE }}>{t.desc}</div>
+          <div style={{ fontSize: 13, color: BODY, lineHeight: 1.45, marginTop: 3, fontFamily: MANROPE }}>{t.desc}</div>
           {t.stat && (
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, marginTop: 11, fontSize: 12.5, fontWeight: 800, color: t.ink, fontFamily: MANROPE }}>
               {t.stat} <ArrowRight style={{ width: 13, height: 13 }} />
