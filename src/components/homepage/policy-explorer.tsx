@@ -12,7 +12,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import {
-  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink, ListChecks,
+  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink, ListChecks, Quote,
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
@@ -469,6 +469,42 @@ function readableOnWhite(hex: string): string {
   return `#${hx(r)}${hx(g)}${hx(b)}`
 }
 
+/** A tappable title that expands downward to reveal its content — the "what
+ *  they'll do" / "how this affects you" breakdown inside an open issue panel.
+ *  Uses the same grid-template-rows collapse trick as the mobile topic grid
+ *  above, for a smooth height animation without measuring pixel heights. */
+function ExpandableSection({ icon: Icon, title, defaultOpen, children }: {
+  icon: React.ElementType
+  title: string
+  defaultOpen?: boolean
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = useState(!!defaultOpen)
+  return (
+    <div style={{ borderTop: `1px solid ${BORDER}`, marginTop: 14, paddingTop: 14 }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%',
+          background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: MANROPE, textAlign: 'left',
+        }}
+      >
+        <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Icon style={{ width: 17, height: 17, color: JADE, flexShrink: 0 }} />
+          <span style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{title}</span>
+        </span>
+        <ChevronDown style={{ width: 16, height: 16, color: SECONDARY, flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
+      </button>
+      <div style={{ display: 'grid', gridTemplateRows: open ? '1fr' : '0fr', transition: 'grid-template-rows .3s ease' }}>
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ paddingTop: 12 }}>{children}</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /** The chosen party's stance on the open topic. Sits directly in the panel —
  *  no nested card of its own, since the panel already carries the party's
  *  colour on its border and names the party in its heading. */
@@ -487,6 +523,14 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
   // meandering bullets. Falls back to that split only where a position has no
   // keyProposals captured yet, so the panel is never left empty.
   const bullets = pos?.keyProposals.length ? pos.keyProposals : (pos?.stance ? toBullets(body) : [])
+  // Verbatim only — excerpts/quote are the two fields the ingestion script
+  // mechanically verifies as exact substrings of the party's own published
+  // text (see scripts/draft-positions.mjs). keyProposals/stance/summary are
+  // still a faithful AI paraphrase of that same text, fine for reporting a
+  // claim in plain language — but quotes are the one thing on this panel with
+  // zero synthesis in the loop. Merge quote in only if it isn't already one
+  // of the excerpts, so nothing repeats.
+  const quotes = pos ? [...pos.excerpts, ...(pos.quote && !pos.excerpts.includes(pos.quote) ? [pos.quote] : [])] : []
 
   if (!pos) {
     return (
@@ -499,18 +543,19 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
   return (
     <div>
       <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 7, fontFamily: MANROPE }}>{party.name} on {topicLabel}</div>
-      <p style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, margin: '0 0 12px', fontFamily: MANROPE }}>{pos.stance || body}</p>
+      <p style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, margin: 0, fontFamily: MANROPE }}>{pos.stance || body}</p>
 
-      {/* Same shape as the full breakdown page's list (see PositionReader), so
-          a reader meets the identical format here and there: jade icon, plain
-          heading, one action per bullet in the party's colour. */}
+      {/* Two tap-to-expand sections — deliberately just these two, both
+          strictly grounded in the party's own published text (see
+          scripts/draft-positions.mjs). Dropped: a "who this affects" section,
+          because that field is the model CONSTRUCTING an impact read rather
+          than transcribing one — the party never said it, so it doesn't
+          belong on a panel that's meant to be their claim and nothing else.
+          "What they'll do" opens by default so those bullets stay immediately
+          visible, same as before. "In their own words" starts closed. */}
       {bullets.length > 0 && (
-        <>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '0 0 11px' }}>
-            <ListChecks style={{ width: 17, height: 17, color: JADE, flexShrink: 0 }} />
-            <h4 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>What they say they&rsquo;ll do</h4>
-          </div>
-          <ul style={{ listStyle: 'none', margin: '0 0 14px', padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <ExpandableSection icon={ListChecks} title="What they say they&rsquo;ll do" defaultOpen>
+          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
             {bullets.map((b, i) => (
               <li key={i} style={{ display: 'flex', gap: 11, fontSize: 17, color: '#33373f', lineHeight: 1.55, fontFamily: MANROPE }}>
                 <span aria-hidden style={{ width: 7, height: 7, borderRadius: '50%', background: c, flexShrink: 0, marginTop: 9 }} />
@@ -518,11 +563,17 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
               </li>
             ))}
           </ul>
-        </>
+        </ExpandableSection>
       )}
 
-      {pos.quote && (
-        <p style={{ fontSize: 15, color: SECONDARY, lineHeight: 1.5, margin: '0 0 12px', paddingLeft: 11, borderLeft: `3px solid ${c}`, fontStyle: 'italic', fontFamily: MANROPE }}>“{pos.quote}”</p>
+      {quotes.length > 0 && (
+        <ExpandableSection icon={Quote} title="In their own words">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {quotes.map((q, i) => (
+              <blockquote key={i} style={{ margin: 0, paddingLeft: 11, borderLeft: `3px solid ${c}`, fontSize: 15, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, fontStyle: 'italic' }}>“{q}”</blockquote>
+            ))}
+          </div>
+        </ExpandableSection>
       )}
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
