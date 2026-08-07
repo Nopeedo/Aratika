@@ -211,7 +211,7 @@ function Grid({ tiles }: { tiles: Tile[] }) {
           background: t.tint, border: `2px solid ${t.ink}`, color: INK,
         }}>
           <t.Icon style={{ width: 24, height: 24, color: t.ink, marginBottom: 12 }} />
-          <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-.01em', color: t.ink, fontFamily: MANROPE }}>{t.title}</div>
+          <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE }}>{t.title}</div>
           <div style={{ fontSize: 13, color: BODY, lineHeight: 1.45, marginTop: 3, fontFamily: MANROPE }}>{t.desc}</div>
           {t.stat && (
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, marginTop: 11, fontSize: 12.5, fontWeight: 800, color: t.ink, fontFamily: MANROPE }}>
