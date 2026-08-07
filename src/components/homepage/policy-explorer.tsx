@@ -10,7 +10,6 @@
  */
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import Link from 'next/link'
 import {
   ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink, ListChecks, Quote,
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
@@ -430,7 +429,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
               // Crossfades on the cycle's own clock, so while the tiles are
               // still rolling the stance swaps mid-fade rather than hard-cutting.
               <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
-                <FocusedCard slug={shown} pos={getPos(shown)} topic={sel} topicLabel={selTopic.label} />
+                <FocusedCard slug={shown} pos={getPos(shown)} topicLabel={selTopic.label} />
               </div>
             )
           ) : (
@@ -529,10 +528,9 @@ function ExpandableSection({ icon: Icon, title, accent, defaultOpen, children }:
 /** The chosen party's stance on the open topic. Sits directly in the panel —
  *  no nested card of its own, since the panel already carries the party's
  *  colour on its border and names the party in its heading. */
-function FocusedCard({ slug, pos, topic, topicLabel }: {
+function FocusedCard({ slug, pos, topicLabel }: {
   slug: PartySlug
   pos: PartyPosition | undefined
-  topic: string
   topicLabel: string
 }) {
   const party = PARTY_PROFILES[slug]
@@ -597,15 +595,9 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
         </ExpandableSection>
       )}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
-        <Link href={`/policies/${topic}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: INK, textDecoration: 'none', fontFamily: MANROPE }}>
-          Full breakdown <ArrowRight style={{ width: 15, height: 15 }} />
-        </Link>
-      </div>
-
       {/* Source link sits last — it's the footnote for everything above it. */}
       {pos.sourceUrl && (
-        <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 14, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE, marginTop: 12 }}>
+        <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 14, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE, marginTop: 12, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
           {pos.sourceLabel} <ExternalLink style={{ width: 12, height: 12 }} />
         </a>
       )}
