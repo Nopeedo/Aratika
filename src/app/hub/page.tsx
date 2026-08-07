@@ -83,6 +83,23 @@ export default async function HubPage() {
     if (following) {
       const allNews = await getNews()
       feedNews = allNews.filter((n) => matches(n.parties, n.topics, n.mps, n.electorates)).slice(0, 4)
+
+      // Newest activity per tracked thing → the card's "new since last visit" badge.
+      const latest: Record<string, number> = {}
+      const bump = (k: string, t: number) => { if (t > (latest[k] ?? 0)) latest[k] = t }
+      for (const n of allNews) {
+        const t = n.pubDate ? Date.parse(n.pubDate) : NaN
+        if (Number.isNaN(t)) continue
+        for (const p of n.parties) bump(`party:${p}`, t)
+        for (const tp of n.topics) bump(`policy:${tp}`, t)
+        for (const m of n.mps) bump(`mp:${m}`, t)
+        for (const e of n.electorates) bump(`electorate:${e}`, t)
+      }
+      enriched = enriched.map((b) => {
+        const keys = b.kind === 'electorate' ? [`electorate:${b.ref_id}`, `electorate:${b.label}`] : [`${b.kind}:${b.ref_id}`]
+        const la = Math.max(0, ...keys.map((k) => latest[k] ?? 0))
+        return la ? { ...b, lastActivity: la } : b
+      })
     }
   }
   const tracked = enriched.length

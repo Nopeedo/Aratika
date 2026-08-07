@@ -7,7 +7,7 @@
  * dashboard. Empty state nudges the user toward the things worth tracking.
  */
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
@@ -26,7 +26,9 @@ function fmtDate(iso?: string | null) {
 }
 
 // Server enriches MP/party bookmarks with display details (photo, party, leader).
-export type TrackedItem = Bookmark & { photo?: string; party?: string; role?: string; leader?: string }
+// `lastActivity` = ms timestamp of the newest news tagged to this item, if any —
+// drives the "new since your last visit" badge.
+export type TrackedItem = Bookmark & { photo?: string; party?: string; role?: string; leader?: string; lastActivity?: number }
 const initials = (s: string) => s.split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase()
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
@@ -40,6 +42,16 @@ const GROUPS: { kind: Bookmark['kind']; label: string; icon: React.ElementType }
   { kind: 'bill', label: 'Tracked bills', icon: Gavel },
   { kind: 'electorate', label: 'Tracked electorates', icon: MapPin },
 ]
+
+// Each section gets its own colour identity — light tint + deep 700-level ink —
+// the same treatment the homepage topic chips / hub tiles use.
+const KIND_STYLE: Record<Bookmark['kind'], { tint: string; ink: string }> = {
+  mp:         { tint: '#eff4ff', ink: '#1d4ed8' },
+  party:      { tint: '#f5f3ff', ink: '#6d28d9' },
+  policy:     { tint: '#f0fdfa', ink: '#0f766e' },
+  bill:       { tint: '#fdf3ff', ink: '#a21caf' },
+  electorate: { tint: '#fef1f2', ink: '#be123c' },
+}
 
 function hrefFor(b: Bookmark): string {
   if (b.href) return b.href
@@ -60,6 +72,25 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
   // midnight, and a date computed during render is a hydration mismatch.
   const [today, setToday] = useState<string | null>(null)
   useEffect(() => { setToday(new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })) }, [])
+
+  // "New since your last visit": compare each item's newest activity against the
+  // timestamp we stored last time. Read the OLD value, light up the badges, then
+  // stamp now — so the badge clears on the next visit. Runs once (a ref guards
+  // against React 18 StrictMode's double-effect, which would otherwise stamp now
+  // and wipe the badges immediately). First-ever visit falls back to 3 days.
+  const [seenSince, setSeenSince] = useState<number | null>(null)
+  const stamped = useRef(false)
+  useEffect(() => {
+    if (stamped.current) return
+    stamped.current = true
+    const KEY = 'cc_last_seen_v1'
+    let raw: string | null = null
+    try { raw = localStorage.getItem(KEY) } catch { /* private mode */ }
+    const since = raw ? Number(raw) : Date.now() - 3 * 86_400_000
+    setSeenSince(Number.isFinite(since) ? since : 0)
+    try { localStorage.setItem(KEY, String(Date.now())) } catch { /* private mode */ }
+  }, [])
+  const isUpdated = (b: TrackedItem) => seenSince != null && !!b.lastActivity && b.lastActivity > seenSince
 
   // Match a tracked bill to the dataset by slug, falling back to its title.
   // Bill bookmarks are saved from pages backed by different datasets, so slugs
@@ -146,20 +177,25 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
       {GROUPS.map(({ kind, label, icon: Icon }) => {
         const group = items.filter((b) => b.kind === kind)
         if (group.length === 0) return null
+        const ks = KIND_STYLE[kind]
         return (
           <div key={kind}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-              <Icon style={{ width: 16, height: 16, color: JADE }} />
-              <h3 style={{ fontSize: 14.5, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>{label}</h3>
-              <span style={{ fontSize: 12, fontWeight: 700, color: TERTIARY, fontFamily: MANROPE }}>{group.length}</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 12, padding: '6px 12px', borderRadius: 999, background: ks.tint, border: `1.5px solid ${ks.ink}` }}>
+              <Icon style={{ width: 15, height: 15, color: ks.ink }} />
+              <h3 style={{ fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>{label}</h3>
+              <span style={{ fontSize: 12, fontWeight: 800, color: ks.ink, fontFamily: MANROPE }}>{group.length}</span>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 10 }}>
               {group.map((b) => {
                 const sub = b.role || b.sublabel
                 const open = openBill(b)
                 return (
-                  <div key={b.id} className="party-card" style={{ position: 'relative', border: `1px solid ${open ? '#bfd4fe' : BORDER}`, borderRadius: 14, background: '#fff', overflow: 'hidden' }}>
+                  <div key={b.id} className="party-card" style={{ position: 'relative', border: `1.5px solid ${open ? '#bfd4fe' : ks.ink}`, borderRadius: 14, background: open ? '#eef4ff' : ks.tint, overflow: 'hidden' }}>
                     <span style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, background: b.accent || JADE }} />
+                    {isUpdated(b) && (
+                      <span className="cc-update-badge" role="status" aria-label={`New updates on ${b.label}`} title="New updates"
+                        style={{ position: 'absolute', top: 7, right: 7, zIndex: 2, width: 12, height: 12, borderRadius: '50%', background: '#e11d48', border: '2px solid #fff' }} />
+                    )}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px' }}>
                     <Link href={hrefFor(b)} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', paddingLeft: 4 }}>
                       {b.kind === 'mp' ? (
