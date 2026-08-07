@@ -551,10 +551,10 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
           because that field is the model CONSTRUCTING an impact read rather
           than transcribing one — the party never said it, so it doesn't
           belong on a panel that's meant to be their claim and nothing else.
-          "What they'll do" opens by default so those bullets stay immediately
-          visible, same as before. "In their own words" starts closed. */}
+          Both start closed — the stance headline above is the answer for
+          someone who just wants the gist; these are opt-in depth. */}
       {bullets.length > 0 && (
-        <ExpandableSection icon={ListChecks} title="What they say they&rsquo;ll do" defaultOpen>
+        <ExpandableSection icon={ListChecks} title="What they say they&rsquo;ll do">
           <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
             {bullets.map((b, i) => (
               <li key={i} style={{ display: 'flex', gap: 11, fontSize: 17, color: '#33373f', lineHeight: 1.55, fontFamily: MANROPE }}>
