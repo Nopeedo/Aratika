@@ -18,6 +18,7 @@ import {
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { TopicChip } from '@/components/homepage/topic-chip'
+import { isLightHex } from '@/components/homepage/battleground-card'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
@@ -469,17 +470,35 @@ function readableOnWhite(hex: string): string {
   return `#${hx(r)}${hx(g)}${hx(b)}`
 }
 
+/** Darken a hex colour by a flat proportion — a "pressed" shade of whatever
+ *  party colour comes in, rather than a hardcoded second colour per party. */
+function darken(hex: string, factor: number): string {
+  const m = hex.replace('#', '')
+  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
+  const hx = (v: number) => Math.max(0, Math.min(255, Math.round(v * factor))).toString(16).padStart(2, '0')
+  return `#${hx(r)}${hx(g)}${hx(b)}`
+}
+
 /** A tappable title that expands downward to reveal its content — the "what
  *  they'll do" / "how this affects you" breakdown inside an open issue panel.
  *  Uses the same grid-template-rows collapse trick as the mobile topic grid
- *  above, for a smooth height animation without measuring pixel heights. */
-function ExpandableSection({ icon: Icon, title, defaultOpen, children }: {
+ *  above, for a smooth height animation without measuring pixel heights.
+ *  Filled with the current party's own colour rather than a fixed jade, so it
+ *  reads as part of that party's panel rather than a generic site colour.
+ *  ACT's yellow (and any other light party colour) is too washed out for
+ *  white text, so the text/icon flip to dark ink on light fills — same
+ *  isLightHex threshold already used for this exact problem on battleground
+ *  cards and the party tiles, kept here rather than reintroducing it. */
+function ExpandableSection({ icon: Icon, title, accent, defaultOpen, children }: {
   icon: React.ElementType
   title: string
+  accent: string
   defaultOpen?: boolean
   children: React.ReactNode
 }) {
   const [open, setOpen] = useState(!!defaultOpen)
+  const light = isLightHex(accent)
+  const fg = light ? INK : '#fff'
   return (
     <div style={{ marginTop: 12 }}>
       <button
@@ -487,16 +506,16 @@ function ExpandableSection({ icon: Icon, title, defaultOpen, children }: {
         aria-expanded={open}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%',
-          background: open ? '#166638' : JADE, color: '#fff', borderRadius: 999, border: 'none',
+          background: open ? darken(accent, 0.8) : accent, color: fg, borderRadius: 999, border: 'none',
           padding: '12px 18px', cursor: 'pointer', fontFamily: MANROPE, textAlign: 'left',
           transition: 'background-color .2s ease',
         }}
       >
         <span style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-          <Icon style={{ width: 17, height: 17, color: '#fff', flexShrink: 0 }} />
-          <span style={{ fontSize: 16, fontWeight: 800, color: '#fff', fontFamily: MANROPE }}>{title}</span>
+          <Icon style={{ width: 17, height: 17, color: fg, flexShrink: 0 }} />
+          <span style={{ fontSize: 16, fontWeight: 800, color: fg, fontFamily: MANROPE }}>{title}</span>
         </span>
-        <ChevronDown style={{ width: 16, height: 16, color: '#fff', flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
+        <ChevronDown style={{ width: 16, height: 16, color: fg, flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
       </button>
       <div style={{ display: 'grid', gridTemplateRows: open ? '1fr' : '0fr', transition: 'grid-template-rows .3s ease' }}>
         <div style={{ overflow: 'hidden' }}>
@@ -556,7 +575,7 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
           Both start closed — the stance headline above is the answer for
           someone who just wants the gist; these are opt-in depth. */}
       {bullets.length > 0 && (
-        <ExpandableSection icon={ListChecks} title="What they say they&rsquo;ll do">
+        <ExpandableSection icon={ListChecks} title="What they say they&rsquo;ll do" accent={c}>
           <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
             {bullets.map((b, i) => (
               <li key={i} style={{ display: 'flex', gap: 11, fontSize: 17, color: '#33373f', lineHeight: 1.55, fontFamily: MANROPE }}>
@@ -569,7 +588,7 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
       )}
 
       {quotes.length > 0 && (
-        <ExpandableSection icon={Quote} title="In their own words">
+        <ExpandableSection icon={Quote} title="In their own words" accent={c}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {quotes.map((q, i) => (
               <blockquote key={i} style={{ margin: 0, paddingLeft: 11, borderLeft: `3px solid ${c}`, fontSize: 15, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, fontStyle: 'italic' }}>“{q}”</blockquote>
