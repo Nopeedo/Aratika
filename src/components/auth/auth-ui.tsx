@@ -3,7 +3,7 @@
 /** Shared UI for the auth pages (login / register / reset). */
 
 import * as React from 'react'
-import { AlertCircle, ArrowRight } from 'lucide-react'
+import { AlertCircle, ArrowRight, Lock, Eye, EyeOff } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
@@ -39,6 +39,30 @@ export function Field({ icon: Icon, type, placeholder, value, onChange, autoComp
         onChange={(e) => onChange(e.target.value)}
         style={{ flex: 1, border: 'none', outline: 'none', padding: '11px 11px 11px 0', fontSize: 14, fontFamily: 'var(--font-geist-sans), sans-serif', color: INK }}
       />
+    </div>
+  )
+}
+
+/** Password input with a show/hide toggle — so people can check what they typed. */
+export function PasswordField({ placeholder, value, onChange, autoComplete }: {
+  placeholder: string; value: string; onChange: (v: string) => void; autoComplete?: string
+}) {
+  const [show, setShow] = React.useState(false)
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, overflow: 'hidden' }}>
+      <Lock style={{ width: 16, height: 16, color: TERTIARY, margin: '0 11px', flexShrink: 0 }} />
+      <input
+        type={show ? 'text' : 'password'} placeholder={placeholder} value={value} required autoComplete={autoComplete}
+        onChange={(e) => onChange(e.target.value)}
+        style={{ flex: 1, border: 'none', outline: 'none', padding: '11px 0', fontSize: 14, fontFamily: 'var(--font-geist-sans), sans-serif', color: INK }}
+      />
+      <button
+        type="button" onClick={() => setShow((s) => !s)}
+        aria-label={show ? 'Hide password' : 'Show password'}
+        style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: TERTIARY, padding: '0 11px', flexShrink: 0 }}
+      >
+        {show ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
+      </button>
     </div>
   )
 }

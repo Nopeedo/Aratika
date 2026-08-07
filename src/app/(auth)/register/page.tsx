@@ -4,9 +4,9 @@ import * as React from 'react'
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Mail, Lock, User as UserIcon, MailCheck } from 'lucide-react'
+import { Mail, User as UserIcon, MailCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { AuthShell, Field, SubmitButton, ErrorBox, GoogleButton, OrDivider, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
+import { AuthShell, Field, PasswordField, SubmitButton, ErrorBox, GoogleButton, OrDivider, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
@@ -27,6 +27,7 @@ function RegisterInner() {
   const [name, setName]         = React.useState('')
   const [email, setEmail]       = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [confirm, setConfirm]   = React.useState('')
   const [error, setError]       = React.useState('')
   const [loading, setLoading]   = React.useState(false)
   const [sent, setSent]         = React.useState(false)
@@ -36,6 +37,7 @@ function RegisterInner() {
     setError('')
     const pwIssue = passwordIssue(password)
     if (pwIssue) { setError(pwIssue); return }
+    if (password !== confirm) { setError('Those passwords don’t match.'); return }
     setLoading(true)
     const supabase = createClient()
     const { data, error } = await supabase.auth.signUp({
@@ -93,8 +95,12 @@ function RegisterInner() {
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 14 }}>
         <Field icon={UserIcon} type="text" placeholder="Your name" value={name} onChange={setName} autoComplete="name" />
         <Field icon={Mail} type="email" placeholder="Email address" value={email} onChange={setEmail} autoComplete="email" />
-        <Field icon={Lock} type="password" placeholder="Password (min. 8 characters)" value={password} onChange={setPassword} autoComplete="new-password" />
+        <PasswordField placeholder="Password (min. 8 characters)" value={password} onChange={setPassword} autoComplete="new-password" />
         <PasswordStrength value={password} />
+        <PasswordField placeholder="Confirm password" value={confirm} onChange={setConfirm} autoComplete="new-password" />
+        {confirm.length > 0 && confirm !== password && (
+          <p style={{ fontSize: 12.5, color: '#dc2626', fontFamily: MANROPE, margin: '-4px 0 0' }}>Passwords don’t match yet.</p>
+        )}
         <SubmitButton loading={loading}>{isPremium ? 'Start free trial' : 'Create account'}</SubmitButton>
       </form>
       <p style={{ fontSize: 11.5, color: '#9aa0aa', fontFamily: MANROPE, textAlign: 'center', marginTop: 14, lineHeight: 1.5 }}>
