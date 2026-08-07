@@ -481,24 +481,26 @@ function ExpandableSection({ icon: Icon, title, defaultOpen, children }: {
 }) {
   const [open, setOpen] = useState(!!defaultOpen)
   return (
-    <div style={{ borderTop: `1px solid ${BORDER}`, marginTop: 14, paddingTop: 14 }}>
+    <div style={{ marginTop: 12 }}>
       <button
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%',
-          background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: MANROPE, textAlign: 'left',
+          background: open ? '#166638' : JADE, color: '#fff', borderRadius: 999, border: 'none',
+          padding: '12px 18px', cursor: 'pointer', fontFamily: MANROPE, textAlign: 'left',
+          transition: 'background-color .2s ease',
         }}
       >
-        <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Icon style={{ width: 17, height: 17, color: JADE, flexShrink: 0 }} />
-          <span style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{title}</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+          <Icon style={{ width: 17, height: 17, color: '#fff', flexShrink: 0 }} />
+          <span style={{ fontSize: 16, fontWeight: 800, color: '#fff', fontFamily: MANROPE }}>{title}</span>
         </span>
-        <ChevronDown style={{ width: 16, height: 16, color: SECONDARY, flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
+        <ChevronDown style={{ width: 16, height: 16, color: '#fff', flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
       </button>
       <div style={{ display: 'grid', gridTemplateRows: open ? '1fr' : '0fr', transition: 'grid-template-rows .3s ease' }}>
         <div style={{ overflow: 'hidden' }}>
-          <div style={{ paddingTop: 12 }}>{children}</div>
+          <div style={{ paddingTop: 14, paddingLeft: 4, paddingRight: 4 }}>{children}</div>
         </div>
       </div>
     </div>
