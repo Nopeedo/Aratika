@@ -12,7 +12,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import {
-  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink,
+  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink, ListChecks,
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
@@ -481,7 +481,12 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
   const party = PARTY_PROFILES[slug]
   const c = party.color
   const body = pos?.summaryBasic || pos?.summary
-  const bullets = pos?.stance ? toBullets(body) : []
+  // The same editor-written keyProposals the full breakdown page lists under
+  // "What they say they'll do" — short, already one action per line. Preferred
+  // over slicing the summary prose into sentences, which produced longer, more
+  // meandering bullets. Falls back to that split only where a position has no
+  // keyProposals captured yet, so the panel is never left empty.
+  const bullets = pos?.keyProposals.length ? pos.keyProposals : (pos?.stance ? toBullets(body) : [])
 
   if (!pos) {
     return (
@@ -496,17 +501,24 @@ function FocusedCard({ slug, pos, topic, topicLabel }: {
       <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 7, fontFamily: MANROPE }}>{party.name} on {topicLabel}</div>
       <p style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, margin: '0 0 12px', fontFamily: MANROPE }}>{pos.stance || body}</p>
 
-      {/* One bullet per sentence — easier to scan than a wall of prose, which
-          is the whole point for a reader who doesn't follow politics closely. */}
+      {/* Same shape as the full breakdown page's list (see PositionReader), so
+          a reader meets the identical format here and there: jade icon, plain
+          heading, one action per bullet in the party's colour. */}
       {bullets.length > 0 && (
-        <ul style={{ listStyle: 'none', margin: '0 0 14px', padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {bullets.map((b, i) => (
-            <li key={i} style={{ display: 'flex', gap: 11, fontSize: 17, color: '#33373f', lineHeight: 1.55, fontFamily: MANROPE }}>
-              <span aria-hidden style={{ width: 7, height: 7, borderRadius: '50%', background: c, flexShrink: 0, marginTop: 9 }} />
-              <span>{b}</span>
-            </li>
-          ))}
-        </ul>
+        <>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '0 0 11px' }}>
+            <ListChecks style={{ width: 17, height: 17, color: JADE, flexShrink: 0 }} />
+            <h4 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>What they say they&rsquo;ll do</h4>
+          </div>
+          <ul style={{ listStyle: 'none', margin: '0 0 14px', padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {bullets.map((b, i) => (
+              <li key={i} style={{ display: 'flex', gap: 11, fontSize: 17, color: '#33373f', lineHeight: 1.55, fontFamily: MANROPE }}>
+                <span aria-hidden style={{ width: 7, height: 7, borderRadius: '50%', background: c, flexShrink: 0, marginTop: 9 }} />
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
 
       {pos.quote && (

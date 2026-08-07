@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu, X, ChevronDown, Map, User, LogOut, Settings, Crown, ListChecks } from 'lucide-react'
+import { Menu, X, ChevronDown, Map, User, LogOut, Settings, Crown, ListChecks, Home as HomeIcon } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { Button } from '@/components/ui/button'
 import { visibleNav, type NavItem } from '@/constants/nav-links'
@@ -152,6 +152,25 @@ export function Navbar() {
       {mobileOpen && (
         <div className="lg:hidden border-t border-border bg-background">
           <nav className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
+            {/* Home — pinned above everything else as the way back to the front
+                landing page. Points at /?full=1, NOT /: a returning visitor
+                hitting / is redirected to /hub (see app/page.tsx), so without
+                the flag this button would quietly land them somewhere else and
+                read as broken. Closes the menu explicitly too — the usual
+                close-on-route-change only watches pathname, which doesn't
+                change when you're already on the landing page. */}
+            <Link
+              href="/?full=1"
+              onClick={() => setMobileOpen(false)}
+              className={cn(
+                'flex items-center gap-2 px-3 py-2.5 rounded-md text-sm font-semibold transition-colors mb-1 pb-3 border-b border-border',
+                pathname === '/' ? 'text-brand-jade bg-brand-jade-subtle' : 'text-foreground hover:bg-surface',
+              )}
+            >
+              <HomeIcon className="size-4" />
+              Home
+            </Link>
+
             {NAV.map((item) =>
               item.children ? (
                 <MobileGroup key={item.label} item={item} isActive={isActive} />

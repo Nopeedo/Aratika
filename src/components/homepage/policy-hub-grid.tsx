@@ -6,14 +6,9 @@
  */
 
 import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
-import { PARTY_COLORS } from '@/constants/parties'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { PolicyExplorer } from '@/components/homepage/policy-explorer'
 import { PolicyHubHeading } from '@/components/homepage/policy-hub-heading'
-
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2'
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const PARTY_DOT_ORDER = ['green', 'labour', 'tpm', 'nzfirst', 'national', 'act'] as const
 
 export async function PolicyHubGrid() {
   const positions = await getAllApprovedPositions()
@@ -32,23 +27,7 @@ export async function PolicyHubGrid() {
           <PolicyHubHeading />
         </div>
 
-        {/* The topic boxes come right after the heading now — the explanatory
-            copy moved below, out of the way (see bottom of this section). */}
         <PolicyExplorer topicKeys={POLICY_TOPIC_ORDER} positions={positions} />
-
-        <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, marginTop: 24, marginBottom: 0, lineHeight: 1.55 }}>
-          Tap any issue to see where every party stands, right here — drawn from each party’s <b style={{ color: INK }}>most recent published policy</b>, not their stance at a past election.
-        </p>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 16px', marginTop: 20, paddingTop: 16, borderTop: `1px solid ${BORDER}` }}>
-          <span style={{ fontSize: 13, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, alignSelf: 'center', marginRight: 4 }}>Party positions shown for:</span>
-          {PARTY_DOT_ORDER.map((slug) => (
-            <div key={slug} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE }}>
-              <span style={{ width: 9, height: 9, borderRadius: '50%', background: PARTY_COLORS[slug].bg, display: 'inline-block', flexShrink: 0 }} />
-              {slug === 'tpm' ? 'Te Pāti Māori' : slug === 'nzfirst' ? 'NZ First' : slug.charAt(0).toUpperCase() + slug.slice(1)}
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   )
