@@ -13,6 +13,8 @@
  * and their pages are untouched — they're just no longer stacked on the home.
  */
 
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
 import { HomeBackground } from '@/components/homepage/home-background'
@@ -23,14 +25,23 @@ import { AllPartiesSection } from '@/components/homepage/all-parties-section'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 import { InstallBanner } from '@/components/notifications/install-banner'
+import { MarkSeen } from '@/components/homepage/mark-seen'
 
-export default function HomePage() {
+export default async function HomePage({ searchParams }: { searchParams: Promise<{ full?: string }> }) {
+  // Returning visitors (a cookie set on their first visit) go straight to the
+  // election hub instead of this marketing landing page. `?full=1` — used by the
+  // hub's "view the full homepage" link — always shows the landing.
+  const { full } = await searchParams
+  if (!full && (await cookies()).get('arapono_seen')?.value === '1') redirect('/hub')
+
   return (
     <PartyCycleProvider>
       {/* One continuous weave texture behind the whole homepage, tinted with the
           current party's accent colour; sections are transparent so it shows
           through. */}
       <HomeBackground>
+        {/* First visit → set the cookie so next time they land on /hub. */}
+        <MarkSeen />
 
         {/* ── The choice: guided help, or explore ── */}
         <CinematicHero />
