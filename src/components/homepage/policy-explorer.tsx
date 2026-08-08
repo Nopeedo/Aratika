@@ -591,19 +591,14 @@ function FocusedCard({ slug, pos, topicLabel }: {
       <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 7, fontFamily: MANROPE }}>{party.name} on {topicLabel}</div>
       <p style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, margin: 0, fontFamily: MANROPE }}>{pos.stance || body}</p>
 
-      {/* Two tap-to-expand sections — deliberately just these two, both
-          strictly grounded in the party's own published text (see
-          scripts/draft-positions.mjs). Dropped: a "who this affects" section,
-          because that field is the model CONSTRUCTING an impact read rather
-          than transcribing one — the party never said it, so it doesn't
-          belong on a panel that's meant to be their claim and nothing else.
-          Both start closed — the stance headline above is the answer for
-          someone who just wants the gist; these are opt-in depth. */}
-      {/* PREVIEW: both sections forced open (defaultOpen) so the new large-text
-          style is visible without tapping. Revert to collapsed-by-default once
-          the look is confirmed — see the two defaultOpen props below. */}
+      {/* "What they say they'll do" is no longer a tap-to-expand section — the
+          points are the first thing shown, right under the stance headline,
+          unconditional. The pill that used to sit ABOVE them as a toggle now
+          sits BELOW them as a plain static label (no button, no chevron —
+          there's nothing left to expand/collapse). Still strictly grounded in
+          the party's own published text (see scripts/draft-positions.mjs). */}
       {bullets.length > 0 && (
-        <ExpandableSection icon={ListChecks} title="What they say they&rsquo;ll do" accent={c} defaultOpen>
+        <div style={{ marginTop: 16 }}>
           {/* No dot markers, no smaller/greyer body copy — each proposal reads
               at the same weight as the stance headline above, just stacked as
               its own short line rather than one long sentence. Text is exactly
@@ -621,8 +616,22 @@ function FocusedCard({ slug, pos, topicLabel }: {
               )
             })}
           </ul>
-        </ExpandableSection>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 9, marginTop: 14,
+            background: c, color: isLightHex(c) ? INK : '#fff', borderRadius: 999,
+            padding: '12px 18px', fontFamily: MANROPE,
+          }}>
+            <ListChecks style={{ width: 17, height: 17, flexShrink: 0 }} />
+            <span style={{ fontSize: 16, fontWeight: 800 }}>What they say they&rsquo;ll do</span>
+          </div>
+        </div>
       )}
+
+      {/* "In their own words" stays a real tap-to-expand section — dropped:
+          a "who this affects" section, because that field is the model
+          CONSTRUCTING an impact read rather than transcribing one — the party
+          never said it, so it doesn't belong on a panel that's meant to be
+          their claim and nothing else. */}
 
       {quotes.length > 0 && (
         <ExpandableSection icon={Quote} title="In their own words" accent={c} defaultOpen>
