@@ -25,7 +25,7 @@ import { MP_DETAIL } from './mps-detail'
 import { GENERATED_DETAIL } from './mps-detail-generated'
 import { MP_PHOTOS } from './mp-photos'
 import { MP_WIKI } from './mps-wikipedia'
-import { MP_WRITTEN_QUESTIONS } from './mps-written-questions'
+import { MP_WRITTEN_QUESTIONS, WRITTEN_QUESTIONS_CHECKED } from './mps-written-questions'
 
 export interface SponsoredBillExample {
   title:  string
@@ -183,6 +183,12 @@ export const MP_PROFILES: Record<string, MPProfile> = (() => {
   // Merge in this-term written-questions counts (questions.parliament.nz — see
   // scripts/build-mp-written-questions.mjs). Fills the existing "Written questions"
   // stat slot on the MP profile page.
+  // An MP that was searched but has no entry asked none this term — record that as a
+  // real 0 rather than leaving the field undefined, which the profile renders as
+  // "being added" and would never stop showing for MPs whose true answer is zero.
+  for (const slug of WRITTEN_QUESTIONS_CHECKED) {
+    if (map[slug]) map[slug] = { ...map[slug], writtenQuestions: 0 }
+  }
   for (const slug in MP_WRITTEN_QUESTIONS) {
     if (map[slug]) map[slug] = { ...map[slug], writtenQuestions: MP_WRITTEN_QUESTIONS[slug].count }
   }

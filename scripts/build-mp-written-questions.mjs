@@ -34,6 +34,8 @@ const TERM = 54
 const SOURCE_URL = 'https://questions.parliament.nz/'
 const SOURCE_LABEL = "Written Parliamentary Questions (questions.parliament.nz)"
 const RECENT_KEEP = 5
+const PAGE_SIZE = 1000   // the endpoint's real ceiling — larger values still return 1000
+const MAX_PAGES = 80     // 80,000 rows; see the truncation guard below
 const REPLY_CAP = 500 // chars — real text, just capped so one huge reply doesn't bloat the bundle
 
 // MPs: slug -> official name (as it appears in question titles)
@@ -43,8 +45,11 @@ const slugRe = /slug:\s*'([^']+)'/g
 let sm
 while ((sm = slugRe.exec(src))) {
   const win = src.slice(sm.index, sm.index + 400)
-  const nm = win.match(/\bname:\s*'([^']+)'/)
-  if (nm) mps.push({ slug: sm[1], name: nm[1] })
+  // Names are single-quoted with escaped apostrophes ('Damien O\'Connor'), so a
+  // plain [^']+ stops at the backslash and searches for "Damien O\" — which
+  // matches nothing and published a false zero for both O'Connors.
+  const nm = win.match(/\bname:\s*'((?:[^'\\]|\\.)*)'/)
+  if (nm) mps.push({ slug: sm[1], name: nm[1].replace(/\\(['\\])/g, '$1') })
 }
 mps.push({ slug: 'christopher-luxon', name: 'Christopher Luxon' })
 mps.push({ slug: 'judith-collins', name: 'Judith Collins' })
@@ -72,7 +77,18 @@ async function search(keyword, page, pageSize, tries = 3) {
   }
 }
 
-const titleRe = (name) => new RegExp(`^\\d+\\s*\\(\\d{4}\\)\\.\\s*(?:Rt\\s+)?(?:Hon\\s+)?${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+to\\s+the\\s+`, 'i')
+// Titles in the official record are richer than "Hon": they stack and include
+// doctorates and honours — "Hon Dr Ayesha Verrall", "Rt Hon", "Sir", "Dame".
+// Only allowing (Rt )?(Hon )? silently excluded MPs like Verrall (22k questions)
+// and Megan Woods, publishing a false zero for them. Apostrophes also differ
+// between our data (curly) and the record (straight), which dropped O'Connor.
+const titleRe = (name) => {
+  const esc = name
+    .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    .replace(/['’]/g, "['’]")
+    .replace(/\s+/g, '\\s+')
+  return new RegExp(`^\\d+\\s*\\(\\d{4}\\)\\.\\s*(?:(?:Rt|Hon|Dr|Sir|Dame|Professor)\\.?\\s+)*${esc}\\s+to\\s+the\\s+`, 'i')
+}
 
 function clean(s) {
   return (s || '').replace(/\s+/g, ' ').trim()
@@ -89,23 +105,33 @@ let done = 0
 for (const mp of mps) {
   try {
     let rows = []
-    // No artificial page cap — some MPs (esp. prolific opposition askers) genuinely
-    // exceed 2,000 questions this term. Loop until a page comes back short, with a
-    // generous safety ceiling (40 pages = 20,000 rows) against a runaway loop.
-    for (let page = 1; page <= 40; page++) {
-      let d = await search(mp.name, page, 500)
+    let expected = null   // the endpoint's own @odata.count — how many rows we SHOULD get
+    // Some MPs (esp. prolific opposition askers) genuinely ask tens of thousands of
+    // written questions in a term — Francisco Hernandez alone is ~28k. An earlier
+    // 20,000-row ceiling silently truncated those MPs, publishing a capped number as
+    // if it were the real one. Page until the endpoint is exhausted, and shout if the
+    // safety ceiling is ever actually reached rather than quietly under-reporting.
+    for (let page = 1; page <= MAX_PAGES; page++) {
+      let d = await search(mp.name, page, PAGE_SIZE)
+      if (expected === null && typeof d['@odata.count'] === 'number') expected = d['@odata.count']
       // A partial (not empty, not full) page is ambiguous — could be genuinely the
       // last page, or a transient short read. Re-confirm once before trusting it,
       // since a long sequential run over many MPs can hit an intermittent hiccup.
-      if (d.value && d.value.length > 0 && d.value.length < 500) {
+      if (d.value && d.value.length > 0 && d.value.length < PAGE_SIZE) {
         await sleep(300)
-        const confirm = await search(mp.name, page, 500)
+        const confirm = await search(mp.name, page, PAGE_SIZE)
         if (confirm.value && confirm.value.length > d.value.length) d = confirm
       }
       if (!d.value || d.value.length === 0) break
       rows.push(...d.value)
-      if (d.value.length < 500) break
+      if (d.value.length < PAGE_SIZE) break
+      if (page === MAX_PAGES) {
+        console.warn(`  !! ${mp.name}: hit the ${MAX_PAGES}-page ceiling (${rows.length} rows, endpoint reports ${expected}) — COUNT WILL BE TRUNCATED. Raise MAX_PAGES.`)
+      }
       await sleep(80) // be gentle on an undocumented, shared endpoint
+    }
+    if (expected !== null && rows.length < expected) {
+      console.warn(`  !  ${mp.name}: fetched ${rows.length} of ${expected} rows the endpoint reports.`)
     }
     const re = titleRe(mp.name)
     const mine = rows.filter((r) => r.documentType === 'WrittenQuestion' && r.parliamentNumber === TERM && re.test(r.title))
@@ -172,6 +198,13 @@ export const WRITTEN_QUESTIONS_META = {
   sourceLabel: "${SOURCE_LABEL}",
 }
 export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = ${JSON.stringify(result, null, 2)}
+
+// Every MP this run actually searched. An MP here but absent from the map above
+// asked NO written questions this term — a real, checked zero (typical for
+// ministers and government backbenchers, who answer them rather than ask them).
+// Without this we can't tell "checked, none found" from "not looked at yet", and
+// the profile would show "being added" forever for MPs whose true answer is zero.
+export const WRITTEN_QUESTIONS_CHECKED: string[] = ${JSON.stringify(mps.map((m) => m.slug).sort(), null, 2)}
 `, 'utf8')
 
 console.log(`\nMatched ${Object.keys(result).length} MPs with written questions this term → ${OUT}`)

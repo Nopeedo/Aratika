@@ -12,4 +12,10760 @@ export const WRITTEN_QUESTIONS_META = {
   sourceUrl: 'https://questions.parliament.nz/',
   sourceLabel: "Written Parliamentary Questions (questions.parliament.nz)",
 }
-export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {}
+export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
+  "oriini-kaipara": {
+    "count": 51,
+    "byMinister": [
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 28
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 7
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 3
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2026-04-22",
+        "question": "How many households, if any, containing a disabled adult have experienced a reduction in Accommodation Supplement or income related rent since the boarder income changes took effect on 2 March 2026?",
+        "reply": "I refer the Member to reply number 17026 (2026)"
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2026-04-22",
+        "question": "How many households, if any, containing a disabled child have experienced a reduction in Accommodation Supplement or income related rent since the boarder income changes took effect on 2 March 2026?",
+        "reply": "I am advised by the Ministry of Social Development (the Ministry) that obtaining this information would require substantial manual collation and engagement, diverting Ministry staff from their core duties. I am further advised that people who may have a disability are not required to inform the Ministry of their disability, and the reasons for receiving financial support may not be related to any such disability. Therefore, in accordance with Speaker’s Ruling 210/6, I consider that the time requ…"
+      },
+      {
+        "minister": "Minister of Housing",
+        "date": "2026-04-21",
+        "question": "What engagement, if any, was undertaken with Rawiri Community House, local whānau, and community service providers before Kāinga Ora decided to reclaim the Rawiri Community House site in Manurewa?",
+        "reply": "I refer the Member to my response to written question 16532 (2026)."
+      },
+      {
+        "minister": "Minister of Housing",
+        "date": "2026-04-21",
+        "question": "On what dates , if any, were any reports, briefings, aide mémoires, or written advice relating to Rawiri Community House provided to the Minister for Housing by Kāinga Ora?",
+        "reply": "I refer the Member to my response to written question 16533 (2026)."
+      },
+      {
+        "minister": "Minister of Housing",
+        "date": "2026-04-21",
+        "question": "What internal assessments, memoranda, or decision documents were prepared by Kāinga Ora that informed the decision to take back the lease for Rawiri Community House?",
+        "reply": "Kāinga Ora - Homes and Communities advises me that a business case was prepared in 2022."
+      }
+    ]
+  },
+  "mike-davidson": {
+    "count": 159,
+    "byMinister": [
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 109
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 31
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 13
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 2
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for the South Island",
+        "date": "2026-07-30",
+        "question": "Has the Minister received a formal request/s from Christchurch City Council (CCC) and/or the Mayor of Christchurch in 2026 to meet with the governing body of CCC and/or CCC, and if so, when did he receive the request/s and has he formally met with the governing body of CCC and/or CCC in response to the request/s, and if not, why not?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for the South Island",
+        "date": "2026-07-30",
+        "question": "Since receiving the letter titled \"2026 02 20 Minister for the South Island - Mayoral Joint Priorities\" on 2 March 2026 and directing his \"office to review the information and gather relevant context and input from the appropriate portfolios, to inform my advocacy role\", what of the priority projects and policy areas mentioned in the letter will the Minister be advocating for?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Local Government",
+        "date": "2026-07-29",
+        "question": "Since November 2025, how many people, if any, have written to the Minister with a complaint about non-elected members on Council committees, broken down into months?",
+        "reply": "I receive a large volume of correspondence relating to local government and do not maintain a record of correspondence by specific topic. As a result, answering your question would require a manual review of all relevant correspondence. This would involve a significant amount of time, and I do not consider it to be in the public interest."
+      },
+      {
+        "minister": "Minister for the South Island",
+        "date": "2026-07-16",
+        "question": "Did you receive a written request to meet with the elected members of Christchurch City Council in February 2026, and if so, have you met with them or responded to their request to meet?",
+        "reply": "I have not received written requests to meet with elected members of Christchurch City Council in February 2026. For those invitations I have accepted, please refer to my diary which is proactively released on the beehive website and can be found here: https://www.beehive.govt.nz/minister/hon-james-meager"
+      },
+      {
+        "minister": "Minister for the South Island",
+        "date": "2026-07-16",
+        "question": "Did you receive a letter from Christchurch City Council and/or the Mayor of Christchurch in February 2026 requesting government support in a number of areas, including funding and regulatory support for Mass Rapid Transit, and if so, what actions have you taken in regard to this letter?",
+        "reply": "On 2 March 2026, I received an email from Mayor Phil Mauger, Christchurch City Council, with an attached letter titled \"2026 02 20 Minister for the South Island - Mayoral Joint Priorities\", outlining priority projects and policy areas, including Mass Rapid Transit, and the support being sought. Subsequently, I directed my office to review the information and gather relevant context and input from the appropriate portfolios, to inform my advocacy role."
+      }
+    ]
+  },
+  "steve-abel": {
+    "count": 648,
+    "byMinister": [
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 192
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 121
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 44
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 30
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 27
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 23
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 18
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 18
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 18
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 16
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 12
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 12
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 11
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "count": 4
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 3
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 3
+      },
+      {
+        "minister": "Leader of the House",
+        "count": 2
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Resources",
+        "date": "2026-07-23",
+        "question": "What data, if any, from historical offshore oil and gas surveys does the government have access to?",
+        "reply": "Data aquired under permit and through government funded acquisition programmes is available publicy via the Geodata Catalogue on the New Zealand Petroleum & Minerals Website. Data submitted under regulation is released publicly under timeframes set out in Section 90 of the Crown Minerals Act. Data relates to activites including surveys, drilling and technical reports. MBIE holds over 2 Petabytes of data in this collection (includes petroleum, mineral and coal related exploration output). For mor…"
+      },
+      {
+        "minister": "Minister for Resources",
+        "date": "2026-07-23",
+        "question": "What is the investment today by the government, if any, on offshore oil and gas exploration?",
+        "reply": "The Government has not made any direct investment in offshore oil and gas exploration at this time. It has established a $200 million Gas Security Fund to provide co-investment in a range of projects that will bring more gas to market."
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "date": "2026-07-23",
+        "question": "Does the Minister expect any further grants, like the $60 million grant to Fletcher Building, will be needed for private companies, if so, what will be the process for deciding whether a company will receive a grant?",
+        "reply": "I refer the Member to Written Parliamentary Question 33037 (2026)."
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "date": "2026-07-23",
+        "question": "What government support has been sought, if any, by growers in the Hawkes Bay to scope the viability of purchasing the McCain processing facility?",
+        "reply": "I refer the Member to my response to WPQ 30979 (2026)."
+      },
+      {
+        "minister": "Minister for Resources",
+        "date": "2026-07-23",
+        "question": "What areas, if any, of New Zealand's offshore areas have been surveyed by the oil and gas industry over the past 40 years?",
+        "reply": "Historically onshore and offshore Taranaki has been the focus of oil and gas exploration however data exists across a number of New Zealands on and offshore sedimentary basins. The density, quality and vintage of data varies significantly. This information is publiclly available to search, download or order at the NZP&M website. The Geodata Map, associated with the Geodata Catalogue online service, provides a map view of the distribution of data sets across New Zealand, onshore and offshore."
+      }
+    ]
+  },
+  "ginny-andersen": {
+    "count": 5131,
+    "byMinister": [
+      {
+        "minister": "Minister of Police",
+        "count": 2466
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 486
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 339
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 326
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 323
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 197
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 147
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 147
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 126
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 114
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 99
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 66
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 46
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 43
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 36
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 36
+      },
+      {
+        "minister": "Minister for Tertiary Education",
+        "count": 27
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 10
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 9
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 3
+      },
+      {
+        "minister": "Minister for the Public Service and Digitising Government",
+        "count": 2
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Education",
+        "date": "2026-08-05",
+        "question": "How much, if anything, are schools paid to participate in in the School Onsite Training Programme?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-08-05",
+        "question": "How are teaching students selected to take part in the School Onsite Training Programme and how, if at all, are schools, where the students are placed, involved in selecting students?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-08-05",
+        "question": "How many, if any, students have completed training under the School Onsite Training programme in each year since it began and how many, if any, of those people are still in a teaching role?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Police",
+        "date": "2026-07-28",
+        "question": "How many times, if any, have Police prosecuted offences/offenders under s 45 of the Arms Act 1983 since the provision was introduced?",
+        "reply": "I am advised that since the enactment of the Arms Act 1983 and the commencement of the Recorded Crime Offender Statistics (RCOS) in July 2009, there have been 25,410 proceedings against offenders for the offence of \"Unlawfully Carry/Possess Firearm/Restricted Weapon/Explosives\" that resulted in prosecution. Section 45 of the Arms Act has been amended three times since the legislation’s introduction."
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-07-27",
+        "question": "Has any decision been made about whether or when the national results of the Ministry of Education's phonics checks will be published; if so, who made that decision?",
+        "reply": "I am advised that the Ministry of Education is still considering how the phonics checks results will be published on an ongoing basis."
+      }
+    ]
+  },
+  "camilla-belich": {
+    "count": 13891,
+    "byMinister": [
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 593
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 525
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 438
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 376
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 281
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 219
+      },
+      {
+        "minister": "Minister for the Public Service and Digitising Government",
+        "count": 216
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 213
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 211
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 205
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 201
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 199
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 197
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 196
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 196
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 195
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 195
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 193
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 193
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 193
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 193
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 192
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 190
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 189
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 188
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 188
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 188
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 187
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 187
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 186
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 186
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 185
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 185
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 185
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 185
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 185
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 184
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 184
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 183
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 183
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 175
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 173
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 172
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 172
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 171
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 167
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 161
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 161
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 161
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 147
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 143
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 137
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 126
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 124
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 117
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "count": 114
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 114
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 113
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 112
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 111
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 109
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 108
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 103
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 100
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 96
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 95
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 92
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 85
+      },
+      {
+        "minister": "Minister responsible for the GCSB and NZSIS",
+        "count": 84
+      },
+      {
+        "minister": "Minister for Tertiary Education",
+        "count": 84
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 81
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 67
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 62
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 62
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 62
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 59
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 55
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 52
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 47
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 44
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 41
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 39
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 38
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 38
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 36
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 34
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 31
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 31
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 30
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 25
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 24
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 17
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 16
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 16
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 15
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "count": 11
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 10
+      },
+      {
+        "minister": "Minister of State for Trade and Investment",
+        "count": 9
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister for Emergency Management and Recovery",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister for National Security and Intelligence",
+        "count": 5
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-08-07",
+        "question": "What work, if any, are the Electoral Commission doing to ensure people enrol prior to October?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-08-07",
+        "question": "What resources have the Electoral Commission allocated to ensuring people are enrolled to vote and is it more than previous Budget?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-08-07",
+        "question": "Is it a requirement to have an EasyVote card to vote in the 2026 General Election?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "I received the following advice: • 20 July 2026 – Briefing: Tenancy Tribunal Reappointments - Whangarei, Auckland, Tauranga, Wellington and Invercargill • 21 July 2026 – Briefing: Remote Participation Programme Business Case and draft Cabinet Paper • 22 July 2026 – Briefing: Wellington Waitangi Tribunal and Māori Land Court Relocation Project Business Case • 24 July 2026 – Weekly Report: Weekly Report (Justice, Associate Justice and Courts) I have received three further documents, but I believe …"
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "I took the following five papers to Cabinet: • 21 July 2026 – Deputy Legal Complaints Review Officer: Appointment • 21 July 2026 – Principal Disputes Referee: Reappointment • 22 July 2026 – Amendment Paper to the Arms Bill: Approval for Release"
+      }
+    ]
+  },
+  "glen-bennett": {
+    "count": 425,
+    "byMinister": [
+      {
+        "minister": "Minister for Economic Development",
+        "count": 216
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 198
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 11
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "In my capacity as Minister for Tourism and Hospitality, I regularly request and receive advice on a range of topics. In the interest of transparency, a list of reports received by my office from the Ministry of Business, Innovation and Employment is regularly published on the MBIE website. The lists of titles published are available here: https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/tourism-and-hospital…"
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-07-13",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 6 July 2026, by title and date?",
+        "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
+      }
+    ]
+  },
+  "rachel-boyack": {
+    "count": 1308,
+    "byMinister": [
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 402
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 259
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 212
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 178
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 137
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 31
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 16
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 2
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "I refer the Member to reply number 59549 (2024)."
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None."
+      }
+    ]
+  },
+  "rachel-brooking": {
+    "count": 9085,
+    "byMinister": [
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 960
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 775
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 584
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 503
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 502
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 168
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 168
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 112
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 112
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 112
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 106
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 94
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 92
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 71
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 70
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 68
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 66
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 62
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 61
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 59
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 59
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 59
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 59
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 59
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 59
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 58
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 58
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 58
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 57
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 56
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 56
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 56
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 56
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister of Climate Change",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 56
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 56
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 56
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 56
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 56
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 56
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 56
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission's Report into the Terrorist Attack on the Christchurch Mosques",
+        "count": 56
+      },
+      {
+        "minister": "Acting Attorney-General",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Space",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Space",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Space",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "The titles of advice, reports, briefings and/or aide memoires I received from MBIE the week beginning 19 July will be released on the MBIE website in the coming weeks here: https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/space/ The titles and dates of briefings received from the Civil Aviation Authority will be proactively released here: https://aviation.govt.nz/about-us/corporate-publications/ministerial-…"
+      },
+      {
+        "minister": "Minister for Space",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None."
+      }
+    ]
+  },
+  "kahurangi-carter": {
+    "count": 264,
+    "byMinister": [
+      {
+        "minister": "Minister for Children",
+        "count": 107
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 45
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 19
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 10
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 9
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 4
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 3
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 3
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Prime Minister",
+        "date": "2026-07-20",
+        "question": "Does he stand by his statement on mandatory gender and ethnicity pay gap reporting that “I think you have to be really cognisant of, you know, you can spend a lot of time on activity and actually not on actually solving the problem or, or delivering the achievement of a better result\", and if so, has he reconsidered his position after the Berl research finding it would cost about 10 staff hours a year to do the reporting?",
+        "reply": "I refer the member to my reply to written question 32924 (2026)."
+      },
+      {
+        "minister": "Prime Minister",
+        "date": "2026-07-20",
+        "question": "Does he accept reporting from RNZ that he believes making compulsory pay gap reporting for businesses is 'worth a conversation', and if so, has he had any conversations with Ministers on making legislative changes to achieve this?",
+        "reply": "I refer the member to my reply to written question 32924 (2026)."
+      },
+      {
+        "minister": "Minister of Revenue",
+        "date": "2026-07-20",
+        "question": "Has he seen Berl research that closing gender pay gaps could increase income tax revenue by $648 million a year, and if so, has he had any conversations with ministerial colleagues about introducing mandatory pay gap reporting to work towards this estimated increased revenue?",
+        "reply": "No."
+      },
+      {
+        "minister": "Prime Minister",
+        "date": "2026-07-20",
+        "question": "Does he stand by his comments on reporting of gender and ethnic pay gaps that, while CEO of Air New Zealand, “I self-reported it because I thought it was important\", and if so, will his government introduce or support legislation to make reporting gender and ethnic pay gaps mandatory, and if not, why not?",
+        "reply": "Yes. I stand by my comments. The Government supports transparency and supports businesses measuring pay gaps. The key question is not whether information should be available, but what will most effectively reduce the gap. Our focus is on practical action and lasting change rather than regulation for regulation's sake. The question is not whether pay gaps should be understood and addressed, but what is the most effective way to achieve that outcome. The Government's current approach is to support…"
+      },
+      {
+        "minister": "Minister for Youth",
+        "date": "2026-07-08",
+        "question": "What events or meetings, if any, did the Minister decline to attend during the week beginning June 29th 2026 , including location, event description, and attendees?",
+        "reply": "I receive a large number of invitations, and I do not believe it is in the public interest to provide this level of detail for declined invitations. The member can refer to my published diary for invitations which were accepted."
+      }
+    ]
+  },
+  "georgie-dansey": {
+    "count": 66,
+    "byMinister": [
+      {
+        "minister": "Minister for Regulation",
+        "count": 55
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 10
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Associate Minister of Housing",
+        "date": "2026-08-07",
+        "question": "How many people received hardship assistance payments for emergency housing in Hamilton City during the June 2026 quarter; and how many received hardship assistance payments for emergency housing during the June 2023 quarter?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2026-08-07",
+        "question": "How many people received hardship assistance payments in Hamilton City during the June 2026 quarter; and how many received hardship assistance payments during the December 2023 quarter?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2026-08-07",
+        "question": "How many Jobseeker Support recipients are there currently in Hamilton City; and how many were there in November 2023?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Regulation",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "The titles of papers I received in my capacity as Minister for Regulation are considered for proactive release each month and are published on the Ministry for Regulation’s website. Some titles may be withheld where the material remains under active consideration. This response does not include documents received by my office. Compiling that material would require significant time and divert staff from their core responsibilities."
+      },
+      {
+        "minister": "Minister for Regulation",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
+      }
+    ]
+  },
+  "marama-davidson": {
+    "count": 265,
+    "byMinister": [
+      {
+        "minister": "Minister of Conservation",
+        "count": 69
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 51
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 20
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 16
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 10
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 7
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 2
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 1
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 1
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 1
+      },
+      {
+        "minister": "Acting Attorney-General",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 1
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "count": 1
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-07-22",
+        "question": "What advice, if any, has he received on consent law; listed by title and date?",
+        "reply": "I refer to the advice listed in Table 1."
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-07-22",
+        "question": "What advice, if any, has he requested on consent law; listed by title and date?",
+        "reply": "My office does not keep records of advice I have requested. I refer the Member instead to my response to WPQ 33067 (2026)."
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "date": "2026-07-22",
+        "question": "What advice, if any, has she received on consent law; listed by title and date?",
+        "reply": "On 17 February 2025, I received advice from officials (ref 119421) ahead of a scheduled meeting with the founder of the Consent Law Reform Campaign, Layba Zubair. The aide-mémoire included general information about the campaign. In October 2025, I also received a copy of the open letter from Layba Zubair to the Minister of Justice about consent law reform. I have not received any other specific advice about consent law reform."
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-07-15",
+        "question": "What advice, if any, has he received from the Chief Victims Advisor since February 2025; listed by title and date?",
+        "reply": "I refer the Member to attachment 1. I have received one further document, but I believe it would prejudice the orderly and effective conduct of government decision making processes to release the title at this time."
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "date": "2026-07-15",
+        "question": "What international trips, if any, has she taken in 2026; listed by place and date?",
+        "reply": "As Minister, I have undertaken international travel on one occasion in 2026. The destination was Australia and the dates of travel were 17 to 28 February 2026 inclusive."
+      }
+    ]
+  },
+  "reuben-davidson": {
+    "count": 1314,
+    "byMinister": [
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 322
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 321
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 247
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 115
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 39
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "count": 36
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 30
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 28
+      },
+      {
+        "minister": "Minister for the Public Service and Digitising Government",
+        "count": 24
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 20
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 2
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 1
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 1
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 1
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 1
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 1
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Climate Change",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Economic Growth",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "The list of briefings and reports received by my office from the Ministry of Business, Innovation and Employment (MBIE) is regularly published on MBIE's website (https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/economic-development). It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpayer funds and therefore not in the public interest…"
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
+      }
+    ]
+  },
+  "barbara-edmonds": {
+    "count": 7052,
+    "byMinister": [
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 1203
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 1109
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 465
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 139
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 122
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 80
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 64
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 63
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 63
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 60
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 56
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 53
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 50
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 50
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 49
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 48
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 47
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 46
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 46
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 46
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 46
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 46
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 45
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 45
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 45
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 45
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 45
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 45
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 45
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 45
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 45
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 43
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 43
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 43
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 43
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 43
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 43
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 43
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 43
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 42
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 37
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 36
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 32
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 30
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 29
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 29
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 29
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 29
+      },
+      {
+        "minister": "Minister of State for Trade and Investment",
+        "count": 29
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "count": 29
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 28
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 27
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 27
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 19
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 18
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 18
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 18
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 18
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 18
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 18
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 18
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 16
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 16
+      },
+      {
+        "minister": "Associate Minister of Climate Change",
+        "count": 16
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 16
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 16
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission's Report into the Terrorist Attack on the Christchurch Mosques",
+        "count": 16
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 13
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 13
+      },
+      {
+        "minister": "Acting Minister of Commerce and Consumer Affairs (Grocery Sector)",
+        "count": 8
+      },
+      {
+        "minister": "Speaker of the House of Representatives",
+        "count": 8
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 4
+      },
+      {
+        "minister": "Minister responsible for the GCSB and NZSIS",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for Emergency Management and Recovery",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for National Security and Intelligence",
+        "count": 2
+      },
+      {
+        "minister": "Minister for the Public Service and Digitising Government",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Tertiary Education",
+        "count": 2
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Finance",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Finance",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": "My office receives a significant volume of information. To answer this question will require significant staff resources and I do not believe it is in the public interest to do so. If the member wishes to be more specific about the information he/she is seeking, I will endeavour to provide a response."
+      }
+    ]
+  },
+  "takuta-ferris": {
+    "count": 12,
+    "byMinister": [
+      {
+        "minister": "Minister of Health",
+        "count": 12
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Health",
+        "date": "2026-04-13",
+        "question": "What is the current average wait time from GP referral to first specialist assessment for suspected gynaecological cancers in the Southern region, and how does this compare to national clinical guidance recommending assessment within four weeks?",
+        "reply": "I am advised that current average wait time from GP referral to first specialist assessment for suspected gynaecological cancers in South Island region: • Nelson Marlborough: 18.6 days • South Canterbury: 18.4 days • Southern: 26.9 days • West Coast: 53.87 day. I am further advised that the West Coast average wait time is heavily distorted by the low number of patients. In addition, Canterbury district does not disaggregate data between gynaecological services, so this information cannot be accu…"
+      },
+      {
+        "minister": "Minister of Health",
+        "date": "2026-04-10",
+        "question": "What advice has the Minister received on the clinical impact of delays beyond four weeks for aggressive gynaecological cancers, including effects on staging, treatment options, and survival outcomes?",
+        "reply": "Titles of advice that I have received that support delivering access to timely, quality healthcare for all New Zealanders have been, or will be, proactively released on the Ministry of Health, Health New Zealand and Pharmac websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers https://www.tewhatuora.govt.nz/publications https://pharmac.govt.nz/news-and-resources/official-information-act/list-of-ministerial-briefings."
+      },
+      {
+        "minister": "Minister of Health",
+        "date": "2026-04-10",
+        "question": "What is the current number of practising gynaecological oncologists in the Southern region, expressed in full-time equivalents, and how has this changed over the past five years?",
+        "reply": "I refer the Member to the attached table."
+      },
+      {
+        "minister": "Minister of Health",
+        "date": "2026-04-10",
+        "question": "Is the Minister satisfied that current staffing levels for gynaecological oncology in the Southern region are sufficient to provide safe, timely, and equitable care; if so, on what evidence is that assessment based?",
+        "reply": "I am advised that Health New Zealand is developing a clinical service plan for gynaecological oncology across New Zealand which will ultimately ease pressure across the system. I am further advised that Health NZ continues to maximise capacity. Recent progress includes: • Two full-time gynaecologists have been employed, commencing mid-2026. • An additional 103 colposcopy procedures have been completed in 2026 as at 14 April, with a further 60 planned. • Increased access to theatre (inhouse and p…"
+      },
+      {
+        "minister": "Minister of Health",
+        "date": "2026-04-10",
+        "question": "How many vacant gynaecological oncology positions currently exist in the Southern region, how long have they been vacant, and what recruitment efforts are underway to fill them?",
+        "reply": "I am advised that Health New Zealand does not aggregate data down to the specificity of gynaecological oncologist; however, these roles sit under the Senior Medical Officer occupational grouping."
+      }
+    ]
+  },
+  "julie-anne-genter": {
+    "count": 462,
+    "byMinister": [
+      {
+        "minister": "Minister of Transport",
+        "count": 363
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 19
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 8
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 4
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 3
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Rail",
+        "date": "2026-07-15",
+        "question": "Are the new Cook Strait ferries still expected to be delivered by 2029, and if not, when are they expected to be ready for service?",
+        "reply": "Yes."
+      },
+      {
+        "minister": "Minister of Transport",
+        "date": "2026-06-16",
+        "question": "Will Waka Kotahi's work on identifying critical work versus activities that could be deferred, include the Roads of Natioinal Signifiance programme, and if so, when will this work be completed and made public?",
+        "reply": "I have previously advised of the need to sequence Roads of National Significance projects over time based on efficiency, strategic fit, and deliverability due to funding and capacity constraints. This exercise is ongoing, and further information will be shared publicly when appropriate."
+      },
+      {
+        "minister": "Minister of Transport",
+        "date": "2026-06-16",
+        "question": "When will the new draft Government Policy Statement on Land Transport be released for consultation?",
+        "reply": "Announcements will be made in due course."
+      },
+      {
+        "minister": "Minister of Transport",
+        "date": "2026-06-05",
+        "question": "What specific measures, if any, has the New Zealand Transport Agency implemented in the last 12 months to strengthen its infrastructure alliance contracts against financial mismanagement, and how is the effectiveness of these measures being independently audited, if at all?",
+        "reply": "NZTA manages the finances and any potential conflicts with clearly documented processes supported internally (within Alliances) and externally (by NZTA and independent auditors). Within Alliances, this includes defined commercial frameworks for assessing cost eligibility, project-level payment claim reviews, independent external Alliance audit processes, and structured governance arrangements to review, challenge, and escalate cost issues. Any identified instances of potentially fraudulent activ…"
+      },
+      {
+        "minister": "Minister of Transport",
+        "date": "2026-06-05",
+        "question": "For each of the six roading contracts currently under investigation by the New Zealand Transport Agency or external agencies, what is the total initial approved budget, the total amount spent to date, and the total dollar value of unapproved or disputed costs identified by investigators, listed by project?",
+        "reply": "It would not be appropriate to comment on the specific issues raised as the matters remain under investigation. Providing further detail at this stage could prejudice those investigations and any related processes."
+      }
+    ]
+  },
+  "shanan-halbert": {
+    "count": 1474,
+    "byMinister": [
+      {
+        "minister": "Minister for Auckland",
+        "count": 415
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 378
+      },
+      {
+        "minister": "Minister for Tertiary Education",
+        "count": 105
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 79
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 69
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 55
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 55
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 40
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 38
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 31
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 30
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 27
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 11
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 6
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 5
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 3
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 1
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 1
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 1
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Whānau Ora",
+        "date": "2026-08-05",
+        "question": "What was the longest period between a whānau being accepted into Whānau Ora and being allocated a navigator, for the period 1 July 2025 to 30 June 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "date": "2026-08-05",
+        "question": "What was the average period between a whānau being accepted into Whānau Ora and being allocated a navigator, for the period 1 July 2025 to 30 June 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "date": "2026-08-05",
+        "question": "How many whānau, if any, had been accepted into Whānau Ora services but not yet allocated a navigator, as at 30 June 2026; and how does this compare with the same measure as at 31 October 2025?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Tertiary Education",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "During the week beginning 19 July 2026 I took the following Cabinet paper to the Appointments and Honours Committee meeting held on 21 July 2026: Auckland University of Technology, Massey University, University of Auckland, and University of Waikato: Council appointments."
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None."
+      }
+    ]
+  },
+  "francisco-hernandez": {
+    "count": 28460,
+    "byMinister": [
+      {
+        "minister": "Minister for Regulation",
+        "count": 702
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 690
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 638
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 607
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 583
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 582
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 476
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 466
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 456
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 432
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 415
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 404
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 398
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 394
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 392
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 392
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 387
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 383
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 380
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 371
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 368
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 365
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 364
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 364
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 363
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 361
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 361
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 359
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 359
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 359
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 356
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 355
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 354
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 353
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 351
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 351
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 349
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 348
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 345
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 345
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 334
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 325
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 321
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 315
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 314
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 310
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 293
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 293
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 290
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 288
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 283
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 276
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 272
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 268
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 267
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 263
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 245
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 241
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 231
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 217
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 211
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 210
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 202
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 198
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 193
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 185
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 169
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 160
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 156
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 155
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 153
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 146
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 145
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 141
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 139
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 137
+      },
+      {
+        "minister": "Minister for Tertiary Education",
+        "count": 134
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 134
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 127
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 123
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 119
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 118
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 111
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 111
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 108
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 107
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 107
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 107
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 106
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 105
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 104
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 103
+      },
+      {
+        "minister": "Minister for the Public Service and Digitising Government",
+        "count": 102
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 101
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 101
+      },
+      {
+        "minister": "Minister of State for Trade and Investment",
+        "count": 98
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 98
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 97
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 96
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 93
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 91
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "count": 91
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 89
+      },
+      {
+        "minister": "Acting Attorney-General",
+        "count": 86
+      },
+      {
+        "minister": "Associate Minister for Sport and Recreation",
+        "count": 76
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 63
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 62
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "count": 60
+      },
+      {
+        "minister": "Acting Minister of Commerce and Consumer Affairs (Grocery Sector)",
+        "count": 53
+      },
+      {
+        "minister": "Minister responsible for the GCSB and NZSIS",
+        "count": 52
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission's Report into the Terrorist Attack on the Christchurch Mosques",
+        "count": 24
+      },
+      {
+        "minister": "Minister of State for Trade",
+        "count": 20
+      },
+      {
+        "minister": "Associate Minister of Climate Change",
+        "count": 17
+      },
+      {
+        "minister": "Associate Minister for Emergency Management and Recovery",
+        "count": 16
+      },
+      {
+        "minister": "Speaker of the House of Representatives",
+        "count": 8
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 8
+      },
+      {
+        "minister": "Acting Minister for State Owned Enterprises (New Zealand Post)",
+        "count": 7
+      },
+      {
+        "minister": "Associate Minister for National Security and Intelligence",
+        "count": 2
+      },
+      {
+        "minister": "Leader of the House",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Mental Health",
+        "date": "2026-08-03",
+        "question": "How much, if any, is budgeted to be spent in the 2026/27 financial year in the Minister’s departments, agencies, crown entities and any other bodies that the Minister is responsible for, if any, on consultants who advise on public sector reform management or similar?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "date": "2026-08-03",
+        "question": "How much, if any, has been spent in the Minister’s departments, agencies, crown entities and any other bodies that the Minister is responsible for, if any, on consultants who advise on public sector reform management or similar, since 27 November 2023?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "date": "2026-08-03",
+        "question": "How much, if any, is budgeted to be spent in the 2026/27 financial year in the Minister’s departments, agencies, crown entities and any other bodies that the Minister is responsible for, if any, on consultants who advise on public sector reform management or similar?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Auckland",
+        "date": "2026-07-31",
+        "question": "What public engagement surveys, if any, have been completed regarding the use of artificial intelligence in the Minister’s departments, agencies, crown entities and any other bodies that the Minister is responsible for, if any, since 27 November 2023?",
+        "reply": "As the Minister for Auckland, I am not responsible for any departments, entities, ministries, or agencies."
+      },
+      {
+        "minister": "Minister for Auckland",
+        "date": "2026-07-31",
+        "question": "What procurement process, if any, was used for purchasing artificial intelligence tools, if any, currently being used within the Minister’s departments, agencies, crown entities and any other bodies that the Minister is responsible for, if any?",
+        "reply": "As the Minister for Auckland, I am not responsible for any departments, entities, ministries, or agencies."
+      }
+    ]
+  },
+  "chris-hipkins": {
+    "count": 2882,
+    "byMinister": [
+      {
+        "minister": "Prime Minister",
+        "count": 1493
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 499
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 332
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 328
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 165
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 9
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "count": 2
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 2
+      },
+      {
+        "minister": "Leader of the House",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 2
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Prime Minister",
+        "date": "2026-08-07",
+        "question": "On what date did his office first contact the New Zealand Defence Force to book Air Force to transport him to Auckland on 23 July 2026, and was this from Ohakea Airbase?",
+        "reply": null
+      },
+      {
+        "minister": "Prime Minister",
+        "date": "2026-08-07",
+        "question": "In what capacity did he attend a National Party fundraiser on 23 July 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Resources",
+        "date": "2026-08-07",
+        "question": "Further to his answer to written question 32072 (2026): what does his diary show for the specific pick-up and drop off points for each vehicle service trip he took while in Toronto Canada in March 2025, and what are they, if any?",
+        "reply": null
+      },
+      {
+        "minister": "Prime Minister",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "In my capacity as Prime Minister, I have not presented papers to Cabinet within the specified timeframe."
+      },
+      {
+        "minister": "Prime Minister",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "As Prime Minister, I regularly request and receive advice from officials in the Department of the Prime Minister and Cabinet (DPMC) on a range of matters. In accordance with Speaker’s Ruling 210/6, I consider that the time and resources, and hence the expense, required to answer this question within the timeframe allowed for written parliamentary questions is not in the public interest. I am advised, however, that DPMC publishes a monthly list of titles of advice provided to me, by the middle of…"
+      }
+    ]
+  },
+  "willie-jackson": {
+    "count": 1145,
+    "byMinister": [
+      {
+        "minister": "Minister for Māori Development",
+        "count": 409
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 259
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 245
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 94
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 55
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 18
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 17
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 7
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 3
+      },
+      {
+        "minister": "Speaker of the House of Representatives",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 2
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 1
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Māori Development",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None."
+      }
+    ]
+  },
+  "mariameno-kapa-kingi": {
+    "count": 15,
+    "byMinister": [
+      {
+        "minister": "Minister of Housing",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2025-05-23",
+        "question": "What is the current number of rangatahi aged 18 and 19 who are unemployed and reliant on Jobseeker Support or Emergency Benefits and are also young parents?",
+        "reply": "I refer the Member to reply number 27123 (2025)"
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2025-05-23",
+        "question": "What is the current number of rangatahi aged 18 and 19 who are unemployed and reliant on Jobseeker Support or Emergency Benefits?",
+        "reply": "I refer the Member to reply number 27123 (2025)"
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2025-05-23",
+        "question": "What is the current number of rangatahi aged 18 and 19 who are unemployed and reliant on Jobseeker Support or Emergency Benefits that identify as Māori?",
+        "reply": "I refer the member to the attached table, which contains the number of 18-19 year olds with no income declared in receipt of Jobseeker Support of Emergency Benefit. The table also contains information on how many of that cohort are Māori This is also response to written questions 27119 (2025) and 27124 (2025)."
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2025-05-23",
+        "question": "What advice, reports, briefings, memos, aide memoire, papers or any other communications, if any, has she received regarding her proposal that parents, rather than the welfare system, will be responsible for supporting unemployed 18- and 19-year-olds who cannot support themselves under the planned benefit changes announced in Budget 2025, by title and date?",
+        "reply": "In my capacity as Minister for Social Development and Employment, I regularly request and receive advice on a range of topics. In the interest of transparency, a list of reports received by my office from the Ministry of Social Development is regularly published on the Ministry of Social Development website. The lists of titles published since September 2018 are available here: www.msd.govt.nz/about-msd-and-our-work/publications-resources/information-releases/reports-to-minister/index.html. Pape…"
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2025-05-23",
+        "question": "Has the Minister attended any meetings regarding her proposal that parents, rather than the welfare system, will be responsible for supporting unemployed 18- and 19-year-olds who cannot support themselves under the planned benefit changes announced in Budget 2025 in the last year, if so, what meetings did she attend; listed by agenda, attendees and dates?",
+        "reply": "I discuss a range of topics with officials & parliamentary colleagues I do not think it would be in the public interest to collate such information."
+      }
+    ]
+  },
+  "ingrid-leary": {
+    "count": 2446,
+    "byMinister": [
+      {
+        "minister": "Minister for Mental Health",
+        "count": 1077
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 360
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 256
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 98
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 62
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 38
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 30
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 26
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 18
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 18
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 17
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 15
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 14
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 12
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 9
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 8
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 8
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 8
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 8
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 5
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 4
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 4
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 4
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 4
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 4
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Climate Change",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 4
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 4
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 4
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 4
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 4
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 4
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 4
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 4
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission's Report into the Terrorist Attack on the Christchurch Mosques",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Tertiary Education",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Attorney-General",
+        "date": "2026-08-07",
+        "question": "Has he received any communication from the Ombudsman seeking or querying Police involvement in investigating Wakari Hospital Ward 10A; if so, when?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Police",
+        "date": "2026-08-07",
+        "question": "If Police are not investigating Wakari Hospital Ward 10A, following the Ombudsman’s statement about probable torture, has the Minister, or his office, formally asked Police why they are not investigating, and, if it is, on what date was that inquiry made?",
+        "reply": null
+      },
+      {
+        "minister": "Attorney-General",
+        "date": "2026-08-07",
+        "question": "Is he concerned, given the finding on Lake Alice Hospital by the United Nations Committee Against Torture, that New Zealand had breached the Convention for failing to properly investigate under Article 12 of the Convention, that NZ will again be in breach of the UN Committee Against Torture for failing to properly and independently investigate Wakari Hospital Ward 10A?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "date": "2026-07-28",
+        "question": "Did Health New Zealand indicate at any point, after 1 April 2026, whether the concerns the Ombudsman raised about Wakari Hospital Ward 10A were different from those raised in 2022, and if so, on what date did that indication occur?",
+        "reply": "I have had many conversations with officials about the findings from the Ombudsman report, as the Member would expect. I would also refer the Member to the publicly available 2022 report: https://www.ombudsman.parliament.nz/sites/default/files/2022-02/Report%20on%20an%20unannounced%20inspection%20of%20Ward%2010a%20and%20Helensburgh%20Cottage%2C%20Wakari%20Hospital%20Dunedin%2C%20under%20the%20Crimes%20of%20Torture%20Act%201989.pdf. Health New Zealand provided me with a timeline in late June 2026…"
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "date": "2026-07-28",
+        "question": "What specific new information caused the shift from a refurbishment programme to a decision to close Wakari Hospital Ward 10A, and relocate patients?",
+        "reply": "I am advised the decision to close Wakari Hospital Ward 10A, made by the Health New Zealand Board on 1 July 2026 and advised to me on 2 July 2026, was a clinical decision based on the safety needs of individual patients."
+      }
+    ]
+  },
+  "jo-luxton": {
+    "count": 3795,
+    "byMinister": [
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 1148
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 739
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 668
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 515
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 344
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 51
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 46
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 42
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 33
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 31
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 26
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 22
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 21
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 10
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 8
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 7
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 5
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 4
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 3
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for Emergency Management and Recovery",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Biosecurity",
+        "date": "2026-08-07",
+        "question": "What consideration, if any, has he given to commercial impacts on poultry producers who are housing birds out of biosecurity necessity, including the implications for producers' ability to market eggs or poultry products as free range?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "date": "2026-08-07",
+        "question": "What assessment, if any, has he or his agency made of the potential impacts of an H5N1 avian influenza outbreak on domestic poultry production costs and supply fluctuations, given that New Zealand is not generally an importer of poultry meat or eggs?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "date": "2026-08-07",
+        "question": "What engagement, if any, has the Minister had with representatives of the arable sector since 1 June regarding the potential impacts of an H5N1 avian influenza outbreak and implications on feed grain demand or business continuity; and what supports for the sector, if any, are being considered?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None"
+      }
+    ]
+  },
+  "huhana-lyndon": {
+    "count": 345,
+    "byMinister": [
+      {
+        "minister": "Minister of Health",
+        "count": 142
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 23
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 16
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 10
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 4
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 3
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 2
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 2
+      },
+      {
+        "minister": "Speaker of the House of Representatives",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 1
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Education",
+        "date": "2026-07-28",
+        "question": "How many organisational restructures, if any, have affected the staff and functions currently undertaken by Ngā Poutoko Aromatawai Māori since 27 November 2023, and what changes to staffing numbers and reporting lines resulted from each restructure, if any?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-07-28",
+        "question": "Did NZQA prepare a Te Tiriti impact assessment, Māori impact assessment, or equivalent analysis in relation to the proposed Assessment Division restructure; if so, when was it completed and what were its conclusions?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-07-28",
+        "question": "How many full-time equivalent staff employed by NZQA have primary responsibility for Māori-medium assessment, mātauranga Māori qualifications, or Māori assessment standards?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Local Government",
+        "date": "2026-06-11",
+        "question": "How many committees, listed by name, were identified by the minister to have non-elected voting members in the Northland Region and of those committees, how many members were identified to be non-elected?",
+        "reply": "My officials advise me that the following council committees in the Northland region include non-elected members (number listed in brackets). This list does not include statutory committees (such as a District Licensing Committee or a committee established under a Treaty settlement agreement). Far North District Council • Te Kuaka Committee for Māori Strategic Relationships (10) • Te Miromiro Committee for Assurance, Risk and Finance (2) • Te Koekoeā Committee for Council Controlled Organisation…"
+      },
+      {
+        "minister": "Minister of Health",
+        "date": "2026-06-11",
+        "question": "Did the Ministry of Health seek advice, input, and engagement from Māori health stakeholders as part of the amendments to health practitioner legislation, and if so, which organisations were consulted?",
+        "reply": "I am advised that the Ministry of Health undertook targeted engagement with stakeholders as part of a review of the Health Practitioners Competence Assurance Act. This included outreach to Māori professional organisations, such as Tae Ora Tinana and Ngā Maia Māori Midwives Aotearoa. Additionally, the Ministry published a discussion document titled Putting Patients First: Modernising health workforce regulation. Through this public consultation about 9% of submissions were made on behalf of organ…"
+      }
+    ]
+  },
+  "kieran-mcanulty": {
+    "count": 4292,
+    "byMinister": [
+      {
+        "minister": "Minister of Housing",
+        "count": 1756
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 855
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 366
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 220
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 212
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 199
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 115
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 98
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 85
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 44
+      },
+      {
+        "minister": "Minister for the Public Service and Digitising Government",
+        "count": 34
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 32
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 29
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 25
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 16
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 14
+      },
+      {
+        "minister": "Speaker of the House of Representatives",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 12
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 12
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 7
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 3
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "date": "2026-08-05",
+        "question": "What is the total budgeted cost of establishing the Ministry for Cities, Environment, Regions and Transport (MCERT), including accommodation, fit-out, branding, information technology, change management and redundancy costs?",
+        "reply": null
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "date": "2026-08-05",
+        "question": "What amount, if any, has been spent, and what amount is budgeted, on staff clothing or merchandise bearing the branding of the Ministry for Cities, Environment, Regions and Transport (MCERT)?",
+        "reply": null
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "date": "2026-08-05",
+        "question": "What amount, if any, has been spent since 1 December 2025 on the design of the logo, brand or visual identity of the Ministry for Cities, Environment, Regions and Transport (MCERT), and which supplier or agency undertook that work?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None"
+      }
+    ]
+  },
+  "tracey-mclellan": {
+    "count": 2113,
+    "byMinister": [
+      {
+        "minister": "Minister of Corrections",
+        "count": 1579
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 323
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 127
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 17
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 8
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 8
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Corrections",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Corrections",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Minister of Corrections",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "I received two aide-memories between 19 July 2026 and 24 July 2026. I am advised that the title of one aide-mémoire has been partially withheld in accordance with Speakers’ Ruling 199/6. I also receive regular updates from my officials on a range of matters, including via regular meetings and my weekly report."
+      },
+      {
+        "minister": "Minister of Corrections",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "date": "2026-07-22",
+        "question": "Has the Minister been advised by the Civil Aviation Authority of any governance changes within Airways New Zealand Limited affecting the delivery of air traffic services since 1 July 2024?",
+        "reply": "No."
+      }
+    ]
+  },
+  "ricardo-menendez-march": {
+    "count": 1307,
+    "byMinister": [
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 524
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 397
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 43
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 36
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 35
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 34
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 24
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 24
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 23
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 20
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 17
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 13
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 9
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 9
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 2
+      },
+      {
+        "minister": "Acting Minister of Commerce and Consumer Affairs (Grocery Sector)",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 2
+      },
+      {
+        "minister": "Speaker of the House of Representatives",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 1
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Immigration",
+        "date": "2026-07-29",
+        "question": "Did NEC New Zealand Ltd. provide a formal written response to the Ministry of Business, Innovation, and Employment (MBIE) following discussions regarding the termination of the Biometric Capability Upgrade (BCU) project; if so, on what date was it received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Immigration",
+        "date": "2026-07-29",
+        "question": "How much did the Ministry of Business, Innovation, and Employment (MBIE) pay, or expect to pay, in stranded costs arising from the termination of the Biometric Capability Upgrade (BCU) project?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Immigration",
+        "date": "2026-07-29",
+        "question": "What decisions, if any, were made following the meeting with Richard Griffiths regarding next steps arising from the Ministry of Business, Innovation, and Employment’s termination notice, prior to NEC New Zealand Ltd. providing its formal written response?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "date": "2026-07-28",
+        "question": "Which agency, if any, will be tasked with developing an “AI strategy”?",
+        "reply": "The Ministry of Business, Innovation and Employment is the lead agency for New Zealand’s Strategy for Artificial Intelligence: Investing with confidence."
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "date": "2026-07-28",
+        "question": "What is the intended scope, if any, for the “AI strategy” his government is “looking at”?",
+        "reply": "I refer the Member to reply number 33659 (2026)"
+      }
+    ]
+  },
+  "debbie-ngarewa-packer": {
+    "count": 1078,
+    "byMinister": [
+      {
+        "minister": "Minister of Health",
+        "count": 237
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 67
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 65
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 61
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 60
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 53
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 48
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 44
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 36
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 34
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 32
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 31
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 28
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 25
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 24
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 22
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 20
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 19
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 17
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 17
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 10
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 8
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 8
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 7
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 7
+      },
+      {
+        "minister": "Acting Minister of Commerce and Consumer Affairs (Grocery Sector)",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 2
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Conservation",
+        "date": "2026-07-16",
+        "question": "Has the Minister obtained advice regarding the consistency of the Conservation Amendment Bill with Treaty settlement obligations?",
+        "reply": "I have publicly stated the Government’s commitment that amendments to the conservation system will uphold Treaty settlements. I have received advice on how redress obligations can be transferred into the new conservation system. For more complex redress, the Government will continue to engage with Post-Settlement Governance Entities on how to uphold their redress in the new system. The Conservation Amendment Bill sets out a process for reaching agreement with PSGEs and that, until agreement is r…"
+      },
+      {
+        "minister": "Minister of Conservation",
+        "date": "2026-07-16",
+        "question": "Has the Minister assessed the impact of the Conservation Amendment Bill on Te Papakura o Taranaki, Whanganui National Park, and Whareorino Conservation Area; if so, what were those assessments?",
+        "reply": "I have received advice on how to uphold the Taranaki Maunga arrangements as set out in the Te Kāhui Tupua Act 2025. I, along with Department of Conservation officials, am continuing to engage with both Te Tōpuni Kōkōrangi and Te Tōpuni Ngārahu on how best to uphold those arrangements through the Conservation Amendment Bill and the National Conservation Policy Statement. The Whanganui National Park will be subject to future collective negotiations, in the context of the revised conservation syste…"
+      },
+      {
+        "minister": "Minister for Energy",
+        "date": "2026-07-16",
+        "question": "How does the discontinuation of Crown funding for Ara Ake align with the Government's stated objectives for regional economic growth in Taranaki?",
+        "reply": "The Government is focussed on ensuring an affordable and secure supply of energy, which is a key enabler of economic growth across New Zealand, including in Taranaki."
+      },
+      {
+        "minister": "Minister of Conservation",
+        "date": "2026-07-16",
+        "question": "What advice, if any, has the Minister received on whether the Conservation Amendment Bill changes the legal hierarchy from conservation being the primary purpose of public conservation land to one where economic use is given greater weight?",
+        "reply": "I have been advised that the proposed changes do not create an obligation on the Department of Conservation to balance conservation outcomes with economic opportunities. Conservation will remain the overarching purpose of the Act. For more information on the continued primacy of conservation, I refer the member to the advice contained in 26-M-0046 - EDS meeting memo - 20 May, which has been released on the Department’s website under reference OIAD-9292 available here: https://www.doc.govt.nz/new…"
+      },
+      {
+        "minister": "Minister of Conservation",
+        "date": "2026-07-16",
+        "question": "How many hectares, if any, of Department of Conservation land within the Te Tai Hauāuru electorate are expected to be affected by the Conservation Amendment Bill?",
+        "reply": "The Conservation Amendment Bill introduces new national conservation settings that will apply across all public conservation land. However, the impact on any particular area will vary depending on factors such as the purposes for which the land is managed and any applicable Treaty settlement arrangements."
+      }
+    ]
+  },
+  "damien-oconnor": {
+    "count": 1405,
+    "byMinister": [
+      {
+        "minister": "Minister for Land Information",
+        "count": 364
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 181
+      },
+      {
+        "minister": "Minister of State for Trade",
+        "count": 181
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 171
+      },
+      {
+        "minister": "Minister of State for Trade and Investment",
+        "count": 146
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 135
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 134
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 62
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 10
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Land Information",
+        "date": "2026-08-06",
+        "question": "How many consent holders under the \"commitment to reside in New Zealand\" test have been required to dispose of a property following a trigger event in each of the last five financial years, and how many waivers from that requirement have been granted?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Land Information",
+        "date": "2026-08-06",
+        "question": "What advice, if any, did he receive on the expected number of consents under the \"$5 million plus house\" pathway over the first three years of its operation, and how does the number granted to date compare with that advice?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Land Information",
+        "date": "2026-08-06",
+        "question": "Further to the answer to question for written answer 32030 (2026), does the figure of 22 national interest assessments include assessments concluded at stage one, and how many transactions were screened for national interest risk but not recorded as having undergone an assessment?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Land Information",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": "Members of my office will communicate with Land Information New Zealand (LINZ) on a number of issues, some of which are not collated or registered in a way that could be included in a single answer. LINZ also supports me in other ways which are captured but would be imprudent to collate. Examples of this would include support responding to Ministerial correspondence (withheld to support the privacy of writers), written parliamentary questions (publicly available on the parliamentary website) and…"
+      },
+      {
+        "minister": "Minister for Land Information",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": "I did not take any papers to Cabinet in the week beginning 27 July 2026."
+      }
+    ]
+  },
+  "greg-oconnor": {
+    "count": 779,
+    "byMinister": [
+      {
+        "minister": "Minister for Courts",
+        "count": 425
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 330
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 10
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 10
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Courts",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Courts",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Veterans",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Veterans",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "I refer the Member to the attached document."
+      },
+      {
+        "minister": "Minister for Courts",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "I received the following advice: • 24 July 2026 – Weekly Report: Weekly Report (Justice, Associate Justice and Courts)"
+      }
+    ]
+  },
+  "tamatha-paul": {
+    "count": 1040,
+    "byMinister": [
+      {
+        "minister": "Minister of Housing",
+        "count": 272
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 181
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 108
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 99
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 98
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 62
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 60
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 29
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 25
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 22
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 22
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 3
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 2
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 2
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 2
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Local Government",
+        "date": "2026-07-22",
+        "question": "Further to his reply to Written Question 32122, is it not possible to provide the requested information because it does not exist?",
+        "reply": "The total change costs to councils of amalgamating, broken down by council, region, and total does not exist for the reasons stated in Written Question 32122."
+      },
+      {
+        "minister": "Minister of Local Government",
+        "date": "2026-07-22",
+        "question": "Further to his reply to Written Question 32122, why has the government proceeded with requiring councils to amalgamate despite no estimates of the potential costs to councils?",
+        "reply": "Because the government's voluntary Headstart process allows councils to decide the shape of their proposals, including which councils they comprise, representation, and how they manage services such as transport. The cost of any proposal depends on what they choose."
+      },
+      {
+        "minister": "Minister of Local Government",
+        "date": "2026-07-16",
+        "question": "What, if any, does the government estimate to be the change costs to councils of amalgamating, broken down by council, region, and total if available?",
+        "reply": "It is not possible to provide the information the member has requested, as the change cost would ultimately depend on the scope of any amalgamation, the individual councils, the number of councils in any particular amalgamation, and several other factors that would vary from one amalgamation proposal to another."
+      },
+      {
+        "minister": "Minister of Housing",
+        "date": "2026-07-15",
+        "question": "How many, if any, private rental homes are currently available in the lower quartile of the rental market, and is it greater or less than the 29% of social housing households that he claims currently have sufficient income to manage private rental costs in the lower quartile of the rental market?",
+        "reply": "As of 20 July 2026, there were 2,569 rentals listed on TradeMe that were below the lower quartile rent MBIE published for May 2026 (latest available). This will not include any rentals listed on other sites or those available but not on any listing site. This figure is a point in time view of the number of rentals available. Tenancy services data shows that around 13-14,000 new tenancies are started each month nationally with roughly 3,500 being lower quartile rentals. The analysis which showed …"
+      },
+      {
+        "minister": "Minister of Housing",
+        "date": "2026-07-09",
+        "question": "Does he accept the findings published by the Ministry of Social Development that the 1992 reforms to remove the rent subsidy and introduce the Accommodation Supplement failed to improve horizontal equity and instead worsened vertical equity, and if so, how did that factor into the government’s decision to reduce the Income-Related Rent Subsidy and increase the Accommodation Supplement?",
+        "reply": "I am aware of the findings about the 1992 reforms which have informed the Review of Social Housing. There are no plans to remove the rent subsidy for social housing tenants and to extend the Accommodation Supplement (AS) to social housing tenants. The gap between the income-related rent subsidy (IRRS) and AS has grown over time, since the re-introduction of IRRS in 2000. Budget 2026 changes will retain income-related rent (IRR) at a more generous level than the AS, with tenants in comparable fin…"
+      }
+    ]
+  },
+  "lan-pham": {
+    "count": 1697,
+    "byMinister": [
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 326
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 287
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 171
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 165
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 105
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 93
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 75
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 61
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 46
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 41
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 38
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 35
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 28
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 25
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 23
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 17
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 15
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 13
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 13
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 12
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 12
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 8
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for Emergency Management and Recovery",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Regional Development",
+        "date": "2026-08-07",
+        "question": "When, if ever, has Kānoa had to recover taxpayer funding given out under the Regional Infrastructure Fund when the terms of a loan agreements were not met?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "date": "2026-08-07",
+        "question": "What, if anything, is the formal protocol followed by Kānoa for recovering taxpayer monies given out under the Regional Infrastructure Fund when the terms of loan agreements are not met?",
+        "reply": null
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "date": "2026-08-07",
+        "question": "Following reply 32965 (2026), was the inclusion of a policy consultation option to remove Te Mana o te Wai provisions from national direction based on a suggestion from agricultural industry stakeholders?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "date": "2026-07-21",
+        "question": "Was the review of the Dairy Industry Restructuring Act (DIRA) discussed at the meeting the Minister attended on 2/04/2026 noted as \"MEET: Helen Clark Foundation, Beehive, Helen Clark Foundation representatives, Agriculture\" in his calendar for April 2026?",
+        "reply": "No."
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "date": "2026-07-21",
+        "question": "What advice, if any, did the Minister receive on the inclusion of 'Option 3: Remove Te Mana o te Wai provisions' in the consultation on freshwater national direction undertaken in 2025?",
+        "reply": "In developing the freshwater national direction consultation package, my Ministerial colleagues and I received advice from officials and discussed options for inclusion in the package, including options relating to Te Mana o te Wai."
+      }
+    ]
+  },
+  "willow-jean-prime": {
+    "count": 4566,
+    "byMinister": [
+      {
+        "minister": "Minister for Children",
+        "count": 1486
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 1069
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 635
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "count": 524
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 364
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 213
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 46
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 40
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 36
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 12
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 10
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Tertiary Education",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 3
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 2
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 2
+      },
+      {
+        "minister": "Minister for the Public Service and Digitising Government",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Children",
+        "date": "2026-08-07",
+        "question": "How many, if any, serious event notifications were made at each of Oranga Tamariki's Korowai Manaaki, Whakatakapokai, Te Maioha o Prekarangi, Te Au rere a te Tonga, and Te Puna Wai o Tuhinapo youth justice facilities in July 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Children",
+        "date": "2026-08-07",
+        "question": "What protocol and procedures, if any, govern the storage and disposal of CTV footage captured at Oranga Tamariki youth justice facilities?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Children",
+        "date": "2026-08-07",
+        "question": "How many reports of concern, if any, were made at each of Oranga Tamariki's Korowai Manaaki, Whakatakapokai, Te Maioha o Prekarangi, Te Au rere a te Tonga, and Te Puna Wai o Tuhinapo youth justice facilities between 1 January and 30 June 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "In my capacity as Minister for Social Development and Employment, I regularly request and receive advice on a range of topics. In the interest of transparency, a list of reports received by my office from the Ministry of Social Development is regularly published on the Ministry of Social Development website. The lists of titles published since September 2018 are available here: www.msd.govt.nz/about-msd-and-our-work/publications-resources/information-releases/reports-to-minister/index.html. Pape…"
+      },
+      {
+        "minister": "Minister for Children",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "I took one paper to the Cabinet Expenditure and Regulatory Review Committee on Tuesday 21 July 2026: • Tranche 1-2 Frontline Technology Systems Update: Detailed Business Care"
+      }
+    ]
+  },
+  "priyanca-radhakrishnan": {
+    "count": 2269,
+    "byMinister": [
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 597
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 581
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 305
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 291
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 199
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 56
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 41
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 39
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 26
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 20
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 20
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 18
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 17
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 11
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 7
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 3
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 2
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for ACC",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Conservation",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for ACC",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": "In the interest of transparency, a list of titles of papers that I have received from ACC are published on ACC's website: https://www.acc.co.nz/resources#/category/1"
+      }
+    ]
+  },
+  "dan-rosewarne": {
+    "count": 163,
+    "byMinister": [
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 53
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 40
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 34
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 1
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Rural Communities",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for the South Island",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "As Minister for Rural Communities I refer the member to the attached table. One title has been withheld under Speaker’s Ruling 199/6. Please note I also receive a portfolio Weekly Update."
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "As Minister for Rural Communities, none."
+      }
+    ]
+  },
+  "deborah-russell": {
+    "count": 3789,
+    "byMinister": [
+      {
+        "minister": "Minister of Revenue",
+        "count": 2873
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 291
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 269
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 163
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 102
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 43
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 8
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 8
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Climate Change",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Revenue",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "The titles of papers I received in my capacity as the Minister of Climate Change from the Ministry of Foreign Affairs and Trade are considered for proactive release each month and are published on the Ministry of Foreign Affairs and Trade’s website at: https://www.mfat.govt.nz/en/about-us/ministerial-briefings. The titles of papers I received in my capacity as the Minister of Climate Change from the Ministry for Cities, Environment, Regions and Transport, which was established on 1 July 2026, wi…"
+      },
+      {
+        "minister": "Minister of Revenue",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "None."
+      }
+    ]
+  },
+  "jenny-salesa": {
+    "count": 983,
+    "byMinister": [
+      {
+        "minister": "Minister of Customs",
+        "count": 588
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 352
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 27
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 7
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Ethnic Communities",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "date": "2026-07-13",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 6 July 2026, listed by agency, title and date received?",
+        "reply": "None."
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "date": "2026-07-13",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 6 July 2026, by title and date?",
+        "reply": "None."
+      }
+    ]
+  },
+  "carmel-sepuloni": {
+    "count": 2540,
+    "byMinister": [
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 848
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 427
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 425
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 211
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 199
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 166
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 95
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 68
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 20
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 10
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 5
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 2
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Auckland",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Auckland",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Women",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Women",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "My Office and I receive a range of advice and documents relating to the Women portfolio. I refer the member to the below list of items received the week beginning 19 July 2026. • 2026/27 Estimates for Vote Women Post Hearing Questions 53-57 (21 July 2026) • Meeting with Zoe Lyon-Gifford on 28 July 2026 (23 July 2026) • Attending the Pacific Women MPs wānanga on Tuesday 28 July 2026 and Wednesday 29 July 2026 (23 July 2026)"
+      },
+      {
+        "minister": "Minister for Women",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None."
+      }
+    ]
+  },
+  "lemauga-lydia-sosene": {
+    "count": 1750,
+    "byMinister": [
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 764
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 284
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 136
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 35
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 27
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 21
+      },
+      {
+        "minister": "Speaker of the House of Representatives",
+        "count": 17
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 16
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 16
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 15
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 8
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 6
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 5
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 5
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 5
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 5
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 5
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 5
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 5
+      },
+      {
+        "minister": "Minister of State for Trade and Investment",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 5
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 5
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 5
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 5
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 4
+      },
+      {
+        "minister": "Leader of the House",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "date": "2026-08-05",
+        "question": "Further to his answer to written question 33036 (2026): what do these documents say about staff working for Ministerial Services filming content for their personal social media during work hours?",
+        "reply": null
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "date": "2026-08-05",
+        "question": "Further to his answer to written question 33036 (2026): what do these documents say about staff working for Ministerial Services filming sponsored or paid content in the ministerial offices for their personal social media?",
+        "reply": null
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "date": "2026-08-05",
+        "question": "Further to his answer to written question 33036 (2026): what do these documents say about staff working for Ministerial Services filming sponsored or paid content for their personal social media during work hours?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Statistics",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "I regularly take papers to Cabinet across a range of topics. In the interest of transparency, I proactively release papers considered by Cabinet on the Stats NZ website: https://www.stats.govt.nz/corporate/cabinet-papers/."
+      },
+      {
+        "minister": "Minister of Statistics",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "I regularly request and receive advice on a range of topics. In the interest of transparency, a list of titles of papers that I have received from Stats NZ are published on its website: https://www.stats.govt.nz/about-us/what-we-do/advice-for-the-minister-of-statistics/."
+      }
+    ]
+  },
+  "chle-swarbrick": {
+    "count": 1328,
+    "byMinister": [
+      {
+        "minister": "Minister of Climate Change",
+        "count": 373
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 220
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 86
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 82
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 38
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 33
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 31
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 27
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 27
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 26
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 23
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 19
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 18
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 17
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 11
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 6
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 6
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 6
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 4
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 3
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 2
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 2
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 1
+      },
+      {
+        "minister": "Acting Attorney-General",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Minister of State for Trade and Investment",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for Sport and Recreation",
+        "count": 1
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 1
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 1
+      },
+      {
+        "minister": "Acting Minister of Commerce and Consumer Affairs (Grocery Sector)",
+        "count": 1
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 1
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 1
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Finance",
+        "date": "2026-08-07",
+        "question": "How many NZUs, if any, are forecast to be sold at auction in financial year 2025/26?",
+        "reply": null
+      },
+      {
+        "minister": "Prime Minister",
+        "date": "2026-08-07",
+        "question": "In relation to the answer given to Written Question 25163 and the questions also answered by this answer, does this indicate that staff from the Prime Minister's Office have not held meetings with the range of organisations listed, other than when they were with the Prime Minister?",
+        "reply": null
+      },
+      {
+        "minister": "Prime Minister",
+        "date": "2026-08-07",
+        "question": "In relation to the answer given to Written Parliamentary Question 25163, does the Prime Minister's Office keep records of meetings that staff from the Prime Minister's Office attend without the Prime Minister?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Conservation",
+        "date": "2026-06-25",
+        "question": "What conservation land, if any, on Waiheke Island is included in the \"bits and bobs\" he referred to in Environment Select Committee on 18 June?",
+        "reply": "The Government has always been firm that our iconic landscapes and the places that make New Zealand special will never be put at risk. But I was not clear enough about how the Conservation Amendment Bill (the Bill) would do that, so on 25 June I announced that the Government supports the removal of the land exchanges and disposals provisions from the Bill. This has since been communicated with the Environment Select Committee considering the Bill."
+      },
+      {
+        "minister": "Minister of Conservation",
+        "date": "2026-06-25",
+        "question": "What conservation land, if any, on Aotea / Great Barrier Island is included in the \"bits and bobs\" he referred to in Environment Select Committee on 18 June?",
+        "reply": "The Government has always been firm that our iconic landscapes and the places that make New Zealand special will never be put at risk. But I was not clear enough about how the Conservation Amendment Bill (the Bill) would do that, so on 25 June I announced that the Government supports the removal of the land exchanges and disposals provisions from the Bill. This has since been communicated with the Environment Select Committee considering the Bill."
+      }
+    ]
+  },
+  "cushla-tangaere-manuel": {
+    "count": 1130,
+    "byMinister": [
+      {
+        "minister": "Minister of Forestry",
+        "count": 403
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 280
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 149
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 146
+      },
+      {
+        "minister": "Associate Minister for Sport and Recreation",
+        "count": 98
+      },
+      {
+        "minister": "Associate Minister for Emergency Management and Recovery",
+        "count": 32
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 12
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 3
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Forestry",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Forestry",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "On 22 July 2026, I took a paper on behalf of the Associate Minister for Emergency Management and Recovery, the title of which is not in the public interest to release at this time."
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "I have received the following advice from the National Emergency Management Agency (NEMA) during the week beginning 19 July 2026: • Fortnightly Status Report (23 July 2026) • Aide-Memoire - Talking Points for Economic Policy Committee: Supporting Quicker and More Effective Recoveries (21 July 2026) In addition, staff in my office may informally receive documents, including draft documents, from officials in NEMA, other agencies, and other Ministers’ offices. This information is not held in a for…"
+      }
+    ]
+  },
+  "jan-tinetti": {
+    "count": 3362,
+    "byMinister": [
+      {
+        "minister": "Minister of Education",
+        "count": 1069
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 861
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 498
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 239
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 192
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 160
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 138
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 94
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 30
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 17
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 15
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 13
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 6
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Associate Minister of Education",
+        "date": "2026-08-05",
+        "question": "How many, if any, new Early Childhood Education centres opened during the week of July 27th 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "date": "2026-08-05",
+        "question": "How many, if any, Early Childhood Education centres got their licenses reclassified as a provisional license by the Ministry of Education during the week of July 27th 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "date": "2026-08-05",
+        "question": "How many, if any, Early Childhood Education centres got their licenses cancelled by the Ministry of Education during the week of July 27th 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "As the Minister for Workplace Relations and Safety, the titles of advice I received from the Ministry of Business, Innovation and Employment (MBIE) and WorkSafe are considered for proactive release on a regular basis. These titles can be found on the MBIE website at https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/workplace-relations-and-safety or on the WorkSafe website at https://www.worksafe.govt.nz/abou…"
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "I am advised that the Social Investment Agency publishes a monthly list of titles of advice to Ministers, by the middle of the month after the advice is provided. I refer the member to that list, which can be found here: https://www.sia.govt.nz/about/official-information-act-oia-requests. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpayer funds and therefore not in the public interest."
+      }
+    ]
+  },
+  "teanau-tuiono": {
+    "count": 4899,
+    "byMinister": [
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 427
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 417
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 282
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 281
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 241
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 197
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 168
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 146
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 135
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 122
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 121
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 120
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 92
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 77
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 68
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 68
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 65
+      },
+      {
+        "minister": "Associate Minister for National Security and Intelligence",
+        "count": 57
+      },
+      {
+        "minister": "Minister responsible for the GCSB and NZSIS",
+        "count": 57
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 54
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 53
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 47
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 42
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 38
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 35
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 34
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 34
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 33
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 32
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 32
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 32
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 32
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 32
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 31
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 28
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 27
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 26
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 24
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 24
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 24
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 24
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 23
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 22
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 22
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 22
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 21
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 21
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 21
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 21
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 21
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 21
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 20
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 20
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 20
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 20
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 19
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 19
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 18
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 18
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 18
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 18
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 18
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 17
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 17
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 17
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 17
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 17
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 16
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 16
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 16
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 16
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 15
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 15
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 14
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 14
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 14
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 13
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 13
+      },
+      {
+        "minister": "Minister of State for Trade and Investment",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 13
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 12
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 12
+      },
+      {
+        "minister": "Acting Minister of Commerce and Consumer Affairs (Grocery Sector)",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 11
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 11
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 11
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 11
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 10
+      },
+      {
+        "minister": "Acting Attorney-General",
+        "count": 9
+      },
+      {
+        "minister": "Associate Minister for Sport and Recreation",
+        "count": 9
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "count": 8
+      },
+      {
+        "minister": "Minister for the Public Service and Digitising Government",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for Emergency Management and Recovery",
+        "count": 2
+      },
+      {
+        "minister": "Leader of the House",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 2
+      },
+      {
+        "minister": "Deputy Leader of the House",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Prime Minister",
+        "date": "2026-08-03",
+        "question": "What events or meetings, if any, did the Minister decline to attend during the week beginning 27 July 2026, including location, event description, and attendees?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Defence",
+        "date": "2026-08-03",
+        "question": "What advice, reports, briefings, aide memoires, or any other documents has the Minister or any member of their Office requested, if any, during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "date": "2026-08-03",
+        "question": "What events or meetings, if any, did the Minister decline to attend during the week beginning 27 July 2026, including location, event description, and attendees?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "date": "2026-07-27",
+        "question": "What events or meetings, if any, did the Minister decline to attend during the week beginning 20 July 2026, including location, event description, and attendees?",
+        "reply": "Refer to the response to WPQ 10239 (2026)."
+      },
+      {
+        "minister": "Minister for Veterans",
+        "date": "2026-07-27",
+        "question": "What advice, reports, briefings, aide memoires, or any other documents has the Minister or any member of their Office requested, if any, during the week beginning 20 July 2026, by title and date?",
+        "reply": "I refer the Member to WPQ 33471(2026)."
+      }
+    ]
+  },
+  "phil-twyford": {
+    "count": 2504,
+    "byMinister": [
+      {
+        "minister": "Minister of Immigration",
+        "count": 1499
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 710
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 115
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 43
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 32
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 18
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 11
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 8
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 5
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Immigration",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Immigration",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Immigration",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Minister of Immigration",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "The documents I received from MBIE in the week beginning 19 July 2026 are listed in the table attached. This list includes formal briefings and aides-mémoire where the Minister of Immigration is recorded as the main recipient. Papers received from other agencies, or where a paper has been referred by another Minister, are not included in this list. Briefings that accompany responses to Official Information Act requests to the Minister are also not included in this list. I am withholding the titl…"
+      }
+    ]
+  },
+  "tangi-utikere": {
+    "count": 7028,
+    "byMinister": [
+      {
+        "minister": "Minister of Transport",
+        "count": 3578
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 745
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 623
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 523
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 418
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 354
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 150
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 144
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 111
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 98
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 44
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 41
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 31
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 29
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 20
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 16
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 15
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 14
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 11
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 10
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 2
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Rail",
+        "date": "2026-08-07",
+        "question": "What is Ferry Holdings Limited's total forecast operating cost to 2029, and how much of the $1,704 million funding envelope remains uncommitted?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Rail",
+        "date": "2026-08-07",
+        "question": "By what date are Port Marlborough and CentrePort required to make their respective $110 million and $100 million contributions to the portside infrastructure programme?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Rail",
+        "date": "2026-08-07",
+        "question": "What are the respective roles of Beca Ltd and North Projects Ltd in cost estimation and cost review for Ferry Holdings' programme, and why are both required?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Minister of Transport",
+        "date": "2026-07-27",
+        "question": "What is the status, for SH58 Safety Improvements Stage 2, of (a) any notice of requirement or designation and its lapse date; (b) any resource consent or Fast-track approval and its lapse date; (c) total property acquired and property spend to date; (d) total non-construction expenditure to date; and (e) whether any of these are being withdrawn, surrendered, or allowed to lapse?",
+        "reply": "Interim reply: I refer the Member to reply number 33496 (2026)"
+      }
+    ]
+  },
+  "ayesha-verrall": {
+    "count": 22507,
+    "byMinister": [
+      {
+        "minister": "Minister of Health",
+        "count": 9019
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 3089
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 357
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 228
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 189
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 168
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 167
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 160
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 153
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 153
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 147
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 144
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 144
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 141
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 139
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 139
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 139
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 137
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 137
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 136
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 136
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 134
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 132
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 130
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 130
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 130
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 129
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 129
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 128
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 127
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 126
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 123
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 120
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 115
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 115
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 114
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 112
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 110
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 103
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 102
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 102
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 101
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 100
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 100
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 99
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 98
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 98
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 98
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 92
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 89
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 89
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 89
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 89
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 88
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 88
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 88
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 88
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 87
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 86
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 86
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 86
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 86
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 86
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 85
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 85
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 85
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 85
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 85
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 85
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 84
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 84
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 84
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 84
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 84
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 84
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 84
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 83
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 82
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 82
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 79
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 79
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 78
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 78
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 78
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission's Report into the Terrorist Attack on the Christchurch Mosques",
+        "count": 78
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 78
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 77
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 77
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 77
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 77
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 76
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 76
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 76
+      },
+      {
+        "minister": "Associate Minister of Climate Change",
+        "count": 76
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 75
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 67
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 52
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 48
+      },
+      {
+        "minister": "Minister of State for Trade",
+        "count": 38
+      },
+      {
+        "minister": "Minister for Tertiary Education",
+        "count": 32
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 7
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 5
+      },
+      {
+        "minister": "Acting Attorney-General",
+        "count": 4
+      },
+      {
+        "minister": "Speaker of the House of Representatives",
+        "count": 3
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Health",
+        "date": "2026-08-04",
+        "question": "Is the Free Speech Union a party to any proceedings currently before the Health Practitioners Disciplinary Tribunal, if so, how many?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "Titles of all advice that I have received have been, or will be, proactively released on the Ministry of Health and Health New Zealand websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2019-2025 https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2026 https://www.tewhatuora.govt.nz/publications https://www.tewhatuora.govt.nz/publications/te-aka-whai-ora-advice-provided-to-the-minister-and-associate-ministers-of-healt…"
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "Titles of all advice that I have received have been, or will be, proactively released on the Ministry of Health and Pharmac websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2019-2025 https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2026 https://pharmac.govt.nz/news-and-resources/official-information-act/list-of-ministerial-briefings"
+      }
+    ]
+  },
+  "celia-wade-brown": {
+    "count": 214,
+    "byMinister": [
+      {
+        "minister": "Minister of Conservation",
+        "count": 92
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 42
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 24
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 12
+      },
+      {
+        "minister": "Minister for Vocational Education",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 2
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 2
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-07-03",
+        "question": "Does the Minister accept MBIE's estimate of future revenue from the International Visitor Levy remaining flat for the three years 2026/27, 2027/28 and 2028/29 rather than increasing for the following years?",
+        "reply": "I am advised that MBIE will be publicly releasing International Visitor Conservation and Tourism Levy forecasts in the coming weeks that have updated figures."
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-07-03",
+        "question": "What advice, if any, has the Minister received from the local government sector regarding funding tourism-related initiatives?",
+        "reply": "As Minister of Tourism and Hospitality, I regularly engage with stakeholders across the tourism system, including the local government sector, on a range of matters where there are overlaps in interests and responsibilities. This remains the case in relation to tourism-related funding matters and initiatives."
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-07-02",
+        "question": "What communication, if any, has the Minister had with her colleague, the Minister of Local Government, about the Tourism strategy system roles, especially leading \"Marketing to New Zealanders to travel and attend events within New Zealand is undertaken by both local government (RTOs) and tourism businesses\"?",
+        "reply": "As Minister of Tourism and Hospitality, I regularly engage with my ministerial colleagues, including the Minister of Local Government, on a range of matters where there are overlaps between portfolios. This remains the case in relation to the Tourism Policy Statement and respective system roles."
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-06-23",
+        "question": "Is the Minister aware that Easy Read enrolment information is not yet available on the Vote.NZ website although there are less than eighteen weeks until enrolment closes?",
+        "reply": "The Electoral Commission is an independent Crown entity and as such, I do not receive reporting on detailed operational matters. The Commission’s quarterly accountability reports contain some information of this nature, but no information relating to the particular matter stated. I am advised that the Electoral Commission is conducting a phased public information campaign which started with the Māori Electoral Option from 31 March to 6 August, followed by an enrolment update campaign from 17 Aug…"
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-06-23",
+        "question": "Has the Minister received any updates from the Electoral Commission on when the vote.nz website will be completely ready with all enrolment and voting information?",
+        "reply": "The Electoral Commission is an independent Crown entity and as such, I do not receive reporting on detailed operational matters. The Commission’s quarterly accountability reports contain some information of this nature, but no information relating to the particular matter stated. I am advised that the Electoral Commission is conducting a phased public information campaign which started with the Māori Electoral Option from 31 March to 6 August, followed by an enrolment update campaign from 17 Aug…"
+      }
+    ]
+  },
+  "rawiri-waititi": {
+    "count": 68,
+    "byMinister": [
+      {
+        "minister": "Minister of Corrections",
+        "count": 27
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Corrections",
+        "date": "2026-06-04",
+        "question": "Does the Parole Board have any safeguards to ensure that any untested allegations are not unfairly relied on in situations where a complainant or paroled offender is unable to attend a recall hearing for a paroled offender, if so, what are these safeguards?",
+        "reply": "I am advised that as required by the Parole Act 2002, every person subject to a recall application is given the opportunity to either appear before the New Zealand Parole Board (Parole Board) to state their case, or to make written submissions. Respondents are also entitled to be represented by counsel. Section 65(4) provides that the Parole Board may determine a recall application without hearing from any person orally, unless the respondent has indicated they wish to appear in person, or the P…"
+      },
+      {
+        "minister": "Minister of Corrections",
+        "date": "2026-06-04",
+        "question": "Does the Department rely on psychological risk assessments that are expressly conditional on allegations being true, and if so, how is the reliability of those underlying allegations assessed?",
+        "reply": "I am advised that psychological risk assessment reports prepared by Corrections’ psychologists relate to individuals who have been convicted. In forming their risk opinions, psychologists may consider a range of information beyond the Judge’s Sentencing Notes and Summary of Facts, including self-report, incidents and misconducts, and disclosures from whānau or health services (where consent is provided). The weight given to each source varies and must be defensible. Psychological risk opinions a…"
+      },
+      {
+        "minister": "Minister of Corrections",
+        "date": "2026-06-03",
+        "question": "Has the Department identified any issues with missing or incomplete historical files relating to psychological assessments or recall decisions of a paroled offender?",
+        "reply": "I am assured, and it is my expectation, that Corrections maintains relevant records, including psychological assessments and recall decisions, in accordance with its record-keeping obligations."
+      },
+      {
+        "minister": "Minister of Corrections",
+        "date": "2026-06-03",
+        "question": "What safeguards, if any, exist to ensure that information provided to the Parole Board is accurate and complete to support recall hearings?",
+        "reply": "I am advised that Corrections has processes in place to support the accuracy and completeness of information provided to the New Zealand Parole Board. These include: • preparing reports using structured templates and guidance • reviewing information against case records and relevant sources • internal quality assurance and management oversight • providing supporting documents where available. I am further assured that where new or updated information becomes available, it is provided to the Paro…"
+      },
+      {
+        "minister": "Minister of Corrections",
+        "date": "2026-06-03",
+        "question": "Does the Department of Corrections ever rely on independent allegations made by third parties when applying to the Parole Board to have a paroled offender recalled, if so, does the Department verify these allegations and what steps are required to verify?",
+        "reply": "I am advised that Corrections may consider third party allegations when assessing risk or compliance. However, staff will assess the source, ensure corroboration and consistency with other information, and the seriousness of the risk. Where there are credible public safety concerns, a precautionary approach may be taken even if verification is ongoing."
+      }
+    ]
+  },
+  "vanushi-walters": {
+    "count": 713,
+    "byMinister": [
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 368
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 120
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 92
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 36
+      },
+      {
+        "minister": "Minister responsible for the GCSB and NZSIS",
+        "count": 36
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 16
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 10
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 5
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 4
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 3
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "count": 2
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Prime Minister",
+        "date": "2026-08-07",
+        "question": "What assessment, if any, has he received of the effect on New Zealand’s international reputation of the remarks made by the Minister of Foreign Affairs in the New Zealand Parliament on 29 July 2026, and on what date was that assessment provided?",
+        "reply": null
+      },
+      {
+        "minister": "Prime Minister",
+        "date": "2026-08-07",
+        "question": "Has he issued any guidance to Ministers concerning public statements about ethnic communities or foreign countries since 29 July 2026; if so, on what date and in what terms?",
+        "reply": null
+      },
+      {
+        "minister": "Prime Minister",
+        "date": "2026-08-07",
+        "question": "On what date and at what time was he, or the Office of the Prime Minister, first informed that the Chinese Embassy in New Zealand had lodged representations with the Ministry of Foreign Affairs and Trade on 30 July 2026 concerning remarks made in the New Zealand Parliament on 29 July 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "date": "2026-07-27",
+        "question": "Which of Australia, Canada, the United Kingdom, and the member states of the European Union voted in favour of the reappointment of Volker Türk as United Nations High Commissioner for Human Rights on 24 July 2026, and which, if any, abstained?",
+        "reply": "Australia, Canada, the UK and the EU Member States voted in favour of the reappointment."
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "date": "2026-07-27",
+        "question": "Did New Zealand deliver an explanation of vote, or lodge any written statement, in connection with its abstention on the 24 July 2026 United Nations General Assembly vote to reappoint the High Commissioner for Human Rights, and if so, what did it state?",
+        "reply": "No."
+      }
+    ]
+  },
+  "duncan-webb": {
+    "count": 3385,
+    "byMinister": [
+      {
+        "minister": "Minister of Justice",
+        "count": 1254
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 683
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 475
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 120
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission's Report into the Terrorist Attack on the Christchurch Mosques",
+        "count": 116
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 88
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 84
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 56
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 55
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 39
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 39
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 33
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 25
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 19
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 17
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 16
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 16
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 15
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 13
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 12
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 12
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 11
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "count": 11
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 7
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 6
+      },
+      {
+        "minister": "Minister for the Public Service and Digitising Government",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 5
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister of Police",
+        "count": 5
+      },
+      {
+        "minister": "Minister responsible for Ministerial Services",
+        "count": 4
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 4
+      },
+      {
+        "minister": "Speaker of the House of Representatives",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 3
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Conservation",
+        "count": 3
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 2
+      },
+      {
+        "minister": "Acting Minister of Commerce and Consumer Affairs (Grocery Sector)",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for Regional Development",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Child Poverty Reduction",
+        "count": 1
+      },
+      {
+        "minister": "Minister responsible for the GCSB",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Digitising Government",
+        "count": 1
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 1
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Climate Change",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 1
+      },
+      {
+        "minister": "Minister of State for Trade",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for ACC",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 1
+      },
+      {
+        "minister": "Acting Attorney-General",
+        "count": 1
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-08-06",
+        "question": "Does the Electoral Commission audit situations where letters are returned \"gone no address\" to ensure that there are no situations where the elector in fact still resides at the address, or that instances where this occurs are not a systemic problem with the Commission or New Zealand Post?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-08-06",
+        "question": "If a person is placed on the dormant roll, is the elector informed \"you are not currently enrolled\"; if so is this accurate and is the elector able to cast a party vote at the next election?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-08-06",
+        "question": "How many occassions is the Electoral Commission aware of where an elector was moved to the dormant roll in accordance with legislative requirements because correspondence was returned to the Electoral Commission by New Zealand Post ‘Gone no address’ — notwithstanding the elector in fact still resided at the address?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Regulation",
+        "date": "2026-07-21",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received regarding or referring to Uber, listed by title and date?",
+        "reply": "My office has received notes regarding the availability of Uber for use by DIA staff."
+      },
+      {
+        "minister": "Minister for Regulation",
+        "date": "2026-07-21",
+        "question": "Has the Minister's office been in contact with any individual from or representing Waymo autonomous cars?",
+        "reply": "No."
+      }
+    ]
+  },
+  "helen-white": {
+    "count": 784,
+    "byMinister": [
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "count": 355
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 235
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "count": 143
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 10
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 8
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 4
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for the Prevention of Family and Sexual Violence",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "date": "2026-07-27",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 19 July 2026, listed by agency, title and date received?",
+        "reply": "In my capacity as Minister for the Community and Voluntary Sector, I regularly request and receive advice on a range of topics. In the interest of transparency, a list of reports received by my office have been, or will be, proactively released on the Department’s website at: www.dia.govt.nz/Proactive-Releases#briefing-titles."
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "date": "2026-07-27",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 19 July 2026, by title and date?",
+        "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
+      }
+    ]
+  },
+  "arena-williams": {
+    "count": 3136,
+    "byMinister": [
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 1452
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 638
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 451
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 170
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 152
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 64
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 51
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 22
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 21
+      },
+      {
+        "minister": "Acting Minister of Commerce and Consumer Affairs (Grocery Sector)",
+        "count": 17
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 15
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 12
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Media and Communications",
+        "count": 10
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 5
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 5
+      },
+      {
+        "minister": "Acting Minister for State Owned Enterprises (New Zealand Post)",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Defence",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Disability Issues",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister for Youth",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Youth",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": "I regularly take papers to Cabinet across a range of topics. In the interest of transparency, I proactively release papers considered by Cabinet on the Ministry of Business, Innovation and Employment website (https://www.mbie.govt.nz/document-library)."
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": "I regularly request and receive advice on a range of topics. In the interest of transparency, a list of briefings and reports received by my office from the Ministry of Business, Innovation and Employment (MBIE) is regularly published on MBIE's website (https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/commerce-and-consumer-affairs)."
+      }
+    ]
+  },
+  "scott-willis": {
+    "count": 502,
+    "byMinister": [
+      {
+        "minister": "Minister for Energy",
+        "count": 217
+      },
+      {
+        "minister": "Minister of Science, Innovation and Technology",
+        "count": 37
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 20
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 20
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 18
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 15
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 14
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 14
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 14
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 13
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 13
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 10
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Forestry",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Rural Communities",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 5
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Sport and Recreation",
+        "count": 4
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 3
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "count": 3
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Associate Minister of Health",
+        "date": "2026-07-30",
+        "question": "Is the Minister committed to fully implementing the updated Dementia Mate Wareware Action Plan 2026-2031, if so, what steps is the Minister taking to achieve this plan, and if not - why not?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "date": "2026-07-30",
+        "question": "What stakeholders, if any, has the Minister met with to discuss the Dementia Mate Wareware Action Plan 2026-2031?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "date": "2026-07-30",
+        "question": "What written advice, if any, has the Minister recieved on the updated Dementia Mate Wareware Action Plan 2026-2031 by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "date": "2026-07-17",
+        "question": "What advice, if any, has the Minister received regarding the reform of Vehicle Dimension and Mass (VDAM) regulations, listed by date and title?",
+        "reply": "None."
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "date": "2026-07-17",
+        "question": "What plans, if any, does the Minister have to field test agricultural machines that are not able to be permitted under current Vehicle Dimension and Mass (VDAM) regulations?",
+        "reply": "None."
+      }
+    ]
+  },
+  "megan-woods": {
+    "count": 2828,
+    "byMinister": [
+      {
+        "minister": "Minister for Energy",
+        "count": 852
+      },
+      {
+        "minister": "Minister for Resources",
+        "count": 607
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 473
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 404
+      },
+      {
+        "minister": "Associate Minister of Climate Change",
+        "count": 197
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 45
+      },
+      {
+        "minister": "Minister of Transport",
+        "count": 39
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 38
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 30
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 28
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 26
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 16
+      },
+      {
+        "minister": "Minister for the Environment",
+        "count": 16
+      },
+      {
+        "minister": "Minister for Regional Development",
+        "count": 12
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 6
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Biosecurity",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 2
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Auckland",
+        "count": 1
+      },
+      {
+        "minister": "Deputy Leader of the House",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Associate Minister for Energy",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Resources",
+        "date": "2026-08-03",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "date": "2026-08-03",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Energy",
+        "date": "2026-07-13",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 6 July 2026, listed by agency, title and date received?",
+        "reply": "A list of the briefings I have received from MBIE is proactively available on the MBIE website. You can access this information at https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information."
+      },
+      {
+        "minister": "Minister for Resources",
+        "date": "2026-07-13",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 6 July 2026, listed by agency, title and date received?",
+        "reply": "A list of the briefings I have received from MBIE is proactively available on the MBIE website. You can access this information at https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information."
+      }
+    ]
+  },
+  "lawrence-xu-nan": {
+    "count": 1705,
+    "byMinister": [
+      {
+        "minister": "Minister of Education",
+        "count": 784
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "count": 510
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 44
+      },
+      {
+        "minister": "Minister for Trade",
+        "count": 43
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 32
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "count": 30
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 22
+      },
+      {
+        "minister": "Minister for Seniors",
+        "count": 17
+      },
+      {
+        "minister": "Associate Minister of Justice",
+        "count": 15
+      },
+      {
+        "minister": "Associate Minister of Housing",
+        "count": 15
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 15
+      },
+      {
+        "minister": "Minister for ACC",
+        "count": 14
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "count": 13
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 12
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 11
+      },
+      {
+        "minister": "Minister for Food Safety",
+        "count": 11
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 10
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 9
+      },
+      {
+        "minister": "Minister for Land Information",
+        "count": 9
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 8
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "count": 8
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Statistics",
+        "count": 7
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 7
+      },
+      {
+        "minister": "Minister for Tertiary Education and Skills",
+        "count": 7
+      },
+      {
+        "minister": "Minister of Revenue",
+        "count": 5
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "count": 4
+      },
+      {
+        "minister": "Attorney-General",
+        "count": 4
+      },
+      {
+        "minister": "Prime Minister",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Courts",
+        "count": 3
+      },
+      {
+        "minister": "Minister for Regulation",
+        "count": 3
+      },
+      {
+        "minister": "Associate Minister of Agriculture",
+        "count": 3
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 2
+      },
+      {
+        "minister": "Minister for Mental Health",
+        "count": 2
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission's Report into the Terrorist Attack on the Christchurch Mosques",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for the Environment",
+        "count": 2
+      },
+      {
+        "minister": "Associate Minister for Energy",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Emergency Management and Recovery",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Energy",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "count": 1
+      },
+      {
+        "minister": "Minister of State for Trade and Investment",
+        "count": 1
+      },
+      {
+        "minister": "Minister for the Public Service",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Universities",
+        "count": 1
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 1
+      }
+    ],
+    "recent": [
+      {
+        "minister": "Minister of Education",
+        "date": "2026-08-06",
+        "question": "What groups and organisations, if any, were consulted with on the nine new industry-led subjects prior to the announcement on 6 August 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-08-06",
+        "question": "What reports, briefings, emails, memos, aides-memoire, notes or written advice, if any, has the Minister sent to Industry Leaders regarding the nine new industry-led subjects?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-08-06",
+        "question": "What reports, briefings, emails, memos, aides-memoire, notes or written advice, if any, has the Minister received from other Ministers regarding the nine new industry-led subjects?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-07-23",
+        "question": "Was the Privacy Commissioner notified as a result of the SMART (Student Monitoring, Assessment and Reporting Tool) data breach; if so, when?",
+        "reply": "Yes, on 16 July 2026."
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-07-23",
+        "question": "How long have trial logins for the SMART (Student Monitoring, Assessment and Reporting Tool) been able to access live records?",
+        "reply": "I am advised by the Ministry of Education that trial logins for the Student Monitoring, Assessment and Reporting Tool were able to access live reporting records from 3 July to 16 July 2026. Two teachers used these logins to access student data that was not their own."
+      }
+    ]
+  }
+}
+
+// Every MP this run actually searched. An MP here but absent from the map above
+// asked NO written questions this term — a real, checked zero (typical for
+// ministers and government backbenchers, who answer them rather than ask them).
+// Without this we can't tell "checked, none found" from "not looked at yet", and
+// the profile would show "being added" forever for MPs whose true answer is zero.
+export const WRITTEN_QUESTIONS_CHECKED: string[] = [
+  "andrew-bayly",
+  "andrew-hoggard",
+  "andy-foster",
+  "arena-williams",
+  "ayesha-verrall",
+  "barbara-edmonds",
+  "barbara-kuriger",
+  "brooke-van-velden",
+  "cameron-brewer",
+  "cameron-luxton",
+  "camilla-belich",
+  "carl-bates",
+  "carlos-cheung",
+  "carmel-sepuloni",
+  "casey-costello",
+  "catherine-wedd",
+  "celia-wade-brown",
+  "chle-swarbrick",
+  "chris-bishop",
+  "chris-hipkins",
+  "chris-penk",
+  "christopher-luxon",
+  "cushla-tangaere-manuel",
+  "damien-oconnor",
+  "dan-bidois",
+  "dan-rosewarne",
+  "dana-kirkpatrick",
+  "david-macleod",
+  "david-seymour",
+  "david-wilson",
+  "debbie-ngarewa-packer",
+  "deborah-russell",
+  "duncan-webb",
+  "erica-stanford",
+  "francisco-hernandez",
+  "georgie-dansey",
+  "gerry-brownlee",
+  "ginny-andersen",
+  "glen-bennett",
+  "grant-mccallum",
+  "greg-fleming",
+  "greg-oconnor",
+  "hamish-campbell",
+  "hana-rawhiti-maipi-clarke",
+  "helen-white",
+  "huhana-lyndon",
+  "ingrid-leary",
+  "james-meager",
+  "jamie-arbuckle",
+  "jan-tinetti",
+  "jenny-marcroft",
+  "jenny-salesa",
+  "jo-luxton",
+  "joseph-mooney",
+  "judith-collins",
+  "julie-anne-genter",
+  "kahurangi-carter",
+  "karen-chhour",
+  "katie-nimon",
+  "kieran-mcanulty",
+  "lan-pham",
+  "laura-mcclure",
+  "lawrence-xu-nan",
+  "lemauga-lydia-sosene",
+  "louise-upston",
+  "marama-davidson",
+  "mariameno-kapa-kingi",
+  "mark-cameron",
+  "mark-mitchell",
+  "mark-patterson",
+  "matt-doocey",
+  "maureen-pugh",
+  "megan-woods",
+  "melissa-lee",
+  "mike-butterick",
+  "mike-davidson",
+  "mike-davidson",
+  "miles-anderson",
+  "nancy-lu",
+  "nicola-grigg",
+  "nicola-willis",
+  "nicole-mckee",
+  "oriini-kaipara",
+  "oriini-kaipara",
+  "parmjeet-parmar",
+  "paul-goldsmith",
+  "paulo-garcia",
+  "penny-simmonds",
+  "phil-twyford",
+  "priyanca-radhakrishnan",
+  "rachel-boyack",
+  "rachel-brooking",
+  "rawiri-waititi",
+  "reuben-davidson",
+  "ricardo-menendez-march",
+  "rima-nakhle",
+  "ryan-hamilton",
+  "sam-uffindell",
+  "scott-simpson",
+  "scott-willis",
+  "shanan-halbert",
+  "shane-jones",
+  "shane-reti",
+  "simeon-brown",
+  "simon-court",
+  "simon-watts",
+  "steve-abel",
+  "stuart-smith",
+  "suze-redmayne",
+  "takuta-ferris",
+  "tama-potaka",
+  "tamatha-paul",
+  "tangi-utikere",
+  "teanau-tuiono",
+  "tim-costley",
+  "tim-van-de-molen",
+  "todd-mcclay",
+  "todd-stephenson",
+  "tom-rutherford",
+  "tracey-mclellan",
+  "vanessa-weenink",
+  "vanushi-walters",
+  "willie-jackson",
+  "willow-jean-prime",
+  "winston-peters"
+]
