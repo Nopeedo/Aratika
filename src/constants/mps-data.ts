@@ -193,6 +193,16 @@ export const MP_PROFILES: Record<string, MPProfile> = (() => {
     if (map[slug]) map[slug] = { ...map[slug], writtenQuestions: MP_WRITTEN_QUESTIONS[slug].count }
   }
 
+  // Speeches in the House (Hansard — scripts/build-mp-speeches.mjs) is built and
+  // available as MP_SPEECHES, but deliberately NOT merged into `speeches` yet.
+  // Hansard files a presiding officer's procedural calls during a bill's committee
+  // stage under the same DebateItem/Speech type as a substantive speech, with no
+  // field distinguishing them — so the raw tally ranks Assistant Speakers
+  // (Kuriger 2,593, Pugh 1,347) above the Leader of the House (563) and the Prime
+  // Minister (29). Publishing that under "Speeches in the House" would read as an
+  // engagement score and mislead, which is the opposite of the point. Awaiting a
+  // decision on framing/label before it goes on the profile.
+
   return map
 })()
 
