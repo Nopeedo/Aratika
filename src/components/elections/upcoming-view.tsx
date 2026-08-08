@@ -27,14 +27,18 @@ import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { VideoSection } from '@/components/news/video-section'
 import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
+// Warm palette carried over from the homepage/hub so the Election Centre reads
+// as the same product rather than a separate tool: espresso headings, warm body
+// greys, warm hairlines — replacing the cold #0c0e12/#6b7078/#e9e7e2 set.
+const INK = '#2A1206', SECONDARY = '#6b6157', TERTIARY = '#9a9186'
+const BORDER = '#e6e2da', SURFACE = '#faf8f4', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 // Practical steps that sit alongside the "how your vote works" explainer.
+// tint/ink follow the homepage policy-chip language (deep 700-level borders).
 const STEPS = [
-  { icon: UserPlus, title: 'Enrol or check your details', body: 'You must be enrolled to vote. Enrol or update your address anytime at vote.nz.', href: 'https://vote.nz', cta: 'Enrol at vote.nz' },
-  { icon: Clock, title: 'Vote early or on the day', body: 'Advance voting usually opens about two weeks before election day. Dates confirmed closer to the time.', href: null, cta: null },
+  { icon: UserPlus, title: 'Enrol or check your details', body: 'You must be enrolled to vote. Enrol or update your address anytime at vote.nz.', href: 'https://vote.nz', cta: 'Enrol at vote.nz', tint: '#ecfdf3', ink: '#15803d' },
+  { icon: Clock, title: 'Vote early or on the day', body: 'Advance voting usually opens about two weeks before election day. Dates confirmed closer to the time.', href: null, cta: null, tint: '#ecfeff', ink: '#0e7490' },
 ]
 
 export async function UpcomingView({ e }: { e: ElectionData }) {
@@ -51,7 +55,16 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const partiesContesting = PARLIAMENTARY_PARTIES.length + NON_PARLIAMENTARY_CONTESTING.length
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    // One continuous woven texture behind the whole page — hero included — so it
+    // sits in the same world as the homepage and hub instead of on flat white.
+    <div style={{
+      backgroundColor: '#f4f2ec',
+      backgroundImage: 'url(/back2.jpg)',
+      backgroundRepeat: 'repeat-y',
+      backgroundSize: '100% auto',
+      backgroundPosition: 'top center',
+      minHeight: '100vh',
+    }}>
       <CommandHero leader={leader} pollCount={polls.length} partiesContesting={partiesContesting} majoritySeats={61} />
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
@@ -64,14 +77,12 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             <TwoVotes />
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14, marginTop: 14 }}>
               {STEPS.map((s) => (
-                <div key={s.title} style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 11, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <s.icon style={{ width: 20, height: 20, color: JADE }} />
-                  </div>
-                  <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{s.title}</div>
-                  <div style={{ flex: 1, fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55 }}>{s.body}</div>
+                <div key={s.title} className="party-card" style={{ background: s.tint, border: `2px solid ${s.ink}`, borderRadius: 16, padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <s.icon style={{ width: 24, height: 24, color: s.ink }} />
+                  <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{s.title}</div>
+                  <div style={{ flex: 1, fontSize: 13, color: '#3f372f', fontFamily: MANROPE, lineHeight: 1.55 }}>{s.body}</div>
                   {s.href && s.cta && (
-                    <a href={s.href} target="_blank" rel="noopener noreferrer" style={cta}>{s.cta} <ArrowUpRight style={ic} /></a>
+                    <a href={s.href} target="_blank" rel="noopener noreferrer" style={{ ...cta, color: s.ink }}>{s.cta} <ArrowUpRight style={ic} /></a>
                   )}
                 </div>
               ))}
@@ -85,7 +96,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               link={{ href: '/battlegrounds', label: 'All battlegrounds' }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               <BattlegroundsTeaser />
-              <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden' }}>
+              <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
                 <div style={{ padding: 18 }}>
                   <BattlegroundsMap embedded />
                 </div>
@@ -109,7 +120,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginTop: 16 }}>
               {/* Current Parliament — the baseline */}
-              <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden' }}>
+              <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
                 <div style={{ padding: '14px 18px', borderBottom: `1px solid ${BORDER}`, background: SURFACE }}>
                   <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>The Parliament you’re voting to change</div>
                   <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>The current make-up, from the {base.year} General Election — your baseline for 2026.</div>
@@ -221,13 +232,14 @@ function ZoneHead({ eyebrow, title, sub, link }: {
   )
 }
 
-/** A dark zone-intro band that echoes the command-centre hero, used to set the
- *  "state of the race" section apart from the light zones around it. */
+/** A deep espresso zone-intro band, used to set the "state of the race" section
+ *  apart from the light zones around it. Was near-black (#0a0c11) to echo the
+ *  old cinematic hero; now that the hero is warm, espresso keeps the contrast
+ *  without dropping a cold slab into the middle of a warm page. */
 function DarkBanner({ eyebrow, title, sub }: { eyebrow: string; title: string; sub: string }) {
   return (
-    <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 18, background: '#0a0c11', color: '#fff', padding: 'clamp(20px, 3vw, 28px)' }}>
-      <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'radial-gradient(560px 260px at 88% -20%, rgba(54,224,138,.2), transparent 60%)' }} />
-      <div aria-hidden className="bg-dot-grid" style={{ position: 'absolute', inset: 0, opacity: 0.05 }} />
+    <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 18, background: '#2A1206', color: '#fff', padding: 'clamp(20px, 3vw, 28px)' }}>
+      <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'radial-gradient(560px 260px at 88% -20%, rgba(54,224,138,.22), transparent 60%)' }} />
       <div style={{ position: 'relative' }}>
         <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: '#36e08a', fontFamily: MANROPE, marginBottom: 7 }}>{eyebrow}</div>
         <h2 style={{ fontSize: 'clamp(22px, 3.8vw, 28px)', fontWeight: 800, letterSpacing: '-.01em', color: '#fff', fontFamily: MANROPE, margin: 0, lineHeight: 1.15 }}>{title}</h2>

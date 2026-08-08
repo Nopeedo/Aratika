@@ -9,8 +9,10 @@
 import Link from 'next/link'
 import { ArrowRight, Landmark, MapPin, Info } from 'lucide-react'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', JADE = '#1F8A4C'
+// Warm palette, shared with the Election Centre page and the homepage, so the
+// explainer doesn't drop cold near-black text and a black CTA into a warm page.
+const INK = '#2A1206', SECONDARY = '#6b6157', TERTIARY = '#9a9186'
+const BORDER = '#e6e2da', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function TwoVotes() {
@@ -53,7 +55,7 @@ export function TwoVotes() {
       {/* Hand-off to the decide tools (no party steering here) */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginTop: 14 }}>
         <span style={{ fontSize: 14.5, fontWeight: 700, color: INK, fontFamily: MANROPE }}>Still deciding who to give them to?</span>
-        <Link href="/guide" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 16px', borderRadius: 11, background: INK, color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
+        <Link href="/guide" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 16px', borderRadius: 11, background: JADE, color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
           Guide me <ArrowRight style={{ width: 15, height: 15 }} />
         </Link>
         <Link href="/compare" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 16px', borderRadius: 11, background: '#fff', color: INK, border: `1px solid ${BORDER}`, fontSize: 14, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
