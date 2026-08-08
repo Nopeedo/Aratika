@@ -11,7 +11,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import {
-  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink, ListChecks, Quote,
+  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink, Quote,
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
@@ -475,16 +475,24 @@ function toBullets(text: string | null | undefined): string[] {
 // stay whole) and would chop leads down to almost nothing.
 const LEAD_SPLIT_WORDS = new Set(['to', 'with', 'through', 'where', 'for', 'so', 'by', 'without', 'under', 'within', 'from', 'using', 'while'])
 
-/** Bold the action, leave the supporting clause at normal weight — no words
- *  added, removed, or reordered, purely a type-weight split so the eye
- *  catches the verb+object first. Finds the first split word starting at the
- *  3rd word (so a lead is never just one or two words) and cuts right before
- *  it; if none appears, the whole phrase is the "lead" and there's no rest. */
+/** Bold the action, leave the rest at normal weight — no words added,
+ *  removed, or reordered, purely a type-weight split so the eye catches the
+ *  verb+object first. Bold is capped at the first sentence, full stop: a
+ *  clause boundary (;:.!?) ends it even if no split word ever appears, so a
+ *  compound proposal like "Equal rights for all; remove race-based policies
+ *  and co-governance" can't render fully bold end to end. Whichever comes
+ *  first — a split word, or the end of the first clause — wins. Split words
+ *  only count from the 3rd word on (a lead is never one or two words); a
+ *  clause boundary counts as soon as it appears, since a genuine sentence
+ *  end is a stronger signal than the minimum-lead-length guard. */
 function splitLead(text: string): [string, string] {
   const words = text.split(' ')
-  for (let i = 2; i < words.length; i++) {
+  for (let i = 1; i < words.length; i++) {
     const bare = words[i].toLowerCase().replace(/[^a-z']/g, '')
-    if (LEAD_SPLIT_WORDS.has(bare)) {
+    if (i >= 2 && LEAD_SPLIT_WORDS.has(bare)) {
+      return [words.slice(0, i).join(' '), words.slice(i).join(' ')]
+    }
+    if (/[;:.!?]$/.test(words[i - 1])) {
       return [words.slice(0, i).join(' '), words.slice(i).join(' ')]
     }
   }
@@ -604,42 +612,40 @@ function FocusedCard({ slug, pos, topicLabel }: {
   return (
     <div>
       <div style={{ fontSize: fitTitleSize(`${party.name} on ${topicLabel}`), fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15, whiteSpace: 'nowrap' }}>{party.name} on {topicLabel}</div>
-      <p style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, margin: 0, fontFamily: MANROPE }}>{pos.stance || body}</p>
+      {(() => {
+        // Same lead/rest split as the bullets below — otherwise a compound
+        // stance like "Equal rights for all; remove race-based policies and
+        // co-governance" rendered fully bold end to end, which is exactly
+        // the "some are straight bold" problem this was built to fix.
+        const [headLead, headRest] = splitLead(pos.stance || body || '')
+        return (
+          <p style={{ fontSize: 20, color: INK, lineHeight: 1.35, margin: 0, fontFamily: MANROPE }}>
+            <span style={{ fontWeight: 700 }}>{headLead}</span>
+            {headRest && <>{' '}<span style={{ fontWeight: 400 }}>{headRest}</span></>}
+          </p>
+        )
+      })()}
 
-      {/* "What they say they'll do" is no longer a tap-to-expand section — the
-          points are the first thing shown, right under the stance headline,
-          unconditional. The pill that used to sit ABOVE them as a toggle now
-          sits BELOW them as a plain static label (no button, no chevron —
-          there's nothing left to expand/collapse). Still strictly grounded in
-          the party's own published text (see scripts/draft-positions.mjs). */}
+      {/* The proposals are the first thing shown, right under the stance
+          headline, unconditional — no title above or below them anymore.
+          No dot markers, no smaller/greyer body copy — each proposal reads
+          at the same weight as the stance headline above, just stacked as
+          its own short line rather than one long sentence. Text is exactly
+          what keyProposals already contains, unedited: shortening it further
+          would mean the site rewording the party's own claim, which is the
+          thing we deliberately ruled out earlier. */}
       {bullets.length > 0 && (
-        <div style={{ marginTop: 16 }}>
-          {/* No dot markers, no smaller/greyer body copy — each proposal reads
-              at the same weight as the stance headline above, just stacked as
-              its own short line rather than one long sentence. Text is exactly
-              what keyProposals already contains, unedited: shortening it
-              further would mean the site rewording the party's own claim,
-              which is the thing we deliberately ruled out earlier. */}
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
-            {bullets.map((b, i) => {
-              const [lead, rest] = splitLead(b)
-              return (
-                <li key={i} style={{ fontSize: 20, color: INK, lineHeight: 1.35, fontFamily: MANROPE }}>
-                  <span style={{ fontWeight: 700 }}>{lead}</span>
-                  {rest && <>{' '}<span style={{ fontWeight: 400 }}>{rest}</span></>}
-                </li>
-              )
-            })}
-          </ul>
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 9, marginTop: 14,
-            background: c, color: isLightHex(c) ? INK : '#fff', borderRadius: 999,
-            padding: '12px 18px', fontFamily: MANROPE,
-          }}>
-            <ListChecks style={{ width: 17, height: 17, flexShrink: 0 }} />
-            <span style={{ fontSize: 16, fontWeight: 800 }}>What they say they&rsquo;ll do</span>
-          </div>
-        </div>
+        <ul style={{ listStyle: 'none', margin: '16px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {bullets.map((b, i) => {
+            const [lead, rest] = splitLead(b)
+            return (
+              <li key={i} style={{ fontSize: 20, color: INK, lineHeight: 1.35, fontFamily: MANROPE }}>
+                <span style={{ fontWeight: 700 }}>{lead}</span>
+                {rest && <>{' '}<span style={{ fontWeight: 400 }}>{rest}</span></>}
+              </li>
+            )
+          })}
+        </ul>
       )}
 
       {/* "In their own words" stays a real tap-to-expand section — dropped:
