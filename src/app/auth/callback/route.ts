@@ -17,7 +17,11 @@ export async function GET(request: Request) {
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`)
     }
+    console.error('[auth/callback] exchangeCodeForSession failed:', error.message)
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`)
   }
 
+  const err = searchParams.get('error_description') || searchParams.get('error')
+  console.error('[auth/callback] no code param on callback.', err ? `Provider said: ${err}` : 'request:', request.url)
   return NextResponse.redirect(`${origin}/login?error=Could not sign you in. Please try again.`)
 }
