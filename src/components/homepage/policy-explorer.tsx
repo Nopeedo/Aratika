@@ -47,7 +47,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
   // until the user taps a tile, their pick afterwards. Using it (rather than
   // selectedSlug) means opening an issue always lands on content — it rolls
   // along with the tiles instead of asking the reader to pick a party first.
-  const { panelSlug, accentColor, fading, fadeMs } = usePartyCycle()
+  const { panelSlug, accentColor, fading, fadeMs, select } = usePartyCycle()
   const shown = panelSlug && PARTY_PROFILES[panelSlug as PartySlug] ? (panelSlug as PartySlug) : null
   const panelRef = useRef<HTMLDivElement>(null)
 
@@ -67,6 +67,13 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
     setOrigin({ x: r.left, y: r.top })
     setReturning(null)
     setSel(key)
+    // Freeze on whichever party is on screen right now. Without this, a
+    // reader who never explicitly picked a party (still on the auto-cycling
+    // clock) could have the content roll to a different party mid-read —
+    // opening an issue is exactly the moment they've committed to reading,
+    // so the party showing at that instant is the one that should stay put.
+    // No-op if a party's already locked in.
+    if (panelSlug) select(panelSlug)
   }
 
   const closeTopic = () => {
@@ -373,7 +380,13 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
                 className="pe-topic-card"
                 onClick={(e) => {
                   setSel(on ? null : key)
-                  if (!on) e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+                  if (!on) {
+                    e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+                    // Same freeze as the mobile path — opening an issue locks
+                    // whichever party is on screen right now, so it can't roll
+                    // to a different party mid-read.
+                    if (panelSlug) select(panelSlug)
+                  }
                 }}
                 aria-expanded={on}
                 style={{
@@ -563,21 +576,27 @@ function FocusedCard({ slug, pos, topicLabel }: {
           belong on a panel that's meant to be their claim and nothing else.
           Both start closed — the stance headline above is the answer for
           someone who just wants the gist; these are opt-in depth. */}
+      {/* PREVIEW: both sections forced open (defaultOpen) so the new large-text
+          style is visible without tapping. Revert to collapsed-by-default once
+          the look is confirmed — see the two defaultOpen props below. */}
       {bullets.length > 0 && (
-        <ExpandableSection icon={ListChecks} title="What they say they&rsquo;ll do" accent={c}>
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <ExpandableSection icon={ListChecks} title="What they say they&rsquo;ll do" accent={c} defaultOpen>
+          {/* No dot markers, no smaller/greyer body copy — each proposal reads
+              at the same weight as the stance headline above, just stacked as
+              its own short line rather than one long sentence. Text is exactly
+              what keyProposals already contains, unedited: shortening it
+              further would mean the site rewording the party's own claim,
+              which is the thing we deliberately ruled out earlier. */}
+          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
             {bullets.map((b, i) => (
-              <li key={i} style={{ display: 'flex', gap: 11, fontSize: 17, color: '#33373f', lineHeight: 1.55, fontFamily: MANROPE }}>
-                <span aria-hidden style={{ width: 7, height: 7, borderRadius: '50%', background: c, flexShrink: 0, marginTop: 9 }} />
-                <span>{b}</span>
-              </li>
+              <li key={i} style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, fontFamily: MANROPE }}>{b}</li>
             ))}
           </ul>
         </ExpandableSection>
       )}
 
       {quotes.length > 0 && (
-        <ExpandableSection icon={Quote} title="In their own words" accent={c}>
+        <ExpandableSection icon={Quote} title="In their own words" accent={c} defaultOpen>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {quotes.map((q, i) => (
               <blockquote key={i} style={{ margin: 0, paddingLeft: 11, borderLeft: `3px solid ${c}`, fontSize: 15, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, fontStyle: 'italic' }}>“{q}”</blockquote>
