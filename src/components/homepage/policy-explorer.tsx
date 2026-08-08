@@ -468,6 +468,29 @@ function toBullets(text: string | null | undefined): string[] {
     .filter(Boolean)
 }
 
+// Words that tend to introduce the supporting half of a proposal — the
+// method/purpose/target clause — rather than the core action itself.
+// Deliberately narrow: "of"/"in"/"and"/"the" etc. are left out because they
+// show up mid-action too often ("investment in major infrastructure" should
+// stay whole) and would chop leads down to almost nothing.
+const LEAD_SPLIT_WORDS = new Set(['to', 'with', 'through', 'where', 'for', 'so', 'by', 'without', 'under', 'within', 'from', 'using', 'while'])
+
+/** Bold the action, leave the supporting clause at normal weight — no words
+ *  added, removed, or reordered, purely a type-weight split so the eye
+ *  catches the verb+object first. Finds the first split word starting at the
+ *  3rd word (so a lead is never just one or two words) and cuts right before
+ *  it; if none appears, the whole phrase is the "lead" and there's no rest. */
+function splitLead(text: string): [string, string] {
+  const words = text.split(' ')
+  for (let i = 2; i < words.length; i++) {
+    const bare = words[i].toLowerCase().replace(/[^a-z']/g, '')
+    if (LEAD_SPLIT_WORDS.has(bare)) {
+      return [words.slice(0, i).join(' '), words.slice(i).join(' ')]
+    }
+  }
+  return [text, '']
+}
+
 /** Party colours are chosen to work as big fills, not as small text. ACT's
  *  yellow on a white panel is effectively invisible at 12px, so anything too
  *  light gets scaled down to a readable version of the same hue rather than
@@ -588,9 +611,15 @@ function FocusedCard({ slug, pos, topicLabel }: {
               further would mean the site rewording the party's own claim,
               which is the thing we deliberately ruled out earlier. */}
           <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
-            {bullets.map((b, i) => (
-              <li key={i} style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, fontFamily: MANROPE }}>{b}</li>
-            ))}
+            {bullets.map((b, i) => {
+              const [lead, rest] = splitLead(b)
+              return (
+                <li key={i} style={{ fontSize: 20, color: INK, lineHeight: 1.35, fontFamily: MANROPE }}>
+                  <span style={{ fontWeight: 700 }}>{lead}</span>
+                  {rest && <>{' '}<span style={{ fontWeight: 400 }}>{rest}</span></>}
+                </li>
+              )
+            })}
           </ul>
         </ExpandableSection>
       )}
