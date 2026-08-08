@@ -15,6 +15,14 @@
  * `GoogleButton`. So this is safe to ship before the env var + Google client
  * origins are set up — nothing changes until then.
  *
+ * Also falls back for an installed PWA running in standalone display mode —
+ * GIS's own origin check reliably throws Google's "origin_mismatch" error
+ * there (confirmed on Android's installed-app/WebAPK shell) even when the
+ * origin is correctly registered; this is a GIS/standalone-mode limitation,
+ * not a config problem. The classic redirect flow doesn't hit that check (it
+ * only relies on the Authorized Redirect URI), so it's reliable there instead.
+ *
+
  * Setup required (one-time, outside the code):
  *   1. Vercel env: NEXT_PUBLIC_GOOGLE_CLIENT_ID = the OAuth *Web* client id
  *      (the same client id Supabase's Google provider uses).
@@ -28,6 +36,12 @@ import { createClient } from '@/lib/supabase/client'
 import { GoogleButton } from './auth-ui'
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+
+// Installed home-screen app (Android WebAPK, or iOS "Add to Home Screen").
+function isStandalone(): boolean {
+  if (typeof window === 'undefined') return false
+  return window.matchMedia?.('(display-mode: standalone)').matches || (window.navigator as unknown as { standalone?: boolean }).standalone === true
+}
 
 // Minimal shape of the bits of GIS we call — avoids pulling in a types package.
 interface GsiId {
@@ -79,7 +93,7 @@ export function GoogleSignIn({ next = '/dashboard', onError }: { next?: string; 
   const [state, setState] = React.useState<'loading' | 'ready' | 'failed'>(CLIENT_ID ? 'loading' : 'failed')
 
   React.useEffect(() => {
-    if (!CLIENT_ID || !window.crypto?.subtle) { setState('failed'); return }
+    if (!CLIENT_ID || !window.crypto?.subtle || isStandalone()) { setState('failed'); return }
     let cancelled = false
 
     ;(async () => {
