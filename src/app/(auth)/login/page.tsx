@@ -6,7 +6,8 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Mail } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { AuthShell, Field, PasswordField, SubmitButton, ErrorBox, GoogleButton, OrDivider } from '@/components/auth/auth-ui'
+import { AuthShell, Field, PasswordField, SubmitButton, ErrorBox, OrDivider } from '@/components/auth/auth-ui'
+import { GoogleSignIn } from '@/components/auth/google-signin'
 
 const SECONDARY = '#6b7078', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
@@ -46,7 +47,7 @@ function LoginInner() {
     <AuthShell title="Welcome back" subtitle="Log in to your Arapono account.">
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {error && <ErrorBox message={error} />}
-        <GoogleButton next="/dashboard" onError={setError} />
+        <GoogleSignIn next="/dashboard" onError={setError} />
         <OrDivider />
       </div>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 14 }}>

@@ -6,7 +6,8 @@ import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Mail, User as UserIcon, MailCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { AuthShell, Field, PasswordField, SubmitButton, ErrorBox, GoogleButton, OrDivider, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
+import { AuthShell, Field, PasswordField, SubmitButton, ErrorBox, OrDivider, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
+import { GoogleSignIn } from '@/components/auth/google-signin'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
@@ -89,7 +90,7 @@ function RegisterInner() {
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {error && <ErrorBox message={error} />}
-        <GoogleButton next={isPremium ? '/subscription' : '/dashboard'} onError={setError} />
+        <GoogleSignIn next={isPremium ? '/subscription' : '/dashboard'} onError={setError} />
         <OrDivider />
       </div>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 14 }}>
