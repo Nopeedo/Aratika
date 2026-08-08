@@ -7,7 +7,6 @@
  */
 
 import * as React from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell, PasswordField, SubmitButton, ErrorBox, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
@@ -16,7 +15,6 @@ const SECONDARY = '#6b7078', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default function ResetPasswordPage() {
-  const router = useRouter()
   const [checking, setChecking] = React.useState(true)
   const [hasSession, setHasSession] = React.useState(false)
   const [password, setPassword] = React.useState('')
@@ -83,12 +81,16 @@ export default function ResetPasswordPage() {
         <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, textAlign: 'center', lineHeight: 1.6, marginBottom: 16 }}>
           Your new password is saved. Head into your dashboard, or log in again next time with it.
         </p>
-        <button
-          onClick={() => { router.push('/dashboard'); router.refresh() }}
-          style={{ display: 'block', width: '100%', padding: '12px', borderRadius: 10, border: 'none', background: JADE, color: '#fff', fontSize: 14.5, fontWeight: 700, fontFamily: MANROPE, cursor: 'pointer' }}
+        {/* A plain anchor, not a router.push button: it still works if hydration
+            hasn't finished (an inert button is a dead end on the final step of
+            the flow), and the full page load makes the server re-read the
+            freshly-set session cookie rather than reuse a cached RSC payload. */}
+        <a
+          href="/dashboard"
+          style={{ display: 'block', width: '100%', boxSizing: 'border-box', textAlign: 'center', padding: '12px', borderRadius: 10, border: 'none', background: JADE, color: '#fff', fontSize: 14.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none', cursor: 'pointer' }}
         >
           Go to dashboard
-        </button>
+        </a>
       </AuthShell>
     )
   }
