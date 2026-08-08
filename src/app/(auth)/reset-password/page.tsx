@@ -27,10 +27,25 @@ export default function ResetPasswordPage() {
 
   React.useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data }) => {
-      setHasSession(!!data.user)
+    let settled = false
+    const settle = (ok: boolean) => {
+      if (settled) return
+      settled = true
+      setHasSession(ok)
       setChecking(false)
+    }
+
+    // A recovery link can also arrive as an implicit-flow URL hash, which the
+    // client SDK picks up asynchronously — so don't declare the link dead on a
+    // single early getUser(). Listen for the auth event too, and only give up
+    // after a short grace period.
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) settle(true)
     })
+    supabase.auth.getUser().then(({ data }) => { if (data.user) settle(true) })
+    const timer = setTimeout(() => settle(false), 2500)
+
+    return () => { clearTimeout(timer); sub.subscription.unsubscribe() }
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
