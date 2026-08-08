@@ -491,6 +491,21 @@ function splitLead(text: string): [string, string] {
   return [text, '']
 }
 
+/** The "{Party} on {Topic}" title above the stance headline needs to read big
+ *  ("Free up land and fund infrastructure" scale) for a short pairing like
+ *  "ACT on Health", but "Te Pāti Māori on Treaty & Māori Affairs" at that
+ *  same size wraps and crowds the panel's rounded corners on a 375px phone.
+ *  No single fixed size works for both, so this scales down by character
+ *  count instead — a deterministic approximation (avg uppercase-bold glyph
+ *  width ≈ 0.66× font-size) rather than a runtime canvas measurement, so
+ *  it's server-render-safe and needs no post-hydration size-flash. Tuned so
+ *  the shortest pairings sit at the "much bigger" size that was asked for,
+ *  and the longest still lands on one line on the narrowest phone panel. */
+function fitTitleSize(text: string): number {
+  const MAX = 26, MIN = 13, SAFE_WIDTH = 300, GLYPH_RATIO = 0.66
+  return Math.max(MIN, Math.min(MAX, SAFE_WIDTH / (text.length * GLYPH_RATIO)))
+}
+
 /** Party colours are chosen to work as big fills, not as small text. ACT's
  *  yellow on a white panel is effectively invisible at 12px, so anything too
  *  light gets scaled down to a readable version of the same hue rather than
@@ -588,7 +603,7 @@ function FocusedCard({ slug, pos, topicLabel }: {
 
   return (
     <div>
-      <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 7, fontFamily: MANROPE }}>{party.name} on {topicLabel}</div>
+      <div style={{ fontSize: fitTitleSize(`${party.name} on ${topicLabel}`), fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15, whiteSpace: 'nowrap' }}>{party.name} on {topicLabel}</div>
       <p style={{ fontSize: 20, fontWeight: 700, color: INK, lineHeight: 1.35, margin: 0, fontFamily: MANROPE }}>{pos.stance || body}</p>
 
       {/* "What they say they'll do" is no longer a tap-to-expand section — the
