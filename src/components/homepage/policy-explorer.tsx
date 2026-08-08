@@ -655,7 +655,7 @@ function FocusedCard({ slug, pos, topicLabel }: {
           their claim and nothing else. */}
 
       {quotes.length > 0 && (
-        <ExpandableSection icon={Quote} title="In their own words" accent={c} defaultOpen>
+        <ExpandableSection icon={Quote} title="Full Breakdown" accent={c} defaultOpen>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {quotes.map((q, i) => (
               <blockquote key={i} style={{ margin: 0, paddingLeft: 11, borderLeft: `3px solid ${c}`, fontSize: 15, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, fontStyle: 'italic' }}>“{q}”</blockquote>
