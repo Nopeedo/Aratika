@@ -469,21 +469,14 @@ function readableOnWhite(hex: string): string {
   return `#${hx(r)}${hx(g)}${hx(b)}`
 }
 
-/** Darken a hex colour by a flat proportion — a "pressed" shade of whatever
- *  party colour comes in, rather than a hardcoded second colour per party. */
-function darken(hex: string, factor: number): string {
-  const m = hex.replace('#', '')
-  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
-  const hx = (v: number) => Math.max(0, Math.min(255, Math.round(v * factor))).toString(16).padStart(2, '0')
-  return `#${hx(r)}${hx(g)}${hx(b)}`
-}
-
 /** A tappable title that expands downward to reveal its content — the "what
  *  they'll do" / "how this affects you" breakdown inside an open issue panel.
  *  Uses the same grid-template-rows collapse trick as the mobile topic grid
  *  above, for a smooth height animation without measuring pixel heights.
  *  Filled with the current party's own colour rather than a fixed jade, so it
- *  reads as part of that party's panel rather than a generic site colour.
+ *  reads as part of that party's panel rather than a generic site colour. The
+ *  fill and text stay IDENTICAL open vs closed — no pressed-state darkening —
+ *  the chevron flip is the only thing that signals state.
  *  ACT's yellow (and any other light party colour) is too washed out for
  *  white text, so the text/icon flip to dark ink on light fills — same
  *  isLightHex threshold already used for this exact problem on battleground
@@ -496,8 +489,7 @@ function ExpandableSection({ icon: Icon, title, accent, defaultOpen, children }:
   children: React.ReactNode
 }) {
   const [open, setOpen] = useState(!!defaultOpen)
-  const light = isLightHex(accent)
-  const fg = light ? INK : '#fff'
+  const fg = isLightHex(accent) ? INK : '#fff'
   return (
     <div style={{ marginTop: 12 }}>
       <button
@@ -505,9 +497,8 @@ function ExpandableSection({ icon: Icon, title, accent, defaultOpen, children }:
         aria-expanded={open}
         style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%',
-          background: open ? darken(accent, 0.8) : accent, color: fg, borderRadius: 999, border: 'none',
+          background: accent, color: fg, borderRadius: 999, border: 'none',
           padding: '12px 18px', cursor: 'pointer', fontFamily: MANROPE, textAlign: 'left',
-          transition: 'background-color .2s ease',
         }}
       >
         <span style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
