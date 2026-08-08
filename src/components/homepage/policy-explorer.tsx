@@ -499,6 +499,73 @@ function splitLead(text: string): [string, string] {
   return [text, '']
 }
 
+/** Bold only what actually fits on the FIRST RENDERED LINE, never more — a
+ *  word/grammar heuristic (like splitLead above) can't guarantee that: "Define
+ *  Treaty of Waitangi principles in law based on the 1840 text, including
+ *  equal rights" is a grammatically fine lead but spans three lines. There's
+ *  no way to know where a line actually breaks without asking the browser —
+ *  it depends on the panel's real width, the font, and every word's own
+ *  length — so this measures it with the Range API instead of guessing.
+ *
+ *  A hidden clone of the text (absolutely positioned, so it doesn't affect
+ *  layout) sits behind the visible bold/regular split. After every layout —
+ *  first paint and on resize — it walks word boundaries, extending a Range
+ *  over the clone and checking getClientRects().length: more than one rect
+ *  means that word pushed the range onto a second line. The last word that
+ *  still reported a single rect is where bold stops. Runs in
+ *  useLayoutEffect so the measurement lands before the browser paints —
+ *  a plain useEffect would flash the fallback (fully bold) for one frame. */
+function FirstLineBold({ text, style }: { text: string; style: React.CSSProperties }) {
+  const measureRef = useRef<HTMLSpanElement>(null)
+  const [boldEnd, setBoldEnd] = useState(text.length)
+
+  useLayoutEffect(() => {
+    const node = measureRef.current?.firstChild
+    if (!node || node.nodeType !== Node.TEXT_NODE) return
+
+    const measure = () => {
+      const range = document.createRange()
+      let lastFits = 0
+      let cursor = 0
+      const words = text.split(' ')
+      for (let i = 0; i < words.length; i++) {
+        cursor += words[i].length
+        range.setStart(node, 0)
+        range.setEnd(node, Math.min(cursor, text.length))
+        if (range.getClientRects().length > 1) break
+        lastFits = cursor
+        cursor += 1 // the space before the next word
+      }
+      // Always bold at least the first word, even on a panel too narrow for
+      // it to fully fit — an empty bold lead would look like the rule broke.
+      setBoldEnd(lastFits || words[0]?.length || text.length)
+    }
+
+    measure()
+    const panel = measureRef.current?.closest('.pe-panel')
+    if (!panel) return
+    const ro = new ResizeObserver(measure)
+    ro.observe(panel)
+    return () => ro.disconnect()
+  }, [text])
+
+  const lead = text.slice(0, boldEnd)
+  const rest = text.slice(boldEnd).trim()
+
+  return (
+    // display:block (not the default inline) so the absolutely-positioned
+    // measuring clone below inherits the real line width from its parent —
+    // an inline position:relative box has no reliable width for inset:0 to
+    // stretch against, which was silently shrinking the clone to ~one word
+    // and made every bullet measure as wrapping almost immediately.
+    <span style={{ position: 'relative', display: 'block' }}>
+      <span ref={measureRef} aria-hidden style={{ ...style, position: 'absolute', inset: 0, visibility: 'hidden', pointerEvents: 'none' }}>{text}</span>
+      <span style={{ fontWeight: 700 }}>{lead}</span>
+      {rest && <>{' '}<span style={{ fontWeight: 400 }}>{rest}</span></>}
+    </span>
+  )
+}
+
 /** The "{Party} on {Topic}" title above the stance headline needs to read big
  *  ("Free up land and fund infrastructure" scale) for a short pairing like
  *  "ACT on Health", but "Te Pāti Māori on Treaty & Māori Affairs" at that
@@ -637,11 +704,10 @@ function FocusedCard({ slug, pos, topicLabel }: {
       {bullets.length > 0 && (
         <ul style={{ listStyle: 'none', margin: '16px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
           {bullets.map((b, i) => {
-            const [lead, rest] = splitLead(b)
+            const liStyle: React.CSSProperties = { fontSize: 20, color: INK, lineHeight: 1.35, fontFamily: MANROPE }
             return (
-              <li key={i} style={{ fontSize: 20, color: INK, lineHeight: 1.35, fontFamily: MANROPE }}>
-                <span style={{ fontWeight: 700 }}>{lead}</span>
-                {rest && <>{' '}<span style={{ fontWeight: 400 }}>{rest}</span></>}
+              <li key={i} style={liStyle}>
+                <FirstLineBold text={b} style={liStyle} />
               </li>
             )
           })}
