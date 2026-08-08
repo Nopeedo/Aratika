@@ -134,8 +134,9 @@ function localRoster() {
 const ACCEPTED = {
   // Present in the source but not our roster — official directory doesn't list
   // them as sitting members; keeping ours.
-  'peeni henare':   { note: 'not in the official parliament.nz directory extract; ours follows the official source' },
-  'adrian rurawhe': { note: 'not in the official parliament.nz directory extract; ours follows the official source' },
+  // Re-verified 2026-08-09 against the Wikipedia source's own text:
+  'adrian rurawhe': { note: 'RETIRED 6 Feb 2026 (RNZ, 21 Jan 2026: "Labour MP Adrian Rurawhe to retire from politics") — correctly absent from our roster; the party table still lists him' },
+  'peeni henare':   { note: 'not in the official parliament.nz directory extract; ours follows the official source. NOT yet re-confirmed either way — worth a manual check against parliament.nz, which is the only open roster question' },
   // In our roster but not the source's current tables — ours follows the official directory.
   'georgie dansey': { note: 'official parliament.nz directory lists them as a sitting member' },
   'dan rosewarne':  { note: 'official parliament.nz directory lists them as a sitting member' },
