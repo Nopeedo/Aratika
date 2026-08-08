@@ -74,3 +74,9 @@ VapidKeys.txt
 *vapid*.txt
 *apikey*.txt
 *.keys
+# This repo is PUBLIC — a stray credentials note swept up by `git add .` would be
+# published irreversibly, so cover the obvious filename shapes too.
+*smtp*.txt
+*secret*.txt
+*password*.txt
+*credentials*.txt
