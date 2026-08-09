@@ -2,8 +2,8 @@
  * UpcomingView — the 2026 Election Centre. A warm command-centre hero, then the
  * body organised into zones with consistent headers (a jade eyebrow + title).
  *
- * Flow: the parties (fill tiles) → get ready (how your vote works) → your
- * electorate (closest races + marginality map) → debates & news → the Parliament
+ * Flow: the parties (fill tiles) → your electorate (closest races + marginality
+ * map) → get ready (how your vote works) → debates & news → the Parliament
  * you're voting to change → election-night scaffold.
  *
  * The tiles lead because they answer "who's standing and where do they sit?" —
@@ -80,6 +80,23 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             <PartiesContesting pop={pop} />
           </section>
 
+          {/* ── YOUR ELECTORATE — the closest races, then the marginality map ── */}
+          <section id="your-seat" style={{ scrollMarginTop: 80 }}>
+            <ZoneHead eyebrow="Your electorate" title="The seats to watch in 2026"
+              sub="Where 2023 was closest is where 2026 will likely be fought hardest. The map is coloured by how tight each race was — tap a seat for the contest."
+              link={{ href: '/battlegrounds', label: 'All battlegrounds' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              {/* `embedded` drops the teaser's own eyebrow/title so this zone keeps
+                  one header, and strips its standalone section padding. */}
+              <BattlegroundsTeaser embedded />
+              <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
+                <div style={{ padding: 18 }}>
+                  <BattlegroundsMap embedded />
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* ── GET READY — how your vote works ─────────────────────────────── */}
           <section id="your-vote" style={{ scrollMarginTop: 80 }}>
             <ZoneHead eyebrow="Get ready to vote" title="How your vote works"
@@ -96,23 +113,6 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                   )}
                 </div>
               ))}
-            </div>
-          </section>
-
-          {/* ── YOUR ELECTORATE — the closest races, then the marginality map ── */}
-          <section id="your-seat" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Your electorate" title="The seats to watch in 2026"
-              sub="Where 2023 was closest is where 2026 will likely be fought hardest. The map is coloured by how tight each race was — tap a seat for the contest."
-              link={{ href: '/battlegrounds', label: 'All battlegrounds' }} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              {/* `embedded` drops the teaser's own eyebrow/title so this zone keeps
-                  one header, and strips its standalone section padding. */}
-              <BattlegroundsTeaser embedded />
-              <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
-                <div style={{ padding: 18 }}>
-                  <BattlegroundsMap embedded />
-                </div>
-              </div>
             </div>
           </section>
 

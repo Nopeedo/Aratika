@@ -38,8 +38,8 @@ const TARGET = new Date('2026-11-07T00:00:00+13:00').getTime()
 // at a removed anchor silently does nothing when tapped.
 const JUMP: { label: string; href: string; tint: string; ink: string }[] = [
   { label: 'The parties', href: '#parties',     tint: '#f5f3ff', ink: '#6d28d9' },
-  { label: 'Your vote',   href: '#your-vote',   tint: '#ecfeff', ink: '#0e7490' },
   { label: 'Your seat',   href: '#your-seat',   tint: '#fef1f2', ink: '#be123c' },
+  { label: 'Your vote',   href: '#your-vote',   tint: '#ecfeff', ink: '#0e7490' },
   { label: 'Watch',       href: '#debates',     tint: '#fffbeb', ink: '#b45309' },
   { label: 'Parliament',  href: '#parliament',  tint: '#eff4ff', ink: '#1d4ed8' },
 ]
