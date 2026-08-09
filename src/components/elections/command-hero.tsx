@@ -17,9 +17,9 @@
  * labelled as such.
  */
 
-import Link from 'next/link'
+import { BackLink } from '@/components/ui/back-link'
 import { useEffect, useState } from 'react'
-import { ArrowLeft, CalendarDays, Users, Landmark } from 'lucide-react'
+import { CalendarDays, Users, Landmark } from 'lucide-react'
 import { PARTY_COLORS, PARTY_NAMES } from '@/constants/parties'
 import type { PartySlug } from '@/types'
 
@@ -78,9 +78,8 @@ export function CommandHero({ leader, pollCount, partiesContesting, majoritySeat
       <div style={{ position: 'relative', maxWidth: 1080, margin: '0 auto', padding: 'clamp(18px, 3vh, 26px) clamp(18px, 5vw, 40px) clamp(24px, 4vh, 36px)' }}>
         {/* Top row — back link + live eyebrow */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 'clamp(14px, 3vh, 26px)' }}>
-          <Link href="/elections" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700, color: WARM, textDecoration: 'none', fontFamily: MANROPE }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> All elections
-          </Link>
+          <BackLink fallbackHref="/elections" label="All elections"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700, color: WARM, textDecoration: 'none', fontFamily: MANROPE }} />
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 12, fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: JADE_DARK, fontFamily: MANROPE }}>
             <span className="live-dot" style={{ width: 8, height: 8, borderRadius: '50%', background: JADE, display: 'inline-block' }} />
             Election Centre

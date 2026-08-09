@@ -10,7 +10,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
-  ArrowLeft, ArrowRight, ArrowUpRight, Users, Calendar, Landmark,
+  ArrowRight, ArrowUpRight, Users, Calendar, Landmark,
   ScrollText, Star, ExternalLink, Globe, CheckCircle2,
 } from 'lucide-react'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES } from '@/constants/parties-data'
@@ -18,6 +18,7 @@ import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { PartySlug, PolicyTopic } from '@/types'
+import { BackLink } from '@/components/ui/back-link'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
@@ -105,13 +106,11 @@ export default async function PartyProfilePage(
 
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 36px' }}>
 
-          <Link href="/parties" style={{
+          <BackLink fallbackHref="/parties" label="All parties" style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
             fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none',
             fontFamily: MANROPE, marginBottom: 24,
-          }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> All parties
-          </Link>
+          }} />
 
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 28, flexWrap: 'wrap' }}>
             {/* Left: identity */}
