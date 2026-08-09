@@ -269,7 +269,9 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     electorateSeats: 6,
     listSeats:       0,
     founded_note:  'Founded in 2004 to provide independent Māori political representation',
-    website:       'https://www.maoriparty.nz',
+    // maoriparty.nz no longer resolves; maoriparty.org.nz is the live site
+    // (confirmed 2026-08: serves the party's own pages and links its socials).
+    website:       'https://www.maoriparty.org.nz',
     parliamentUrl: 'https://www.parliament.nz/en/mps-and-electorates/party/maori-party',
     tagline:       'Māori political party advocating for indigenous rights and Te Tiriti o Waitangi',
     overview:
@@ -490,8 +492,10 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     status:        'extra-parliamentary',
     seats:         0, electorateSeats: 0, listSeats: 0,
     founded_note:  'Founded in 2015 as the NZ Outdoors Party, registered in 2017, and renamed the NZ Outdoors & Freedom Party in 2022.',
-    website:       'https://outdoorsparty.co.nz/',
-    parliamentUrl: 'https://outdoorsparty.co.nz/',
+    // http, not https — the site serves nothing over TLS, so the https URL
+    // failed to connect at all. Verified reachable over http 2026-08.
+    website:       'http://outdoorsparty.co.nz/',
+    parliamentUrl: 'http://outdoorsparty.co.nz/',
     tagline:       'Freedom, health, happiness and compassion as our measures of success.',
     overview:      'The NZ Outdoors & Freedom Party combines environmental and outdoor-recreation advocacy with a civil-liberties “freedom” platform. It campaigns to keep rivers and lakes clean and publicly accessible and against water privatisation, and states positions opposing 1080 poison, water fluoridation and vaccine mandates while supporting medicinal cannabis. It holds no seats in the current Parliament.',
     history:       'Co-founded in 2015 by Alan Simmons and freshwater-angling advocate David Haynes as an environmental and outdoors party, it registered in 2017. Lawyer Sue Grey joined the leadership in 2020 and the party took on anti-1080 and anti-mandate campaigning, was renamed in 2022, and joined the Freedoms NZ umbrella in 2023. It has never won a seat.',

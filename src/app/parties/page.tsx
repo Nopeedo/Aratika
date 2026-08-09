@@ -35,7 +35,7 @@ const REGISTERED_NON_PARLIAMENTARY: { name: string; site: string; focus: string[
   { name: 'Animal Justice Party Aotearoa New Zealand', site: 'https://animaljustice.org.nz/', focus: ['Animal welfare', 'Environment', 'Climate'], profile: '/parties/animal-justice' },
   { name: 'Aotearoa Legalise Cannabis Party', site: 'https://alcp.org.nz/', focus: ['Cannabis law reform', 'Health', 'Justice'], profile: '/parties/alcp' },
   { name: 'Conservative Party NZ', site: 'https://www.conservatives.nz/', focus: ['Economy', 'Housing', 'Law & order'], profile: '/parties/conservative' },
-  { name: 'NZ Outdoors & Freedom Party', site: 'https://outdoorsparty.co.nz/', focus: ['Environment', 'Outdoors & freedom'], profile: '/parties/nz-outdoors' },
+  { name: 'NZ Outdoors & Freedom Party', site: 'http://outdoorsparty.co.nz/', focus: ['Environment', 'Outdoors & freedom'], profile: '/parties/nz-outdoors' },
   { name: 'The Opportunity Party (TOP)', site: 'https://www.opportunity.org.nz/', focus: ['Economy', 'Climate', 'Housing'], profile: '/parties/top' },
   { name: 'Vision New Zealand', site: 'https://www.vision.org.nz/', focus: ['Economy', 'Māori affairs', 'Social values'], profile: '/parties/vision-nz' },
   { name: 'Women’s Rights Party', site: 'https://womensrightsparty.nz/', focus: ['Women’s rights', 'Education', 'Health'], profile: '/parties/womens-rights' },
