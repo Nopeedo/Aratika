@@ -1,32 +1,30 @@
 /**
- * UpcomingView — the 2026 Election Centre. A cinematic command-centre hero, then
- * the body organised into clear zones with consistent headers (a jade eyebrow +
- * title), so the long page reads as distinct sections rather than one white
- * scroll. Flow: get ready (how your vote works) → your electorate → debates →
- * the state of the race (a dark zone echoing the hero: current Parliament, polls,
- * who could govern) → parties → election-night scaffold.
+ * UpcomingView — the 2026 Election Centre. A warm command-centre hero, then the
+ * body organised into zones with consistent headers (a jade eyebrow + title).
+ *
+ * Flow: get ready (how your vote works) → the parties (fill tiles) → debates &
+ * news → the Parliament you're voting to change → election-night scaffold.
+ *
+ * Deliberately shorter than it was. The poll-of-polls bar chart and the coalition
+ * builder were removed once the party tiles started carrying the standings and
+ * the 5% threshold — the tiles say the same thing in less space, and the page had
+ * grown past six screens. The battlegrounds teaser and embedded map went too:
+ * both live in full at /battlegrounds, which the seat pages link back to.
  */
 
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, UserPlus, Clock, Info, MapPin, MessageSquare } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, UserPlus, Clock, Info } from 'lucide-react'
 import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { PARTY_NAMES, PARTY_COLORS, PARLIAMENTARY_PARTIES, NON_PARLIAMENTARY_CONTESTING } from '@/constants/parties'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
-import {
-  pollOfPolls, pollOfPollsOthers, seatProjection, POLL_PARTIES, PREFERRED_PM,
-  TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, POLLS_AS_AT, POLLS_SOURCE,
-} from '@/constants/polls-data'
-import { getPolls, pollsAsAt } from '@/lib/polls/live'
+import { pollOfPolls } from '@/constants/polls-data'
+import { getPolls } from '@/lib/polls/live'
 import { CommandHero } from './command-hero'
 import { TwoVotes } from './two-votes'
-import { PollSnapshot } from './poll-snapshot'
-import { CoalitionExplorer } from './coalition-explorer'
 import { PartiesContesting } from './parties-contesting'
 import { SeatHemicycle } from './seat-hemicycle'
-import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { VideoSection } from '@/components/news/video-section'
-import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
 
 // Warm palette carried over from the homepage/hub so the Election Centre reads
 // as the same product rather than a separate tool: espresso headings, warm body
@@ -48,10 +46,6 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const railVideos = debates.length > 0 ? debates : await getVideos(18)
   const polls = await getPolls()
   const pop = pollOfPolls(polls)
-  const othersPct = pollOfPollsOthers(polls)
-  const projection = seatProjection(polls)
-  const projectionTotal = projection.reduce((n, s) => n + s.seats, 0)
-  const asAt = pollsAsAt(polls) || POLLS_AS_AT
   const leader = [...pop].sort((a, b) => b.pct - a.pct)[0] ?? null
   const partiesContesting = PARLIAMENTARY_PARTIES.length + NON_PARLIAMENTARY_CONTESTING.length
 
@@ -90,42 +84,34 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             </div>
           </section>
 
-          {/* ── YOUR ELECTORATE — battlegrounds teaser + the marginality map ── */}
-          <section id="your-seat" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Your electorate" title="The seats in play"
-              sub="Coloured by how close the 2023 contest was — hotter seats are the most likely to change hands. Tap one for the race."
-              link={{ href: '/battlegrounds', label: 'All battlegrounds' }} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              <BattlegroundsTeaser />
-              <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
-                <div style={{ padding: 18 }}>
-                  <BattlegroundsMap embedded />
-                </div>
-              </div>
-            </div>
+          {/* ── PARTIES CONTESTING — the fill tiles carry the standings now ──── */}
+          <section id="parties" style={{ scrollMarginTop: 80 }}>
+            <ZoneHead eyebrow="Who’s standing" title="Parties contesting 2026"
+              sub="Every party registered with the Electoral Commission to contest the party vote, grouped by whether they hold seats now — not ranked. Each tile fills to that party’s current poll-of-polls share, with the 5% threshold marked. The final list is confirmed when nominations close."
+              link={{ href: '/party-inclusion', label: 'Who’s included' }} />
+            <PartiesContesting pop={pop} />
           </section>
 
-          {/* ── DEBATES ──────────────────────────────────────────────────────── */}
+          {/* ── DEBATES / NEWS ───────────────────────────────────────────────── */}
           {railVideos.length > 0 && (
             <section id="debates" style={{ scrollMarginTop: 80 }}>
               <ZoneHead eyebrow="Watch" title={debates.length > 0 ? 'Debates & leader interviews' : 'Leaders & the press'}
                 sub="Leaders in their own words — debates and interviews as they’re published." />
-              <VideoSection videos={railVideos} />
+              <VideoSection videos={railVideos} hideHeading />
             </section>
           )}
 
-          {/* ── THE STATE OF THE RACE — a dark zone echoing the hero ─────────── */}
-          <section>
-            <DarkBanner eyebrow="The state of the race" title="Where the contest stands"
-              sub={`A poll-of-polls average of ${polls.length} recent polls, as at ${asAt}. A snapshot of opinion — not a prediction.`} />
+          {/* ── THE CURRENT PARLIAMENT — the 2023 baseline ───────────────────── */}
+          <section id="parliament" style={{ scrollMarginTop: 80 }}>
+            {/* One header, not two: the panel used to carry its own title under a
+                banner that described the poll-of-polls, which no longer sits in
+                this zone. */}
+            <ZoneHead eyebrow="Your baseline" title="The Parliament you’re voting to change"
+              sub={`The current make-up, from the ${base.year} General Election — the starting point 2026 changes.`}
+              link={{ href: `/elections/${base.slug}`, label: `Full ${base.year} results` }} />
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginTop: 16 }}>
-              {/* Current Parliament — the baseline */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
-                <div style={{ padding: '14px 18px', borderBottom: `1px solid ${BORDER}`, background: SURFACE }}>
-                  <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>The Parliament you’re voting to change</div>
-                  <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>The current make-up, from the {base.year} General Election — your baseline for 2026.</div>
-                </div>
                 <div style={{ padding: 18, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 18, alignItems: 'center' }}>
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <SeatHemicycle results={base.results!} total={base.totalSeats!} />
@@ -138,41 +124,12 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                         <span style={{ fontSize: 13, fontWeight: 800, color: INK }}>{r.seats}</span>
                       </div>
                     ))}
-                    <Link href={`/elections/${base.slug}`} style={{ ...cta, marginTop: 6 }}>Full {base.year} results <ArrowRight style={ic} /></Link>
+                    {/* The zone header already links to the full results — one is enough. */}
                   </div>
                 </div>
               </div>
 
-              {/* Polls */}
-              <div id="polls" style={{ scrollMarginTop: 80 }}>
-                <PollSnapshot
-                  pop={pop}
-                  othersPct={othersPct}
-                  pollCount={polls.length}
-                  asAt={asAt}
-                  pollParties={POLL_PARTIES}
-                  polls={polls}
-                  preferredPM={PREFERRED_PM}
-                  turnout={TURNOUT_2023}
-                  enrolment={ENROLMENT_2023}
-                  enrolmentUrl={ENROLMENT_LIVE_URL}
-                  pollsSource={POLLS_SOURCE}
-                />
-              </div>
-
-              {/* Who could govern */}
-              <div id="who-governs" style={{ scrollMarginTop: 80 }}>
-                <CoalitionExplorer seats={projection} total={projectionTotal} asAt={asAt} />
-              </div>
             </div>
-          </section>
-
-          {/* ── PARTIES CONTESTING ───────────────────────────────────────────── */}
-          <section>
-            <ZoneHead eyebrow="Who’s standing" title="Parties contesting 2026"
-              sub="Every party registered with the Electoral Commission to contest the party vote, grouped by whether they hold seats now — not ranked. Each tile fills to that party’s current poll-of-polls share, with the 5% threshold marked. The final list is confirmed when nominations close."
-              link={{ href: '/party-inclusion', label: 'Who’s included' }} />
-            <PartiesContesting pop={pop} />
           </section>
 
           {/* Election-night scaffold */}
@@ -212,23 +169,6 @@ function ZoneHead({ eyebrow, title, sub, link }: {
       {link && (
         <Link href={link.href} style={{ ...cta, whiteSpace: 'nowrap', flexShrink: 0 }}>{link.label} <ArrowRight style={ic} /></Link>
       )}
-    </div>
-  )
-}
-
-/** A deep espresso zone-intro band, used to set the "state of the race" section
- *  apart from the light zones around it. Was near-black (#0a0c11) to echo the
- *  old cinematic hero; now that the hero is warm, espresso keeps the contrast
- *  without dropping a cold slab into the middle of a warm page. */
-function DarkBanner({ eyebrow, title, sub }: { eyebrow: string; title: string; sub: string }) {
-  return (
-    <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 18, background: '#2A1206', color: '#fff', padding: 'clamp(20px, 3vw, 28px)' }}>
-      <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'radial-gradient(560px 260px at 88% -20%, rgba(54,224,138,.22), transparent 60%)' }} />
-      <div style={{ position: 'relative' }}>
-        <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: '#36e08a', fontFamily: MANROPE, marginBottom: 7 }}>{eyebrow}</div>
-        <h2 style={{ fontSize: 'clamp(22px, 3.8vw, 28px)', fontWeight: 800, letterSpacing: '-.01em', color: '#fff', fontFamily: MANROPE, margin: 0, lineHeight: 1.15 }}>{title}</h2>
-        <p style={{ fontSize: 14, color: 'rgba(255,255,255,.6)', fontFamily: MANROPE, margin: '8px 0 0', lineHeight: 1.55, maxWidth: 620 }}>{sub}</p>
-      </div>
     </div>
   )
 }

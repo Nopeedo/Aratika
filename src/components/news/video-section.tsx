@@ -25,7 +25,13 @@ function fmtDate(iso: string | null): string {
   return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`
 }
 
-export function VideoSection({ videos }: { videos: VideoItem[] }) {
+export function VideoSection({ videos, hideHeading = false }: {
+  videos: VideoItem[]
+  /** Suppress the built-in "Leaders & the press" title + blurb. Set this when the
+   *  rail sits inside a zone that already has its own header — otherwise the
+   *  section shows two competing headings, which is what the Election Centre did. */
+  hideHeading?: boolean
+}) {
   const [party, setParty] = useState('all')
   const [open, setOpen] = useState<VideoItem | null>(null)
   const ref = useRef<HTMLDivElement>(null)
@@ -45,14 +51,14 @@ export function VideoSection({ videos }: { videos: VideoItem[] }) {
 
   return (
     <section style={{ marginBottom: 30 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 4 }}>
-        <h2 style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Leaders &amp; the press</h2>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: hideHeading ? 'flex-end' : 'space-between', gap: 12, marginBottom: 4 }}>
+        {!hideHeading && <h2 style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Leaders &amp; the press</h2>}
         <div style={{ display: 'flex', gap: 8 }}>
           <button onClick={() => scroll(-1)} aria-label="Scroll left" style={arrowBtn}><ChevronLeft style={{ width: 18, height: 18 }} /></button>
           <button onClick={() => scroll(1)} aria-label="Scroll right" style={arrowBtn}><ChevronRight style={{ width: 18, height: 18 }} /></button>
         </div>
       </div>
-      <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 12px' }}>Press standups, leader updates and debates — straight from official channels.</p>
+      {!hideHeading && <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 12px' }}>Press standups, leader updates and debates — straight from official channels.</p>}
 
       {/* party filter */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 14 }}>
