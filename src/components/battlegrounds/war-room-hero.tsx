@@ -12,10 +12,9 @@
  */
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import type { PartySlug } from '@/types'
+import { BackLink } from '@/components/ui/back-link'
 
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const NEXT_ELECTION_DATE = new Date('2026-11-07T09:00:00+13:00')
@@ -74,9 +73,8 @@ export function WarRoomHero({
   return (
     <div style={{ background: '#0c0e12' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '20px 36px 28px' }}>
-        <Link href="/battlegrounds" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,.6)', textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
-          <ArrowLeft style={{ width: 14, height: 14 }} /> All battlegrounds
-        </Link>
+        <BackLink fallbackHref="/battlegrounds" label="All battlegrounds"
+          style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,.6)', fontFamily: MANROPE, marginBottom: 18 }} />
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap', marginBottom: 18 }}>
           <div>

@@ -9,7 +9,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
-  ArrowLeft, ArrowRight, Info, Home, Heart, Leaf, GraduationCap, Scale,
+  ArrowRight, Info, Home, Heart, Leaf, GraduationCap, Scale,
   Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
@@ -22,6 +22,7 @@ import { getApprovedPositions } from '@/lib/positions/live'
 import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BillsForTopic } from '@/components/bills/bills-for-topic'
+import { BackLink } from '@/components/ui/back-link'
 
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
@@ -63,9 +64,7 @@ export default async function PolicyTopicPage(
       {/* Header */}
       <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) clamp(18px, 5vw, 36px)' }}>
-          <Link href="/policies" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 22 }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> All policy topics
-          </Link>
+          <BackLink fallbackHref="/policies" label="All policy topics" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 22 }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <div className={t.color} style={{ width: 56, height: 56, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               {Icon && <Icon className={`size-7 ${t.textColor}`} />}

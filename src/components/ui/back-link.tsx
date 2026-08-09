@@ -23,14 +23,19 @@ import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { NAV_PREV_KEY } from './nav-history'
 
-/** Routes worth naming when you came from them. Longest prefix wins. */
+/** Routes worth naming when you came from them. Longest prefix wins.
+ *
+ *  Labels are deliberately section nouns rather than index-page names: the href
+ *  is the EXACT page you were on, so "Back to All parties" pointing at
+ *  /parties/national would misdescribe where it goes. "Back to parties" reads
+ *  correctly whether you came from the index or a single party. */
 const KNOWN: { prefix: string; label: string }[] = [
   { prefix: '/elections/2026', label: 'Election Centre' },
   { prefix: '/battlegrounds',  label: 'Battlegrounds' },
   { prefix: '/compare',        label: 'Compare parties' },
   { prefix: '/policies',       label: 'the issues' },
-  { prefix: '/parties',        label: 'All parties' },
-  { prefix: '/elections',      label: 'All elections' },
+  { prefix: '/parties',        label: 'parties' },
+  { prefix: '/elections',      label: 'elections' },
   { prefix: '/dashboard',      label: 'your dashboard' },
   { prefix: '/bills',          label: 'The Record' },
   { prefix: '/news',           label: 'Latest' },

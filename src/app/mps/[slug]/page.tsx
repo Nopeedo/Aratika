@@ -13,7 +13,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
-  ArrowLeft, ArrowRight, ArrowUpRight, MapPin, Calendar, Briefcase,
+  ArrowRight, ArrowUpRight, MapPin, Calendar, Briefcase,
   Landmark, FileText, Vote, Users, ScrollText, ExternalLink,
   Lock, Mail, Globe, PenLine, Activity, Scale, Info, MessageSquare, Receipt, BadgeCheck,
 } from 'lucide-react'
@@ -33,6 +33,7 @@ import { StatusBadge } from '@/components/ui/badge'
 import { MPCard } from '@/components/mp/mp-card'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { formatNumber } from '@/lib/utils/format'
+import { BackLink } from '@/components/ui/back-link'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
@@ -144,9 +145,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
       <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ height: 5, background: party.color }} />
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 36px' }}>
-          <Link href="/mps" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 24 }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> All MPs
-          </Link>
+          <BackLink fallbackHref="/mps" label="All MPs" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 24 }} />
 
           <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
             <MPCard mp={mp} party={party} />
