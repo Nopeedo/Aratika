@@ -82,7 +82,24 @@ if (tableStart < 0 || tableEnd < 0) {
 const lines = allLines.slice(tableStart, tableEnd)
 console.log(`Party-vote table: source lines ${tableStart + 1}–${tableEnd + 1}`)
 
+// Wikipedia's party names in the "Others" footnotes → our slugs. Apostrophes vary
+// between straight and curly in the source, so both forms are listed.
+const MINOR_SLUGS = {
+  'Women’s Rights Party': 'womens-rights',
+  "Women's Rights Party": 'womens-rights',
+  'New Conservatives Party': 'conservative',
+  'New Conservatives': 'conservative',
+  'Vision NZ': 'vision-nz',
+  'Vision New Zealand': 'vision-nz',
+  'NZ Outdoors & Freedom Party': 'nz-outdoors',
+  'New Zealand Outdoors & Freedom Party': 'nz-outdoors',
+  'Animal Justice Party Aotearoa New Zealand': 'animal-justice',
+  'Animal Justice Party': 'animal-justice',
+  'Aotearoa Legalise Cannabis Party': 'alcp',
+}
+
 const polls = []
+const minorReadings = {}
 let skipped = 0
 for (let i = 0; i < lines.length; i++) {
   const d = lines[i].match(/data-sort-value="(\d{4}-\d{2}-\d{2})"\s*\|\s*'''([^']+)'''/)
@@ -110,6 +127,26 @@ for (let i = 0; i < lines.length; i++) {
     ...(isFinite(sample) ? { sample } : {}),
     parties,
   })
+
+  // Minor parties never get their own column — pollsters bundle them into
+  // "Others" and sometimes itemise the split in a footnote. Those readings are
+  // the ONLY published individual figures for parties like Vision NZ, so keep
+  // the most recent one per party. They stay separate from `parties` above
+  // because they aren't measured to the same standard: they're footnote
+  // sub-samples, reported irregularly, and sit well inside the margin of error.
+  const blob = [lines[i + 2], lines[i + 3], lines[i + 4], lines[i + 5]].filter(Boolean).join('\n')
+  const efn = blob.match(/\{\{Efn\|([\s\S]*?)\}\}/)
+  if (efn) {
+    for (const mm of efn[1].matchAll(/\[\[([^\]|]+)(?:\|[^\]]+)?\]\]\s*([\d.]+)\s*%/g)) {
+      const slug = MINOR_SLUGS[mm[1].replace(/\s+/g, ' ').trim()]
+      const pct = parseFloat(mm[2])
+      if (!slug || !isFinite(pct)) continue
+      const prev = minorReadings[slug]
+      if (!prev || d[1] > prev.date) {
+        minorReadings[slug] = { pct, date: d[1], pollster: canonicalPollster(pm[1]) }
+      }
+    }
+  }
 }
 
 polls.sort((a, b) => b.date.localeCompare(a.date))
@@ -149,6 +186,16 @@ export const POLL_HISTORY_META = {
 
 /** Newest first. */
 export const POLL_HISTORY: HistoricalPoll[] = ${JSON.stringify(polls, null, 2)}
+
+export interface MinorReading { pct: number; date: string; pollster: string }
+
+/** The most recent published individual reading for parties that pollsters
+ *  bundle into "Others". These come from a pollster's own footnote breakdown —
+ *  reported irregularly and well inside the margin of error — so they are NOT
+ *  part of the poll-of-polls and should always be shown with their date and
+ *  pollster rather than as a current headline figure. A party absent here has
+ *  no published individual reading at all. */
+export const MINOR_PARTY_READINGS: Record<string, MinorReading> = ${JSON.stringify(minorReadings, null, 2)}
 
 /** Average party support across polls whose fieldwork ended in [from, to].
  *  Returns null for a party with no readings in the window — never 0, which

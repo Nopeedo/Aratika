@@ -1674,6 +1674,37 @@ export const POLL_HISTORY: HistoricalPoll[] = [
   }
 ]
 
+export interface MinorReading { pct: number; date: string; pollster: string }
+
+/** The most recent published individual reading for parties that pollsters
+ *  bundle into "Others". These come from a pollster's own footnote breakdown —
+ *  reported irregularly and well inside the margin of error — so they are NOT
+ *  part of the poll-of-polls and should always be shown with their date and
+ *  pollster rather than as a current headline figure. A party absent here has
+ *  no published individual reading at all. */
+export const MINOR_PARTY_READINGS: Record<string, MinorReading> = {
+  "nz-outdoors": {
+    "pct": 0.3,
+    "date": "2026-06-08",
+    "pollster": "Taxpayers' Union–Curia"
+  },
+  "vision-nz": {
+    "pct": 0.3,
+    "date": "2026-06-08",
+    "pollster": "Taxpayers' Union–Curia"
+  },
+  "conservative": {
+    "pct": 0.2,
+    "date": "2026-06-08",
+    "pollster": "Taxpayers' Union–Curia"
+  },
+  "animal-justice": {
+    "pct": 0.4,
+    "date": "2026-04-15",
+    "pollster": "1News–Verian"
+  }
+}
+
 /** Average party support across polls whose fieldwork ended in [from, to].
  *  Returns null for a party with no readings in the window — never 0, which
  *  would read as "polled at zero" rather than "not polled". */

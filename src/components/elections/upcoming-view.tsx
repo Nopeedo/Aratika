@@ -22,6 +22,7 @@ import { CommandHero } from './command-hero'
 import { TwoVotes } from './two-votes'
 import { PollSnapshot } from './poll-snapshot'
 import { CoalitionExplorer } from './coalition-explorer'
+import { PartiesContesting } from './parties-contesting'
 import { SeatHemicycle } from './seat-hemicycle'
 import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { VideoSection } from '@/components/news/video-section'
@@ -169,26 +170,9 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
           {/* ── PARTIES CONTESTING ───────────────────────────────────────────── */}
           <section>
             <ZoneHead eyebrow="Who’s standing" title="Parties contesting 2026"
-              sub="Every party registered with the Electoral Commission to contest the party vote — grouped by whether they hold seats now, not ranked. The final list is confirmed when nominations close."
+              sub="Every party registered with the Electoral Commission to contest the party vote, grouped by whether they hold seats now — not ranked. Each tile fills to that party’s current poll-of-polls share, with the 5% threshold marked. The final list is confirmed when nominations close."
               link={{ href: '/party-inclusion', label: 'Who’s included' }} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {[
-                { label: 'In Parliament', parties: PARLIAMENTARY_PARTIES },
-                { label: 'Also registered to contest', parties: NON_PARLIAMENTARY_CONTESTING },
-              ].map((grp) => (
-                <div key={grp.label}>
-                  <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 8 }}>{grp.label}</div>
-                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                    {grp.parties.map((p) => (
-                      <Link key={p} href={`/parties/${p}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '8px 13px', borderRadius: 999, border: `1px solid ${BORDER}`, background: '#fff', textDecoration: 'none', fontFamily: MANROPE }}>
-                        <span style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[p].bg }} />
-                        <span style={{ fontSize: 13, fontWeight: 700, color: INK }}>{PARTY_NAMES[p].short}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <PartiesContesting pop={pop} />
           </section>
 
           {/* Election-night scaffold */}
