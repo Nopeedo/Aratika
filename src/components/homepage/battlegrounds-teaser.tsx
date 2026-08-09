@@ -16,14 +16,20 @@ import { BattlegroundCard } from './battleground-card'
 const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', SURFACE = '#f8fafc'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
-export function BattlegroundsTeaser() {
+export function BattlegroundsTeaser({ embedded = false }: {
+  /** Drop the standalone section chrome (outer padding, divider) and the built-in
+   *  eyebrow/title/blurb, for use inside a page zone that already has its own
+   *  header — otherwise the zone shows two competing headings. */
+  embedded?: boolean
+} = {}) {
   const closest = getBattlegrounds()
     .filter((b) => b.tier.key !== 'unknown' && typeof b.info.majority === 'number')
     .slice(0, 5)
 
   return (
-    <section style={{ background: 'transparent', borderBottom: `1px solid ${BORDER}` }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px)' }}>
+    <section style={{ background: 'transparent', ...(embedded ? {} : { borderBottom: `1px solid ${BORDER}` }) }}>
+      <div style={{ maxWidth: embedded ? '100%' : 1280, margin: '0 auto', padding: embedded ? 0 : '48px clamp(18px, 5vw, 36px)' }}>
+        {!embedded && (
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16, flexWrap: 'wrap', marginBottom: 22 }}>
           <div>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 14, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: '#dc2626', fontFamily: MANROPE, marginBottom: 8 }}>
@@ -41,6 +47,7 @@ export function BattlegroundsTeaser() {
             Explore the map <ArrowRight style={{ width: 14, height: 14 }} />
           </Link>
         </div>
+        )}
 
         {/* Closest-races cards — party-coloured, MP photo, verified 2023 majority */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 250px), 1fr))', gap: 12 }}>

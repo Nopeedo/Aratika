@@ -2,16 +2,19 @@
  * UpcomingView — the 2026 Election Centre. A warm command-centre hero, then the
  * body organised into zones with consistent headers (a jade eyebrow + title).
  *
- * Flow: the parties (fill tiles) → get ready (how your vote works) → debates &
- * news → the Parliament you're voting to change → election-night scaffold. The
- * tiles lead because they answer "who's standing and where do they sit?" — the
- * question someone arriving at an election page actually has first.
+ * Flow: the parties (fill tiles) → get ready (how your vote works) → your
+ * electorate (closest races + marginality map) → debates & news → the Parliament
+ * you're voting to change → election-night scaffold.
+ *
+ * The tiles lead because they answer "who's standing and where do they sit?" —
+ * the question someone arriving at an election page actually has first.
  *
  * Deliberately shorter than it was. The poll-of-polls bar chart and the coalition
  * builder were removed once the party tiles started carrying the standings and
  * the 5% threshold — the tiles say the same thing in less space, and the page had
- * grown past six screens. The battlegrounds teaser and embedded map went too:
- * both live in full at /battlegrounds, which the seat pages link back to.
+ * grown past six screens. The battlegrounds teaser and map were briefly removed
+ * in that pass and reinstated — the closest races are the most election-relevant
+ * thing on the page, and /battlegrounds is a destination rather than a substitute.
  */
 
 import Link from 'next/link'
@@ -25,6 +28,8 @@ import { getPolls } from '@/lib/polls/live'
 import { CommandHero } from './command-hero'
 import { TwoVotes } from './two-votes'
 import { PartiesContesting } from './parties-contesting'
+import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
+import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
 import { SeatHemicycle } from './seat-hemicycle'
 import { VideoSection } from '@/components/news/video-section'
 
@@ -91,6 +96,23 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                   )}
                 </div>
               ))}
+            </div>
+          </section>
+
+          {/* ── YOUR ELECTORATE — the closest races, then the marginality map ── */}
+          <section id="your-seat" style={{ scrollMarginTop: 80 }}>
+            <ZoneHead eyebrow="Your electorate" title="The seats to watch in 2026"
+              sub="Where 2023 was closest is where 2026 will likely be fought hardest. The map is coloured by how tight each race was — tap a seat for the contest."
+              link={{ href: '/battlegrounds', label: 'All battlegrounds' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              {/* `embedded` drops the teaser's own eyebrow/title so this zone keeps
+                  one header, and strips its standalone section padding. */}
+              <BattlegroundsTeaser embedded />
+              <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
+                <div style={{ padding: 18 }}>
+                  <BattlegroundsMap embedded />
+                </div>
+              </div>
             </div>
           </section>
 
