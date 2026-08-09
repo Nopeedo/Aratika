@@ -79,7 +79,10 @@ function Tile({ slug, pct }: { slug: PartySlug; pct: number | null }) {
   return (
     <Link href={`/parties/${slug}`} className="party-card" style={{
       position: 'relative', display: 'block', height: TILE_H, borderRadius: 15, overflow: 'hidden',
-      textDecoration: 'none', background: '#fff', border: `1.5px solid rgba(42,18,6,.14)`,
+      // The outline carries the party's own colour so each tile is identifiable
+      // before you read it — the same coloured-border language as the policy
+      // chips and hub tiles.
+      textDecoration: 'none', background: '#fff', border: `2px solid ${colour}`,
       boxShadow: '0 1px 2px rgba(42,18,6,.05)',
       // Unpolled parties get a light hatch so they read as "no measurement",
       // never as an empty (i.e. zero) glass.
@@ -87,23 +90,23 @@ function Tile({ slug, pct }: { slug: PartySlug; pct: number | null }) {
     }}>
       {polled && (
         <>
-          <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: h, background: colour, opacity: 0.3 }} />
-          <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, bottom: h, height: 2, background: colour, opacity: 0.55 }} />
+          <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: h, background: colour, opacity: 0.22 }} />
+          <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, bottom: h, height: 2, background: colour, opacity: 0.6 }} />
         </>
       )}
 
-      {/* 5% threshold — drawn at the same height on every tile. Lightened where
-          the fill sits above it, so it stays visible over a dark party colour. */}
+      {/* 5% threshold — drawn at the same height on every tile. Always a dark
+          line: the fill is light enough at this opacity that a white one washed
+          out over the paler party colours (ACT's yellow especially). */}
       {polled && (
         <>
           <span aria-hidden style={{
             position: 'absolute', left: 0, right: 0, bottom: threshPx,
-            borderTop: `1.5px dashed ${h > threshPx ? 'rgba(255,255,255,.75)' : 'rgba(42,18,6,.34)'}`,
+            borderTop: '1.5px dashed rgba(42,18,6,.38)',
           }} />
           <span aria-hidden style={{
             position: 'absolute', right: 7, bottom: threshPx + 3, fontSize: 9, fontWeight: 800,
-            letterSpacing: '.03em', fontFamily: MANROPE,
-            color: h > threshPx ? 'rgba(255,255,255,.9)' : 'rgba(42,18,6,.5)',
+            letterSpacing: '.03em', fontFamily: MANROPE, color: 'rgba(42,18,6,.55)',
           }}>5%</span>
         </>
       )}

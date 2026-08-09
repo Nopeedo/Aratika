@@ -2,8 +2,10 @@
  * UpcomingView — the 2026 Election Centre. A warm command-centre hero, then the
  * body organised into zones with consistent headers (a jade eyebrow + title).
  *
- * Flow: get ready (how your vote works) → the parties (fill tiles) → debates &
- * news → the Parliament you're voting to change → election-night scaffold.
+ * Flow: the parties (fill tiles) → get ready (how your vote works) → debates &
+ * news → the Parliament you're voting to change → election-night scaffold. The
+ * tiles lead because they answer "who's standing and where do they sit?" — the
+ * question someone arriving at an election page actually has first.
  *
  * Deliberately shorter than it was. The poll-of-polls bar chart and the coalition
  * builder were removed once the party tiles started carrying the standings and
@@ -65,6 +67,14 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(34px, 5vh, 48px)' }}>
 
+          {/* ── PARTIES CONTESTING — the fill tiles carry the standings now ──── */}
+          <section id="parties" style={{ scrollMarginTop: 80 }}>
+            <ZoneHead eyebrow="Who’s standing" title="Parties contesting 2026"
+              sub="Every party registered with the Electoral Commission to contest the party vote, grouped by whether they hold seats now — not ranked. Each tile fills to that party’s current poll-of-polls share, with the 5% threshold marked. The final list is confirmed when nominations close."
+              link={{ href: '/party-inclusion', label: 'Who’s included' }} />
+            <PartiesContesting pop={pop} />
+          </section>
+
           {/* ── GET READY — how your vote works ─────────────────────────────── */}
           <section id="your-vote" style={{ scrollMarginTop: 80 }}>
             <ZoneHead eyebrow="Get ready to vote" title="How your vote works"
@@ -82,14 +92,6 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                 </div>
               ))}
             </div>
-          </section>
-
-          {/* ── PARTIES CONTESTING — the fill tiles carry the standings now ──── */}
-          <section id="parties" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Who’s standing" title="Parties contesting 2026"
-              sub="Every party registered with the Electoral Commission to contest the party vote, grouped by whether they hold seats now — not ranked. Each tile fills to that party’s current poll-of-polls share, with the 5% threshold marked. The final list is confirmed when nominations close."
-              link={{ href: '/party-inclusion', label: 'Who’s included' }} />
-            <PartiesContesting pop={pop} />
           </section>
 
           {/* ── DEBATES / NEWS ───────────────────────────────────────────────── */}
