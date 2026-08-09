@@ -23,8 +23,9 @@ import { RosterAccordion, type RosterItem } from '@/components/battlegrounds/ros
 import { ElectorateNews } from '@/components/battlegrounds/electorate-news'
 import type { PartySlug } from '@/types'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
+// Warm palette carried over from the homepage / Election Centre.
+const INK = '#2A1206', SECONDARY = '#6b6157', TERTIARY = '#9a9186'
+const BORDER = '#e6e2da', SURFACE = '#faf8f4', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function generateStaticParams() {
@@ -327,7 +328,16 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   ]
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    // One continuous woven texture behind hero and body, painted once here so the
+    // tiling doesn't restart and leave a seam under the hero.
+    <div style={{
+      backgroundColor: '#f4f2ec',
+      backgroundImage: 'url(/back2.jpg)',
+      backgroundRepeat: 'repeat-y',
+      backgroundSize: '100% auto',
+      backgroundPosition: 'top center',
+      minHeight: '100vh',
+    }}>
       <WarRoomHero
         electorateName={info.name}
         regionLine={`${info.type === 'maori' ? 'Māori electorate' : 'General electorate'}${info.region ? ` · ${info.region}` : ''}`}

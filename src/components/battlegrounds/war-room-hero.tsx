@@ -17,6 +17,11 @@ import type { PartySlug } from '@/types'
 import { BackLink } from '@/components/ui/back-link'
 
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+// Warm palette shared with the homepage / Election Centre — this hero used to be
+// a black tactical band, which read as a different product once the rest of the
+// site moved to the woven treatment.
+const ESPRESSO = '#2A1206', WARM = '#5b3d2a', BODY = '#3f372f', SUB = '#6b6157'
+const LINE = '#e6e2da', JADE_DARK = '#176B3B'
 const NEXT_ELECTION_DATE = new Date('2026-11-07T09:00:00+13:00')
 
 // Schematic incumbent-side share of the gauge bar, by margin tier — NOT a real
@@ -71,10 +76,10 @@ export function WarRoomHero({
   const closeRace = incumbentShare <= 58
 
   return (
-    <div style={{ background: '#0c0e12' }}>
+    <div>
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '20px 36px 28px' }}>
         <BackLink fallbackHref="/battlegrounds" label="All battlegrounds"
-          style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,.6)', fontFamily: MANROPE, marginBottom: 18 }} />
+          style={{ fontSize: 13, fontWeight: 600, color: WARM, fontFamily: MANROPE, marginBottom: 18 }} />
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap', marginBottom: 18 }}>
           <div>
@@ -82,22 +87,22 @@ export function WarRoomHero({
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: tierColor }} />
               <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: tierColor, fontFamily: MANROPE }}>{tierLabel} battleground</span>
             </div>
-            <h1 style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-.02em', color: '#fff', fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.05 }}>{electorateName}</h1>
-            <p style={{ fontSize: 14, color: 'rgba(255,255,255,.55)', fontFamily: MANROPE, margin: 0 }}>{regionLine}</p>
+            <h1 style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-.02em', color: ESPRESSO, fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.05 }}>{electorateName}</h1>
+            <p style={{ fontSize: 14, color: SUB, fontFamily: MANROPE, margin: 0 }}>{regionLine}</p>
           </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: '#36e08a', fontFamily: MANROPE, lineHeight: 1 }}>{days ?? '—'}</div>
-            <div style={{ fontSize: 10.5, color: 'rgba(255,255,255,.5)', fontFamily: MANROPE, marginTop: 2 }}>days to election day</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: JADE_DARK, fontFamily: MANROPE, lineHeight: 1 }}>{days ?? '—'}</div>
+            <div style={{ fontSize: 10.5, color: SUB, fontFamily: MANROPE, marginTop: 2 }}>days to election day</div>
           </div>
         </div>
 
         {majority != null && swing != null && (
-          <div style={{ background: 'rgba(255,255,255,.06)', border: '1px solid rgba(255,255,255,.14)', borderRadius: 12, padding: '16px 18px' }}>
-            <div style={{ fontSize: 10.5, fontWeight: 800, color: 'rgba(255,255,255,.55)', textTransform: 'uppercase', letterSpacing: '.04em', fontFamily: MANROPE, marginBottom: 12 }}>
+          <div style={{ background: '#fff', border: `1px solid ${LINE}`, borderRadius: 14, padding: '16px 18px', boxShadow: '0 1px 2px rgba(42,18,6,.05)' }}>
+            <div style={{ fontSize: 10.5, fontWeight: 800, color: SUB, textTransform: 'uppercase', letterSpacing: '.04em', fontFamily: MANROPE, marginBottom: 12 }}>
               What it takes to flip this seat
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <div style={{ flexShrink: 0, borderRadius: '50%', border: '2px solid rgba(255,255,255,.3)' }}>
+              <div style={{ flexShrink: 0, borderRadius: '50%', border: '2px solid #fff', boxShadow: '0 0 0 1px rgba(42,18,6,.12)' }}>
                 <Avatar name={incumbentName} party={incumbentParty} src={incumbentPhoto} size="sm" face />
               </div>
               <div style={{ flex: 1 }}>
@@ -105,12 +110,12 @@ export function WarRoomHero({
                   <div style={{ position: 'absolute', left: `calc(${incumbentShare}% - 1px)`, top: -3, width: 2, height: 14, background: '#fbbf24' }} />
                 </div>
               </div>
-              <div style={{ flexShrink: 0, borderRadius: '50%', border: '2px solid rgba(255,255,255,.3)' }}>
+              <div style={{ flexShrink: 0, borderRadius: '50%', border: '2px solid #fff', boxShadow: '0 0 0 1px rgba(42,18,6,.12)' }}>
                 <Avatar name={challengerName ?? '?'} party={challengerParty} src={challengerPhoto} size="sm" face />
               </div>
             </div>
-            <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,.75)', fontFamily: MANROPE, lineHeight: 1.55, margin: '12px 0 0' }}>
-              {incumbentName} won by <b style={{ color: '#fff' }}>{majority.toLocaleString('en-NZ')}</b> votes in 2023 — {closeRace ? 'just ' : ''}<b style={{ color: '#fff' }}>{swing.toLocaleString('en-NZ')}</b> {swing === 1 ? 'voter' : 'voters'} switching to {challengerLabel} would have flipped {electorateName}.
+            <p style={{ fontSize: 12.5, color: BODY, fontFamily: MANROPE, lineHeight: 1.55, margin: '12px 0 0' }}>
+              {incumbentName} won by <b style={{ color: ESPRESSO }}>{majority.toLocaleString('en-NZ')}</b> votes in 2023 — {closeRace ? 'just ' : ''}<b style={{ color: ESPRESSO }}>{swing.toLocaleString('en-NZ')}</b> {swing === 1 ? 'voter' : 'voters'} switching to {challengerLabel} would have flipped {electorateName}.
             </p>
           </div>
         )}
