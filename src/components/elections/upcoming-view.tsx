@@ -51,6 +51,8 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const base = BASELINE_ELECTION
   const debates = await getDebateVideos(12)
   const railVideos = debates.length > 0 ? debates : await getVideos(18)
+  // Only a genuine debate clip may be called one.
+  const hasRealDebates = debates.some((v) => v.debate)
   const polls = await getPolls()
   const pop = pollOfPolls(polls)
   const leader = [...pop].sort((a, b) => b.pct - a.pct)[0] ?? null
@@ -119,8 +121,15 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
           {/* ── DEBATES / NEWS ───────────────────────────────────────────────── */}
           {railVideos.length > 0 && (
             <section id="debates" style={{ scrollMarginTop: 80 }}>
-              <ZoneHead eyebrow="Watch" title={debates.length > 0 ? 'Debates & leader interviews' : 'Leaders & the press'}
-                sub="Leaders in their own words — debates and interviews as they’re published." />
+              {/* Title reflects what's actually in the rail. It used to switch on
+                  `debates.length > 0`, but that list is debate OR presser — and no
+                  video has ever carried the debate flag (debate season is Sep–Oct),
+                  so the page promised "Debates & leader interviews" while showing
+                  press standups. */}
+              <ZoneHead eyebrow="Watch" title={hasRealDebates ? 'Debates & leader interviews' : 'Leaders & the press'}
+                sub={hasRealDebates
+                  ? 'Leaders in their own words — debates and interviews as they’re published.'
+                  : 'Leaders in their own words — press standups and campaign updates. Debates appear here once they’re broadcast.'} />
               <VideoSection videos={railVideos} hideHeading />
             </section>
           )}

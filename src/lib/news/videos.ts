@@ -27,6 +27,12 @@ export interface VideoItem {
   presser: boolean
 }
 
+/** Nothing older than this can surface. Te Pāti Māori's official channel has been
+ *  dormant since 2014, and its six approved clips were otherwise eligible to
+ *  appear on a 2026 election page — a decade-old campaign video presented as
+ *  current is worse than showing nothing for that party. */
+const MAX_AGE_DAYS = 730
+
 export async function getVideos(limit = 48): Promise<VideoItem[]> {
   const supabase = await createClient()
   const { data } = await supabase
@@ -55,7 +61,10 @@ export async function getVideos(limit = 48): Promise<VideoItem[]> {
       presser: d.presser === true,
     }
   })
-  return items.sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+  const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 86_400_000).toISOString().slice(0, 10)
+  return items
+    .filter((v) => !v.pubDate || v.pubDate.slice(0, 10) >= cutoff)
+    .sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
 }
 
 /**
@@ -63,13 +72,41 @@ export async function getVideos(limit = 48): Promise<VideoItem[]> {
  * the section's subtitle always promised standups and leader updates, but only
  * debate-flagged clips qualified, so it sat nearly empty outside debate season.
  * Debates pin first; the rest follow newest-first.
+ *
+ * `presser` is keyword-driven (press terms, or a title naming a party leader),
+ * which structurally favours the big parties: the press write about Luxon and
+ * Hipkins constantly, so their clips qualify while a minor party's own channel
+ * output usually doesn't mention its leader by name. The result was a rail with
+ * 30 approved TOP videos available and none shown. `guaranteed` below fixes that
+ * without weakening the filter for everyone else.
  */
 export async function getDebateVideos(limit = 12): Promise<VideoItem[]> {
-  const all = await getVideos(200)
-  return all
+  const all = await getVideos(300)
+  const eligible = all
     .filter((v) => v.debate || v.presser)
     .sort((a, b) => Number(b.debate) - Number(a.debate) || (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
-    .slice(0, limit)
+
+  const rail = eligible.slice(0, limit)
+
+  // Any party with recent approved video but no slot gets its newest clip, so a
+  // contesting party is never invisible purely because of how its titles read.
+  const represented = new Set(rail.flatMap((v) => v.parties))
+  const guaranteed: VideoItem[] = []
+  for (const v of all) {
+    for (const p of v.parties) {
+      if (represented.has(p)) continue
+      represented.add(p)
+      guaranteed.push(v)
+      break
+    }
+  }
+
+  if (!guaranteed.length) return rail
+  // Keep the rail at `limit` by trimming the oldest non-guaranteed entries.
+  const keep = rail.slice(0, Math.max(0, limit - guaranteed.length))
+  return [...keep, ...guaranteed].sort(
+    (a, b) => Number(b.debate) - Number(a.debate) || (b.pubDate ?? '').localeCompare(a.pubDate ?? ''),
+  )
 }
 
 /** Videos naming a specific battleground electorate — see getNewsForElectorate. */
