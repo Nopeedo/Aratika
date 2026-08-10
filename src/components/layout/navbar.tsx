@@ -316,7 +316,10 @@ function MobileGroup({
   item: NavItem
   isActive: (href?: string) => boolean
 }) {
-  const [open, setOpen] = React.useState(true)
+  // Collapsed by default so the menu opens short enough to take in at a glance.
+  // Exception: the group holding the page you're on starts open, so the menu
+  // shows you where you are instead of hiding it behind a tap.
+  const [open, setOpen] = React.useState(() => item.children!.some((c) => isActive(c.href)))
   return (
     <div>
       <button
