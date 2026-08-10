@@ -22,13 +22,20 @@ export function memberPartyMap(): Record<string, string> {
   return map
 }
 
-/** Party slugs with at least one bill before the House in the tracker dataset. */
-export function partiesWithTrackerBills(): Set<string> {
+/** Party slug → how many bills it has before the House in the tracker dataset.
+ *  Distinct from the ballot count on a party page: the ballot holds proposed
+ *  members' bills that have NOT been introduced, and most never are. */
+export function trackerBillCounts(): Record<string, number> {
   const map = memberPartyMap()
-  const set = new Set<string>()
+  const counts: Record<string, number> = {}
   for (const b of BILLS_54) {
     const p = b.member ? map[normMemberName(b.member)] : undefined
-    if (p) set.add(p)
+    if (p) counts[p] = (counts[p] ?? 0) + 1
   }
-  return set
+  return counts
+}
+
+/** Party slugs with at least one bill before the House in the tracker dataset. */
+export function partiesWithTrackerBills(): Set<string> {
+  return new Set(Object.keys(trackerBillCounts()))
 }

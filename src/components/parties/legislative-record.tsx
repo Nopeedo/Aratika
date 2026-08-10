@@ -7,13 +7,13 @@
 import Link from 'next/link'
 import { Gavel, ExternalLink, BadgeCheck, Info, ArrowRight } from 'lucide-react'
 import { legislativeRecordFor } from '@/lib/parties/legislative-record'
-import { partiesWithTrackerBills } from '@/lib/bills/member-party'
+import { trackerBillCounts } from '@/lib/bills/member-party'
 import type { PartySlug } from '@/types'
 
 // Which parties actually have bills before the House in the tracker — so we only
 // link through to /bills?party=… when there is something to show (opposition
 // parties whose only activity is ballot members' bills have none yet).
-const PARTIES_WITH_BILLS = partiesWithTrackerBills()
+const TRACKER_COUNTS = trackerBillCounts()
 
 // Warm woven palette — matches the party page this card sits on.
 const INK = '#2A1206', SECONDARY = '#6b6157', TERTIARY = '#9a9186', BORDER = '#e6e2da', SURFACE = '#faf8f4', JADE = '#1F8A4C'
@@ -33,7 +33,8 @@ export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug;
   const r = legislativeRecordFor(party)
   const nothing = r.govBillsLed === 0 && r.membersInBallot === 0 && r.membersPassed === 0
   if (nothing) return null
-  const hasTrackerBills = PARTIES_WITH_BILLS.has(party)
+  const trackerCount = TRACKER_COUNTS[party] ?? 0
+  const hasTrackerBills = trackerCount > 0
 
   return (
     <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 24px', boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
@@ -61,12 +62,13 @@ export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug;
           <div style={{ display: 'flex', gap: 10, padding: '12px 14px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 11, marginBottom: 14 }}>
             <Info style={{ width: 16, height: 16, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 12.5, color: '#1e3a8a', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-              As an opposition party, {partyName} doesn’t lead government bills (only ministers can). Its MPs advance policy through <b>members’ bills</b> — drawn from a ballot, so getting one passed is uncommon.
+              As an opposition party, {partyName} doesn’t lead government bills (only ministers can). Its MPs advance policy through <b>members’ bills</b>: each MP may lodge one in a ballot, and a few are drawn at random each fortnight to be introduced. Most never are — so the ballot figure below is what’s <i>waiting</i>, not what’s before Parliament.
             </p>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
             <Stat value={r.membersPassed} label="Members’ bills passed into law" accent />
-            <Stat value={r.membersInBallot} label="Members’ bills in the ballot" />
+            <Stat value={r.membersInBallot} label="Lodged in the ballot — not yet introduced" />
+            <Stat value={trackerCount} label="Before the House now" />
           </div>
           {r.passedMembersBills.length > 0 && (
             <div style={{ marginTop: 14 }}>
@@ -85,9 +87,12 @@ export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug;
       )}
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: hasTrackerBills ? 'space-between' : 'flex-end', gap: 12, flexWrap: 'wrap', marginTop: 16, paddingTop: 14, borderTop: `1px solid ${BORDER}` }}>
+        {/* Says the count, because it sits under the ballot figure and "See all
+            {party} bills" read as a link to those — the tracker only holds bills
+            that have actually been introduced, which is far fewer. */}
         {hasTrackerBills && (
           <Link href={`/bills?party=${party}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-            See all {partyName} bills <ArrowRight style={{ width: 15, height: 15 }} />
+            See {partyName}’s {trackerCount} bill{trackerCount === 1 ? '' : 's'} before Parliament <ArrowRight style={{ width: 15, height: 15 }} />
           </Link>
         )}
         <a href={r.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: TERTIARY, fontFamily: MANROPE, textDecoration: 'none' }}>
