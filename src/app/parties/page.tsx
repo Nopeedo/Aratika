@@ -20,11 +20,13 @@ export const metadata: Metadata = {
     'seat counts, leadership, ideology, and policy positions.',
 }
 
-const INK      = '#0c0e12'
-const SECONDARY = '#6b7078'
-const TERTIARY  = '#9aa0aa'
-const BORDER    = '#e9e7e2'
-const SURFACE   = '#f8fafc'
+// Warm woven palette — shared with the homepage, Election Centre and the party
+// profiles this page leads into.
+const INK      = '#2A1206'
+const SECONDARY = '#6b6157'
+const TERTIARY  = '#9a9186'
+const BORDER    = '#e6e2da'
+const SURFACE   = '#faf8f4'
 const JADE      = '#1F8A4C'
 
 // Registered with the Electoral Commission to contest the 2026 party vote, but holding no
@@ -55,13 +57,19 @@ export default function PartiesPage() {
   const govtSeats   = governing.reduce((n, s) => n + CURRENT_SEATS[s], 0)
 
   return (
-    <div style={{ background: '#ffffff', minHeight: '100vh' }}>
+    // Woven ground, not flat white — the party profiles this page leads into
+    // already sit on it, and the two should feel like one place.
+    <div style={{
+      backgroundColor: '#f4f2ec',
+      backgroundImage: 'url(/back2.jpg)',
+      backgroundRepeat: 'repeat-y',
+      backgroundSize: '100% auto',
+      backgroundPosition: 'top center',
+      minHeight: '100vh',
+    }}>
 
       {/* ── Page header ──────────────────────────────────────────────── */}
-      <div
-        className="bg-dot-grid"
-        style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}
-      >
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 36px 48px' }}>
           <div style={{ marginBottom: 8 }}>
             <SectionDivider type="official" label="Official Parliament Data" />
@@ -96,7 +104,7 @@ export default function PartiesPage() {
             background:   '#ffffff',
             border:       `1px solid ${BORDER}`,
             borderRadius: 16,
-            boxShadow:    '0 2px 4px rgba(12,14,18,.03)',
+            boxShadow:    '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)',
             display:      'flex',
             alignItems:   'center',
             gap:          24,
@@ -186,7 +194,7 @@ function SectionTitle({ label, count }: { label: string; count: number }) {
       <h2 style={{
         fontSize:     18,
         fontWeight:   800,
-        color:        '#0c0e12',
+        color:        INK,
         fontFamily:   'var(--font-manrope), system-ui, sans-serif',
         margin:       0,
       }}>
@@ -194,7 +202,7 @@ function SectionTitle({ label, count }: { label: string; count: number }) {
       </h2>
       <span style={{
         fontSize: 12, fontWeight: 700,
-        background: '#f1efeb', color: '#6b7078',
+        background: '#f1efeb', color: SECONDARY,
         borderRadius: 999, padding: '2px 9px',
         fontFamily: 'var(--font-manrope), system-ui, sans-serif',
       }}>
@@ -222,7 +230,7 @@ function PartyCard({ slug }: { slug: keyof typeof PARTY_PROFILES }) {
         border:       `1px solid ${BORDER}`,
         borderRadius: 20,
         overflow:     'hidden',
-        boxShadow:    '0 2px 4px rgba(12,14,18,.03)',
+        boxShadow:    '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)',
         transition:   'box-shadow 0.15s, border-color 0.15s',
         height:       '100%',
         display:      'flex',

@@ -220,7 +220,7 @@ body {
 }
 .party-card:hover,
 .mp-card:hover {
-  box-shadow:    0 6px 20px rgba(12,14,18,.10) !important;
+  box-shadow:    0 6px 20px rgba(42,18,6,.13) !important;
   border-color:  #1F8A4C !important;
   transform:     translateY(-2px) !important;
 }
