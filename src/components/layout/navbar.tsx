@@ -72,7 +72,7 @@ export function Navbar() {
           <AraponoLogo />
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+          <nav className="hidden xl:flex items-center gap-1" aria-label="Main navigation">
             {NAV.map((item) =>
               item.children ? (
                 <DesktopGroup key={item.label} item={item} active={groupActive(item)} isActive={isActive} />
@@ -111,7 +111,7 @@ export function Navbar() {
               "Explain terms" was removed from this desktop row to reduce header
               density; it remains in the mobile menu (below). Re-add <ExplainToggle />
               here to restore it. */}
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden xl:flex items-center gap-2">
             {isLoggedIn ? (
               <>
                 {PREMIUM_ENABLED && !isPremium && (
@@ -138,7 +138,7 @@ export function Navbar() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="lg:hidden flex items-center justify-center size-9 rounded-md text-muted hover:text-foreground hover:bg-surface transition-colors"
+            className="xl:hidden flex items-center justify-center size-9 rounded-md text-muted hover:text-foreground hover:bg-surface transition-colors"
             onClick={() => setMobileOpen((o) => !o)}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
@@ -150,7 +150,7 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden border-t border-border bg-background">
+        <div className="xl:hidden border-t border-border bg-background">
           <nav className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
             {/* Home — pinned above everything else as the way back to the front
                 landing page. Points at /?full=1, NOT /: a returning visitor
@@ -179,27 +179,29 @@ export function Navbar() {
                   key={item.href}
                   href={item.href!}
                   className={cn(
-                    'flex items-center gap-2 px-3 py-2.5 rounded-md text-sm font-semibold transition-colors',
+                    'block px-3 py-2.5 rounded-md text-sm font-semibold transition-colors',
                     isActive(item.href) ? 'bg-brand-jade-dark text-white' : 'bg-brand-jade text-white hover:bg-brand-jade-dark',
                   )}
                 >
-                  <span className="size-1.5 rounded-full bg-white/90" aria-hidden="true" />
-                  {item.label}
-                  <span className="ml-auto text-xs text-white/70">{item.description}</span>
+                  <span className="flex items-center gap-2">
+                    <span className="size-1.5 rounded-full bg-white/90" aria-hidden="true" />
+                    {item.label}
+                  </span>
+                  <span className="block text-xs font-normal text-white/75 mt-0.5">{item.description}</span>
                 </Link>
               ) : (
                 <Link
                   key={item.href}
                   href={item.href!}
                   className={cn(
-                    'flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
+                    'block px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
                     isActive(item.href)
                       ? 'text-brand-jade bg-brand-jade-subtle'
                       : 'text-foreground hover:bg-surface',
                   )}
                 >
                   {item.label}
-                  <span className="ml-auto text-xs text-muted">{item.description}</span>
+                  <span className="block text-xs font-normal text-muted mt-0.5">{item.description}</span>
                 </Link>
               ),
             )}
@@ -326,6 +328,10 @@ function MobileGroup({
         {item.label}
         <ChevronDown className={cn('ml-auto size-4 transition-transform', open && 'rotate-180')} />
       </button>
+      {/* Children are labels only. Their descriptions sat on the same row via
+          ml-auto, so on a phone "Battlegrounds" and "Electorate races &
+          candidates for 2026" ran into each other — and a sub-item under a
+          named group doesn't need explaining twice. */}
       {open && (
         <div className="ml-3 border-l border-border pl-2 flex flex-col">
           {item.children!.map((c) => (
@@ -333,14 +339,13 @@ function MobileGroup({
               key={c.href}
               href={c.href}
               className={cn(
-                'flex items-center px-3 py-2 rounded-md text-sm transition-colors',
+                'block px-3 py-2 rounded-md text-sm transition-colors',
                 isActive(c.href)
                   ? 'text-brand-jade bg-brand-jade-subtle font-medium'
                   : 'text-foreground hover:bg-surface',
               )}
             >
               {c.label}
-              <span className="ml-auto text-xs text-muted">{c.description}</span>
             </Link>
           ))}
         </div>
