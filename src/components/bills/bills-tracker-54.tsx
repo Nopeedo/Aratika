@@ -14,7 +14,7 @@ import Link from 'next/link'
 import { track } from '@vercel/analytics'
 import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, ExternalLink, PenLine } from 'lucide-react'
 import { BILLS_54, BILL_CATEGORIES, BILLS_54_META, type Bill54 } from '@/constants/bills-54'
-import { PARTY_NAMES } from '@/constants/parties'
+import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { normMemberName } from '@/lib/bills/normalize-member'
 import type { PartySlug } from '@/types'
 
@@ -202,7 +202,7 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
         <>
           <div ref={resultsRef} style={{ scrollMarginTop: 80 }} />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))', gap: 12 }}>
-            {pageItems.map((b) => <BillCard key={b.slug + b.number} b={b} readerSlug={readerSlugs[normTitle(b.title)]} submissionsOpen={isOpen(b)} />)}
+            {pageItems.map((b) => <BillCard key={b.slug + b.number} b={b} readerSlug={readerSlugs[normTitle(b.title)]} submissionsOpen={isOpen(b)} party={partyOf(b.member)} />)}
           </div>
           {pageCount > 1 && <Pager current={current} pageCount={pageCount} goTo={goTo} />}
         </>
@@ -214,7 +214,7 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
 /** Card is a <div>, not one big <Link>: it now carries several distinct
  *  destinations (our breakdown, the official page, the submission call), and
  *  anchors can't legally nest inside one another. */
-function BillCard({ b, readerSlug, submissionsOpen }: { b: Bill54; readerSlug?: string; submissionsOpen?: boolean }) {
+function BillCard({ b, readerSlug, submissionsOpen, party }: { b: Bill54; readerSlug?: string; submissionsOpen?: boolean; party?: string }) {
   const ts = TYPE_STYLE[b.type] ?? TYPE_STYLE.Private
   const ss = statusStyle(b.status)
   const cardStyle: React.CSSProperties = {
@@ -236,7 +236,24 @@ function BillCard({ b, readerSlug, submissionsOpen }: { b: Bill54; readerSlug?: 
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        {b.member && <div style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE }}>In charge: <b style={{ color: '#3f444c' }}>{b.member}</b></div>}
+        {b.member && (
+          <div style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+            <span>In charge: <b style={{ color: '#3f444c' }}>{b.member}</b></span>
+            {/* Which party the member in charge sits for — the same mapping the
+                party filter uses, so a reader can see whose bill it is without
+                having to recognise every MP by name. */}
+            {party && PARTY_NAMES[party as PartySlug] && (
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800,
+                color: '#3f444c', background: '#fff', border: `1px solid ${BORDER}`,
+                borderRadius: 999, padding: '1px 8px', fontFamily: MANROPE, whiteSpace: 'nowrap',
+              }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: PARTY_COLORS[party as PartySlug].bg, flexShrink: 0 }} />
+                {PARTY_NAMES[party as PartySlug].short}
+              </span>
+            )}
+          </div>
+        )}
         {b.committee && <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE }}>{b.committee} committee</div>}
       </div>
 
