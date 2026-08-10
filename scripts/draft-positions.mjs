@@ -98,7 +98,17 @@ const PARTIES = [
     immigration:      'https://www.national.org.nz/policies/parent-visa-boost',
     'foreign-policy': 'https://www.national.org.nz/policies/foreign-affairs-defence-and-veterans',
   } },
-  { slug: 'labour',   name: 'Labour',         sources: { default: 'https://www.labour.org.nz/policy' } },
+  // /policy is a landing page that mostly links out; /our-policies is the 2026
+  // election policy index and carries the actual announcements. Topic-specific
+  // pages are listed where Labour has published one — they campaign on a narrow
+  // set, so several topics genuinely have no published policy yet.
+  { slug: 'labour',   name: 'Labour',         sources: {
+    default:   'https://www.labour.org.nz/our-policies/',
+    economy:   'https://www.labour.org.nz/capitalgainstax',
+    health:    'https://www.labour.org.nz/medicard',
+    climate:   'https://www.labour.org.nz/solarsaver',
+    education: 'https://www.labour.org.nz/apprenticeshipboost',
+  } },
   { slug: 'green',    name: 'Green',          sources: { default: 'https://www.greens.org.nz/policy', manifesto: 'https://assets.nationbuilder.com/beachheroes/pages/17789/attachments/original/1688864858/Final-online-PDF-pages.pdf' } },
   { slug: 'act',      name: 'ACT',            sources: { default: 'https://www.act.org.nz/policies', economy: 'https://www.act.org.nz/economy' } },
   { slug: 'nzfirst',  name: 'NZ First',       sources: { default: 'https://www.nzfirst.nz/2023_policies', manifesto: 'https://www.nzfirst.nz/2023_policies' } },
@@ -117,9 +127,9 @@ const PARTIES = [
   // official policy page (verified). Many are single-issue or thin, so most topics
   // will honestly return {found:false} — recorded as a gap, never invented.
   { slug: 'alcp',           name: 'Aotearoa Legalise Cannabis Party', sources: { default: 'https://alcp.org.nz/policy/' } },
-  { slug: 'animal-justice', name: 'Animal Justice Party Aotearoa NZ',  sources: { default: 'https://animaljustice.org.nz/policy/' } },
+  { slug: 'animal-justice', name: 'Animal Justice Party Aotearoa NZ',  sources: { default: 'https://animaljustice.org.nz/policy/our-policies/' } },
   { slug: 'conservative',   name: 'Conservative Party NZ',             sources: { default: 'https://www.conservatives.nz/' } },
-  { slug: 'nz-outdoors',    name: 'NZ Outdoors & Freedom Party',       sources: { default: 'https://outdoorsparty.co.nz/policy/' } },
+  { slug: 'nz-outdoors',    name: 'NZ Outdoors & Freedom Party',       sources: { default: 'http://outdoorsparty.co.nz/policy/' } },
   { slug: 'vision-nz',      name: 'Vision New Zealand',                sources: { default: 'https://www.vision.org.nz/' } },
   { slug: 'womens-rights',  name: 'The New Zealand Women’s Rights Party', sources: { default: 'https://womensrightsparty.nz/policy/' } },
 ]

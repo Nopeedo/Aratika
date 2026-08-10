@@ -9,7 +9,7 @@
 
 import Link from 'next/link'
 import { Check, Minus } from 'lucide-react'
-import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
+import { PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES, PARTY_PROFILES } from '@/constants/parties-data'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
 
@@ -23,6 +23,12 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
     const ex = lookup.get(key)
     if (!ex || (ex.period !== '2026' && p.period === '2026')) lookup.set(key, p) // prefer current, fall back to 2023
   }
+
+  // Only show a minor party once it actually has something captured — an all-dots
+  // row adds a name and no information.
+  const minors = PROFILED_MINOR_PARTIES.filter((slug) =>
+    topics.some((t) => lookup.has(`${slug}::${t.slug}`)),
+  )
 
   return (
     <div>
@@ -45,39 +51,24 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
             </tr>
           </thead>
           <tbody>
-            {PARTY_DIRECTORY_ORDER.map((slug) => {
-              const party = PARTY_PROFILES[slug as PartySlug]
-              return (
-                <tr key={slug}>
-                  <td style={{ ...tdBase, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
-                      <span style={{ width: 9, height: 9, borderRadius: 3, background: party.color, flexShrink: 0 }} />
-                      <span style={{ fontSize: 13, fontWeight: 800, color: INK }}>{party.name}</span>
-                    </span>
-                  </td>
-                  {topics.map((t) => {
-                    const pos = lookup.get(`${slug}::${t.slug}`)
-                    return (
-                      <td key={t.slug} style={{ ...tdBase, textAlign: 'center' }}>
-                        {pos ? (
-                          pos.noPosition ? (
-                            <Link href={`/policies/${t.slug}/${slug}`} title="No stated position (verified)" style={{ color: TERTIARY, textDecoration: 'none', fontWeight: 800, fontSize: 15 }}>∅</Link>
-                          ) : (
-                            <Link href={`/policies/${t.slug}/${slug}`} title={pos.stance || 'View position'} style={{ display: 'inline-flex' }}>
-                              <span style={{ width: 22, height: 22, borderRadius: 6, background: party.color, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <Check style={{ width: 13, height: 13, color: party.textColor }} />
-                              </span>
-                            </Link>
-                          )
-                        ) : (
-                          <Minus style={{ width: 13, height: 13, color: '#cdd2d8' }} />
-                        )}
-                      </td>
-                    )
-                  })}
+            {PARTY_DIRECTORY_ORDER.map((slug) => (
+              <Row key={slug} slug={slug} topics={topics} lookup={lookup} />
+            ))}
+            {/* The parties outside Parliament sit in their own labelled band. They
+                hold real published positions too — hiding them read as "no data",
+                but merging them into the list above would imply equal standing. */}
+            {minors.length > 0 && (
+              <>
+                <tr>
+                  <th colSpan={topics.length + 1} scope="colgroup" style={{ ...tdBase, textAlign: 'left', background: SURFACE, fontSize: 11.5, fontWeight: 800, color: SECONDARY, letterSpacing: .2, position: 'sticky', left: 0 }}>
+                    Also contesting — not currently in Parliament
+                  </th>
                 </tr>
-              )
-            })}
+                {minors.map((slug) => (
+                  <Row key={slug} slug={slug} topics={topics} lookup={lookup} />
+                ))}
+              </>
+            )}
           </tbody>
         </table>
       </div>
@@ -88,6 +79,40 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
         <Legend swatch={<Minus style={{ width: 13, height: 13, color: '#cdd2d8' }} />} label="Not captured yet" />
       </div>
     </div>
+  )
+}
+
+function Row({ slug, topics, lookup }: { slug: PartySlug; topics: { slug: string; label: string }[]; lookup: Map<string, PartyPosition> }) {
+  const party = PARTY_PROFILES[slug]
+  return (
+    <tr>
+      <td style={{ ...tdBase, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+          <span style={{ width: 9, height: 9, borderRadius: 3, background: party.color, flexShrink: 0 }} />
+          <span style={{ fontSize: 13, fontWeight: 800, color: INK }}>{party.name}</span>
+        </span>
+      </td>
+      {topics.map((t) => {
+        const pos = lookup.get(`${slug}::${t.slug}`)
+        return (
+          <td key={t.slug} style={{ ...tdBase, textAlign: 'center' }}>
+            {pos ? (
+              pos.noPosition ? (
+                <Link href={`/policies/${t.slug}/${slug}`} title="No stated position (verified)" style={{ color: TERTIARY, textDecoration: 'none', fontWeight: 800, fontSize: 15 }}>∅</Link>
+              ) : (
+                <Link href={`/policies/${t.slug}/${slug}`} title={pos.stance || 'View position'} style={{ display: 'inline-flex' }}>
+                  <span style={{ width: 22, height: 22, borderRadius: 6, background: party.color, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Check style={{ width: 13, height: 13, color: party.textColor }} />
+                  </span>
+                </Link>
+              )
+            ) : (
+              <Minus style={{ width: 13, height: 13, color: '#cdd2d8' }} />
+            )}
+          </td>
+        )
+      })}
+    </tr>
   )
 }
 
