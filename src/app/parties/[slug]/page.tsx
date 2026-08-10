@@ -26,14 +26,24 @@ import { PartyLegislativeRecord } from '@/components/parties/legislative-record'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
-const INK       = '#0c0e12'
-const SECONDARY = '#6b7078'
-const TERTIARY  = '#9aa0aa'
-const BORDER    = '#e9e7e2'
-const SURFACE   = '#f8fafc'
+// The warm woven palette shared with the homepage and Election Centre — the
+// party pages were still on cool grey over flat white, which is what made them
+// read as a different site.
+const INK       = '#2A1206'
+const SECONDARY = '#6b6157'
+const TERTIARY  = '#9a9186'
+const BORDER    = '#e6e2da'
+const SURFACE   = '#faf8f4'
 const JADE      = '#1F8A4C'
 const MANROPE   = 'var(--font-manrope), system-ui, sans-serif'
 const DISPLAY   = 'var(--font-space-grotesk), system-ui, sans-serif'
+
+/** Party colour at low alpha, for tints that stay readable behind text. */
+function tint(hex: string, a: number) {
+  const h = hex.replace('#', '')
+  const n = parseInt(h.length === 3 ? h.split('').map((c) => c + c).join('') : h, 16)
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`
+}
 
 // ─── Static generation ────────────────────────────────────────────────────────
 
@@ -66,17 +76,22 @@ function Card({ children, style }: { children: React.ReactNode; style?: React.CS
   return (
     <div style={{
       background: '#ffffff', border: `1px solid ${BORDER}`, borderRadius: 18,
-      padding: '22px 24px', boxShadow: '0 2px 4px rgba(12,14,18,.03)', ...style,
+      padding: '22px 24px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)', ...style,
     }}>
       {children}
     </div>
   )
 }
 
-function SectionHeading({ icon: Icon, title }: { icon: React.ElementType; title: string }) {
+/** The heading icon carries the party's colour in a soft chip — the one visual
+ *  thread that makes each party's page feel like that party's, rather than the
+ *  same jade template with a different name at the top. */
+function SectionHeading({ icon: Icon, title, accent = JADE }: { icon: React.ElementType; title: string; accent?: string }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 14 }}>
-      <Icon style={{ width: 17, height: 17, color: JADE }} />
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+      <span style={{ width: 28, height: 28, borderRadius: 9, background: tint(accent, 0.12), display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <Icon style={{ width: 15, height: 15, color: accent }} />
+      </span>
       <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>{title}</h2>
     </div>
   )
@@ -98,10 +113,24 @@ export default async function PartyProfilePage(
   const coLeaderSlug = party.coLeader ? mpSlugForName(party.coLeader) : null
 
   return (
-    <div style={{ background: '#ffffff', minHeight: '100vh' }}>
+    // Same woven ground as the homepage and Election Centre, so a party page
+    // stops looking like a page from another site.
+    <div style={{
+      backgroundColor: '#f4f2ec',
+      backgroundImage: 'url(/back2.jpg)',
+      backgroundRepeat: 'repeat-y',
+      backgroundSize: '100% auto',
+      backgroundPosition: 'top center',
+      minHeight: '100vh',
+    }}>
 
       {/* ═══════════════ Header band ═══════════════ */}
-      <div className="bg-dot-grid" style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}>
+      {/* Washed in the party's own colour — the identity cue the old 6px strip
+          was too thin to carry. */}
+      <div style={{
+        background: `linear-gradient(180deg, ${tint(party.color, 0.16)} 0%, ${tint(party.color, 0.04)} 60%, rgba(255,255,255,0) 100%)`,
+        borderBottom: `1px solid ${BORDER}`,
+      }}>
         <div style={{ height: 6, background: party.color }} />
 
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 36px' }}>
@@ -195,8 +224,9 @@ export default async function PartyProfilePage(
             {/* Right: seat figure */}
             <div style={{
               background: '#ffffff', border: `1px solid ${BORDER}`, borderRadius: 18,
-              padding: '20px 26px', boxShadow: '0 2px 4px rgba(12,14,18,.03)',
+              padding: '20px 26px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)',
               textAlign: 'center', alignSelf: 'flex-start', minWidth: 150,
+              borderTop: `4px solid ${party.color}`,
             }}>
               <div style={{ fontSize: 54, fontWeight: 700, letterSpacing: '-.03em', color: INK, fontFamily: DISPLAY, lineHeight: 1 }}>
                 {seats}
@@ -220,16 +250,16 @@ export default async function PartyProfilePage(
 
           {/* Overview */}
           <Card>
-            <SectionHeading icon={Landmark} title="Overview" />
-            <p style={{ fontSize: 14.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
+            <SectionHeading icon={Landmark} title="Overview" accent={party.color} />
+            <p style={{ fontSize: 14.5, color: '#3b3229', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
               {party.overview}
             </p>
           </Card>
 
           {/* History */}
           <Card>
-            <SectionHeading icon={ScrollText} title="History" />
-            <p style={{ fontSize: 14.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
+            <SectionHeading icon={ScrollText} title="History" accent={party.color} />
+            <p style={{ fontSize: 14.5, color: '#3b3229', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
               {party.history}
             </p>
             <div style={{ marginTop: 14, fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, fontStyle: 'italic' }}>
@@ -239,12 +269,12 @@ export default async function PartyProfilePage(
 
           {/* Core values */}
           <Card>
-            <SectionHeading icon={CheckCircle2} title="Core values" />
+            <SectionHeading icon={CheckCircle2} title="Core values" accent={party.color} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {party.coreValues.map((v) => (
                 <div key={v} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                   <span style={{ width: 7, height: 7, borderRadius: '50%', background: party.color, flexShrink: 0, marginTop: 7 }} />
-                  <span style={{ fontSize: 14, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.5 }}>{v}</span>
+                  <span style={{ fontSize: 14, color: '#3b3229', fontFamily: MANROPE, lineHeight: 1.5 }}>{v}</span>
                 </div>
               ))}
             </div>
@@ -252,7 +282,7 @@ export default async function PartyProfilePage(
 
           {/* Key policy areas */}
           <Card>
-            <SectionHeading icon={Star} title="Key policy areas" />
+            <SectionHeading icon={Star} title="Key policy areas" accent={party.color} />
             <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px', lineHeight: 1.5 }}>
               Policy topics most associated with {party.name}. Tap any topic to compare every party&apos;s position side by side.
             </p>
@@ -302,6 +332,25 @@ export default async function PartyProfilePage(
             <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 8 }}>
               At a glance
             </div>
+            {/* How the seats were won, before the numbers that describe them —
+                electorate vs list is the one thing about a party's seats that a
+                row of digits doesn't show. */}
+            {seats > 0 && (
+              <div style={{ marginBottom: 14 }}>
+                <div style={{ display: 'flex', height: 10, borderRadius: 999, overflow: 'hidden', background: tint(party.color, 0.12), marginBottom: 8 }}>
+                  {party.electorateSeats > 0 && <div style={{ width: `${(party.electorateSeats / seats) * 100}%`, background: party.color }} />}
+                  {party.listSeats > 0 && <div style={{ width: `${(party.listSeats / seats) * 100}%`, background: tint(party.color, 0.42) }} />}
+                </div>
+                <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: 2, background: party.color }} /> {party.electorateSeats} electorate
+                  </span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: 2, background: tint(party.color, 0.42) }} /> {party.listSeats} list
+                  </span>
+                </div>
+              </div>
+            )}
             <GlanceRow label="Total seats"     value={String(seats)} />
             <GlanceRow label="Electorate seats" value={String(party.electorateSeats)} />
             <GlanceRow label="List seats"       value={String(party.listSeats)} />
@@ -311,7 +360,7 @@ export default async function PartyProfilePage(
 
           {/* Caucus (placeholder) */}
           <Card style={{ padding: '20px 22px' }}>
-            <SectionHeading icon={Users} title="Caucus" />
+            <SectionHeading icon={Users} title="Caucus" accent={party.color} />
             <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5, margin: '0 0 12px' }}>
               {party.name} holds <b style={{ color: INK }}>{seats}</b> seats in the 54th Parliament.
             </p>

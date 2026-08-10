@@ -15,7 +15,8 @@ import type { PartySlug } from '@/types'
 // parties whose only activity is ballot members' bills have none yet).
 const PARTIES_WITH_BILLS = partiesWithTrackerBills()
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
+// Warm woven palette — matches the party page this card sits on.
+const INK = '#2A1206', SECONDARY = '#6b6157', TERTIARY = '#9a9186', BORDER = '#e6e2da', SURFACE = '#faf8f4', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
 
