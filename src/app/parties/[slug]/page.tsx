@@ -2,15 +2,16 @@
  * /parties/[slug] — Individual party profile
  *
  * Template for all party pages, driven by parties-data.ts. Overview, history,
- * core values, and key policy areas are sourced content; the caucus/MP list is
- * a placeholder pending the Parliament API (only MPs with full profiles link out).
+ * core values and key policy areas are sourced content. No caucus list: for
+ * National it ran to 49 rows and stretched the page well past everything that
+ * actually distinguishes one party from another. The MPs live at /mps.
  */
 
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
-  ArrowRight, ArrowUpRight, Users, Calendar, Landmark,
+  ArrowRight, ArrowUpRight, Calendar, Landmark,
   ScrollText, Star, ExternalLink, Globe, CheckCircle2,
 } from 'lucide-react'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES } from '@/constants/parties-data'
@@ -23,7 +24,6 @@ import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { PartyLegislativeRecord } from '@/components/parties/legislative-record'
-import { PartyCaucus } from '@/components/parties/party-caucus'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
@@ -361,11 +361,6 @@ export default async function PartyProfilePage(
             <GlanceRow label="Founded"          value={String(party.founded)} last />
           </Card>
 
-          {/* Caucus */}
-          <Card accent={party.color} style={{ padding: '20px 22px' }}>
-            <SectionHeading icon={Users} title="Caucus" accent={party.color} />
-            <PartyCaucus party={slug as PartySlug} partyName={party.name} seats={seats} />
-          </Card>
         </div>
       </div>
 
@@ -377,7 +372,7 @@ export default async function PartyProfilePage(
             Seat counts from the 2023 General Election (Electoral Commission). Party background from{' '}
             <a href={party.parliamentUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>
               parliament.nz <ArrowUpRight style={{ width: 11, height: 11, display: 'inline' }} />
-            </a>{' '}and official party records. Caucus and leadership verified against the parliament.nz member roster.
+            </a>{' '}and official party records. Leadership verified against the parliament.nz member roster.
             {party.leaderPhoto && party.leaderPhotoCredit && (
               <>{' '}Leader photo: {party.leaderPhotoCredit}{party.leaderPhotoLicense ? `, ${party.leaderPhotoLicense}` : ''}
                 {party.leaderPhotoSourceUrl && (<>{' '}<a href={party.leaderPhotoSourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>(source <ArrowUpRight style={{ width: 10, height: 10, display: 'inline' }} />)</a></>)}.</>
