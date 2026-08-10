@@ -1,40 +1,42 @@
 /**
- * PartyTile — the /parties directory tile, in the same format as the Election
- * Centre's contesting tiles: solid party colour, text in that party's own
- * contrast colour, and a level that fills from the bottom.
+ * PartyTile — the /parties directory tile: flat, solid party colour with text in
+ * that party's own contrast colour.
  *
- * The gauge here measures SEATS, not poll share — this page is about the 54th
- * Parliament as it stands, and mixing in a polling number would be a different
- * claim on a page whose header sources everything to the 2023 official results.
- *
- * Parties with no seats carry no fill. An empty gauge would read as "measured at
- * zero support"; the hatch reads as "not in this Parliament", which is what's
- * actually true — several of them poll above nothing and are contesting 2026.
+ * Deliberately WITHOUT the Election Centre's filling gauge. There the level
+ * carries the poll share, which is the whole point of that grid; here the seat
+ * count is already stated in words, so a gauge added a second encoding of the
+ * same number — and it forced a hatch on the parties holding no seats, which
+ * just looked like a texture bug. Flat colour, one number, no second reading.
  */
 
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { PARTY_COLORS, PARTY_NAMES, CURRENT_SEATS, TOTAL_SEATS } from '@/constants/parties'
 import { PARTY_PROFILES } from '@/constants/parties-data'
+import { MP_PROFILES } from '@/constants/mps-data'
+import { Avatar } from '@/components/ui/avatar'
 import type { PartySlug } from '@/types'
 
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const WARM = '#5b3d2a', LINE = '#e9e4db'
 
-const TILE_H = 196
-/** Top band reserved for the party name, its full name (two lines on the longer
- *  ones) and the seats chip, so the rising fill can never cut through them. */
-const HEADER_H = 88
-const GAUGE_H = TILE_H - HEADER_H
-/** Seats that fill the gauge. Set just above the largest party so its tile reads
- *  as nearly-full rather than clipped, with every tile on one scale. */
-const FULL_AT = 50
-
-const fillPx = (seats: number) => Math.max(2, Math.round((Math.min(seats, FULL_AT) / FULL_AT) * GAUGE_H))
+const TILE_H = 176
 
 /** Fade a party's contrast colour — that colour is per-party (near-black on
  *  ACT's yellow, white on National's blue), so secondary text can't be a fixed
  *  rgba(255,255,255,…) or it disappears on the light tiles. */
+/** A leader who holds a seat has an MP photo; one who doesn't may still have a
+ *  photo on the party record. Returns undefined when there's neither, which
+ *  Avatar renders as initials. */
+function photoFor(name: string, fallback?: string): string | undefined {
+  const mp = Object.values(MP_PROFILES).find((m) => m.name === name)
+  return mp?.photo ?? fallback
+}
+
+function LeaderFace({ slug, name, src }: { slug: PartySlug; name: string; src?: string }) {
+  return <Avatar name={name} party={src ? slug : undefined} src={src} size="sm" face={!!src} />
+}
+
 function hexToRgba(hex: string, alpha: number): string {
   const h = hex.replace('#', '')
   const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h
@@ -65,8 +67,9 @@ export function PartyTile({ slug }: { slug: PartySlug }) {
   const names = PARTY_NAMES[slug]
   const profile = PARTY_PROFILES[slug]
   const seats = CURRENT_SEATS[slug] ?? 0
-  const h = seats > 0 ? fillPx(seats) : 0
   const share = ((seats / TOTAL_SEATS) * 100).toFixed(1)
+  const leaderSrc = profile?.leader ? photoFor(profile.leader, profile.leaderPhoto) : undefined
+  const coLeaderSrc = profile?.coLeader ? photoFor(profile.coLeader) : undefined
 
   return (
     <Link href={`/parties/${slug}`} className="party-card" style={{
@@ -74,21 +77,6 @@ export function PartyTile({ slug }: { slug: PartySlug }) {
       textDecoration: 'none', background: colour, border: `2px solid ${colour}`,
       boxShadow: '0 2px 6px rgba(42,18,6,.12)',
     }}>
-      {/* The seat level survives the solid fill as a darker band from the bottom,
-          so the "filling up" read works without a second hue. */}
-      {seats > 0 && (
-        <>
-          <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: h, background: soft(0.20) }} />
-          <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, bottom: h, height: 2, background: soft(0.45) }} />
-        </>
-      )}
-      {seats === 0 && (
-        <span aria-hidden style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: `repeating-linear-gradient(135deg, ${soft(0.10)} 0 6px, transparent 6px 12px)`,
-        }} />
-      )}
-
       {seats > 0 && (
         <span style={{
           position: 'absolute', top: 12, right: 13, zIndex: 2, fontSize: 10, fontWeight: 800, color: onColour,
@@ -96,28 +84,42 @@ export function PartyTile({ slug }: { slug: PartySlug }) {
         }}>{share}% of the House</span>
       )}
 
-      {/* Identity all sits in the protected header band. The leader line in
-          particular has to live up here: at 11 seats the fill surface lands
-          ~24px off the floor, which cut straight through it at the bottom. Only
-          the seat number sits below, where a line crossing behind 34px bold type
-          reads as layering rather than damage. */}
       <span style={{ position: 'relative', zIndex: 1, height: '100%', padding: '13px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <span style={{ display: 'block' }}>
           <span style={{ display: 'block', fontSize: 16, fontWeight: 800, color: onColour, fontFamily: MANROPE, lineHeight: 1.15, paddingRight: seats > 0 ? 96 : 0 }}>{names.short}</span>
           <span style={{ display: 'block', fontSize: 10.5, color: soft(0.72), fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}>{names.full}</span>
+          {/* Faces, not just names — the leader is how most people recognise a
+              party. MP photo where they hold a seat, the party's own leaderPhoto
+              otherwise; Avatar falls back to initials when neither exists. */}
           {profile?.leader && (
-            <span style={{ display: 'block', fontSize: 11.5, fontWeight: 700, color: soft(0.9), fontFamily: MANROPE, marginTop: 8, lineHeight: 1.3 }}>
-              {profile.coLeader ? `${profile.leader} & ${profile.coLeader}` : profile.leader}
+            <span style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 9 }}>
+              {/* No `party` prop when there's no photo: Avatar's initials
+                  fallback fills the circle with the party colour, which on a
+                  tile of that same colour left the letters floating with no
+                  disc at all. Unset, it falls back to a neutral grey that
+                  reads on every tile. */}
+              {/* Overlap the discs only when both are real photos. Faces sit in
+                  the middle of the frame so a 10px bite is invisible; initials
+                  run edge to edge, and the co-leader's disc was eating the
+                  first one's second letter. */}
+              <span style={{ display: 'flex', flexShrink: 0 }}>
+                <LeaderFace slug={slug} name={profile.leader} src={leaderSrc} />
+                {profile.coLeader && (
+                  <span style={{ marginLeft: leaderSrc && coLeaderSrc ? -10 : 3, borderRadius: '50%', boxShadow: `0 0 0 2px ${colour}` }}>
+                    <LeaderFace slug={slug} name={profile.coLeader} src={coLeaderSrc} />
+                  </span>
+                )}
+              </span>
+              <span style={{ fontSize: 11.5, fontWeight: 700, color: soft(0.92), fontFamily: MANROPE, lineHeight: 1.25, minWidth: 0 }}>
+                {profile.coLeader ? `${profile.leader} & ${profile.coLeader}` : profile.leader}
+              </span>
             </span>
           )}
         </span>
 
         <span style={{ display: 'block' }}>
           {seats > 0 ? (
-            // Solid party colour behind the readout so the level line breaks
-            // around it instead of slicing through the word: at 8–15 seats the
-            // surface lands exactly in this band.
-            <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 6, background: colour, borderRadius: 9, padding: '2px 9px 3px', marginLeft: -9 }}>
+            <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 6 }}>
               <span style={{ fontSize: 34, fontWeight: 800, color: onColour, fontFamily: MANROPE, letterSpacing: '-.02em', lineHeight: 1.05, fontVariantNumeric: 'tabular-nums' }}>
                 {seats}
               </span>
