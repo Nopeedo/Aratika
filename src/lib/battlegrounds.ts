@@ -17,7 +17,9 @@ export const MARGIN_TIERS: MarginTier[] = [
   { key: 'ultra',       label: 'Ultra-marginal', color: '#dc2626', max: 1500 },
   { key: 'marginal',    label: 'Marginal',       color: '#ea580c', max: 3500 },
   { key: 'competitive', label: 'Competitive',    color: '#f59e0b', max: 7000 },
-  { key: 'safe',        label: 'Safe',           color: '#94a3b8', max: Infinity },
+  // Light green rather than grey: on the map, grey read as "no data" next to
+  // the pending-result fill, when a safe seat is a known result.
+  { key: 'safe',        label: 'Safe',           color: '#86c79a', max: Infinity },
 ]
 
 const UNKNOWN_TIER: MarginTier = { key: 'unknown', label: 'Result pending', color: '#d8d5cf', max: 0 }

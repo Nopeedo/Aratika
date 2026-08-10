@@ -10,18 +10,16 @@
  * cinematic band with gradient-filled digits, which read as a different product
  * the moment you arrived from the landing page.
  *
- * Keeps what worked: the live ticking clock, the at-a-glance stat row, and the
- * jump-nav so the long page below stays navigable. The jump chips now use the
+ * Keeps what worked: the live ticking clock and the jump-nav so the long page
+ * below stays navigable. The stat row (majority seats / parties contesting /
+ * poll leader) was removed once the party tiles carried all three lower down —
+ * it was the same numbers twice, one screen apart. The jump chips now use the
  * same coloured-border language as the homepage policy chips and hub tiles.
- * Numbers stay factual/sourced — the poll leader is the poll-of-polls average,
- * labelled as such.
  */
 
 import { BackLink } from '@/components/ui/back-link'
 import { useEffect, useState } from 'react'
-import { CalendarDays, Users, Landmark } from 'lucide-react'
-import { PARTY_COLORS, PARTY_NAMES } from '@/constants/parties'
-import type { PartySlug } from '@/types'
+import { CalendarDays } from 'lucide-react'
 
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 // Shared with the homepage flip counter (days-flip-countdown.tsx) so the two
@@ -44,12 +42,7 @@ const JUMP: { label: string; href: string; tint: string; ink: string }[] = [
   { label: 'Parliament',  href: '#parliament',  tint: '#eff4ff', ink: '#1d4ed8' },
 ]
 
-export function CommandHero({ leader, pollCount, partiesContesting, majoritySeats }: {
-  leader: { slug: PartySlug; pct: number } | null
-  pollCount: number
-  partiesContesting: number
-  majoritySeats: number
-}) {
+export function CommandHero() {
   // Live countdown — computed on the client after mount to avoid hydration drift.
   const [t, setT] = useState<{ d: number; h: number; m: number; s: number } | null>(null)
   useEffect(() => {
@@ -115,20 +108,6 @@ export function CommandHero({ leader, pollCount, partiesContesting, majoritySeat
           Final date &amp; advance-voting period confirmed by the Electoral Commission closer to the day.
         </p>
 
-        {/* Stat band */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 10, marginBottom: 'clamp(18px, 3vh, 26px)' }}>
-          <Stat icon={<Landmark style={{ width: 15, height: 15, color: JADE_DARK }} />} value={String(majoritySeats)} label="seats for a majority" />
-          <Stat icon={<Users style={{ width: 15, height: 15, color: JADE_DARK }} />} value={String(partiesContesting)} label="parties contesting" />
-          {leader ? (
-            <Stat
-              icon={<span style={{ width: 11, height: 11, borderRadius: '50%', background: PARTY_COLORS[leader.slug].bg, display: 'inline-block', flexShrink: 0 }} />}
-              value={`${PARTY_NAMES[leader.slug].short} ${leader.pct}%`}
-              label={`poll-of-polls leader · ${pollCount} polls`}
-            />
-          ) : (
-            <Stat icon={<Users style={{ width: 15, height: 15, color: JADE_DARK }} />} value="—" label="poll of polls" />
-          )}
-        </div>
 
         {/* Jump nav — coloured chips, same language as the policy chips */}
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 9 }}>
@@ -167,14 +146,3 @@ function Tile({ text }: { text: string }) {
   )
 }
 
-function Stat({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 11, padding: '13px 15px', borderRadius: 14, background: 'rgba(255,255,255,.86)', border: '1px solid #e6e2da', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
-      <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34, borderRadius: 10, background: '#ecfdf5', flexShrink: 0 }}>{icon}</span>
-      <div style={{ minWidth: 0 }}>
-        <div style={{ fontSize: 17, fontWeight: 800, color: ESPRESSO, fontFamily: MANROPE, lineHeight: 1.15 }}>{value}</div>
-        <div style={{ fontSize: 11.5, color: SUB, fontFamily: MANROPE, marginTop: 1 }}>{label}</div>
-      </div>
-    </div>
-  )
-}

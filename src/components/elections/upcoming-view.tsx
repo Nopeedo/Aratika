@@ -18,10 +18,10 @@
  */
 
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, UserPlus, Clock, Info } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, UserPlus, Clock, Info, MapPin } from 'lucide-react'
 import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
-import { PARTY_NAMES, PARTY_COLORS, PARLIAMENTARY_PARTIES, NON_PARLIAMENTARY_CONTESTING } from '@/constants/parties'
+import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
 import { pollOfPolls } from '@/constants/polls-data'
 import { getPolls } from '@/lib/polls/live'
@@ -55,8 +55,6 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const hasRealDebates = debates.some((v) => v.debate)
   const polls = await getPolls()
   const pop = pollOfPolls(polls)
-  const leader = [...pop].sort((a, b) => b.pct - a.pct)[0] ?? null
-  const partiesContesting = PARLIAMENTARY_PARTIES.length + NON_PARLIAMENTARY_CONTESTING.length
 
   return (
     // One continuous woven texture behind the whole page — hero included — so it
@@ -69,7 +67,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       backgroundPosition: 'top center',
       minHeight: '100vh',
     }}>
-      <CommandHero leader={leader} pollCount={polls.length} partiesContesting={partiesContesting} majoritySeats={61} />
+      <CommandHero />
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(34px, 5vh, 48px)' }}>
@@ -85,12 +83,25 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
           {/* ── YOUR ELECTORATE — the closest races, then the marginality map ── */}
           <section id="your-seat" style={{ scrollMarginTop: 80 }}>
             <ZoneHead eyebrow="Your electorate" title="The seats to watch in 2026"
-              sub="Where 2023 was closest is where 2026 will likely be fought hardest. The map is coloured by how tight each race was — tap a seat for the contest."
+              sub="Where 2023 was closest is where 2026 will likely be fought hardest — these were the five tightest results."
               link={{ href: '/battlegrounds', label: 'All battlegrounds' }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               {/* `embedded` drops the teaser's own eyebrow/title so this zone keeps
                   one header, and strips its standalone section padding. */}
               <BattlegroundsTeaser embedded />
+
+              {/* The cards and the map were stacked with nothing joining them, so
+                  the map read as a separate widget rather than the same five seats
+                  shown in context. This states that they share one scale. */}
+              <div style={{ display: 'flex', gap: 11, alignItems: 'flex-start', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '13px 16px' }}>
+                <MapPin style={{ width: 17, height: 17, color: '#dc2626', flexShrink: 0, marginTop: 2 }} />
+                <p style={{ fontSize: 13.5, color: '#3f372f', fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
+                  <b style={{ color: INK }}>Those five are the red seats on the map below.</b> It shows all 72 electorates
+                  on the same scale — the closer the 2023 result, the hotter the colour, down to light green for the
+                  safest. Tap any seat for its contest, not just the closest ones.
+                </p>
+              </div>
+
               <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
                 <div style={{ padding: 18 }}>
                   <BattlegroundsMap embedded />
