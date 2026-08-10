@@ -16,8 +16,21 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 // nav / chrome we never want in the bill text
 const DROP = 'script, style, nav, aside, header, footer, button, form, noscript, .legislation-nav, .legislation-mobile-navigation, .list-group, .skip-link, .breadcrumb, .skip-to, [role="navigation"], [aria-hidden="true"]'
 
+/** Stored links often pin a version ("…/0138/28.0/contents.html"). Once a bill
+ *  moves on, that exact version 404s while /latest/ still resolves — so a link
+ *  that worked when it was saved silently rots. Returns null when there's no
+ *  version segment to swap. */
+function latestVersionUrl(url) {
+  const swapped = url.replace(/\/\d+\.\d+\//, '/latest/')
+  return swapped === url ? null : swapped
+}
+
 export async function fetchBillText(url, { preserveBreaks = false } = {}) {
-  const res = await fetch(url, { headers: { 'User-Agent': UA }, redirect: 'follow' })
+  let res = await fetch(url, { headers: { 'User-Agent': UA }, redirect: 'follow' })
+  if (res.status === 404) {
+    const fallback = latestVersionUrl(url)
+    if (fallback) res = await fetch(fallback, { headers: { 'User-Agent': UA }, redirect: 'follow' })
+  }
   if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`)
   const html = await res.text()
 
