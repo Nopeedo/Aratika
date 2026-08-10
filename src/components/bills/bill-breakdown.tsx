@@ -7,12 +7,12 @@
  */
 
 import { useState } from 'react'
-import Link from 'next/link'
 import {
-  ArrowRight, Sparkles, Quote,
+  Sparkles, Quote,
   Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
+import { TopicStances, type TopicStance } from './topic-stances'
 import type { PolicyTopic } from '@/types'
 
 export interface PolicyLink {
@@ -28,12 +28,13 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
 
-export function BillBreakdown({ summary, summaryBasic = null, policyLinks, docType = 'bill', linkTopics = true }: {
+export function BillBreakdown({ summary, summaryBasic = null, policyLinks, docType = 'bill', linkTopics = true, stances = {} }: {
   summary: string | null
   summaryBasic?: string | null
   policyLinks: PolicyLink[]
   docType?: string
   linkTopics?: boolean   // false in the editor preview (no navigation)
+  stances?: Record<string, TopicStance[]>   // party positions, keyed by topic
 }) {
   const topics = policyLinks.filter((p) => POLICY_TOPICS[p.topic as PolicyTopic])
   const [active, setActive] = useState<string | null>(topics[0]?.topic ?? null)
@@ -96,9 +97,11 @@ export function BillBreakdown({ summary, summaryBasic = null, policyLinks, docTy
                 </>
               )}
               {linkTopics && (
-                <Link href={`/policies/${activeLink.topic}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, marginTop: 16, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-                  Where parties stand on {POLICY_TOPICS[activeLink.topic as PolicyTopic].label} <ArrowRight style={{ width: 14, height: 14 }} />
-                </Link>
+                <TopicStances
+                  topic={activeLink.topic}
+                  topicLabel={POLICY_TOPICS[activeLink.topic as PolicyTopic].label}
+                  stances={stances[activeLink.topic] ?? []}
+                />
               )}
             </div>
           )}

@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation'
 import { getApprovedBillBySlug } from '@/lib/bills/live'
 import { BillReader } from '@/components/bills/bill-reader'
 import { BackLink } from '@/components/ui/back-link'
+import { buildStancesByTopic } from '@/lib/positions/stances-by-topic'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,12 +28,16 @@ export default async function LegislationReaderPage({ params }: { params: Promis
   const bill = await getApprovedBillBySlug(slug)
   if (!bill) notFound()
 
+  // Party positions for exactly the topics this bill touches — so "where parties
+  // stand" opens in place rather than navigating the reader away.
+  const stances = await buildStancesByTopic(bill.policyLinks.map((p) => p.topic))
+
   return (
     <div style={{ background: '#f5f8f4', minHeight: '100vh' }}>
       <div className="bg-dot-grid" style={{ background: '#f5f8f4', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '28px 36px 48px' }}>
           <BackLink fallbackHref="/legislation" label="Back" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 24 }} />
-          <BillReader bill={bill} />
+          <BillReader bill={bill} stances={stances} />
         </div>
       </div>
     </div>

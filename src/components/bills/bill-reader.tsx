@@ -11,6 +11,7 @@ import { FileText, ExternalLink, ShieldCheck, UserRound } from 'lucide-react'
 import type { LiveBill } from '@/lib/bills/live'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { BillBreakdown } from '@/components/bills/bill-breakdown'
+import type { TopicStance } from '@/components/bills/topic-stances'
 import { StageTracker } from '@/components/bills/stage-tracker'
 import { HaveYourSay } from '@/components/bills/have-your-say'
 import { BillFullText } from '@/components/bills/bill-full-text'
@@ -19,7 +20,7 @@ const INK = '#17231b', SECONDARY = '#667066', TERTIARY = '#9aa0aa'
 const BORDER = '#e4ebe2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
-export function BillReader({ bill }: { bill: LiveBill }) {
+export function BillReader({ bill, stances = {} }: { bill: LiveBill; stances?: Record<string, TopicStance[]> }) {
   return (
     <div style={{ maxWidth: 820, margin: '0 auto' }}>
       {/* meta + trust line */}
@@ -66,7 +67,7 @@ export function BillReader({ bill }: { bill: LiveBill }) {
       )}
 
       {/* shared summary + policy breakdown */}
-      <BillBreakdown summary={bill.summary} summaryBasic={bill.summaryBasic} policyLinks={bill.policyLinks} docType={bill.docType} />
+      <BillBreakdown summary={bill.summary} summaryBasic={bill.summaryBasic} policyLinks={bill.policyLinks} docType={bill.docType} stances={stances} />
 
       {/* progress timeline */}
       <StageTracker stage={bill.stage} selectCommittee={bill.selectCommittee} />

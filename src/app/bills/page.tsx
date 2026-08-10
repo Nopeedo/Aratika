@@ -14,6 +14,7 @@ import { ExternalLink } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BillsTracker54 } from '@/components/bills/bills-tracker-54'
 import { DefiningBills } from '@/components/bills/defining-bills'
+import { HowToReadBills } from '@/components/bills/how-to-read-bills'
 import { BILLS_54_META } from '@/constants/bills-54'
 import { getApprovedBills } from '@/lib/bills/live'
 import { memberPartyMap } from '@/lib/bills/member-party'
@@ -65,6 +66,12 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
       </div>
 
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '32px 36px 64px' }}>
+
+        {/* Orientation first: what a bill is and what the stages mean, before any
+            of the bills themselves. */}
+        <div style={{ marginBottom: 28 }}>
+          <HowToReadBills />
+        </div>
 
         {/* ── Bills shaping the election (curated) ── */}
         <DefiningBills />

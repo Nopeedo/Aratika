@@ -4,9 +4,10 @@
  * BillsTracker54 — the filterable bills tracker, built on the full 54th-Parliament
  * dataset (src/constants/bills-54.ts, from the official bills API).
  *
- * Designed so a first-time visitor can (1) understand what they're looking at —
- * a plain "how to read this" strip + stage legend — and (2) quickly narrow down
- * by policy area, bill type, stage, or keyword.
+ * Lets a visitor narrow down by policy area, bill type, stage, party or keyword.
+ * The "how to read this" primer that used to sit here now opens the page (see
+ * HowToReadBills) — it's orientation, so it belongs above the fold, not below
+ * the carousel.
  */
 
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -50,7 +51,16 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
   // reach anything below, and every filter change re-rendered the lot.
   const [page, setPage] = useState(1)
   const resultsRef = useRef<HTMLDivElement>(null)
+  const topRef = useRef<HTMLDivElement>(null)
   const partyOf = (m?: string | null) => (m ? memberParty[normName(m)] : undefined)
+  const partyColour = initialParty ? PARTY_COLORS[initialParty as PartySlug]?.bg ?? JADE : JADE
+
+  // Deep-linked from a party profile: bring the filtered list into view instead
+  // of leaving it two screens below the header and carousel. Runs once — later
+  // filter changes shouldn't yank the page around.
+  useEffect(() => {
+    if (initialParty) topRef.current?.scrollIntoView({ block: 'start' })
+  }, [initialParty])
 
   // Today's date is resolved AFTER mount, never during render: the server and the
   // browser can straddle midnight (and sit in different timezones), and a date
@@ -122,41 +132,19 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
 
   return (
     <div>
-      {/* How to read this */}
-      <div style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px', marginBottom: 18 }}>
-        <div style={{ fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 8 }}>How to read this</div>
-        <p style={{ fontSize: 13, color: '#3f444c', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>
-          A <b>bill</b> is a proposed law. <b style={{ color: '#3730a3' }}>Government bills</b> are led by a Minister; <b style={{ color: '#166638' }}>Member’s bills</b> are put forward by backbench MPs via a ballot. Each bill moves through stages — introduction → <b>select committee</b> (where the public can make submissions) → three readings → <b>Royal Assent</b>, when it becomes law.
-        </p>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-          {[
-            { label: 'Passed into law', fg: '#065f46', bg: '#d1fae5' },
-            { label: 'Select committee (submissions)', fg: '#1e40af', bg: '#eef4ff' },
-            { label: 'In progress', fg: '#92400e', bg: '#fff7e6' },
-          ].map((l) => (
-            <span key={l.label} style={{ fontSize: 11, fontWeight: 700, color: l.fg, background: l.bg, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>{l.label}</span>
-          ))}
-        </div>
-      </div>
-
-      {/* Open submissions — the one point in a bill's life where the public can
-          actually act. Silently advancing a bill to "select committee" without
-          telling anyone they can have their say wastes the moment, so surface it
-          up front with the deadline. Only shown while something is genuinely open. */}
-      {openCount > 0 && (
-        <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', background: '#eef4ff', border: '1px solid #bfd4fe', borderRadius: 14, padding: '14px 16px', marginBottom: 18 }}>
-          <PenLine style={{ width: 18, height: 18, color: '#1e40af', flexShrink: 0, marginTop: 2 }} />
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 14, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, marginBottom: 3 }}>
-              {openCount} {openCount === 1 ? 'bill is' : 'bills are'} open for public submissions right now
-            </div>
-            <p style={{ fontSize: 13, color: '#1e40af', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-              When a bill reaches a select committee, anyone can tell MPs what they think of it — you don’t need to be an expert.{' '}
-              <button onClick={() => setSubsOnly(true)} style={{ background: 'none', border: 'none', padding: 0, color: '#1e3a8a', fontWeight: 800, fontFamily: MANROPE, fontSize: 13, cursor: 'pointer', textDecoration: 'underline' }}>
-                Show me those bills
-              </button>
-            </p>
-          </div>
+      {/* Arriving from a party profile ("See all NZ First bills") lands you at the
+          top of a 3,400px page with the filter silently applied — it reads as the
+          plain tracker. Say what's filtered, and scroll here on mount. */}
+      <div ref={topRef} style={{ scrollMarginTop: 72 }} />
+      {initialParty && party === initialParty && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', background: '#fff', border: `2px solid ${partyColour}`, borderRadius: 14, padding: '12px 16px', marginBottom: 18 }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 9, fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>
+            <span style={{ width: 10, height: 10, borderRadius: 3, background: partyColour, flexShrink: 0 }} />
+            Showing {PARTY_NAMES[initialParty as PartySlug]?.short ?? initialParty}’s bills — {filtered.length} of {stats.total}
+          </span>
+          <button onClick={reset} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '8px 12px', fontFamily: MANROPE, cursor: 'pointer' }}>
+            <X style={{ width: 13, height: 13 }} /> Show all bills
+          </button>
         </div>
       )}
 
