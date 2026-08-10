@@ -23,6 +23,7 @@ import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { PartyLegislativeRecord } from '@/components/parties/legislative-record'
+import { PartyCaucus } from '@/components/parties/party-caucus'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
@@ -360,28 +361,10 @@ export default async function PartyProfilePage(
             <GlanceRow label="Founded"          value={String(party.founded)} last />
           </Card>
 
-          {/* Caucus (placeholder) */}
+          {/* Caucus */}
           <Card accent={party.color} style={{ padding: '20px 22px' }}>
             <SectionHeading icon={Users} title="Caucus" accent={party.color} />
-            <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5, margin: '0 0 12px' }}>
-              {party.name} holds <b style={{ color: INK }}>{seats}</b> seats in the 54th Parliament.
-            </p>
-            {leaderSlug ? (
-              <Link href={`/mps/${leaderSlug}`} style={{
-                display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px',
-                background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, textDecoration: 'none',
-              }}>
-                <Avatar name={party.leader} party={slug as PartySlug} src={leaderSlug ? MP_PROFILES[leaderSlug].photo : undefined} size="sm" />
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: INK, fontFamily: MANROPE }}>{party.leader}</div>
-                  <div style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE }}>View profile</div>
-                </div>
-                <ArrowRight style={{ width: 14, height: 14, color: TERTIARY }} />
-              </Link>
-            ) : null}
-            <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.5, margin: '12px 0 0', fontStyle: 'italic' }}>
-              Full caucus list will appear here once the Parliament API integration is complete.
-            </p>
+            <PartyCaucus party={slug as PartySlug} partyName={party.name} seats={seats} />
           </Card>
         </div>
       </div>
@@ -394,7 +377,7 @@ export default async function PartyProfilePage(
             Seat counts from the 2023 General Election (Electoral Commission). Party background from{' '}
             <a href={party.parliamentUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>
               parliament.nz <ArrowUpRight style={{ width: 11, height: 11, display: 'inline' }} />
-            </a>{' '}and official party records. Leadership details pending Parliament API verification.
+            </a>{' '}and official party records. Caucus and leadership verified against the parliament.nz member roster.
             {party.leaderPhoto && party.leaderPhotoCredit && (
               <>{' '}Leader photo: {party.leaderPhotoCredit}{party.leaderPhotoLicense ? `, ${party.leaderPhotoLicense}` : ''}
                 {party.leaderPhotoSourceUrl && (<>{' '}<a href={party.leaderPhotoSourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>(source <ArrowUpRight style={{ width: 10, height: 10, display: 'inline' }} />)</a></>)}.</>
