@@ -9,7 +9,7 @@
  * by policy area, bill type, stage, or keyword.
  */
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { track } from '@vercel/analytics'
 import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, ExternalLink, PenLine } from 'lucide-react'
@@ -37,6 +37,8 @@ function statusStyle(s: string): { fg: string; bg: string; label: string } {
   return { fg: '#92400e', bg: '#fff7e6', label: s }
 }
 
+const PAGE_SIZE = 24
+
 export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialParty }: { readerSlugs?: Record<string, string>; memberParty?: Record<string, string>; initialParty?: string }) {
   const [q, setQ] = useState('')
   const [cat, setCat] = useState('All')
@@ -44,6 +46,10 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
   const [status, setStatus] = useState('All')
   const [party, setParty] = useState<string>(initialParty || 'All')
   const [subsOnly, setSubsOnly] = useState(false)
+  // 270 bills rendered at once meant a reader had to scroll past all of them to
+  // reach anything below, and every filter change re-rendered the lot.
+  const [page, setPage] = useState(1)
+  const resultsRef = useRef<HTMLDivElement>(null)
   const partyOf = (m?: string | null) => (m ? memberParty[normName(m)] : undefined)
 
   // Today's date is resolved AFTER mount, never during render: the server and the
@@ -95,6 +101,24 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
 
   const active = cat !== 'All' || type !== 'All' || status !== 'All' || party !== 'All' || q !== '' || subsOnly
   const reset = () => { setQ(''); setCat('All'); setType('All'); setStatus('All'); setParty('All'); setSubsOnly(false) }
+
+  // Narrowing the filters must not leave you stranded on a page that no longer
+  // exists (e.g. on page 9 of 12, then filtering down to 30 results). Reset
+  // during render — React's documented way to adjust state when inputs change —
+  // rather than in an effect, which would paint the stale page first.
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const filterKey = `${q}|${cat}|${type}|${status}|${party}|${subsOnly}`
+  const [prevFilterKey, setPrevFilterKey] = useState(filterKey)
+  if (filterKey !== prevFilterKey) { setPrevFilterKey(filterKey); setPage(1) }
+  const current = Math.min(page, pageCount)
+  const from = (current - 1) * PAGE_SIZE
+  const pageItems = filtered.slice(from, from + PAGE_SIZE)
+
+  function goTo(n: number) {
+    setPage(Math.min(Math.max(1, n), pageCount))
+    // Jump back to the top of the results, otherwise page 2 opens mid-list.
+    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   return (
     <div>
@@ -164,7 +188,9 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
       </div>
 
       <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, marginBottom: 14 }}>
-        Showing <b style={{ color: INK }}>{filtered.length}</b> of {stats.total} bills{cat !== 'All' ? ` in ${cat}` : ''}
+        {filtered.length > 0
+          ? <>Showing <b style={{ color: INK }}>{from + 1}–{Math.min(from + PAGE_SIZE, filtered.length)}</b> of {filtered.length}{filtered.length !== stats.total ? ` matching` : ''} bill{filtered.length === 1 ? '' : 's'}{cat !== 'All' ? ` in ${cat}` : ''}</>
+          : <>No bills match those filters</>}
       </div>
 
       {/* Results */}
@@ -173,9 +199,13 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
           No bills match those filters. <button onClick={reset} style={{ color: JADE, fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', fontFamily: MANROPE, fontSize: 14 }}>Clear filters</button>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))', gap: 12 }}>
-          {filtered.map((b) => <BillCard key={b.slug + b.number} b={b} readerSlug={readerSlugs[normTitle(b.title)]} submissionsOpen={isOpen(b)} />)}
-        </div>
+        <>
+          <div ref={resultsRef} style={{ scrollMarginTop: 80 }} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))', gap: 12 }}>
+            {pageItems.map((b) => <BillCard key={b.slug + b.number} b={b} readerSlug={readerSlugs[normTitle(b.title)]} submissionsOpen={isOpen(b)} />)}
+          </div>
+          {pageCount > 1 && <Pager current={current} pageCount={pageCount} goTo={goTo} />}
+        </>
       )}
     </div>
   )
@@ -269,5 +299,42 @@ function Select({ value, onChange, options, allLabel, fmt }: { value: string; on
       style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 13.5, fontFamily: MANROPE, color: INK, background: '#fff', cursor: 'pointer', maxWidth: 200 }}>
       {options.map((o) => <option key={o} value={o}>{o === 'All' ? allLabel : fmt ? fmt(o) : o}</option>)}
     </select>
+  )
+}
+
+/** Page controls for the bills grid. Shows first/last and a window around the
+ *  current page rather than all 12 numbers, so it stays usable on a phone. */
+function Pager({ current, pageCount, goTo }: { current: number; pageCount: number; goTo: (n: number) => void }) {
+  const nums: (number | '…')[] = []
+  const push = (n: number | '…') => { if (nums[nums.length - 1] !== n) nums.push(n) }
+  for (let n = 1; n <= pageCount; n++) {
+    if (n === 1 || n === pageCount || Math.abs(n - current) <= 1) push(n)
+    else push('…')
+  }
+
+  const btn = (activeState: boolean): React.CSSProperties => ({
+    minWidth: 36, height: 36, padding: '0 10px', borderRadius: 10, cursor: 'pointer', fontFamily: MANROPE,
+    fontSize: 13, fontWeight: 800,
+    color: activeState ? '#fff' : INK,
+    background: activeState ? INK : '#fff',
+    border: `1px solid ${activeState ? INK : BORDER}`,
+  })
+
+  return (
+    <nav aria-label="Bill pages" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, flexWrap: 'wrap', marginTop: 20 }}>
+      <button onClick={() => goTo(current - 1)} disabled={current === 1} aria-label="Previous page"
+        style={{ ...btn(false), opacity: current === 1 ? 0.4 : 1, cursor: current === 1 ? 'default' : 'pointer' }}>
+        Prev
+      </button>
+      {nums.map((n, i) =>
+        n === '…'
+          ? <span key={`gap-${i}`} style={{ padding: '0 4px', color: SECONDARY, fontFamily: MANROPE, fontSize: 13 }}>…</span>
+          : <button key={n} onClick={() => goTo(n)} aria-current={n === current ? 'page' : undefined} style={btn(n === current)}>{n}</button>,
+      )}
+      <button onClick={() => goTo(current + 1)} disabled={current === pageCount} aria-label="Next page"
+        style={{ ...btn(false), opacity: current === pageCount ? 0.4 : 1, cursor: current === pageCount ? 'default' : 'pointer' }}>
+        Next
+      </button>
+    </nav>
   )
 }

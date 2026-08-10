@@ -28,6 +28,15 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 /** Matches the homepage party-panel swap so the two feel like one interaction. */
 const FADE_MS = 200
 
+/** Fade a hex to rgba — lets an unselected tile still carry its status colour as
+ *  an outline, instead of the near-invisible neutral hairline it had. */
+function hexToRgba(hex: string, alpha: number): string {
+  const h = hex.replace('#', '')
+  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h
+  const n = parseInt(full, 16)
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`
+}
+
 const STATUS: Record<DefiningBill['statusKind'], { label: string; fg: string; bg: string; bar: string }> = {
   law:           { label: 'Now law',     fg: '#166638', bg: '#e0f3e7', bar: ACCENT },
   defeated:      { label: 'Defeated',    fg: '#a3251f', bg: '#f8e4e2', bar: '#c23b3b' },
@@ -92,14 +101,16 @@ export function DefiningBills() {
               style={{
                 flex: '0 0 auto', width: 168, scrollSnapAlign: 'start', textAlign: 'left', cursor: 'pointer',
                 background: CARD, borderRadius: 13, padding: '11px 13px 12px',
-                border: `2px solid ${on ? st.bar : LINE}`,
+                // Unselected keeps the status colour at reduced strength, so each tile
+                // reads as a distinct bill up front rather than a faint grey box.
+                border: `2px solid ${on ? st.bar : hexToRgba(st.bar, 0.38)}`,
                 boxShadow: on ? '0 6px 18px -10px rgba(0,0,0,.45)' : '0 1px 2px rgba(0,0,0,.03)',
                 transform: on ? 'translateY(-2px)' : 'none',
                 transition: 'border-color .2s ease, box-shadow .2s ease, transform .2s ease',
                 fontFamily: MANROPE,
               }}
             >
-              <span style={{ display: 'block', height: 3, borderRadius: 999, background: st.bar, opacity: on ? 1 : 0.45, marginBottom: 9, transition: 'opacity .2s ease' }} />
+              <span style={{ display: 'block', height: 3, borderRadius: 999, background: st.bar, opacity: on ? 1 : 0.6, marginBottom: 9, transition: 'opacity .2s ease' }} />
               <span style={{ display: 'block', fontSize: 10, fontWeight: 800, color: st.fg, fontFamily: MANROPE, marginBottom: 4 }}>{st.label}</span>
               <span style={{ display: 'block', fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.28 }}>{b.title}</span>
             </button>
