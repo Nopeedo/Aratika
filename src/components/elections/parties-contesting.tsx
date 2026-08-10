@@ -29,14 +29,20 @@ const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const WARM = '#5b3d2a', LINE = '#e9e4db'
 
 const TILE_H = 172
-/** Fill scale: this share fills a whole tile. Set above the leading party so the
+/** Top band kept clear for the party name, its full name (which wraps to two
+ *  lines on the longer ones) and the seats chip. The gauge is confined below it:
+ *  measured against the whole tile, National and Labour at ~30% filled to within
+ *  24px of the top and their surface line cut straight across the party name. */
+const HEADER_H = 74
+const GAUGE_H = TILE_H - HEADER_H
+/** Fill scale: this share fills the gauge. Set above the leading party so the
  *  biggest tile reads as nearly-full rather than clipped, while keeping every
  *  tile on ONE scale — the exact number is always printed alongside. */
 const FULL_AT = 35
 const THRESHOLD = 5
 
-const fillPx = (pct: number) => Math.max(2, Math.round((Math.min(pct, FULL_AT) / FULL_AT) * TILE_H))
-const threshPx = Math.round((THRESHOLD / FULL_AT) * TILE_H)
+const fillPx = (pct: number) => Math.max(2, Math.round((Math.min(pct, FULL_AT) / FULL_AT) * GAUGE_H))
+const threshPx = Math.round((THRESHOLD / FULL_AT) * GAUGE_H)
 
 /** Fade a party's contrast colour. Needed because that colour is per-party
  *  (near-black on ACT's yellow, white on National's blue), so secondary text and
