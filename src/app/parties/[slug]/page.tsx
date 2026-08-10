@@ -72,10 +72,12 @@ function mpSlugForName(name: string): string | null {
 
 // ─── Card ─────────────────────────────────────────────────────────────────────
 
-function Card({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
+/** Outlined in the party's own colour. A neutral 1px hairline on a textured
+ *  background reads as no edge at all — the cards dissolved into the weave. */
+function Card({ children, accent, style }: { children: React.ReactNode; accent?: string; style?: React.CSSProperties }) {
   return (
     <div style={{
-      background: '#ffffff', border: `1px solid ${BORDER}`, borderRadius: 18,
+      background: '#ffffff', border: `2px solid ${accent ? tint(accent, 0.45) : BORDER}`, borderRadius: 18,
       padding: '22px 24px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)', ...style,
     }}>
       {children}
@@ -221,12 +223,12 @@ export default async function PartyProfilePage(
               </div>
             </div>
 
-            {/* Right: seat figure */}
+            {/* Right: seat figure — the party's colour all the way round and a
+                wash of it inside, rather than a white card with a coloured lid. */}
             <div style={{
-              background: '#ffffff', border: `1px solid ${BORDER}`, borderRadius: 18,
+              background: tint(party.color, 0.10), border: `2px solid ${party.color}`, borderRadius: 18,
               padding: '20px 26px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)',
               textAlign: 'center', alignSelf: 'flex-start', minWidth: 150,
-              borderTop: `4px solid ${party.color}`,
             }}>
               <div style={{ fontSize: 54, fontWeight: 700, letterSpacing: '-.03em', color: INK, fontFamily: DISPLAY, lineHeight: 1 }}>
                 {seats}
@@ -249,7 +251,7 @@ export default async function PartyProfilePage(
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* Overview */}
-          <Card>
+          <Card accent={party.color}>
             <SectionHeading icon={Landmark} title="Overview" accent={party.color} />
             <p style={{ fontSize: 14.5, color: '#3b3229', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
               {party.overview}
@@ -257,7 +259,7 @@ export default async function PartyProfilePage(
           </Card>
 
           {/* History */}
-          <Card>
+          <Card accent={party.color}>
             <SectionHeading icon={ScrollText} title="History" accent={party.color} />
             <p style={{ fontSize: 14.5, color: '#3b3229', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
               {party.history}
@@ -268,7 +270,7 @@ export default async function PartyProfilePage(
           </Card>
 
           {/* Core values */}
-          <Card>
+          <Card accent={party.color}>
             <SectionHeading icon={CheckCircle2} title="Core values" accent={party.color} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {party.coreValues.map((v) => (
@@ -281,7 +283,7 @@ export default async function PartyProfilePage(
           </Card>
 
           {/* Key policy areas */}
-          <Card>
+          <Card accent={party.color}>
             <SectionHeading icon={Star} title="Key policy areas" accent={party.color} />
             <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px', lineHeight: 1.5 }}>
               Policy topics most associated with {party.name}. Tap any topic to compare every party&apos;s position side by side.
@@ -315,7 +317,7 @@ export default async function PartyProfilePage(
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
           {/* Leadership */}
-          <Card style={{ padding: '20px 22px' }}>
+          <Card accent={party.color} style={{ padding: '20px 22px' }}>
             <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 14 }}>
               Leadership
             </div>
@@ -328,7 +330,7 @@ export default async function PartyProfilePage(
           </Card>
 
           {/* At a glance */}
-          <Card style={{ padding: '20px 22px' }}>
+          <Card accent={party.color} style={{ padding: '20px 22px' }}>
             <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 8 }}>
               At a glance
             </div>
@@ -359,7 +361,7 @@ export default async function PartyProfilePage(
           </Card>
 
           {/* Caucus (placeholder) */}
-          <Card style={{ padding: '20px 22px' }}>
+          <Card accent={party.color} style={{ padding: '20px 22px' }}>
             <SectionHeading icon={Users} title="Caucus" accent={party.color} />
             <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5, margin: '0 0 12px' }}>
               {party.name} holds <b style={{ color: INK }}>{seats}</b> seats in the 54th Parliament.
