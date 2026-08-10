@@ -1,21 +1,22 @@
 /**
  * /bills — Bills tracker.
- * Top: Arapono's plain-language, editor-reviewed breakdowns (the immersive
- * reader entry points), pulled live from approved content_items. Below: the
- * full current-bills snapshot.
+ * Top: the curated bills that defined this term, as a tile carousel. Below: the
+ * full current-bills snapshot for the 54th Parliament.
+ *
+ * The approved breakdowns are still fetched, but no longer shown as their own
+ * card grid — they were a third list of bills on a page that already had two.
+ * They're reachable from each carousel panel, from the tracker rows (via
+ * readerSlugs, which is what that fetch now feeds) and from /legislation.
  */
 
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import { ExternalLink, ArrowRight, Sparkles, FileText } from 'lucide-react'
+import { ExternalLink } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BillsTracker54 } from '@/components/bills/bills-tracker-54'
 import { DefiningBills } from '@/components/bills/defining-bills'
 import { BILLS_54_META } from '@/constants/bills-54'
 import { getApprovedBills } from '@/lib/bills/live'
 import { memberPartyMap } from '@/lib/bills/member-party'
-import { POLICY_TOPICS } from '@/constants/policy-topics'
-import type { PolicyTopic } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,25 +27,9 @@ export const metadata: Metadata = {
     'their type, stage, and progress, with plain-language breakdowns.',
 }
 
-const INK = '#17231b', SECONDARY = '#667066', TERTIARY = '#9aa0aa', SURFACE = '#eef3ec', BORDER = '#e4ebe2'
+const INK = '#17231b', SECONDARY = '#667066', TERTIARY = '#9aa0aa', BORDER = '#e4ebe2'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const JADE = '#1F8A4C'
-
-// Bill stage (kebab value from the pipeline) → human label + colour, matching the
-// tracker's scheme (green = law, blue = select committee, amber = in progress).
-const STAGE_META: Record<string, { label: string; fg: string; bg: string }> = {
-  'introduced': { label: 'Introduced', fg: '#92400e', bg: '#fff7e6' },
-  'first-reading': { label: 'First reading', fg: '#92400e', bg: '#fff7e6' },
-  'select-committee': { label: 'Select committee', fg: '#1e40af', bg: '#eef4ff' },
-  'second-reading': { label: 'Second reading', fg: '#92400e', bg: '#fff7e6' },
-  'committee-of-whole-house': { label: 'Committee of the whole House', fg: '#92400e', bg: '#fff7e6' },
-  'third-reading': { label: 'Third reading', fg: '#92400e', bg: '#fff7e6' },
-  'royal-assent': { label: 'Passed into law', fg: '#065f46', bg: '#d1fae5' },
-}
-function stageMeta(stage: string | null): { label: string; fg: string; bg: string } | null {
-  if (!stage) return null
-  return STAGE_META[stage] ?? { label: stage.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()), fg: '#92400e', bg: '#fff7e6' }
-}
 
 export default async function BillsPage({ searchParams }: { searchParams: Promise<{ party?: string }> }) {
   const { party: initialParty } = await searchParams
@@ -83,53 +68,6 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
 
         {/* ── Bills shaping the election (curated) ── */}
         <DefiningBills />
-
-        {/* ── Readable breakdowns (immersive reader entry points) ── */}
-        {readable.length > 0 && (
-          <section style={{ marginBottom: 40 }}>
-            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 16 }}>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 6 }}>
-                  <Sparkles style={{ width: 16, height: 16, color: JADE }} />
-                  <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Explained by Arapono</span>
-                </div>
-                <h2 style={{ fontSize: 22, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Bills, in plain language</h2>
-                <p style={{ fontSize: 14.5, color: SECONDARY, fontFamily: MANROPE, margin: '6px 0 0', maxWidth: 560, lineHeight: 1.55 }}>
-                  Neutral, editor-reviewed breakdowns — what each bill does and the policy areas it affects. Free to read.
-                </p>
-              </div>
-              <Link href="/legislation" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                See all breakdowns <ArrowRight style={{ width: 14, height: 14 }} />
-              </Link>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 14 }}>
-              {readable.slice(0, 6).map((b) => (
-                <Link key={b.id} href={`/legislation/${b.slug}`} style={{ textDecoration: 'none' }}>
-                  <div className="party-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '20px 22px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, color: JADE, background: '#ecfdf5', border: '1px solid #cfe9d8', borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE, textTransform: 'capitalize' }}>
-                        <FileText style={{ width: 11, height: 11 }} /> {b.docType}
-                      </span>
-                      {(() => { const sm = stageMeta(b.stage); return sm ? <span style={{ fontSize: 11, fontWeight: 800, color: sm.fg, background: sm.bg, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{sm.label}</span> : null })()}
-                    </div>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.3, marginBottom: 8 }}>{b.title}</div>
-                    <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 14px', flex: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{b.summary}</p>
-                    {b.policyLinks.length > 0 && (
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 12 }}>
-                        {b.policyLinks.slice(0, 4).map((p) => {
-                          const meta = POLICY_TOPICS[p.topic as PolicyTopic]
-                          return meta ? <span key={p.topic} style={{ fontSize: 11, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>{meta.label}</span> : null
-                        })}
-                      </div>
-                    )}
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>Read the breakdown <ArrowRight style={{ width: 14, height: 14 }} /></span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* ── Full bills tracker (54th Parliament) ── */}
         <div style={{ marginBottom: 16 }}>
