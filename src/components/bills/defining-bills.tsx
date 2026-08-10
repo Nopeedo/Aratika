@@ -1,38 +1,55 @@
 'use client'
 
 /**
- * DefiningBills — "Bills that defined this term" section on /bills. Jade theme:
- * a featured spotlight (animated journey + count-up stats) for the flagged bill,
- * then a filterable at-a-glance grid. Curated, neutral; each card links to its
- * own breakdown at /bills/[slug]. See src/constants/defining-bills.ts.
+ * DefiningBills — the bills the 2026 election is being fought over.
+ *
+ * Presented as a tile carousel rather than a spotlight card plus a grid of
+ * eight: you pick a bill and its detail swaps in below, the same interaction as
+ * the homepage party tiles. That was the point of the change — eight stacked
+ * cards plus a spotlight ran to several screens on a phone, and a reader had to
+ * scroll past all of it to reach the tracker. One tile row plus one panel is a
+ * fraction of the height and puts every bill one tap away.
+ *
+ * The old status filter chips are gone with it: with all eight tiles visible and
+ * each carrying its status colour, filtering eight items added a control without
+ * removing any work.
+ *
+ * Curated and neutral; every panel links to the bill's own sourced breakdown.
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Landmark, ArrowRight, Flag, Check, X } from 'lucide-react'
+import { Landmark, ArrowRight, Check, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { DEFINING_BILLS, DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
 
-const CARD = '#ffffff', SOFT = '#eef3ec', INK = '#17231b', MUTED = '#667066', LINE = '#e4ebe2'
+const CARD = '#ffffff', INK = '#17231b', MUTED = '#667066', LINE = '#e4ebe2'
 const ACCENT = '#1F8A4C', ACCENT_DK = '#14663a'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+/** Matches the homepage party-panel swap so the two feel like one interaction. */
+const FADE_MS = 200
 
-const STATUS: Record<DefiningBill['statusKind'], { label: string; fg: string; bg: string; bar: string; pct: number }> = {
-  law:           { label: 'Now law',     fg: '#166638', bg: '#e0f3e7', bar: ACCENT,     pct: 100 },
-  defeated:      { label: 'Defeated',    fg: '#a3251f', bg: '#f8e4e2', bar: '#c23b3b',  pct: 62 },
-  'in-progress': { label: 'In progress', fg: '#92400e', bg: '#f8ecd4', bar: '#c07a12',  pct: 45 },
+const STATUS: Record<DefiningBill['statusKind'], { label: string; fg: string; bg: string; bar: string }> = {
+  law:           { label: 'Now law',     fg: '#166638', bg: '#e0f3e7', bar: ACCENT },
+  defeated:      { label: 'Defeated',    fg: '#a3251f', bg: '#f8e4e2', bar: '#c23b3b' },
+  'in-progress': { label: 'In progress', fg: '#92400e', bg: '#f8ecd4', bar: '#c07a12' },
 }
 
-const FILTERS: { key: string; label: string }[] = [
-  { key: 'all', label: 'All' },
-  { key: 'law', label: 'Now law' },
-  { key: 'in-progress', label: 'In progress' },
-  { key: 'defeated', label: 'Defeated' },
-]
-
 export function DefiningBills() {
-  const featured = DEFINING_BILLS.find((b) => b.featured)
-  const [filter, setFilter] = useState('all')
-  const shown = DEFINING_BILLS.filter((b) => filter === 'all' || b.statusKind === filter)
+  const first = DEFINING_BILLS.find((b) => b.featured) ?? DEFINING_BILLS[0]
+  const [active, setActive] = useState(first.slug)
+  const [fading, setFading] = useState(false)
+  const railRef = useRef<HTMLDivElement>(null)
+
+  const bill = DEFINING_BILLS.find((b) => b.slug === active) ?? first
+
+  function select(slug: string) {
+    if (slug === active) return
+    // Fade the panel out, swap, fade back in — so the height change doesn't jump.
+    setFading(true)
+    setTimeout(() => { setActive(slug); setFading(false) }, FADE_MS)
+  }
+
+  const scroll = (dir: number) => railRef.current?.scrollBy({ left: dir * 320, behavior: 'smooth' })
 
   return (
     <section style={{ marginBottom: 48 }}>
@@ -40,28 +57,59 @@ export function DefiningBills() {
         <Landmark style={{ width: 16, height: 16, color: ACCENT_DK }} />
         <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: ACCENT_DK, fontFamily: MANROPE }}>Shaping the 2026 election</span>
       </div>
-      <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>The bills that defined this term</h2>
-      <p style={{ fontSize: 14.5, color: MUTED, fontFamily: MANROPE, margin: '6px 0 20px', maxWidth: 620, lineHeight: 1.55 }}>
-        The legislation the 2026 election is being fought over — what each does, where it got to, and where the parties stand. Neutral, and sourced.
-      </p>
 
-      {featured && <Spotlight bill={featured} />}
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16, flexWrap: 'wrap', margin: '32px 0 16px' }}>
-        <h3 style={{ fontSize: 19, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0 }}>All {DEFINING_BILLS.length}, at a glance</h3>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          {FILTERS.map((f) => (
-            <button key={f.key} onClick={() => setFilter(f.key)} style={{
-              fontSize: 12.5, fontWeight: 700, fontFamily: MANROPE, borderRadius: 999, padding: '7px 14px', cursor: 'pointer',
-              color: filter === f.key ? '#fff' : INK, background: filter === f.key ? INK : CARD,
-              border: `1px solid ${filter === f.key ? INK : LINE}`,
-            }}>{f.label}</button>
-          ))}
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
+        <div>
+          <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>The bills that defined this term</h2>
+          <p style={{ fontSize: 14.5, color: MUTED, fontFamily: MANROPE, margin: '6px 0 0', maxWidth: 620, lineHeight: 1.55 }}>
+            The legislation the 2026 election is being fought over. Tap a bill to see what it does, where it got to, and why it matters.
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={() => scroll(-1)} aria-label="Scroll bills left" style={arrowBtn}><ChevronLeft style={{ width: 17, height: 17 }} /></button>
+          <button onClick={() => scroll(1)} aria-label="Scroll bills right" style={arrowBtn}><ChevronRight style={{ width: 17, height: 17 }} /></button>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 14 }}>
-        {shown.map((b) => <BillCard key={b.slug} bill={b} />)}
+      {/* Tile rail — horizontally scrollable so eight bills cost one row on a
+          phone instead of eight stacked cards. */}
+      <div
+        ref={railRef}
+        style={{
+          display: 'flex', gap: 10, overflowX: 'auto', scrollSnapType: 'x mandatory',
+          padding: '16px 2px 6px', margin: '0 -2px',
+          scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch',
+        }}
+      >
+        {DEFINING_BILLS.map((b) => {
+          const st = STATUS[b.statusKind]
+          const on = b.slug === active
+          return (
+            <button
+              key={b.slug}
+              onClick={() => select(b.slug)}
+              aria-pressed={on}
+              style={{
+                flex: '0 0 auto', width: 168, scrollSnapAlign: 'start', textAlign: 'left', cursor: 'pointer',
+                background: CARD, borderRadius: 13, padding: '11px 13px 12px',
+                border: `2px solid ${on ? st.bar : LINE}`,
+                boxShadow: on ? '0 6px 18px -10px rgba(0,0,0,.45)' : '0 1px 2px rgba(0,0,0,.03)',
+                transform: on ? 'translateY(-2px)' : 'none',
+                transition: 'border-color .2s ease, box-shadow .2s ease, transform .2s ease',
+                fontFamily: MANROPE,
+              }}
+            >
+              <span style={{ display: 'block', height: 3, borderRadius: 999, background: st.bar, opacity: on ? 1 : 0.45, marginBottom: 9, transition: 'opacity .2s ease' }} />
+              <span style={{ display: 'block', fontSize: 10, fontWeight: 800, color: st.fg, fontFamily: MANROPE, marginBottom: 4 }}>{st.label}</span>
+              <span style={{ display: 'block', fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.28 }}>{b.title}</span>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Panel — the selected bill */}
+      <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${FADE_MS}ms ease-in-out` }}>
+        <BillPanel bill={bill} />
       </div>
 
       <p style={{ fontSize: 11.5, color: '#8a8f86', fontFamily: MANROPE, margin: '16px 0 0', lineHeight: 1.5, maxWidth: 640 }}>
@@ -71,30 +119,63 @@ export function DefiningBills() {
   )
 }
 
-// ─── Featured spotlight ──────────────────────────────────────────────────────
-
-function Spotlight({ bill }: { bill: DefiningBill }) {
-  const f = bill.featured!
+function BillPanel({ bill }: { bill: DefiningBill }) {
+  const st = STATUS[bill.statusKind]
+  const f = bill.featured
   return (
-    <div style={{ background: CARD, border: `1px solid ${LINE}`, borderRadius: 20, padding: '26px 28px 24px', boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 28px 56px -46px rgba(0,0,0,.4)' }}>
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: '#a3251f', background: '#f8e4e2', borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
-        <Flag style={{ width: 12, height: 12 }} /> {f.tagline}
+    <div style={{ background: CARD, border: `1px solid ${LINE}`, borderRadius: 20, padding: 'clamp(20px, 3vw, 28px)', boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 28px 56px -46px rgba(0,0,0,.4)' }}>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: st.fg, background: st.bg, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
+        {st.label}
       </span>
-      <div style={{ fontSize: 25, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: '13px 0 8px', lineHeight: 1.2 }}>{bill.title}</div>
-      <p style={{ fontSize: 14.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 24px', maxWidth: 60 * 8 }}>{bill.what}</p>
+      <h3 style={{ fontSize: 'clamp(20px, 3.2vw, 25px)', fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: '13px 0 8px', lineHeight: 1.2 }}>{bill.title}</h3>
+      <p style={{ fontSize: 14.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 22px', maxWidth: 640 }}>{bill.what}</p>
 
-      <p style={labelStyle}>Its journey through Parliament</p>
-      <Journey nodes={f.journey} />
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginTop: 26, paddingTop: 22, borderTop: `1px solid ${LINE}` }}>
-        {f.stats.map((s, i) => (
-          <div key={i}>
-            <div style={{ fontSize: 25, fontWeight: 800, letterSpacing: '-.02em', color: ACCENT_DK, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>
-              {typeof s.to === 'number' ? <CountUp to={s.to} suffix={s.suffix ?? ''} /> : s.text}
-            </div>
-            <div style={{ fontSize: 12, color: MUTED, fontFamily: MANROPE, lineHeight: 1.4, marginTop: 3 }}>{s.label}</div>
+      {/* The featured bill has a hand-built journey; every other bill has a dated
+          timeline, so both get a progress read rather than only the spotlight. */}
+      {f ? (
+        <>
+          <p style={labelStyle}>Its journey through Parliament</p>
+          <Journey nodes={f.journey} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 14, marginTop: 26, paddingTop: 22, borderTop: `1px solid ${LINE}` }}>
+            {f.stats.map((s, i) => (
+              <div key={i}>
+                <div style={{ fontSize: 25, fontWeight: 800, letterSpacing: '-.02em', color: ACCENT_DK, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>
+                  {typeof s.to === 'number' ? <CountUp to={s.to} suffix={s.suffix ?? ''} /> : s.text}
+                </div>
+                <div style={{ fontSize: 12, color: MUTED, fontFamily: MANROPE, lineHeight: 1.4, marginTop: 3 }}>{s.label}</div>
+              </div>
+            ))}
           </div>
-        ))}
+        </>
+      ) : bill.timeline && bill.timeline.length > 0 ? (
+        <>
+          <p style={labelStyle}>How it progressed</p>
+          <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {bill.timeline.slice(0, 4).map((t, i) => (
+              <li key={i} style={{ display: 'flex', gap: 11, alignItems: 'flex-start' }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: st.bar, flexShrink: 0, marginTop: 6 }} />
+                <span style={{ fontSize: 12, fontWeight: 800, color: INK, fontFamily: MANROPE, width: 108, flexShrink: 0 }}>{t.date}</span>
+                <span style={{ fontSize: 13, color: MUTED, fontFamily: MANROPE, lineHeight: 1.5 }}>{t.event}</span>
+              </li>
+            ))}
+          </ol>
+          {bill.timeline.length > 4 && (
+            <p style={{ fontSize: 12, color: '#8a8f86', fontFamily: MANROPE, margin: '10px 0 0' }}>
+              +{bill.timeline.length - 4} more in the full breakdown
+            </p>
+          )}
+        </>
+      ) : null}
+
+      <div style={{ marginTop: 24, paddingTop: 20, borderTop: `1px solid ${LINE}`, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 18 }}>
+        <div>
+          <p style={labelStyle}>Why it matters</p>
+          <p style={{ fontSize: 13.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.why}</p>
+        </div>
+        <div>
+          <p style={labelStyle}>Where it came from</p>
+          <p style={{ fontSize: 13.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.champion}</p>
+        </div>
       </div>
 
       <Link href={`/bills/${bill.slug}`} style={{ marginTop: 22, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: ACCENT_DK, fontFamily: MANROPE, textDecoration: 'none' }}>
@@ -150,23 +231,8 @@ function useProgress(dur: number) {
   return p
 }
 
-// ─── At-a-glance card ────────────────────────────────────────────────────────
-
-function BillCard({ bill }: { bill: DefiningBill }) {
-  const st = STATUS[bill.statusKind]
-  return (
-    <Link href={`/bills/${bill.slug}`} className="party-card" style={{ display: 'flex', flexDirection: 'column', background: CARD, border: `1px solid ${LINE}`, borderRadius: 14, padding: '16px 17px 14px', textDecoration: 'none' }}>
-      <span style={{ alignSelf: 'flex-start', fontSize: 10.5, fontWeight: 800, color: st.fg, background: st.bg, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>{st.label}</span>
-      <div style={{ fontSize: 15.5, fontWeight: 800, letterSpacing: '-.015em', color: INK, fontFamily: MANROPE, lineHeight: 1.25, margin: '10px 0 6px' }}>{bill.title}</div>
-      <p style={{ fontSize: 12.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.5, margin: '0 0 12px', flex: 1 }}>{bill.what}</p>
-      <div style={{ height: 4, background: LINE, borderRadius: 999, overflow: 'hidden', marginBottom: 12 }}>
-        <span style={{ display: 'block', height: '100%', width: `${st.pct}%`, background: st.bar, borderRadius: 999 }} />
-      </div>
-      <span style={{ fontSize: 11.5, fontWeight: 800, color: ACCENT_DK, fontFamily: MANROPE, display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-        Read the breakdown <ArrowRight style={{ width: 13, height: 13 }} />
-      </span>
-    </Link>
-  )
-}
-
 const labelStyle: React.CSSProperties = { fontSize: 11, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: MUTED, fontFamily: MANROPE, margin: '0 0 16px' }
+const arrowBtn: React.CSSProperties = {
+  display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34,
+  borderRadius: 999, border: `1px solid ${LINE}`, background: CARD, color: INK, cursor: 'pointer',
+}
