@@ -206,15 +206,17 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
                     )}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px' }}>
                     <Link href={hrefFor(b)} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', paddingLeft: 4 }}>
+                      {/* Only kinds with something genuinely per-item get a tile:
+                          an MP has their face, a party its own mark. Bills,
+                          policies and electorates were all showing the SAME kind
+                          icon on every card — three identical pins in a row under
+                          a heading that already says "Tracked electorates". The
+                          heading names the kind; the card names the thing. */}
                       {b.kind === 'mp' ? (
                         <Avatar name={b.label} party={b.party as PartySlug | undefined} src={b.photo} size="md" />
                       ) : b.kind === 'party' ? (
                         <span style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: b.accent || JADE, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, fontFamily: MANROPE }}>{initials(b.label)}</span>
-                      ) : (
-                        <span style={{ width: 40, height: 40, borderRadius: 11, flexShrink: 0, background: ks.tint, border: `1px solid ${ks.ink}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: ks.ink }}>
-                          {b.kind === 'electorate' ? <MapPin style={{ width: 18, height: 18 }} /> : b.kind === 'bill' ? <Gavel style={{ width: 18, height: 18 }} /> : <Scale style={{ width: 18, height: 18 }} />}
-                        </span>
-                      )}
+                      ) : null}
                       <div style={{ minWidth: 0 }}>
                         <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{b.label}</div>
                         {sub && <div style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{sub}</div>}
