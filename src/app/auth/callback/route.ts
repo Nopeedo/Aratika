@@ -13,6 +13,21 @@ import { NextResponse } from 'next/server'
 import type { EmailOtpType } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 
+/**
+ * `next` is attacker-controllable and gets concatenated onto our origin, so it
+ * has to be a path on THIS site and nothing else. Two forms look relative but
+ * aren't once joined to an origin:
+ *   ?next=@evil.com   → https://arapono.org.nz@evil.com   (userinfo trick)
+ *   ?next=//evil.com  → protocol-relative, straight off-site
+ * A backslash is included because browsers normalise \ to / in URLs.
+ * Anything that isn't a plain single-slash path falls back to the dashboard.
+ */
+function safeNext(raw: string | null): string {
+  if (!raw || !raw.startsWith('/')) return '/dashboard'
+  if (raw.startsWith('//') || raw.startsWith('/\\')) return '/dashboard'
+  return raw
+}
+
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
@@ -24,7 +39,7 @@ export async function GET(request: Request) {
   // Supabase's URL config, the query string can be dropped and the user would
   // silently end up on the dashboard instead of being able to set a password.
   const isRecovery = type === 'recovery'
-  const next = isRecovery ? '/reset-password' : (searchParams.get('next') ?? '/dashboard')
+  const next = isRecovery ? '/reset-password' : safeNext(searchParams.get('next'))
 
   const supabase = await createClient()
 
