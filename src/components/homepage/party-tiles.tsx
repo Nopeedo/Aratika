@@ -16,7 +16,7 @@ import { Armchair } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import type { PartySlug } from '@/types'
-import { MANROPE } from '@/constants/theme'
+import { INK, MANROPE } from '@/constants/theme'
 
 export interface TilePosition { topic: string; label: string; stance: string; sourceUrl: string | null; href: string; fromProfile?: boolean }
 export interface TileParty {
@@ -40,7 +40,7 @@ export interface TileParty {
   topicsTotal: number
 }
 
-const INK = '#2A1206', SUB = '#6b5f54', MUTE = '#a99d8f', LINE = '#ece8e1'
+const SUB = '#6b5f54', MUTE = '#a99d8f', LINE = '#ece8e1'
 
 /** hex → rgba string, for the party-coloured tile-row backing. */
 function rgba(hex: string, a: number): string {

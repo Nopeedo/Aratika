@@ -15,13 +15,13 @@ import { useState, useEffect } from 'react'
 import { Avatar } from '@/components/ui/avatar'
 import type { PartySlug } from '@/types'
 import { BackLink } from '@/components/ui/back-link'
-import { MANROPE } from '@/constants/theme'
+import { JADE_DARK, MANROPE } from '@/constants/theme'
 
 // Warm palette shared with the homepage / Election Centre — this hero used to be
 // a black tactical band, which read as a different product once the rest of the
 // site moved to the woven treatment.
 const ESPRESSO = '#2A1206', WARM = '#5b3d2a', BODY = '#3f372f', SUB = '#6b6157'
-const LINE = '#e6e2da', JADE_DARK = '#176B3B'
+const LINE = '#e6e2da'
 const NEXT_ELECTION_DATE = new Date('2026-11-07T09:00:00+13:00')
 
 // Schematic incumbent-side share of the gauge bar, by margin tier — NOT a real

@@ -23,14 +23,14 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import type { Bookmark as BookmarkType } from '@/hooks/use-bookmarks'
 import type { PartySlug } from '@/types'
-import { MANROPE } from '@/constants/theme'
+import { BORDER, INK, JADE, JADE_DARK, MANROPE, TERTIARY } from '@/constants/theme'
 
 const ELECTION_DATE = new Date('2026-11-07T00:00:00+13:00') // Sat 7 Nov 2026, NZ
 
 export const metadata: Metadata = { title: 'Your election hub' }
 
-const INK = '#0c0e12', ESPRESSO = '#2A1206', WARM = '#5b3d2a', BODY = '#3f372f', SUB = '#6b6157', TERTIARY = '#9aa0aa'
-const LINE = '#e9e4db', BORDER = '#e9e7e2', JADE = '#1F8A4C', JADE_DARK = '#176B3B'
+const ESPRESSO = '#2A1206', WARM = '#5b3d2a', BODY = '#3f372f', SUB = '#6b6157'
+const LINE = '#e9e4db'
 
 interface Tile {
   href: string; title: string; desc: string; Icon: React.ComponentType<{ style?: React.CSSProperties }>

@@ -10,9 +10,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Check, X, ArrowRight, RotateCcw, Trophy } from 'lucide-react'
 import type { QuizQuestion } from '@/constants/learn-data'
 import { Confetti } from './confetti'
-import { INK, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C', RED = '#dc2626'
+const RED = '#dc2626'
 
 export function Quiz({
   questions, accent, onComplete, playful = false,

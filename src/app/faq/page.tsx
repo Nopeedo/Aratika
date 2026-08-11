@@ -10,14 +10,14 @@ import Link from 'next/link'
 import { HelpCircle, Mail, ArrowUpRight } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { SITE } from '@/constants/site'
-import { INK, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Help & FAQ',
   description: 'How Arapono stays non-partisan, where our information comes from, how we’re funded, and how to get started.',
 }
 
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C', BODY = '#33373f'
+const BODY = '#33373f'
 
 function QA({ q, children, first }: { q: string; children: React.ReactNode; first?: boolean }) {
   return (

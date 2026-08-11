@@ -18,9 +18,9 @@ import {
   Newspaper, Swords, Vote, LayoutDashboard, GraduationCap,
 } from 'lucide-react'
 import { isEnabled } from '@/constants/features'
-import { BORDER, JADE, MANROPE } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SUB = '#5b6067', TERTIARY = '#9aa0aa'
+const SUB = '#5b6067'
 
 // Left/right inset that lines the rail up with the centred 1280 container while
 // letting the rail itself run full-bleed to the viewport edges — so cards scroll

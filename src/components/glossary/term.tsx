@@ -16,8 +16,9 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { GLOSSARY } from '@/constants/glossary'
 import { useExplainMode } from '@/hooks/use-explain-mode'
+import { INK, JADE } from '@/constants/theme'
 
-const JADE = '#1F8A4C', INK = '#0c0e12', LINE = '#d8d5cf'
+const LINE = '#d8d5cf'
 
 function findEntry(name: string) {
   const n = name.trim().toLowerCase()

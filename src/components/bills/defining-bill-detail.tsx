@@ -11,9 +11,9 @@ import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import type { PolicyTopic } from '@/types'
-import { MANROPE } from '@/constants/theme'
+import { INK, MANROPE } from '@/constants/theme'
 
-const GROUND = '#f5f8f4', CARD = '#ffffff', SOFT = '#eef3ec', INK = '#17231b', MUTED = '#667066'
+const GROUND = '#f5f8f4', CARD = '#ffffff', SOFT = '#eef3ec', MUTED = '#667066'
 const LINE = '#e4ebe2', ACCENT = '#1F8A4C', ACCENT_DK = '#14663a'
 
 const STATUS: Record<DefiningBill['statusKind'], { fg: string; bg: string; icon: React.ElementType }> = {

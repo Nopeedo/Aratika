@@ -10,9 +10,9 @@
 
 import { useEffect, useState } from 'react'
 import { Download, Share, SquarePlus, X } from 'lucide-react'
-import { MANROPE } from '@/constants/theme'
+import { INK, JADE, MANROPE } from '@/constants/theme'
 
-const INK = '#0c0e12', SUB = '#5b6067', JADE = '#1F8A4C'
+const SUB = '#5b6067'
 const DISMISS_KEY = 'arapono.install.dismissed'
 
 interface BIPEvent extends Event { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> }

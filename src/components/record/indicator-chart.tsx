@@ -6,9 +6,9 @@
  */
 
 import type { EconSeries } from '@/constants/economic-data'
-import { MANROPE } from '@/constants/theme'
+import { BORDER, MANROPE, TERTIARY } from '@/constants/theme'
 
-const SLATE = '#64748b', SLATE_DARK = '#334155', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2'
+const SLATE = '#64748b', SLATE_DARK = '#334155'
 
 // The government formed late Nov 2023, so 2024 is its first full year.
 const TERM_FROM = 2024

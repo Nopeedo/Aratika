@@ -1,4 +1,4 @@
-import { MANROPE } from '@/constants/theme'
+import { INK, MANROPE } from '@/constants/theme'
 
 /**
  * StartHereCta — a small, quiet title that sits directly under the hero subline
@@ -7,7 +7,7 @@ import { MANROPE } from '@/constants/theme'
  * the tiles for attention.
  */
 
-const INK = '#2A1206', SUB = '#5b3d2a'
+const SUB = '#5b3d2a'
 
 export function StartHereCta() {
   return (

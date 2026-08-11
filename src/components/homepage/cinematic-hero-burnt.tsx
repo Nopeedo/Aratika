@@ -11,10 +11,11 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { DaysFlipCountdown } from '@/components/homepage/days-flip-countdown'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
-import { MANROPE } from '@/constants/theme'
+import { INK, MANROPE } from '@/constants/theme'
 
 // ── Burnt Clay palette (on white) ──
-const INK = '#2A1206'           // deep espresso ink (headline / body)
+// INK (deep espresso, headline / body) now comes from the shared tokens — this
+// hero is where that value was set, and the rest of the site has caught up to it.
 const TERRACOTTA = '#C2410C'    // solid bold accent
 
 // Accent colour comes from the shared PartyCycle clock (synced with the tiles).
