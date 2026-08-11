@@ -113,7 +113,7 @@ export function MPFinderSearch() {
       }}>
         Works with suburbs, street addresses, and electorate names ·{' '}
         <a
-          href="/how-it-works#mmp"
+          href="/learn/mmp"
           style={{ color: '#1F8A4C', textDecoration: 'none', fontWeight: 600 }}
         >
           Not sure which roll you're on?

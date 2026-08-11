@@ -174,7 +174,7 @@ export function ElectoratePanel({ electorateName }: { electorateName: string | n
           <p style={{ fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
             Under MMP, your <b>party vote</b> also elects list MPs who represent the whole country —
             you&apos;re represented by more than just your electorate MP.{' '}
-            <Link href="/how-it-works#mmp" style={{ color: JADE, fontWeight: 700 }}>How MMP works →</Link>
+            <Link href="/learn/mmp" style={{ color: JADE, fontWeight: 700 }}>How MMP works →</Link>
           </p>
         </div>
       </div>
