@@ -10,8 +10,8 @@ import { motion } from 'framer-motion'
 import { Trophy, Zap, Award, Cloud, CloudOff } from 'lucide-react'
 import { useLearnProgress } from '@/hooks/use-learn-progress'
 import { computeStats } from '@/lib/learn/xp'
+import { INK, SECONDARY, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C', AMBER = '#c9a227'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 

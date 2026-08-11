@@ -12,9 +12,8 @@ import {
   FileCheck, Search, Star, Swords, Gavel,
 } from 'lucide-react'
 import type { RevealItem } from '@/constants/learn-interactives'
+import { BORDER, INK, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const ICONS: Record<string, React.ElementType> = {

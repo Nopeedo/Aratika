@@ -14,8 +14,8 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { formatNumber, toSlug } from '@/lib/utils/format'
 import { MpPhotoTile } from './mp-photo-tile'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function ElectorateTiles({ name }: { name: string }) {

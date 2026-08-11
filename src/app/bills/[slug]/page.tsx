@@ -21,9 +21,8 @@ import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { formatDate } from '@/lib/utils/format'
 import { PREMIUM_ENABLED } from '@/constants/features'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
 

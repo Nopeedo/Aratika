@@ -23,14 +23,13 @@ import { BUDGET_LINKS, FUND_RELATION, FUNDED_PROMISE_IDS, BUDGET_BASELINE } from
 import { BUDGET_META } from '@/constants/budget-2026'
 import { ECONOMIC_DATA, type EconSeries } from '@/constants/economic-data'
 import { IndicatorChart } from '@/components/record/indicator-chart'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'National — Accountability Record (private)',
   robots: { index: false, follow: false },
 }
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
 

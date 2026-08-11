@@ -21,9 +21,9 @@ import { isLightHex } from '@/components/homepage/battleground-card'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 const TOPIC_ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 // Mobile open sequence. The chip that flies up into the head row and the panel

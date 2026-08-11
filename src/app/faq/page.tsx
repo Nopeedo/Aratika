@@ -10,13 +10,13 @@ import Link from 'next/link'
 import { HelpCircle, Mail, ArrowUpRight } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { SITE } from '@/constants/site'
+import { INK, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Help & FAQ',
   description: 'How Arapono stays non-partisan, where our information comes from, how we’re funded, and how to get started.',
 }
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C', BODY = '#33373f'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 

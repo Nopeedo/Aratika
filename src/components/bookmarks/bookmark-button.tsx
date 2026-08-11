@@ -9,8 +9,8 @@
 import { useRouter, usePathname } from 'next/navigation'
 import { Bookmark, BookmarkCheck } from 'lucide-react'
 import { useBookmarks, type BookmarkEntity } from '@/hooks/use-bookmarks'
+import { BORDER, INK, JADE } from '@/constants/theme'
 
-const JADE = '#1F8A4C', INK = '#0c0e12', BORDER = '#e9e7e2'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function BookmarkButton({

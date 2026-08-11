@@ -11,8 +11,8 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ExternalLink, ListChecks, Users, Quote, ShieldCheck } from 'lucide-react'
 import type { PartyPosition } from '@/lib/positions/live'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function PositionReader({ position, accent, topicLabel }: { position: PartyPosition; accent: string; topicLabel: string }) {

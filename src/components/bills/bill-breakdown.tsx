@@ -14,6 +14,7 @@ import {
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { TopicStances, type TopicStance } from './topic-stances'
 import type { PolicyTopic } from '@/types'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export interface PolicyLink {
   topic: string
@@ -22,8 +23,6 @@ export interface PolicyLink {
   excerpts: string[]
 }
 
-const INK = '#17231b', SECONDARY = '#667066', TERTIARY = '#9aa0aa'
-const BORDER = '#e4ebe2', SURFACE = '#eef3ec', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }

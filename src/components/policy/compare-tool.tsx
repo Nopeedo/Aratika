@@ -16,8 +16,8 @@ import { CONTESTING_PARTIES } from '@/constants/parties'
 import { PartyPositions } from '@/components/policy/party-positions'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
+import { BORDER, INK, JADE, SURFACE, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 interface TopicOpt { slug: string; label: string; hasData: boolean }

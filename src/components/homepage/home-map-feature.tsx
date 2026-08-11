@@ -16,8 +16,8 @@ import { Loader2, MapPinOff, MousePointerClick } from 'lucide-react'
 import type { FeatureCollection } from 'geojson'
 import { PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
 import { PARTY_PROFILES } from '@/constants/parties-data'
+import { BORDER, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
-const SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const ElectorateMap = dynamic(() => import('@/components/map/electorate-map'), {

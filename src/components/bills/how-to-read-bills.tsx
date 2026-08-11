@@ -6,8 +6,7 @@
  * carousel and the 270-row tracker, not after them.
  */
 
-const INK = '#0c0e12', BORDER = '#e9e7e2', SURFACE = '#f8fafc'
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, MANROPE, SURFACE } from '@/constants/theme'
 
 export function HowToReadBills() {
   return (

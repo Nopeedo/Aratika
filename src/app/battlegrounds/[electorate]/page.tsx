@@ -22,10 +22,9 @@ import { WarRoomHero } from '@/components/battlegrounds/war-room-hero'
 import { RosterAccordion, type RosterItem } from '@/components/battlegrounds/roster-accordion'
 import { ElectorateNews } from '@/components/battlegrounds/electorate-news'
 import type { PartySlug } from '@/types'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 // Warm palette carried over from the homepage / Election Centre.
-const INK = '#2A1206', SECONDARY = '#6b6157', TERTIARY = '#9a9186'
-const BORDER = '#e6e2da', SURFACE = '#faf8f4', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function generateStaticParams() {

@@ -12,11 +12,11 @@ import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { MapPin, ArrowUpRight, Loader2 } from 'lucide-react'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 // Keep the map (and Leaflet) out of the homepage bundle — load only when reached.
 const MapExperience = dynamic(() => import('@/components/map/map-experience').then((m) => m.MapExperience), { ssr: false })
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function HomeMap() {

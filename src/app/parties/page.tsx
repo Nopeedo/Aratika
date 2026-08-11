@@ -5,6 +5,7 @@ import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { PartyTileGrid, PlainPartyTile } from '@/components/parties/party-tile'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Political Parties',
@@ -15,11 +16,6 @@ export const metadata: Metadata = {
 
 // Warm woven palette — shared with the homepage, Election Centre and the party
 // profiles this page leads into.
-const INK      = '#2A1206'
-const SECONDARY = '#6b6157'
-const TERTIARY  = '#9a9186'
-const BORDER    = '#e6e2da'
-const JADE      = '#1F8A4C'
 
 // Registered with the Electoral Commission to contest the 2026 party vote, but holding no
 // seats in the current (54th) Parliament. Listed EQUALLY and alphabetically — Arapono ranks
@@ -203,7 +199,6 @@ function SectionTitle({ label, count }: { label: string; count: number }) {
     </div>
   )
 }
-
 
 // ─── Registered parties not in Parliament — neutral, equal, sourced ─────────────
 

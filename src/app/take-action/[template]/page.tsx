@@ -19,8 +19,8 @@ import { getBill } from '@/constants/bills-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { PremiumGate } from '@/components/action/premium-gate'
 import { LetterStudio, LetterPreview } from '@/components/action/letter-studio'
+import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', JADE = '#1F8A4C', BORDER = '#e9e7e2'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function generateStaticParams() {

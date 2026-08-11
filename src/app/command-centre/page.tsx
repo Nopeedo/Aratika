@@ -22,8 +22,8 @@ import { CommandCentreTryIt } from '@/components/command-centre/try-it'
 import { NotifyToggle } from '@/components/notifications/notify-toggle'
 import { InstallButton } from '@/components/notifications/install-button'
 import type { BookmarkEntity } from '@/hooks/use-bookmarks'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export const metadata: Metadata = {

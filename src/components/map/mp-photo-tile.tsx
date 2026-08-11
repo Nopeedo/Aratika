@@ -12,6 +12,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
+import { BORDER } from '@/constants/theme'
 
 export interface MpLite {
   slug: string
@@ -20,7 +21,6 @@ export interface MpLite {
   photoLicense?: string
 }
 
-const BORDER = '#e9e7e2'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function MpPhotoTile({ name, party, mp, caption, fill }: {

@@ -8,8 +8,8 @@ import { Mail, User as UserIcon, MailCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell, Field, PasswordField, SubmitButton, ErrorBox, OrDivider, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
 import { GoogleSignIn } from '@/components/auth/google-signin'
+import { INK, JADE, SECONDARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default function RegisterPage() {

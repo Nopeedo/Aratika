@@ -9,10 +9,10 @@ import { Lock, BarChart3 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getEditor } from '@/lib/editor/auth'
 import { ReviewList, type PendingItem } from '@/components/editor/review-list'
+import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default async function EditorPage() {

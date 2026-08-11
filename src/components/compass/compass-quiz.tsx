@@ -32,9 +32,9 @@ import { PARTY_PROFILES } from '@/constants/parties-data'
 import { PARTY_COLORS } from '@/constants/parties'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import type { PolicyTopic } from '@/types'
+import { INK, SECONDARY, TERTIARY } from '@/constants/theme'
 
 // ── Burnt Clay palette (matches the hero + party tiles) ──
-const INK = '#2A1206', SECONDARY = '#6b5f54', TERTIARY = '#a99d8f'
 const BORDER = '#ece8e1', SURFACE = '#faf7f2', CLAY = '#C2410C'
 const CLAY_LIGHT = '#fbeee6'   // warm terracotta tint (was the green #ecfdf5)
 const GREEN = '#1F8A4C'        // kept only for the "agree" overlap indicator (distinct from disagree)

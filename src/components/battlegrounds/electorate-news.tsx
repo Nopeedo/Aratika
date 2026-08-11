@@ -10,8 +10,8 @@
 import { Landmark, Newspaper, ExternalLink, PlayCircle } from 'lucide-react'
 import { getNewsForElectorate, type NewsItem } from '@/lib/news/live'
 import { getVideosForElectorate, type VideoItem } from '@/lib/news/videos'
+import { BORDER, INK, SECONDARY, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 

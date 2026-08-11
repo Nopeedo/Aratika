@@ -14,8 +14,8 @@ import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { CommandCentreTryIt } from '@/components/command-centre/try-it'
 import { TrackShowcase } from '@/components/homepage/track-showcase'
 import type { BookmarkEntity } from '@/hooks/use-bookmarks'
+import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function TrackCta() {

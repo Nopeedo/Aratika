@@ -13,6 +13,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, ChevronDown } from 'lucide-react'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export interface TopicStance {
   party: string
@@ -24,7 +25,6 @@ export interface TopicStance {
   noPosition: boolean
 }
 
-const INK = '#17231b', SECONDARY = '#667066', TERTIARY = '#9aa0aa', BORDER = '#e4ebe2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function TopicStances({ topic, topicLabel, stances }: { topic: string; topicLabel: string; stances: TopicStance[] }) {

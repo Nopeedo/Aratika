@@ -8,14 +8,13 @@ import Link from 'next/link'
 import { ArrowUpRight, Scale, ShieldCheck, Unlock, Compass } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { DATA_SOURCES } from '@/constants/site'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'About Arapono',
   description: 'Arapono is an independent, non-partisan platform making New Zealand politics clear, credible and accessible.',
 }
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const PRINCIPLES = [

@@ -10,8 +10,8 @@
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import type { PartySlug } from '@/types'
+import { INK } from '@/constants/theme'
 
-const INK = '#0c0e12'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 /** hex → rgba string, for the feathered wash behind the heading. */

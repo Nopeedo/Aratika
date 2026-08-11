@@ -8,6 +8,7 @@
 import type { Metadata } from 'next'
 import { MPsDirectory } from '@/components/mps/mps-directory'
 import { SectionDivider } from '@/components/ui/section-divider'
+import { BORDER, INK, SECONDARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Members of Parliament',
@@ -16,7 +17,6 @@ export const metadata: Metadata = {
     'searchable and filterable by party and electorate.',
 }
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default function MPsDirectoryPage() {

@@ -15,12 +15,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import { ELECTION_DATE } from '@/components/homepage/election-countdown'
+import { BORDER, INK } from '@/constants/theme'
 
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const INK = '#2A1206'
 const CARD_TOP = '#ffffff'
 const CARD_BOT = '#f4f1ec'
-const BORDER = '#e6e2da'
 
 const W = 58, H = 74, HALF = H / 2
 const ROLL = 70                   // ms per fold — CONSTANT speed for the roll

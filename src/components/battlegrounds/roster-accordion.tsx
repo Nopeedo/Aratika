@@ -11,11 +11,9 @@ import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import type { PartySlug } from '@/types'
+import { BORDER, INK, SECONDARY } from '@/constants/theme'
 
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const BORDER = '#e9e7e2'
-const INK = '#0c0e12'
-const SECONDARY = '#6b7078'
 
 export interface RosterItem {
   key: string

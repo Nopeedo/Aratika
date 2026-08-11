@@ -19,9 +19,8 @@ import type { PolicyTopic } from '@/types'
 import type { PolicyLink } from '@/components/bills/bill-breakdown'
 import { useUser } from '@/hooks/use-user'
 import { PREMIUM_ENABLED } from '@/constants/features'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const HL = '#fff3bf', HL_BORDER = '#ffe08a'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 

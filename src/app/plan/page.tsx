@@ -6,13 +6,12 @@
 
 import type { Metadata } from 'next'
 import { PlanView } from '@/components/onboarding/plan-view'
+import { BORDER } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Your plan',
   description: 'Your personalised, tick-as-you-go plan — the issues you care about and the parts of Arapono that help you most.',
 }
-
-const BORDER = '#e9e7e2'
 
 export default function PlanPage() {
   return (

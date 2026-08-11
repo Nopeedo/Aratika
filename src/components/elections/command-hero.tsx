@@ -20,13 +20,13 @@
 import { BackLink } from '@/components/ui/back-link'
 import { useEffect, useState } from 'react'
 import { CalendarDays } from 'lucide-react'
+import { JADE, JADE_DARK } from '@/constants/theme'
 
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 // Shared with the homepage flip counter (days-flip-countdown.tsx) so the two
 // counters read as the same object.
 const ESPRESSO = '#2A1206', WARM = '#5b3d2a', SUB = '#6b6157'
 const CARD_TOP = '#ffffff', CARD_BOT = '#f4f1ec', CARD_LINE = '#e6e2da'
-const JADE = '#1F8A4C', JADE_DARK = '#176B3B'
 
 // Election day: Saturday 7 November 2026, local NZ (NZDT, UTC+13 in November).
 const TARGET = new Date('2026-11-07T00:00:00+13:00').getTime()
@@ -107,7 +107,6 @@ export function CommandHero() {
         <p style={{ textAlign: 'center', fontSize: 12, color: SUB, fontFamily: MANROPE, margin: '4px 0 clamp(20px, 3.4vh, 30px)' }}>
           Final date &amp; advance-voting period confirmed by the Electoral Commission closer to the day.
         </p>
-
 
         {/* Jump nav — coloured chips, same language as the policy chips */}
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 9 }}>

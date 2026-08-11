@@ -5,8 +5,8 @@
  */
 
 import { ShieldCheck } from 'lucide-react'
+import { BORDER, INK, JADE, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const STATS = [

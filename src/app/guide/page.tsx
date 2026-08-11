@@ -7,14 +7,13 @@
 
 import type { Metadata } from 'next'
 import { QuickGuide } from '@/components/guide/quick-guide'
+import { BORDER } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Get started — a quick, no-jargon guide',
   description:
     'New to this, or not sure where to start? Three quick questions and we’ll point you to where the parties stand on what you care about, how to enrol, and your local seat. Skippable, no account needed.',
 }
-
-const BORDER = '#e9e7e2'
 
 export default function GuidePage() {
   return (

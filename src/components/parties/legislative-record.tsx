@@ -10,6 +10,7 @@ import { legislativeRecordFor } from '@/lib/parties/legislative-record'
 import { trackerBillCounts } from '@/lib/bills/member-party'
 import { PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 // Which parties actually have bills before the House in the tracker — so we only
 // link through to /bills?party=… when there is something to show (opposition
@@ -17,7 +18,6 @@ import type { PartySlug } from '@/types'
 const TRACKER_COUNTS = trackerBillCounts()
 
 // Warm woven palette — matches the party page this card sits on.
-const INK = '#2A1206', SECONDARY = '#6b6157', TERTIARY = '#9a9186', BORDER = '#e6e2da', SURFACE = '#faf8f4', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
 

@@ -18,6 +18,7 @@ import { HowToReadBills } from '@/components/bills/how-to-read-bills'
 import { BILLS_54_META } from '@/constants/bills-54'
 import { getApprovedBills } from '@/lib/bills/live'
 import { memberPartyMap } from '@/lib/bills/member-party'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,9 +29,7 @@ export const metadata: Metadata = {
     'their type, stage, and progress, with plain-language breakdowns.',
 }
 
-const INK = '#17231b', SECONDARY = '#667066', TERTIARY = '#9aa0aa', BORDER = '#e4ebe2'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const JADE = '#1F8A4C'
 
 export default async function BillsPage({ searchParams }: { searchParams: Promise<{ party?: string }> }) {
   const { party: initialParty } = await searchParams

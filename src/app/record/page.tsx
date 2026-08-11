@@ -12,14 +12,13 @@ import { ShieldAlert, ArrowRight, Target, FileText, TrendingUp, ExternalLink } f
 import { createClient } from '@/lib/supabase/server'
 import { GOVERNMENT, PROMISES, BILLS, promiseTally } from '@/constants/record-national'
 import { ECONOMIC_DATA } from '@/constants/economic-data'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Accountability data (private)',
   robots: { index: false, follow: false },
 }
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
 

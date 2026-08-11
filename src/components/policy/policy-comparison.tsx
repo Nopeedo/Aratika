@@ -12,8 +12,8 @@ import { useState } from 'react'
 import { PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PartyPositions } from '@/components/policy/party-positions'
 import type { PartyPosition } from '@/lib/positions/live'
+import { BORDER, INK, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function PolicyComparison({ positions, topicLabel, topic }: { positions: PartyPosition[]; topicLabel: string; topic: string }) {

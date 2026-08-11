@@ -15,10 +15,10 @@ import { PolicyTopic, PartySlug } from '@/types'
 import { getApprovedPosition } from '@/lib/positions/live'
 import { PositionReader } from '@/components/policy/position-reader'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export async function generateMetadata({ params }: { params: Promise<{ topic: string; party: string }> }): Promise<Metadata> {

@@ -11,6 +11,7 @@ import { SectionDivider } from '@/components/ui/section-divider'
 import { getNews } from '@/lib/news/live'
 import { getVideos } from '@/lib/news/videos'
 import { NewsFeed } from '@/components/news/news-feed'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,7 +20,6 @@ export const metadata: Metadata = {
   description: 'Live New Zealand political news for the 2026 election, from credible outlets — RNZ, the Beehive, NZ Herald, Stuff and Newsroom — tagged by party and issue.',
 }
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const SOURCES = [

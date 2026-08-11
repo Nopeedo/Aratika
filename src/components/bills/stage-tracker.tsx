@@ -8,8 +8,8 @@
 
 import { Check, Vote } from 'lucide-react'
 import { BILL_STAGE_PIPELINE } from '@/constants/bills-data'
+import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
 
-const INK = '#17231b', SECONDARY = '#667066', BORDER = '#e4ebe2', JADE = '#1F8A4C'
 const AMBER = '#c07a12', AMBER_DK = '#92400e', LINE = '#e4e6e9'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 

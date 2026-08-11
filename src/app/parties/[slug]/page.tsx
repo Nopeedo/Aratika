@@ -24,18 +24,13 @@ import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { PartyLegislativeRecord } from '@/components/parties/legislative-record'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
 // The warm woven palette shared with the homepage and Election Centre — the
 // party pages were still on cool grey over flat white, which is what made them
 // read as a different site.
-const INK       = '#2A1206'
-const SECONDARY = '#6b6157'
-const TERTIARY  = '#9a9186'
-const BORDER    = '#e6e2da'
-const SURFACE   = '#faf8f4'
-const JADE      = '#1F8A4C'
 const MANROPE   = 'var(--font-manrope), system-ui, sans-serif'
 const DISPLAY   = 'var(--font-space-grotesk), system-ui, sans-serif'
 

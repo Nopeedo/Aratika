@@ -13,8 +13,8 @@ import { PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PartyPositions } from '@/components/policy/party-positions'
 import { TopicChip } from '@/components/homepage/topic-chip'
 import type { PartyPosition } from '@/lib/positions/live'
+import { INK, SECONDARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function AllPartiesCompare({ topicKeys, positions }: { topicKeys: string[]; positions: PartyPosition[] }) {

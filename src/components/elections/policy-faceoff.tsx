@@ -20,8 +20,8 @@ import type { PartyPosition } from '@/lib/positions/live'
 import { PARTY_COLORS, PARTY_NAMES, PARTY_ORDER } from '@/constants/parties'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import type { PartySlug, PolicyTopic } from '@/types'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 type Side = 'a' | 'b'

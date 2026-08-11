@@ -8,8 +8,8 @@
 import Link from 'next/link'
 import { Vote, Compass, Sparkles, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Term } from '@/components/glossary/term'
+import { BORDER, INK, JADE, SECONDARY, SURFACE } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function GetReadyToVote() {

@@ -15,10 +15,10 @@ import { useRouter } from 'next/navigation'
 import { ArrowRight, ArrowLeft, Check, Vote, MapPin, Scale, Compass, RotateCcw } from 'lucide-react'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import type { PolicyTopic } from '@/types'
+import { BORDER, JADE, JADE_DARK, SURFACE } from '@/constants/theme'
 
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const INK = '#0c0e12', SUB = '#5b6067', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C', JADE_DARK = '#176B3B'
 
 const ENROL_URL = 'https://vote.nz/enrolling/enrol-or-update/'
 const MAX_ISSUES = 4

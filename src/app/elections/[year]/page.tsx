@@ -11,8 +11,8 @@ import { getElection, ELECTION_SLUGS } from '@/constants/elections-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { ResultsView } from '@/components/elections/results-view'
 import { UpcomingView } from '@/components/elections/upcoming-view'
+import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function generateStaticParams() {

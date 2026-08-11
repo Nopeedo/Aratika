@@ -6,14 +6,13 @@
 
 import type { Metadata } from 'next'
 import { CompassQuiz } from '@/components/compass/compass-quiz'
+import { BORDER } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Your political compass',
   description:
     'A 12-question, no-jargon compass: find the tools that help you most and see where you overlap with each party on the issues — sourced, side by side. Not voting advice.',
 }
-
-const BORDER = '#e9e7e2'
 
 export default function StartPage() {
   return (

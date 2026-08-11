@@ -9,8 +9,8 @@ import Link from 'next/link'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { CoverageMatrix } from './coverage-matrix'
+import { BORDER, INK, JADE, SECONDARY, SURFACE } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export async function PolicyCoverage({ maxWidth = 1100 }: { maxWidth?: number }) {

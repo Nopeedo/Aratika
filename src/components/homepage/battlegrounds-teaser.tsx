@@ -12,8 +12,8 @@ import Link from 'next/link'
 import { Swords, ArrowRight } from 'lucide-react'
 import { getBattlegrounds } from '@/lib/battlegrounds'
 import { BattlegroundCard } from './battleground-card'
+import { BORDER, INK, SECONDARY, SURFACE } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', BORDER = '#e9e7e2', SURFACE = '#f8fafc'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function BattlegroundsTeaser({ embedded = false }: {

@@ -8,11 +8,10 @@
 
 import Link from 'next/link'
 import { ArrowRight, Landmark, MapPin, Info } from 'lucide-react'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 // Warm palette, shared with the Election Centre page and the homepage, so the
 // explainer doesn't drop cold near-black text and a black CTA into a warm page.
-const INK = '#2A1206', SECONDARY = '#6b6157', TERTIARY = '#9a9186'
-const BORDER = '#e6e2da', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function TwoVotes() {

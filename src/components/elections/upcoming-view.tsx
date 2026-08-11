@@ -32,12 +32,11 @@ import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
 import { SeatHemicycle } from './seat-hemicycle'
 import { VideoSection } from '@/components/news/video-section'
+import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 // Warm palette carried over from the homepage/hub so the Election Centre reads
 // as the same product rather than a separate tool: espresso headings, warm body
 // greys, warm hairlines — replacing the cold #0c0e12/#6b7078/#e9e7e2 set.
-const INK = '#2A1206', SECONDARY = '#6b6157', TERTIARY = '#9a9186'
-const BORDER = '#e6e2da', SURFACE = '#faf8f4', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 // Practical steps that sit alongside the "how your vote works" explainer.

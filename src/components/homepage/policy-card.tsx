@@ -8,6 +8,7 @@ import {
   Home, Heart, Leaf, GraduationCap, Scale,
   Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
+import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
 
 const TOPIC_ICONS: Record<string, React.ElementType> = {
   Home, Heart, TrendingUp, Leaf, GraduationCap,
@@ -15,11 +16,6 @@ const TOPIC_ICONS: Record<string, React.ElementType> = {
 }
 
 const PARTY_DOT_ORDER = ['green', 'labour', 'tpm', 'nzfirst', 'national', 'act'] as const
-
-const INK      = '#0c0e12'
-const JADE     = '#1F8A4C'
-const SECONDARY = '#6b7078'
-const BORDER   = '#e9e7e2'
 
 export function PolicyCard({ topicKey }: { topicKey: string }) {
   const topic = POLICY_TOPICS[topicKey as keyof typeof POLICY_TOPICS]

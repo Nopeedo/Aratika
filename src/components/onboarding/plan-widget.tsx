@@ -19,9 +19,8 @@ import { usePreferences } from '@/hooks/use-preferences'
 import { usePlanProgress } from '@/hooks/use-plan-progress'
 import { buildPlan } from '@/lib/onboarding/recommendations'
 import { REC_ICONS } from '@/components/onboarding/rec-icons'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
 
-const INK = '#0c0e12', SECONDARY = '#6b7078', TERTIARY = '#9aa0aa'
-const BORDER = '#e9e7e2', JADE = '#1F8A4C'
 const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function PlanWidget() {
