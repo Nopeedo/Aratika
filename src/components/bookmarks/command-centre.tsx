@@ -15,7 +15,7 @@ import { BILLS_54, type Bill54 } from '@/constants/bills-54'
 import DEFINING_BILL_MAP from '@/constants/defining-bill-map.json'
 import type { PartySlug } from '@/types'
 import type { Bookmark } from '@/hooks/use-bookmarks'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, CARD_SHADOW, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
 
@@ -177,17 +177,28 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
         const ks = KIND_STYLE[kind]
         return (
           <div key={kind}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 12, padding: '6px 12px', borderRadius: 999, background: ks.tint, border: `1.5px solid ${ks.ink}` }}>
-              <Icon style={{ width: 15, height: 15, color: ks.ink }} />
-              <h3 style={{ fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>{label}</h3>
-              <span style={{ fontSize: 12, fontWeight: 800, color: ks.ink, fontFamily: MANROPE }}>{group.length}</span>
+            {/* A label, not an object. This was a pill in the group's tint with
+                a 1.5px border in the group's ink — exactly the treatment the
+                cards below it use, so a heading and a tracked item read as the
+                same kind of thing at different sizes. Now it's a rule-style
+                header: no fill, no outline, and the colour survives only in the
+                icon and the count. */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 12 }}>
+              <Icon style={{ width: 15, height: 15, color: ks.ink, flexShrink: 0 }} />
+              <h3 style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: SECONDARY, fontFamily: MANROPE, margin: 0, whiteSpace: 'nowrap' }}>{label}</h3>
+              <span style={{ fontSize: 11, fontWeight: 800, color: ks.ink, background: ks.tint, borderRadius: 999, padding: '1px 7px', fontFamily: MANROPE, flexShrink: 0 }}>{group.length}</span>
+              <span aria-hidden style={{ flex: 1, height: 1, background: BORDER }} />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 10 }}>
               {group.map((b) => {
                 const sub = b.role || b.sublabel
                 const open = openBill(b)
                 return (
-                  <div key={b.id} className="party-card" style={{ position: 'relative', border: `1.5px solid ${open ? '#bfd4fe' : ks.ink}`, borderRadius: 14, background: open ? '#eef4ff' : ks.tint, overflow: 'hidden' }}>
+                  // White card on a hairline, not a big tinted pill — the tint
+                  // and the kind's ink now live only in the icon tile and the
+                  // left stripe, so a card reads as an object you can act on
+                  // rather than as a larger version of its own heading.
+                  <div key={b.id} className="party-card" style={{ position: 'relative', border: `1px solid ${open ? '#bfd4fe' : BORDER}`, borderRadius: 14, background: open ? '#eef4ff' : '#fff', overflow: 'hidden', boxShadow: CARD_SHADOW }}>
                     <span style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, background: b.accent || JADE }} />
                     {isUpdated(b) && (
                       <span className="cc-update-badge" role="status" aria-label={`New updates on ${b.label}`} title="New updates"
@@ -200,7 +211,7 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
                       ) : b.kind === 'party' ? (
                         <span style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: b.accent || JADE, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, fontFamily: MANROPE }}>{initials(b.label)}</span>
                       ) : (
-                        <span style={{ width: 40, height: 40, borderRadius: 11, flexShrink: 0, background: SURFACE, border: `1px solid ${BORDER}`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: b.accent || JADE }}>
+                        <span style={{ width: 40, height: 40, borderRadius: 11, flexShrink: 0, background: ks.tint, border: `1px solid ${ks.ink}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: ks.ink }}>
                           {b.kind === 'electorate' ? <MapPin style={{ width: 18, height: 18 }} /> : b.kind === 'bill' ? <Gavel style={{ width: 18, height: 18 }} /> : <Scale style={{ width: 18, height: 18 }} />}
                         </span>
                       )}
