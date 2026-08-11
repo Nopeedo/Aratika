@@ -14,9 +14,7 @@ import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { CommandCentreTryIt } from '@/components/command-centre/try-it'
 import { TrackShowcase } from '@/components/homepage/track-showcase'
 import type { BookmarkEntity } from '@/hooks/use-bookmarks'
-import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export function TrackCta() {
   const trackOptions: BookmarkEntity[] = [

@@ -19,9 +19,7 @@ import { RevealCards } from './reveal-cards'
 import { KiwiMascot } from './kiwi-mascot'
 import { Quiz } from './quiz'
 import { PARLIAMENT_PARTS, COMMITTEE_STEPS, ROLES } from '@/constants/learn-interactives'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const TIER_ACCENT: Record<LearnTier, string> = {
   kids: '#e0529c', beginner: '#1F8A4C', intermediate: '#2563eb', expert: '#7c3aed',

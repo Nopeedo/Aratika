@@ -15,9 +15,7 @@ import { buildPlan } from '@/lib/onboarding/recommendations'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { BILLS_54_TOPIC_COUNTS } from '@/constants/bills-54-summary'
 import { REC_ICONS } from '@/components/onboarding/rec-icons'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export function PlanView() {
   const { prefs, loaded } = usePreferences()

@@ -6,8 +6,7 @@
 import { hemicycle } from '@/lib/mmp'
 import { PARTY_COLORS } from '@/constants/parties'
 import { SPECTRUM_ORDER, type PartyResult } from '@/constants/elections-data'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { MANROPE } from '@/constants/theme'
 
 export function SeatHemicycle({ results, total }: { results: PartyResult[]; total: number }) {
   const geo = hemicycle(total)

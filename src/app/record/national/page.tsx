@@ -23,15 +23,12 @@ import { BUDGET_LINKS, FUND_RELATION, FUNDED_PROMISE_IDS, BUDGET_BASELINE } from
 import { BUDGET_META } from '@/constants/budget-2026'
 import { ECONOMIC_DATA, type EconSeries } from '@/constants/economic-data'
 import { IndicatorChart } from '@/components/record/indicator-chart'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'National — Accountability Record (private)',
   robots: { index: false, follow: false },
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
 
 const STATUS: Record<PromiseStatus, { label: string; color: string; bg: string; border: string; icon: React.ElementType }> = {
   delivered:   { label: 'Delivered',   color: '#065f46', bg: '#ecfdf5', border: '#a7f3d0', icon: CheckCircle2 },

@@ -8,14 +8,12 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { GLOSSARY } from '@/constants/glossary'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Glossary of NZ Political Terms',
   description: 'Plain-language definitions of the New Zealand political terms you’ll come across — from MMP to Royal assent.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default function GlossaryPage() {
   const sorted = [...GLOSSARY].sort((a, b) => a.term.localeCompare(b.term))

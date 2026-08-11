@@ -8,9 +8,7 @@ import { Mail } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell, Field, PasswordField, SubmitButton, ErrorBox, OrDivider } from '@/components/auth/auth-ui'
 import { GoogleSignIn } from '@/components/auth/google-signin'
-import { JADE, SECONDARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export default function LoginPage() {
   return (

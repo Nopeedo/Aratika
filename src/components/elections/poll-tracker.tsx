@@ -15,9 +15,7 @@ import {
   TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, PARTICIPATION_SOURCE,
   POLLS_AS_AT, POLLS_SOURCE, PROJECTION_SEATS, MAJORITY_SEATS,
 } from '@/constants/polls-data'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 function Card({ children }: { children: React.ReactNode }) {
   return <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '20px 22px' }}>{children}</div>

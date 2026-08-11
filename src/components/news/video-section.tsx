@@ -12,9 +12,8 @@ import { Play, X, ChevronLeft, ChevronRight, Vote } from 'lucide-react'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
 import type { VideoItem } from '@/lib/news/videos'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 // Deterministic date label (UTC) — SSR/hydration-safe (no Date.now()); matches NewsFeed.

@@ -10,8 +10,7 @@ import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowRight, Compass, ChevronDown } from 'lucide-react'
 import { ElectionCountdown } from '@/components/homepage/election-countdown'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { MANROPE } from '@/constants/theme'
 
 export function CinematicHero() {
   const reduce = useReducedMotion()

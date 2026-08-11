@@ -16,8 +16,7 @@ import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { pollOfPolls, seatProjection, MAJORITY_SEATS, POLLS_AS_AT, PREFERRED_PM } from '@/constants/polls-data'
 import { AnchorCountdownTile } from './election-anchor-countdown'
 import { Term } from '@/components/glossary/term'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { MANROPE } from '@/constants/theme'
 
 export function ElectionAnchor() {
   const pop = pollOfPolls()

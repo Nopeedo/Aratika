@@ -20,9 +20,8 @@
 import { BackLink } from '@/components/ui/back-link'
 import { useEffect, useState } from 'react'
 import { CalendarDays } from 'lucide-react'
-import { JADE, JADE_DARK } from '@/constants/theme'
+import { JADE, JADE_DARK, MANROPE } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 // Shared with the homepage flip counter (days-flip-countdown.tsx) so the two
 // counters read as the same object.
 const ESPRESSO = '#2A1206', WARM = '#5b3d2a', SUB = '#6b6157'

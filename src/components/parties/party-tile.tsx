@@ -16,8 +16,8 @@ import { PARTY_PROFILES } from '@/constants/parties-data'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { Avatar } from '@/components/ui/avatar'
 import type { PartySlug } from '@/types'
+import { MANROPE } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const WARM = '#5b3d2a', LINE = '#e9e4db'
 
 const TILE_H = 176

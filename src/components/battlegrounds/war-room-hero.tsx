@@ -15,8 +15,8 @@ import { useState, useEffect } from 'react'
 import { Avatar } from '@/components/ui/avatar'
 import type { PartySlug } from '@/types'
 import { BackLink } from '@/components/ui/back-link'
+import { MANROPE } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 // Warm palette shared with the homepage / Election Centre — this hero used to be
 // a black tactical band, which read as a different product once the rest of the
 // site moved to the woven treatment.

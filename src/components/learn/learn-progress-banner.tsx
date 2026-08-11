@@ -10,10 +10,9 @@ import { motion } from 'framer-motion'
 import { Trophy, Zap, Award, Cloud, CloudOff } from 'lucide-react'
 import { useLearnProgress } from '@/hooks/use-learn-progress'
 import { computeStats } from '@/lib/learn/xp'
-import { INK, SECONDARY, TERTIARY } from '@/constants/theme'
+import { INK, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C', AMBER = '#c9a227'
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function LearnProgressBanner() {
   const { progress, loaded, isSynced } = useLearnProgress()

@@ -22,9 +22,7 @@ import {
 } from '@/constants/electorates-data'
 import { PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
 import { PARTY_PROFILES } from '@/constants/parties-data'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 // Leaflet map — client-only, no SSR
 const ElectorateMap = dynamic(() => import('./electorate-map'), {

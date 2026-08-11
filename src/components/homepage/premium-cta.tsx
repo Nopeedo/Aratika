@@ -6,9 +6,7 @@
 
 import Link from 'next/link'
 import { Crown } from 'lucide-react'
-import { JADE } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { JADE, MANROPE } from '@/constants/theme'
 
 export function PremiumCta() {
   return (

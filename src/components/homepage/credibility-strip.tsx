@@ -5,9 +5,7 @@
  */
 
 import { ShieldCheck } from 'lucide-react'
-import { BORDER, INK, JADE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, TERTIARY } from '@/constants/theme'
 
 const STATS = [
   { value: '2026', label: 'General Election', sublabel: '~Oct 2026' },

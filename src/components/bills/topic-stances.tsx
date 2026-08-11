@@ -13,7 +13,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, ChevronDown } from 'lucide-react'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export interface TopicStance {
   party: string
@@ -24,8 +24,6 @@ export interface TopicStance {
   summary: string | null
   noPosition: boolean
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function TopicStances({ topic, topicLabel, stances }: { topic: string; topicLabel: string; stances: TopicStance[] }) {
   const [open, setOpen] = useState(false)

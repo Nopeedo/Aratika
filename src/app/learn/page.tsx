@@ -12,7 +12,7 @@ import {
 import { LEARN_MODULES } from '@/constants/learn-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { LearnProgressBanner } from '@/components/learn/learn-progress-banner'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Learn — How Parliament Works',
@@ -20,8 +20,6 @@ export const metadata: Metadata = {
     'Interactive, beginner-to-expert lessons on how New Zealand’s Parliament and government work — ' +
     'with hands-on widgets and quizzes. Free for everyone.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const ICONS: Record<string, React.ElementType> = {
   Vote, Landmark, Users, FileText, MessagesSquare, UserCog,

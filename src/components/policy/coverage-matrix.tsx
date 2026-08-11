@@ -12,9 +12,7 @@ import { Check, Minus } from 'lucide-react'
 import { PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES, PARTY_PROFILES } from '@/constants/parties-data'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
-import { BORDER, INK, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export function CoverageMatrix({ positions, topics }: { positions: PartyPosition[]; topics: { slug: string; label: string }[] }) {
   const lookup = new Map<string, PartyPosition>()

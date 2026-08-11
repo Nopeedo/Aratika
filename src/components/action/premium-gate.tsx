@@ -10,9 +10,7 @@ import Link from 'next/link'
 import { Lock, Sparkles, LogIn } from 'lucide-react'
 import { useUser } from '@/hooks/use-user'
 import { PREMIUM_ENABLED } from '@/constants/features'
-import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export function PremiumGate({
   children, preview, featureName = 'This feature', perks = [],

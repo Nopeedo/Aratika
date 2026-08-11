@@ -12,9 +12,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import type { BattlegroundEntry, MarginTier } from '@/lib/battlegrounds'
-import { BORDER, INK, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export function BattlegroundsList({ all, tiers }: { all: BattlegroundEntry[]; tiers: MarginTier[] }) {
   const [filter, setFilter] = useState<string>('all')

@@ -8,7 +8,7 @@
 import type { Metadata } from 'next'
 import { MPsDirectory } from '@/components/mps/mps-directory'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Members of Parliament',
@@ -16,8 +16,6 @@ export const metadata: Metadata = {
     'Browse all current Members of Parliament in New Zealand\'s 54th Parliament — ' +
     'searchable and filterable by party and electorate.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default function MPsDirectoryPage() {
   return (

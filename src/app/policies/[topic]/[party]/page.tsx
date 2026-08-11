@@ -15,11 +15,9 @@ import { PolicyTopic, PartySlug } from '@/types'
 import { getApprovedPosition } from '@/lib/positions/live'
 import { PositionReader } from '@/components/policy/position-reader'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export async function generateMetadata({ params }: { params: Promise<{ topic: string; party: string }> }): Promise<Metadata> {
   const { topic, party } = await params

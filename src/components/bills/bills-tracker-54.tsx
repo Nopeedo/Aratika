@@ -18,12 +18,10 @@ import { BILLS_54, BILL_CATEGORIES, BILLS_54_META, type Bill54 } from '@/constan
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { normMemberName } from '@/lib/bills/normalize-member'
 import type { PartySlug } from '@/types'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
 const normName = normMemberName
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const TYPE_STYLE: Record<string, { fg: string; bg: string }> = {
   Government: { fg: '#3730a3', bg: '#eef2ff' },

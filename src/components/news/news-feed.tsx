@@ -15,9 +15,8 @@ import type { PartySlug, PolicyTopic } from '@/types'
 import type { NewsItem } from '@/lib/news/live'
 import type { VideoItem } from '@/lib/news/videos'
 import { VideoSection } from '@/components/news/video-section'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 // Deterministic date label (UTC) — safe for SSR/hydration (no Date.now()).

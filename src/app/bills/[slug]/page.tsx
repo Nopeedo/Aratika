@@ -21,10 +21,7 @@ import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { formatDate } from '@/lib/utils/format'
 import { PREMIUM_ENABLED } from '@/constants/features'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export function generateStaticParams() {
   return [...BILL_SLUGS, ...DEFINING_BILLS.map((b) => b.slug)].map((slug) => ({ slug }))

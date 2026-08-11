@@ -11,9 +11,8 @@
 import { useEffect, useState } from 'react'
 import { useReducedMotion } from 'framer-motion'
 import { Users, Landmark, Scale, Gavel, Newspaper, Video, Bookmark, Play, Check } from 'lucide-react'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const DURATION = 5000
 
 type Key = 'mp' | 'party' | 'policy' | 'bill' | 'news' | 'video'

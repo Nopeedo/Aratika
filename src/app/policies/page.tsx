@@ -15,7 +15,7 @@ import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PolicyTopic } from '@/types'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Policy Hub',
@@ -23,8 +23,6 @@ export const metadata: Metadata = {
     'Compare where New Zealand\'s political parties stand on the issues that matter — ' +
     'housing, health, the economy, climate and more.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const ICONS: Record<string, React.ElementType> = {
   Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users,

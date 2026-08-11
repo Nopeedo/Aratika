@@ -21,10 +21,10 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Landmark, ArrowRight, Check, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { DEFINING_BILLS, DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
+import { MANROPE } from '@/constants/theme'
 
 const CARD = '#ffffff', INK = '#17231b', MUTED = '#667066', LINE = '#e4ebe2'
 const ACCENT = '#1F8A4C', ACCENT_DK = '#14663a'
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 /** Matches the homepage party-panel swap so the two feel like one interaction. */
 const FADE_MS = 200
 

@@ -10,15 +10,13 @@ import { SectionDivider } from '@/components/ui/section-divider'
 import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
 import { BattlegroundsList } from '@/components/battlegrounds/battlegrounds-list'
 import Link from 'next/link'
-import { BORDER, INK, JADE, SECONDARY, SURFACE } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Battlegrounds — Seats to Watch',
   description:
     'New Zealand’s most marginal electorates — the closest 2023 contests and the seats most likely to change hands in 2026.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default function BattlegroundsHub() {
   const all = getBattlegrounds()

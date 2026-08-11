@@ -10,11 +10,9 @@ import { getApprovedBillBySlug } from '@/lib/bills/live'
 import { BillReader } from '@/components/bills/bill-reader'
 import { BackLink } from '@/components/ui/back-link'
 import { buildStancesByTopic } from '@/lib/positions/stances-by-topic'
-import { BORDER, SECONDARY } from '@/constants/theme'
+import { BORDER, MANROPE, SECONDARY } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params

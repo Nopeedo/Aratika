@@ -8,10 +8,9 @@
 
 import { Check, Vote } from 'lucide-react'
 import { BILL_STAGE_PIPELINE } from '@/constants/bills-data'
-import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 const AMBER = '#c07a12', AMBER_DK = '#92400e', LINE = '#e4e6e9'
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 /** Seven stages across a phone screen leaves ~50px a column, so the two long
  *  names get a short form. Only the label changes — never the stage itself. */

@@ -6,9 +6,7 @@
  */
 
 import { ChevronDown } from 'lucide-react'
-import { INK, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { INK, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export function GoDeeperDivider() {
   return (

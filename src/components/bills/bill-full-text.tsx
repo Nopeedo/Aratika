@@ -19,10 +19,9 @@ import type { PolicyTopic } from '@/types'
 import type { PolicyLink } from '@/components/bills/bill-breakdown'
 import { useUser } from '@/hooks/use-user'
 import { PREMIUM_ENABLED } from '@/constants/features'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const HL = '#fff3bf', HL_BORDER = '#ffe08a'
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
 

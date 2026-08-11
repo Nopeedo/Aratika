@@ -13,9 +13,7 @@ import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { Avatar } from '@/components/ui/avatar'
 import { StatusBadge } from '@/components/ui/badge'
 import { PartySlug } from '@/types'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const ALL_MPS = Object.values(MP_PROFILES).sort((a, b) => {
   const sa = a.name.split(' ').slice(-1)[0]

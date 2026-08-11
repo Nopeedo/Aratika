@@ -1,3 +1,5 @@
+import { MANROPE } from '@/constants/theme'
+
 /**
  * StartHereCta — a small, quiet title that sits directly under the hero subline
  * and introduces the party tiles below. Deliberately minimal (a title + one
@@ -5,7 +7,6 @@
  * the tiles for attention.
  */
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const INK = '#2A1206', SUB = '#5b3d2a'
 
 export function StartHereCta() {

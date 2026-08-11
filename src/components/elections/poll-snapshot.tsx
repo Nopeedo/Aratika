@@ -12,9 +12,7 @@ import Link from 'next/link'
 import { TrendingUp, ChevronDown, UserRound, Users2, ArrowUpRight } from 'lucide-react'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export interface PollOfPollsEntry { slug: PartySlug; pct: number }
 export interface PollRow { pollster: string; fieldwork: string; parties: Partial<Record<PartySlug, number>>; sourceUrl: string }

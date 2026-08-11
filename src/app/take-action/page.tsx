@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { LETTER_TEMPLATES, LETTER_TEMPLATE_ORDER } from '@/constants/letter-templates'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Take Action — Write to an MP or make a submission',
@@ -19,8 +19,6 @@ export const metadata: Metadata = {
     'Draft letters to MPs and Ministers, make select committee submissions, and file Official Information ' +
     'Act requests — with guided templates and official-channel links. An Arapono Premium feature.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const ICONS: Record<string, React.ElementType> = { Mail, FileText, Briefcase, FileSearch }
 

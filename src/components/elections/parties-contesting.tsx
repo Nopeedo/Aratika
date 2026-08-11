@@ -23,8 +23,8 @@ import Link from 'next/link'
 import { PARTY_COLORS, PARTY_NAMES, CURRENT_SEATS, PARLIAMENTARY_PARTIES, NON_PARLIAMENTARY_CONTESTING } from '@/constants/parties'
 import { MINOR_PARTY_READINGS } from '@/constants/polls-history'
 import type { PartySlug } from '@/types'
+import { MANROPE } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 // Group headings only — tile text now uses each party's own contrast colour.
 const WARM = '#5b3d2a', LINE = '#e9e4db'
 

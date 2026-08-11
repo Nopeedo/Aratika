@@ -15,7 +15,7 @@ import { BILLS_54, type Bill54 } from '@/constants/bills-54'
 import DEFINING_BILL_MAP from '@/constants/defining-bill-map.json'
 import type { PartySlug } from '@/types'
 import type { Bookmark } from '@/hooks/use-bookmarks'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
 
@@ -31,8 +31,6 @@ function fmtDate(iso?: string | null) {
 // drives the "new since your last visit" badge.
 export type TrackedItem = Bookmark & { photo?: string; party?: string; role?: string; leader?: string; lastActivity?: number }
 const initials = (s: string) => s.split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase()
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const GROUPS: { kind: Bookmark['kind']; label: string; icon: React.ElementType }[] = [
   { kind: 'mp', label: 'Tracked MPs', icon: Users },

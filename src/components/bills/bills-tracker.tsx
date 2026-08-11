@@ -11,10 +11,7 @@ import { BILLS, BillKind } from '@/constants/bills-data'
 import { BillStatusBadge } from '@/components/ui/badge'
 import { BillStatus } from '@/types'
 import { formatDateShort } from '@/lib/utils/format'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const STAGES: { key: BillStatus | 'all'; label: string }[] = [
   { key: 'all', label: 'All stages' },

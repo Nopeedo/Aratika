@@ -8,8 +8,7 @@
 import { useEffect, useState } from 'react'
 import { CalendarClock } from 'lucide-react'
 import { NEXT_ELECTION_DATE } from '@/constants/elections-data'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { MANROPE } from '@/constants/theme'
 
 export function CountdownBig() {
   const [now, setNow] = useState<number | null>(null)

@@ -5,9 +5,7 @@ import Link from 'next/link'
 import { Mail, MailCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell, Field, SubmitButton, ErrorBox } from '@/components/auth/auth-ui'
-import { INK, JADE, SECONDARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail]     = React.useState('')

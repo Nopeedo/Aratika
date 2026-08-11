@@ -13,15 +13,13 @@ import { PARTY_PROFILES } from '@/constants/parties-data'
 import { PARTY_NAMES, PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
 import { PartySlug } from '@/types'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Parliament — Current Overview',
   description:
     'The 54th New Zealand Parliament: seat distribution, the governing coalition and Cabinet, the Opposition, and key roles.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const COALITION: PartySlug[] = ['national', 'act', 'nzfirst']
 const OPPOSITION: PartySlug[] = ['labour', 'green', 'tpm']

@@ -10,9 +10,7 @@ import { ArrowLeft } from 'lucide-react'
 import { getModule, LEARN_MODULE_IDS } from '@/constants/learn-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { ModuleExperience } from '@/components/learn/module-experience'
-import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export function generateStaticParams() {
   return LEARN_MODULE_IDS.map((module) => ({ module }))

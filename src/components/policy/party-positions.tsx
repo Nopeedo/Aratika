@@ -15,9 +15,7 @@ import { ExternalLink, ArrowRight, ChevronDown } from 'lucide-react'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export function PartyPositions({ parties, getPos, detailed, topic, topicLabel }: {
   parties: string[]

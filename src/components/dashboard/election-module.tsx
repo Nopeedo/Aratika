@@ -13,11 +13,10 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { ArrowRight, MapPin, Vote, Info } from 'lucide-react'
 import { ELECTION_DATE } from '@/components/homepage/election-countdown'
+import { MANROPE } from '@/constants/theme'
 
 export interface ElectionPartyLine { slug: string; short: string; color: string; seats2023: number }
 export interface ElectionElectorate { label: string; href: string }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function DashboardElection({ parties, electorates }: { parties: ElectionPartyLine[]; electorates: ElectionElectorate[] }) {
   const [days, setDays] = useState<number | null>(null)

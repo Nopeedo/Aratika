@@ -11,9 +11,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ExternalLink, ListChecks, Users, Quote, ShieldCheck } from 'lucide-react'
 import type { PartyPosition } from '@/lib/positions/live'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export function PositionReader({ position, accent, topicLabel }: { position: PartyPosition; accent: string; topicLabel: string }) {
   const [detailed, setDetailed] = useState(false)

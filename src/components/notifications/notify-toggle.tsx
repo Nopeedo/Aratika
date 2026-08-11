@@ -10,8 +10,8 @@
 import { useEffect, useState } from 'react'
 import { Bell, BellOff, BellRing, Check, Smartphone, Loader2 } from 'lucide-react'
 import { pushSupported, iosNeedsInstall, subscribeToPush, unsubscribeFromPush, isSubscribed } from '@/lib/notifications/push-client'
+import { MANROPE } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const INK = '#0c0e12', SUB = '#5b6067', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 
 // Only render once the site's VAPID public key is configured (build-time env).

@@ -24,9 +24,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { PenLine, ArrowRight, ExternalLink } from 'lucide-react'
 import { isEnabled } from '@/constants/features'
-import { BORDER, INK, JADE } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE } from '@/constants/theme'
 
 /** "13 August 2026" — a deadline should read like a date, not an ISO string. */
 function fmtDate(iso?: string | null) {

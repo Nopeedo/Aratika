@@ -13,9 +13,7 @@ import { Plus, Trash2, Loader2, ExternalLink } from 'lucide-react'
 import { POLL_PARTIES } from '@/constants/polls-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export interface EditorPoll {
   id: string

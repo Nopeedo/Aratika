@@ -12,9 +12,8 @@ import { RotateCcw } from 'lucide-react'
 import {
   SIM_PARTIES, allocate, seatColours, hemicycle, MAJORITY, THRESHOLD_PCT,
 } from '@/lib/mmp'
-import { BORDER, INK, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const NEUTRAL = '#e2e1dc'
 
 const defaults = Object.fromEntries(SIM_PARTIES.map((p) => [p.key, p.defaultPct]))

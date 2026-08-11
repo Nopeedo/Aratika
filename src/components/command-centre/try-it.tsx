@@ -11,9 +11,7 @@ import Link from 'next/link'
 import { ArrowRight, Target } from 'lucide-react'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { useBookmarks, type BookmarkEntity } from '@/hooks/use-bookmarks'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export function CommandCentreTryIt({ options }: { options: BookmarkEntity[] }) {
   const { bookmarks, user, loading } = useBookmarks()

@@ -11,14 +11,12 @@ import { redirect } from 'next/navigation'
 import { ShieldAlert, Plus, Minus, Users, Target, ExternalLink, FileText, MessageSquare } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { POLICY_ANALYSIS } from '@/constants/record-analysis'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Policy deep dives (private)',
   robots: { index: false, follow: false },
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default async function PolicyAnalysisPage() {
   const supabase = await createClient()

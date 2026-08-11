@@ -17,9 +17,8 @@ import { hemicycle } from '@/lib/mmp'
 import { PARTY_COLORS, PARTY_NAMES } from '@/constants/parties'
 import { SPECTRUM_ORDER } from '@/constants/elections-data'
 import type { PartySlug } from '@/types'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const EMPTY = '#e4e3de'
 
 export interface SeatEntry { slug: PartySlug; seats: number }

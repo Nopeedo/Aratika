@@ -8,14 +8,12 @@ import type { Metadata } from 'next'
 import { Mail, Flag, ShieldCheck, ArrowUpRight } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { SITE } from '@/constants/site'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Contact & Corrections',
   description: 'Get in touch with Arapono, or report a correction. Accuracy matters to us.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const EMAIL = SITE.email // hello@arapono.nz
 

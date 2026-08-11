@@ -23,9 +23,7 @@ import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BillsForTopic } from '@/components/bills/bills-for-topic'
 import { BackLink } from '@/components/ui/back-link'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const ICONS: Record<string, React.ElementType> = {
   Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users,

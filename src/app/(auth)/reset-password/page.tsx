@@ -10,9 +10,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell, PasswordField, SubmitButton, ErrorBox, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
-import { JADE, SECONDARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export default function ResetPasswordPage() {
   const [checking, setChecking] = React.useState(true)

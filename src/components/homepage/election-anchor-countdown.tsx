@@ -9,8 +9,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { ELECTION_DATE } from './election-countdown'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { MANROPE } from '@/constants/theme'
 
 export function AnchorCountdownTile() {
   const [days, setDays] = useState<number | null>(null)

@@ -11,8 +11,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { DaysFlipCountdown } from '@/components/homepage/days-flip-countdown'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { MANROPE } from '@/constants/theme'
 
 // ── Burnt Clay palette (on white) ──
 const INK = '#2A1206'           // deep espresso ink (headline / body)

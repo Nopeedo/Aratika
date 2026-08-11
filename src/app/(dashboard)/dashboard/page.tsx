@@ -22,11 +22,9 @@ import { PARTY_PROFILES } from '@/constants/parties-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import type { PartySlug, PolicyTopic } from '@/types'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = { title: 'My Dashboard' }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default async function DashboardPage() {
   const supabase = await createClient()

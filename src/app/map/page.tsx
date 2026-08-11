@@ -8,7 +8,7 @@
 import type { Metadata } from 'next'
 import { MapExperience } from '@/components/map/map-experience'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Interactive Electorate Map',
@@ -16,8 +16,6 @@ export const metadata: Metadata = {
     'Click anywhere on New Zealand to find your electorate MP, their party, and ' +
     'what they stand for. Boundaries sourced from official Stats NZ data.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default async function MapPage({
   searchParams,

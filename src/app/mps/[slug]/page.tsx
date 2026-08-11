@@ -34,11 +34,9 @@ import { MPCard } from '@/components/mp/mp-card'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { formatNumber } from '@/lib/utils/format'
 import { BackLink } from '@/components/ui/back-link'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
 const billGroupLabel: React.CSSProperties = { fontSize: 11.5, fontWeight: 800, letterSpacing: '.02em', textTransform: 'uppercase', color: '#9aa0aa', fontFamily: MANROPE, margin: '0 0 7px' }
 
 export function generateStaticParams() {

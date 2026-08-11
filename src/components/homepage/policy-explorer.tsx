@@ -21,10 +21,9 @@ import { isLightHex } from '@/components/homepage/battleground-card'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 const TOPIC_ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 // Mobile open sequence. The chip that flies up into the head row and the panel
 // that opens below it must SETTLE ON THE SAME FRAME, so the chip's flight time

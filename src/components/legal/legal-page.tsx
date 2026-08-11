@@ -7,9 +7,7 @@
 import type { ReactNode } from 'react'
 import { AlertTriangle } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export function LegalPage({
   title, subtitle, updated, children,

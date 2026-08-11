@@ -12,10 +12,10 @@ import { FileText, ArrowRight, Search, Sparkles } from 'lucide-react'
 import type { LiveBill } from '@/lib/bills/live'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import type { PolicyTopic } from '@/types'
+import { MANROPE } from '@/constants/theme'
 
 const CARD = '#ffffff', SOFT = '#eef3ec', INK = '#17231b', MUTED = '#667066', LINE = '#e4ebe2'
 const ACCENT = '#1F8A4C', ACCENT_DK = '#14663a'
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const STAGE_LABEL: Record<string, string> = {
   'introduced': 'Introduced',

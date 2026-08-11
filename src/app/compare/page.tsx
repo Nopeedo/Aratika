@@ -11,7 +11,7 @@ import { getAllApprovedPositions } from '@/lib/positions/live'
 import { CompareTool } from '@/components/policy/compare-tool'
 import { CoverageMatrix } from '@/components/policy/coverage-matrix'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,8 +19,6 @@ export const metadata: Metadata = {
   title: 'Compare the parties',
   description: 'Compare where every party stands on the issues, side by side — summarised neutrally from official policy, with sources.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default async function ComparePage() {
   const positions = await getAllApprovedPositions()

@@ -10,8 +10,8 @@
 
 import { useEffect, useState } from 'react'
 import { Download, Share, SquarePlus, X } from 'lucide-react'
+import { MANROPE } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const INK = '#0c0e12', SUB = '#5b6067', JADE = '#1F8A4C'
 const DISMISS_KEY = 'arapono.install.dismissed'
 

@@ -18,10 +18,7 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { Avatar } from '@/components/ui/avatar'
 import { formatNumber, toSlug } from '@/lib/utils/format'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export function ElectoratePanel({ electorateName }: { electorateName: string | null }) {
 

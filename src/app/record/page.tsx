@@ -12,15 +12,12 @@ import { ShieldAlert, ArrowRight, Target, FileText, TrendingUp, ExternalLink } f
 import { createClient } from '@/lib/supabase/server'
 import { GOVERNMENT, PROMISES, BILLS, promiseTally } from '@/constants/record-national'
 import { ECONOMIC_DATA } from '@/constants/economic-data'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Accountability data (private)',
   robots: { index: false, follow: false },
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
 
 export default async function RecordHubPage() {
   const supabase = await createClient()

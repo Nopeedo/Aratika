@@ -19,9 +19,7 @@ import { usePreferences } from '@/hooks/use-preferences'
 import { usePlanProgress } from '@/hooks/use-plan-progress'
 import { buildPlan } from '@/lib/onboarding/recommendations'
 import { REC_ICONS } from '@/components/onboarding/rec-icons'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export function PlanWidget() {
   const pathname = usePathname()

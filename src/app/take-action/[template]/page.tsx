@@ -19,9 +19,7 @@ import { getBill } from '@/constants/bills-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { PremiumGate } from '@/components/action/premium-gate'
 import { LetterStudio, LetterPreview } from '@/components/action/letter-studio'
-import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export function generateStaticParams() {
   return LETTER_TEMPLATE_ORDER.map((template) => ({ template }))

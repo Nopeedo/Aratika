@@ -15,9 +15,8 @@ import {
   LETTER_TEMPLATES, type LetterTemplateId, type LetterContext, type LetterInput,
 } from '@/constants/letter-templates'
 import { assembleLetter, deriveParliamentaryEmail, mailtoHref } from '@/lib/letter/build'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const SERIF = 'Georgia, "Times New Roman", serif'
 
 const SUBMISSION_URL = 'https://www.parliament.nz/en/pb/sc/make-a-submission/'

@@ -12,9 +12,7 @@ import Link from 'next/link'
 import { Swords, ArrowRight } from 'lucide-react'
 import { getBattlegrounds } from '@/lib/battlegrounds'
 import { BattlegroundCard } from './battleground-card'
-import { BORDER, INK, SECONDARY, SURFACE } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, MANROPE, SECONDARY, SURFACE } from '@/constants/theme'
 
 export function BattlegroundsTeaser({ embedded = false }: {
   /** Drop the standalone section chrome (outer padding, divider) and the built-in

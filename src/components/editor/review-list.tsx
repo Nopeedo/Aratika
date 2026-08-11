@@ -13,9 +13,7 @@ import { BillBreakdown, type PolicyLink } from '@/components/bills/bill-breakdow
 import { StageTracker } from '@/components/bills/stage-tracker'
 import { HaveYourSay } from '@/components/bills/have-your-say'
 import { billSlugFromLink } from '@/lib/bills/slug'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export interface PendingItem {
   id: string

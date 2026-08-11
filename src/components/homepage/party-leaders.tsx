@@ -10,9 +10,7 @@ import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
 import { MP_PROFILES } from '@/constants/mps-data'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 function leaderProfile(name: string) {
   return Object.values(MP_PROFILES).find((mp) => mp.name === name)

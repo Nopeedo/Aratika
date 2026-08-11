@@ -15,9 +15,7 @@ import { Sparkles, Send, ChevronDown, ArrowUpRight, Lock, Loader2, ShieldCheck }
 import { useUser } from '@/hooks/use-user'
 import { usePreferences } from '@/hooks/use-preferences'
 import { isEnabled } from '@/constants/features'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 interface Source { title: string; href: string }
 interface Msg { role: 'user' | 'assistant'; content: string; sources?: Source[] }

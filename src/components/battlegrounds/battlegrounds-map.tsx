@@ -20,9 +20,7 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { toSlug } from '@/lib/utils/format'
 import { MpPhotoTile } from '@/components/map/mp-photo-tile'
 import { MARGIN_TIERS, classifyMargin, marginColorByName } from '@/lib/battlegrounds'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 type Layer = 'general' | 'maori'
 const PATHS: Record<Layer, string> = {

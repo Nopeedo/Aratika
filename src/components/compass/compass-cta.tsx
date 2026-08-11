@@ -12,8 +12,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Compass, ArrowRight } from 'lucide-react'
 import { useReducedMotion } from 'framer-motion'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { MANROPE } from '@/constants/theme'
 
 // Deep, white-text-legible versions of each party colour, in seat order.
 // ACT's bright yellow is darkened to gold so white text stays readable.

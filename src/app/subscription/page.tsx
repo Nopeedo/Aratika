@@ -9,14 +9,12 @@ import type { Metadata } from 'next'
 import { Check, Sparkles, Heart } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { UpgradeButton } from '@/components/billing/billing-buttons'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Arapono Premium',
   description: 'Support an independent, non-partisan platform and unlock the Take Action studio, tracking and alerts.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 // Display only — the actual charge comes from your Stripe Price. Keep in sync.
 const PRICE_DISPLAY = 'NZ$20'

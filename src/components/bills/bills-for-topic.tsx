@@ -9,9 +9,7 @@ import { ScrollText, ArrowRight, BadgeCheck, Clock } from 'lucide-react'
 import { billsForTopic } from '@/lib/bills/by-topic'
 import { BILLS_54_META } from '@/constants/bills-54'
 import type { PolicyTopic } from '@/types'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export function BillsForTopic({ topic, label }: { topic: PolicyTopic; label: string }) {
   const { passed, active, total } = billsForTopic(topic)

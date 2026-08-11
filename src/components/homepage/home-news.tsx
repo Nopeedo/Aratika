@@ -8,9 +8,7 @@
 import Link from 'next/link'
 import { Newspaper, ArrowRight, ArrowUpRight, Sparkles, Compass } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 const NEWS_SOURCES = [
   { name: 'RNZ — Politics', url: 'https://www.rnz.co.nz/news/political', desc: 'NZ’s public broadcaster — independent political coverage.' },

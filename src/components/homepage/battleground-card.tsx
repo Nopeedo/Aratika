@@ -14,8 +14,7 @@ import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import type { BattlegroundEntry } from '@/lib/battlegrounds'
 import type { PartySlug } from '@/types'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { MANROPE } from '@/constants/theme'
 
 export function isLightHex(hex: string): boolean {
   const m = hex.replace('#', '')

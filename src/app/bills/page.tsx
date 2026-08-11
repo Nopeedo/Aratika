@@ -18,7 +18,7 @@ import { HowToReadBills } from '@/components/bills/how-to-read-bills'
 import { BILLS_54_META } from '@/constants/bills-54'
 import { getApprovedBills } from '@/lib/bills/live'
 import { memberPartyMap } from '@/lib/bills/member-party'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,8 +28,6 @@ export const metadata: Metadata = {
     'Track bills currently before the New Zealand House of Representatives — ' +
     'their type, stage, and progress, with plain-language breakdowns.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default async function BillsPage({ searchParams }: { searchParams: Promise<{ party?: string }> }) {
   const { party: initialParty } = await searchParams

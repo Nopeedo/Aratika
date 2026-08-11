@@ -10,9 +10,7 @@ import Image from 'next/image'
 import type { MPProfile } from '@/constants/mps-data'
 import type { PartyProfile } from '@/constants/parties-data'
 import { formatNumber } from '@/lib/utils/format'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
+import { DISPLAY, MANROPE } from '@/constants/theme'
 
 function initials(name: string) {
   return name.split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase()

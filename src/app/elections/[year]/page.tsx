@@ -11,9 +11,7 @@ import { getElection, ELECTION_SLUGS } from '@/constants/elections-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { ResultsView } from '@/components/elections/results-view'
 import { UpcomingView } from '@/components/elections/upcoming-view'
-import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export function generateStaticParams() {
   return ELECTION_SLUGS.map((year) => ({ year }))

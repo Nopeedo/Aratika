@@ -8,7 +8,7 @@ import type { Metadata } from 'next'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { getApprovedBills } from '@/lib/bills/live'
 import { LegislationBrowser } from '@/components/bills/legislation-browser'
-import { BORDER, INK, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,8 +16,6 @@ export const metadata: Metadata = {
   title: 'Legislation, made readable',
   description: 'Plain-language, non-partisan breakdowns of New Zealand bills and acts — what they do and which policy areas they affect.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default async function LegislationIndexPage() {
   const bills = await getApprovedBills()

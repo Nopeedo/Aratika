@@ -8,9 +8,7 @@ import { ArrowRight, ArrowUpRight, Landmark, MapPin, Info, Trophy } from 'lucide
 import type { ElectionData } from '@/constants/elections-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { SeatHemicycle } from './seat-hemicycle'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const fmt = (n: number) => n.toLocaleString('en-NZ')
 

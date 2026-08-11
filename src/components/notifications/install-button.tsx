@@ -13,8 +13,8 @@
 
 import { useEffect, useState } from 'react'
 import { Download, Share, SquarePlus, X, Check } from 'lucide-react'
+import { MANROPE } from '@/constants/theme'
 
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 const INK = '#0c0e12', SUB = '#5b6067', BORDER = '#e9e7e2', JADE = '#1F8A4C'
 
 interface BIPEvent extends Event { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> }

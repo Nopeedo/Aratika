@@ -11,10 +11,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
 import { CURRENT_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
-const DISPLAY = 'var(--font-space-grotesk), system-ui, sans-serif'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 function leaderProfile(name: string) {
   return Object.values(MP_PROFILES).find((mp) => mp.name === name)

@@ -13,9 +13,7 @@ import { PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PartyPositions } from '@/components/policy/party-positions'
 import { TopicChip } from '@/components/homepage/topic-chip'
 import type { PartyPosition } from '@/lib/positions/live'
-import { INK, SECONDARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { INK, MANROPE, SECONDARY } from '@/constants/theme'
 
 export function AllPartiesCompare({ topicKeys, positions }: { topicKeys: string[]; positions: PartyPosition[] }) {
   // Defaults to the first issue rather than nothing, so the section is never an

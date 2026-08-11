@@ -8,14 +8,12 @@ import { ArrowRight, Vote } from 'lucide-react'
 import { ELECTIONS } from '@/constants/elections-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Elections',
   description: 'New Zealand general elections — the upcoming 2026 election and official results from 2023.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default function ElectionsHub() {
   return (

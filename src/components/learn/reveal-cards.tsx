@@ -12,9 +12,7 @@ import {
   FileCheck, Search, Star, Swords, Gavel,
 } from 'lucide-react'
 import type { RevealItem } from '@/constants/learn-interactives'
-import { BORDER, INK, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const ICONS: Record<string, React.ElementType> = {
   Crown, Users, Briefcase, Scale, FileInput, Megaphone, Ear, FileCheck, Search, Star, Swords, Gavel,

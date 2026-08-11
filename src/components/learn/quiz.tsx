@@ -10,10 +10,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Check, X, ArrowRight, RotateCcw, Trophy } from 'lucide-react'
 import type { QuizQuestion } from '@/constants/learn-data'
 import { Confetti } from './confetti'
-import { INK, SECONDARY, TERTIARY } from '@/constants/theme'
+import { INK, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 const BORDER = '#e9e7e2', SURFACE = '#f8fafc', JADE = '#1F8A4C', RED = '#dc2626'
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export function Quiz({
   questions, accent, onComplete, playful = false,

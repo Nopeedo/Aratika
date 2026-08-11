@@ -11,10 +11,9 @@ import {
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
-import { INK } from '@/constants/theme'
+import { INK, MANROPE } from '@/constants/theme'
 
 const TOPIC_ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 // Deep border colours keyed by the Tailwind hue in each topic's textColor
 // (e.g. "text-orange-700" → "orange"). Real hex values, NOT a class string

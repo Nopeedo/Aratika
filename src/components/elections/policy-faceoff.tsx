@@ -20,9 +20,7 @@ import type { PartyPosition } from '@/lib/positions/live'
 import { PARTY_COLORS, PARTY_NAMES, PARTY_ORDER } from '@/constants/parties'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import type { PartySlug, PolicyTopic } from '@/types'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 type Side = 'a' | 'b'
 

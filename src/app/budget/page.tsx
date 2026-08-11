@@ -21,15 +21,13 @@ import {
   type BudgetKind,
 } from '@/constants/budget-2026'
 import { BUDGET_BASELINE } from '@/constants/budget-links'
-import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Budget 2026 — what the Government is spending',
   description:
     'A plain-English, non-partisan breakdown of New Zealand’s Budget 2026: where the money goes by sector, key initiatives and the fiscal outlook. Sourced from The Treasury.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const SECTOR_ICON: Record<string, React.ComponentType<{ style?: React.CSSProperties }>> = {
   health: HeartPulse, education: GraduationCap, 'law-order': Scale,

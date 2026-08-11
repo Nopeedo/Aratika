@@ -15,9 +15,7 @@ import type { TopicStance } from '@/components/bills/topic-stances'
 import { StageTracker } from '@/components/bills/stage-tracker'
 import { HaveYourSay } from '@/components/bills/have-your-say'
 import { BillFullText } from '@/components/bills/bill-full-text'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export function BillReader({ bill, stances = {} }: { bill: LiveBill; stances?: Record<string, TopicStance[]> }) {
   return (

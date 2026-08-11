@@ -8,9 +8,7 @@
 import Link from 'next/link'
 import { Vote, Compass, Sparkles, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Term } from '@/components/glossary/term'
-import { BORDER, INK, JADE, SECONDARY, SURFACE } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE } from '@/constants/theme'
 
 export function GetReadyToVote() {
   return (

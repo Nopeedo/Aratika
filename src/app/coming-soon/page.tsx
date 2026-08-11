@@ -6,11 +6,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Sparkles, ArrowRight, Vote, Map, Scale } from 'lucide-react'
-import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export const metadata: Metadata = { title: 'Coming soon', robots: { index: false, follow: false } }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default function ComingSoonPage() {
   return (

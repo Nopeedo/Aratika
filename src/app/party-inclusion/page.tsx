@@ -8,15 +8,13 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight, Scale, ListChecks, BarChart3, ShieldCheck } from 'lucide-react'
 import { PARTY_NAMES, PARLIAMENTARY_PARTIES, NON_PARLIAMENTARY_CONTESTING } from '@/constants/parties'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'How we decide which parties are included',
   description:
     'Arapono’s inclusion policy — every party registered to contest the 2026 party vote is represented equally, by registration not polling. Poll figures are labelled, never inferred.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const PRINCIPLES = [
   {

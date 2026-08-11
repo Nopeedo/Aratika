@@ -13,9 +13,7 @@ import { usePreferences } from '@/hooks/use-preferences'
 import { usePlanProgress } from '@/hooks/use-plan-progress'
 import { buildPlan } from '@/lib/onboarding/recommendations'
 import { REC_ICONS } from '@/components/onboarding/rec-icons'
-import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export function HomePlanBanner() {
   const { prefs, loaded } = usePreferences()

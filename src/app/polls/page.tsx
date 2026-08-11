@@ -8,14 +8,12 @@ import Link from 'next/link'
 import { BarChart3, Info, ArrowRight } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { POLL_DISCLAIMER } from '@/constants/site'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Public Polls',
   description: 'Arapono community polls — share your view on the issues. Non-scientific; for engagement, not measurement.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 export default function PollsPage() {
   return (

@@ -7,8 +7,7 @@
 
 import { useState } from 'react'
 import { Sparkles, CreditCard, Loader2 } from 'lucide-react'
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
+import { MANROPE } from '@/constants/theme'
 
 async function go(endpoint: string, onError: (msg: string) => void) {
   const res = await fetch(endpoint, { method: 'POST' })

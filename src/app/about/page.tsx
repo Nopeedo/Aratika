@@ -8,14 +8,12 @@ import Link from 'next/link'
 import { ArrowUpRight, Scale, ShieldCheck, Unlock, Compass } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { DATA_SOURCES } from '@/constants/site'
-import { BORDER, INK, JADE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'About Arapono',
   description: 'Arapono is an independent, non-partisan platform making New Zealand politics clear, credible and accessible.',
 }
-
-const MANROPE = 'var(--font-manrope), system-ui, sans-serif'
 
 const PRINCIPLES = [
   { icon: Scale, title: 'Non-partisan', body: 'We present every party, MP and policy even-handedly. We don’t endorse anyone, and we never tell you how to vote.' },
