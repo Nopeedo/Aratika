@@ -10,7 +10,7 @@ import { Lock, ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getEditor } from '@/lib/editor/auth'
 import { PollAdmin, type EditorPoll } from '@/components/editor/poll-admin'
-import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,8 +18,8 @@ export default async function EditorPollsPage() {
   const { user, isEditor } = await getEditor()
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 860, margin: '0 auto', padding: '44px 36px 36px' }}>
           <Link href="/editor" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginBottom: 14 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> Editorial review

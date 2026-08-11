@@ -8,7 +8,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft, ArrowUpRight, Scale, ListChecks, BarChart3, ShieldCheck } from 'lucide-react'
 import { PARTY_NAMES, PARLIAMENTARY_PARTIES, NON_PARLIAMENTARY_CONTESTING } from '@/constants/parties'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'How we decide which parties are included',
@@ -41,8 +41,8 @@ const PRINCIPLES = [
 
 export default function PartyInclusionPage() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 34px' }}>
           <Link href="/elections/2026" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginBottom: 16 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> Election Centre

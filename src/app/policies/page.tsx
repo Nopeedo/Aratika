@@ -15,7 +15,7 @@ import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PolicyTopic } from '@/types'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Policy Hub',
@@ -34,8 +34,8 @@ function partiesForTopic(topic: PolicyTopic) {
 
 export default function PolicyHubPage() {
   return (
-    <div style={{ background: '#ffffff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
           <div style={{ marginBottom: 8 }}>
             <SectionDivider type="official" label="Party Policy Comparison" />

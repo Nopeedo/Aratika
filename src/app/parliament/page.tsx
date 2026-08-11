@@ -13,7 +13,7 @@ import { PARTY_PROFILES } from '@/constants/parties-data'
 import { PARTY_NAMES, PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
 import { PartySlug } from '@/types'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Parliament — Current Overview',
@@ -48,7 +48,7 @@ const KEY_ROLES = [
 
 export default function ParliamentPage() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}`, background: '#fff' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px 36px 8px' }}>

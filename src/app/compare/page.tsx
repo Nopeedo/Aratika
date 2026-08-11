@@ -11,7 +11,7 @@ import { getAllApprovedPositions } from '@/lib/positions/live'
 import { CompareTool } from '@/components/policy/compare-tool'
 import { CoverageMatrix } from '@/components/policy/coverage-matrix'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,9 +26,9 @@ export default async function ComparePage() {
   const topics = POLICY_TOPIC_ORDER.map((slug) => ({ slug, label: POLICY_TOPICS[slug].label, hasData: withData.has(slug) }))
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       {/* Header */}
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
           <div style={{ marginBottom: 10 }}>
             <SectionDivider type="official" label="Sourced from official party policy" />

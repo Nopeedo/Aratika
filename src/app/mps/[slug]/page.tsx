@@ -34,7 +34,7 @@ import { MPCard } from '@/components/mp/mp-card'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { formatNumber } from '@/lib/utils/format'
 import { BackLink } from '@/components/ui/back-link'
-import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const billGroupLabel: React.CSSProperties = { fontSize: 11.5, fontWeight: 800, letterSpacing: '.02em', textTransform: 'uppercase', color: '#9aa0aa', fontFamily: MANROPE, margin: '0 0 7px' }
@@ -131,7 +131,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
   const hasAnyDetail = !!(mp.bio || mp.portfolios?.length || mp.committees?.length)
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       <style>{`
         .bill-row-caret { color: #c2c6cd; transition: transform .15s ease, color .15s ease; }
         .bill-link:hover .bill-row-caret { color: ${JADE}; transform: translateX(2px); }
@@ -139,7 +139,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
       `}</style>
 
       {/* ═══════════════ Header band ═══════════════ */}
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ height: 5, background: party.color }} />
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 36px' }}>
           <BackLink fallbackHref="/mps" label="All MPs" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 24 }} />

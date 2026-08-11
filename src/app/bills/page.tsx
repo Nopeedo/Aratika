@@ -18,7 +18,7 @@ import { HowToReadBills } from '@/components/bills/how-to-read-bills'
 import { BILLS_54_META } from '@/constants/bills-54'
 import { getApprovedBills } from '@/lib/bills/live'
 import { memberPartyMap } from '@/lib/bills/member-party'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -44,10 +44,10 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
   const memberParty = memberPartyMap()
 
   return (
-    <div style={{ background: '#f5f8f4', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
 
       {/* Header */}
-      <div className="bg-dot-grid" style={{ background: '#f5f8f4', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 36px 40px' }}>
           <div style={{ marginBottom: 8 }}>
             <SectionDivider type="official" label="Official Parliament Data" />

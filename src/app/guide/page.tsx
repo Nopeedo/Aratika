@@ -7,7 +7,7 @@
 
 import type { Metadata } from 'next'
 import { QuickGuide } from '@/components/guide/quick-guide'
-import { BORDER } from '@/constants/theme'
+import { BORDER, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Get started — a quick, no-jargon guide',
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 
 export default function GuidePage() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 700, margin: '0 auto', padding: 'clamp(32px, 6vh, 60px) clamp(20px, 5vw, 36px)' }}>
           <QuickGuide />
         </div>

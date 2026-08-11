@@ -11,7 +11,7 @@ import { getElection, ELECTION_SLUGS } from '@/constants/elections-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { ResultsView } from '@/components/elections/results-view'
 import { UpcomingView } from '@/components/elections/upcoming-view'
-import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export function generateStaticParams() {
   return ELECTION_SLUGS.map((year) => ({ year }))
@@ -36,8 +36,8 @@ export default async function ElectionYearPage({ params }: { params: Promise<{ y
   if (upcoming) return <UpcomingView e={e} />
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px 36px 34px' }}>
           <Link href="/elections" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All elections

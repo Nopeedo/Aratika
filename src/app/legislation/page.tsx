@@ -8,7 +8,7 @@ import type { Metadata } from 'next'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { getApprovedBills } from '@/lib/bills/live'
 import { LegislationBrowser } from '@/components/bills/legislation-browser'
-import { BORDER, INK, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,8 +21,8 @@ export default async function LegislationIndexPage() {
   const bills = await getApprovedBills()
 
   return (
-    <div style={{ background: '#f5f8f4', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#f5f8f4', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 980, margin: '0 auto', padding: '48px 36px 40px' }}>
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Legislation" /></div>
           <h1 style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Legislation, made readable</h1>

@@ -9,7 +9,7 @@ import type { Metadata } from 'next'
 import { Check, Sparkles, Heart } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { UpgradeButton } from '@/components/billing/billing-buttons'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Arapono Premium',
@@ -36,8 +36,8 @@ const PREMIUM = [
 
 export default function SubscriptionPage() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 980, margin: '0 auto', padding: '48px 36px 40px', textAlign: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
             <SectionDivider type="official" label="Arapono Premium" />

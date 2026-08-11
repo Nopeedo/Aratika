@@ -23,7 +23,7 @@ import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BillsForTopic } from '@/components/bills/bills-for-topic'
 import { BackLink } from '@/components/ui/back-link'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 const ICONS: Record<string, React.ElementType> = {
   Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users,
@@ -56,10 +56,10 @@ export default async function PolicyTopicPage(
   const positions = await getApprovedPositions(topic)
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
 
       {/* Header */}
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) clamp(18px, 5vw, 36px)' }}>
           <BackLink fallbackHref="/policies" label="All policy topics" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 22 }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>

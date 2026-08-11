@@ -9,7 +9,7 @@ import { Lock, BarChart3 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getEditor } from '@/lib/editor/auth'
 import { ReviewList, type PendingItem } from '@/components/editor/review-list'
-import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,8 +17,8 @@ export default async function EditorPage() {
   const { user, isEditor } = await getEditor()
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 860, margin: '0 auto', padding: '44px 36px 36px' }}>
           <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>Editorial review</h1>
           <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>

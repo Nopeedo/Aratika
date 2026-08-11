@@ -12,7 +12,7 @@ import { ShieldAlert, ArrowRight, Target, FileText, TrendingUp, ExternalLink } f
 import { createClient } from '@/lib/supabase/server'
 import { GOVERNMENT, PROMISES, BILLS, promiseTally } from '@/constants/record-national'
 import { ECONOMIC_DATA } from '@/constants/economic-data'
-import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Accountability data (private)',
@@ -38,7 +38,7 @@ export default async function RecordHubPage() {
   }
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       {/* Header */}
       <div style={{ background: '#0c0e12', color: '#fff' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '38px 36px 30px' }}>

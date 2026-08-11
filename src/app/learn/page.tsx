@@ -12,7 +12,7 @@ import {
 import { LEARN_MODULES } from '@/constants/learn-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { LearnProgressBanner } from '@/components/learn/learn-progress-banner'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Learn — How Parliament Works',
@@ -28,9 +28,9 @@ const ICONS: Record<string, React.ElementType> = {
 
 export default function LearnHubPage() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       {/* Hero */}
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '48px 36px 42px' }}>
           <div style={{ marginBottom: 10 }}>
             <SectionDivider type="official" label="Arapono Learn" />

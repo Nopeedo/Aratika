@@ -11,7 +11,7 @@ import { SectionDivider } from '@/components/ui/section-divider'
 import { getNews } from '@/lib/news/live'
 import { getVideos } from '@/lib/news/videos'
 import { NewsFeed } from '@/components/news/news-feed'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,8 +32,8 @@ export default async function NewsPage() {
   const [items, videos] = await Promise.all([getNews(), getVideos()])
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 920, margin: '0 auto', padding: '40px 36px 30px' }}>
           <div style={{ marginBottom: 12 }}><SectionDivider type="official" label="Live — credible NZ sources" /></div>
           <h1 style={{ fontSize: 'clamp(30px, 4.5vw, 44px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.08 }}>

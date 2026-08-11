@@ -10,7 +10,7 @@ import { SectionDivider } from '@/components/ui/section-divider'
 import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
 import { BattlegroundsList } from '@/components/battlegrounds/battlegrounds-list'
 import Link from 'next/link'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Battlegrounds — Seats to Watch',
@@ -23,8 +23,8 @@ export default function BattlegroundsHub() {
   const counts = MARGIN_TIERS.map((t) => ({ t, n: all.filter((b) => b.tier.key === t.key).length }))
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '46px 36px 38px' }}>
           <div style={{ marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
             <SectionDivider type="official" label="Election Battlegrounds" />

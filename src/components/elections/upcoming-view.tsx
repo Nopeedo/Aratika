@@ -32,7 +32,7 @@ import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
 import { SeatHemicycle } from './seat-hemicycle'
 import { VideoSection } from '@/components/news/video-section'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 // Warm palette carried over from the homepage/hub so the Election Centre reads
 // as the same product rather than a separate tool: espresso headings, warm body
@@ -57,14 +57,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   return (
     // One continuous woven texture behind the whole page — hero included — so it
     // sits in the same world as the homepage and hub instead of on flat white.
-    <div style={{
-      backgroundColor: '#f4f2ec',
-      backgroundImage: 'url(/back2.jpg)',
-      backgroundRepeat: 'repeat-y',
-      backgroundSize: '100% auto',
-      backgroundPosition: 'top center',
-      minHeight: '100vh',
-    }}>
+    <div style={WOVEN_PAGE}>
       <CommandHero />
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>

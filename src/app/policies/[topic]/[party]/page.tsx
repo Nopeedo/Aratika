@@ -15,7 +15,7 @@ import { PolicyTopic, PartySlug } from '@/types'
 import { getApprovedPosition } from '@/lib/positions/live'
 import { PositionReader } from '@/components/policy/position-reader'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -36,9 +36,9 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
   const pos = await getApprovedPosition(topic, party)
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       {/* Header */}
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ height: 6, background: p.color }} />
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 36px 32px' }}>
           <Link href={`/policies/${topic}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>

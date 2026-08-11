@@ -22,7 +22,7 @@ import { WarRoomHero } from '@/components/battlegrounds/war-room-hero'
 import { RosterAccordion, type RosterItem } from '@/components/battlegrounds/roster-accordion'
 import { ElectorateNews } from '@/components/battlegrounds/electorate-news'
 import type { PartySlug } from '@/types'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 // Warm palette carried over from the homepage / Election Centre.
 
@@ -328,14 +328,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   return (
     // One continuous woven texture behind hero and body, painted once here so the
     // tiling doesn't restart and leave a seam under the hero.
-    <div style={{
-      backgroundColor: '#f4f2ec',
-      backgroundImage: 'url(/back2.jpg)',
-      backgroundRepeat: 'repeat-y',
-      backgroundSize: '100% auto',
-      backgroundPosition: 'top center',
-      minHeight: '100vh',
-    }}>
+    <div style={WOVEN_PAGE}>
       <WarRoomHero
         electorateName={info.name}
         regionLine={`${info.type === 'maori' ? 'Māori electorate' : 'General electorate'}${info.region ? ` · ${info.region}` : ''}`}

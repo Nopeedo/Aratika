@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import { LETTER_TEMPLATES, LETTER_TEMPLATE_ORDER } from '@/constants/letter-templates'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Take Action — Write to an MP or make a submission',
@@ -30,9 +30,9 @@ const STEPS = [
 
 export default function TakeActionHub() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       {/* Hero */}
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '46px 36px 40px' }}>
           <div style={{ marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
             <SectionDivider type="official" label="Take Action" />

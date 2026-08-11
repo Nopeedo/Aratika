@@ -21,7 +21,7 @@ import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { formatDate } from '@/lib/utils/format'
 import { PREMIUM_ENABLED } from '@/constants/features'
-import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export function generateStaticParams() {
   return [...BILL_SLUGS, ...DEFINING_BILLS.map((b) => b.slug)].map((slug) => ({ slug }))
@@ -59,10 +59,10 @@ export default async function BillDetailPage(
   if (!bill) notFound()
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
 
       {/* Header */}
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 36px 36px' }}>
           <Link href="/bills" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 22 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All bills

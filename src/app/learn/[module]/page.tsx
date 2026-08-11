@@ -10,7 +10,7 @@ import { ArrowLeft } from 'lucide-react'
 import { getModule, LEARN_MODULE_IDS } from '@/constants/learn-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { ModuleExperience } from '@/components/learn/module-experience'
-import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export function generateStaticParams() {
   return LEARN_MODULE_IDS.map((module) => ({ module }))
@@ -33,9 +33,9 @@ export default async function LearnModulePage(
   if (!m || m.status !== 'live') notFound()
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       {/* Header */}
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 880, margin: '0 auto', padding: '24px 36px 34px' }}>
           <Link href="/learn" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 20 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All modules

@@ -23,7 +23,7 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import type { Bookmark as BookmarkType } from '@/hooks/use-bookmarks'
 import type { PartySlug } from '@/types'
-import { BORDER, INK, JADE, JADE_DARK, MANROPE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, JADE_DARK, MANROPE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 const ELECTION_DATE = new Date('2026-11-07T00:00:00+13:00') // Sat 7 Nov 2026, NZ
 
@@ -130,7 +130,7 @@ export default async function HubPage() {
   ]
 
   return (
-    <div style={{ backgroundColor: '#f4f2ec', backgroundImage: 'url(/back2.jpg)', backgroundRepeat: 'repeat-y', backgroundSize: '100% auto', backgroundPosition: 'top center', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       <div style={{ maxWidth: 1160, margin: '0 auto', padding: 'clamp(20px, 4vh, 34px) clamp(16px, 4vw, 36px) 64px' }}>
 
         {/* welcome + countdown */}

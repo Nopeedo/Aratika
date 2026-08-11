@@ -8,7 +8,7 @@ import type { Metadata } from 'next'
 import { Mail, Flag, ShieldCheck, ArrowUpRight } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { SITE } from '@/constants/site'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Contact & Corrections',
@@ -19,8 +19,8 @@ const EMAIL = SITE.email // hello@arapono.nz
 
 export default function ContactPage() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '44px 36px 34px' }}>
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Contact" /></div>
           <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.1 }}>Contact &amp; corrections</h1>

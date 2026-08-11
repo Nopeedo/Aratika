@@ -8,7 +8,7 @@
 import type { Metadata } from 'next'
 import { MapExperience } from '@/components/map/map-experience'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Interactive Electorate Map',
@@ -25,10 +25,10 @@ export default async function MapPage({
   const { search } = await searchParams
 
   return (
-    <div style={{ background: '#ffffff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
 
       {/* Header band */}
-      <div className="bg-dot-grid" style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px 36px 32px' }}>
           <div style={{ marginBottom: 10 }}>
             <SectionDivider type="official" label="Official Parliament & Electoral Data" />

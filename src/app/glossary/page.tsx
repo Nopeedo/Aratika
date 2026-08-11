@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { GLOSSARY } from '@/constants/glossary'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Glossary of NZ Political Terms',
@@ -18,8 +18,8 @@ export const metadata: Metadata = {
 export default function GlossaryPage() {
   const sorted = [...GLOSSARY].sort((a, b) => a.term.localeCompare(b.term))
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '48px 36px 40px' }}>
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Glossary" /></div>
           <h1 style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Political glossary</h1>

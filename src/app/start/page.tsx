@@ -6,7 +6,7 @@
 
 import type { Metadata } from 'next'
 import { CompassQuiz } from '@/components/compass/compass-quiz'
-import { BORDER } from '@/constants/theme'
+import { BORDER, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Your political compass',
@@ -16,8 +16,8 @@ export const metadata: Metadata = {
 
 export default function StartPage() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '56px 36px 56px' }}>
           <CompassQuiz />
         </div>

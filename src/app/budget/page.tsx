@@ -21,7 +21,7 @@ import {
   type BudgetKind,
 } from '@/constants/budget-2026'
 import { BUDGET_BASELINE } from '@/constants/budget-links'
-import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Budget 2026 — what the Government is spending',
@@ -44,9 +44,9 @@ const KIND_COLOR: Record<BudgetKind, { bg: string; fg: string }> = {
 
 export default function BudgetPage() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       {/* ── Header ────────────────────────────────────────────── */}
-      <div className="bg-dot-grid" style={{ borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 36px 30px' }}>
           <div style={{ marginBottom: 12 }}>
             <SectionDivider type="official" label="Official — The Treasury" />

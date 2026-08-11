@@ -17,6 +17,7 @@
 
 import { useEffect, useState, type ReactNode } from 'react'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
+import { PAPER } from '@/constants/theme'
 
 const TOP_ALPHA = 0.05
 const TILE_ALPHA = 0.3
@@ -57,7 +58,12 @@ export function HomeBackground({ children }: { children: ReactNode }) {
   const maskGradient = `linear-gradient(to bottom, ${stops})`
 
   return (
-    <div style={{ backgroundColor: '#f8fafc', backgroundImage: 'url(/back2.jpg)', backgroundRepeat: 'repeat-y', backgroundSize: '100% auto', backgroundPosition: 'top center', position: 'relative', isolation: 'isolate' }}>
+    // Same weave as every other page, but this one can't take WOVEN_PAGE whole:
+    // it needs position/isolation for the tint overlay and must NOT set
+    // minHeight. The base was #f8fafc (cool) while the rest of the site sits on
+    // PAPER — that colour shows through the weave's gaps, so the homepage read a
+    // shade colder than everything it links to.
+    <div style={{ backgroundColor: PAPER, backgroundImage: 'url(/back2.jpg)', backgroundRepeat: 'repeat-y', backgroundSize: '100% auto', backgroundPosition: 'top center', position: 'relative', isolation: 'isolate' }}>
       <div
         aria-hidden
         style={{

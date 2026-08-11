@@ -19,7 +19,7 @@ import { getBill } from '@/constants/bills-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { PremiumGate } from '@/components/action/premium-gate'
 import { LetterStudio, LetterPreview } from '@/components/action/letter-studio'
-import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export function generateStaticParams() {
   return LETTER_TEMPLATE_ORDER.map((template) => ({ template }))
@@ -79,8 +79,8 @@ export default async function TakeActionTemplatePage(
   }, ctx)
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 32px' }}>
           <Link href="/take-action" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All templates

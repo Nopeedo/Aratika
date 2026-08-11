@@ -11,7 +11,7 @@ import { redirect } from 'next/navigation'
 import { ShieldAlert, Plus, Minus, Users, Target, ExternalLink, FileText, MessageSquare } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { POLICY_ANALYSIS } from '@/constants/record-analysis'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Policy deep dives (private)',
@@ -25,7 +25,7 @@ export default async function PolicyAnalysisPage() {
   if (!user) redirect('/login?next=/record/analysis')
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
       {/* Header */}
       <div style={{ background: '#0c0e12', color: '#fff' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '38px 36px 30px' }}>

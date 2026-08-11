@@ -10,7 +10,7 @@ import { getApprovedBillBySlug } from '@/lib/bills/live'
 import { BillReader } from '@/components/bills/bill-reader'
 import { BackLink } from '@/components/ui/back-link'
 import { buildStancesByTopic } from '@/lib/positions/stances-by-topic'
-import { BORDER, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,8 +31,8 @@ export default async function LegislationReaderPage({ params }: { params: Promis
   const stances = await buildStancesByTopic(bill.policyLinks.map((p) => p.topic))
 
   return (
-    <div style={{ background: '#f5f8f4', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#f5f8f4', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '28px 36px 48px' }}>
           <BackLink fallbackHref="/legislation" label="Back" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 24 }} />
           <BillReader bill={bill} stances={stances} />

@@ -24,7 +24,7 @@ import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { PartyLegislativeRecord } from '@/components/parties/legislative-record'
-import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
@@ -111,14 +111,7 @@ export default async function PartyProfilePage(
   return (
     // Same woven ground as the homepage and Election Centre, so a party page
     // stops looking like a page from another site.
-    <div style={{
-      backgroundColor: '#f4f2ec',
-      backgroundImage: 'url(/back2.jpg)',
-      backgroundRepeat: 'repeat-y',
-      backgroundSize: '100% auto',
-      backgroundPosition: 'top center',
-      minHeight: '100vh',
-    }}>
+    <div style={WOVEN_PAGE}>
 
       {/* ═══════════════ Header band ═══════════════ */}
       {/* Washed in the party's own colour — the identity cue the old 6px strip

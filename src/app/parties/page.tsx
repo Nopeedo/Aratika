@@ -5,7 +5,7 @@ import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { PartyTileGrid, PlainPartyTile } from '@/components/parties/party-tile'
-import { BORDER, INK, JADE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Political Parties',
@@ -47,14 +47,7 @@ export default function PartiesPage() {
   return (
     // Woven ground, not flat white — the party profiles this page leads into
     // already sit on it, and the two should feel like one place.
-    <div style={{
-      backgroundColor: '#f4f2ec',
-      backgroundImage: 'url(/back2.jpg)',
-      backgroundRepeat: 'repeat-y',
-      backgroundSize: '100% auto',
-      backgroundPosition: 'top center',
-      minHeight: '100vh',
-    }}>
+    <div style={WOVEN_PAGE}>
 
       {/* ── Page header ──────────────────────────────────────────────── */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>

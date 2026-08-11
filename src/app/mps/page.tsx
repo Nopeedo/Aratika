@@ -8,7 +8,7 @@
 import type { Metadata } from 'next'
 import { MPsDirectory } from '@/components/mps/mps-directory'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Members of Parliament',
@@ -19,10 +19,10 @@ export const metadata: Metadata = {
 
 export default function MPsDirectoryPage() {
   return (
-    <div style={{ background: '#ffffff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
 
       {/* Header */}
-      <div className="bg-dot-grid" style={{ background: '#ffffff', borderBottom: `1px solid ${BORDER}` }}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px 36px 40px' }}>
           <div style={{ marginBottom: 8 }}>
             <SectionDivider type="official" label="Official Parliament Data" />

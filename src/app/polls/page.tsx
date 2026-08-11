@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { BarChart3, Info, ArrowRight } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { POLL_DISCLAIMER } from '@/constants/site'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Public Polls',
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 
 export default function PollsPage() {
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
-      <div className="bg-dot-grid" style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
+    <div style={WOVEN_PAGE}>
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '48px 36px 40px' }}>
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Public Polls" /></div>
           <h1 style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Have your say</h1>

@@ -23,7 +23,7 @@ import { BUDGET_LINKS, FUND_RELATION, FUNDED_PROMISE_IDS, BUDGET_BASELINE } from
 import { BUDGET_META } from '@/constants/budget-2026'
 import { ECONOMIC_DATA, type EconSeries } from '@/constants/economic-data'
 import { IndicatorChart } from '@/components/record/indicator-chart'
-import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'National — Accountability Record (private)',
@@ -55,7 +55,7 @@ export default async function NationalRecordPage() {
   const promiseById = new Map(PROMISES.map((p) => [p.id, p]))
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={WOVEN_PAGE}>
 
       {/* Header */}
       <div style={{ background: '#0c0e12', color: '#fff' }}>

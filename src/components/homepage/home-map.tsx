@@ -34,7 +34,7 @@ export function HomeMap() {
   }, [])
 
   return (
-    <section id="map" className="bg-dot-grid" style={{ backgroundColor: '#ffffff', borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, scrollMarginTop: 210 }}>
+    <section id="map" style={{ borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, scrollMarginTop: 210 }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '52px clamp(18px, 5vw, 36px) 6px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 12, flexWrap: 'wrap' }}>
           <div>
