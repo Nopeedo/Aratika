@@ -8,6 +8,7 @@ import { CompanionWidget } from '@/components/companion/companion-widget'
 import { SoundToggle } from '@/components/homepage/sound-toggle'
 import { SWRegister } from '@/components/notifications/sw-register'
 import { NavHistory } from '@/components/ui/nav-history'
+import { OrganizationSchema } from '@/components/seo/organization-schema'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SITE } from '@/constants/site'
@@ -113,6 +114,7 @@ export default function RootLayout({
       `}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <OrganizationSchema />
         <SWRegister />
         {/* Records the previous in-app route so BackLink can return you to where
             you actually came from rather than a page's fixed parent. */}

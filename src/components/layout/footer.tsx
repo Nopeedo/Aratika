@@ -52,6 +52,27 @@ export function Footer() {
             <p className="text-xs text-slate-500 mt-3 leading-relaxed">
               An independent, non-partisan political information platform for New Zealanders.
             </p>
+
+            {/* Official accounts. Driven by SITE.socials, which also feeds the
+                Organization schema — so this appears the moment a handle is added
+                there and stays absent while the list is empty. */}
+            {SITE.socials.length > 0 && (
+              <ul className="flex flex-wrap gap-2 mt-4">
+                {SITE.socials.map((social) => (
+                  <li key={social.url}>
+                    <a
+                      href={social.url}
+                      target="_blank"
+                      rel="me noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-full text-xs text-slate-300 transition-colors"
+                    >
+                      {social.label}
+                      <ExternalLink className="size-2.5 opacity-60" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Learn */}

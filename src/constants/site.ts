@@ -5,9 +5,20 @@ export const SITE = {
     'Your one-stop resource for clear, credible information on New Zealand\'s parliament, MPs, parties, and policies — all in one place.',
   url: 'https://arapono.org.nz',
   email: 'hello@arapono.org.nz',
-  // No social accounts yet — re-add { twitter, facebook, … } here (and render them
-  // in footer.tsx) once real @arapono handles exist. The old aratikatnz placeholders
-  // were removed at launch prep: they rendered nowhere and pointed at the old name.
+  // Official accounts. These feed three things at once: the footer links, the
+  // `sameAs` array in the Organization schema (how Google ties the "Arapono"
+  // brand to this domain), and nothing else — so adding a handle here is the
+  // only edit needed when a new account goes live.
+  //
+  // Only list accounts that actually exist and post. A `sameAs` pointing at an
+  // empty profile is a weak signal, so leave TikTok/Facebook/YouTube commented
+  // out until there's something on them.
+  socials: [
+    { label: 'Instagram', url: 'https://www.instagram.com/arapononz/' },
+    // { label: 'TikTok', url: 'https://www.tiktok.com/@…' },
+    // { label: 'Facebook', url: 'https://www.facebook.com/…' },
+    // { label: 'YouTube', url: 'https://www.youtube.com/@…' },
+  ] as { label: string; url: string }[],
 
   // Promoter statement (Electoral Act 1993 s204F). An election advertisement must
   // be "Promoted/authorised by NAME, FULL STREET ADDRESS", clearly displayed, at all
