@@ -13,6 +13,7 @@
  * and their pages are untouched — they're just no longer stacked on the home.
  */
 
+import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
@@ -26,6 +27,13 @@ import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 // import { InstallBanner } from '@/components/notifications/install-banner' // hidden — see below
 import { MarkSeen } from '@/components/homepage/mark-seen'
+
+// The navbar logo and the hub both link to /?full=1, so crawlers (which carry no
+// `arapono_seen` cookie and therefore see identical content at both URLs) would
+// otherwise treat it as a second homepage competing with the one in the sitemap.
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<{ full?: string }> }) {
   // Returning visitors (a cookie set on their first visit) go straight to the
