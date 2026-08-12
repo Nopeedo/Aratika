@@ -161,12 +161,18 @@ function BillPanel({ bill }: { bill: DefiningBill }) {
       ) : bill.timeline && bill.timeline.length > 0 ? (
         <>
           <p style={labelStyle}>How it progressed</p>
+          {/* The date sits in a fixed 108px column beside the event. On a phone
+              that left the event about 200px to wrap in, so a one-line note
+              like "Government drops the plan for three ministers to have the
+              final say" ran to five ragged lines. Under 760px the date moves
+              above the event and the text gets the full card width. */}
+          <style dangerouslySetInnerHTML={{ __html: TIMELINE_CSS }} />
           <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
             {bill.timeline.slice(0, 4).map((t, i) => (
-              <li key={i} style={{ display: 'flex', gap: 11, alignItems: 'flex-start' }}>
-                <span style={{ width: 8, height: 8, borderRadius: '50%', background: st.bar, flexShrink: 0, marginTop: 6 }} />
-                <span style={{ fontSize: 12, fontWeight: 800, color: INK, fontFamily: MANROPE, width: 108, flexShrink: 0 }}>{t.date}</span>
-                <span style={{ fontSize: 13, color: MUTED, fontFamily: MANROPE, lineHeight: 1.5 }}>{t.event}</span>
+              <li key={i} className="bill-tl-row">
+                <span className="bill-tl-dot" style={{ width: 8, height: 8, borderRadius: '50%', background: st.bar }} />
+                <span className="bill-tl-date" style={{ fontSize: 12, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{t.date}</span>
+                <span className="bill-tl-event" style={{ fontSize: 13, color: MUTED, fontFamily: MANROPE, lineHeight: 1.5 }}>{t.event}</span>
               </li>
             ))}
           </ol>
@@ -243,6 +249,22 @@ function useProgress(dur: number) {
 }
 
 const labelStyle: React.CSSProperties = { fontSize: 11, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: MUTED, fontFamily: MANROPE, margin: '0 0 16px' }
+
+/* Date beside the event on desktop, above it on a phone. Shipped with the
+   component so the rules and the class names can't arrive a build apart — the
+   date's column width is set here, not inline, precisely so the media query can
+   drop it. */
+const TIMELINE_CSS = `
+.bill-tl-row { display: flex; gap: 11px; align-items: flex-start; }
+.bill-tl-dot { flex-shrink: 0; margin-top: 6px; }
+.bill-tl-date { width: 108px; flex-shrink: 0; }
+@media (max-width: 760px) {
+  .bill-tl-row { display: grid; grid-template-columns: 8px 1fr; column-gap: 11px; row-gap: 2px; align-items: start; }
+  .bill-tl-dot { grid-column: 1; grid-row: 1; align-self: start; }
+  .bill-tl-date { grid-column: 2; grid-row: 1; width: auto; }
+  .bill-tl-event { grid-column: 2; grid-row: 2; }
+}
+`
 const arrowBtn: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34,
   borderRadius: 999, border: `1px solid ${LINE}`, background: CARD, color: INK, cursor: 'pointer',

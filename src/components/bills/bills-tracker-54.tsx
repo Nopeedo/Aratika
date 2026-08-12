@@ -146,8 +146,14 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
         </div>
       )}
 
+      {/* Layout for the two rows below lives in TRACKER_CSS, shipped with this
+          component. Both need media queries — content-width chips and selects
+          each took a row of their own on a phone, in five different widths —
+          and an inline style would beat any of them. */}
+      <style dangerouslySetInnerHTML={{ __html: TRACKER_CSS }} />
+
       {/* Stat chips (click to filter by stage) */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 18 }}>
+      <div className="bills-stats" style={{ marginBottom: 18 }}>
         <StatChip icon={Landmark} value={stats.total} label="Bills this term" active={status === 'All' && type === 'All' && !subsOnly} onClick={reset} />
         <StatChip icon={BadgeCheck} value={stats.passed} label="Passed into law" active={status === 'Royal Assent'} onClick={() => setStatus('Royal Assent')} />
         <StatChip icon={Megaphone} value={stats.committee} label="At select committee" active={status === 'Select Committee'} onClick={() => setStatus('Select Committee')} />
@@ -156,8 +162,8 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
       </div>
 
       {/* Filter bar */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center', marginBottom: 16 }}>
-        <div style={{ position: 'relative', flex: '1 1 240px', minWidth: 200 }}>
+      <div className="bills-filters" style={{ marginBottom: 16 }}>
+        <div className="bills-search" style={{ position: 'relative' }}>
           <Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 15, height: 15, color: TERTIARY }} />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search bills or MPs…"
             style={{ width: '100%', padding: '10px 12px 10px 34px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 14, fontFamily: MANROPE, color: INK, outline: 'none', background: '#fff' }} />
@@ -286,6 +292,26 @@ function fmtDate(iso?: string | null) {
   return isNaN(d.getTime()) ? iso : d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 }
 
+/* Desktop keeps the original content-width chip row and inline filter bar. Under
+   760px both become two even columns: the chips were five different widths
+   stacking one per row (285px of screen for five numbers), and the four
+   dropdowns did the same underneath, so the controls pushed the actual bills
+   most of a screen further down. */
+const TRACKER_CSS = `
+.bills-stats { display: flex; flex-wrap: wrap; gap: 10px; }
+.bills-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.bills-search { flex: 1 1 240px; min-width: 200px; }
+.bills-select { max-width: 200px; }
+@media (max-width: 760px) {
+  .bills-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .bills-stats > button { width: 100%; padding: 9px 10px; gap: 7px; }
+  .bills-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .bills-search { grid-column: 1 / -1; min-width: 0; }
+  .bills-select { max-width: none; width: 100%; min-width: 0; }
+  .bills-filters > button { grid-column: 1 / -1; justify-content: center; }
+}
+`
+
 function StatChip({ icon: Icon, value, label, active, onClick }: { icon: React.ElementType; value: number; label: string; active: boolean; onClick: () => void }) {
   return (
     <button onClick={onClick} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '10px 14px', borderRadius: 12, border: `1px solid ${active ? JADE : BORDER}`, background: active ? '#ecfdf5' : '#fff', cursor: 'pointer', fontFamily: MANROPE }}>
@@ -298,8 +324,8 @@ function StatChip({ icon: Icon, value, label, active, onClick }: { icon: React.E
 
 function Select({ value, onChange, options, allLabel, fmt }: { value: string; onChange: (v: string) => void; options: string[]; allLabel: string; fmt?: (s: string) => string }) {
   return (
-    <select value={value} onChange={(e) => onChange(e.target.value)}
-      style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 13.5, fontFamily: MANROPE, color: INK, background: '#fff', cursor: 'pointer', maxWidth: 200 }}>
+    <select value={value} onChange={(e) => onChange(e.target.value)} className="bills-select"
+      style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 13.5, fontFamily: MANROPE, color: INK, background: '#fff', cursor: 'pointer' }}>
       {options.map((o) => <option key={o} value={o}>{o === 'All' ? allLabel : fmt ? fmt(o) : o}</option>)}
     </select>
   )
