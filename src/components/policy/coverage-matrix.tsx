@@ -31,6 +31,16 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
 
   return (
     <div>
+      {/* Shipped with the component rather than from globals.css on purpose.
+          These rules and the class names that use them have to arrive together:
+          the padding they set is NOT duplicated inline (an inline style would
+          beat the media query below), so if the stylesheet were ever a build
+          behind the markup, every cell in this table would render with no
+          padding at all. That is exactly what happened when this lived in
+          globals.css — the deployed HTML had the new class names while the
+          deployed CSS bundle did not have the rules. In here they cannot
+          desync, because they are the same payload. */}
+      <style dangerouslySetInnerHTML={{ __html: MATRIX_CSS }} />
       {/* On a phone only about a third of this grid fits, so say so — otherwise
           people assume what they can see is all there is. Hidden on wider
           screens where the whole table is visible. */}
@@ -130,7 +140,27 @@ function Legend({ swatch, label }: { swatch: React.ReactNode; label: string }) {
   )
 }
 
-// Padding lives in globals.css (.coverage-matrix), not here: inline styles beat
-// any stylesheet rule, so it can't be tightened for phones from this file.
+// Padding is set by MATRIX_CSS, not inline: an inline style would beat the
+// media query that tightens it for phones.
 const thBase: React.CSSProperties = { fontSize: 11.5, fontWeight: 800, color: SECONDARY, borderBottom: `1px solid ${BORDER}`, whiteSpace: 'nowrap' }
 const tdBase: React.CSSProperties = { borderBottom: `1px solid ${BORDER}`, whiteSpace: 'nowrap' }
+
+/* On a phone the party column was taking well over half the visible width and
+   only one topic column showed, while the cells it left were mostly empty space
+   around a 22px tick. Narrower gutters and a smaller party label put noticeably
+   more of the grid in view before you have to swipe. Desktop keeps the roomier
+   original spacing — the whole table fits there without scrolling. */
+const MATRIX_CSS = `
+.coverage-matrix th,
+.coverage-matrix td { padding: 10px 12px; }
+.coverage-party-name { font-size: 13px; }
+.coverage-band { white-space: nowrap; }
+@media (max-width: 760px) {
+  .coverage-matrix th,
+  .coverage-matrix td { padding: 9px 6px; }
+  .coverage-matrix th:first-child,
+  .coverage-matrix td:first-child { padding-left: 10px; padding-right: 8px; }
+  .coverage-party-name { font-size: 12px; }
+  .coverage-band { white-space: normal; display: inline-block; max-width: 62vw; }
+}
+`
