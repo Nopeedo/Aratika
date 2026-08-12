@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { Search, MapPin, Landmark, ArrowRight } from 'lucide-react'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
+import { PARTY_COLORS } from '@/constants/parties'
 import { Avatar } from '@/components/ui/avatar'
 import { StatusBadge } from '@/components/ui/badge'
 import { PartySlug } from '@/types'
@@ -112,14 +113,22 @@ export function MPsDirectory() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 }}>
           {filtered.map((mp) => {
             const prof = PARTY_PROFILES[mp.party]
+            const col = PARTY_COLORS[mp.party]
             return (
               <Link key={mp.slug} href={`/mps/${mp.slug}`} style={{ textDecoration: 'none' }}>
+                {/* Same treatment as the /parties tiles and the homepage party
+                    card: a pale wash of the party's colour behind a border in
+                    that colour. Replaces the old white card with a 4px strip on
+                    top — the border carries the party now, so a separate strip
+                    would be a second reading of the same thing.
+                    2px rather than the 3px used on the party tiles: there are
+                    six of those and 123 of these, and at this density 3px read
+                    as a wall of outlines. */}
                 <div className="mp-card" style={{
-                  background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16,
+                  background: col.light, border: `2px solid ${prof.color}`, borderRadius: 16,
                   overflow: 'hidden', boxShadow: '0 2px 4px rgba(12,14,18,.03)',
                   height: '100%', display: 'flex', flexDirection: 'column',
                 }}>
-                  <div style={{ height: 4, background: prof.color }} />
                   <div style={{ padding: '15px 17px', display: 'flex', flexDirection: 'column', gap: 11, flex: 1 }}>
                     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
                       <Avatar name={mp.name} party={mp.party} src={mp.photo} size="md" />
@@ -135,7 +144,12 @@ export function MPsDirectory() {
                       </div>
                     </div>
                     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
-                      <span style={{ fontSize: 10.5, fontWeight: 700, background: prof.color, color: prof.textColor, borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
+                      {/* Ink on white with a thin party-coloured edge, rather
+                          than the old solid-colour pill: the card is already
+                          washed in that colour, so a solid block of it sat too
+                          heavily, and the label stays readable for every party
+                          instead of depending on a per-party contrast colour. */}
+                      <span style={{ fontSize: 10.5, fontWeight: 700, background: '#fff', color: INK, border: `1px solid ${prof.color}`, borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
                         {prof.name}
                       </span>
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE }}>
