@@ -323,6 +323,29 @@ body {
   }
 }
 
+/* ─── Coverage matrix (party × topic) ────────────────────────────────────────
+   Padding and the party-name size live here rather than inline so they can be
+   tightened for phones — an inline style would win over any media query.
+
+   On a phone the party column was taking well over half the visible width and
+   only one topic column showed, while the cells it left were mostly empty
+   space around a 22px tick. Narrower gutters and a smaller party label put
+   noticeably more of the grid in view before you have to swipe. */
+.coverage-matrix th,
+.coverage-matrix td { padding: 10px 12px; }
+.coverage-party-name { font-size: 13px; }
+.coverage-band { white-space: nowrap; }
+
+@media (max-width: 760px) {
+  .coverage-matrix th,
+  .coverage-matrix td { padding: 9px 6px; }
+  .coverage-matrix th:first-child,
+  .coverage-matrix td:first-child { padding-left: 10px; padding-right: 8px; }
+  .coverage-party-name { font-size: 12px; }
+  /* Wraps to the viewport rather than the full width of the table it spans. */
+  .coverage-band { white-space: normal; display: inline-block; max-width: 62vw; }
+}
+
 /* ─── MP card stat grid ──────────────────────────────────────────────────────
    Two columns on wider screens; stacks to one on phones so long electorate
    names (e.g. "Palmerston North") show in full instead of being clipped by the

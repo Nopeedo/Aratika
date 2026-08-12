@@ -10,6 +10,7 @@
 import Link from 'next/link'
 import { Check, Minus } from 'lucide-react'
 import { PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES, PARTY_PROFILES } from '@/constants/parties-data'
+import { PARTY_NAMES } from '@/constants/parties'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
 import { BORDER, INK, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
@@ -37,10 +38,10 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
         Swipe across to see all {topics.length} topics — the party column stays put.
       </p>
       <div className="scroll-x" style={{ overflowX: 'auto', border: `1px solid ${BORDER}`, borderRadius: 14 }}>
-        <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 720, fontFamily: MANROPE }}>
+        <table className="coverage-matrix" style={{ borderCollapse: 'collapse', width: '100%', minWidth: 640, fontFamily: MANROPE }}>
           <thead>
             <tr>
-              <th style={{ ...thBase, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, minWidth: 96, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }}>Party</th>
+              <th style={{ ...thBase, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }}>Party</th>
               {topics.map((t) => (
                 <th key={t.slug} style={{ ...thBase, textAlign: 'center' }}>
                   <Link href={`/policies/${t.slug}`} style={{ color: SECONDARY, textDecoration: 'none' }}>{t.label}</Link>
@@ -59,7 +60,10 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
               <>
                 <tr>
                   <th colSpan={topics.length + 1} scope="colgroup" style={{ ...tdBase, textAlign: 'left', background: SURFACE, fontSize: 11.5, fontWeight: 800, color: SECONDARY, letterSpacing: .2, position: 'sticky', left: 0 }}>
-                    Also contesting — not currently in Parliament
+                    {/* The cell spans the full table, so pinned at left:0 on a
+                        phone its label ran off the visible edge mid-word. The
+                        inner span wraps to the viewport instead. */}
+                    <span className="coverage-band">Also contesting — not currently in Parliament</span>
                   </th>
                 </tr>
                 {minors.map((slug) => (
@@ -85,9 +89,13 @@ function Row({ slug, topics, lookup }: { slug: PartySlug; topics: { slug: string
   return (
     <tr>
       <td style={{ ...tdBase, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }}>
+        {/* Short name, not the full registered one: this column is sized by its
+            longest label, and "Animal Justice Party Aotearoa New Zealand" was
+            pushing it past half the screen on a phone while the topic cells sat
+            half empty. The full name is on the party's own page. */}
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
           <span style={{ width: 9, height: 9, borderRadius: 3, background: party.color, flexShrink: 0 }} />
-          <span style={{ fontSize: 13, fontWeight: 800, color: INK }}>{party.name}</span>
+          <span className="coverage-party-name" style={{ fontWeight: 800, color: INK }}>{PARTY_NAMES[slug].short}</span>
         </span>
       </td>
       {topics.map((t) => {
@@ -122,5 +130,7 @@ function Legend({ swatch, label }: { swatch: React.ReactNode; label: string }) {
   )
 }
 
-const thBase: React.CSSProperties = { padding: '10px 12px', fontSize: 11.5, fontWeight: 800, color: SECONDARY, borderBottom: `1px solid ${BORDER}`, whiteSpace: 'nowrap' }
-const tdBase: React.CSSProperties = { padding: '10px 12px', borderBottom: `1px solid ${BORDER}`, whiteSpace: 'nowrap' }
+// Padding lives in globals.css (.coverage-matrix), not here: inline styles beat
+// any stylesheet rule, so it can't be tightened for phones from this file.
+const thBase: React.CSSProperties = { fontSize: 11.5, fontWeight: 800, color: SECONDARY, borderBottom: `1px solid ${BORDER}`, whiteSpace: 'nowrap' }
+const tdBase: React.CSSProperties = { borderBottom: `1px solid ${BORDER}`, whiteSpace: 'nowrap' }
