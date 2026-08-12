@@ -71,6 +71,7 @@ async function buildTileParties(): Promise<TileParty[]> {
     }).filter((p): p is TilePosition => p !== null)
 
     const leaderSlug = mpSlugForName(prof.leader)
+    const coLeaderSlug = prof.coLeader ? mpSlugForName(prof.coLeader) : null
 
     return {
       slug,
@@ -82,6 +83,9 @@ async function buildTileParties(): Promise<TileParty[]> {
       leaderTitle: prof.leaderTitle,
       leaderPhoto: leaderSlug ? MP_PROFILES[leaderSlug].photo : prof.leaderPhoto,
       leaderHref: leaderSlug ? `/mps/${leaderSlug}` : null,
+      coLeader: prof.coLeader,
+      coLeaderPhoto: coLeaderSlug ? MP_PROFILES[coLeaderSlug].photo : undefined,
+      coLeaderHref: coLeaderSlug ? `/mps/${coLeaderSlug}` : null,
       role: prof.status === 'governing' ? 'In government' : 'In opposition',
       seats: prof.seats,
       electorateSeats: prof.electorateSeats,

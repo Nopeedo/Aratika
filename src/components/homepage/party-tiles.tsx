@@ -29,6 +29,11 @@ export interface TileParty {
   leaderTitle: string
   leaderPhoto?: string
   leaderHref: string | null
+  /** Green and Te Pāti Māori have co-leaders. Neither is "the" leader, so both
+   *  are shown side by side rather than one being promoted over the other. */
+  coLeader?: string
+  coLeaderPhoto?: string
+  coLeaderHref?: string | null
   role: string
   seats: number
   electorateSeats: number
@@ -293,12 +298,31 @@ function PanelHeader({ p }: { p: TileParty }) {
       <span style={{ display: 'block', fontSize: 'clamp(30px,6.4vw,56px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.05 }}>{p.name}</span>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 12 }}>
-        <Avatar name={p.leader} party={p.slug} src={p.leaderPhoto} size="md" face />
+        {/* Overlap the discs only when both are real photos — matches the party
+            tile elsewhere. Faces sit mid-frame so a 10px bite is invisible,
+            whereas initials run edge to edge and would get clipped. */}
+        <span style={{ display: 'flex', flexShrink: 0 }}>
+          <Avatar name={p.leader} party={p.slug} src={p.leaderPhoto} size="md" face />
+          {p.coLeader && (
+            <span style={{ marginLeft: p.leaderPhoto && p.coLeaderPhoto ? -10 : 4, borderRadius: '50%', boxShadow: '0 0 0 2px #fff' }}>
+              <Avatar name={p.coLeader} party={p.slug} src={p.coLeaderPhoto} size="md" face />
+            </span>
+          )}
+        </span>
         <span style={{ textAlign: 'left' }}>
           <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>
             {p.leaderHref ? <Link href={p.leaderHref} style={{ color: INK, textDecoration: 'none' }}>{p.leader}</Link> : p.leader}
+            {p.coLeader && (
+              <>
+                {' & '}
+                {p.coLeaderHref ? <Link href={p.coLeaderHref} style={{ color: INK, textDecoration: 'none' }}>{p.coLeader}</Link> : p.coLeader}
+              </>
+            )}
           </div>
-          <div style={{ fontSize: 12.5, fontWeight: 600, color: SUB, marginTop: 1, fontFamily: MANROPE }}>{p.leaderTitle}</div>
+          {/* Pluralised, so a co-led party never reads as having one leader. */}
+          <div style={{ fontSize: 12.5, fontWeight: 600, color: SUB, marginTop: 1, fontFamily: MANROPE }}>
+            {p.coLeader ? 'Co-leaders' : p.leaderTitle}
+          </div>
         </span>
       </div>
     </div>
