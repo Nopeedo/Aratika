@@ -1,12 +1,18 @@
 /**
- * PartyTile — the /parties directory tile: flat, solid party colour with text in
- * that party's own contrast colour.
+ * PartyTile — the /parties directory tile.
+ *
+ * Matches the homepage party card: a pale wash of the party's colour behind a
+ * distinct border in that same colour, with the text in ink rather than the
+ * party's contrast colour. The two pages then read as one system, and the copy
+ * stays legible without depending on a per-party contrast colour — which was
+ * the fragile part of the old solid-fill treatment, since it had to flip
+ * between near-black on ACT's yellow and white on National's blue.
  *
  * Deliberately WITHOUT the Election Centre's filling gauge. There the level
  * carries the poll share, which is the whole point of that grid; here the seat
  * count is already stated in words, so a gauge added a second encoding of the
  * same number — and it forced a hatch on the parties holding no seats, which
- * just looked like a texture bug. Flat colour, one number, no second reading.
+ * just looked like a texture bug. One number, no second reading.
  */
 
 import Link from 'next/link'
@@ -16,15 +22,12 @@ import { PARTY_PROFILES } from '@/constants/parties-data'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { Avatar } from '@/components/ui/avatar'
 import type { PartySlug } from '@/types'
-import { MANROPE } from '@/constants/theme'
+import { INK, MANROPE, SECONDARY } from '@/constants/theme'
 
 const WARM = '#5b3d2a', LINE = '#e9e4db'
 
 const TILE_H = 176
 
-/** Fade a party's contrast colour — that colour is per-party (near-black on
- *  ACT's yellow, white on National's blue), so secondary text can't be a fixed
- *  rgba(255,255,255,…) or it disappears on the light tiles. */
 /** A leader who holds a seat has an MP photo; one who doesn't may still have a
  *  photo on the party record. Returns undefined when there's neither, which
  *  Avatar renders as initials. */
@@ -62,8 +65,7 @@ export function PartyTileGrid({ slugs }: { slugs: PartySlug[] }) {
 
 export function PartyTile({ slug }: { slug: PartySlug }) {
   const colour = PARTY_COLORS[slug].bg
-  const onColour = PARTY_COLORS[slug].text
-  const soft = (a: number) => hexToRgba(onColour, a)
+  const light = PARTY_COLORS[slug].light
   const names = PARTY_NAMES[slug]
   const profile = PARTY_PROFILES[slug]
   const seats = CURRENT_SEATS[slug] ?? 0
@@ -74,43 +76,42 @@ export function PartyTile({ slug }: { slug: PartySlug }) {
   return (
     <Link href={`/parties/${slug}`} className="party-card" style={{
       position: 'relative', display: 'block', height: TILE_H, borderRadius: 15, overflow: 'hidden',
-      textDecoration: 'none', background: colour, border: `2px solid ${colour}`,
-      boxShadow: '0 2px 6px rgba(42,18,6,.12)',
+      textDecoration: 'none', background: light, border: `3px solid ${colour}`,
+      boxShadow: '0 2px 6px rgba(42,18,6,.08)',
     }}>
       {seats > 0 && (
+        // Ink on white rather than the party colour: several palettes (ACT's
+        // yellow, TOP's cyan) are too light to use as text on a pale ground, so
+        // the colour stays in the border where it can't fail contrast.
         <span style={{
-          position: 'absolute', top: 12, right: 13, zIndex: 2, fontSize: 10, fontWeight: 800, color: onColour,
-          background: soft(0.14), border: `1px solid ${soft(0.28)}`, borderRadius: 99, padding: '2px 7px', fontFamily: MANROPE,
+          position: 'absolute', top: 12, right: 13, zIndex: 2, fontSize: 10, fontWeight: 800, color: SECONDARY,
+          background: '#fff', border: `1px solid ${hexToRgba(colour, 0.32)}`, borderRadius: 99, padding: '2px 7px', fontFamily: MANROPE,
         }}>{share}% of the House</span>
       )}
 
       <span style={{ position: 'relative', zIndex: 1, height: '100%', padding: '13px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <span style={{ display: 'block' }}>
-          <span style={{ display: 'block', fontSize: 16, fontWeight: 800, color: onColour, fontFamily: MANROPE, lineHeight: 1.15, paddingRight: seats > 0 ? 96 : 0 }}>{names.short}</span>
-          <span style={{ display: 'block', fontSize: 10.5, color: soft(0.72), fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}>{names.full}</span>
+          <span style={{ display: 'block', fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15, paddingRight: seats > 0 ? 96 : 0 }}>{names.short}</span>
+          <span style={{ display: 'block', fontSize: 10.5, color: SECONDARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}>{names.full}</span>
           {/* Faces, not just names — the leader is how most people recognise a
               party. MP photo where they hold a seat, the party's own leaderPhoto
               otherwise; Avatar falls back to initials when neither exists. */}
           {profile?.leader && (
             <span style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 9 }}>
-              {/* No `party` prop when there's no photo: Avatar's initials
-                  fallback fills the circle with the party colour, which on a
-                  tile of that same colour left the letters floating with no
-                  disc at all. Unset, it falls back to a neutral grey that
-                  reads on every tile. */}
               {/* Overlap the discs only when both are real photos. Faces sit in
                   the middle of the frame so a 10px bite is invisible; initials
                   run edge to edge, and the co-leader's disc was eating the
-                  first one's second letter. */}
+                  first one's second letter. The ring matches the tile ground so
+                  it reads as a gap between the discs, not an outline. */}
               <span style={{ display: 'flex', flexShrink: 0 }}>
                 <LeaderFace slug={slug} name={profile.leader} src={leaderSrc} />
                 {profile.coLeader && (
-                  <span style={{ marginLeft: leaderSrc && coLeaderSrc ? -10 : 3, borderRadius: '50%', boxShadow: `0 0 0 2px ${colour}` }}>
+                  <span style={{ marginLeft: leaderSrc && coLeaderSrc ? -10 : 3, borderRadius: '50%', boxShadow: `0 0 0 2px ${light}` }}>
                     <LeaderFace slug={slug} name={profile.coLeader} src={coLeaderSrc} />
                   </span>
                 )}
               </span>
-              <span style={{ fontSize: 11.5, fontWeight: 700, color: soft(0.92), fontFamily: MANROPE, lineHeight: 1.25, minWidth: 0 }}>
+              <span style={{ fontSize: 11.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.25, minWidth: 0 }}>
                 {profile.coLeader ? `${profile.leader} & ${profile.coLeader}` : profile.leader}
               </span>
             </span>
@@ -120,15 +121,15 @@ export function PartyTile({ slug }: { slug: PartySlug }) {
         <span style={{ display: 'block' }}>
           {seats > 0 ? (
             <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 6 }}>
-              <span style={{ fontSize: 34, fontWeight: 800, color: onColour, fontFamily: MANROPE, letterSpacing: '-.02em', lineHeight: 1.05, fontVariantNumeric: 'tabular-nums' }}>
+              <span style={{ fontSize: 34, fontWeight: 800, color: INK, fontFamily: MANROPE, letterSpacing: '-.02em', lineHeight: 1.05, fontVariantNumeric: 'tabular-nums' }}>
                 {seats}
               </span>
-              <span style={{ fontSize: 13, fontWeight: 700, color: soft(0.8), fontFamily: MANROPE }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE }}>
                 {seats === 1 ? 'seat' : 'seats'}
               </span>
             </span>
           ) : (
-            <span style={{ display: 'block', fontSize: 11.5, fontWeight: 700, color: soft(0.85), fontFamily: MANROPE, lineHeight: 1.4 }}>
+            <span style={{ display: 'block', fontSize: 11.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.4 }}>
               Contesting 2026 — no seats in this Parliament
             </span>
           )}
@@ -155,7 +156,9 @@ export function TileGroupHeading({ label, count }: { label: string; count: numbe
 export function PlainPartyTile({ name, focus, site }: { name: string; focus: string[]; site: string }) {
   return (
     <div style={{
-      height: TILE_H, borderRadius: 15, background: '#fff', border: `2px solid ${LINE}`,
+      // 3px to match the profiled tiles it shares a grid with — these parties
+      // have no colour of their own, so the border stays neutral.
+      height: TILE_H, borderRadius: 15, background: '#fff', border: `3px solid ${LINE}`,
       padding: '13px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
       boxShadow: '0 2px 6px rgba(42,18,6,.06)',
     }}>
