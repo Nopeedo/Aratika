@@ -35,6 +35,19 @@ const isBoiler = (s: string) => { const t = s.trim(); return !t || BOILER.some((
 interface Annotation { id: string; paragraph_index: number; quote: string; note: string | null }
 interface Para { text: string; topics: string[]; id: string; head: boolean }
 
+/* Contents beside the text on desktop, above it on a phone. The 248px sidebar
+   is a comfortable third of a laptop window but most of a phone screen, and it
+   was taking that width out of the bill text rather than out of the margins. */
+const READER_CSS = `
+.reader-toc { width: 248px; flex-shrink: 0; border-right: 1px solid #e6e2da; max-height: 680px; }
+.reader-text { max-height: 680px; }
+@media (max-width: 760px) {
+  .reader-split { flex-direction: column; }
+  .reader-toc { width: auto; max-height: 190px; border-right: none; border-bottom: 1px solid #e6e2da; }
+  .reader-text { max-height: 60vh; padding: 16px 16px 22px; }
+}
+`
+
 export function BillFullText({ fullText, policyLinks, docType = 'bill', contentItemId, billSlug, billTitle }: {
   fullText: string | null; policyLinks: PolicyLink[]; docType?: string
   contentItemId?: string; billSlug?: string; billTitle?: string
@@ -145,17 +158,22 @@ export function BillFullText({ fullText, policyLinks, docType = 'bill', contentI
                 : <span><Link href="/login" style={{ color: '#b45309', fontWeight: 800 }}>Sign in</Link>{PREMIUM_ENABLED ? ' (Premium)' : ''} to highlight passages and keep notes.</span>}
           </div>
 
-          {/* TOC sidebar + text */}
-          <div style={{ display: 'flex', alignItems: 'stretch' }}>
+          {/* TOC sidebar + text. The sidebar's width and the divider it sits
+              against are set in READER_CSS, not inline: at 248px fixed it left
+              the bill text about 90px to wrap in on a phone — roughly one word
+              per line — and an inline width would beat the media query that
+              stacks them. */}
+          <style dangerouslySetInnerHTML={{ __html: READER_CSS }} />
+          <div className="reader-split" style={{ display: 'flex', alignItems: 'stretch' }}>
             {toc.length >= 3 && (
-              <nav style={{ width: 248, flexShrink: 0, borderRight: `1px solid ${BORDER}`, background: '#fcfbf9', maxHeight: 680, overflowY: 'auto', padding: '14px 10px' }}>
+              <nav className="reader-toc" style={{ background: '#fcfbf9', overflowY: 'auto', padding: '14px 10px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, padding: '0 8px 10px' }}><List style={{ width: 13, height: 13 }} /> Contents</div>
                 {toc.map((h) => (
                   <button key={h.id} onClick={() => scrollTo(h.id)} title={h.label} style={{ display: 'block', width: '100%', textAlign: 'left', cursor: 'pointer', fontFamily: MANROPE, fontSize: 12.5, fontWeight: h.sub ? 500 : 700, color: h.sub ? SECONDARY : INK, background: 'none', border: 'none', borderRadius: 8, padding: h.sub ? '6px 8px 6px 20px' : '6px 8px', lineHeight: 1.35, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{h.label}</button>
                 ))}
               </nav>
             )}
-            <div ref={textRef} onMouseUp={canAnnotate ? onMouseUp : undefined} style={{ flex: 1, minWidth: 0, maxHeight: 680, overflowY: 'auto', padding: '20px 24px 28px', scrollBehavior: 'smooth' }}>
+            <div ref={textRef} className="reader-text" onMouseUp={canAnnotate ? onMouseUp : undefined} style={{ flex: 1, minWidth: 0, overflowY: 'auto', padding: '20px 24px 28px', scrollBehavior: 'smooth' }}>
               {paras.map((p, i) => {
                 if (p.head) return <div key={i} data-pidx={i} id={p.id} style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '22px 0 8px', scrollMarginTop: 12 }}>{p.text}</div>
                 const relevant = p.topics.length > 0

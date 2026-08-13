@@ -19,6 +19,24 @@ const SHORT: Record<string, string> = {
   'select-committee': 'Select committee',
 }
 
+/* Horizontal track on desktop; a vertical list under 760px, where seven columns
+   leave ~40px each and the labels overlapped into an unreadable run. The rail
+   is dropped in the vertical form — with the beads stacked left it would need to
+   be redrawn as a spine, and the bead states already carry the progress. */
+const TRACK_CSS = `
+.stage-track { position: relative; display: flex; justify-content: space-between; gap: 2px; }
+.stage-rail { position: absolute; left: 11px; right: 11px; top: 11px; height: 2px; }
+.stage-fill { right: auto; }
+.stage-step { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; min-width: 0; text-align: center; }
+.stage-label { font-size: 10.5px; }
+@media (max-width: 760px) {
+  .stage-track { flex-direction: column; gap: 12px; }
+  .stage-rail { display: none; }
+  .stage-step { flex-direction: row; align-items: center; gap: 11px; flex: none; text-align: left; }
+  .stage-label { font-size: 13px; }
+}
+`
+
 export function StageTracker({ stage, selectCommittee }: { stage: string | null; selectCommittee?: string | null }) {
   const currentIdx = stage ? BILL_STAGE_PIPELINE.findIndex((s) => s.key === stage) : -1
   const n = BILL_STAGE_PIPELINE.length
@@ -36,17 +54,22 @@ export function StageTracker({ stage, selectCommittee }: { stage: string | null;
         <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 18px', fontStyle: 'italic' }}>Current stage being confirmed — here are the steps every bill passes through.</p>
       )}
 
-      <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+      {/* Seven stages across a phone is about 40px a column — too narrow for
+          "Introduced" or "Select committee", so the labels ran into each other.
+          Under 760px the track turns into a vertical list instead. The layout
+          properties live in TRACK_CSS rather than inline for that reason. */}
+      <style dangerouslySetInnerHTML={{ __html: TRACK_CSS }} />
+      <div className="stage-track">
         {/* Track: the grey rail, then the completed overlay. Inset by half a bead
             so the line starts and ends at the bead centres, not the edges. */}
-        <span aria-hidden style={{ position: 'absolute', left: 11, right: 11, top: 11, height: 2, background: LINE }} />
-        {fill > 0 && <span aria-hidden style={{ position: 'absolute', left: 11, top: 11, height: 2, background: JADE, width: `calc((100% - 22px) * ${fill})` }} />}
+        <span aria-hidden className="stage-rail" style={{ background: LINE }} />
+        {fill > 0 && <span aria-hidden className="stage-rail stage-fill" style={{ background: JADE, width: `calc((100% - 22px) * ${fill})` }} />}
 
         {BILL_STAGE_PIPELINE.map((s, i) => {
           const done = currentIdx !== -1 && i < currentIdx
           const current = i === currentIdx
           return (
-            <div key={s.key} style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, flex: 1, minWidth: 0, textAlign: 'center' }}>
+            <div key={s.key} className="stage-step">
               <span style={{
                 width: 24, height: 24, borderRadius: '50%', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -57,7 +80,7 @@ export function StageTracker({ stage, selectCommittee }: { stage: string | null;
                   : current ? <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#fff' }} />
                   : <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#cbd0d6' }} />}
               </span>
-              <span style={{ fontSize: 10.5, fontWeight: current ? 800 : 600, color: done ? JADE : current ? AMBER_DK : '#8b9299', fontFamily: MANROPE, lineHeight: 1.3, hyphens: 'auto' }}>
+              <span className="stage-label" style={{ fontWeight: current ? 800 : 600, color: done ? JADE : current ? AMBER_DK : '#8b9299', fontFamily: MANROPE, lineHeight: 1.3, hyphens: 'auto' }}>
                 {SHORT[s.key] ?? s.label}
               </span>
             </div>

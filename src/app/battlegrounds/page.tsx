@@ -30,15 +30,22 @@ export default function BattlegroundsHub() {
             <SectionDivider type="official" label="Election Battlegrounds" />
             <Link href="/elections/2026" style={{ fontSize: 12, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE }}>2026 election →</Link>
           </div>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-            <div style={{ width: 54, height: 54, borderRadius: 15, background: '#fef2f2', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Swords style={{ width: 27, height: 27, color: '#dc2626' }} />
+          {/* The icon, heading and intro all scale with the viewport. At a fixed
+              54px / 38px / 17px this hero filled a phone screen on its own —
+              heading over two lines above a nine-line paragraph — and pushed the
+              roll switcher and the map below the fold. */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'clamp(11px, 3vw, 16px)' }}>
+            <div style={{ width: 'clamp(40px, 11vw, 54px)', height: 'clamp(40px, 11vw, 54px)', borderRadius: 15, background: '#fef2f2', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Swords style={{ width: 'clamp(20px, 5.5vw, 27px)', height: 'clamp(20px, 5.5vw, 27px)', color: '#dc2626' }} />
             </div>
             <div>
-              <h1 style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.05 }}>Seats to watch</h1>
-              <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.6, margin: 0 }}>
-                Every electorate has a battle page — the closest 2023 contests are most likely to change hands in 2026, but
-                every seat, safe ones included, has its own defender, record and contest to follow. Hotter colours mean tighter races.
+              <h1 style={{ fontSize: 'clamp(26px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.05 }}>Seats to watch</h1>
+              {/* Trimmed from 40 words to 27 — same three points (every seat has
+                  a page, the close ones are the ones to watch, colour = margin),
+                  without the aside that was costing four lines on a phone. */}
+              <p style={{ fontSize: 'clamp(14.5px, 3.9vw, 17px)', fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.55, margin: 0 }}>
+                Every electorate has its own battle page — defender, record and contest. The closest 2023 races are the
+                likeliest to change hands in 2026; hotter colours mean tighter races.
               </p>
             </div>
           </div>

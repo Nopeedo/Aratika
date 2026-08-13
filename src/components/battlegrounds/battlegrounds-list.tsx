@@ -30,12 +30,22 @@ export function BattlegroundsList({ all, tiers }: { all: BattlegroundEntry[]; ti
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 14 }}>
-        {shown.map((b) => (
+        {shown.map((b) => {
+          // Washed in the sitting MP's party colour with a border to match, the
+          // same treatment as the party tiles and the MP directory. Seats with
+          // no sitting member fall back to the plain card.
+          const col = b.info.party ? PARTY_COLORS[b.info.party] : null
+          return (
           <Link key={b.slug} href={`/battlegrounds/${b.slug}`} style={{ textDecoration: 'none' }}>
-            <div className="policy-card" style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '16px 18px', height: '100%', boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+            <div className="policy-card" style={{ background: col ? col.light : '#fff', border: `2px solid ${col ? col.bg : BORDER}`, borderRadius: 16, padding: '16px 18px', height: '100%', boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
                 <span style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{b.info.name}</span>
-                <span style={{ fontSize: 10.5, fontWeight: 800, color: '#fff', background: b.tier.color, borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>{b.tier.label}</span>
+                {/* White ring so the margin tier stays readable as its own
+                    signal. Without it, a red "Ultra-marginal" badge on a Labour
+                    seat sat on a pale red card inside a red border, and the
+                    thing this page is actually sorted by disappeared into the
+                    party colour. */}
+                <span style={{ fontSize: 10.5, fontWeight: 800, color: '#fff', background: b.tier.color, borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE, whiteSpace: 'nowrap', boxShadow: '0 0 0 2px rgba(255,255,255,.95)' }}>{b.tier.label}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>
                 {b.info.party && <span style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[b.info.party].bg }} />}
@@ -50,7 +60,8 @@ export function BattlegroundsList({ all, tiers }: { all: BattlegroundEntry[]; ti
               </div>
             </div>
           </Link>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
