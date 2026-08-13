@@ -38,7 +38,7 @@ export function TwoVotes() {
         <div style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE }}>Cast each vote to see what it actually does.</div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 0 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 0 }}>
 
         {/* Party vote */}
         <div style={{ padding: '16px 18px', borderRight: `1px solid ${BORDER}` }}>
@@ -79,7 +79,7 @@ export function TwoVotes() {
       </div>
 
       {/* Effects */}
-      <div style={{ borderTop: `1px solid ${BORDER}`, padding: '14px 18px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 12 }}>
+      <div style={{ borderTop: `1px solid ${BORDER}`, padding: '14px 18px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 12 }}>
         <AnimatePresence mode="wait">
           <motion.div key={party ?? 'np'} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}
             style={{ fontSize: 12.5, color: party !== null ? '#065f46' : TERTIARY, fontFamily: MANROPE, lineHeight: 1.5 }}>

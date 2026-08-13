@@ -71,7 +71,7 @@ export default async function PolicyAnalysisPage() {
 
               <div style={{ padding: '16px 20px' }}>
                 {/* For / Against */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 14 }}>
                   <ArgColumn kind="for" items={p.argumentsFor} />
                   <ArgColumn kind="against" items={p.argumentsAgainst} />
                 </div>

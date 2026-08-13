@@ -85,7 +85,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
         <div>
           <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>What {firstName} has prioritised this term</div>
           <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 14px' }}>Official roles, sourced from parliament.nz.</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(220px, 100%), 1fr))', gap: 16 }}>
             {mp.portfolios && mp.portfolios.length > 0 && (
               <div>
                 <Label icon={Megaphone} text="Spokesperson roles" />

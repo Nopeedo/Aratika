@@ -147,7 +147,7 @@ function BillPanel({ bill }: { bill: DefiningBill }) {
         <>
           <p style={labelStyle}>Its journey through Parliament</p>
           <Journey nodes={f.journey} />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 14, marginTop: 26, paddingTop: 22, borderTop: `1px solid ${LINE}` }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(140px, 100%), 1fr))', gap: 14, marginTop: 26, paddingTop: 22, borderTop: `1px solid ${LINE}` }}>
             {f.stats.map((s, i) => (
               <div key={i}>
                 <div style={{ fontSize: 25, fontWeight: 800, letterSpacing: '-.02em', color: ACCENT_DK, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>
@@ -184,7 +184,7 @@ function BillPanel({ bill }: { bill: DefiningBill }) {
         </>
       ) : null}
 
-      <div style={{ marginTop: 24, paddingTop: 20, borderTop: `1px solid ${LINE}`, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 18 }}>
+      <div style={{ marginTop: 24, paddingTop: 20, borderTop: `1px solid ${LINE}`, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 18 }}>
         <div>
           <p style={labelStyle}>Why it matters</p>
           <p style={{ fontSize: 13.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.why}</p>

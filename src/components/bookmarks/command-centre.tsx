@@ -189,7 +189,7 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
               <span style={{ fontSize: 11, fontWeight: 800, color: ks.ink, background: ks.tint, borderRadius: 999, padding: '1px 7px', fontFamily: MANROPE, flexShrink: 0 }}>{group.length}</span>
               <span aria-hidden style={{ flex: 1, height: 1, background: BORDER }} />
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 10 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(240px, 100%), 1fr))', gap: 10 }}>
               {group.map((b) => {
                 const sub = b.role || b.sublabel
                 const open = openBill(b)

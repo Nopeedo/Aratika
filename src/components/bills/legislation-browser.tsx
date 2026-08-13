@@ -107,7 +107,7 @@ export function LegislationBrowser({ bills }: { bills: LiveBill[] }) {
       {filtered.length === 0 ? (
         <p style={{ fontSize: 14, color: MUTED, fontFamily: MANROPE, padding: '10px 2px' }}>No breakdowns match those filters. <button onClick={() => { setQuery(''); setTopic('all'); setStage('all') }} style={{ color: ACCENT_DK, fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer', fontFamily: MANROPE, fontSize: 14 }}>Clear filters</button></p>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 16 }}>
           {filtered.map((b) => (
             <Link key={b.id} href={`/legislation/${b.slug}`} className="party-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', background: CARD, border: `1px solid ${LINE}`, borderRadius: 18, padding: '20px 22px', textDecoration: 'none' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>

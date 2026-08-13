@@ -90,7 +90,7 @@ export function QuickGuide() {
           <p style={{ fontSize: 15.5, color: SUB, lineHeight: 1.5, margin: '0 0 22px' }}>
             Pick a few things you care about. We&rsquo;ll show you where the parties actually stand — no jargon, no spin.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))', gap: 10 }}>
             {POLICY_TOPIC_ORDER.map((t) => {
               const on = issues.includes(t)
               const disabled = !on && issues.length >= MAX_ISSUES

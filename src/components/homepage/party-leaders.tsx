@@ -43,7 +43,7 @@ export function PartyLeaders() {
         </div>
 
         {/* Leader cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 16 }}>
           {leaders.map(({ slug, party, mp }) => (
             <Link key={slug} href={`/mps/${mp!.slug}`} className="party-card" style={{ textDecoration: 'none', display: 'block', borderRadius: 16, overflow: 'hidden', border: `1px solid ${BORDER}`, background: '#fff' }}>
               {/* party colour bar */}

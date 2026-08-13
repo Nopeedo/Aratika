@@ -106,7 +106,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             <ZoneHead eyebrow="Get ready to vote" title="How your vote works"
               sub="You get two votes under MMP. Here’s what each one does — then sort your enrolment." />
             <TwoVotes />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14, marginTop: 14 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 14, marginTop: 14 }}>
               {STEPS.map((s) => (
                 <div key={s.title} className="party-card" style={{ background: s.tint, border: `2px solid ${s.ink}`, borderRadius: 16, padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <s.icon style={{ width: 24, height: 24, color: s.ink }} />
@@ -147,7 +147,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
-                <div style={{ padding: 18, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 18, alignItems: 'center' }}>
+                <div style={{ padding: 18, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 18, alignItems: 'center' }}>
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <SeatHemicycle results={base.results!} total={base.totalSeats!} />
                   </div>

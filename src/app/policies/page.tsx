@@ -51,7 +51,7 @@ export default function PolicyHubPage() {
       </div>
 
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: 'clamp(18px, 5vw, 36px) clamp(18px, 5vw, 36px) 64px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: 16 }}>
           {POLICY_TOPIC_ORDER.map((key) => {
             const topic = POLICY_TOPICS[key]
             const Icon = ICONS[topic.icon]

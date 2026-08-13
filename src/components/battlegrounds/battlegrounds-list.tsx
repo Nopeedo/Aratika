@@ -29,7 +29,7 @@ export function BattlegroundsList({ all, tiers }: { all: BattlegroundEntry[]; ti
         })}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 14 }}>
         {shown.map((b) => {
           // Washed in the sitting MP's party colour with a border to match, the
           // same treatment as the party tiles and the MP directory. Seats with

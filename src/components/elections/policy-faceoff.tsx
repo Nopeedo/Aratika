@@ -168,7 +168,7 @@ export function PolicyFaceoff({ positions }: { positions: PartyPosition[] }) {
       </div>
 
       {/* The two contenders */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 12, alignItems: 'stretch' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(250px, 100%), 1fr))', gap: 12, alignItems: 'stretch' }}>
         <ContenderCard side="a" party={a} pos={posA} list={list} onSelect={choose} onPick={pick} flash={flash === 'a'} />
         <ContenderCard side="b" party={b} pos={posB} list={list} onSelect={choose} onPick={pick} flash={flash === 'b'} />
       </div>

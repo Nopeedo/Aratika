@@ -30,7 +30,7 @@ export default function GlossaryPage() {
       </div>
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '34px 36px 64px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 14 }}>
           {sorted.map((t) => (
             <div key={t.term} style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px' }}>
               <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 5 }}>{t.term}</div>

@@ -53,7 +53,7 @@ export default function SubscriptionPage() {
       </div>
 
       <div style={{ maxWidth: 880, margin: '0 auto', padding: '36px 36px 64px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 18 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 18 }}>
           {/* Free */}
           <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 20, padding: '26px 24px' }}>
             <div style={{ fontSize: 14, fontWeight: 800, color: SECONDARY, fontFamily: MANROPE, letterSpacing: '.04em', textTransform: 'uppercase' }}>Free</div>

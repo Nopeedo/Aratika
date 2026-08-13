@@ -102,7 +102,7 @@ export function LetterStudio({ templateId, ctx: ctx0 }: { templateId: LetterTemp
         </ul>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 20, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: 20, alignItems: 'start' }}>
 
         {/* ── Form ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>

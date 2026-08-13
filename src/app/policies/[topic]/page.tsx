@@ -92,7 +92,7 @@ export default async function PolicyTopicPage(
           <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px' }}>
             Parties that list this as one of their key policy areas. Tap a party to see its full profile.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(220px, 100%), 1fr))', gap: 12 }}>
             {priorityParties.map((p) => {
               const party = PARTY_PROFILES[p]
               return (

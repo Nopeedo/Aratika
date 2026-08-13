@@ -216,7 +216,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
             <Card>
               <SectionHeading icon={Activity} title="Impact this term" />
               <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '-6px 0 14px' }}>{CURRENT_TERM.label} · {CURRENT_TERM.sinceLabel}</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(120px, 100%), 1fr))', gap: 10 }}>
                 <ImpactTile label="Roles & spokesperson areas" value={mp.portfolios?.length ?? 0} />
                 <ImpactTile label="Select committees" value={mp.committees?.length ?? 0} />
                 {govBills.length > 0 && <ImpactTile label="Government bills in charge" value={govBills.length} />}
@@ -396,7 +396,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
                 <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '-6px 0 14px' }}>
                   Travel and accommodation paid by Parliamentary Service for {e.period}. Ministers’ expenses are disclosed separately.
                 </p>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(120px, 100%), 1fr))', gap: 10 }}>
                   {[{ l: 'Total this quarter', v: e.total, big: true }, { l: 'Accommodation', v: e.accommodation }, { l: 'Travel', v: e.travel }].map((t) => (
                     <div key={t.l} style={{ background: t.big ? '#f1f7f3' : SURFACE, border: `1px solid ${t.big ? '#c9e6d4' : BORDER}`, borderRadius: 12, padding: '12px 14px', minWidth: 0 }}>
                       <div style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: DISPLAY, lineHeight: 1 }}>{money(t.v)}</div>

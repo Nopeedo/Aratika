@@ -211,7 +211,7 @@ export default async function DashboardPage() {
             </div>
 
             {feedNews.length > 0 && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 10, marginBottom: feedVideos.length ? 24 : 0 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 10, marginBottom: feedVideos.length ? 24 : 0 }}>
                 {feedNews.map((n) => (
                   <a key={n.id} href={n.link} target="_blank" rel="noopener noreferrer" className="party-card" style={{ display: 'flex', gap: 11, textDecoration: 'none', border: `1px solid ${BORDER}`, borderRadius: 12, padding: '11px 12px', background: '#fff' }}>
                     <span style={{ width: 64, height: 48, flexShrink: 0, borderRadius: 8, overflow: 'hidden', background: '#eef4ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

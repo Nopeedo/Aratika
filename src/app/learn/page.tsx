@@ -55,7 +55,7 @@ export default function LearnHubPage() {
       {/* Modules */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '36px 36px 64px' }}>
         <LearnProgressBanner />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 16 }}>
           {LEARN_MODULES.map((m) => {
             const Icon = ICONS[m.icon] || Vote
             const live = m.status === 'live'

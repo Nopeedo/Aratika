@@ -54,7 +54,7 @@ export default function AboutPage() {
         {/* Principles */}
         <section>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 16px' }}>What we stand for</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 14 }}>
             {PRINCIPLES.map((p) => (
               <div key={p.title} style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '18px 20px' }}>
                 <div style={{ width: 40, height: 40, borderRadius: 11, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 10 }}>
@@ -73,7 +73,7 @@ export default function AboutPage() {
           <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 16px', lineHeight: 1.6 }}>
             Credibility is the whole point. Everything on Arapono traces back to official, public sources:
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 12 }}>
             {DATA_SOURCES.map((s) => (
               <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                 <div className="party-card" style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px', height: '100%' }}>

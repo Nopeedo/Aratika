@@ -193,7 +193,7 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
       ) : (
         <>
           <div ref={resultsRef} style={{ scrollMarginTop: 80 }} />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(330px, 100%), 1fr))', gap: 12 }}>
             {pageItems.map((b) => <BillCard key={b.slug + b.number} b={b} readerSlug={readerSlugs[normTitle(b.title)]} submissionsOpen={isOpen(b)} party={partyOf(b.member)} />)}
           </div>
           {pageCount > 1 && <Pager current={current} pageCount={pageCount} goTo={goTo} />}

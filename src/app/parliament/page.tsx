@@ -79,7 +79,7 @@ export default function ParliamentPage() {
           <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 16px' }}>
             The Prime Minister and ministers who run the country — {ministers.length} ministers across the coalition.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(250px, 100%), 1fr))', gap: 12 }}>
             {ministers.map((m) => (
               <Link key={m.slug} href={`/mps/${m.slug}`} style={{ textDecoration: 'none' }}>
                 <div className="party-card" style={{ display: 'flex', alignItems: 'center', gap: 11, background: '#fff', border: `1px solid ${BORDER}`, borderLeft: `4px solid ${PARTY_COLORS[m.party].bg}`, borderRadius: 12, padding: '12px 14px', height: '100%' }}>
@@ -97,7 +97,7 @@ export default function ParliamentPage() {
         <section>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>The Opposition</h2>
           <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 16px' }}>The parties holding the Government to account.</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 14 }}>
             {OPPOSITION.map((p) => {
               const party = PARTY_PROFILES[p]
               return (
@@ -122,7 +122,7 @@ export default function ParliamentPage() {
         {KEY_ROLES.length > 0 && (
           <section>
             <h2 style={{ fontSize: 22, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 16px' }}>Key roles</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 12 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(230px, 100%), 1fr))', gap: 12 }}>
               {KEY_ROLES.map(({ role, mp, icon: Icon }) => (
                 <Link key={role} href={`/mps/${mp!.slug}`} style={{ textDecoration: 'none' }}>
                   <div className="party-card" style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px', height: '100%' }}>

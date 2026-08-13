@@ -18,7 +18,7 @@ export function GetReadyToVote() {
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px clamp(18px, 5vw, 36px)' }}>
         <h2 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Get ready to vote</h2>
         <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px' }}>Three quick steps to feel confident heading into 2026.</p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 16 }}>
           {/* enrol — official */}
           <a href="https://vote.nz" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
             <div className="party-card" style={{ height: '100%', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 22px' }}>

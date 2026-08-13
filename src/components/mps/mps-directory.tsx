@@ -110,7 +110,7 @@ export function MPsDirectory() {
           No MPs match your filters.
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: 14 }}>
           {filtered.map((mp) => {
             const prof = PARTY_PROFILES[mp.party]
             const col = PARTY_COLORS[mp.party]

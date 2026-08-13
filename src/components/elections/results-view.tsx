@@ -32,7 +32,7 @@ export function ResultsView({ e }: { e: ElectionData }) {
       )}
 
       {/* Party vote + hemicycle */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 22, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 22, alignItems: 'start' }}>
         <div>
           <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Party vote</h2>
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px' }}>The party vote decides each party’s share of seats.</p>

@@ -33,7 +33,7 @@ export default function ContactPage() {
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '30px 36px 64px', display: 'flex', flexDirection: 'column', gap: 22 }}>
 
         {/* Two action cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 14 }}>
           <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '22px 24px' }}>
             <div style={{ width: 42, height: 42, borderRadius: 12, background: SURFACE, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
               <Mail style={{ width: 21, height: 21, color: JADE }} />

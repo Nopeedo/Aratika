@@ -77,7 +77,7 @@ export default function BudgetPage() {
 
         {/* ── What it says it does (themes) ───────────────────── */}
         <h2 style={sectionH2()}>What Budget {BUDGET_META.year} sets out to do</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 12, marginBottom: 40 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))', gap: 12, marginBottom: 40 }}>
           {BUDGET_THEMES.map((t, i) => (
             <div key={i} style={{ display: 'flex', gap: 12, padding: '14px 16px', border: `1px solid ${BORDER}`, borderRadius: 12 }}>
               <span style={{ width: 24, height: 24, borderRadius: 7, background: '#ecfdf5', color: JADE, fontWeight: 800, fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontFamily: MANROPE }}>{i + 1}</span>
@@ -92,7 +92,7 @@ export default function BudgetPage() {
           Treasury publishes these as forecasts. We quote them as stated and don’t add precise figures
           beyond what Treasury put in words on its summary.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 14, marginBottom: 42 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 14, marginBottom: 42 }}>
           {[
             { ...BUDGET_OUTLOOK.economic, icon: TrendingUp },
             { ...BUDGET_OUTLOOK.fiscal, icon: Wallet },
@@ -137,7 +137,7 @@ export default function BudgetPage() {
           <Chip k="operating" /> <Chip k="capital" /> <Chip k="saving" /> so you can see what’s ongoing
           spending, one-off investment, or a saving.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(330px, 100%), 1fr))', gap: 16 }}>
           {BUDGET_SECTORS.map((s) => {
             const Icon = SECTOR_ICON[s.key] ?? Boxes
             return (
@@ -174,7 +174,7 @@ export default function BudgetPage() {
 
         {/* ── Election context / cross-links ──────────────────── */}
         <h2 style={{ ...sectionH2(), marginTop: 48 }}>Put it in context</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 12 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 12 }}>
           <CrossLink href="/policies/economy" title="Compare party economic policy" body="See how each party’s stated economy and tax policy stacks up against what’s actually budgeted." />
           <CrossLink href="/compare" title="Compare all parties" body="Where every party stands across health, education, housing, crime and more — side by side." />
           <CrossLink href="/record" title="Were the promises funded?" body="Track the government’s promises against the record (private accountability deep-dive)." />

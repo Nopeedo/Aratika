@@ -202,7 +202,7 @@ export default function HomePage() {
             <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: 0 }}>Everything you need to walk in ready for the decision.</p>
           </div>
           <Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 14 }}>
             {([
               { href: '/start', icon: Compass, accent: true, title: 'Start with you', body: 'Tell us the issues you care about — we’ll point you to what matters for your vote.', cta: 'Find what matters' },
               { href: '/compare', icon: Scale, accent: false, title: 'Line up the parties', body: 'Every party, side by side, on the issues that matter most to you.', cta: 'Compare parties' },
@@ -257,7 +257,7 @@ export default function HomePage() {
       ═══════════════════════════════════════════════════════════════════ */}
       <section style={{ background: '#0c0e12' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px 36px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 40, alignItems: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 40, alignItems: 'center' }}>
             <div>
               <div className="live-dot" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(54,224,138,.12)', color: '#36e08a', border: '1px solid rgba(54,224,138,.25)', borderRadius: 999, padding: '6px 13px', fontSize: 12.5, fontWeight: 800, fontFamily: 'var(--font-manrope), system-ui, sans-serif', marginBottom: 18 }}>
                 <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#36e08a', display: 'inline-block' }} />
@@ -437,7 +437,7 @@ export default function HomePage() {
           {/* 10-topic grid */}
           <div style={{
             display:             'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(180px, 100%), 1fr))',
             gap:                 14,
           }}>
             {POLICY_TOPIC_ORDER.map((key) => (
@@ -495,7 +495,7 @@ export default function HomePage() {
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px 36px' }}>
           <h2 style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 6px' }}>Get ready to vote</h2>
           <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 24px' }}>Three quick steps to feel confident heading into 2026.</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 16 }}>
             {/* enrol — official */}
             <a href="https://vote.nz" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
               <div className="party-card" style={{ height: '100%', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 22px' }}>

@@ -30,7 +30,7 @@ export default function ElectionsHub() {
       </div>
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '36px 36px 64px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 18 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: 18 }}>
           {ELECTIONS.map((e) => {
             const upcoming = e.status === 'upcoming'
             return (

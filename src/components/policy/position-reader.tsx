@@ -53,7 +53,7 @@ export function PositionReader({ position, accent, topicLabel }: { position: Par
       {/* Who this affects */}
       {position.whoAffected.length > 0 && (
         <Section icon={Users} title="Who this affects">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(240px, 100%), 1fr))', gap: 10 }}>
             {position.whoAffected.map((w, i) => (
               <div key={i} style={{ border: `1px solid ${BORDER}`, borderRadius: 12, padding: '12px 14px', background: SURFACE }}>
                 <div style={{ fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 3 }}>{w.group}</div>

@@ -60,7 +60,7 @@ export default function TakeActionHub() {
 
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '34px 36px 64px' }}>
         {/* Templates */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(330px, 1fr))', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(330px, 100%), 1fr))', gap: 16 }}>
           {LETTER_TEMPLATE_ORDER.map((id) => {
             const t = LETTER_TEMPLATES[id]
             const Icon = ICONS[t.icon] || Mail
@@ -86,7 +86,7 @@ export default function TakeActionHub() {
         {/* How it works */}
         <div style={{ marginTop: 34 }}>
           <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 14px' }}>How it works</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(220px, 100%), 1fr))', gap: 12 }}>
             {STEPS.map((s) => (
               <div key={s.n} style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px' }}>
                 <div style={{ width: 28, height: 28, borderRadius: '50%', background: JADE, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 14, fontFamily: MANROPE, marginBottom: 8 }}>{s.n}</div>

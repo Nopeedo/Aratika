@@ -68,7 +68,7 @@ export function CoalitionExplorer({ seats, total, asAt }: { seats: SeatEntry[]; 
         Tap parties to add them to a government and see if they get there. Seats estimated from poll averages as at {asAt}.
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20, alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 20, alignItems: 'center' }}>
         {/* Hemicycle */}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <svg viewBox={`0 0 ${geo.width} ${geo.height}`} style={{ width: '100%', maxWidth: 460 }} role="img" aria-label={`${chosenSeats} of ${total} seats selected`}>

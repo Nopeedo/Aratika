@@ -42,7 +42,7 @@ export function ModuleExperience({ module }: { module: LearnModule }) {
         <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 9 }}>
           Choose your level
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 8 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(140px, 100%), 1fr))', gap: 8 }}>
           {TIERS.map((t) => {
             const on = t.key === tier
             const a = TIER_ACCENT[t.key]

@@ -16,7 +16,7 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/the
 export function TwoVotes() {
   return (
     <div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 14 }}>
         {/* Party vote — the important one */}
         <div style={{ position: 'relative', border: `1.5px solid ${JADE}`, borderRadius: 16, background: '#fff', padding: '20px 20px 18px', display: 'flex', flexDirection: 'column', gap: 9 }}>
           <span style={{ position: 'absolute', top: 14, right: 14, fontSize: 10.5, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: '#fff', background: JADE, borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>Does the heavy lifting</span>

@@ -178,7 +178,7 @@ export default async function NationalRecordPage() {
           </div>
 
           {/* Funding links */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 12 }}>
             {BUDGET_LINKS.map((link, i) => {
               const rel = FUND_RELATION[link.relation]
               const pr = link.promiseId ? promiseById.get(link.promiseId) : undefined
@@ -219,7 +219,7 @@ export default async function NationalRecordPage() {
         {/* ── Priorities ── */}
         <div style={{ marginTop: 38 }}>
           <SectionTitle icon={Activity} title="Priorities through the term" sub="Where effort and legislation concentrated" />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: 12 }}>
             {PRIORITIES.map((pr) => (
               <div key={pr.theme} style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: '15px 17px', background: SURFACE }}>
                 <div style={{ fontSize: 14.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 5 }}>{pr.theme}</div>
@@ -266,7 +266,7 @@ export default async function NationalRecordPage() {
               public record to ~early 2026; confirm the latest at each source.
             </p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 14 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 14 }}>
             {ECONOMIC_DATA.series.map((s) => <EconCard key={s.id} series={s} />)}
             <OcrCard />
           </div>

@@ -78,7 +78,7 @@ export function PollAdmin({ initial }: { initial: EditorPoll[] }) {
       <form onSubmit={submit} style={{ border: `1px solid ${BORDER}`, borderRadius: 16, padding: 22, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Add a poll</div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: 14 }}>
           <Field label="Pollster *"><input value={pollster} onChange={(e) => setPollster(e.target.value)} placeholder="1News–Verian" style={inp} required /></Field>
           <Field label="Fieldwork dates"><input value={fieldwork} onChange={(e) => setFieldwork(e.target.value)} placeholder="13–17 Jun 2026" style={inp} /></Field>
           <Field label="Poll date *"><input type="date" value={date} onChange={(e) => setDate(e.target.value)} style={inp} required /></Field>
@@ -87,7 +87,7 @@ export function PollAdmin({ initial }: { initial: EditorPoll[] }) {
 
         <div>
           <div style={{ fontSize: 12.5, fontWeight: 800, color: SECONDARY, fontFamily: MANROPE, marginBottom: 8 }}>Party vote (%)</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: 10 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(120px, 100%), 1fr))', gap: 10 }}>
             {POLL_PARTIES.map((p) => (
               <div key={p} style={{ display: 'flex', alignItems: 'center', gap: 8, border: `1px solid ${BORDER}`, borderRadius: 10, padding: '6px 10px' }}>
                 <span style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[p].bg, flexShrink: 0 }} />

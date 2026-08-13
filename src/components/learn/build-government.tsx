@@ -85,7 +85,7 @@ export function BuildGovernment() {
         </div>
 
         {/* party toggles */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 8 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))', gap: 8 }}>
           {RESULT_2023.map((b) => {
             const on = picked.has(b.key)
             return (
