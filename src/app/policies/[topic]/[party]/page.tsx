@@ -14,6 +14,8 @@ import { CONTESTING_PARTIES } from '@/constants/parties'
 import { PolicyTopic, PartySlug } from '@/types'
 import { getApprovedPosition } from '@/lib/positions/live'
 import { PositionReader } from '@/components/policy/position-reader'
+import { PolicyDeepDive } from '@/components/policy/policy-deep-dive'
+import { getDeepDive } from '@/constants/policy-deep-dives'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -34,6 +36,7 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
   if (!t || !p || party === 'independent' || !CONTESTING_PARTIES.includes(party as PartySlug)) notFound()
 
   const pos = await getApprovedPosition(topic, party)
+  const deepDive = getDeepDive(topic, party)
 
   return (
     <div style={WOVEN_PAGE}>
@@ -51,7 +54,7 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
         </div>
       </div>
 
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '28px 36px 64px' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '28px 36px 64px', display: 'flex', flexDirection: 'column', gap: 26 }}>
         {pos ? (
           <PositionReader position={pos} accent={p.color} topicLabel={t.label} />
         ) : (
@@ -64,6 +67,12 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
             </p>
           </div>
         )}
+
+        {/* Long-form breakdown, where the party has published a policy document
+            for this topic. Renders independently of `pos` — the document is its
+            own source, so a deep dive can exist before we've recorded a summary
+            position, and the absence of one is not a gap in the page. */}
+        {deepDive && <PolicyDeepDive dive={deepDive} accent={p.color} partyName={p.name} />}
       </div>
       <PolicyCoverage maxWidth={900} />
     </div>
