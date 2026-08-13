@@ -727,11 +727,20 @@ function FocusedCard({ slug, pos, topicLabel }: {
   return (
     <div>
       <div style={{ fontSize: fitTitleSize(`${party.name} on ${topicLabel}`), fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15, whiteSpace: 'nowrap' }}>{party.name} on {topicLabel}</div>
-      {(() => {
-        // Same lead/rest split as the bullets below — otherwise a compound
-        // stance like "Equal rights for all; remove race-based policies and
-        // co-governance" rendered fully bold end to end, which is exactly
-        // the "some are straight bold" problem this was built to fix.
+      {/* The stance headline is gone from the top of the panel. It restated the
+          proposals directly beneath it — Labour's housing stance read "Capital
+          gains tax on investment property; solar help for renters and
+          homeowners" above bullets saying exactly those two things — so it cost
+          a reader a paragraph before any actual content.
+
+          It stays as the fallback when a position has no proposals to list, so
+          a thin topic still says something rather than rendering a heading over
+          nothing. Coverage is partial by design (see the "x of y topics
+          captured" note), so that case is live, not theoretical. */}
+      {items.length === 0 && (() => {
+        // Lead/rest split, so a compound stance like "Equal rights for all;
+        // remove race-based policies and co-governance" doesn't render bold
+        // end to end.
         const [headLead, headRest] = splitLead(pos.stance || body || '')
         return (
           <p style={{ fontSize: 20, color: INK, lineHeight: 1.35, margin: 0, fontFamily: MANROPE }}>
@@ -741,16 +750,18 @@ function FocusedCard({ slug, pos, topicLabel }: {
         )
       })()}
 
-      {/* The proposals are the first thing shown, right under the stance
-          headline, unconditional — no title above or below them anymore.
-          No dot markers, no smaller/greyer body copy — each proposal reads
-          at the same weight as the stance headline above, just stacked as
-          its own short line rather than one long sentence. Text is exactly
-          what keyProposals already contains, unedited: shortening it further
-          would mean the site rewording the party's own claim, which is the
-          thing we deliberately ruled out earlier. */}
+      {/* The proposals are now the first thing under the panel title — no
+          heading above or below them, no dot markers, no smaller or greyer
+          body copy. Each reads at full weight, stacked as its own short line.
+          The 4px top margin replaces the 16px that used to clear the stance
+          headline; the two never render together.
+
+          Text is exactly what keyProposals contains, unedited — shortening it
+          would mean the site rewording the party's own claim, which we ruled
+          out. Merging several into one is done in policy-proposal-groups.ts,
+          where it's stated explicitly rather than derived. */}
       {items.length > 0 && (
-        <ul style={{ listStyle: 'none', margin: '16px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <ul style={{ listStyle: 'none', margin: '4px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
           {items.map((it, i) => {
             const liStyle: React.CSSProperties = { fontSize: 20, color: INK, lineHeight: 1.35, fontFamily: MANROPE }
             const text = typeof it === 'string' ? it : it.headline
