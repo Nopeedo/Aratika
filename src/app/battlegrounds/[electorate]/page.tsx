@@ -348,21 +348,20 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
         challengerName={leadChallenger?.name}
         challengerParty={leadChallenger && leadChallenger.party !== 'independent' ? leadChallenger.party : undefined}
         challengerPhoto={leadChallenger?.mpSlug ? MP_PROFILES[leadChallenger.mpSlug]?.photo : undefined}
+        /* Track sits in the hero's title row, not floating above the content.
+           Follows this seat into the Command Centre alongside tracked MPs,
+           parties and bills. */
+        action={<BookmarkButton entity={{
+          kind: 'electorate',
+          refId: info.name,
+          label: info.name,
+          sublabel: `${tier.label} battleground${info.party ? ` · ${mp?.name ?? info.mpName}` : ''}`,
+          href: `/battlegrounds/${electorate}`,
+          accent: incumbentColor,
+        }} />}
       />
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: '28px 36px 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
-
-        {/* Track this battleground — follows it into the Command Centre, alongside tracked MPs, parties and bills */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <BookmarkButton entity={{
-            kind: 'electorate',
-            refId: info.name,
-            label: info.name,
-            sublabel: `${tier.label} battleground${info.party ? ` · ${mp?.name ?? info.mpName}` : ''}`,
-            href: `/battlegrounds/${electorate}`,
-            accent: incumbentColor,
-          }} />
-        </div>
 
         {/* In the news — real coverage naming this seat or its MP, from the same feed as /news */}
         <section style={sectionCard}>

@@ -48,6 +48,7 @@ export function WarRoomHero({
   challengerName,
   challengerParty,
   challengerPhoto,
+  action,
 }: {
   electorateName: string
   regionLine: string
@@ -65,6 +66,10 @@ export function WarRoomHero({
   challengerName?: string
   challengerParty?: PartySlug
   challengerPhoto?: string
+  /** Page-level action (the Track button). Sits in the title row rather than
+   *  floating on its own above the content, which is where every other page
+   *  puts it — see /policies/[topic], /mps/[slug], /parties/[slug]. */
+  action?: React.ReactNode
 }) {
   const [days, setDays] = useState<number | null>(null)
   useEffect(() => {
@@ -90,9 +95,12 @@ export function WarRoomHero({
             <h1 style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-.02em', color: ESPRESSO, fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.05 }}>{electorateName}</h1>
             <p style={{ fontSize: 14, color: SUB, fontFamily: MANROPE, margin: 0 }}>{regionLine}</p>
           </div>
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: 22, fontWeight: 800, color: JADE_DARK, fontFamily: MANROPE, lineHeight: 1 }}>{days ?? '—'}</div>
-            <div style={{ fontSize: 10.5, color: SUB, fontFamily: MANROPE, marginTop: 2 }}>days to election day</div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: 22, fontWeight: 800, color: JADE_DARK, fontFamily: MANROPE, lineHeight: 1 }}>{days ?? '—'}</div>
+              <div style={{ fontSize: 10.5, color: SUB, fontFamily: MANROPE, marginTop: 2 }}>days to election day</div>
+            </div>
+            {action}
           </div>
         </div>
 
