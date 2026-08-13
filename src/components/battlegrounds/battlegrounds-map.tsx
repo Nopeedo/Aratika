@@ -20,6 +20,7 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { toSlug } from '@/lib/utils/format'
 import { MpPhotoTile } from '@/components/map/mp-photo-tile'
 import { MARGIN_TIERS, classifyMargin, marginColorByName } from '@/lib/battlegrounds'
+import { MAP_LEGEND_CSS } from '@/components/map/legend-css'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 type Layer = 'general' | 'maori'
@@ -30,23 +31,6 @@ const PATHS: Record<Layer, string> = {
 
 const ElectorateMap = dynamic(() => import('@/components/map/electorate-map'), { ssr: false, loading: () => <Loading /> })
 
-/* The legend is an overlay, so its size is taken straight out of the map. Four
-   stacked rows at 11.5px covered roughly a third of the map on a phone; under
-   760px it becomes two compact columns and gives that back. */
-const LEGEND_CSS = `
-.map-legend { padding: 10px 12px; }
-.map-legend-title { font-size: 10px; margin-bottom: 7px; }
-.map-legend-items { display: flex; flex-direction: column; gap: 4px; }
-.map-legend-row { gap: 7px; font-size: 11.5px; }
-.map-legend-dot { width: 11px; height: 11px; }
-@media (max-width: 760px) {
-  .map-legend { padding: 7px 9px; left: 8px; bottom: 8px; max-width: 62%; }
-  .map-legend-title { font-size: 9px; margin-bottom: 5px; }
-  .map-legend-items { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 8px; }
-  .map-legend-row { gap: 5px; font-size: 10px; }
-  .map-legend-dot { width: 8px; height: 8px; }
-}
-`
 
 export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
   const [layer, setLayer] = React.useState<Layer>('general')
@@ -167,7 +151,7 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
           )}
 
           {/* Legend */}
-          <style dangerouslySetInnerHTML={{ __html: LEGEND_CSS }} />
+          <style dangerouslySetInnerHTML={{ __html: MAP_LEGEND_CSS }} />
           {status === 'ready' && data && (
             <div className="map-legend" style={{ position: 'absolute', left: 12, bottom: 12, zIndex: 1000, background: 'rgba(255,255,255,.95)', border: `1px solid ${BORDER}`, borderRadius: 12, boxShadow: '0 2px 8px rgba(12,14,18,.12)' }}>
               <div className="map-legend-title" style={{ fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>2023 margin</div>

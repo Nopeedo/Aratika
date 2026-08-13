@@ -209,9 +209,17 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
 function BillCard({ b, readerSlug, submissionsOpen, party }: { b: Bill54; readerSlug?: string; submissionsOpen?: boolean; party?: string }) {
   const ts = TYPE_STYLE[b.type] ?? TYPE_STYLE.Private
   const ss = statusStyle(b.status)
+  // Washed in the party colour of the member in charge, matching the party
+  // tiles, the MP directory and the battleground cards. Bills with no named
+  // member (or an unmapped one) keep the plain card.
+  const col = party && PARTY_COLORS[party as PartySlug] ? PARTY_COLORS[party as PartySlug] : null
   const cardStyle: React.CSSProperties = {
-    border: `1px solid ${submissionsOpen ? '#bfd4fe' : BORDER}`, borderRadius: 14, padding: '15px 16px',
-    background: '#fff', display: 'flex', flexDirection: 'column', height: '100%',
+    // The open-for-submissions signal used to be this border. It now lives only
+    // in the blue "You can have your say" panel inside the card, which states
+    // the closing date — a stronger signal than a border tint anyway.
+    border: `2px solid ${col ? col.bg : submissionsOpen ? '#bfd4fe' : BORDER}`,
+    borderRadius: 14, padding: '15px 16px',
+    background: col ? col.light : '#fff', display: 'flex', flexDirection: 'column', height: '100%',
   }
   return (
     <div className="party-card" style={cardStyle}>

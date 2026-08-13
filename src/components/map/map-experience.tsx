@@ -22,6 +22,7 @@ import {
 } from '@/constants/electorates-data'
 import { PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
 import { PARTY_PROFILES } from '@/constants/parties-data'
+import { MAP_LEGEND_CSS } from '@/components/map/legend-css'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 // Leaflet map — client-only, no SSR
@@ -249,24 +250,25 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
           {(status === 'missing' || status === 'error') && <MapMissing layer={layer} error={status === 'error'} />}
 
           {/* Legend */}
+          <style dangerouslySetInnerHTML={{ __html: MAP_LEGEND_CSS }} />
           {status === 'ready' && (
-            <div style={{
+            <div className="map-legend" style={{
               position: 'absolute', left: 12, bottom: 12, zIndex: 1000,
               background: 'rgba(255,255,255,0.95)', border: `1px solid ${BORDER}`, borderRadius: 12,
-              padding: '10px 12px', boxShadow: '0 2px 8px rgba(12,14,18,.12)', maxWidth: 220,
+              boxShadow: '0 2px 8px rgba(12,14,18,.12)',
             }}>
-              <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 7 }}>
+              <div className="map-legend-title" style={{ fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>
                 Held by
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div className="map-legend-items">
                 {PARTY_ORDER.map((slug) => (
-                  <div key={slug} style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE }}>
-                    <span style={{ width: 11, height: 11, borderRadius: 3, background: PARTY_COLORS[slug].bg, flexShrink: 0 }} />
+                  <div key={slug} className="map-legend-row" style={{ display: 'flex', alignItems: 'center', color: SECONDARY, fontFamily: MANROPE }}>
+                    <span className="map-legend-dot" style={{ borderRadius: 3, background: PARTY_COLORS[slug].bg, flexShrink: 0 }} />
                     {PARTY_PROFILES[slug].name}
                   </div>
                 ))}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 2, paddingTop: 4, borderTop: `1px solid ${BORDER}` }}>
-                  <span style={{ width: 11, height: 11, borderRadius: 3, background: '#d8d5cf', flexShrink: 0 }} />
+                <div className="map-legend-row map-legend-note" style={{ display: 'flex', alignItems: 'center', color: TERTIARY, fontFamily: MANROPE, borderTop: `1px solid ${BORDER}` }}>
+                  <span className="map-legend-dot" style={{ borderRadius: 3, background: '#d8d5cf', flexShrink: 0 }} />
                   Data pending
                 </div>
               </div>
