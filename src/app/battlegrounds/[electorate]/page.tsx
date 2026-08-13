@@ -245,6 +245,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
     {
       key: 'defender',
       color: incumbentColor,
+      light: info.party ? PARTY_COLORS[info.party].light : undefined,
       avatarName: mp?.name ?? info.mpName ?? '?',
       avatarParty: info.party ?? undefined,
       avatarPhoto: mp?.photo,
@@ -277,6 +278,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
           return {
             key: c.name,
             color,
+            light: PARTY_COLORS[c.party]?.light,
             avatarName: c.name,
             avatarParty: c.party === 'independent' ? undefined : c.party,
             avatarPhoto: c.mpSlug ? MP_PROFILES[c.mpSlug]?.photo : undefined,
@@ -363,21 +365,21 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
         </div>
 
         {/* In the news — real coverage naming this seat or its MP, from the same feed as /news */}
-        <div>
+        <section style={sectionCard}>
           <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>In the news</h2>
           <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px' }}>Coverage naming {info.name} or {firstName}, from our tracked feeds.</p>
           <ElectorateNews electorateName={info.name} />
-        </div>
+        </section>
 
         {/* The roster — tap a combatant to expand their full dossier */}
-        <div>
+        <section style={sectionCard}>
           <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>The roster</h2>
           <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px' }}>
             The defender's record, and who's confirmed to challenge them in 2026.
             {hasPollData && <> Poll standing shown is illustrative only — no verified electorate-level polling exists for this preview.</>}
           </p>
           <RosterAccordion items={rosterItems} />
-        </div>
+        </section>
 
         {/* Links + source */}
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -404,6 +406,20 @@ function mpSlugFromName(name: string): string {
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
+}
+
+/* Each major block gets its own bordered card. These sections used to be bare
+   divs on the page's woven texture, so a heading was the only thing separating
+   "In the news" from "The roster" and the page read as one long scroll.
+
+   The ground is SURFACE rather than white on purpose: the cards inside — news
+   items, and roster rows now washed in a party colour — need to sit ON
+   something. A white section behind white cards would have flattened both. */
+const sectionCard: React.CSSProperties = {
+  background: SURFACE,
+  border: `1px solid ${BORDER}`,
+  borderRadius: 18,
+  padding: 'clamp(16px, 3.5vw, 24px)',
 }
 
 const ic: React.CSSProperties = { width: 14, height: 14 }

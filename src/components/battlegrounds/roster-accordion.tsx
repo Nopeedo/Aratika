@@ -16,6 +16,10 @@ import { BORDER, INK, MANROPE, SECONDARY } from '@/constants/theme'
 export interface RosterItem {
   key: string
   color: string
+  /** Pale wash of `color`, from PARTY_COLORS[...].light. Omitted for rows with
+   *  no party of their own (the "no challengers yet" placeholder), which stay
+   *  white rather than borrowing someone else's colour. */
+  light?: string
   avatarName: string
   avatarParty?: PartySlug
   avatarPhoto?: string
@@ -35,21 +39,32 @@ export function RosterAccordion({ items, defaultOpenKey }: { items: RosterItem[]
       {items.map((item) => {
         const open = openKey === item.key
         return (
-          <div key={item.key} style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden' }}>
+          // Party colour on the border and the header row — the same treatment
+          // as the party tiles, MP directory and bill cards. The 4px left edge
+          // is gone with it: the border carries the party now, so keeping both
+          // was a second reading of the same thing.
+          //
+          // The wash stops at the header. Expanded, these rows hold a full
+          // dossier — committees, bills, a written-questions chart, cream inset
+          // panels — and running the tint behind all of that both buried the
+          // content and clashed with the insets. The list reads by party; the
+          // dossier reads on a neutral ground.
+          <div key={item.key} style={{ background: '#fff', border: `2px solid ${item.light ? item.color : BORDER}`, borderRadius: 14, overflow: 'hidden' }}>
             <button
               onClick={() => setOpenKey(open ? null : item.key)}
               style={{
                 display: 'flex', alignItems: 'center', gap: 12, width: '100%', textAlign: 'left',
-                padding: '13px 16px', background: 'none', border: 'none', cursor: 'pointer',
-                borderLeft: `4px solid ${item.color}`,
+                padding: '13px 16px', background: item.light ?? 'none', border: 'none', cursor: 'pointer',
               }}
             >
               <Avatar name={item.avatarName} party={item.avatarParty} src={item.avatarPhoto} size="sm" face />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                   <span style={{ fontSize: 14.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{item.title}</span>
+                  {/* White ring, so "Incumbent" doesn't vanish into a card now
+                      washed in that same party colour. */}
                   {item.badge && (
-                    <span style={{ fontSize: 10, fontWeight: 800, color: '#fff', background: item.color, borderRadius: 999, padding: '2px 8px', fontFamily: MANROPE }}>{item.badge}</span>
+                    <span style={{ fontSize: 10, fontWeight: 800, color: '#fff', background: item.color, borderRadius: 999, padding: '2px 8px', fontFamily: MANROPE, boxShadow: item.light ? '0 0 0 2px rgba(255,255,255,.95)' : 'none' }}>{item.badge}</span>
                   )}
                 </div>
                 <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, marginTop: 1 }}>{item.subtitle}</div>
