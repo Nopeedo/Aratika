@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { PARTY_PROFILES } from '@/constants/parties-data'
+import { getProposalGrouping, type GroupedProposal } from '@/constants/policy-proposal-groups'
 import { TopicChip } from '@/components/homepage/topic-chip'
 import { isLightHex } from '@/components/homepage/battleground-card'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
@@ -606,6 +607,49 @@ function readableOnWhite(hex: string): string {
  *  white text, so the text/icon flip to dark ink on light fills — same
  *  isLightHex threshold already used for this exact problem on battleground
  *  cards and the party tiles, kept here rather than reintroducing it. */
+/** The detail behind a merged proposal.
+ *
+ *  Deliberately quieter than ExpandableSection below: a plain text toggle with
+ *  no fill, sized under the proposal it belongs to rather than across the whole
+ *  panel. That section is a destination — this is a footnote on one line, and a
+ *  second full-width coloured bar competing with "Full Breakdown" would read as
+ *  the more important of the two.
+ *
+ *  Connected to its proposal by the rule down the left of the opened detail, so
+ *  it's clear the points belong to the line above and not to the panel. */
+function SeeMore({ details, accent }: { details: string[]; accent: string }) {
+  const [open, setOpen] = useState(false)
+  const tone = readableOnWhite(accent)
+  return (
+    <div style={{ marginTop: 7 }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none',
+          padding: 0, cursor: 'pointer', fontFamily: MANROPE, fontSize: 14.5, fontWeight: 700, color: tone,
+        }}
+      >
+        {open ? 'Show less' : 'See more'}
+        <ChevronDown style={{ width: 14, height: 14, flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
+      </button>
+      <div style={{ display: 'grid', gridTemplateRows: open ? '1fr' : '0fr', transition: 'grid-template-rows .3s ease' }}>
+        <div style={{ overflow: 'hidden' }}>
+          <ul style={{
+            listStyle: 'none', margin: '10px 0 0', padding: '2px 0 2px 13px',
+            borderLeft: `2px solid ${accent}33`,
+            display: 'flex', flexDirection: 'column', gap: 9,
+          }}>
+            {details.map((d) => (
+              <li key={d} style={{ fontSize: 16, fontWeight: 400, color: '#3f372f', lineHeight: 1.45, fontFamily: MANROPE }}>{d}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function ExpandableSection({ icon: Icon, title, accent, defaultOpen, children }: {
   icon: React.ElementType
   title: string
@@ -658,6 +702,11 @@ function FocusedCard({ slug, pos, topicLabel }: {
   // meandering bullets. Falls back to that split only where a position has no
   // keyProposals captured yet, so the panel is never left empty.
   const bullets = pos?.keyProposals.length ? pos.keyProposals : (pos?.stance ? toBullets(body) : [])
+  // Where several proposals are really one policy, a curated grouping says how
+  // they read as one — see constants/policy-proposal-groups.ts. Absent one, the
+  // panel shows the raw keyProposals exactly as before.
+  const grouping = pos ? getProposalGrouping(pos.topic, slug) : null
+  const items: GroupedProposal[] = grouping?.proposals ?? bullets
   // Verbatim only — excerpts/quote are the two fields the ingestion script
   // mechanically verifies as exact substrings of the party's own published
   // text (see scripts/draft-positions.mjs). keyProposals/stance/summary are
@@ -700,13 +749,15 @@ function FocusedCard({ slug, pos, topicLabel }: {
           what keyProposals already contains, unedited: shortening it further
           would mean the site rewording the party's own claim, which is the
           thing we deliberately ruled out earlier. */}
-      {bullets.length > 0 && (
+      {items.length > 0 && (
         <ul style={{ listStyle: 'none', margin: '16px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {bullets.map((b, i) => {
+          {items.map((it, i) => {
             const liStyle: React.CSSProperties = { fontSize: 20, color: INK, lineHeight: 1.35, fontFamily: MANROPE }
+            const text = typeof it === 'string' ? it : it.headline
             return (
               <li key={i} style={liStyle}>
-                <FirstLineBold text={b} style={liStyle} />
+                <FirstLineBold text={text} style={liStyle} />
+                {typeof it !== 'string' && <SeeMore details={it.details} accent={c} />}
               </li>
             )
           })}
