@@ -140,17 +140,22 @@ function Tile({ slug, pct }: { slug: PartySlug; pct: number | null }) {
         </>
       )}
 
-      {seats > 0 && (
-        <span style={{
-          position: 'absolute', top: 12, right: 13, zIndex: 2, fontSize: 10, fontWeight: 800, color: onColour,
-          background: soft(0.14), border: `1px solid ${soft(0.28)}`, borderRadius: 99, padding: '2px 7px', fontFamily: MANROPE,
-        }}>{seats} {seats === 1 ? 'seat' : 'seats'}</span>
-      )}
-
       <span style={{ position: 'relative', zIndex: 1, height: '100%', padding: '13px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <span style={{ display: 'block', paddingRight: seats > 0 ? 58 : 0 }}>
-          <span style={{ fontSize: 15, fontWeight: 800, color: onColour, fontFamily: MANROPE, lineHeight: 1.15, display: 'block' }}>{names.short}</span>
-          <span style={{ display: 'block', fontSize: 10.5, color: soft(0.72), fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}>{names.full}</span>
+        {/* Seats chip laid out beside the names rather than positioned over
+            them — same fix as the /parties tile. The old absolute chip plus a
+            paddingRight on the short name left the full name, which has no such
+            padding, running under the chip on the longer party names. */}
+        <span style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+          <span style={{ display: 'block', minWidth: 0 }}>
+            <span style={{ fontSize: 15, fontWeight: 800, color: onColour, fontFamily: MANROPE, lineHeight: 1.15, display: 'block' }}>{names.short}</span>
+            <span style={{ display: 'block', fontSize: 10.5, color: soft(0.72), fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}>{names.full}</span>
+          </span>
+          {seats > 0 && (
+            <span style={{
+              flexShrink: 0, whiteSpace: 'nowrap', fontSize: 10, fontWeight: 800, color: onColour,
+              background: soft(0.14), border: `1px solid ${soft(0.28)}`, borderRadius: 99, padding: '2px 7px', fontFamily: MANROPE,
+            }}>{seats} {seats === 1 ? 'seat' : 'seats'}</span>
+          )}
         </span>
 
         {polled ? (

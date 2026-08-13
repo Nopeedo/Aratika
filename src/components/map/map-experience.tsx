@@ -250,10 +250,12 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
           {(status === 'missing' || status === 'error') && <MapMissing layer={layer} error={status === 'error'} />}
 
           {/* Legend */}
+          {/* left/bottom live in MAP_LEGEND_CSS so the media query can clear the
+              Leaflet attribution strip; inline values would beat it. */}
           <style dangerouslySetInnerHTML={{ __html: MAP_LEGEND_CSS }} />
           {status === 'ready' && (
             <div className="map-legend" style={{
-              position: 'absolute', left: 12, bottom: 12, zIndex: 1000,
+              position: 'absolute', zIndex: 1000,
               background: 'rgba(255,255,255,0.95)', border: `1px solid ${BORDER}`, borderRadius: 12,
               boxShadow: '0 2px 8px rgba(12,14,18,.12)',
             }}>

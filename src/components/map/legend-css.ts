@@ -14,14 +14,19 @@
  * inline on the elements — an inline style would beat it.
  */
 export const MAP_LEGEND_CSS = `
-.map-legend { padding: 10px 12px; max-width: 220px; }
+/* Cleared above the Leaflet attribution strip. That line carries the
+   OpenStreetMap and CARTO credits their licences require, and the legend was
+   sitting on top of it — a legal problem as much as a visual one. */
+.map-legend { padding: 10px 12px; max-width: 220px; left: 12px; bottom: 30px; }
 .map-legend-title { font-size: 10px; margin-bottom: 7px; }
 .map-legend-items { display: flex; flex-direction: column; gap: 4px; }
 .map-legend-row { gap: 7px; font-size: 11.5px; }
 .map-legend-dot { width: 11px; height: 11px; }
 .map-legend-note { margin-top: 2px; padding-top: 4px; }
 @media (max-width: 760px) {
-  .map-legend { padding: 7px 9px; left: 8px; bottom: 8px; max-width: 64%; }
+  /* 34px, not 26: on the narrowest phones the attribution wraps to two lines
+     and the taller strip reached back under the legend. */
+  .map-legend { padding: 7px 9px; left: 8px; bottom: 34px; max-width: 64%; }
   .map-legend-title { font-size: 9px; margin-bottom: 5px; }
   .map-legend-items { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 8px; }
   .map-legend-row { gap: 5px; font-size: 10px; }

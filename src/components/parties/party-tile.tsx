@@ -79,20 +79,29 @@ export function PartyTile({ slug }: { slug: PartySlug }) {
       textDecoration: 'none', background: light, border: `3px solid ${colour}`,
       boxShadow: '0 2px 6px rgba(42,18,6,.08)',
     }}>
-      {seats > 0 && (
-        // Ink on white rather than the party colour: several palettes (ACT's
-        // yellow, TOP's cyan) are too light to use as text on a pale ground, so
-        // the colour stays in the border where it can't fail contrast.
-        <span style={{
-          position: 'absolute', top: 12, right: 13, zIndex: 2, fontSize: 10, fontWeight: 800, color: SECONDARY,
-          background: '#fff', border: `1px solid ${hexToRgba(colour, 0.32)}`, borderRadius: 99, padding: '2px 7px', fontFamily: MANROPE,
-        }}>{share}% of the House</span>
-      )}
-
       <span style={{ position: 'relative', zIndex: 1, height: '100%', padding: '13px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <span style={{ display: 'block' }}>
-          <span style={{ display: 'block', fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15, paddingRight: seats > 0 ? 96 : 0 }}>{names.short}</span>
-          <span style={{ display: 'block', fontSize: 10.5, color: SECONDARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}>{names.full}</span>
+          {/* The share chip is laid out beside the names, not positioned over
+              them. It used to be absolute with a hand-tuned paddingRight on the
+              short name to clear it — which left the FULL name, with no such
+              padding, running under the chip. A flex row can't collide at any
+              width and needs no magic number. */}
+          <span style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+            <span style={{ display: 'block', minWidth: 0 }}>
+              <span style={{ display: 'block', fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15 }}>{names.short}</span>
+              <span style={{ display: 'block', fontSize: 10.5, color: SECONDARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}>{names.full}</span>
+            </span>
+            {seats > 0 && (
+              // Ink on white rather than the party colour: several palettes
+              // (ACT's yellow, TOP's cyan) are too light to use as text on a
+              // pale ground, so the colour stays in the border where it can't
+              // fail contrast.
+              <span style={{
+                flexShrink: 0, whiteSpace: 'nowrap', fontSize: 10, fontWeight: 800, color: SECONDARY,
+                background: '#fff', border: `1px solid ${hexToRgba(colour, 0.32)}`, borderRadius: 99, padding: '2px 7px', fontFamily: MANROPE,
+              }}>{share}% of the House</span>
+            )}
+          </span>
           {/* Faces, not just names — the leader is how most people recognise a
               party. MP photo where they hold a seat, the party's own leaderPhoto
               otherwise; Avatar falls back to initials when neither exists. */}

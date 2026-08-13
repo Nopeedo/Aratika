@@ -150,10 +150,11 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
             </div>
           )}
 
-          {/* Legend */}
+          {/* Legend. left/bottom live in MAP_LEGEND_CSS so the media query can
+              clear the Leaflet attribution strip; inline values would beat it. */}
           <style dangerouslySetInnerHTML={{ __html: MAP_LEGEND_CSS }} />
           {status === 'ready' && data && (
-            <div className="map-legend" style={{ position: 'absolute', left: 12, bottom: 12, zIndex: 1000, background: 'rgba(255,255,255,.95)', border: `1px solid ${BORDER}`, borderRadius: 12, boxShadow: '0 2px 8px rgba(12,14,18,.12)' }}>
+            <div className="map-legend" style={{ position: 'absolute', zIndex: 1000, background: 'rgba(255,255,255,.95)', border: `1px solid ${BORDER}`, borderRadius: 12, boxShadow: '0 2px 8px rgba(12,14,18,.12)' }}>
               <div className="map-legend-title" style={{ fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>2023 margin</div>
               <div className="map-legend-items">
                 {MARGIN_TIERS.map((t) => (
