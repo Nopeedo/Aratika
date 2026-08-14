@@ -1215,6 +1215,129 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       ],
     },
   },
+
+  {
+    topics: ['treaty-maori-affairs'],
+    party: 'green',
+    title: 'Māori Manifesto — kaupapa Māori and Te Tiriti commitments',
+    // Scoped to two chapters of a document that spans about thirty policy
+    // areas. Those two are where it names legislation and funds; the rest is a
+    // paragraph and a few bullets per topic, which belongs in the position
+    // summaries rather than here.
+    //
+    // Sits alongside the Te Tiriti policy deep dive on the same page and does
+    // not repeat it: that one sets constitutional position, this one is the
+    // operational layer — which Acts would change, and what would be funded.
+    //
+    // Macrons are stripped by extraction, so te reo is written out by hand and
+    // no quote containing a macronised word is used.
+    summary:
+      'The Green Party’s Māori Manifesto covers around thirty policy areas. This covers its two Māori-specific ' +
+      'chapters, which are where it names legislation: amending the Treaty of Waitangi Act so Te Tiriti is the ' +
+      'authoritative text, giving the Waitangi Tribunal binding power to order land returned, removing “full and ' +
+      'final” from Treaty settlements, amending the Public Works Act to protect Māori land, and a Marae Resilience ' +
+      'Fund.',
+
+    facts: [
+      { label: 'Treaty of Waitangi Act', value: 'Te Tiriti as authoritative', note: 'Working alongside He Whakaputanga' },
+      { label: 'Waitangi Tribunal', value: 'Binding recommendations', note: 'Including return of Crown and private land' },
+      { label: 'Treaty settlements', value: '“Full and final” removed', note: 'And the large natural grouping approach ended' },
+      { label: 'Public Works Act 1981', value: 'Amended', note: 'To prevent acquisition of Māori land' },
+      { label: 'Marae', value: 'A Marae Resilience Fund', note: 'Including civil emergency provision' },
+      { label: 'Te reo Māori', value: 'Expanded nationwide', note: 'In formal and informal settings' },
+    ],
+
+    coveredLabel: 'What the two chapters commit to',
+    covered: [
+      'Amending the Treaty of Waitangi Act to recognise Te Tiriti as the authoritative text, working in conjunction with He Whakaputanga',
+      'Te Tiriti-based decision-making across government, with iwi and hapū resourced as partners rather than advisors',
+      'Reforming Treaty settlements — removing “full and final” clauses, ending the large natural grouping approach, validating hapū rangatiratanga',
+      'A better resourced Waitangi Tribunal with power to make binding recommendations for return of Crown and private land',
+      'Returning whenua wrongfully alienated outside settlements, including exploring a right of first refusal at point of sale',
+      'A Marae Resilience Fund, an end to perpetual leases on whenua Māori, and Public Works Act protections',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Which Act would change, and how',
+        body:
+          'The manifesto proposes amending the Treaty of Waitangi Act so that Te Tiriti — the te reo Māori text — is ' +
+          'recognised as the authoritative one, and that it works in conjunction with He Whakaputanga o te ' +
+          'Rangatiratanga o Nu Tireni. That is a change to which text has legal standing, not only to how it is ' +
+          'interpreted.',
+      },
+      {
+        heading: 'A Waitangi Tribunal that can order land returned',
+        body:
+          'Beyond more resourcing, the manifesto would give the Tribunal power to make binding recommendations for the ' +
+          'return of land to iwi, whānau and hapū — and states this covers private as well as Crown land. The document ' +
+          'does not set out how that would work where land is privately held.',
+      },
+      {
+        heading: 'Reopening settled settlements',
+        body:
+          'It would amend the settlement policy guide used by negotiators to enable what it calls fair negotiations and ' +
+          'just reparations without cessation of sovereignty, remove clauses referring to “full and final” settlement, ' +
+          'and end the large natural grouping approach in favour of validating hapū rangatiratanga.',
+      },
+      {
+        heading: 'Returning land outside the settlement process',
+        body:
+          'Separately from settlements, it proposes facilitating return of whenua wrongfully alienated from tangata ' +
+          'whenua, including exploring a right-of-first-refusal process that would let iwi, hapū and whānau acquire ' +
+          'private land at the point it is sold.',
+      },
+      {
+        heading: 'Protecting the land that remains',
+        body:
+          'Two specific protections: ending perpetual leases on whenua Māori, and amending the Public Works Act 1981 so ' +
+          'the Crown cannot acquire Māori freehold land, Māori customary land, or land within reasonable proximity to ' +
+          'marae, urupā and wāhi tapu.',
+      },
+      {
+        heading: 'Marae, te reo, and devolved decision-making',
+        body:
+          'A Marae Resilience Fund would resource marae to lead initiatives for their people, wāhi tapu and whenua under ' +
+          'their own tikanga, with ongoing funding recognising marae as community lifelines in civil emergencies. The ' +
+          'manifesto also commits to devolving power and resources to tangata whenua, and to expanding the learning, ' +
+          'speaking and promotion of te reo Māori in both formal and informal settings.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'We know that Te Tiriti and democracy are not contradictory, they are complementary.',
+        context: 'Kaupapa Māori',
+      },
+      {
+        text: 'When Te Tiriti breaches are ongoing, apologies for past harms are not enough.',
+        context: 'Te Tiriti o Waitangi',
+      },
+      {
+        text: 'The Green Party understands that He Whakaputanga and Te Tiriti are the foundation for an enduring constitutional partnership.',
+        context: 'Te Tiriti o Waitangi',
+      },
+    ],
+
+    openQuestions: [
+      'No dates are given for any of the legislative changes.',
+      'The manifesto carries no costings — not for the Marae Resilience Fund, nor for land return.',
+      'It does not say how binding Tribunal recommendations would operate over privately owned land, which is the most consequential of the proposals.',
+      'The right-of-first-refusal process is described as something to explore rather than a settled mechanism.',
+    ],
+
+    source: {
+      documentTitle: 'Māori Manifesto 2026',
+      publisher: 'Green Party of Aotearoa New Zealand',
+      authorisedBy: 'Miriam Ross',
+      retrieved: '2026-08-14',
+      alsoFrom: [
+        { documentTitle: 'Kaupapa Māori and Te Tiriti o Waitangi chapters', note: 'the two chapters this covers, of about thirty in the document' },
+      ],
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
