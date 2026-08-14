@@ -141,6 +141,153 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
       },
     ],
   },
+
+  // ── National ──────────────────────────────────────────────────────────────
+  // Economy (3) and environment (6) are left ungrouped. Economy is already
+  // short, and environment's six are six different domains — freshwater,
+  // biodiversity, oceans, waste, planning, restoration — so merging them would
+  // flatten distinct commitments into one vague "nature" line.
+
+  {
+    topic: 'housing',
+    party: 'national',
+    proposals: [
+      {
+        headline: 'Require councils to zone enough land for 30 years of housing demand, through upzoning and planning reform',
+        details: [
+          'Require councils to zone enough land for 30 years of housing demand',
+          'Enable more housing through upzoning and planning reform',
+        ],
+      },
+      'Reform infrastructure funding and financing to reduce the cost of new developments',
+      'Establish a $1 billion fund rewarding councils that consent more new homes',
+    ],
+  },
+
+  {
+    topic: 'health',
+    party: 'national',
+    proposals: [
+      {
+        headline: 'More GPs and a 24/7 digital service for online consultations, prescriptions and lab referrals',
+        details: [
+          'Train more doctors and allow overseas-trained GPs to work in New Zealand practices',
+          'Run a 24/7 digital service for online GP consultations, prescriptions, and lab referrals',
+        ],
+      },
+      'Extend free breast screening to women aged 70–74',
+      {
+        headline: 'Build new hospitals in Nelson and Dunedin, and install 38 scanners over three years',
+        details: [
+          'Build new hospitals (Nelson, Dunedin) and upgrade facilities nationwide',
+          'Install 38 new or replacement CT, MRI and SPECT scanners over three years',
+        ],
+      },
+      'Fund more medicines through Pharmac and set health targets to reduce waiting times',
+    ],
+  },
+
+  {
+    topic: 'education',
+    party: 'national',
+    proposals: [
+      {
+        headline: 'An hour a day each on reading, writing and maths, taught with structured literacy and numeracy',
+        details: [
+          'Require an hour a day each on reading, writing and maths',
+          'Use structured literacy and numeracy teaching methods in all schools',
+        ],
+      },
+      'Ban cell phones in schools to reduce distractions',
+      {
+        headline: 'Replace NCEA with a new national qualification, and introduce a new curriculum for Years 1 to 10',
+        details: [
+          'Replace NCEA with a new national qualification',
+          'Introduce a new curriculum for Years 1 to 10',
+        ],
+      },
+      'Increase learning support for students who need extra help',
+    ],
+  },
+
+  {
+    topic: 'climate',
+    party: 'national',
+    proposals: [
+      {
+        headline: 'Faster and longer consents for renewable energy, and no consent needed for transmission upgrades',
+        details: [
+          'Require resource consent decisions for new renewable energy projects to be issued within one year',
+          'Make resource consents for renewable projects last 35 years',
+          'Remove consent requirements for upgrades to existing electricity transmission lines and most new infrastructure',
+        ],
+      },
+      'Double New Zealand’s supply of renewable electricity from wind, solar, and geothermal sources',
+      'Support the shift to electric vehicles, electric public transport, and electric industrial processing',
+      'Reduce agricultural emissions through new technology',
+    ],
+  },
+
+  {
+    topic: 'crime-justice',
+    party: 'national',
+    proposals: [
+      {
+        headline: 'Tougher sentences for criminals, including specifically for sexual offending',
+        details: [
+          'Tougher sentences for criminals',
+          'Tougher sentences specifically for sexual offending',
+        ],
+      },
+      'Cracking down on gangs',
+      {
+        headline: 'More tools and powers for Police, and more foot patrols',
+        details: [
+          'More tools and powers for Police',
+          'More Police foot patrols',
+        ],
+      },
+    ],
+  },
+
+  {
+    topic: 'immigration',
+    party: 'national',
+    proposals: [
+      {
+        // All five recorded proposals are this one visa and its conditions, so
+        // the panel showed a single policy five times. The conditions are named
+        // in the headline rather than left behind the toggle: sponsorship and
+        // health insurance decide who can actually use it.
+        headline: 'A Parent Visa Boost: a five-year multiple-entry visa, extendable for another five, with sponsorship and health-insurance conditions',
+        details: [
+          'Require visa holders to be sponsored by their children or grandchildren in New Zealand',
+          'Require visa holders to carry health insurance for the duration of their stay',
+          'Exclude visa holders from NZ Super and other government entitlements',
+          'Require visa holders to pass standard Immigration New Zealand health and other requirements',
+        ],
+      },
+    ],
+  },
+
+  {
+    topic: 'foreign-policy',
+    party: 'national',
+    proposals: [
+      'Prioritise diplomacy, international partnerships, and trade agreements in line with NZ values',
+      {
+        headline: 'Maintain a combat-ready military and work with allies on security challenges',
+        details: [
+          'Maintain a modern, combat-ready military to protect New Zealand’s Exclusive Economic Zone',
+          'Collaborate with allies and global partners to address security challenges',
+        ],
+      },
+      // Left separate from the diplomacy line above: one is how New Zealand
+      // trades and partners, the other is what it advocates for.
+      'Promote democracy, freedom, human rights, and inclusivity internationally',
+      'Ensure veterans receive timely care, recognition, and support',
+    ],
+  },
 ]
 
 /** The grouping for a topic/party pair, or null to use the raw keyProposals. */
