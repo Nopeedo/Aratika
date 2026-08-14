@@ -1091,6 +1091,130 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       ],
     },
   },
+
+  {
+    topics: ['treaty-maori-affairs'],
+    party: 'green',
+    title: 'Te Tiriti o Waitangi policy',
+    // A different kind of document from the costed ones: it sets constitutional
+    // position and values rather than a programme with dates and dollars. The
+    // summary says so plainly, so nobody arrives expecting an implementation
+    // plan and reads its absence as an omission on our part.
+    //
+    // Macrons are stripped by text extraction, so every te reo word here is
+    // written out correctly by hand rather than copied from the extract, and no
+    // quote containing one is used — a quote we cannot check character for
+    // character is not a quote.
+    summary:
+      'This is the Green Party’s foundational Tiriti policy rather than a costed programme: it sets the ' +
+      'constitutional position every other Green policy is required to align with. It affirms the te reo Māori texts ' +
+      'of He Whakaputanga 1835 and Te Tiriti o Waitangi 1840 as the country’s founding documents, seeks a fully ' +
+      'resourced Waitangi Tribunal with binding authority, supports the return of whenua and restitution for ' +
+      'breaches, and upholds UNDRIP.',
+
+    facts: [
+      { label: 'What it is', value: 'A foundational policy', note: 'All other Green policies must align with it' },
+      { label: 'Founding texts', value: 'He Whakaputanga and Te Tiriti', note: 'The te reo Māori texts, of 1835 and 1840' },
+      { label: 'Waitangi Tribunal', value: 'Binding authority', note: 'And fully resourced' },
+      { label: 'Constitutional change', value: 'As set out in Matike Mai', note: 'Referred to rather than restated' },
+      { label: 'International', value: 'UNDRIP upheld', note: 'Alongside the Mataatua Declaration' },
+      { label: 'Written by', value: 'Te Rōpū Pounamu', note: 'The party’s Māori member collective' },
+    ],
+
+    coveredLabel: 'What the policy commits to',
+    covered: [
+      'Affirming the te reo Māori texts of He Whakaputanga o te Rangatiratanga o Nu Tireni 1835 and Te Tiriti o Waitangi 1840 as the founding constitutional documents',
+      'A Waitangi Tribunal that is fully resourced and has binding decision-making authority',
+      'Mutually agreed resolution of, and restitution for, outstanding historical and contemporary breaches',
+      'Return of whenua to Māori — Hoki Whenua Mai — as central to restoring wellbeing',
+      'Constitutional transformation along the lines envisioned by Matike Mai',
+      'Upholding UNDRIP and the Mataatua Declaration on Cultural and Intellectual Property Rights of Indigenous Peoples',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Where the policy comes from',
+        body:
+          'The party amended its Charter in 2001 to recognise Te Tiriti o Waitangi as the country’s founding document ' +
+          'and Māori as tangata whenua. The party and its political office were restructured in 2022, and this policy ' +
+          'was developed by Te Rōpū Pounamu, the party’s Māori member collective.',
+      },
+      {
+        heading: 'Tikanga as law',
+        body:
+          'The policy states that Māori values and cultural practices expressed through tikanga and kawa were the first ' +
+          'laws in Aotearoa, continue to guide Māori, and have been recognised by the courts as part of the country’s ' +
+          'law. It commits the party to explaining concepts from te ao Māori whenever it uses them.',
+      },
+      {
+        heading: 'Tino rangatiratanga',
+        body:
+          'It affirms tino rangatiratanga of whānau, hapū and iwi over their whenua, awa, moana, kāinga and taonga, ' +
+          'both tangible and intangible — including mātauranga Māori, rongoā, tikanga and kawa, and taonga species — ' +
+          'and commits to devolving power and resources to tangata whenua-led decision-making.',
+      },
+      {
+        heading: 'Its position on co-governance',
+        body:
+          'The policy draws a distinction worth reading carefully: it says rangatira did not sign Te Tiriti to ' +
+          'co-govern taonga over which they already had authority, while acknowledging that co-governance can enable ' +
+          'progress towards what it calls a mature Tiriti-based relationship.',
+      },
+      {
+        heading: 'Whenua and restitution',
+        body:
+          'It describes colonisation and Tiriti breaches as having disconnected generations of Māori from their land, ' +
+          'treats Hoki Whenua Mai as central to restoring cultural, physical, mental and spiritual wellbeing, and ' +
+          'states a Crown obligation to prevent further breaches, including environmental degradation and biodiversity ' +
+          'loss.',
+      },
+      {
+        heading: 'Ōritetanga — equity',
+        body:
+          'The policy attributes inequitable systems and disparities to the systemic racism of settler colonialism, ' +
+          'notes further disparity for rangatahi, takatāpui and tāngata whaikaha, and seeks equitable outcomes across ' +
+          'health, education, justice, te taiao, housing and economic wellbeing.',
+      },
+      {
+        heading: 'How it binds the rest of the party’s policy',
+        body:
+          'Rather than sitting as a standalone kaupapa Māori policy, it requires every other Green policy to align ' +
+          'with it. The party says Te Rōpū Pounamu’s direction on any policy is accepted as binding, and that every ' +
+          'full policy review seeks mātauranga Māori and applies a Critical Tiriti Analysis to draft content.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'The Waitangi Tribunal must be fully resourced and have binding decision-making authority to ensure Tiriti breaches are addressed.',
+        context: 'Mana Motuhake',
+      },
+      {
+        text: 'All Green Party policies are rooted in Te Tiriti o Waitangi and must be aligned with this foundational policy.',
+        context: 'Tiriti-based policy',
+      },
+    ],
+
+    openQuestions: [
+      'The policy sets direction rather than implementation: it does not say what legislation would be introduced, or when.',
+      'It does not set out what binding Waitangi Tribunal authority would cover in practice, or how it would be given legal effect.',
+      'Constitutional transformation is referred to through Matike Mai rather than described in the document itself.',
+      'As a foundational policy rather than a programme, it carries no costings.',
+    ],
+
+    source: {
+      documentTitle: 'Te Tiriti o Waitangi Policy',
+      publisher: 'Green Party of Aotearoa New Zealand',
+      authorisedBy: 'Miriam Ross, Level 5, 108 The Terrace, Wellington',
+      url: 'https://www.greens.org.nz/te_tiriti_o_waitangi',
+      retrieved: '2026-08-14',
+      alsoFrom: [
+        { documentTitle: 'Reviewed 2022', note: 'the version read is dated 9 June 2026' },
+      ],
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
