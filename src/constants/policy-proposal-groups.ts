@@ -541,6 +541,164 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
       },
     ],
   },
+
+  // ── NZ First ──────────────────────────────────────────────────────────────
+  // Six proposals on every one of the ten topics, and most are genuinely
+  // separate policies rather than one policy stated several ways — so the
+  // merging here is the lightest of any party. Economy is left whole (six
+  // distinct measures), as is Treaty and Māori affairs, where the six sit in
+  // six different domains: language, health, international law, local
+  // government, coalition policy, curriculum.
+
+  {
+    topic: 'housing',
+    party: 'nzfirst',
+    proposals: [
+      'Reinstate interest tax deductibility for landlords to encourage more rental homes to be built',
+      'Evaluate allowing KiwiSaver members to use savings above a set level to pay down their mortgage',
+      {
+        headline: 'Support for older renters: a Seniors Housing plan and a higher Accommodation Supplement for SuperGold holders',
+        details: [
+          'Develop a Seniors Housing plan for older New Zealanders in rental accommodation',
+          'Work to increase the Accommodation Supplement for SuperGold card holders',
+        ],
+      },
+      'Absorb the Ministry of Housing and Urban Development into a new Ministry for Infrastructure',
+    ],
+  },
+
+  {
+    topic: 'health',
+    party: 'nzfirst',
+    proposals: [
+      'Replace Pharmac with a new patient-focused medicines agency, adding $1.3 billion in funding',
+      'Create a $925 million-a-year GP-controlled fund to clear the 60,000-person waiting list',
+      {
+        headline: 'Recruit around 2,000 extra doctors through immigration, fast-tracking registration of overseas-trained GPs',
+        details: [
+          'Recruit approximately 2,000 extra doctors through immigration as a priority',
+          'Fast-track registration of overseas-trained doctors into general practice',
+        ],
+      },
+      'Set up digital health clinics in hard-to-staff areas, led by nurse practitioners',
+      'Abolish the Māori Health Authority and base health care on need, not race',
+    ],
+  },
+
+  {
+    topic: 'education',
+    party: 'nzfirst',
+    proposals: [
+      'Enforce compulsory schooling and address truancy',
+      'Focus school curriculum on reading, writing, and arithmetic; remove gender ideology and critical race theory',
+      'Conduct a Select Committee Inquiry into whether NCEA is working',
+      // Left separate from the trades pair below: this one is about when a
+      // university student stops paying, not about shortage fields.
+      'Move ‘Fees Free’ from first year to third year for full-time students who pass all coursework',
+      {
+        headline: 'Free apprenticeships in in-demand trades, and student loan write-offs for working in shortage fields',
+        details: [
+          'Free apprenticeships for in-demand trades, with fees refunded after each successful trade exam',
+          'Student loan abatement: one year of loans wiped for every two years of full-time work in a shortage field',
+        ],
+      },
+    ],
+  },
+
+  {
+    topic: 'climate',
+    party: 'nzfirst',
+    proposals: [
+      {
+        headline: 'Repeal the ban on new offshore oil and gas exploration, and investigate reopening the Marsden Point refinery',
+        details: [
+          'Repeal the 2018 law banning new offshore oil and gas exploration permits',
+          'Investigate reopening the Marsden Point oil refinery',
+        ],
+      },
+      'Establish a Ministry of Energy focused on powering economic growth',
+      'Keep the Tiwai Point aluminium smelter open',
+      'Work with other countries on climate change resilience through foreign policy',
+      'Make cheap renewable energy a competitive advantage for New Zealand’s economy',
+    ],
+  },
+
+  {
+    topic: 'environment',
+    party: 'nzfirst',
+    proposals: [
+      'Fix infrastructure damaged by severe weather events',
+      'Address aquatic and land-based pests, weeds, and biosecurity threats',
+      {
+        headline: 'Repeal Labour’s planning laws, temporarily reinstate the RMA, and replace the Environment Court with legislation limiting third-party appeals',
+        details: [
+          'Repeal Labour’s planning laws and temporarily reinstate the Resource Management Act',
+          'Replace the Environment Court with new planning legislation limiting third-party appeals',
+        ],
+      },
+      'Repeal the 2018 law banning new oil and gas exploration',
+      'Improve water storage in productive rural regions',
+    ],
+  },
+
+  {
+    topic: 'crime-justice',
+    party: 'nzfirst',
+    proposals: [
+      {
+        headline: 'Add at least 500 frontline police within 18 months, and double the number of Youth Aid officers',
+        details: [
+          'Add at least 500 new frontline police within the first 18 months',
+          'Double the number of Youth Aid officers',
+        ],
+      },
+      'Introduce mandatory minimum sentences for serious violent and sexual offenders',
+      'Create a gang-only prison and designate gangs as terrorist organisations',
+      'Introduce a Youth Justice Demerit Points system for young offenders',
+      'Establish Mental Health Response Units for mental health crises in communities',
+    ],
+  },
+
+  {
+    topic: 'immigration',
+    party: 'nzfirst',
+    proposals: [
+      'Replace the Accredited Employer Work Visa with a Skills Shortage Visa and a Labour Shortage Visa',
+      {
+        headline: 'Prioritise recruiting around 2,000 overseas doctors, fast-tracking residence for in-demand clinical staff',
+        details: [
+          'Fast-track residence (within 30 days) and permanent residence (within 2 years) for in-demand clinical staff from six named countries',
+          'Make recruiting overseas doctors an immigration priority to fill a shortfall of around 2,000',
+        ],
+      },
+      'Crack down on exploitation of immigrant workers in poor working conditions',
+      'Establish an Essential Worker workforce planning mechanism for long-term skills and labour shortage planning',
+      'Combine Immigration New Zealand, Customs, and the Defence Force into a new Border Protection Force',
+    ],
+  },
+
+  {
+    topic: 'foreign-policy',
+    party: 'nzfirst',
+    proposals: [
+      {
+        headline: 'Pursue closer Commonwealth economic relations and a full free trade agreement with the United States',
+        details: [
+          'Launch a Closer Commonwealth Economic Relations arrangement with the UK, Australia, Canada, Singapore, Malaysia and Brunei',
+          'Continue working toward a full free trade agreement with the United States',
+        ],
+      },
+      {
+        headline: 'Increase defence spending to 2% of GDP by 2030, with a permanent Defence Capital Fund for equipment',
+        details: [
+          'Progressively increase defence spending to reach 2% of GDP by 2030',
+          'Establish a permanent Defence Capital Fund to pay for military equipment',
+        ],
+      },
+      'Create a New Zealand Border Protection Force combining Defence, Customs, and Immigration',
+      'Require a national interest test before following United Nations or WHO directives',
+    ],
+  },
 ]
 
 /** The grouping for a topic/party pair, or null to use the raw keyProposals. */
