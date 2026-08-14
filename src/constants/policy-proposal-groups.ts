@@ -288,6 +288,123 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
       'Ensure veterans receive timely care, recognition, and support',
     ],
   },
+
+  // ── Green ─────────────────────────────────────────────────────────────────
+  // Green's recorded proposals are more principle-based than the other two
+  // parties', so the merging here is deliberately lighter: combining two broad
+  // statements produces a vaguer one, not a clearer one. Only groups where the
+  // same commitment is repeated across domains, or several mechanics serve one
+  // policy, are merged. Health (1), education (3), crime & justice (2) and
+  // environment (6 separately published policies) are left alone.
+
+  {
+    topic: 'housing',
+    party: 'green',
+    proposals: [
+      'Large-scale government building of public housing',
+      'End homelessness through community-based housing-first support',
+      {
+        // Four of the six were renting: evictions, rent levels, quality, and
+        // rights in general. One tenancy policy stated four times.
+        headline: 'Strengthen renters’ rights: ban no-cause evictions, stabilise rent increases and lift rental quality standards',
+        details: [
+          'Ban no-cause evictions for renters',
+          'Stabilise rent increases',
+          'Improve the quality standards of rental homes',
+          'Strengthen renters’ rights overall',
+        ],
+      },
+    ],
+  },
+
+  {
+    topic: 'economy',
+    party: 'green',
+    proposals: [
+      {
+        headline: 'Publish an alternative budget and apply a Green Fiscal Strategy to how public money is managed',
+        details: [
+          'Publish an alternative budget showing different spending and revenue choices',
+          'Apply a Green Fiscal Strategy to guide how public money is managed',
+        ],
+      },
+      // Left separate: both are aims for the economy rather than instruments,
+      // and merging them would say less than either does on its own.
+      'Build an economy that meets everyone’s basic needs',
+      'Give everyday people more power to shape the economic system',
+    ],
+  },
+
+  {
+    topic: 'climate',
+    party: 'green',
+    proposals: [
+      'Take urgent, equitable, evidence-based action on climate change',
+      {
+        headline: 'Transition to renewable energy accessible to everyone, with a democratised energy system',
+        details: [
+          'Transition to renewable energy accessible to everyone',
+          'Democratise the energy system, prioritising community wellbeing over private profit',
+        ],
+      },
+      'Protect nature and ecosystems as part of climate response',
+      'Help communities prepare for and recover from climate-related disasters',
+    ],
+  },
+
+  {
+    topic: 'treaty-maori-affairs',
+    party: 'green',
+    proposals: [
+      'Honour Te Tiriti o Waitangi as a foundational commitment',
+      'Uphold Māori rights across government',
+      'Support Māori development',
+      {
+        // The same commitment applied to four areas — governance, oceans,
+        // energy, immigration — stated as four proposals.
+        headline: 'Apply a Tiriti-based approach across governance, ocean and marine management, energy and immigration',
+        details: [
+          'Apply a Tiriti-based approach to governance, making it fair and inclusive',
+          'Apply a Tiriti-based approach to ocean and marine management',
+          'Apply a Tiriti-based approach to the energy system and immigration system',
+        ],
+      },
+    ],
+  },
+
+  {
+    topic: 'immigration',
+    party: 'green',
+    proposals: [
+      'Build a progressive, Tiriti-based immigration system',
+      {
+        // Three descriptions of how the same system should behave.
+        headline: 'An immigration system that is humane, fair, practical and sensitive to those affected',
+        details: [
+          'Ensure the immigration system is humane and fair',
+          'Make immigration practical and sustainable',
+          'Be sensitive to the requirements and concerns of all people affected',
+        ],
+      },
+    ],
+  },
+
+  {
+    topic: 'foreign-policy',
+    party: 'green',
+    proposals: [
+      'Take independent, principled stances on the world stage',
+      'Cooperate globally to uphold rights and interests of all people and the planet',
+      {
+        headline: 'Protect New Zealand from external threats and promote peaceful resolution of conflict globally',
+        details: [
+          'Protect New Zealand from external threats',
+          'Promote conflict prevention and peaceful conflict resolution globally',
+        ],
+      },
+      'Support trade and foreign investment that prioritises sustainability and justice',
+    ],
+  },
 ]
 
 /** The grouping for a topic/party pair, or null to use the raw keyProposals. */
