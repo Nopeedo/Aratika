@@ -28,6 +28,9 @@ const DEEP_DIVE_CSS = `
 `
 
 export function PolicyDeepDive({ dive, accent, partyName }: { dive: DeepDive; accent: string; partyName: string }) {
+  const covered = dive.covered ?? []
+  const exempt = dive.exempt ?? []
+  const both = covered.length > 0 && exempt.length > 0
   return (
     <section style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 18, padding: 'clamp(18px, 4vw, 28px)' }}>
       <style dangerouslySetInnerHTML={{ __html: DEEP_DIVE_CSS }} />
@@ -57,11 +60,19 @@ export function PolicyDeepDive({ dive, accent, partyName }: { dive: DeepDive; ac
         ))}
       </div>
 
-      {/* What's in, what's out — the question most readers actually arrive with */}
-      <div className="dd-split" style={{ marginBottom: 26 }}>
-        <ListPanel icon={CheckCircle2} tone={accent} title={dive.coveredLabel ?? 'What it applies to'} items={dive.covered} />
-        <ListPanel icon={XCircle} tone={TERTIARY} title={dive.exemptLabel ?? 'What is exempt'} items={dive.exempt} />
-      </div>
+      {/* What's in, what's out — the question most readers actually arrive with.
+          Side by side when both exist; on its own, full width, when only one
+          does; skipped entirely when neither does. */}
+      {(covered.length > 0 || exempt.length > 0) && (
+        <div className={both ? 'dd-split' : undefined} style={{ marginBottom: 26 }}>
+          {covered.length > 0 && (
+            <ListPanel icon={CheckCircle2} tone={accent} title={dive.coveredLabel ?? 'What it applies to'} items={covered} />
+          )}
+          {exempt.length > 0 && (
+            <ListPanel icon={XCircle} tone={TERTIARY} title={dive.exemptLabel ?? 'What is exempt'} items={exempt} />
+          )}
+        </div>
+      )}
 
       {/* Mechanics */}
       <Heading icon={ListChecks} accent={accent}>How it would work</Heading>

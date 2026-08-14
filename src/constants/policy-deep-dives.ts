@@ -76,8 +76,11 @@ export interface PolicyDeepDive {
   /** One paragraph, plain language, no advocacy. */
   summary: string
   facts: DeepDiveFact[]
-  covered: string[]
-  exempt: string[]
+  /** Both optional. Not every policy has two sides — a screening programme has
+   *  who it covers and no exclusion list, and padding one out to fill the panel
+   *  would be inventing content. Omit either and its panel is not rendered. */
+  covered?: string[]
+  exempt?: string[]
   /** Headings for the two lists. Default to the tax framing the first deep dive
    *  needed; an entitlement wants "What the visits cover" / "What they don't". */
   coveredLabel?: string
@@ -657,6 +660,107 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       documentTitle: 'Backing your family doctor',
       publisher: 'New Zealand Labour Party',
       url: 'https://www.labour.org.nz/familydoctorloanscheme',
+      retrieved: '2026-08-14',
+    },
+  },
+
+  {
+    topics: ['health'],
+    party: 'labour',
+    title: 'Free cervical screening',
+    // The shortest source so far — a one-page factsheet — but a specific one:
+    // age range, start date, delivery, funding source and a costing. Short deep
+    // dive rather than a padded one; there is no exclusion list because the
+    // document states none.
+    summary:
+      'Labour proposes making cervical screening free for everyone aged 25 to 69 from 1 October 2027. Eligibility ' +
+      'would be loaded automatically onto the Medicard and claimed by scanning it at a general practice or a ' +
+      'community screening event. The screening would sit on top of the three free doctor’s visits rather than ' +
+      'counting against them, and be funded from existing health baselines.',
+
+    facts: [
+      { label: 'Who', value: 'Everyone aged 25 to 69' },
+      { label: 'From', value: '1 October 2027' },
+      { label: 'Claimed with', value: 'The Medicard', note: 'Eligibility loaded onto it automatically' },
+      { label: 'Where', value: 'GP or community screening events' },
+      { label: 'Counts against the free visits', value: 'No', note: 'It is in addition to the three a year' },
+      { label: 'Cost', value: '$21.6m in the first full year', note: 'From existing health baselines' },
+    ],
+
+    coveredLabel: 'What it covers',
+    covered: [
+      'Everyone aged 25 to 69',
+      'Screening at the general practice you are enrolled with, or at community screening events',
+      'Claimed by scanning your Medicard, with eligibility loaded onto it automatically',
+      'In addition to the three free doctor’s visits, not counted against them',
+    ],
+    // No exempt list: the document states no exclusions, and inventing one to
+    // fill the panel would be exactly the padding these pages avoid.
+
+    mechanics: [
+      {
+        heading: 'Who it covers and when it starts',
+        body:
+          'Free screening for those aged 25 to 69, from 1 October 2027. The document does not describe any other ' +
+          'eligibility condition.',
+      },
+      {
+        heading: 'How you would claim it',
+        body:
+          'Eligibility would be loaded automatically onto the Medicard, the same card carrying the three free doctor’s ' +
+          'visits. It would be claimed by scanning the card at a general practice or a community screening event.',
+      },
+      {
+        heading: 'It sits on top of the free visits',
+        body:
+          'The document is explicit that free screening is in addition to the three free doctor’s visits, so using it ' +
+          'would not reduce the number of free appointments available in a year.',
+      },
+      {
+        heading: 'How it would be paid for',
+        body:
+          'Unlike the free visits, which the party would fund from its proposed capital gains tax, screening is stated ' +
+          'as coming from existing health baselines. The costing given is $21.6 million for the first full year.',
+      },
+      {
+        heading: 'The case the party makes',
+        body:
+          'The document argues cervical cancer is among the most preventable cancers, that 85 percent of those ' +
+          'diagnosed have never been screened or have missed screenings, and that making it free would bring it into ' +
+          'line with other nationwide free cancer screening programmes.',
+      },
+    ],
+
+    examples: [],
+
+    revenue: {
+      heading: 'What they expect it to cost',
+      rows: [{ period: 'First full year', amount: '$21.6m' }],
+      basis: 'Labour’s own figure. The document says the screening would be funded from existing health baselines.',
+    },
+
+    quotes: [
+      {
+        text: 'Cervical cancer is among the most preventable cancers - yet 85 percent of those diagnosed have never been screened or missed screenings.',
+        context: 'Why it matters',
+      },
+      {
+        text: 'Screening will be funded from existing health baselines.',
+        context: 'The cost',
+      },
+    ],
+
+    openQuestions: [
+      'The document does not say what applies to people outside the 25 to 69 age range.',
+      'It does not say how often a free screening would be available within that range.',
+      'It says the screening comes from existing health baselines, but does not say what that funding is currently spent on.',
+    ],
+
+    source: {
+      documentTitle: 'Free cervical screening',
+      publisher: 'New Zealand Labour Party',
+      authorisedBy: 'Rob Salmond, 2 Gilmer Terrace, Wellington',
+      url: 'https://www.labour.org.nz/cervicalscreening',
       retrieved: '2026-08-14',
     },
   },
