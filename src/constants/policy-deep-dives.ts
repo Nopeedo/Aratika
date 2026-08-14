@@ -423,11 +423,133 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-14',
     },
   },
+
+  {
+    topics: ['economy'],
+    party: 'labour',
+    title: 'A New Zealand Future Fund',
+    summary:
+      'Labour proposes a state investment fund that would sit alongside, but separate from, the New Zealand Super ' +
+      'Fund. It would be seeded with a small number of Crown-owned assets plus an initial capital contribution, run ' +
+      'by the Guardians of the Super Fund with the Minister of Finance as sole shareholder, and invest in ' +
+      'infrastructure and New Zealand businesses. The assets it is seeded with would be barred from sale by law.',
+
+    facts: [
+      { label: 'What it is', value: 'A state investment fund', note: 'Separate from the New Zealand Super Fund' },
+      { label: 'Run by', value: 'Guardians of the Super Fund', note: 'The existing body that manages the Super Fund' },
+      { label: 'Shareholder', value: 'The Minister of Finance', note: 'Sole shareholder, but cannot pick investments' },
+      { label: 'Seeded with', value: 'Crown assets and capital', note: 'Assets with a commercial and public good purpose' },
+      { label: 'Seed assets', value: 'Protected in law', note: 'Sale prevented by legislation' },
+      { label: 'Invests in', value: 'Infrastructure and NZ businesses', note: 'For financial and social returns' },
+    ],
+
+    coveredLabel: 'What it would do',
+    exemptLabel: 'What it could not do',
+
+    covered: [
+      'Invest in infrastructure and innovative New Zealand businesses',
+      'Hold Crown-owned assets that have both a commercial and a public good purpose',
+      'Invest and borrow in its own right',
+      'Take returns that are social as well as financial — the document gives community renewable energy and high-tech start-ups as examples',
+    ],
+
+    exempt: [
+      'Sell the assets it is seeded with — the document says this would be prevented in legislation',
+      'Sell its other assets without explicit Ministerial approval',
+      'Be told by the Minister of Finance which individual investments to make',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Separate from the Super Fund, run by the same people',
+        body:
+          'The fund would sit alongside the New Zealand Super Fund rather than inside it, and be governed by the ' +
+          'Guardians of the Super Fund — the existing body that runs it. The Minister of Finance would be sole ' +
+          'shareholder.',
+      },
+      {
+        heading: 'How it would be seeded',
+        body:
+          'The document describes a foundation of existing government assets plus an initial capital contribution. The ' +
+          'assets would be a small number of Crown-owned ones with both a commercial and a public good purpose, giving ' +
+          'the fund dividend income, a base to borrow against, and something to invest from.',
+      },
+      {
+        heading: 'The seed assets would be locked in law',
+        body:
+          'Those assets would be protected in legislation so they cannot be sold and stay in public ownership. Assets ' +
+          'the fund acquires later would need explicit Ministerial approval before any sale.',
+      },
+      {
+        heading: 'What independence would mean in practice',
+        body:
+          'The fund would operate under legislation and a public policy statement. The Minister of Finance would set ' +
+          'broad objectives through a letter of expectation but would have no power to direct individual investments — ' +
+          'the same arm’s-length arrangement the Super Fund uses.',
+      },
+      {
+        heading: 'Returns measured two ways',
+        body:
+          'The document is explicit that some investments may not deliver the returns of global markets, and argues ' +
+          'they would create national value instead — stronger communities, lower costs, more resilient industries, and ' +
+          'keeping talent and ideas in New Zealand.',
+      },
+      {
+        heading: 'The comparisons it draws',
+        body:
+          'The case is made against three reference points, all figures from the document itself.',
+        bullets: [
+          'Singapore’s Temasek: began in 1974 with S$354 million, now worth more than S$434 billion',
+          'Australia’s superannuation: grown to A$4.2 trillion',
+          'New Zealand’s own Super Fund: $85 billion, of which the document says only 11 percent is invested in New Zealand',
+        ],
+      },
+    ],
+
+    // No worked examples in the document, and no financial forecast either —
+    // see the open questions, which are the substantive part of this one.
+    examples: [],
+
+    quotes: [
+      {
+        text: 'It will be independently governed by the Guardians of the Super Fund, with the Minister of Finance as sole shareholder.',
+        context: 'How the Future Fund works',
+      },
+      {
+        text: 'The Minister of Finance will set broad objectives through a letter of expectation, but will have no power to direct individual investments.',
+        context: 'How the Future Fund works',
+      },
+      {
+        text: 'The Future Fund will have the authority to invest and borrow, but any sale of seeded assets will be prevented in legislation.',
+        context: 'How the Future Fund works',
+      },
+    ],
+
+    openQuestions: [
+      'The document does not say how large the initial capital contribution would be.',
+      'It does not name which Crown-owned assets would be used to seed the fund.',
+      'No target size, return or timeframe is given for the fund.',
+      'No start date is stated, and the document does not say what legislation would be needed first.',
+    ],
+
+    source: {
+      documentTitle: 'New Zealand Future Fund',
+      publisher: 'New Zealand Labour Party',
+      authorisedBy: 'Rob Salmond, 2 Gilmer Terrace, Wellington',
+      url: 'https://www.labour.org.nz/futurefund',
+      retrieved: '2026-08-14',
+    },
+  },
 ]
 
-/** The deep dive for a topic/party pair, or null. */
-export function getDeepDive(topic: string, party: string): PolicyDeepDive | null {
-  return POLICY_DEEP_DIVES.find(
+/** Every deep dive for a topic/party pair, in declaration order.
+ *
+ *  Returns a list, not one: a party can have more than one document-backed
+ *  policy on the same topic. Labour's economy page carries both the capital
+ *  gains tax and the Future Fund. Returning only the first silently hid the
+ *  second. */
+export function getDeepDives(topic: string, party: string): PolicyDeepDive[] {
+  return POLICY_DEEP_DIVES.filter(
     (d) => d.party === party && d.topics.includes(topic as PolicyTopic),
-  ) ?? null
+  )
 }
