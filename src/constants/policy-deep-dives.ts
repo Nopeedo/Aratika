@@ -764,6 +764,173 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-14',
     },
   },
+
+  // ── Green ─────────────────────────────────────────────────────────────────
+
+  {
+    // On housing as well as economy: two of the six measures are property ones,
+    // and it sits alongside Labour's capital gains tax there for comparison.
+    topics: ['economy', 'housing'],
+    party: 'green',
+    title: 'A tax system for all of us',
+    summary:
+      'The Green Party proposes six revenue measures and an income tax cut. A 2.5 percent annual tax on net assets ' +
+      'over $10 million and a 33 percent tax on inheritances and gifts received over $1 million; a higher company ' +
+      'rate for large firms, a levy on the big banks, and enforcement of withholding tax on profits sent offshore; ' +
+      'and reversal of the landlord interest deduction and the brightline change. Income tax is cut, with the first ' +
+      '$10,000 tax-free and a new 45 percent rate over $160,000.',
+
+    facts: [
+      { label: 'Tax on net assets', value: '2.5% a year over $10m', note: '$20m for a couple, after debts; family home exempt' },
+      { label: 'Inheritances and gifts', value: '33% over $1m', note: 'Paid by the recipient; family home and farm exempt' },
+      { label: 'Large company rate', value: '33%', note: 'Turnover over $30m; small and medium firms stay at 28%' },
+      { label: 'Tax-free threshold', value: 'First $10,000', note: 'The party says 96% of people get a tax cut' },
+      { label: 'New top rate', value: '45% over $160,000', note: 'On the portion above the threshold' },
+      { label: 'Net revenue', value: '$5.1bn in 2027/28', note: 'After the income tax cut; party’s own modelling' },
+    ],
+
+    coveredLabel: 'What would be taxed more',
+    exemptLabel: 'What is exempt or unchanged',
+
+    covered: [
+      'Net assets above $10 million, or $20 million for a couple, at 2.5 percent a year',
+      'Inheritances and gifts received above $1 million, at 33 percent',
+      'Companies with turnover above $30 million, at 33 percent instead of 28',
+      'Banks with more than $100 billion in liabilities, at 0.06 percent of total liabilities',
+      'Profits sent offshore by large multinationals, through the 5 percent withholding rate',
+      'Income above $160,000, at 45 percent',
+    ],
+
+    exempt: [
+      'The family home, from the tax on net assets',
+      'Family homes and family farms, from the inheritance and gift tax',
+      'Māori land under Te Ture Whenua Māori Act, and the assets of Post-Settlement Governance Entities',
+      'The assets of charities, NGOs and clubs',
+      'Small and medium businesses, which stay on the 28 percent company rate',
+    ],
+
+    mechanics: [
+      {
+        heading: 'The tax on net assets',
+        body:
+          'A 2.5 percent annual charge on net assets above $10 million for an individual, or $20 million for a couple, ' +
+          'measured after mortgages and other debt. It is a tax on wealth held, not on income from wages or work.',
+        bullets: [
+          'Covers property, shares and bonds, which the document says have known values because they trade often',
+          'Artworks and similar worth more than $50,000 are valued at what they are insured for',
+          'Wealth in a discretionary trust is assessed against the settlor; a fixed-interest trust is apportioned to beneficiaries',
+        ],
+      },
+      {
+        heading: 'The Capital Acquisitions Tax',
+        body:
+          'A 33 percent tax on inheritances and gifts worth more than $1 million, paid by the person receiving them ' +
+          'rather than the estate. The document says it would apply to about 1,100 people a year, and that the 33 ' +
+          'percent rate matches the base rate on income earned by a trust or by the estate of someone who has died.',
+      },
+      {
+        heading: 'A higher company rate for large firms only',
+        body:
+          'The company rate rises from 28 to 33 percent for businesses with annual turnover above $30 million — the ' +
+          'threshold Inland Revenue uses to define a large business, which the document says is about 0.7 percent of ' +
+          'firms. Everyone below it stays at 28 percent.',
+      },
+      {
+        heading: 'A levy on the big banks',
+        body:
+          'An annual levy of 0.06 percent on the total liabilities of banks holding more than $100 billion — which the ' +
+          'document says captures ANZ, ASB, BNZ and Westpac, and matches a levy Australia already has. The stated ' +
+          'purposes are the fiscal risk of highly leveraged banks, bank profitability, and levelling the field for ' +
+          'smaller competitors.',
+      },
+      {
+        heading: 'Enforcing withholding tax on offshore profits',
+        body:
+          'The document argues large multinationals reduce their New Zealand taxable profit by classifying what are in ' +
+          'substance royalties as service and licence fees. The policy is to enforce the existing 5 percent withholding ' +
+          'rate on them, and it says this would apply to any company misclassifying royalties this way, not only the ' +
+          'named examples.',
+      },
+      {
+        heading: 'Reversing the two property tax changes',
+        body:
+          'Interest deductibility on residential investment property would be removed, and the brightline test returned ' +
+          'to 10 years from the current 2. The document notes this taxes the gain at the seller’s marginal rate and ' +
+          'does not apply to the family home.',
+      },
+      {
+        heading: 'The proposed income tax scale',
+        body:
+          'Seven brackets replacing the current five, with the first $10,000 untaxed and a new top rate on income over ' +
+          '$160,000. Only the portion above each threshold is taxed at that rate.',
+        bullets: [
+          '$0–$9,999 at 0% · $10,000–$19,999 at 10% · $20,000–$39,999 at 17.5%',
+          '$40,000–$59,999 at 25.5% · $60,000–$79,999 at 30.5% · $80,000–$159,999 at 33.5%',
+          '$160,000 and over at 45%',
+        ],
+      },
+    ],
+
+    examples: [
+      {
+        title: 'Two inheritances, one taxed and one not',
+        fromDocument: true,
+        setup: [
+          'In the first, someone is gifted a family home worth $1.5 million and $250,000 in shares',
+          'In the second, someone is gifted a family home worth $1.5 million and $1.25 million in shares and bonds',
+        ],
+        outcome: [
+          'The first pays nothing — the family home is exempt, and what is left is under the $1 million threshold',
+          'The second pays 33 percent on $250,000, being the value above $1 million once the family home is excluded',
+        ],
+      },
+    ],
+
+    revenue: {
+      rows: [
+        { period: '2027/28', amount: '$5,147m' },
+        { period: '2028/29', amount: '$5,348m' },
+        { period: '2029/30', amount: '$5,541m' },
+        { period: '2030/31', amount: '$5,725m' },
+      ],
+      basis:
+        'Net totals, after the income tax cut (about $2.3bn a year) and extra Inland Revenue funding. Modelled by the ' +
+        'Parliamentary Library using Inland Revenue, Stats NZ, Reserve Bank and Treasury data. The document states ' +
+        'that behavioural response is beyond the models’ scope, though it assumes 28.5 percent of the net-assets tax ' +
+        'revenue would be lost to avoidance and evasion.',
+    },
+
+    quotes: [
+      {
+        text: 'The person receiving the inheritance or gift will pay the tax, not the estate or person passing it on.',
+        context: 'How it will work — Capital Acquisitions Tax',
+      },
+      {
+        text: 'Modelling the behavioural response to a change in the tax system is beyond the scope of these models.',
+        context: 'Modelling assumptions',
+      },
+      {
+        text: 'Costings for each policy have been projected through to the end of 2031 and are estimates only based on the best available information.',
+        context: 'Modelling assumptions',
+      },
+    ],
+
+    openQuestions: [
+      'The document does not say when the changes would take effect; the costings begin in 2027/28.',
+      'Beyond property, shares and bonds having known values, and art over $50,000 being taken at its insured value, it does not set out how net assets would be valued each year.',
+      'Behavioural response to the changes is excluded from the modelling, which the document states directly.',
+      'Flow-on effects on other tax revenue — it gives GST and company tax as examples — are described as uncertain and are not included.',
+    ],
+
+    source: {
+      documentTitle: 'A tax system for all of us — Tax policy 2026',
+      publisher: 'Green Party of Aotearoa New Zealand',
+      authorisedBy: 'Marama Davidson and Chlöe Swarbrick, Green Party Co-leaders, Parliament Buildings, Wellington',
+      // The Green Party's policy index has no dedicated tax page, so there is no
+      // URL to point at yet. Better to say so than to guess one.
+      retrieved: '2026-08-14',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
