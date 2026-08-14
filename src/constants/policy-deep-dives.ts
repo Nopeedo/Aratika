@@ -1338,6 +1338,156 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       ],
     },
   },
+
+  // ── National ──────────────────────────────────────────────────────────────
+
+  {
+    topics: ['economy'],
+    party: 'national',
+    title: 'Compulsory KiwiSaver, and three changes around it',
+    summary:
+      'National proposes making KiwiSaver contributions compulsory for all workers from 1 July 2028, at the default ' +
+      'rate on a glidepath reaching 6 percent each from employee and employer by 2032. Alongside it: a $1,500 Baby ' +
+      'Boost with automatic enrolment at birth, a government KiwiSaver contribution for people on paid parental ' +
+      'leave whether or not they contribute themselves, and compulsory employer contributions for workers over 65 — ' +
+      'all from 1 July 2027.',
+
+    facts: [
+      { label: 'Compulsory from', value: '1 July 2028', note: 'For all workers, at the prevailing default rate' },
+      { label: 'Contribution glidepath', value: '6% each by 2032', note: 'Combined 12%, which the party says matches Australia' },
+      { label: 'Baby Boost', value: '$1,500 at birth', note: 'With automatic KiwiSaver enrolment, from 1 July 2027' },
+      { label: 'Parental leave', value: 'Government contributes', note: 'Even if the parent does not, from 1 July 2027' },
+      { label: 'Workers over 65', value: 'Employer must contribute', note: 'From 1 July 2027' },
+      { label: 'Cost', value: '$110m rising to $362m', note: '2027/28 to 2030/31; from future Budget allowances' },
+    ],
+
+    coveredLabel: 'Who it would apply to',
+    exemptLabel: 'Who is excepted',
+
+    covered: [
+      'All workers, from 1 July 2028, at the prevailing default contribution rate',
+      'Self-employed people, at the employee-equivalent rate — 4 percent rather than the combined 8',
+      'Every child born in New Zealand, automatically enrolled with a $1,500 payment',
+      'People on paid parental leave, who receive a government contribution regardless of their own',
+      'Employees aged over 65, whose employers would have to contribute as for anyone else',
+    ],
+
+    exempt: [
+      'Employees already saving through another employer-managed defined contribution scheme',
+      'People receiving paid parental leave, for the period they are out of work',
+      'Anyone suspending contributions — but only by meeting the existing hardship test',
+    ],
+
+    mechanics: [
+      {
+        heading: 'What compulsory means here',
+        body:
+          'Contributions would be made at whatever the default rate is at the time, following an already-legislated ' +
+          'glidepath: 3.5 percent from 1 April 2026, rising 0.5 points in 2028 and each year after until employee and ' +
+          'employer rates each reach 6 percent on 1 April 2032. The document says this is aimed at low-income, ' +
+          'part-time and self-employed workers, whose contribution rates it describes as lower than average.',
+      },
+      {
+        heading: 'The exceptions, and the hardship test',
+        body:
+          'Three carve-outs: another employer-managed scheme, the period someone is on paid parental leave, and ' +
+          'suspension — which would require meeting the hardship test already used for early withdrawal. The ' +
+          'self-employed would pay only the employee share, 4 percent rather than the combined 8.',
+      },
+      {
+        heading: '$1,500 at birth, and what it grows to',
+        body:
+          'Every child born in New Zealand would be enrolled automatically and receive $1,500. The document works ' +
+          'through the compounding: at an assumed long-run return of about 7 percent a year, that becomes roughly ' +
+          '$5,000 by age 18 with no further contributions. Costing assumes about 60,000 births a year; it notes there ' +
+          'were 57,700 live births last year.',
+      },
+      {
+        heading: 'Paid parental leave contributions',
+        body:
+          'Today the government matches contributions made by someone on paid parental leave. The document says only ' +
+          'about 1 in 5 eligible people kept contributing in the year to June 2025, so 4 in 5 got nothing. From 1 July ' +
+          '2027 the contribution would be paid regardless, at the default rate applied to the parental leave payment.',
+      },
+      {
+        heading: 'Workers over 65',
+        body:
+          'Employers are not currently required to contribute for employees aged 65 and over. National would require ' +
+          'it from 1 July 2027, on the same basis as for other employees. The document notes around 1 in 4 New ' +
+          'Zealanders over 65 are in paid work and says this implements a 2024 Retirement Commissioner recommendation.',
+      },
+    ],
+
+    examples: [
+      {
+        title: 'Jess, on paid parental leave twice',
+        fromDocument: true,
+        setup: [
+          'Jess is 30 when she has her first baby in 2028, and 33 for her second in 2031',
+          'She receives the maximum paid parental leave entitlement, 26 weeks, after each birth',
+        ],
+        outcome: [
+          'The first period adds $625 to her KiwiSaver, the second $952',
+          'Assuming a 7 percent average annual return, that is about $15,000 more by the time she is 65',
+        ],
+      },
+      {
+        title: 'Jeff, working past 65',
+        fromDocument: true,
+        setup: [
+          'Jeff is 65 in 2027, earning $70,000 a year',
+          'He chooses to work three more years and retires at 68',
+        ],
+        outcome: [
+          'His employer is now obliged to contribute to his KiwiSaver',
+          'The document puts him about $6,300 better off by 2030',
+        ],
+      },
+    ],
+
+    revenue: {
+      heading: 'What they expect it to cost',
+      rows: [
+        { period: '2027/28', amount: '$110.1m' },
+        { period: '2028/29', amount: '$323.4m' },
+        { period: '2029/30', amount: '$342.2m' },
+        { period: '2030/31', amount: '$361.6m' },
+      ],
+      basis:
+        'National’s own figures, covering the Baby Boost, the parental leave top-up, the wider government ' +
+        'contribution and the Crown’s own cost as an employer. The document says the cost would be met from future ' +
+        'Budget operating allowances, and that it has deliberately not offset the total with the additional employer ' +
+        'superannuation contribution tax the changes would raise, to keep the estimate conservative.',
+    },
+
+    quotes: [
+      {
+        text: 'Contributions will be made at the prevailing default rate as part of the agreed glidepath, lifting combined default contributions to 12% by 2032, matching Australia.',
+        context: 'Compulsory savings',
+      },
+      {
+        text: 'The cost of this policy will be met from future Budget operating allowances.',
+        context: 'Fiscal impact',
+      },
+      {
+        text: 'This directly implements a recommendation of the Retirement Commissioner, who called for employer contributions to be required for those over 65 in the Commission’s 2024 review of KiwiSaver settings.',
+        context: 'Employer contributions for workers over 65',
+      },
+    ],
+
+    openQuestions: [
+      'The document does not say what happens if a worker simply does not contribute — only that suspending requires meeting the hardship test.',
+      'It does not say whether the self-employed rate stays at 4 percent or follows the glidepath up to 6.',
+      'It does not say whether the $1,500 Baby Boost would be indexed.',
+      'The cost is to come from future Budget operating allowances rather than from identified savings or revenue.',
+    ],
+
+    source: {
+      documentTitle: 'Building the Future: Enhancing KiwiSaver for Everyone',
+      publisher: 'New Zealand National Party',
+      retrieved: '2026-08-14',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
