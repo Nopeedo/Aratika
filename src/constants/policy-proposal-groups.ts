@@ -48,9 +48,13 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
     party: 'labour',
     proposals: [
       {
-        headline: '28% tax on any profit made when a commercial or residential property is sold',
+        // "excluding the family home" is in the headline, not just the detail,
+        // because without it the line reads as covering every house sale — and
+        // for most people the only property they will ever sell is the one they
+        // live in, which this exempts. Matches the document's own wording.
+        headline: '28% tax on any profit made when a commercial or residential property is sold, excluding the family home',
         details: [
-          'The family home is excluded, along with farms, KiwiSaver, shares, business assets and inheritances',
+          'Farms, KiwiSaver, shares, business assets, gifts and inheritances are also exempt',
           'Applies only to gains made after 1 July 2027 — no profit made before that date is taxed',
           'Paid when the property is sold, not while it is held',
           'Charged at the individual level, so each owner is taxed on their share of the gain',
@@ -59,6 +63,27 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
       },
       'SolarSaver scheme to help homeowners and renters access solar without upfront costs',
       'SolarSaver includes subsidies and loan schemes, up and running within 12 months of taking office',
+    ],
+  },
+
+  {
+    topic: 'health',
+    party: 'labour',
+    proposals: [
+      {
+        // "Three free GP visits a year", not "free GP visits" — the count is
+        // the policy. Dropping it would promise unlimited free care, which is
+        // the same trap as leaving the family home out of the housing headline.
+        headline: 'Three free GP visits a year, plus free prescriptions, maternity scans and cervical screening',
+        details: [
+          'Three free doctor’s visits per year for everyone, through a new Medicard',
+          'The $5 prescription fee removed, making prescriptions free for all',
+          'Free maternity scans everywhere in New Zealand',
+          'Free cervical screening nationwide',
+        ],
+      },
+      // Workforce, not a service someone receives — stays its own point.
+      'A Family Doctor Loan Scheme to increase the number of GPs',
     ],
   },
 ]
