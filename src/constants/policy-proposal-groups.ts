@@ -405,6 +405,142 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
       'Support trade and foreign investment that prioritises sustainability and justice',
     ],
   },
+
+  // ── ACT ───────────────────────────────────────────────────────────────────
+  // Climate, environment, immigration and foreign policy have no recorded ACT
+  // position, so there is nothing to group there.
+
+  {
+    topic: 'economy',
+    party: 'act',
+    proposals: [
+      {
+        headline: 'A two-rate income tax with a top rate of 28%, aligned with trust and company rates',
+        details: [
+          'Introduce a two-rate income tax system with a top rate of 28%',
+          'Align personal, trust, and company tax rates to simplify the system',
+        ],
+      },
+      'Continue identifying and cutting low-value government spending',
+      {
+        headline: 'Remove regulations and streamline consenting, and open markets to more competition',
+        details: [
+          'Remove unnecessary regulations to make it easier for businesses to invest and hire',
+          'Streamline consenting processes and open markets to more competition',
+        ],
+      },
+      'Maintain 90-day trial periods for all employers',
+    ],
+  },
+
+  {
+    topic: 'housing',
+    party: 'act',
+    proposals: [
+      'Allow thousands of overseas building products to be used in New Zealand to lower construction costs',
+      {
+        headline: 'Repeal and replace the Resource Management Act with a property-rights-based, rules-based system',
+        details: [
+          'Repeal and replace the Resource Management Act with a property-rights-based system',
+          'Create a rules-based framework where development can proceed quickly without lengthy compliance',
+        ],
+      },
+      'Enable private investment in major infrastructure through Public Private Partnerships',
+    ],
+  },
+
+  {
+    topic: 'health',
+    party: 'act',
+    proposals: [
+      {
+        headline: 'Government to purchase health services rather than provide them, expanding contracts with private hospitals',
+        details: [
+          'Expand contracts with private hospitals for elective surgeries, diagnostics and specialist care',
+          'Government to act as a purchaser of health services rather than a direct provider',
+        ],
+      },
+      'Remove remaining race-based health policies and deliver services based on patient need',
+      {
+        headline: 'Publish detailed performance reports and set measurable targets for Health NZ',
+        details: [
+          'Publish regular, detailed performance reports for hospitals and health services',
+          'Set measurable, trackable targets for Health NZ',
+        ],
+      },
+      'Focus health funding on frontline services rather than management',
+    ],
+  },
+
+  {
+    topic: 'education',
+    party: 'act',
+    // Only one merge here. Student Education Accounts and partnership schools
+    // both widen choice, but they are two distinct mechanisms — an account
+    // families spend, and a type of school — so they stay apart.
+    proposals: [
+      'Introduce Student Education Accounts — publicly funded accounts parents can spend at any registered school or provider',
+      'Publish detailed, comparable school performance data for parents',
+      {
+        headline: 'Raise teacher training standards and introduce performance-based pay',
+        details: [
+          'Raise teacher training standards with a focus on evidence-based literacy and numeracy methods',
+          'Introduce performance-based pay so schools can reward their best teachers',
+        ],
+      },
+      'Restore and expand partnership (charter) schools — publicly funded but independently run',
+      'Keep curriculum focused on core subjects: reading, writing, maths, science, and history',
+    ],
+  },
+
+  {
+    topic: 'crime-justice',
+    party: 'act',
+    proposals: [
+      {
+        headline: 'Bring back Three Strikes, and longer sentences for attacks on vulnerable workers',
+        details: [
+          'Bring back Three Strikes — serious repeat violent or sexual offenders serve full sentences with no parole',
+          'Longer sentences for attacks on vulnerable workers such as shop staff and bus drivers',
+        ],
+      },
+      {
+        headline: 'Expand prison capacity and drop targets to reduce prisoner numbers',
+        details: [
+          'Expand prison capacity and remove targets to reduce prisoner numbers',
+          'Keep dangerous offenders in prison based on evidence of rehabilitation, not political targets',
+        ],
+      },
+      'Allow prisoners early parole only if they gain literacy, a trade, or a qualification',
+      'Focus police on frontline work against gangs and violent crime by cutting paperwork',
+    ],
+  },
+
+  {
+    topic: 'treaty-maori-affairs',
+    party: 'act',
+    // The most contested set on the site. The merges here are mechanical — two
+    // lines on the same subject joined, each party's own wording kept intact in
+    // the detail — and no proposal is dropped, softened or characterised.
+    proposals: [
+      'Define Treaty of Waitangi principles in law based on the 1840 text, including equal rights for all',
+      'End co-governance arrangements in water, infrastructure, conservation, and local services',
+      {
+        headline: 'Remove remaining race-based policies across government, with ‘need not race’ as the guiding principle',
+        details: [
+          'Remove remaining race-based policies across all areas of government',
+          'Keep ‘need not race’ as the guiding principle for government policy',
+        ],
+      },
+      {
+        headline: 'Keep the public’s right to challenge Māori council wards, and oppose voting rights for unelected appointees',
+        details: [
+          'Maintain the public’s right to challenge Māori council wards',
+          'Oppose unelected appointees gaining voting rights on councils',
+        ],
+      },
+    ],
+  },
 ]
 
 /** The grouping for a topic/party pair, or null to use the raw keyProposals. */
