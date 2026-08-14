@@ -699,6 +699,157 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
       'Require a national interest test before following United Nations or WHO directives',
     ],
   },
+
+  // ── Te Pāti Māori ─────────────────────────────────────────────────────────
+  // Kaupapa-based like Green's, so merged lightly for the same reason: joining
+  // two broad commitments produces a vaguer one. Treaty and Māori affairs is
+  // left whole — six distinct constitutional commitments, and it is the topic
+  // where a merge is most likely to read as editorial. Immigration has no
+  // recorded position.
+
+  {
+    topic: 'economy',
+    party: 'tpm',
+    proposals: [
+      'Make the wealthiest pay more tax and use revenue for public services',
+      'Build Māori-led institutions and funds to grow Māori enterprise and wealth',
+      'Protect Māori data and knowledge through data sovereignty',
+      {
+        headline: 'Lift incomes, strengthen welfare, and provide cost-of-living relief including transport affordability',
+        details: [
+          'Lift incomes so people can live with dignity',
+          'Strengthen welfare so whānau are not penalised for being poor',
+          'Back practical cost-of-living relief including transport affordability',
+        ],
+      },
+    ],
+  },
+
+  {
+    topic: 'housing',
+    party: 'tpm',
+    proposals: [
+      'Build and support more public and affordable homes',
+      'Make it easier to build homes on Māori and ancestral land',
+      {
+        headline: 'Stop speculation and land-banking, and act on vacant properties',
+        details: [
+          'Stop speculation and land-banking',
+          'Take action on vacant properties',
+        ],
+      },
+      'Use tax revenue from the wealthiest to fund housing',
+    ],
+  },
+
+  {
+    topic: 'health',
+    party: 'tpm',
+    proposals: [
+      'Rebuild and strengthen a Māori-led health authority',
+      'Shift health services toward prevention and whānau wellbeing rather than crisis response',
+      {
+        headline: 'Make health services accessible, culturally safe, and accountable to Māori communities',
+        details: [
+          'Make health services accessible and culturally safe for Māori',
+          'Make health services accountable to Māori communities',
+        ],
+      },
+      'Fund health through tax revenue from the wealthiest',
+    ],
+  },
+
+  {
+    topic: 'education',
+    party: 'tpm',
+    proposals: [
+      {
+        headline: 'Establish a Māori-led education authority, with Māori governance and decision-making in education',
+        details: [
+          'Establish a Māori-led education authority',
+          'Support Māori governance and decision-making in education',
+        ],
+      },
+      'Embed mātauranga Māori properly across learning',
+      'Remove barriers that block whānau from accessing education and training',
+    ],
+  },
+
+  {
+    topic: 'climate',
+    party: 'tpm',
+    proposals: [
+      {
+        headline: 'Ban seabed mining and protect land and ocean from extractive industries',
+        details: [
+          'Ban seabed mining',
+          'Protect land and ocean from extractive industries',
+        ],
+      },
+      'Invest in climate resilience for communities most at risk',
+      'Support regenerative and sustainable approaches aligned with Māori values',
+    ],
+  },
+
+  {
+    topic: 'environment',
+    party: 'tpm',
+    proposals: [
+      {
+        headline: 'Assert Māori rights and authority over freshwater, requiring Māori consent for decisions about water',
+        details: [
+          'Assert Māori rights and authority over freshwater',
+          'Stop decisions about water being made without Māori consent',
+        ],
+      },
+      // Seed sovereignty and GE stay separate from the land/food pair below:
+      // it is a distinct stance, not a description of the same commitment.
+      'Protect Māori seed sovereignty and reject GE foods',
+      {
+        headline: 'Invest in regenerative Māori agriculture and community food systems, and increase access to land for food production',
+        details: [
+          'Invest in regenerative Māori agriculture and community food systems',
+          'Increase access to land for food production',
+        ],
+      },
+      'Protect whenua, wai and climate as part of their core kaupapa',
+    ],
+  },
+
+  {
+    topic: 'crime-justice',
+    party: 'tpm',
+    proposals: [
+      {
+        headline: 'Establish a Māori-led justice authority and develop Māori-led community justice solutions',
+        details: [
+          'Establish a Māori-led justice authority',
+          'Develop Māori-led community justice solutions',
+        ],
+      },
+      'Reform laws that criminalise poverty and survival',
+      'Move away from mass imprisonment toward long-term transformation',
+    ],
+  },
+
+  {
+    topic: 'foreign-policy',
+    party: 'tpm',
+    proposals: [
+      {
+        headline: 'Declare Aotearoa militarily neutral, and withdraw from military alignments seen as undermining sovereignty',
+        details: [
+          'Declare Aotearoa a militarily neutral nation',
+          'Review and withdraw from military alignments seen as undermining sovereignty',
+        ],
+      },
+      'Reset foreign policy to be independent and grounded in Māori values',
+      'Build stronger relationships with Pacific and Indigenous nations',
+      // What the Defence Force does, rather than who it aligns with.
+      'Refocus the Defence Force on protection, disaster response, and Pacific support',
+      'Uphold international human rights and hold war criminals to account',
+    ],
+  },
 ]
 
 /** The grouping for a topic/party pair, or null to use the raw keyProposals. */
