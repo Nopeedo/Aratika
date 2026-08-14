@@ -540,6 +540,126 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-14',
     },
   },
+
+  {
+    topics: ['health'],
+    party: 'labour',
+    title: 'A Family Doctor Loan Scheme',
+    // Scoped to the loan scheme. The back half of this document repeats the
+    // free-visits one — the 4.5 million appointments, independent pricing —
+    // which the Medicard deep dive above already covers. Restating it here
+    // would have the same page tell a reader the same thing twice.
+    summary:
+      'Labour proposes low-interest loans to help doctors buy into or set up an owner-operated general practice. A ' +
+      'loan would cover up to 90 percent of the buy-in cost to a maximum of $500,000, be interest-free for two years ' +
+      'and then charge 3 percent, with ten years to repay. Up to 50 would be available a year from 1 July 2027, ' +
+      'targeted at communities with no GP clinic or where practices have closed their books.',
+
+    facts: [
+      { label: 'Loan size', value: 'Up to 90% of the buy-in', note: 'Capped at $500,000' },
+      { label: 'Interest', value: 'Nil for two years, then 3%', note: 'Repayments start after year two' },
+      { label: 'Term', value: '10 years to repay', note: 'In total, including the interest-free period' },
+      { label: 'How many', value: 'Up to 50 a year', note: 'One loan per doctor' },
+      { label: 'Available from', value: '1 July 2027', note: 'Through the existing Small Business Cashflow Loan Scheme' },
+      { label: 'Targeted at', value: 'Underserved communities', note: 'No GP clinic, or books partially or fully closed' },
+    ],
+
+    coveredLabel: 'Who and what it covers',
+    exemptLabel: 'What it excludes',
+
+    covered: [
+      'Doctors buying into an existing general practice, or setting up a new one',
+      'Up to 90 percent of the cost of buying in, capped at $500,000',
+      'Practices in communities with no GP clinic, or where GP books are partially or fully closed',
+      'Delivered through the existing Small Business Cashflow Loan Scheme',
+    ],
+
+    exempt: [
+      'Corporate-owned practices — the document says the scheme is for owner-operated clinics only',
+      'A second loan for a doctor who has already had one',
+      'More than 50 loans in any year',
+    ],
+
+    mechanics: [
+      {
+        heading: 'What the loan covers',
+        body:
+          'A doctor could borrow up to 90 percent of the cost of buying into a practice, to a maximum of $500,000. ' +
+          'The document restricts it to owner-operated practices and excludes corporate-owned ones, on the stated ' +
+          'grounds of backing locally run clinics connected to their communities.',
+      },
+      {
+        heading: 'How repayment works',
+        body:
+          'No interest and no repayments for the first two years. Monthly repayments then begin on the outstanding ' +
+          'balance, and an annual interest rate of 3 percent applies from that point. The full term is ten years.',
+      },
+      {
+        heading: 'Who gets one, and where',
+        body:
+          'Up to 50 loans a year, one per doctor, targeted to communities with no GP clinic or where practices have ' +
+          'partially or fully closed their books. The document does not set out how those communities would be ' +
+          'identified.',
+      },
+      {
+        heading: 'Delivered through an existing scheme',
+        body:
+          'Rather than a new institution, the loans would run through the Small Business Cashflow Loan Scheme, which ' +
+          'already exists, from 1 July 2027.',
+      },
+      {
+        heading: 'The problem the party says it addresses',
+        body:
+          'The document argues the number of owner-operated practices is falling because buying in is unaffordable for ' +
+          'younger GPs who already carry student loans and mortgages, and that this leaves fewer clinics in smaller ' +
+          'towns and rural areas.',
+      },
+    ],
+
+    examples: [
+      {
+        title: 'Buying into a retiring doctor’s practice',
+        fromDocument: true,
+        setup: [
+          'Katherine wants to move back to Cambridge, near family, and buy a house',
+          'A local doctor is retiring and wants to sell his practice in 2029',
+          'He has had interest from a corporate provider but would prefer it stayed owner-operated',
+          'Buying in would take $400,000, and she also plans a $500,000 mortgage at $2,500 a month',
+        ],
+        outcome: [
+          'Borrowing the $400,000 from a bank could cost upwards of $5,000 a month',
+          'Under the scheme she borrows the same $400,000 with no repayments or interest until 2031',
+          'She then has until 2039 to repay it',
+          'The document’s point is that the first two years are free of repayments, so she can focus on the practice rather than the loan',
+        ],
+      },
+    ],
+
+    quotes: [
+      {
+        text: 'Providing low-interest loans will back those doctors who want to spend their careers caring for their local communities.',
+        context: 'Care close to home',
+      },
+      {
+        text: 'Practices are expensive to establish, difficult to run, and high interest rates make taking on that risk even harder.',
+        context: 'Care close to home',
+      },
+    ],
+
+    openQuestions: [
+      'The document does not say what the scheme would cost, or how the lending would be funded.',
+      'It does not say whether the 3 percent rate is fixed for the rest of the term.',
+      'It does not set out how a community with “no GP clinic, or where GP books are partially or fully closed” would be assessed.',
+      'It does not say what happens if more than 50 doctors apply in a year.',
+    ],
+
+    source: {
+      documentTitle: 'Backing your family doctor',
+      publisher: 'New Zealand Labour Party',
+      url: 'https://www.labour.org.nz/familydoctorloanscheme',
+      retrieved: '2026-08-14',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
