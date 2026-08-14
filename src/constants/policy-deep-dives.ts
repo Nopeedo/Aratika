@@ -105,6 +105,11 @@ export interface PolicyDeepDive {
     url?: string
     /** ISO date we read the document. */
     retrieved: string
+    /** Further documents this draws on. Some policies are published across more
+     *  than one — an energy plan plus a standalone explainer for the entity it
+     *  creates — and covering each separately would repeat most of both. Every
+     *  document a page draws on has to be named, whichever one is primary. */
+    alsoFrom?: { documentTitle: string; note?: string }[]
   }
 }
 
@@ -929,6 +934,161 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       // The Green Party's policy index has no dedicated tax page, so there is no
       // URL to point at yet. Better to say so than to guess one.
       retrieved: '2026-08-14',
+    },
+  },
+
+  {
+    topics: ['climate'],
+    party: 'green',
+    title: 'Power for all of us — the energy plan and Kiwipower',
+    // Covers both the energy policy and the standalone Kiwipower explainer.
+    // They overlap heavily on Kiwipower, so two deep dives would repeat most of
+    // each other; both documents are named in the source block.
+    summary:
+      'The Green Party proposes cutting power bills through household and community ownership of renewable ' +
+      'generation, and creating Kiwipower — a publicly owned Crown entity to build and contract the backup ' +
+      '“firming” capacity the system needs when hydro lakes are low or wind drops. It includes zero-interest loans ' +
+      'for solar and batteries, a renters’ right to solar, expanded home insulation, and funds for community, ' +
+      'public-housing and Māori-housing renewable projects.',
+
+    facts: [
+      { label: 'Clean energy loans', value: 'Zero interest', note: 'For solar, batteries and efficiency upgrades; tied to the property' },
+      { label: 'Renters', value: 'A right to solar', note: 'Plus legalising cheaper plug-in solar' },
+      { label: 'Public housing', value: 'Solar on over half', note: 'Of all public homes, within four years' },
+      { label: 'Community energy', value: '$200m', note: 'Reallocated from fossil fuel subsidies' },
+      { label: 'Kiwipower', value: '$980m over four years', note: 'A new publicly owned Crown entity' },
+      { label: 'Warmer Kiwi Homes', value: '50,000 upgrades', note: 'At an 80% subsidy rate' },
+    ],
+
+    coveredLabel: 'What the plan would do',
+    covered: [
+      'Zero-interest loans for rooftop solar, batteries and energy efficiency upgrades',
+      'A renters’ right to solar, and legalisation of cheaper plug-in solar systems',
+      'Expand Warmer Kiwi Homes, including replacing gas heating and stoves',
+      'Fund community-owned renewable projects on schools, marae and other local sites',
+      'Put solar on more than half of all public homes, and fund renewable energy on Māori housing',
+      'Establish Kiwipower to build and contract renewable firming capacity',
+    ],
+    // No exemption list — this is a spending and regulation plan, not a tax.
+
+    mechanics: [
+      {
+        heading: 'Zero-interest loans, tied to the house rather than the person',
+        body:
+          'A government-backed scheme would lend for rooftop solar, batteries and efficiency upgrades at zero interest, ' +
+          'with the loan attached to the property and repaid over time through a separate levy rather than up front. ' +
+          'The document says a fully electric home with solar could save up to $1,000 a year including repayments.',
+        bullets: [
+          'Central government would hold 20 percent, with councils and the Local Government Funding Agency splitting the rest',
+          'The Energy Efficiency and Conservation Authority would run it',
+          'Up to 90 percent of rateable properties could access it — if all councils take part',
+          'The document estimates the scheme could be running in as little as six months',
+        ],
+      },
+      {
+        heading: 'Renters, and plug-in solar',
+        body:
+          'The document says renters are four to five times more likely to experience energy hardship but least able ' +
+          'to benefit from rooftop solar. It proposes legalising plug-in solar — smaller, cheaper units needing no ' +
+          'special installation that can move with a tenant — and a right to solar stopping landlords or body ' +
+          'corporates unreasonably blocking safe, certified systems, through changes to tenancy and body corporate law.',
+      },
+      {
+        heading: 'Being paid fairly for power sent back to the grid',
+        body:
+          'The party would regulate to ensure households and businesses with rooftop solar get a fair price for ' +
+          'electricity exported to the grid, and reform network pricing so solar users pay only for the infrastructure ' +
+          'they actually use rather than a flat charge.',
+      },
+      {
+        heading: 'Expanding Warmer Kiwi Homes',
+        body:
+          'Costed for 50,000 upgrades over four years at an 80 percent subsidy rate, covering replacement of gas ' +
+          'heating and stoves, ventilation, and hot water heat pumps.',
+      },
+      {
+        heading: 'Community-owned generation',
+        body:
+          '$200 million for locally led projects — the document names schools, marae, libraries, recreation centres, ' +
+          'community energy groups, iwi and Māori organisations and local government — funded by reallocating fossil ' +
+          'fuel subsidies. It estimates this could put solar on 1,500 schools and 500 marae and fund 500 further ' +
+          'projects, and includes enabling peer-to-peer energy trading.',
+      },
+      {
+        heading: 'Public and Māori housing',
+        body:
+          'Rooftop solar on more than half of all public homes within four years, with installation mandated on new or ' +
+          'renovated public homes where appropriate. Separately, $80 million for renewable energy on Māori housing — ' +
+          'the document notes Māori are two to three times more likely to experience energy hardship.',
+      },
+      {
+        heading: 'Kiwipower: what it is and how it would work',
+        body:
+          'A publicly owned Crown entity, accountable to a Minister, created to fix what the documents call a firming ' +
+          'shortage — the backup capacity that keeps supply reliable when hydro and wind are low. It would be ' +
+          'established by the end of 2027 with legislation passed and a board appointed.',
+        bullets: [
+          'Contract access to existing firming, including hydro and thermal now held by the big power companies',
+          'Invest in new renewable firming and storage — geothermal, biomass, batteries, small pumped hydro, demand response',
+          'Offer fair, transparent contracts to independent retailers, generators and large energy users',
+          'Big power companies would face a regulated access obligation to offer a portion of their firming capacity, at a fair return',
+          'Funded by a four-year $980 million appropriation, which the party attributes to its proposed tax on the super-rich',
+        ],
+      },
+    ],
+
+    examples: [],
+
+    revenue: {
+      heading: 'What they expect it to cost',
+      rows: [
+        { period: 'Kiwipower', amount: '$980m' },
+        { period: 'Warmer Kiwi Homes', amount: '$969.8m' },
+        { period: 'Public housing solar', amount: '$460m' },
+        { period: 'Clean energy loan subsidy', amount: '$421.2m' },
+        { period: 'Community energy', amount: '$200m' },
+        { period: 'Māori housing energy', amount: '$80m' },
+      ],
+      basis:
+        'Four-year totals, each as stated in the document’s own costings rather than summed by us. Modelled using ' +
+        'Parliamentary Library information, a Rewiring Aotearoa model for the loan subsidy, and EECA figures for ' +
+        'installation costs and savings. The party says the plan is paid for by its proposed tax on the super-rich.',
+    },
+
+    quotes: [
+      {
+        text: 'The loans would be tied to the property and repaid over time, avoiding full upfront costs.',
+        context: 'Making household power bills more affordable',
+      },
+      {
+        text: 'Kiwipower will be funded through a four year $980 million appropriation, paid for by our Super Rich Tax.',
+        context: 'Building a resilient energy system',
+      },
+      {
+        text: 'Kiwipower will be established by the end of 2027, with legislation passed and a board appointed.',
+        context: 'Kiwipower explainer — timeline and accountability',
+      },
+    ],
+
+    openQuestions: [
+      'The loan scheme depends on councils opting in. The document says up to 90 percent of rateable properties could access it if all councils participate, but does not say what happens where they do not.',
+      'The split between operating and capital spending for Kiwipower is not set — the document says its board would decide, within the $980 million envelope.',
+      'No start date is given for the renters’ right to solar or for legalising plug-in solar.',
+      'The savings figures are modelled estimates, and the document says the plug-in solar figure is based on Parliamentary Library estimates of savings in Australia rather than New Zealand data.',
+    ],
+
+    source: {
+      documentTitle: 'Power for all of us — Energy policy 2026',
+      publisher: 'Green Party of Aotearoa New Zealand',
+      authorisedBy: 'Marama Davidson and Chlöe Swarbrick, Green Party Co-leaders, Parliament Buildings, Wellington',
+      url: 'https://www.greens.org.nz/energy_policy',
+      retrieved: '2026-08-14',
+      alsoFrom: [
+        {
+          documentTitle: 'Kiwipower explainer',
+          note: 'an image-only PDF, read by optical character recognition and checked against the pages themselves',
+        },
+      ],
     },
   },
 ]

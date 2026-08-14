@@ -174,6 +174,14 @@ export function PolicyDeepDive({ dive, accent, partyName }: { dive: DeepDive; ac
             {dive.source.authorisedBy && <> Authorised by {dive.source.authorisedBy}.</>}
             {' '}Read {dive.source.retrieved}.
           </div>
+          {/* Every document the page draws on gets named, not just the primary
+              one — a reader checking a figure needs to know where to look. */}
+          {dive.source.alsoFrom?.map((a) => (
+            <div key={a.documentTitle} style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, marginTop: 3 }}>
+              Also drawn from <b style={{ color: INK }}>{a.documentTitle}</b>
+              {a.note ? <>, {a.note}</> : null}.
+            </div>
+          ))}
           {dive.source.url ? (
             <a href={dive.source.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginTop: 5 }}>
               Read the full document <ExternalLink style={{ width: 12, height: 12 }} />
