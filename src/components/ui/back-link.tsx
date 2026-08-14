@@ -19,7 +19,7 @@
 
 import { useSyncExternalStore } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { NAV_PREV_KEY } from './nav-history'
 
@@ -65,11 +65,20 @@ export function BackLink({ fallbackHref, label = 'Back', style }: {
   style?: React.CSSProperties
 }) {
   const router = useRouter()
+  const pathname = usePathname()
   const rawPrev = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
-  // Only name routes we recognise — "Back to /some/deep/path" reads worse than
-  // the page's own sensible default.
-  const d = rawPrev ? describe(rawPrev) : null
+  // Never go back DOWN into a page you just came up from. Arriving at
+  // /policies/health from /policies/health/green, this used to render a link
+  // labelled "Back to the issues" that pointed at the party page — so back and
+  // forth bounced between the same two pages and never reached /policies.
+  //
+  // The label describes a section while the href is the exact previous page, so
+  // the two only agree when that page sits outside the current branch. A
+  // descendant, or the current page itself, falls through to fallbackHref.
+  const isBelow = !!rawPrev && !!pathname && (rawPrev === pathname || rawPrev.startsWith(pathname === '/' ? '/' : pathname + '/'))
+
+  const d = rawPrev && !isBelow ? describe(rawPrev) : null
   const prev = d && d.href !== fallbackHref ? d : null
 
   const base: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'none', ...style }
@@ -86,7 +95,10 @@ export function BackLink({ fallbackHref, label = 'Back', style }: {
     <button
       type="button"
       onClick={() => {
-        if (typeof window !== 'undefined' && window.history.length > 1) router.back()
+        // router.back() would land on the same descendant the named link was
+        // just stopped from pointing at, so when the previous page is below
+        // this one, go up to the fallback instead.
+        if (!isBelow && typeof window !== 'undefined' && window.history.length > 1) router.back()
         else router.push(fallbackHref)
       }}
       style={base}
