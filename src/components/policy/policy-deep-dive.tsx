@@ -59,8 +59,8 @@ export function PolicyDeepDive({ dive, accent, partyName }: { dive: DeepDive; ac
 
       {/* What's in, what's out — the question most readers actually arrive with */}
       <div className="dd-split" style={{ marginBottom: 26 }}>
-        <ListPanel icon={CheckCircle2} tone={accent} title="What it applies to" items={dive.covered} />
-        <ListPanel icon={XCircle} tone={TERTIARY} title="What is exempt" items={dive.exempt} />
+        <ListPanel icon={CheckCircle2} tone={accent} title={dive.coveredLabel ?? 'What it applies to'} items={dive.covered} />
+        <ListPanel icon={XCircle} tone={TERTIARY} title={dive.exemptLabel ?? 'What is exempt'} items={dive.exempt} />
       </div>
 
       {/* Mechanics */}
@@ -109,7 +109,7 @@ export function PolicyDeepDive({ dive, accent, partyName }: { dive: DeepDive; ac
       {/* Revenue */}
       {dive.revenue && (
         <>
-          <Heading icon={Coins} accent={accent}>What they expect it to raise</Heading>
+          <Heading icon={Coins} accent={accent}>{dive.revenue.heading ?? 'What they expect it to raise'}</Heading>
           <div className="dd-revenue" style={{ marginBottom: 10 }}>
             {dive.revenue.rows.map((r) => (
               <div key={r.period} style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 12, padding: '11px 13px' }}>

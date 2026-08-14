@@ -78,12 +78,18 @@ export interface PolicyDeepDive {
   facts: DeepDiveFact[]
   covered: string[]
   exempt: string[]
+  /** Headings for the two lists. Default to the tax framing the first deep dive
+   *  needed; an entitlement wants "What the visits cover" / "What they don't". */
+  coveredLabel?: string
+  exemptLabel?: string
   mechanics: DeepDiveSection[]
   examples: DeepDiveExample[]
   revenue?: {
     rows: { period: string; amount: string }[]
     /** How the party says the forecast was produced. */
     basis: string
+    /** Defaults to raising money. Set for a policy that costs rather than raises. */
+    heading?: string
   }
   quotes: DeepDiveQuote[]
   openQuestions: string[]
@@ -263,6 +269,157 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       documentTitle: 'Targeted tax changes to grow the economy and invest in health',
       publisher: 'New Zealand Labour Party',
       authorisedBy: 'Rob Salmond, 2 Gilmer Terrace, Wellington',
+      url: 'https://www.labour.org.nz/capitalgainstax',
+      retrieved: '2026-08-14',
+    },
+  },
+
+  {
+    topics: ['health'],
+    party: 'labour',
+    title: 'Three free doctor’s visits a year, with a new Medicard',
+    summary:
+      'Labour proposes giving every New Zealander three free GP visits a year, claimed with a new Medicard at the ' +
+      'practice they are enrolled with. The visits cover a doctor or nurse appointment, do not roll over if unused, ' +
+      'and exclude after-hours and ACC care. Alongside it the party would change how general practice is funded, ' +
+      'through an Independent Pricing Authority, and fund the package from its proposed capital gains tax.',
+
+    facts: [
+      { label: 'Free visits', value: 'Three a year', note: 'Per person; they do not roll over into the next year' },
+      { label: 'Claimed with', value: 'A new Medicard', note: 'Also usable through a secure app' },
+      { label: 'Where', value: 'Your enrolled practice', note: 'An appointment with a doctor or a nurse' },
+      { label: 'Who gets one', value: 'Every New Zealander', note: 'Issued at birth, or on becoming a citizen or resident' },
+      { label: 'Cost', value: '$393.3m, then ~$553m a year', note: 'Party’s own figures, from 2027/28' },
+      { label: 'Funded by', value: 'The proposed capital gains tax', note: 'See Labour’s housing policy for how that works' },
+    ],
+
+    coveredLabel: 'What the three visits cover',
+    exemptLabel: 'What they don’t cover',
+
+    covered: [
+      'Appointments with a doctor at the general practice you are enrolled with',
+      'Appointments with a nurse at that same practice',
+      'Access through a secure app as well as the card',
+    ],
+
+    exempt: [
+      'Services that are already free, such as immunisations or Access and Choice services',
+      'After-hours care',
+      'ACC visits',
+      'Clinical phone triage — which also does not count against your three visits',
+    ],
+
+    mechanics: [
+      {
+        heading: 'How you get and use the card',
+        body:
+          'People receive a Medicard at birth, or when they become a citizen, resident, or otherwise eligible for ' +
+          'healthcare. It is used at the practice you are enrolled with, and the same three visits are accessible ' +
+          'through an app.',
+        bullets: [
+          'Holds your National Health Index number and your entitlement information',
+          'Integrates with My Health Account, New Zealand’s digital health identity system',
+          'Tracks entitlements in real time and integrates with primary and community provider software',
+          'The document says it is designed for privacy, accessibility including non-digital users, and multilingual support',
+        ],
+      },
+      {
+        heading: 'Three a year, use them or lose them',
+        body:
+          'The entitlement is three visits per person per calendar year and does not accumulate — unused visits do not ' +
+          'carry into the next year. Where an issue is resolved through phone triage rather than an appointment, it is ' +
+          'not counted against the three.',
+      },
+      {
+        heading: 'Changing how general practice is paid',
+        body:
+          'The document sets out the funding model as the underlying problem: general practice has been paid mainly a ' +
+          'flat amount per enrolled person, with clinics able to charge a co-payment on top. It cites independent ' +
+          'analysis from 2022 finding general practice underfunded by around 7.6 percent — about $137 million against ' +
+          'total practice income of $1.67 billion.',
+      },
+      {
+        heading: 'An Independent Pricing Authority',
+        body:
+          'A proposed new body, modelled on Australia’s Independent Health and Aged Care Pricing Authority, would set a ' +
+          'national evidence-based rate for GP funding, and be operating by July 2028. When the rate rises, Health NZ ' +
+          'would be required to fund the increase the following year.',
+        bullets: [
+          'Would use practice costs, staffing, patient mix, service delivery and sector-wide cost studies',
+          'Money currently collected in co-payments would be added to general practice funding',
+        ],
+      },
+      {
+        heading: 'Freeing up appointments to absorb the demand',
+        body:
+          'Labour says more people seeing a doctor is the point, and that it worked with general practice ' +
+          'representatives on changes to free up around 4.58 million appointments a year.',
+        bullets: [
+          'Clinical phone triage — around 1.9 million freed, and a further 2.9 million streamlined',
+          'AI scribes and other digital tools — around 1.5 million',
+          'Better information for people with long-term conditions — around 1 million',
+          'Targeted facilities funding in high-demand areas — around 180,000',
+        ],
+      },
+      {
+        heading: 'Other changes in the package',
+        body:
+          'Three smaller measures sit alongside the visits themselves, aimed at practice running costs and how ' +
+          'technology is adopted.',
+        bullets: [
+          'A Digital Innovation Fund so clinics can adopt proven technology quickly',
+          'Extending primary care access to the national Health System Catalogue for bulk procurement pricing',
+          'A review of telehealth funding, to ensure it complements rather than replaces face-to-face care',
+        ],
+      },
+    ],
+
+    // The document carries no worked examples of an individual's situation, so
+    // there are none to report. It illustrates scale instead, which is in the
+    // appointments section above.
+    examples: [],
+
+    revenue: {
+      heading: 'What they expect it to cost',
+      rows: [
+        { period: '2027/28', amount: '$393.3m' },
+        { period: '2028/29', amount: '$553m' },
+        { period: '2029/30', amount: '$553m' },
+        { period: '2030 & outyears', amount: '$548m' },
+      ],
+      basis:
+        'Labour’s own costings for the whole package — the visits themselves, the Medicard and app, clinical triage, ' +
+        'digital tools, self-care, the Independent Pricing Authority and facilities grants. The document does not ' +
+        'state an independent cost check.',
+    },
+
+    quotes: [
+      {
+        text: 'The three free visits apply per year and don’t roll over. If they aren’t used within the year, they won’t carry into the next.',
+        context: 'How the Medicard works',
+      },
+      {
+        text: 'Your three free visits cover appointments with a doctor or nurse at your enrolled general practice. They don’t include services that are already free (such as immunisations or Access and Choice services), after-hours care, or ACC visits.',
+        context: 'How the Medicard works',
+      },
+      {
+        text: 'Money currently in co-payments will be added to general practice funding, so clinics won’t be worse off under the new system.',
+        context: 'Fixing the funding problem',
+      },
+    ],
+
+    openQuestions: [
+      'The document does not say what a patient pays for a fourth visit in the same year.',
+      'The national GP funding rate is not specified — the document says the Independent Pricing Authority would set it once operating, by July 2028.',
+      'The 4.58 million appointments figure is Labour’s estimate, developed with general practice representatives; no independent modelling is cited.',
+      'The costings are the party’s own, and the document does not state an independent cost check.',
+    ],
+
+    source: {
+      documentTitle: 'Free doctor’s visits for all New Zealanders',
+      publisher: 'New Zealand Labour Party',
+      authorisedBy: 'Rob Salmond, 2 Gilmer Terrace, Wellington',
+      url: 'https://www.labour.org.nz/medicard',
       retrieved: '2026-08-14',
     },
   },
