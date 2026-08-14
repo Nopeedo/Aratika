@@ -86,6 +86,61 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
       'A Family Doctor Loan Scheme to increase the number of GPs',
     ],
   },
+
+  {
+    topic: 'education',
+    party: 'labour',
+    // Order follows the recorded proposals rather than being re-ranked: the
+    // Māori-education commitments came first, the curriculum position next, the
+    // trades ones last.
+    proposals: [
+      {
+        headline: 'Restore Te Tiriti o Waitangi obligations for school boards and reverse cuts to te reo Māori teacher support',
+        details: [
+          'Restore the legal requirement for school boards to give effect to Te Tiriti o Waitangi',
+          'Reverse cuts to support for teachers learning te reo Māori',
+          'Work in partnership with schools, kura and communities on Māori education',
+        ],
+      },
+      // A single position on several changes at once — already one point.
+      'Oppose changes to curriculum, mandated testing, school qualifications, and charter schools',
+      {
+        // "from 2027" is in the headline: both parts start then, and a reader
+        // who doesn't open the detail would otherwise read it as immediate.
+        headline: 'Extend apprenticeship support from 2027, with a $1,000 toolbox grant and more trades covered',
+        details: [
+          'Extend Apprenticeship Boost employer payments from 2027',
+          'Provide a $1,000 toolbox grant to apprentices',
+          'Add more trades to the apprenticeship scheme',
+        ],
+      },
+    ],
+  },
+
+  {
+    topic: 'economy',
+    party: 'labour',
+    proposals: [
+      'Cap weekly public transport fares at $20 per person',
+      'Establish a New Zealand Future Fund to invest in the country’s future',
+      // Left as recorded. The housing panel carries the merged version with the
+      // rate, the exclusion and the start date; expanding it here would be
+      // adding, not simplifying, and the two panels would then say it twice.
+      'Introduce a Capital Gains Tax',
+      {
+        // Three health commitments sat on the economy panel because they are
+        // what the capital gains tax is said to fund. Merged as one offer; the
+        // funding link is stated on the housing panel and in the deep dive
+        // rather than asserted here.
+        headline: 'Free prescriptions, three free GP visits a year, and free maternity scans and cervical screening',
+        details: [
+          'Remove the $5 prescription fee, making prescriptions free',
+          'Provide three free doctor visits a year via a new Medicard',
+          'Make maternity scans and cervical screening free',
+        ],
+      },
+    ],
+  },
 ]
 
 /** The grouping for a topic/party pair, or null to use the raw keyProposals. */
