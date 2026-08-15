@@ -1602,6 +1602,124 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-14',
     },
   },
+
+  {
+    // On environment because that is where conservation, biodiversity and access
+    // to public land sit in our topics. The summary opens by naming the subject
+    // so nobody expects a freshwater or emissions policy from the heading.
+    topics: ['environment'],
+    party: 'national',
+    title: 'Hunting and fishing: game animals, access and Fish & Game',
+    summary:
+      'National proposes recognising valued introduced species in law so they are not treated as pests by default, ' +
+      'building a coordinated wild animal management framework, and legislating to modernise Fish & Game. It would ' +
+      'open suitable Crown land managed by LINZ to recreational hunting, add signatories to the Access Charter, seek ' +
+      'more herds of special interest after wapiti and sika, and give the hunting and fishing sector a permanent ' +
+      'seat on the Conservation Authority.',
+
+    facts: [
+      { label: 'Introduced species', value: 'Recognised in law', note: 'Not treated as pests by default' },
+      { label: 'Wild animals', value: 'One coordinated framework', note: 'Replacing what it calls fragmented law' },
+      { label: 'Fish & Game', value: 'Modernised by legislation', note: 'Administration, accountability, where money goes' },
+      { label: 'Herds of special interest', value: 'More to be sought', note: 'After wapiti and sika this term' },
+      { label: 'Crown land', value: 'Opened where suitable', note: 'LINZ-managed land, on public conservation land rules' },
+      { label: 'Conservation Authority', value: 'A sector seat', note: 'Replacing an existing seat, not adding one' },
+    ],
+
+    coveredLabel: 'What it would change',
+    covered: [
+      'Formally recognise introduced species that have recreational, economic, environmental or cultural value',
+      'Establish a coordinated wild animal management framework across the current mix of laws and agencies',
+      'Pass legislation to modernise Fish & Game New Zealand',
+      'Open suitable LINZ-managed Crown land to recreational hunting and fishing',
+      'Add the Game Animal Council, Land Information New Zealand and the Overseas Investment Office to the Access Charter',
+      'Replace an existing Conservation Authority and Conservation Board seat with a hunting and fishing representative',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Introduced species, and what “not a pest by default” means',
+        body:
+          'The document describes wild animals as managed through a fragmented set of laws, agencies and plans, with ' +
+          'responsibilities often unclear and valued species sometimes treated simply as pests. It would recognise in ' +
+          'law species providing recreational, economic, environmental or cultural value — while saying action would ' +
+          'still be taken where populations cause unacceptable environmental damage, managed to local conditions.',
+      },
+      {
+        heading: 'Fish & Game and the Game Animal Council',
+        body:
+          'Legislation would simplify Fish & Game’s administration, strengthen its accountability to licence holders, ' +
+          'and direct resources to the regions, habitats and fisheries the document says need them most. Fish and Game ' +
+          'regions would also be told to review their boundaries to align with the Government’s Resource Management ' +
+          'Act and local government reforms.',
+      },
+      {
+        heading: 'More herds of special interest',
+        body:
+          'Two herds — wapiti and sika — were designated this term under the Game Animal Council (Herds of Special ' +
+          'Interest) Amendment Act 2026. National would seek proposals for more on that model, saying selections would ' +
+          'be evidence-based and require strong local and hunter support, and would replace the Tahr Control Plan 1993 ' +
+          'with a plan developed alongside the tahr hunting community.',
+      },
+      {
+        heading: 'Access to Crown land',
+        body:
+          'The current policy generally prevents recreational hunting on Crown land managed by Land Information New ' +
+          'Zealand. National would change that, opening suitable land that would ordinarily be publicly accessible ' +
+          'under rules similar to public conservation land. The document is explicit that Crown pastoral leases and ' +
+          'other land not ordinarily publicly accessible would be unaffected.',
+      },
+      {
+        heading: 'Jobs, exports and the rules around them',
+        body:
+          'It would promote New Zealand’s guided-hunting offer in overseas markets and simplify trophy-export permits, ' +
+          'veterinary certification, taxidermy requirements and customs processes, alongside clearer rules ' +
+          'distinguishing recreational, guided and aerial hunting from commercial wild animal recovery.',
+      },
+      {
+        heading: 'The smaller measures',
+        body:
+          'A set of further commitments sits at the end of the document.',
+        bullets: [
+          'Investigate sustainable funding for national hunter training, with the Firearms Safety Authority',
+          'Partner with DOC and community organisations on public conservation huts and facilities',
+          'Feed Outdoor Access Commission maps into the new planning and environmental system',
+          'Move shooting range consenting to a risk-based approach, with a right to operate where nobody could later complain',
+          'Pilot a government-backed biodiversity credit recognising hunter-led conservation',
+        ],
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'They will not be treated as pests by default simply because they were introduced.',
+        context: 'Recognising valued introduced species',
+      },
+      {
+        text: 'Existing arrangements for Crown pastoral leases and other land that is not ordinarily publicly accessible will remain unchanged.',
+        context: 'Protect recreational access',
+      },
+    ],
+
+    openQuestions: [
+      'The document does not name which introduced species would be recognised in law.',
+      'It does not define “suitable” Crown land, or say how much land would be opened to hunting.',
+      'No costings are given for any part of the plan.',
+      'The biodiversity credit is described as a pilot, with no scale, funding source or timeframe stated.',
+    ],
+
+    source: {
+      documentTitle: 'Building the Future: Our Plan for Hunting and Fishing',
+      publisher: 'New Zealand National Party',
+      authorisedBy: 'J de Joux',
+      retrieved: '2026-08-14',
+      alsoFrom: [
+        { documentTitle: 'Delivering on our 2023 Hunting and Fishing commitments', note: 'a record of the current term, used here only for what has already been legislated' },
+      ],
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
