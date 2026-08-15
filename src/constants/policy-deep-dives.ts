@@ -1488,6 +1488,120 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-14',
     },
   },
+
+  {
+    topics: ['foreign-policy'],
+    party: 'national',
+    title: 'New Zealand’s Next Billion Customers — the trade agenda',
+    summary:
+      'National proposes opening trade negotiations with seven new economies over five years, extending the ' +
+      'essential-supplies agreement signed with Singapore to other partners, cutting border paperwork through ' +
+      'paperless trade and digital customs, and giving New Zealand Trade and Enterprise a mandate to seek out ' +
+      'opportunities rather than wait to be asked. It restates a target of doubling export value by 2034.',
+
+    facts: [
+      { label: 'New negotiations', value: 'Seven economies', note: 'To commence within five years' },
+      { label: 'Those markets', value: '~700m people', note: 'And more than US$5 trillion of GDP combined' },
+      { label: 'NZ exports there now', value: '$1.8bn', note: 'Which the document frames as the size of the opportunity' },
+      { label: 'Export target', value: 'Doubled by 2034', note: 'Exports have risen from $94.4bn to $114.1bn' },
+      { label: 'Non-tariff barriers', value: '$1bn to be removed', note: 'After $733m removed this term' },
+      { label: 'Trade missions', value: 'At least 23 next term', note: 'More sector-specific, with commercial targets' },
+    ],
+
+    coveredLabel: 'What the agenda would do',
+    covered: [
+      'Commence trade negotiations with Brazil, Switzerland, Argentina, EFTA, Bangladesh, Nigeria and Uruguay',
+      'Negotiate essential-supplies agreements with further partners, using the Singapore agreement as the template',
+      'Expand paperless trade and digital customs through the Future of Investment and Trade Partnership',
+      'Extend real-time digital certification to the UK and other close partners',
+      'Give New Zealand Trade and Enterprise a mandate to lead companies to opportunities, not only respond to them',
+      'Complete at least 23 trade missions over the term',
+    ],
+
+    mechanics: [
+      {
+        heading: 'The seven markets, and why these ones',
+        body:
+          'The document groups them into three categories and gives the figures for each: high-income European ' +
+          'economies, large South American ones, and emerging Asian and African markets. Together it puts them at ' +
+          'almost 700 million people and over US$5 trillion of GDP, against current New Zealand exports of $1.8 ' +
+          'billion.',
+        bullets: [
+          'Brazil — 214m people, US$2.19tn GDP, $205.81m of New Zealand exports today',
+          'Switzerland — 8.7m, US$936.56bn, $467.64m',
+          'Argentina — 46m, US$638.37bn, $75.2m',
+          'EFTA (Iceland, Liechtenstein, Norway) — 6m, US$525.09bn, $83.78m',
+          'Bangladesh — 178m, US$450.12bn, $670.15m',
+          'Nigeria — 242m, US$252.26bn, $224.99m',
+          'Uruguay — 3.5m, US$80.96bn, $27.36m',
+        ],
+      },
+      {
+        heading: 'Essential supplies agreements',
+        body:
+          'New Zealand and Singapore signed an Agreement on Trade in Essential Supplies on 4 May 2026, which the ' +
+          'document describes as guaranteeing that food, medicines, medical supplies and critical inputs keep moving ' +
+          'between the two during a disruption, committing both to avoid export restrictions on each other, and ' +
+          'creating a framework for information sharing when supply chains come under pressure. National would use it ' +
+          'as a template with other partners.',
+      },
+      {
+        heading: 'Paperless trade and digital customs',
+        body:
+          'The vehicle is the Future of Investment and Trade Partnership, a network of 16 economies New Zealand helped ' +
+          'convene with Singapore, Switzerland and the UAE, which the document expects to pass 20 members. The aim is ' +
+          'real-time digital trade documentation, fewer non-tariff barriers, and automated customs and origin systems ' +
+          'so goods clear borders faster.',
+      },
+      {
+        heading: 'A different job for NZTE',
+        body:
+          'NZTE works with around 1,000 companies. The document says it has largely responded to companies that ask ' +
+          'for help, and proposes shifting it to what it calls a “lead and follow” model — identifying which exporters ' +
+          'stand to gain when a new agreement opens a tariff window and approaching them, and building forward-looking ' +
+          'sector opportunity maps.',
+      },
+      {
+        heading: 'What the document counts as this term’s record',
+        body:
+          'It sets the agenda against results it attributes to the current term, which are the party’s own figures ' +
+          'rather than independently sourced here.',
+        bullets: [
+          'A free trade agreement with India, cutting or removing tariffs on 95 percent of exports',
+          'The NZ–EU agreement in force ahead of schedule, with exports up 37.9 percent since signing',
+          'Concluded negotiations with the six-nation Gulf Cooperation Council',
+          '23 trade missions to 18 countries, and $733 million of non-tariff barriers removed',
+        ],
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'These seven markets combined represent almost 700 million people and a GDP of more than US$5 trillion, similar to the size of the German and Japanese economies today, and growing rapidly.',
+        context: 'Prioritising new trade deals',
+      },
+      {
+        text: 'A re-elected National Government will ask NZTE to do more: to actively lead companies to new opportunities and markets, not just follow where they point.',
+        context: 'New Zealand Trade and Enterprise',
+      },
+    ],
+
+    openQuestions: [
+      'The document carries no costings — neither for the negotiations themselves nor for the extra NZTE resourcing it proposes.',
+      'It commits to commencing negotiations with seven economies, not to concluding any of them, and gives no expected timeframe for a deal.',
+      'The $1 billion of non-tariff barriers to be removed is a target; the document does not say which barriers or how they would be counted.',
+      'The record it sets out for the current term is the party’s own account, without independent sourcing in the document.',
+    ],
+
+    source: {
+      documentTitle: 'Building the Future: New Zealand’s Next Billion Customers',
+      publisher: 'New Zealand National Party',
+      authorisedBy: 'J de Joux, 41 Pipitea St, Wellington',
+      retrieved: '2026-08-14',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
