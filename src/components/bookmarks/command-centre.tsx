@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { BILLS_54, type Bill54 } from '@/constants/bills-54'
+import { PARTY_COLORS } from '@/constants/parties'
 import DEFINING_BILL_MAP from '@/constants/defining-bill-map.json'
 import type { PartySlug } from '@/types'
 import type { Bookmark } from '@/hooks/use-bookmarks'
@@ -48,6 +49,43 @@ const KIND_STYLE: Record<Bookmark['kind'], { tint: string; ink: string }> = {
   policy:     { tint: '#f0fdfa', ink: '#0f766e' },
   bill:       { tint: '#fdf3ff', ink: '#a21caf' },
   electorate: { tint: '#fef1f2', ink: '#be123c' },
+}
+
+/** The card's ground and edge.
+ *
+ *  Where a party stands behind the item — a party itself, or an MP who sits for
+ *  one — this returns that party's canonical pale wash and full colour, which is
+ *  exactly what /parties, the MP directory and the battleground cards use. These
+ *  tiles were the last place still on the old treatment: a white card with a 4px
+ *  stripe down the side, which read as a different species of object from the
+ *  same party's tile two pages away.
+ *
+ *  Everything else falls back to its kind's tint, keeping the saved accent on
+ *  the edge where there is one — a tracked electorate carries its incumbent's
+ *  colour, and that is worth keeping. */
+function tileColours(b: TrackedItem): { wash: string; edge: string } {
+  const slug = b.kind === 'party' ? b.ref_id : b.kind === 'mp' ? b.party : undefined
+  const pc = slug ? PARTY_COLORS[slug as PartySlug] : undefined
+  if (pc) return { wash: pc.light, edge: pc.bg }
+  // Saved accent but no party record — a tracked electorate carries its
+  // incumbent's colour. The ground is derived from that same colour rather than
+  // taken from the kind: pairing a National-blue border with the electorate
+  // group's pink tint put two colour systems on one card, and Coromandel came
+  // out blue-on-pink.
+  if (b.accent) return { wash: washFrom(b.accent), edge: b.accent }
+  const ks = KIND_STYLE[b.kind]
+  return { wash: ks.tint, edge: ks.ink }
+}
+
+/** Lighten a hex most of the way to white — a pale ground for any accent,
+ *  standing in for the designed `light` that only profiled parties have. */
+function washFrom(hex: string): string {
+  const h = hex.replace('#', '')
+  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h
+  const n = parseInt(full, 16)
+  if (Number.isNaN(n)) return '#fff'
+  const mix = (c: number) => Math.round(c + (255 - c) * 0.92)
+  return `rgb(${mix((n >> 16) & 255)}, ${mix((n >> 8) & 255)}, ${mix(n & 255)})`
 }
 
 function hrefFor(b: Bookmark): string {
@@ -193,19 +231,21 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
               {group.map((b) => {
                 const sub = b.role || b.sublabel
                 const open = openBill(b)
+                const { wash, edge } = tileColours(b)
                 return (
-                  // White card on a hairline, not a big tinted pill — the tint
-                  // and the kind's ink now live only in the icon tile and the
-                  // left stripe, so a card reads as an object you can act on
-                  // rather than as a larger version of its own heading.
-                  <div key={b.id} className="party-card" style={{ position: 'relative', border: `1px solid ${open ? '#bfd4fe' : BORDER}`, borderRadius: 14, background: open ? '#eef4ff' : '#fff', overflow: 'hidden', boxShadow: CARD_SHADOW }}>
-                    <span style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, background: b.accent || JADE }} />
+                  // Pale wash behind a border in the same colour — the treatment
+                  // /parties, the MP directory and the battleground cards all
+                  // use. The old 4px left stripe is gone: with the colour in the
+                  // border it was saying the same thing twice.
+                  // A bill open for submissions keeps its blue over the top,
+                  // because that state matters more than the tile's identity.
+                  <div key={b.id} className="party-card" style={{ position: 'relative', border: `3px solid ${open ? '#bfd4fe' : edge}`, borderRadius: 14, background: open ? '#eef4ff' : wash, overflow: 'hidden', boxShadow: CARD_SHADOW }}>
                     {isUpdated(b) && (
                       <span className="cc-update-badge" role="status" aria-label={`New updates on ${b.label}`} title="New updates"
                         style={{ position: 'absolute', top: 7, right: 7, zIndex: 2, width: 12, height: 12, borderRadius: '50%', background: '#e11d48', border: '2px solid #fff' }} />
                     )}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px' }}>
-                    <Link href={hrefFor(b)} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none', paddingLeft: 4 }}>
+                    <Link href={hrefFor(b)} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none' }}>
                       {/* Only kinds with something genuinely per-item get a tile:
                           an MP has their face, a party its own mark. Bills,
                           policies and electorates were all showing the SAME kind
@@ -215,7 +255,14 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
                       {b.kind === 'mp' ? (
                         <Avatar name={b.label} party={b.party as PartySlug | undefined} src={b.photo} size="md" />
                       ) : b.kind === 'party' ? (
-                        <span style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: b.accent || JADE, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, fontFamily: MANROPE }}>{initials(b.label)}</span>
+                        // Initials in ink on white, ringed in the party colour,
+                        // rather than white on the colour itself. Solid fills
+                        // forced the text to flip between near-black on ACT's
+                        // yellow and white on National's blue; several palettes
+                        // are too light to carry white at all. Keeping the
+                        // colour in the ring is the same fix the party tiles
+                        // and their share chips already use.
+                        <span style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: '#fff', border: `2px solid ${edge}`, color: INK, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, fontFamily: MANROPE }}>{initials(b.label)}</span>
                       ) : null}
                       <div style={{ minWidth: 0 }}>
                         <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{b.label}</div>
