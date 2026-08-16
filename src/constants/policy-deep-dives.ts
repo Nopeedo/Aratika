@@ -4123,6 +4123,289 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-16',
     },
   },
+
+  {
+    topics: ['economy'],
+    party: 'nzfirst',
+    slug: 'kiwi-kids-grant',
+    title: 'The Kiwi Kids Grant',
+    summary:
+      'A universal, non-means-tested payment of $5,000 a year for each of a family’s first three children, through ' +
+      'each child’s first three years, tax free and paid monthly through IRD. One parent must be a New Zealand ' +
+      'citizen. It would sit on top of existing support and is costed at $400 million a year by year three. The case ' +
+      'made for it is demographic: a falling citizen birthrate that NZ First argues cannot be solved by migration.',
+
+    facts: [
+      { label: 'The grant', value: '$5,000 a year', note: 'Tax free, through each child’s first three years' },
+      { label: 'Children covered', value: 'The first three', note: 'First, second and third child only' },
+      { label: 'Eligibility', value: 'One parent a citizen', note: 'Universal and not means tested' },
+      { label: 'How it is paid', value: 'Monthly, via IRD', note: 'First year for a first child can be taken as a lump sum' },
+      { label: 'Cost', value: '$400m a year', note: 'By year three, once the full cycle is established' },
+      { label: 'Relationship to other support', value: 'In addition', note: 'On top of everything parents already receive' },
+    ],
+
+    coveredLabel: 'The birth figures the policy cites',
+    covered: [
+      'Citizen births falling from 52,506 in 2006 to 36,351 in 2025 — a 30 percent drop',
+      'Non-citizen births rising from 8,001 in 2006 to 14,380 in 2025',
+      'The share of all births shifting from 87% citizen and 13% non-citizen in 2006 to 72% and 28% last year',
+      'A birthrate of 1.53 per person against the 2.1 needed for replacement',
+    ],
+
+    mechanics: [
+      {
+        heading: 'What the grant is',
+        body:
+          'A universal, non-means-tested $5,000 a year for each of the first, second and third child, paid across ' +
+          'each child’s first three years. It is tax free and additional to every other support parents already ' +
+          'qualify for, so it does not replace Working for Families or Best Start.',
+      },
+      {
+        heading: 'How it would be paid',
+        body:
+          'As a regular monthly payment administered through IRD, with one option: the first year’s grant for a first ' +
+          'child can be taken as an upfront lump sum, to help with the cost of preparing for a first baby.',
+      },
+      {
+        heading: 'The demographic case',
+        body:
+          'The document’s argument is that citizen births have fallen 30 percent in a decade while non-citizen births ' +
+          'have nearly doubled, shifting the composition of who is born here, and that the birthrate of 1.53 is well ' +
+          'below replacement. It describes relying on migration to fill that gap as papering over the cracks, and ' +
+          'notes the same decline is happening across the western world.',
+      },
+      {
+        heading: 'Why cost is the lever they pick',
+        body:
+          'The document lists several reasons people have fewer children or have them later — prioritising careers, ' +
+          'wanting a dependent-free adulthood, rising costs, and the sacrifices involved — and picks cost as the one ' +
+          'a government can move, describing the grant as substantially lowering one main barrier.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'The ‘Kiwi Kids Grant’ is a universal, non-means tested grant of $5000 annually for the first three years, and for each of the first, second, and third child.',
+        context: 'On what the grant is',
+      },
+      { text: 'One parent must be a New Zealand citizen to be eligible for this grant.', context: 'On eligibility' },
+      {
+        text: 'New Zealand’s current birthrate is 1.53 births per person, which is well below the rate of replacement of 2.1 births per person needed to just maintain our population.',
+        context: 'On the birthrate',
+      },
+      {
+        text: 'Masking this massive problem with increasing migration is just papering over the cracks and will be disastrous for our future.',
+        context: 'On migration as an alternative',
+      },
+    ],
+
+    openQuestions: [
+      'The birth and birthrate figures are given without a source or a link to the underlying data.',
+      'Eligibility turns on one parent being a citizen, and the document does not say what happens where neither parent is.',
+      'Nothing is said about a fourth or subsequent child, who appear to fall outside the grant entirely.',
+      'Whether the $5,000 would be indexed, or fixed at that amount for future cohorts, is not stated.',
+      'The $400 million estimate is given for year three without the birth assumptions or take-up rate behind it.',
+      'The document lists career, lifestyle and the sacrifices of parenting alongside cost as reasons for the decline, but offers no evidence for how much of it cost accounts for.',
+    ],
+
+    source: {
+      documentTitle: 'The ‘Kiwi Kids Grant’',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/the_kiwi_kids_grant',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['treaty-maori-affairs'],
+    party: 'nzfirst',
+    slug: 'disestablish-imsb',
+    title: 'Disestablishing Auckland’s Independent Māori Statutory Board',
+    summary:
+      'NZ First has a member’s bill to disestablish the Independent Māori Statutory Board, the unelected body created ' +
+      'alongside the Auckland Super City in 2010. Its functions, property and obligations would transfer back to ' +
+      'Auckland Council. The argument made is accountability: that ratepayers fund the board — $3.5 million last ' +
+      'year — without being able to elect or remove its members. The document states the change would not stop the ' +
+      'council engaging with Māori.',
+
+    facts: [
+      { label: 'The body', value: 'Auckland’s IMSB', note: 'Created alongside the Super City in 2010' },
+      { label: 'Mechanism', value: 'A member’s bill', note: 'Written and introduced, to be campaigned on' },
+      { label: 'Cost cited', value: '$3.5m last year', note: 'Paid by ratepayers, per the document' },
+      { label: 'Members', value: 'Unelected', note: 'Ratepayers cannot elect or remove them' },
+      { label: 'Functions', value: 'Back to the council', note: 'Along with property and obligations' },
+      { label: 'Engagement with Māori', value: 'Not prevented', note: 'But to occur within elected structures' },
+    ],
+
+    // The document is explicit about limits on its own reach, and a reader
+    // deserves that as prominently as the case for the change.
+    coveredLabel: 'What the policy says it does not do',
+    covered: [
+      'Prevent Auckland Council from engaging with Māori',
+      'Prevent the council recognising Māori interests',
+      'Interrupt council operations — the bill provides for an orderly transition of functions, property and obligations',
+    ],
+
+    mechanics: [
+      {
+        heading: 'What the board is, and how its role grew',
+        body:
+          'The Independent Māori Statutory Board was created with the amalgamation of Auckland’s councils in 2010. ' +
+          'The document says it was originally established to provide advice, but that its statutory documents and ' +
+          'appointments have since become embedded across council planning, funding, procurement and performance ' +
+          'systems.',
+      },
+      {
+        heading: 'The accountability argument',
+        body:
+          'The case rests on elected accountability rather than on the board’s work: that Aucklanders were never ' +
+          'asked whether to fund or empower it, that ratepayers pay millions a year including $3.5 million last year, ' +
+          'and that they cannot elect or remove its members. The document sets this against rising rates, increasing ' +
+          'debt and reductions in core services, calling the result a growing democratic deficit.',
+      },
+      {
+        heading: 'Where its functions would go',
+        body:
+          'The bill provides for an orderly transition of the board’s functions, property and obligations back to ' +
+          'Auckland Council, with the stated aim of continuity of council operations.',
+      },
+      {
+        heading: 'What the document says it does not change',
+        body:
+          'It states directly that removing the board does not prevent Auckland Council from engaging with Māori or ' +
+          'recognising their interests — the stated intent being that such engagement happens through democratically ' +
+          'accountable structures instead.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'Aucklanders were never asked whether they agreed to fund or empower a parallel governance system within their council.',
+        context: 'On the accountability argument',
+      },
+      {
+        text: 'The removal of the IMSB will ensure that those who influence public spending and public decision making are directly accountable to the public.',
+        context: 'On what removal achieves',
+      },
+      {
+        text: 'It does not prevent Auckland Council from engaging with Māori or recognising their interests, rather it ensures that such engagement occurs within democratically accountable structures.',
+        context: 'On the limits of the policy',
+      },
+    ],
+
+    openQuestions: [
+      'The $3.5 million figure is given for “last year” without naming the year or the source.',
+      'The member’s bill is described as written and introduced but is not named, so a reader cannot look it up.',
+      'How the board’s advisory functions would actually be performed once returned to the council is not described.',
+      'Whether the statutory documents the board has produced would remain in force is not addressed.',
+      'What an orderly transition means for the board’s staff is not stated.',
+      'The document does not say whether equivalent arrangements at other councils would be affected.',
+    ],
+
+    source: {
+      documentTitle: 'Disestablish Auckland’s ‘Independent Maori Statutory Board’',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/disestablish_auckland_s_independent_maori_statutory_board',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['treaty-maori-affairs'],
+    party: 'nzfirst',
+    slug: 'referendum-on-maori-seats',
+    title: 'A referendum on the Māori seats',
+    summary:
+      'NZ First would put the future of the Māori electorate seats to a public vote, and says that if enough people ' +
+      'support them they could be retained. The case rests on the 1986 Royal Commission’s conclusion that MMP would ' +
+      'remove the original justification for separate seats, on figures the party gives for Māori representation in ' +
+      'the House, on falling Māori roll enrolment, and on its characterisation of the current seat-holders.',
+
+    facts: [
+      { label: 'The proposal', value: 'A public referendum', note: 'On whether the Māori seats are still needed' },
+      { label: 'If support exists', value: 'They could be retained', note: 'The document’s own stated position' },
+      { label: '1986 Royal Commission', value: 'Cited', note: 'That MMP would remove the original justification' },
+      { label: 'Māori in the House', value: '27% claimed', note: 'Against a stated 17% of the population' },
+      { label: 'Māori roll', value: 'About half', note: 'Of enrolled Māori, and falling, per the document' },
+      { label: 'General seats 1854–1978', value: 'Four Māori MPs', note: 'Rising substantially since MMP, it says' },
+    ],
+
+    mechanics: [
+      {
+        heading: 'Putting it to a vote',
+        body:
+          'The proposal is that the public decide whether the Māori seats are effective, relevant and still needed. ' +
+          'The document points to the recent referendum on local Māori wards as precedent, and is explicit that if ' +
+          'the seats have enough support they could be retained. NZ First notes it has campaigned on this before and ' +
+          'wants it implemented after the next election.',
+      },
+      {
+        heading: 'The Royal Commission argument',
+        body:
+          'The central constitutional claim is that the 1986 Royal Commission on the electoral system concluded that ' +
+          'MMP would produce a more representative Parliament and that the original justification for separate Māori ' +
+          'seats would no longer exist.',
+      },
+      {
+        heading: 'The representation figures',
+        body:
+          'The document says there is now a record number of Māori in Parliament and Cabinet, putting it at 27 ' +
+          'percent of the House against what it describes as an often-claimed 17 percent of the population. It adds ' +
+          'that between 1854 and 1978 only four Māori held a general seat, that the number has risen substantially ' +
+          'since MMP, and that enrolment on the Māori roll has been falling and now sits at about half of enrolled ' +
+          'Māori. From this it concludes that a separate franchise based on race has become irrelevant.',
+      },
+      {
+        heading: 'Its case about the current seat-holders',
+        body:
+          'The document gives the conduct of the Māori Party over the past two years as part of its reasoning, saying ' +
+          'they hold the majority of the Māori seats, do not turn up to Parliament and disregard the rules and ' +
+          'processes, and concluding that the seats no longer serve their original purpose. These are the document’s ' +
+          'characterisations; it offers no attendance, voting or participation data alongside them.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'the Royal Commission into the electoral system in 1986 stated that with the implementation of MMP it would create a more representative Parliament and the original justification for separate Māori seats would no longer exist.',
+        context: 'On the constitutional argument',
+      },
+      {
+        text: 'If the Māori seats have enough people who support them then they could be retained.',
+        context: 'On what the referendum could decide',
+      },
+      {
+        text: 'we currently have a record number of Māori in parliament and in Cabinet, with twenty-seven percent of the House having a Māori background',
+        context: 'On representation in the House',
+      },
+      {
+        text: 'The arguments for a separate franchise based on race have become irrelevant.',
+        context: 'The document’s conclusion',
+      },
+    ],
+
+    openQuestions: [
+      'No date, wording or threshold for the referendum is given, and the document does not say whether the result would be binding.',
+      'The claim that the Māori Party do not turn up to Parliament is made without attendance or voting data.',
+      'The 27 percent and 17 percent figures, the Māori roll enrolment claim and the 1854–1978 figure are all given without a source.',
+      'The 1986 Royal Commission is cited for one conclusion, and the document does not set out what else it recommended about Māori representation.',
+      'What would happen to electorate boundaries and the size of the House if the seats were abolished is not addressed.',
+      'Whether Māori would keep the choice between rolls in the meantime, and what happens to those already enrolled, is not stated.',
+    ],
+
+    source: {
+      documentTitle: 'Referendum on Maori Seats',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/referendum_on_maori_seats',
+      retrieved: '2026-08-16',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
