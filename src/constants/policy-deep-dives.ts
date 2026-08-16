@@ -4406,6 +4406,228 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-16',
     },
   },
+
+  // ── Te Pāti Māori ──────────────────────────────────────────────────────────
+  //
+  // Their eighteen policy pages run to three bullets and a short rationale
+  // each, which is too thin for this format — a dive built from one would be
+  // mostly "the document does not say", which reads as evasiveness rather than
+  // as brevity. These two come from announcements that do carry specific
+  // commitments, paired with the matching policy page. The first open question
+  // on each says plainly that the source is an announcement, so the gaps are
+  // read as what they are.
+
+  {
+    topics: ['treaty-maori-affairs'],
+    party: 'tpm',
+    slug: 'binding-waitangi-tribunal',
+    title: 'Making Waitangi Tribunal recommendations binding',
+    summary:
+      'Te Pāti Māori would make Waitangi Tribunal recommendations binding rather than advisory, establish a ' +
+      'Parliamentary Commissioner for Te Tiriti, and require every Bill before Parliament to carry a Te Tiriti Impact ' +
+      'Statement. The problem they identify is structural: the Tribunal can investigate, hear evidence and make ' +
+      'findings, but a government can simply ignore them. It sits under their wider Mana Motuhake commitment to ' +
+      'Te Tiriti-based constitutional change.',
+
+    facts: [
+      { label: 'Tribunal findings', value: 'Would bind', note: 'Rather than being recommendations a government may ignore' },
+      { label: 'New office', value: 'Commissioner for Te Tiriti', note: 'A Parliamentary Commissioner' },
+      { label: 'Every Bill', value: 'A Te Tiriti Impact Statement', note: 'Required before Parliament' },
+      { label: 'The stated flaw', value: 'Findings can be ignored', note: 'The Tribunal can find, but not compel' },
+      { label: 'Wider commitment', value: 'Constitutional change', note: 'Te Tiriti-based, under Mana Motuhake' },
+      { label: 'Also committed to', value: 'Land back', note: 'And rangatiratanga commitments under Te Tiriti' },
+    ],
+
+    coveredLabel: 'The wider Mana Motuhake commitments',
+    covered: [
+      'Commit to Te Tiriti-based constitutional change',
+      'Strengthen Māori political authority and governance structures',
+      'Progress land back and rangatiratanga commitments under Te Tiriti o Waitangi',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Binding recommendations',
+        body:
+          'The central change. The Waitangi Tribunal would move from making recommendations a government can decline ' +
+          'to act on, to making findings that bind. The party frames the current arrangement as a flaw in Aotearoa’s ' +
+          'constitutional arrangements rather than a failure of any one government.',
+      },
+      {
+        heading: 'A Parliamentary Commissioner for Te Tiriti',
+        body:
+          'A new office, named as one of three mechanisms alongside binding findings and impact statements. The ' +
+          'announcement establishes that it would exist but does not set out its powers.',
+      },
+      {
+        heading: 'A Te Tiriti Impact Statement on every Bill',
+        body:
+          'Every Bill before Parliament would have to include one — the third mechanism, aimed at putting Te Tiriti ' +
+          'into the legislative process at the point a law is written rather than after it is challenged.',
+      },
+      {
+        heading: 'What prompted the announcement',
+        body:
+          'It responds to a call by New Zealand First to review the Waitangi Tribunal, made after the Tribunal found ' +
+          'the Government’s Treaty clause review was a major breach of Te Tiriti. Co-leader Rawiri Waititi’s argument ' +
+          'is that a government told by an independent watchdog that it has breached Te Tiriti should address the ' +
+          'breach rather than investigate the watchdog.',
+      },
+      {
+        heading: 'Where it sits in their platform',
+        body:
+          'Under Mana Motuhake, which commits to Te Tiriti-based constitutional change, strengthening Māori political ' +
+          'authority and governance structures, and progressing land back and rangatiratanga commitments. The stated ' +
+          'reasoning for constitutional entrenchment is that without it, every gain can be undone by the next ' +
+          'government.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'The Waitangi Tribunal can investigate, hear evidence and make findings. But governments can simply ignore them.',
+        context: 'On the problem being solved',
+      },
+      {
+        text: 'That is why Te Pāti Māori will make Waitangi Tribunal recommendations binding, establish a Parliamentary Commissioner for Te Tiriti, and require every Bill before Parliament to include a Te Tiriti Impact Statement.',
+        context: 'The commitment itself',
+      },
+      {
+        text: 'It is about accountability. When an independent watchdog tells the Government it has breached Te Tiriti, the Government’s job is to address the breach, not attack the watchdog.',
+        context: 'Rawiri Waititi on what prompted it',
+      },
+      {
+        text: 'If governments can ignore the Waitangi Tribunal every time they don’t like the answer, what accountability is left?',
+        context: 'Rawiri Waititi',
+      },
+    ],
+
+    openQuestions: [
+      'The source is a press release announcing the commitment rather than a policy document, so most of the mechanics below are simply not covered by it yet.',
+      'How binding recommendations would work in law is not set out, nor whether they would apply only to future findings or also to the Tribunal’s existing body of recommendations.',
+      'What happens where a binding recommendation requires spending, or conflicts with other legislation, is not addressed.',
+      'The Parliamentary Commissioner for Te Tiriti’s powers, appointment process and reporting lines are not described.',
+      'What a Te Tiriti Impact Statement would contain, who would assess it, and what happens to a Bill that fails one, is not stated.',
+      'No cost or timeline is given for any of the three mechanisms.',
+    ],
+
+    source: {
+      documentTitle: 'Te Pati Maori will make the Waitangi Tribunal recommendations binding',
+      publisher: 'Te Pāti Māori',
+      documentDate: '6 August 2026',
+      url: 'https://www.maoriparty.org.nz/te_pati_maori_will_make_the_waitangi_tribunal_recommendations_binding',
+      retrieved: '2026-08-16',
+      alsoFrom: [
+        { documentTitle: 'Mana Motuhake', note: 'their policy page, for the wider constitutional commitments' },
+      ],
+    },
+  },
+
+  {
+    topics: ['environment'],
+    party: 'tpm',
+    slug: 'seabed-mining-prohibition',
+    title: 'A permanent ban on seabed mining',
+    summary:
+      'Co-leader Debbie Ngarewa-Packer has reintroduced a member’s bill, the Seabed Mining Prohibition Act, to ban ' +
+      'seabed mining permanently — closing all legal pathways including fast-track approvals, and applying across the ' +
+      'coastal marine area, the exclusive economic zone and the continental shelf. It is the second version, ' +
+      'strengthened to account for fast-track legislation; the first was supported by the Greens and voted down by ' +
+      'Labour.',
+
+    facts: [
+      { label: 'The bill', value: 'Seabed Mining Prohibition Act', note: 'A member’s bill, prepared for the ballot' },
+      { label: 'Scope', value: 'All legal pathways', note: 'Including fast-track approvals' },
+      { label: 'Area covered', value: 'Coastal, EEZ, shelf', note: 'Coastal marine area, exclusive economic zone, continental shelf' },
+      { label: 'Version', value: 'The second', note: 'Strengthened to reflect fast-track legislation' },
+      { label: 'The previous bill', value: 'Voted down', note: 'Supported by the Greens, opposed by Labour' },
+      { label: 'Route', value: 'The members’ ballot', note: 'Not government legislation' },
+    ],
+
+    coveredLabel: 'The wider climate commitments it sits under',
+    covered: [
+      'Protect whenua and moana from extractive industries, including banning seabed mining',
+      'Invest in climate resilience for communities most at risk',
+      'Back regenerative and sustainable approaches aligned with Māori values',
+    ],
+
+    mechanics: [
+      {
+        heading: 'What the bill does',
+        body:
+          'The Seabed Mining Prohibition Act would close all legal pathways for seabed mining, fast-track approvals ' +
+          'included, and apply across the coastal marine area, the exclusive economic zone and the continental shelf ' +
+          '— so the ban is defined by where the seabed is rather than by which consenting regime applies.',
+      },
+      {
+        heading: 'Why a second version',
+        body:
+          'Ngarewa-Packer has introduced seabed mining legislation before. That bill had Green Party support and was ' +
+          'voted down by Labour. This version is described as strengthened to reflect changes in the law since, ' +
+          'specifically the fast-track regime.',
+      },
+      {
+        heading: 'The argument from the fast-track process',
+        body:
+          'The case made is that the evidence is now settled because it survived a process designed to be permissive: ' +
+          'even under fast-track legislation intended to push projects through, seabed mining was found to cause ' +
+          'unacceptable harm to the environment, to taonga species and to tikanga Māori. The conclusion drawn is that ' +
+          'these impacts cannot be conditioned away, and that where regulators themselves find the risk too great, ' +
+          'Parliament should act.',
+      },
+      {
+        heading: 'Where it sits in their platform',
+        body:
+          'Under a climate policy that commits to protecting whenua and moana from extractive industries, naming a ' +
+          'seabed mining ban directly, alongside climate resilience investment for the communities most at risk and ' +
+          'regenerative approaches aligned with Māori values. The framing offered is mana moana, kaitiakitanga and ' +
+          'intergenerational responsibility.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'The Seabed Mining Prohibition Act closes all legal pathways for seabed mining, including fast-track approvals, and applies across the coastal marine area, the exclusive economic zone, and the continental shelf.',
+        context: 'What the bill does',
+      },
+      {
+        text: 'Even under fast-track legislation designed to push projects through, seabed mining has been found to cause unacceptable harm to the environment, to taonga species, and to tikanga Māori.',
+        context: 'Debbie Ngarewa-Packer on the evidence',
+      },
+      {
+        text: 'When regulators themselves conclude that the risks are too great and the uncertainty too high, Parliament has a responsibility to act.',
+        context: 'Debbie Ngarewa-Packer',
+      },
+      {
+        text: 'Our oceans are not sacrifice zones and this is work I intend to see through.',
+        context: 'Debbie Ngarewa-Packer',
+      },
+    ],
+
+    openQuestions: [
+      'The source is a press release announcing the bill; the bill text itself is not linked, so its drafting cannot be checked against the description.',
+      'A member’s bill depends on being drawn from the ballot, and the announcement does not say what happens to the policy if it is not.',
+      'Whether existing permits or live applications would be extinguished, and whether compensation would follow, is not addressed.',
+      'How the ban would sit with the Crown Minerals Act and the EEZ Act is not set out.',
+      'No exemption is described for scientific research, cable laying or other non-extractive seabed activity.',
+      'The announcement notes the previous bill was voted down by Labour but does not say what has changed to make a different result likely.',
+    ],
+
+    source: {
+      documentTitle: 'Seabed mining banned in Aotearoa under reintroduced Member’s Bill',
+      publisher: 'Te Pāti Māori',
+      documentDate: '8 February 2026',
+      url: 'https://www.maoriparty.org.nz/seabed_mining_banned_in_aotearoa_under_reintroduced_member_s_bill',
+      retrieved: '2026-08-16',
+      alsoFrom: [
+        { documentTitle: 'Climate', note: 'their policy page, for the commitments this sits under' },
+      ],
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
