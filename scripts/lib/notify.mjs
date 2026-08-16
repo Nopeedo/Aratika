@@ -42,6 +42,14 @@ function vapidReady() {
   const priv = process.env.VAPID_PRIVATE_KEY
   if (!pub || !priv) return false
   webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:hello@arapono.org.nz', pub, priv)
+  // A subscription is bound to the public key the BROWSER subscribed with. If
+  // this environment signs with a different pair, every push is rejected — and
+  // since secrets are write-only, there is otherwise no way to tell which pair
+  // a runner is holding. Twelve hex characters of a hash identifies the key
+  // without disclosing it, so the CI log can be compared against a known-good
+  // environment. The length is printed too: a trailing newline in a pasted
+  // secret is the other way this breaks, and it shows up here as 88, not 87.
+  console.log(`  push key: fp=${createHash('sha256').update(pub).digest('hex').slice(0, 12)} len=${pub.length}`)
   _vapid = true
   return true
 }
