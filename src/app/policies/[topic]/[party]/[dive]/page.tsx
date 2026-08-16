@@ -75,7 +75,8 @@ export default async function DeepDivePage({ params }: { params: Params }) {
       </div>
 
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '28px 36px 64px' }}>
-        <PolicyDeepDive dive={d} accent={p.color} partyName={p.name} />
+        {/* The page header above already carries the title as the <h1>. */}
+        <PolicyDeepDive dive={d} accent={p.color} partyName={p.name} showTitle={false} />
 
         <div style={{ marginTop: 26, textAlign: 'center' }}>
           <Link

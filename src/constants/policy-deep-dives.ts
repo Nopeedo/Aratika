@@ -2845,6 +2845,534 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-16',
     },
   },
+
+  // ── ACT ───────────────────────────────────────────────────────────────────
+
+  {
+    // First deep dive on immigration for any party.
+    topics: ['immigration'],
+    party: 'act',
+    slug: 'making-immigration-work',
+    title: 'Making immigration work: deportation, visas and a welfare stand-down',
+    summary:
+      'ACT would let resident visa holders convicted of offences carrying 10-year sentences be deported however long ' +
+      'they have lived here, make skilled work visa categories expire every year unless demand is proved again, bar ' +
+      'new residents from income-tested benefits for five years, and add a $6-a-day infrastructure surcharge to ' +
+      'temporary work visas. English requirements would extend to all work visa levels, and a dedicated overstayer ' +
+      'enforcement unit would be set up inside Immigration New Zealand.',
+
+    facts: [
+      { label: 'Deportation threshold', value: '10-year sentences', note: 'Liability however long someone has been resident' },
+      { label: 'Welfare stand-down', value: 'Five years', note: 'No jobseeker, accommodation supplement or income-tested benefits' },
+      { label: 'Infrastructure surcharge', value: '$6 a day', note: 'On temporary work visas, expected to raise about $80m a year' },
+      { label: 'Visa categories', value: 'Expire yearly', note: 'Reopened only on up-to-date evidence of demand' },
+      { label: 'Known overstayers', value: '20,980', note: 'The figure the policy cites' },
+      { label: 'English requirements', value: 'All AEWV types', note: 'Currently absent from three of the five levels' },
+    ],
+
+    // The document's own evidence for its visa argument, set out as it sets it
+    // out. The counts are raw approvals; what they are missing is in the open
+    // questions rather than editorialised here.
+    coveredLabel: 'Approvals the policy points to',
+    exemptLabel: 'The skilled roles it compares them with',
+
+    covered: [
+      'Fast food workers — 2,480 approved',
+      'Beauty therapists — 2,119 approved',
+      'Newspaper deliverers — 35 approved',
+    ],
+
+    exempt: [
+      'Software engineers — 1,052 approved',
+      'Biomedical engineers — 30 approved',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Deporting serious offenders',
+        body:
+          'Resident visa holders convicted of offences carrying sentences of 10 years or more could be deported no ' +
+          'matter how long they had been in New Zealand. The document frames residency as a privilege and argues ' +
+          'that because victims face no time limit on their suffering there should be none on accountability. It ' +
+          'notes this goes further than the current Government proposal, which extends liability to 20 years.',
+      },
+      {
+        heading: 'Making visa categories expire',
+        body:
+          'Accredited Employer Work Visa skill categories would automatically expire each year, and could only stay ' +
+          'open on up-to-date evidence of demand. The argument is that the categories are meant to fill crucial skills ' +
+          'gaps but stay wide open after the gaps close.',
+      },
+      {
+        heading: 'A five-year welfare stand-down',
+        body:
+          'All residence class visa holders would be barred from jobseeker support, the accommodation supplement and ' +
+          'income-tested benefits for their first five years. The stated principle: coming to New Zealand should be a ' +
+          'path to opportunity rather than to welfare.',
+      },
+      {
+        heading: 'A surcharge for infrastructure',
+        body:
+          'A $6-a-day infrastructure surcharge on temporary work visas, on top of existing charges, so that migrants ' +
+          'contribute from day one and before they start paying tax. The document puts the revenue at around $80 ' +
+          'million a year and says the charge would remain more affordable than comparable visas in Australia and the ' +
+          'United Kingdom.',
+      },
+      {
+        heading: 'English language requirements',
+        body:
+          'Basic English requirements would extend to all Accredited Employer Work Visa types, which the document says ' +
+          'currently have none at three of five levels, with higher standards for student and resident visa holders ' +
+          'and lower standards permitted for seasonal workers.',
+      },
+      {
+        heading: 'Enforcement against overstaying',
+        body:
+          'A dedicated overstayer enforcement unit would be established within Immigration New Zealand. Platform ' +
+          'employers such as Uber and DoorDash would have to verify and report work rights, and employers who ' +
+          'facilitate overstaying would lose their accreditation.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      { text: 'Residency is a privilege.', context: 'Deport serious offenders' },
+      {
+        text: 'Coming to New Zealand should be a path to opportunity - not a path to welfare.',
+        context: 'Opportunity, not dependency',
+      },
+      {
+        text: 'ACT will extend basic English language requirements to all AEWV types, with higher standards for student and resident visa holders.',
+        context: 'Stronger English language requirements',
+      },
+      {
+        text: 'Platform employers such as Uber and DoorDash will be required to verify and report work rights.',
+        context: 'Enforce the rules',
+      },
+    ],
+
+    openQuestions: [
+      'The deportation threshold is written as offences “carrying sentences of 10 years or more”, which does not say whether it means the maximum penalty available for the offence or the sentence actually imposed — a distinction that decides how many people it reaches.',
+      'The visa approval figures are raw counts. “Since July 2022” is attached to the first comparison only, no period is given for the second, and none of them say how many people applied.',
+      'What counts as “basic” English, and what the higher standards for students and residents would be, is not specified.',
+      'The five-year stand-down is stated for all residence class visa holders without saying whether it reaches refugees and protected persons, or people who already hold residence.',
+      'How the $6-a-day surcharge would be charged — upfront for the visa term, or as an ongoing levy — is not described beyond the $80 million estimate.',
+      'The size, cost and powers of the overstayer enforcement unit are not stated.',
+    ],
+
+    source: {
+      documentTitle: 'Making immigration work for New Zealand',
+      publisher: 'ACT New Zealand',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    // First deep dive on education for any party.
+    topics: ['education'],
+    party: 'act',
+    slug: 'class-disruption',
+    title: 'Teacher authority and classroom disruption',
+    summary:
+      'ACT would give teachers an explicit legal power to order a disruptive student out of the classroom, with ' +
+      'reasonable force available if the student refuses twice. Staff acting in good faith would get clear legal ' +
+      'protection, an assault on anyone at school would automatically trigger removal and a stand-down or suspension, ' +
+      'and parent meetings would become mandatory for serious or repeated behaviour — enforced with fines of up to ' +
+      '$3,000 and liability for deliberate property damage.',
+
+    facts: [
+      { label: 'Teachers affected', value: 'About half', note: 'Deal with disruption in every lesson, per ERO' },
+      { label: 'Time lost', value: '40–50 min a day', note: '47% of teachers say they lose this much or more' },
+      { label: 'PISA ranking', value: 'Lowest in the OECD', note: 'For disciplinary climate in maths classes' },
+      { label: 'Parent fines', value: 'Up to $300', note: 'First offence; up to $3,000 for subsequent ones' },
+      { label: 'The removal power', value: 'Held by the teacher', note: 'Sitting below stand-down and suspension' },
+      { label: 'Law changed', value: 'Education and Training Act 2020', note: 'Including section 80 on stand-downs' },
+    ],
+
+    coveredLabel: 'When a parent meeting is mandatory',
+    exemptLabel: 'What the policy rules out',
+
+    covered: [
+      'Violence, threats, intimidation or destruction of property — on the first occurrence',
+      'Refusing to leave the classroom after being lawfully directed — on the first occurrence',
+      'Repeated low-level disruption, but only where the parent has not already engaged with the school in good faith',
+      'Non-engagement itself escalates, to the Ministry of Education or the Oranga Tamariki and Police Youth Aid pathway',
+    ],
+
+    exempt: [
+      'Any return to physical discipline',
+      'Seclusion rooms, banned in 2017 after the Miramar case',
+      'Empty or lockable rooms as a destination for removed students',
+      'Leaving a refusal with the classroom teacher rather than escalating it',
+    ],
+
+    mechanics: [
+      {
+        heading: 'The power to remove a student',
+        body:
+          'An explicit legal power for classroom teachers to direct a student to leave the room for serious or ' +
+          'persistent disruption. The document compares its operation to the school cell phone ban: a fast frontline ' +
+          'tool held by the teacher, sitting below the formal stand-down and suspension processes rather than ' +
+          'replacing them. Under the new law, defiant students must leave.',
+      },
+      {
+        heading: 'Where a removed student goes',
+        body:
+          'To a supervised, staffed space in the school — an existing pastoral office, deans’ room or learning support ' +
+          'room. The document draws an explicit line here: not an empty or lockable room, which is what separates this ' +
+          'from the seclusion rooms banned in 2017 after the Miramar case, where children were locked in confinement ' +
+          'as punishment.',
+      },
+      {
+        heading: 'If a student refuses to go',
+        body:
+          'A refusal escalates to a dean or senior leader rather than being left with the teacher, and continued ' +
+          'refusal triggers a mandatory parent meeting on the first occurrence. Where a student refuses after being ' +
+          'lawfully directed and refuses again after escalation, staff may use reasonable force to remove them from ' +
+          'the classroom.',
+      },
+      {
+        heading: 'Protection for staff who intervene',
+        body:
+          'Clear legal protection for staff using reasonable and proportionate intervention to prevent harm, including ' +
+          'reasonable physical restraint, consistent with the existing boundaries in section 99 of the Education and ' +
+          'Training Act 2020. The protection would extend to restraint used to prevent destruction of property. ACT ' +
+          'says it would clarify those existing boundaries so teachers know what is permitted, without adding ' +
+          'paperwork.',
+      },
+      {
+        heading: 'Automatic consequences for assault',
+        body:
+          'Any assault on a teacher, student or staff member would trigger immediate removal followed by a mandatory ' +
+          'stand-down or suspension, which the document says ends the current school-by-school inconsistency. Where an ' +
+          'assault crosses the criminal threshold, the first occurrence goes to Police Youth Aid under the existing ' +
+          'Oranga Tamariki Act, without waiting for it to happen again.',
+      },
+      {
+        heading: 'Parents share responsibility',
+        body:
+          'Meetings become mandatory when behaviour repeats or turns serious, targeted at disengaged parents rather ' +
+          'than those already working with the school. A parent who misses a mandatory meeting without reasonable ' +
+          'excuse can be fined up to $300 for a first offence and up to $3,000 after that, on a regime the document ' +
+          'compares to school attendance. Parents may also be held liable for the cost of deliberate property damage ' +
+          'caused by their child, recoverable as a debt.',
+      },
+      {
+        heading: 'What changes in law',
+        body:
+          'The Education and Training Act 2020 would be amended to create the removal power, clarify good-faith ' +
+          'intervention, mandate the automatic response to assaults, require parent meetings, escalate parental ' +
+          'non-engagement and make parents liable for deliberate damage. Section 80 would be updated to reflect that ' +
+          'stand-downs and suspensions become mandatory.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'ACT will give classroom teachers an explicit legal power to direct a student to leave the room for serious or persistent disruption, backed in law, very much like the operation of the school cell phone ban.',
+        context: 'Power to remove disruptive students',
+      },
+      {
+        text: 'Where a student refuses to leave after being lawfully directed to do so, and refuses again after escalation, staff may use reasonable force to remove the student from the classroom.',
+        context: 'Power to remove disruptive students',
+      },
+      {
+        text: 'This is not an empty or lockable room, a distinction that separates it from the seclusion rooms banned in 2017 following the Miramar case, where children were locked in confinement as punishment.',
+        context: 'Where removed students go',
+      },
+      {
+        text: 'back the right of the majority to learn - without any return to physical discipline.',
+        context: 'Opening summary of the policy',
+      },
+    ],
+
+    openQuestions: [
+      '“Reasonable force” is not defined. The document points to the existing boundaries in section 99 and says it would clarify them, but the clarification itself is not set out.',
+      'Removed students go to a staffed pastoral, deans’ or learning support room, and the document does not say what happens in schools without one available.',
+      'No cost is given for the supervised spaces or the staff needed to run them.',
+      'Whether the removal power applies to primary schools as well as secondary is not stated.',
+      'Who decides whether a parent’s excuse for missing a meeting is reasonable, and how a fine would be issued and appealed, is not described.',
+      'The document does not say whether removals would be recorded, reported or published.',
+      'The learning support room is named as a destination, but the effect on students with disabilities or learning support needs is not discussed.',
+    ],
+
+    source: {
+      documentTitle: 'Strengthening teacher authority and stopping class disruption',
+      publisher: 'ACT New Zealand',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['environment'],
+    party: 'act',
+    slug: 'backing-hunters',
+    title: 'Backing Hunters: game animals, access and the Game Animal Council',
+    summary:
+      'ACT would move responsibility for managing game animals on conservation land from DOC to the Game Animal ' +
+      'Council, so hunters set the targets rather than being consulted on them, and recognise game species as valued ' +
+      'natural resources instead of pests. Community groups would get first right of funding for hut and track ' +
+      'maintenance, hunting groups could earn biodiversity credits, rules on venison recovery and backcountry landing ' +
+      'would loosen, and two new infringement offences would cover interference with lawful hunting.',
+
+    facts: [
+      { label: 'Management transfer', value: 'DOC → Game Animal Council', note: 'For game animals on conservation land' },
+      { label: 'The DOC estate', value: '950+ huts, 15,000km of tracks', note: 'Against a 30% maintenance shortfall' },
+      { label: 'Closure alerts', value: '2,300+', note: 'Issued since 2021' },
+      { label: 'First special herd', value: 'Stewart Island whitetail', note: 'Designated a Herd of Special Interest' },
+      { label: 'Community groups', value: 'First right of funding', note: 'On multi-year contracts, where competitive' },
+      { label: 'New offences', value: 'Two', note: 'Standing in the line of fire; drone or helicopter harassment' },
+    ],
+
+    coveredLabel: 'What moves to the Game Animal Council',
+    exemptLabel: 'What DOC would stop doing',
+
+    covered: [
+      'Setting game animal management targets on conservation land, with full funding for the duties',
+      'Restricting commercial take by animal gender where necessary',
+      'Designating accessible backcountry landing sites',
+      'Formal representation in predator removal decisions, alongside the NZ Deerstalkers Association',
+    ],
+
+    exempt: [
+      'Managing game animals on conservation land',
+      'Dictating which helicopters venison recovery operators may use — safety returns to the Civil Aviation Authority',
+      'Deciding hut and track funding without offering community groups first refusal',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Hunters setting the targets',
+        body:
+          'The document’s framing is that game animals on conservation land are managed by the one agency whose ' +
+          'default is to control or exterminate them, and that the Game Animal Council was given a seat at the table ' +
+          'rather than a hand on the levers. Transferring management to the Council is meant to change that, with full ' +
+          'funding for its current and proposed duties.',
+      },
+      {
+        heading: 'Recognising valued herds',
+        body:
+          'Game animal and gamebird species would be recognised in legislation as valued natural resources to be ' +
+          'sustainably managed, rather than pests to be exterminated “as far as possible”. New Zealand’s most valued ' +
+          'herds would be designated Herds of Special Interest, starting with Stewart Island whitetail deer. The ' +
+          'document notes the current Government is already doing this for Wapiti and Sika and says the work should ' +
+          'continue.',
+      },
+      {
+        heading: 'Funding the volunteers already doing the work',
+        body:
+          'DOC manages more than 950 huts and 15,000km of tracks with a 30 percent maintenance shortfall and has ' +
+          'issued over 2,300 closure alerts since 2021. Hunting, tramping and conservation groups already restore huts ' +
+          'and maintain tracks with volunteers, but live on annual discretionary grants. DOC would be required to give ' +
+          'community groups first right of funding where they can offer a competitive option, enabling multi-year ' +
+          'contracts.',
+      },
+      {
+        heading: 'Credit for pest control',
+        body:
+          'The Voluntary Nature Credits Market would open to accredited hunting groups so they can earn biodiversity ' +
+          'credits for verified results, and the NZ Deerstalkers Association and Game Animal Council would be formally ' +
+          'represented in predator removal decision-making.',
+      },
+      {
+        heading: 'Venison recovery',
+        body:
+          'DOC would stop dictating which helicopters commercial venison recovery operators use, with aircraft safety ' +
+          'left to the Civil Aviation Authority. In exchange, the Game Animal Council could restrict commercial take ' +
+          'by animal gender where necessary — the document’s concern being that current permits let operators strip ' +
+          'out the trophy stags recreational hunters value most.',
+      },
+      {
+        heading: 'Getting into the backcountry',
+        body:
+          'The Game Animal Council would designate accessible landing sites, and DOC would have to adopt clear, public ' +
+          'and uniform testing processes for assessing them. The document argues large areas of rugged country like ' +
+          'Fiordland are closed by no-fly and no-landing zones drawn as legacy lines on a map without clear ' +
+          'conservation or safety reasoning. Separately, the Outdoor Access Commission would be directed to prioritise ' +
+          'hunting access in its work programme.',
+      },
+      {
+        heading: 'Two new infringement offences',
+        body:
+          'One for deliberately standing in the line of fire of a lawful hunter, which the document describes as ' +
+          'dangerous sabotage. One for harassing game bird shooters with drones or helicopters used to scatter or ' +
+          'flush birds. The document says no specific offence currently addresses either.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'New Zealand’s laws still treat game animals as pests to be controlled, and in national parks, exterminated as far as possible.',
+        context: 'Opening statement of the problem',
+      },
+      {
+        text: 'ACT will transfer responsibility for managing game animals on conservation land from DOC to the Game Animal Council, meaning hunters will set the targets rather than just being consulted.',
+        context: 'Empowering hunter led management',
+      },
+      {
+        text: 'Aircraft safety should be the Civil Aviation Authority’s job, not DOC’s.',
+        context: 'Fairer venison recovery',
+      },
+      {
+        text: 'ACT will create an infringement offence for deliberately standing in the line of fire of a lawful hunter, deterring dangerous sabotage and keeping the backcountry safe for everyone.',
+        context: 'Stopping dangerous interference with hunting',
+      },
+    ],
+
+    openQuestions: [
+      'The introduction says game animals would be managed “within firm conservation limits”, but the limits are never defined and the document does not say who would set them once target-setting moves from DOC to the Council.',
+      'The Game Animal Council would both represent hunters and set the management targets; how those two roles would sit together is not addressed.',
+      'No cost is given for fully funding the Council’s current and proposed duties.',
+      'Neither new infringement offence carries a stated penalty.',
+      'What makes a community group’s bid “competitive” against DOC delivery, and who judges it, is not defined.',
+      'Himalayan tahr are named as a treasured herd with no plan recognising their value, but the document does not say whether tahr would be designated a Herd of Special Interest.',
+    ],
+
+    source: {
+      documentTitle: 'Backing Hunters',
+      publisher: 'ACT New Zealand',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    // Machinery of government rather than fiscal policy, but economy is the
+    // closest topic we carry. Reinforces the case for a governance topic — see
+    // also TOP's Citizens' Voice, which has no home at all.
+    topics: ['economy'],
+    party: 'act',
+    slug: 'smaller-government',
+    title: 'A consolidated bureaucracy: 43 departments into 19',
+    summary:
+      'ACT would merge New Zealand’s 43 government departments into 19 and its 78 ministerial portfolios into 18, so ' +
+      'that each department answers to a single minister. Ministers would appoint their own chief executives on fixed ' +
+      'renewable terms and be able to remove them for non-performance or policy misalignment, and the Public Service ' +
+      'Commission’s functions would move into the Department of the Prime Minister and Cabinet. The document maps ' +
+      'every current department and portfolio to where it would land.',
+
+    facts: [
+      { label: 'Departments', value: '43 → 19', note: 'Norway governs a country our size with 17' },
+      { label: 'Portfolios', value: '78 → 18', note: 'Against the 20 the document says Norway needs' },
+      { label: 'Chief executives', value: 'Appointed by ministers', note: 'Fixed term, renewable once' },
+      { label: 'Public Service Commission', value: 'Folded into DPMC', note: 'No longer a gatekeeper on appointments' },
+      { label: 'Cited fiscal effect', value: '0.08–0.18% of GDP', note: 'Per spending minister, from OECD panel studies' },
+      { label: 'Frontline staff', value: 'Not targeted', note: 'Consolidation aimed at duplicated head-office functions' },
+    ],
+
+    coveredLabel: 'Some of the bigger mergers',
+    exemptLabel: 'Departments left as they are',
+
+    covered: [
+      'New Zealand Revenue and Customs — Inland Revenue and the Customs Service',
+      'Ministry of Defence and Security — Defence, the Defence Force, GCSB and NZSIS',
+      'Ministry of Justice and Law — Justice, Corrections, Police, the Serious Fraud Office, NEMA, Fire and Emergency, and Treaty Settlements',
+      'Ministry of Cities, Environment, Regions and Transport — Environment, Housing and Urban Development, Transport, Local Government and Infrastructure',
+      'Ministry of Health and Wellbeing — Health, Health New Zealand, the Cancer Control Agency and ACC',
+      'Ministry for Culture and Heritage — Ethnic Communities, Pacific Peoples, Seniors, Women, Māori Development, and Arts, Culture and Heritage',
+    ],
+
+    exempt: [
+      'The Treasury',
+      'Department of Conservation',
+      'Ministry for Regulation',
+      'Ministry of Foreign Affairs and Trade',
+      'Oranga Tamariki',
+      'Ministry for Primary Industries',
+      'MCERT, which the document says would keep reporting to multiple ministers',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Fewer departments',
+        body:
+          'New Zealand runs 43 departments, which the document says is more than one and a half times what comparable ' +
+          'countries carry, each with its own chief executive, communications team, HR and finance. They would be ' +
+          'consolidated into 19, grouped around real policy domains so that one department owns an outcome rather ' +
+          'than several sharing it. The document lists every current agency and the department it would land in.',
+      },
+      {
+        heading: 'Fewer ministers',
+        body:
+          '78 ministerial portfolios would become 18. The argument is that splitting responsibility this far makes ' +
+          'problems like housing and crime everyone’s job and nobody’s duty. Combined with the department mergers, ' +
+          'each department would report to one minister for its budget and outcomes — with MCERT named as the ' +
+          'exception.',
+      },
+      {
+        heading: 'Ministers appointing and removing chief executives',
+        body:
+          'The document’s stated problem is that ministers are accountable for delivery but neither appoint nor can ' +
+          'remove the chief executives who implement their policies. Ministers would appoint departmental chief ' +
+          'executives for a fixed term, renewable once, and could remove them for specified reasons such as ' +
+          'non-performance or policy misalignment. Officials would keep public service protections and the right to ' +
+          'return to a lower classified role.',
+      },
+      {
+        heading: 'What happens to the Public Service Commission',
+        body:
+          'It would no longer sit between ministers and key appointments. Its functions would move into the Department ' +
+          'of the Prime Minister and Cabinet.',
+      },
+      {
+        heading: 'Protecting the frontline',
+        body:
+          'The document is explicit that consolidation targets duplicated head-office functions — multiple ' +
+          'communications offices, HR teams, finance teams and executive layers — and not nurses, teachers or police. ' +
+          'Savings could go back to frontline services, to taxpayers, or to paying down debt.',
+      },
+      {
+        heading: 'The research it rests on',
+        body:
+          'The case draws on the “common pool” effect, where many ministers each control part of the budget and each ' +
+          'has an incentive to expand their own spending while the cost spreads across all taxpayers. OECD panel ' +
+          'studies are cited putting this at roughly 0.08 to 0.18 percent of GDP in additional deficit per spending ' +
+          'minister, with a 58-country study and evidence from Swiss cantons pointing the same way. The document ' +
+          'lists its sources, including a 2025 New Zealand Initiative report applying the research here.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'New Zealand runs one of the most fragmented executives in the developed world. It wasn’t designed, it grew by accident.',
+        context: 'Opening statement',
+      },
+      {
+        text: 'When responsibility is split this far, problems like housing and crime become everyone’s job and nobody’s duty.',
+        context: 'Fewer ministers, clearer responsibility',
+      },
+      {
+        text: 'ACT will let ministers remove chief executives for specified reasons such as non-performance or policy misalignment, but they would retain public service protections and the right to return to a lower classified role.',
+        context: 'Accountable chief executives',
+      },
+      {
+        text: 'Consolidation targets duplicated head-office functions: the multiple communications offices, HR teams, finance teams and executive layers, not nurses, teachers or police.',
+        context: 'Protect the frontline',
+      },
+    ],
+
+    openQuestions: [
+      'No savings figure is given. The document says savings could go to frontline services, taxpayers or debt, but does not estimate them.',
+      'No cost or timeline is given for carrying out the restructuring itself.',
+      '“Policy misalignment” as a ground for removing a chief executive is not defined, and the document does not say who would adjudicate it.',
+      'The research cited estimates the fiscal cost of each additional spending minister, but the document does not convert that into an expected saving from cutting 78 portfolios to 18.',
+      'Land Information New Zealand is marked “not yet included” in the department it would otherwise join.',
+      'MCERT is a stated exception to the one-department-one-minister rule, on the grounds that a newly established ministry should not be restructured yet.',
+      'How many staff would be affected by consolidating duplicated head-office functions is not given.',
+    ],
+
+    source: {
+      documentTitle: 'ACT’s plan for a consolidated bureaucracy',
+      publisher: 'ACT New Zealand',
+      retrieved: '2026-08-16',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.

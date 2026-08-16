@@ -27,7 +27,21 @@ const DEEP_DIVE_CSS = `
 }
 `
 
-export function PolicyDeepDive({ dive, accent, partyName }: { dive: DeepDive; accent: string; partyName: string }) {
+export function PolicyDeepDive({
+  dive,
+  accent,
+  partyName,
+  showTitle = true,
+}: {
+  dive: DeepDive
+  accent: string
+  partyName: string
+  /** Off when the page around it already carries the title as its <h1>, which
+   *  is every case now that dives have their own pages. The attribution line
+   *  stays either way — "this is their document, not ours" is the one piece of
+   *  framing that should never be dropped for tidiness. */
+  showTitle?: boolean
+}) {
   const covered = dive.covered ?? []
   const exempt = dive.exempt ?? []
   const both = covered.length > 0 && exempt.length > 0
@@ -36,15 +50,17 @@ export function PolicyDeepDive({ dive, accent, partyName }: { dive: DeepDive; ac
       <style dangerouslySetInnerHTML={{ __html: DEEP_DIVE_CSS }} />
 
       {/* Header — names the document up front, so nothing below reads as ours */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 6 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: showTitle ? 6 : 14 }}>
         <ScrollText style={{ width: 16, height: 16, color: accent }} />
         <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.09em', textTransform: 'uppercase', color: SECONDARY, fontFamily: MANROPE }}>
           In depth — from {partyName}’s policy document
         </span>
       </div>
-      <h2 style={{ fontSize: 'clamp(20px, 4.4vw, 26px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px', lineHeight: 1.2 }}>
-        {dive.title}
-      </h2>
+      {showTitle && (
+        <h2 style={{ fontSize: 'clamp(20px, 4.4vw, 26px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px', lineHeight: 1.2 }}>
+          {dive.title}
+        </h2>
+      )}
       <p style={{ fontSize: 15, color: '#23262c', fontFamily: MANROPE, lineHeight: 1.7, margin: '0 0 22px', maxWidth: 720 }}>
         {dive.summary}
       </p>
