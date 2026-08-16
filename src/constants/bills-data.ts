@@ -18,6 +18,18 @@
 
 import { BillStatus } from '@/types'
 
+/** SUPERSEDED — do not display either of these, and do not use them to date
+ *  anything on a page.
+ *
+ *  They describe when these ten hand-written entries were captured, which is no
+ *  longer when the bill data on screen is from: /bills/[slug] takes stage, last
+ *  activity, committee and submission dates from bills-54.ts, rebuilt daily.
+ *  Showing this date alongside that data is what had the page announcing a May
+ *  stage in August — one bill sat at "before select committee" for the eleven
+ *  weeks after it became law.
+ *
+ *  Use BILLS_54_META.asOf for anything the register supplies. These stay only
+ *  because the summaries below were written against this snapshot. */
 export const BILLS_SNAPSHOT_DATE = '2026-05-28'
 export const BILLS_TOTAL_CURRENT = 107   // total current bills per parliament.nz
 export const BILLS_SOURCE_URL = 'https://bills.parliament.nz/bills-proposed-laws?Tab=Current'
