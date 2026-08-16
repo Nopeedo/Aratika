@@ -74,6 +74,7 @@ export function DeepDiveCard({
           <ScrollText style={{ width: 15, height: 15, color: accent, flexShrink: 0 }} />
           <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.09em', textTransform: 'uppercase', color: SECONDARY, fontFamily: MANROPE }}>
             In depth — from {partyName}’s policy document
+            {dive.source.documentDate && <span style={{ color: TERTIARY }}> · {dive.source.documentDate}</span>}
           </span>
         </div>
 

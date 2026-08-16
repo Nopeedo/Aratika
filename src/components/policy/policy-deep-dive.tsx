@@ -54,6 +54,7 @@ export function PolicyDeepDive({
         <ScrollText style={{ width: 16, height: 16, color: accent }} />
         <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.09em', textTransform: 'uppercase', color: SECONDARY, fontFamily: MANROPE }}>
           In depth — from {partyName}’s policy document
+          {dive.source.documentDate && <span style={{ color: TERTIARY }}> · {dive.source.documentDate}</span>}
         </span>
       </div>
       {showTitle && (
@@ -186,7 +187,8 @@ export function PolicyDeepDive({
         <ScrollText style={{ width: 15, height: 15, color: TERTIARY, flexShrink: 0, marginTop: 2 }} />
         <div>
           <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6 }}>
-            Summarised from <b style={{ color: INK }}>{dive.source.documentTitle}</b>, published by {dive.source.publisher}.
+            Summarised from <b style={{ color: INK }}>{dive.source.documentTitle}</b>, published by {dive.source.publisher}
+            {dive.source.documentDate ? <> in {dive.source.documentDate}</> : null}.
             {dive.source.authorisedBy && <> Authorised by {dive.source.authorisedBy}.</>}
             {' '}Read {dive.source.retrieved}.
           </div>

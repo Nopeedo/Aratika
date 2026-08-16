@@ -103,6 +103,12 @@ export interface PolicyDeepDive {
   source: {
     documentTitle: string
     publisher: string
+    /** When the party published it, as printed on the document — "February 2026",
+     *  "October 2023". Shown next to the attribution rather than buried in the
+     *  footer, because a policy document's age is part of reading it: a
+     *  manifesto written before a party entered government is a different claim
+     *  from one written this year. Omit only when the document carries no date. */
+    documentDate?: string
     /** The promoter statement printed on the document, where it carries one. */
     authorisedBy?: string
     /** Omit until the public URL is confirmed — never guess one. */
@@ -1613,6 +1619,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     source: {
       documentTitle: 'Building the Future: New Zealand’s Next Billion Customers',
       publisher: 'New Zealand National Party',
+      documentDate: '2026',
       authorisedBy: 'J de Joux, 41 Pipitea St, Wellington',
       retrieved: '2026-08-14',
     },
@@ -2042,6 +2049,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     source: {
       documentTitle: 'Tax Reset Policy Overview',
       publisher: 'The Opportunities Party',
+      documentDate: 'May 2026',
       retrieved: '2026-08-14',
       alsoFrom: [
         { documentTitle: 'Tax Reset Policy Addendum', note: 'which sets out the ten-year implementation pathway' },
@@ -2251,6 +2259,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     source: {
       documentTitle: 'Healthy Oceans Policy Overview',
       publisher: 'The Opportunities Party',
+      documentDate: 'February 2026',
       retrieved: '2026-08-16',
     },
   },
@@ -2452,6 +2461,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     source: {
       documentTitle: 'Abundant Energy Policy Overview',
       publisher: 'The Opportunities Party',
+      documentDate: 'February 2026',
       retrieved: '2026-08-16',
     },
   },
@@ -2658,6 +2668,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     source: {
       documentTitle: 'Intergenerational Infrastructure Policy Overview',
       publisher: 'The Opportunities Party',
+      documentDate: 'August 2026',
       retrieved: '2026-08-16',
     },
   },
@@ -2842,6 +2853,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     source: {
       documentTitle: 'Breakthrough Economy Policy Overview',
       publisher: 'The Opportunities Party',
+      documentDate: 'July 2026',
       retrieved: '2026-08-16',
     },
   },
@@ -2964,6 +2976,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     source: {
       documentTitle: 'Making immigration work for New Zealand',
       publisher: 'ACT New Zealand',
+      documentDate: '3 May 2026',
       retrieved: '2026-08-16',
     },
   },
@@ -3102,6 +3115,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     source: {
       documentTitle: 'Strengthening teacher authority and stopping class disruption',
       publisher: 'ACT New Zealand',
+      documentDate: '2 August 2026',
       retrieved: '2026-08-16',
     },
   },
@@ -3236,6 +3250,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     source: {
       documentTitle: 'Backing Hunters',
       publisher: 'ACT New Zealand',
+      documentDate: '25 July 2026',
       retrieved: '2026-08-16',
     },
   },
@@ -3370,6 +3385,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     source: {
       documentTitle: 'ACT’s plan for a consolidated bureaucracy',
       publisher: 'ACT New Zealand',
+      documentDate: '28 June 2026',
       retrieved: '2026-08-16',
     },
   },
