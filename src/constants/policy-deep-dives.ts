@@ -2030,6 +2030,211 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       ],
     },
   },
+
+  {
+    topics: ['environment'],
+    party: 'top',
+    title: 'Healthy Oceans: fisheries reform, marine protection and a blue economy',
+    summary:
+      'TOP would move fisheries away from the Quota Management System’s single-species quotas toward ecosystem-based ' +
+      'management, lift the biomass level at which a stock counts as sustainable, put cameras on every commercial ' +
+      'vessel over 8 metres, and phase out bottom trawling in stages. Marine protection would expand from under 0.5 ' +
+      'percent of the EEZ to 30 percent by 2035, using a new statute to replace the Marine Reserves Act 1971. Seabed ' +
+      'mining would be banned permanently. The party puts the short-term cost at no more than $100 million a year.',
+
+    facts: [
+      { label: 'Our ocean territory', value: 'Over 4m km²', note: 'Fifth-largest EEZ in the world, 15 times our land mass' },
+      { label: 'Protected today', value: 'Under 0.5%', note: '44 marine reserves, just over 17,000 km²' },
+      { label: 'Protection target', value: '20% by 2030, 30% by 2035', note: 'Through marine spatial planning' },
+      { label: 'Sustainability target', value: '40% → 50%', note: 'Of virgin biomass; soft limit 20→40%, hard limit 10→20%' },
+      { label: 'Cameras on boats', value: 'All vessels over 8m', note: 'Including deep-sea trawlers and scampi boats' },
+      { label: 'Cost to government', value: 'Up to $100m a year', note: 'The party’s own short-term estimate' },
+    ],
+
+    coveredLabel: 'The new marine protection toolkit',
+    exemptLabel: 'Species targeted for recovery programmes',
+
+    // Not a covered/exempt pairing in the tax sense — two lists from the
+    // document that are most usefully read side by side. The panel labels
+    // carry the meaning.
+    covered: [
+      'High-protection marine reserves, where no extractive activity is allowed',
+      'Multiple-use marine protected areas, allowing regeneration alongside some fishing',
+      'Species management areas protecting specific threatened species',
+      'Seafloor protection zones prohibiting bottom-impact fishing but allowing other activity',
+      'Emergency closure areas responding temporarily to ecosystem stress',
+      'Sustainable-use zones managed for long-term health with continued harvest',
+      'Statutory recognition of customary tools such as rāhui',
+    ],
+
+    exempt: [
+      'Seabirds — albatross, petrels and penguins',
+      'Marine mammals — New Zealand sea lions and southern right whales',
+      'Māui and Hector’s dolphins',
+      'Threatened fish including mako sharks and Antarctic toothfish',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Ecosystem-based management instead of single-species quotas',
+        body:
+          'The document’s core argument is that the Quota Management System manages one species at a time and misses ' +
+          'the relationships between them. TOP would review fisheries management to allow ecosystem-based approaches, ' +
+          'drawing on the Rescue Fish / Ika Rauora pathway developed by LegaSea and NZ Sport Fishing. Secure catch ' +
+          'entitlements would stay, with ecosystem health requirements, bycatch limits and habitat protection added ' +
+          'around them. Inshore and offshore fisheries would be managed differently.',
+      },
+      {
+        heading: 'Raising the bar for what counts as sustainable',
+        body:
+          'Three thresholds move at once, so that stocks are “genuinely abundant rather than merely not collapsed”. ' +
+          'The document notes the government reports 87 percent of stocks in good shape while recreational fishers ' +
+          'report declining catch, and attributes the gap to these baselines being set too low.',
+        bullets: [
+          'Management targets rise from 40 to 50 percent of virgin biomass',
+          'Soft limits, below which a stock is considered depleted, rise from 20 to 40 percent',
+          'Hard limits, which trigger immediate action, rise from 10 to 20 percent',
+        ],
+      },
+      {
+        heading: 'Cameras on every vessel over 8 metres',
+        body:
+          'Cameras would be rolled out to all commercial vessels over 8 metres, including deep-sea trawlers and ' +
+          'scampi boats currently exempt under the present programme. Footage would be independently reviewed to ' +
+          'verify catch reporting, monitor protected-species bycatch and feed stock assessments. Independent observer ' +
+          'programmes would be kept alongside the cameras rather than replaced by them.',
+      },
+      {
+        heading: 'A staged phase-out of bottom trawling',
+        body:
+          'Bottom-contact methods — trawling, dredging and Danish seining — would be phased out on a timetable rather ' +
+          'than banned at once, with transition assistance for affected operators to retrain, retool for other methods, ' +
+          'or exit the industry.',
+        bullets: [
+          'Immediate closures in the Hauraki Gulf and other inshore areas facing critical ecosystem decline',
+          'A three-year phase-out on all seamounts, where the document says New Zealand is the only South Pacific nation still permitting the practice',
+          'A five-year phase-out on other deep-sea features, including cold-water coral habitats',
+        ],
+      },
+      {
+        heading: 'Industry paying more of the restoration bill',
+        body:
+          'Commercial fishers already pay fisheries management costs under the Fisheries (Cost Recovery) Rules 2001, ' +
+          'but the document says industry levies cover less than half of what monitoring, enforcement and ' +
+          'administration actually cost. TOP would move to a beneficiary-pays system of resource rentals funding ' +
+          'protected-area management, threatened species recovery, habitat restoration and research — set, it says, ' +
+          'at a level that keeps the industry viable.',
+      },
+      {
+        heading: 'Expanding protection from 0.5 percent to 30 percent',
+        body:
+          'The expansion would be planned across Parliament rather than in one term, and designed using systematic ' +
+          'conservation planning rather than drawn on a map. The Marine Reserves Act 1971 would be replaced, on the ' +
+          'grounds that it offers only one tool — the full no-take reserve — through an adversarial process. Planning ' +
+          'would be run in resourced partnership with iwi and hapū, commercial and recreational fishers, tourism ' +
+          'operators, conservation groups, scientists and councils.',
+      },
+      {
+        heading: 'Beyond our own waters',
+        body:
+          'New Zealand would support regional blue corridors — linked protected areas across several nations’ waters ' +
+          'following migratory whales, tuna, seabirds and turtles — and legislate to ratify the High Seas Treaty, the ' +
+          'first legal framework for protecting international waters. All seabed mining applications in the ' +
+          'territorial sea and EEZ would be opposed.',
+      },
+      {
+        heading: 'Growing the blue economy',
+        body:
+          'The economic case rests on the claim that between 60 and 90 percent of the commercial catch is exported ' +
+          'with little processing. TOP would implement the nine concluding recommendations of the Sustainable Seas ' +
+          'National Science Challenge and use the existing Sustainable Food and Fibre Futures fund to back ' +
+          'value-added processing, premium branding and direct-to-consumer distribution.',
+        bullets: [
+          'Seaweed farming, which sequesters carbon and absorbs excess nutrients',
+          'Shellfish aquaculture, which filters water and creates habitat',
+          'Land-based recirculating systems for finfish, avoiding biosecurity risk and marine pollution',
+          'Integrated multi-trophic aquaculture combining species as natural ecosystems do',
+        ],
+      },
+      {
+        heading: 'Coastal restoration as climate policy',
+        body:
+          'Wetlands, mangroves, seagrass meadows and salt marshes are treated as carbon sinks as well as fish ' +
+          'nurseries, sequestering carbon at rates the document says far exceed terrestrial forests while buffering ' +
+          'storm surge and sea-level rise. Investment covers wetland restoration, seagrass rebuilding and riparian ' +
+          'planting to cut sediment and nutrient runoff before it reaches the sea, with a target of more than 10,000 ' +
+          'hectares restored.',
+      },
+      {
+        heading: 'Iwi and hapū-led marine management',
+        body:
+          'The policy would resource iwi and hapū to develop and implement marine management plans in their rohe ' +
+          'moana, on the basis that many are already doing this work and filling gaps left by central government. It ' +
+          'also commits to repealing the Marine and Coastal Area (Takutai Moana) (Customary Marine Title) Amendment ' +
+          'Act 2025.',
+      },
+      {
+        heading: 'One body responsible for the ocean',
+        body:
+          'Four agencies currently operate under different statutes with none accountable for the ocean as a whole. ' +
+          'TOP would reinstate an Ocean Secretariat with statutory authority to give cross-agency advice, explicitly ' +
+          'mandated to prioritise the interests of future generations, coordinating MPI, DOC, the EPA and regional ' +
+          'councils. Alongside it: a national open-access ocean data platform pooling research, citizen science, ' +
+          'commercial fishing data and monitoring, and 20-year regional ocean plans for the Hauraki Gulf, ' +
+          'Tasman/Golden Bays, the Marlborough Sounds, Fiordland and the Subantarctic.',
+      },
+    ],
+
+    examples: [],
+
+    revenue: {
+      heading: 'What they say it would cost',
+      rows: [
+        { period: 'Annual cost to government', amount: 'Up to $100m' },
+        { period: 'Blue economy growth targeted', amount: '$500m+ a year' },
+      ],
+      basis:
+        'The document describes the package as “largely cost-neutral or positive to the Crown in the long term”, with ' +
+        'some costs recovered from the commercial fishing industry. It names coastal ecosystem restoration, marine ' +
+        'research and blue economy development as the larger items within the $100 million, but does not itemise them ' +
+        'further. The $500 million blue economy figure is a stated goal rather than a forecast, and no date is given ' +
+        'for reaching it.',
+    },
+
+    quotes: [
+      {
+        text: 'Yet we protect less than 0.5% of our waters as marine reserves, allow destructive fishing practices that harm critical ecosystems, and manage our fisheries with outdated approaches that prioritise short-term extraction over long-term abundance.',
+        context: 'Opening statement of the problem',
+      },
+      {
+        text: 'We will urgently roll out cameras to commercial fishing vessels over 8m in length, including deep-sea trawlers and scampi boats currently exempt under the present government’s programme.',
+        context: 'Install cameras and maintain observers on all commercial fishing vessels',
+      },
+      {
+        text: 'Research shows we can protect 86% of threatened species while maintaining 86% of current fishing catch',
+        context: 'Develop a Marine Protected Area expansion plan',
+      },
+      {
+        text: 'The ecological risks of seabed mining are profound, the potential benefits are speculative, and once ecosystems are destroyed, restoration may be impossible.',
+        context: 'Oppose seabed mining in New Zealand waters',
+      },
+    ],
+
+    openQuestions: [
+      'The summary of reforms promises bottom trawling phased out “in all inshore areas by 2030”, but the detailed section gives only immediate closures in the Hauraki Gulf and other areas in critical decline, with no inshore end date.',
+      'The same document puts commercial catch exported without value-added processing at “between 60% and 90%” in one section and “over 90%” in another.',
+      'Marine protection is stated as reaching 30 percent in the summary and 30 percent by 2035 in the detail, with 20 percent by 2030 as an intermediate step — the summary does not carry the dates.',
+      'The 86 percent protection alongside 86 percent of catch figure is attributed to research that is not named or cited.',
+      'What the increased resource rentals would actually be set at is not stated, only that they would keep the industry viable.',
+      'No cost is attached to the marine protected area expansion, the Ocean Secretariat or the transition assistance for trawl operators separately from the $100 million total.',
+    ],
+
+    source: {
+      documentTitle: 'Healthy Oceans Policy Overview',
+      publisher: 'The Opportunities Party',
+      retrieved: '2026-08-16',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
