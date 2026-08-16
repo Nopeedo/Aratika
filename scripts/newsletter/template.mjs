@@ -53,10 +53,10 @@ export function renderNewsletter({ name, daysToElection, tracked, general, siteU
   const trackedCard = tracked?.items?.length
     ? card(`${eyebrow('On what you follow')}${h2('Things you track moved')}
         <table role="presentation" cellpadding="0" cellspacing="0" width="100%">${tracked.items.map(trackedRow).join('')}</table>
-        <a href="${esc(manageUrl || site + '/command-centre')}" style="display:inline-block;margin-top:12px;font-family:Arial,sans-serif;font-size:13.5px;font-weight:800;color:${JADE};text-decoration:none">See everything in your command centre →</a>`)
+        <a href="${esc(manageUrl || site + '/dashboard')}" style="display:inline-block;margin-top:12px;font-family:Arial,sans-serif;font-size:13.5px;font-weight:800;color:${JADE};text-decoration:none">See everything in your command centre →</a>`)
     : card(`${eyebrow('On what you follow')}${h2('Follow what matters to you')}
         <div style="font-family:Arial,sans-serif;font-size:14px;color:${SUB};line-height:1.55">You’re not following anything yet. Track a party, MP or bill and we’ll surface just those updates here.</div>
-        <a href="${esc(site + '/command-centre')}" style="display:inline-block;margin-top:12px;font-family:Arial,sans-serif;font-size:13.5px;font-weight:800;color:${JADE};text-decoration:none">Start tracking →</a>`)
+        <a href="${esc(site + '/dashboard')}" style="display:inline-block;margin-top:12px;font-family:Arial,sans-serif;font-size:13.5px;font-weight:800;color:${JADE};text-decoration:none">Start tracking →</a>`)
 
   const g = general || {}
   const generalCard = card(`${eyebrow('Across the motu this week')}${h2('The week in brief')}
@@ -111,7 +111,7 @@ export function renderNewsletter({ name, daysToElection, tracked, general, siteU
           <tr><td style="padding:22px 24px;font-family:Arial,sans-serif;font-size:12px;line-height:1.7;color:rgba(255,255,255,.6)">
             <img src="${logo}" width="24" height="24" alt="" style="border-radius:6px;vertical-align:middle"><span style="color:#fff;font-weight:800;font-size:14px;margin-left:7px;vertical-align:middle">Arapono</span>
             <div style="margin-top:12px;color:rgba(255,255,255,.82)">Sourced from NZ Parliament · Electoral Commission · Stats NZ · RNZ · Treasury</div>
-            <div style="margin-top:12px">You’re getting this because you have an Arapono account. <a href="${esc(manageUrl || site + '/command-centre')}" style="color:#7fe3aa;text-decoration:none">Manage what you follow</a> · <a href="${esc(unsubscribeUrl)}" style="color:#7fe3aa;text-decoration:none">Unsubscribe</a>.</div>
+            <div style="margin-top:12px">You’re getting this because you have an Arapono account. <a href="${esc(manageUrl || site + '/dashboard')}" style="color:#7fe3aa;text-decoration:none">Manage what you follow</a> · <a href="${esc(unsubscribeUrl)}" style="color:#7fe3aa;text-decoration:none">Unsubscribe</a>.</div>
             <div style="margin-top:12px;color:rgba(255,255,255,.4)">Arapono is an independent, non-partisan platform. We point to the record and let you decide — we never tell you how to vote.</div>
           </td></tr>
         </table>
@@ -126,14 +126,14 @@ export function renderNewsletter({ name, daysToElection, tracked, general, siteU
     name ? `Kia ora ${name},` : 'Kia ora,',
     '',
     'ON WHAT YOU FOLLOW',
-    ...(tracked?.items?.length ? tracked.items.map((t) => `• ${t.title}${t.chip ? ` (${t.chip})` : ''}`) : ['• Nothing tracked yet — start at ' + site + '/command-centre']),
+    ...(tracked?.items?.length ? tracked.items.map((t) => `• ${t.title}${t.chip ? ` (${t.chip})` : ''}`) : ['• Nothing tracked yet — start at ' + site + '/dashboard']),
     '',
     'ACROSS THE MOTU THIS WEEK',
     ...((general?.stories || []).map((s) => `• ${s.title}${s.url ? ` — ${s.url}` : ''}`)),
     '',
     `${daysToElection} days to go — check you're enrolled: ${site}/guide`,
     '',
-    `Manage: ${manageUrl || site + '/command-centre'}  ·  Unsubscribe: ${unsubscribeUrl}`,
+    `Manage: ${manageUrl || site + '/dashboard'}  ·  Unsubscribe: ${unsubscribeUrl}`,
     'Arapono is independent and non-partisan.',
   ]
 

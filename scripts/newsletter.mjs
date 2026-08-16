@@ -126,7 +126,10 @@ for (const userId of recipientIds) {
   const tracked = { items: trackedFor(userId) }
   const { subject, html, text } = renderNewsletter({
     name: '', daysToElection, tracked, general, siteUrl: SITE,
-    unsubscribeUrl: await unsubUrl(userId), manageUrl: `${SITE}/command-centre`,
+    // /dashboard, not /command-centre. Everyone receiving this has an account
+    // by definition, so "your command centre" has to mean the one with their
+    // things in it — /command-centre is the public page explaining the feature.
+    unsubscribeUrl: await unsubUrl(userId), manageUrl: `${SITE}/dashboard`,
   })
   const to = emails.get(userId)
   if (!to) continue

@@ -20,7 +20,10 @@ export async function POST() {
   const { sent } = await sendPushToUser(user.id, {
     title: 'Arapono',
     body: '🔔 Notifications are working — this is a test.',
-    url: '/command-centre',
+    // The route already 401s anyone not signed in, so this can only ever be
+    // tapped by someone with a dashboard — send them to it rather than to the
+    // public page explaining what a command centre is.
+    url: '/dashboard',
     tag: 'arapono-test',
   })
   return NextResponse.json({ ok: true, sent })

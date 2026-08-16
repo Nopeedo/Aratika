@@ -118,7 +118,7 @@ const emailFor = (bill) => {
     `Read our plain-language breakdown: https://arapono.org.nz/bills`,
     ``,
     `—`,
-    `You're receiving this because you track this bill on Arapono. To stop, untrack it in your command centre: https://arapono.org.nz/command-centre`,
+    `You're receiving this because you track this bill on Arapono. To stop, untrack it in your command centre: https://arapono.org.nz/dashboard`,
     `Arapono is free and non-partisan. We take no position on this bill.`,
   ].filter((l) => l !== null).join('\n')
   const html = `
@@ -133,7 +133,7 @@ const emailFor = (bill) => {
     </tbody></table>
     <p style="margin:20px 0"><a href="${bill.officialUrl}" style="background:#1F8A4C;color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px 18px;border-radius:10px;display:inline-block">Make a submission at Parliament</a></p>
     <p style="font-size:13px;margin:0 0 24px"><a href="https://arapono.org.nz/bills" style="color:#1F8A4C">Read our plain-language breakdown first →</a></p>
-    <p style="font-size:12px;color:#667066;line-height:1.6;border-top:1px solid #e4ebe2;padding-top:12px">You're receiving this because you track this bill on Arapono. <a href="https://arapono.org.nz/command-centre" style="color:#667066">Untrack it</a> to stop these alerts. Arapono is free and non-partisan — we take no position on this bill.</p>
+    <p style="font-size:12px;color:#667066;line-height:1.6;border-top:1px solid #e4ebe2;padding-top:12px">You're receiving this because you track this bill on Arapono. <a href="https://arapono.org.nz/dashboard" style="color:#667066">Untrack it</a> to stop these alerts. Arapono is free and non-partisan — we take no position on this bill.</p>
   </div>`
   return { subject, text, html }
 }
