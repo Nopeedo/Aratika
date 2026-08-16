@@ -3684,6 +3684,445 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-16',
     },
   },
+
+  {
+    // Both topics. It is a regional revenue policy, but it also rewrites where
+    // mining may happen and cuts back DOC's role, which a reader on the
+    // environment page needs to see.
+    topics: ['economy', 'environment'],
+    party: 'nzfirst',
+    slug: 'mining-royalties-to-regions',
+    title: 'Returning 50% of mining royalties to the regions',
+    summary:
+      'Half the royalties from any mine would stay in the region it came from rather than going to Wellington, ' +
+      'earmarked for local infrastructure and services. Around that sits a wider mining package: new zones with ' +
+      'clearer rules on where mining may happen, longer permits covering the full life of a mine, a reined-in role ' +
+      'for DOC and other agencies, a modern geological survey of what is underground, and the reopening of the ' +
+      'School of Mines.',
+
+    facts: [
+      { label: 'Royalty share', value: '50% to the region', note: 'From mining in that region, rather than to Wellington' },
+      { label: 'Permits', value: 'Longer', note: 'Covering the full life of the mine, including rehabilitation' },
+      { label: 'Mining zones', value: 'New and clearer', note: 'Recognising regions where mining is already key' },
+      { label: 'Agencies', value: 'Reined in', note: 'Including DOC, told to stay on core priorities' },
+      { label: 'Survey', value: 'A modern geological survey', note: 'Plus advanced core-scanning of existing data' },
+      { label: 'Workforce', value: 'Reopen the School of Mines', note: 'With investment in skills and training' },
+    ],
+
+    coveredLabel: 'What the regional half would be invested in',
+    covered: [
+      'Water services',
+      'Flood protection',
+      'Energy generation opportunities',
+      'Tourism opportunities',
+      'Transport and connectivity upgrades',
+      'Housing development in areas of high minerals industry growth',
+      'Critical infrastructure projects, plus properly funded Mines Rescue capability',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Half the royalties stay put',
+        body:
+          'Where mining happens in a region, 50 percent of the royalties would remain there to support local ' +
+          'infrastructure, services and long-term development, backed by targeted regional investment to help those ' +
+          'projects succeed. The document’s framing is that the benefits of mining should flow back to the ' +
+          'communities the mining happens in rather than to Wellington.',
+      },
+      {
+        heading: 'Simplifying a system they call overly complex',
+        body:
+          'The stated problem is duplication, delay and rules that the document says do not improve environmental ' +
+          'outcomes but do stop investment and cost jobs. New mining zones would set clearer rules about where mining ' +
+          'can occur, recognising regions where it is already a key part of the economy.',
+      },
+      {
+        heading: 'Longer permits',
+        body:
+          'Permit duration would be changed to reflect that mining is a long-term business, with permits covering the ' +
+          'full life of a mine including rehabilitation. The argument is investor certainty: more confidence, more ' +
+          'investment.',
+      },
+      {
+        heading: 'Reining in the agencies',
+        body:
+          'The package would limit the role of government agencies including the Department of Conservation, on the ' +
+          'basis that they should stay focused on core priorities and that regional prosperity should not be ' +
+          'sidelined by processes the document says have lost all sense of proportion.',
+      },
+      {
+        heading: 'Finding out what is actually there',
+        body:
+          'A modern geological survey, plus investment in advanced core-scanning technology to unlock existing data. ' +
+          'The document’s case is that New Zealand does not currently have a modern understanding of what lies ' +
+          'underground while other countries do.',
+      },
+      {
+        heading: 'Value here rather than dig and ship',
+        body:
+          'The concern raised is that New Zealand risks exporting critical minerals raw and letting others capture ' +
+          'the value. The response is continued investment in science and innovation, and rebuilding the sector ' +
+          'workforce — including reopening the School of Mines so New Zealanders can take the high-paying jobs.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'If mining happens in a region, a 50% share of the royalties will stay in that region, supporting local infrastructure, services, and long-term development.',
+        context: 'On the regional share',
+      },
+      {
+        text: 'You can protect the environment and grow the economy at the same time. They are not mutually exclusive.',
+        context: 'On reining in government agencies',
+      },
+      {
+        text: 'Right now, we don’t even have a modern understanding of what we’ve got beneath our feet.',
+        context: 'On the geological survey',
+      },
+      {
+        text: 'At the moment, we risk being stuck in a ‘dig and ship’ model for key future industries, sending our resources offshore and letting others make the real money.',
+        context: 'On adding value in New Zealand',
+      },
+    ],
+
+    openQuestions: [
+      'No total royalty figure is given, so there is no way to tell what the regional half would amount to.',
+      'Who would hold and spend the regional share — councils, a new body, or central government — is not stated.',
+      'Which region receives the share where a mine spans a boundary, or sits offshore, is not addressed.',
+      'Whether the new mining zones would permit mining on conservation land is not said, though the policy does cut back DOC’s role.',
+      '“Reining in” DOC and other agencies is not defined, and no statutory change is named.',
+      'Longer permits are proposed without saying how long, and no cost is given for the geological survey, the core-scanning programme or reopening the School of Mines.',
+    ],
+
+    source: {
+      documentTitle: 'Returning 50% of mining royalties to the regions',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/returning_50_of_mining_royalties_to_the_regions',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['economy'],
+    party: 'nzfirst',
+    slug: 'new-zealand-owned-bank',
+    title: 'Buying back the BNZ to build a New Zealand owned bank',
+    summary:
+      'NZ First would buy the Bank of New Zealand back from National Australia Bank and merge it with Kiwibank to ' +
+      'form the National Bank of New Zealand — fully Crown owned, commercially run, and big enough to compete with ' +
+      'ANZ, ASB and Westpac. It would not come out of the operating budget: the funding stack is a sovereign banking ' +
+      'bond, long-dated Crown debt, a limited tranche of Future Fund and ACC money, and Kiwibank’s existing capital.',
+
+    facts: [
+      { label: 'The plan', value: 'Buy back BNZ', note: 'From National Australia Bank' },
+      { label: 'Merged with', value: 'Kiwibank', note: 'To form the National Bank of New Zealand' },
+      { label: 'Australian-owned share', value: '~85%', note: 'Of the banking system, held across four banks' },
+      { label: 'Kiwibank today', value: 'Just under 8%', note: 'Of the mortgage market' },
+      { label: 'BNZ cash earnings', value: '$1.5bn+ a year', note: 'Which they say would comfortably service the debt' },
+      { label: 'Ownership', value: 'Fully Crown owned', note: 'Commercially run, not a government department' },
+    ],
+
+    coveredLabel: 'How the buy-back would be funded',
+    exemptLabel: 'Countries the policy points to',
+
+    covered: [
+      'A New Zealand Sovereign Banking Bond, marketed to domestic retail and KiwiSaver investors',
+      'Long-dated Crown debt at current sovereign rates',
+      'A limited tranche of NZ Future Fund and ACC investment, as commercial equity at arm’s length and a market rate of return',
+      'Retention of Kiwibank’s existing capital base',
+    ],
+
+    exempt: [
+      'Singapore',
+      'Norway',
+      'Germany',
+      'Canada',
+      'France',
+    ],
+
+    mechanics: [
+      {
+        heading: 'The buy-back and the merger',
+        body:
+          'BNZ would be bought back from National Australia Bank and merged with Kiwibank into a single Crown-owned ' +
+          'commercial bank with the scale to compete with the other majors. The document notes that when National ' +
+          'sold BNZ to NAB in November 1992 it had six of every ten New Zealand banking customers.',
+      },
+      {
+        heading: 'The case they make about the market',
+        body:
+          'Four Australian-owned banks control around 85 percent of the system and, the document says, lend New ' +
+          'Zealand deposits back at margins materially higher than their parents earn in Australia. It cites the ' +
+          'Commerce Commission’s 2024 personal banking market study as finding a structurally uncompetitive market ' +
+          'with no sustained pressure to compete on price and no realistic threat of new entry at scale. Kiwibank was ' +
+          'created in 2002 as a domestic challenger but holds just under 8 percent of the mortgage market.',
+      },
+      {
+        heading: 'Paying for it without touching the operating budget',
+        body:
+          'A blended funding stack rather than a single source, built so that BNZ’s own earnings service the debt ' +
+          'raised to buy it. The document describes the result as self-financing in expectation, with the fiscal ' +
+          'impact being a one-off balance-sheet expansion rather than an ongoing cost.',
+      },
+      {
+        heading: 'What it would and would not be',
+        body:
+          'Not a government department, and the document is explicit that it does not regard this as nationalisation. ' +
+          'A fully commercial bank with a Crown shareholder, intended as a strategic domestic lender for agriculture, ' +
+          'infrastructure and SME growth on long-horizon terms. The management structure is deferred to later ' +
+          'campaign announcements.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'Four Australian owned banks control around 85 percent of the system.',
+        context: 'Opening statement of the problem',
+      },
+      {
+        text: 'Successive governments have starved it of the capital it would need to be a genuine system-shaping competitor.',
+        context: 'On Kiwibank',
+      },
+      {
+        text: 'The buy-back is self-financing in expectation. The fiscal impact is a one-off balance-sheet expansion, not an ongoing cost.',
+        context: 'On the funding stack',
+      },
+      {
+        text: 'This is not nationalisation – this is taking back our country.',
+        context: 'On what the policy is',
+      },
+    ],
+
+    openQuestions: [
+      'No purchase price is given, and the document does not say whether National Australia Bank is willing to sell or what happens if it is not.',
+      'The management structure is explicitly deferred to “upcoming campaign announcements”.',
+      'How much of the NZ Future Fund and ACC would be committed is described only as a limited tranche.',
+      'Whether both brands survive the merger, and what changes for existing Kiwibank customers, is not addressed.',
+      '“Self-financing in expectation” rests on BNZ’s current earnings continuing, and no sensitivity to a downturn or a rate cycle is offered.',
+      'The comparison countries are named without saying which of their state-owned banks are comparable in structure or share.',
+    ],
+
+    source: {
+      documentTitle: 'Backing a New Zealand Owned Bank',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/backing_a_new_zealand_owned_bank',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['economy'],
+    party: 'nzfirst',
+    slug: 'marsden-point-economic-zone',
+    title: 'A Special Economic Zone at Marsden Point',
+    summary:
+      'A Special Economic Zone covering the former refinery and Northport, focused on energy and maritime activity ' +
+      'including a new drydock for ship repairs. Its principal feature is relief from planning regulation and the ' +
+      'RMA: instead of councils, DOC and other agencies, consents would be decided quickly by a government expert ' +
+      'panel judging whether a proposal grows the economy. Changes to overseas investment rules and a range of tax ' +
+      'incentives are under consideration.',
+
+    facts: [
+      { label: 'Where', value: 'The former refinery and Northport' },
+      { label: 'Focus', value: 'Energy and maritime', note: 'Including a new drydock servicing ship repairs worldwide' },
+      { label: 'Principal benefit', value: 'Relief from the RMA', note: 'And from planning regulation generally' },
+      { label: 'Consenting', value: 'A government expert panel', note: 'In place of councils, DOC and other agencies' },
+      { label: 'Tax', value: 'Under consideration', note: 'Rates rebates through to reduced company tax' },
+      { label: 'Alongside it', value: 'Drydock, expressway, rail', note: 'Northland Expressway and the Marsden Point rail link' },
+    ],
+
+    coveredLabel: 'Relief the zone would offer',
+    covered: [
+      'Planning rules and RMA consents decided by a government panel rather than councils',
+      'No dealing with local or regional councils, DOC or other agencies',
+      'Possible Overseas Investment Act changes to ease quality foreign investment',
+      'Rates rebates, with the Crown paying councils for services provided to zone businesses',
+      'Foregoing various levies',
+      'Investment incentives, up to reduced company taxes for specific investments',
+    ],
+
+    mechanics: [
+      {
+        heading: 'What the zone covers',
+        body:
+          'The former refinery site and Northport, focused on energy generation and distribution and on maritime ' +
+          'activity — including the new drydock, servicing ship repairs from New Zealand and around the world. The ' +
+          'document places it in a wider strategy of producing more for export while fortifying national security.',
+      },
+      {
+        heading: 'Consenting by expert panel',
+        body:
+          'The principal benefit named is relief from planning regulation and the RMA. Rather than dealing with local ' +
+          'and regional councils, DOC and other agencies, planning rules and consents would be determined quickly by ' +
+          'a government panel, deciding on whether a change grows the economy and achieves the aims of the zone.',
+      },
+      {
+        heading: 'Foreign investment',
+        body:
+          'Changes to the Overseas Investment Act are under consideration to make quality foreign investment in the ' +
+          'zone easier, while the document says national interest and ownership would still be protected — it points ' +
+          'to Darwin, whose port is foreign-owned, as what it wants to avoid.',
+      },
+      {
+        heading: 'Tax incentives, as options',
+        body:
+          'Presented as being considered rather than committed: rates rebates with the Crown paying councils for ' +
+          'services to zone businesses, foregoing various levies, investment incentives, and reduced company taxes ' +
+          'for specific investments. The document notes SEZ policy mixes vary internationally and can include tax ' +
+          'breaks, wage subsidies, reduced regulation and infrastructure investment.',
+      },
+      {
+        heading: 'The infrastructure around it',
+        body:
+          'The zone is presented as part of a complex rather than a standalone legislative change, alongside the ' +
+          'drydock, the Northland Expressway, and the Marsden Point rail link running north and south to Auckland.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'The principal benefit this economic zone would provide is relief from planning regulations and the RMA.',
+        context: 'On what the zone does',
+      },
+      {
+        text: 'No longer will industries in the zone have to deal with local/regional councils, DOC and a myriad of other bureaucratic agencies for their activities.',
+        context: 'On consenting',
+      },
+      {
+        text: 'This expert panel would make decisions based on whether the changes will grow the economy and achieve the aims of the zone.',
+        context: 'On the decision test',
+      },
+      {
+        text: 'Afterall, who wants another Darwin, where that port in Australia is owned by foreign interests?',
+        context: 'On overseas investment',
+      },
+    ],
+
+    openQuestions: [
+      'Who sits on the expert panel, how members are appointed, and whether decisions can be appealed is not stated.',
+      'What environmental standards apply inside the zone once the RMA does not is not described.',
+      'The tax incentives are listed as options under consideration rather than commitments, with no cost attached to any of them.',
+      'The Overseas Investment Act changes are also only being considered, and the protections said to accompany them are not specified.',
+      'No revenue, job or investment estimate is given for the zone.',
+      'Whether the model would be extended to other sites is not addressed.',
+    ],
+
+    source: {
+      documentTitle: 'Establishing a Special Economic Zone at Marsden Point',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/establishing_a_special_economic_zone_at_marsden_point',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    // Climate, like every other party's energy policy on this site — there is no
+    // energy topic, and a reader comparing energy plans should find this next to
+    // the Greens' and TOP's.
+    topics: ['climate'],
+    party: 'nzfirst',
+    slug: 'fuel-security',
+    title: 'Fuel security: a $1 billion subsurface survey',
+    summary:
+      'NZ First would spend $1 billion over a term of government on a National Subsurface Development Survey, ' +
+      'building a single national dataset across energy, geothermal and CO₂ storage sites, and a framework to ' +
+      'develop them. The case is that New Zealand’s offshore basins have never been surveyed with modern tools, that ' +
+      'the odds of a major commercial discovery are above ninety percent, and that a find would fund a ' +
+      'Norwegian-model sovereign wealth fund on royalties well above 50 percent.',
+
+    facts: [
+      { label: 'Investment', value: '$1bn', note: 'Over the term of a government' },
+      { label: 'The survey', value: 'One national dataset', note: 'Across energy, geothermal and CO₂ storage sites' },
+      { label: 'Basins', value: 'Ten prospective', note: 'The Great South Basin has had eight wells in its history' },
+      { label: 'Claimed odds', value: 'Above 90%', note: 'Of a major commercial discovery, per unnamed analysis' },
+      { label: 'Royalty', value: 'Well above 50%', note: 'On all extractions, as production matures' },
+      { label: 'Where the money goes', value: 'A sovereign fund', note: 'On the Norwegian model' },
+    ],
+
+    coveredLabel: 'The timeline the policy sets out',
+    covered: [
+      'First results within twelve months, turning potential into data global capital can bid against',
+      'Within twenty-four months, the highest-ranked basins surveyed, wells identified, and first physical proof reserves exist',
+      'Potentially within six years, a pathway to owning and controlling our own energy supply for domestic use and export',
+    ],
+
+    mechanics: [
+      {
+        heading: 'The survey itself',
+        body:
+          'A National Subsurface Development Survey pulling energy, geothermal and CO₂ storage sites into one ' +
+          'national dataset, plus the framework to develop them. The document says existing seismic data is two ' +
+          'technology generations old and covers only a fraction of the subsurface.',
+      },
+      {
+        heading: 'Why they say now',
+        body:
+          'Survey costs are described as sitting at structural lows, and capital as moving into politically stable ' +
+          'basins since the conflict in the Strait of Hormuz — but that to move, it needs modern data. The document ' +
+          'points to Namibia, whose data acquisition campaign began in 2022, and Guyana, which went from first ' +
+          'discovery to South America’s third-largest producer in under a decade.',
+      },
+      {
+        heading: 'What happens if they find something',
+        body:
+          'Explorers would carry the risk of proving the fields on terms the document calls fair, with a royalty well ' +
+          'above 50 percent on all extractions as production matures. Any discovery would be used to end the gas ' +
+          'shortfalls it blames for high power prices, drive local fuel costs down, export oil and gas, and establish ' +
+          'a Norwegian-model sovereign fund turning the find into permanent national wealth and regional investment.',
+      },
+      {
+        heading: 'How it is positioned against other parties',
+        body:
+          'The document explicitly contrasts itself with what it calls tinkering around the edges with solar panel ' +
+          'plans, arguing that does next to nothing for fuel and gas insecurity, and frames the issue as economic ' +
+          'sovereignty rather than energy policy — New Zealand ceasing to be beholden to other nations’ decisions.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'New Zealand potentially holds Norway-scale energy prospects in our offshore basins and that potential has never been accurately surveyed or characterised with modern tools.',
+        context: 'On the opportunity',
+      },
+      {
+        text: 'Analysis shows that the odds of New Zealand having a major commercial discovery in our basins is well above ninety percent.',
+        context: 'On the likelihood of a find',
+      },
+      {
+        text: 'We would set fair terms while explorers carry the risk of proving the fields — and over time place a royalty well above 50% on all extractions as production matures.',
+        context: 'On terms and royalties',
+      },
+      {
+        text: 'Other parties want to ‘tinker around the edges’ with solar panel plans – which does next to nothing to address fuel and gas insecurity',
+        context: 'On other parties’ energy policies',
+      },
+    ],
+
+    openQuestions: [
+      'The “well above ninety percent” figure is attributed to analysis that is not named, dated or cited.',
+      'The document does not address what the emissions consequences of extraction would be, or how the policy sits with New Zealand’s climate targets.',
+      'Whether the survey and any subsequent extraction would cover areas currently subject to offshore exploration restrictions is not stated.',
+      'The royalty is given as “well above 50%” without a figure, and “as production matures” is not defined.',
+      'No cost is attached to the development framework beyond the $1 billion for the survey itself.',
+      'The six-year pathway assumes a commercial discovery, and no alternative is described if the survey finds nothing.',
+      'CO₂ storage sites are named in the survey’s scope but no policy for using them is given.',
+    ],
+
+    source: {
+      documentTitle: 'Future Proofing our Fuel Security',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/future_proofing_our_fuel_security',
+      retrieved: '2026-08-16',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
