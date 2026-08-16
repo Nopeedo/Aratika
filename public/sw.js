@@ -23,11 +23,21 @@ self.addEventListener('push', (event) => {
   }
 
   const title = payload.title || 'Arapono'
+  const tag = payload.tag || undefined
   const options = {
     body: payload.body || '',
     icon: payload.icon || '/icon-192.png',
     badge: '/icon-192.png',
-    tag: payload.tag || undefined, // same tag collapses/replaces an earlier one
+    // Same tag collapses onto an earlier notification instead of stacking —
+    // which is what we want, since every digest carries tag 'n-digest' and a
+    // pile of them would be worse than one.
+    tag,
+    // But a replacement is SILENT by default: it swaps the text in place with
+    // no banner and no sound. The second digest and every one after it landed
+    // in the notification centre unannounced, which read as "notifications
+    // aren't working". renotify makes a replacement alert again; the spec
+    // requires a tag alongside it, hence the guard.
+    renotify: tag ? true : undefined,
     data: { url: payload.url || '/' },
     requireInteraction: false,
   }
