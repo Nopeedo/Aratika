@@ -1720,6 +1720,149 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       ],
     },
   },
+
+  {
+    // Filed under economy, which is the closest of the ten topics: it is a
+    // workplace entitlement affecting household income, and it shares the
+    // KiwiSaver page — the parental leave top-up appears in both documents and
+    // is covered in the KiwiSaver deep dive rather than repeated here.
+    topics: ['economy'],
+    party: 'national',
+    title: 'Paid parental leave: 26 weeks to 30',
+    summary:
+      'National proposes lifting paid parental leave from 26 weeks to 30 in three annual steps between 2027 and ' +
+      '2029, and separately allowing both parents to take their leave at the same time rather than only one after ' +
+      'the other. It would also keep in force the change letting annual leave accrue during parental leave so ' +
+      'returning parents are paid in full. The stated longer-term aim is 40 weeks.',
+
+    facts: [
+      { label: 'Now', value: '26 weeks' },
+      { label: 'By 1 July 2029', value: '30 weeks', note: 'In three steps: +1, +1, then +2' },
+      { label: 'Longer-term aim', value: '40 weeks', note: 'No date; stated as subject to fiscal conditions' },
+      { label: 'Shared leave', value: 'Both parents at once', note: 'In any combination they choose' },
+      { label: 'Holiday pay', value: 'Paid in full on return', note: 'Annual leave keeps accruing during parental leave' },
+      { label: 'Cost', value: '$327.4m over four years', note: 'From Budget operating allowances' },
+    ],
+
+    coveredLabel: 'What would change',
+    exemptLabel: 'What would not',
+
+    covered: [
+      'Paid parental leave rises from 26 weeks to 30, in three steps',
+      'Parents could take their leave at the same time, in any combination and order',
+      'Annual leave continues to accrue during parental leave, and is paid in full on return',
+    ],
+
+    exempt: [
+      'The maximum weekly payment rate, which the document says is unchanged',
+      'Eligibility settings, also stated as unchanged',
+      'The total entitlement per child — sharing divides the 30 weeks rather than adding to them',
+    ],
+
+    mechanics: [
+      {
+        heading: 'The three steps, and when each applies',
+        body:
+          'Each increase is funded from a specific Budget and takes effect the following July. An increase applies to ' +
+          'parents whose entitlement commences on or after its effective date, so it is the start date of the leave ' +
+          'that decides which entitlement applies rather than the date of birth alone.',
+        bullets: [
+          'Budget 2027 — from 1 July 2027 — 27 weeks',
+          'Budget 2028 — from 1 July 2028 — 28 weeks',
+          'Budget 2029 — from 1 July 2029 — 30 weeks',
+        ],
+      },
+      {
+        heading: 'Why it is staged',
+        body:
+          'The document says announcing the whole pathway up front gives families certainty and employers time to ' +
+          'prepare, and that staging keeps each step affordable within tight operating allowances. It notes the ' +
+          'largest increase, in 2029, is timed to coincide with the forecast return to surplus that year.',
+      },
+      {
+        heading: 'Taking leave at the same time',
+        body:
+          'Parents can already split the entitlement, but not use it simultaneously. This would let them take all or ' +
+          'part of it together, apart, then together again in whatever order suits — while the combined total stays ' +
+          'the same.',
+      },
+      {
+        heading: 'The legislation it would change',
+        body:
+          'Shared leave would come through amending the Parental Leave and Employment Protection Act 1987, along the ' +
+          'lines of the Parental Leave and Employment Protection (Shared Leave) Amendment Bill currently before ' +
+          'Parliament. The document says the change is not expected to cost the Crown significantly, with Inland ' +
+          'Revenue absorbing administration within baselines.',
+      },
+      {
+        heading: 'Holiday pay after parental leave',
+        body:
+          'Annual leave has been paid on average weekly earnings over the previous 12 months, so a parent taking a ' +
+          'holiday soon after returning could be paid less because of time spent at home. Under the Employment Leave ' +
+          'Act, which replaces the Holidays Act, leave keeps accruing during parental leave and is paid in full, from ' +
+          '1 July 2027. National would keep those provisions in force as legislated.',
+      },
+    ],
+
+    examples: [
+      {
+        title: 'Two ways parents could use 30 weeks together',
+        fromDocument: true,
+        setup: [
+          'A couple has a combined entitlement of 30 weeks once the final increase applies',
+          'Under current rules they could split it, but only take it one after the other',
+        ],
+        outcome: [
+          'Both could take paid leave together for 15 weeks',
+          'Or both take four weeks together, then one takes ten, then the other takes twelve',
+          'The combined total stays 30 weeks either way',
+        ],
+      },
+    ],
+
+    revenue: {
+      heading: 'What they expect it to cost',
+      rows: [
+        { period: '2027/28', amount: '$27.0m' },
+        { period: '2028/29', amount: '$56.6m' },
+        { period: '2029/30', amount: '$119.0m' },
+        { period: '2030/31', amount: '$124.9m' },
+      ],
+      basis:
+        'Totalling $327.4 million. National’s own figures, based on the gross cost forecast in BEFU 2026 and net of ' +
+        'the additional PAYE the Crown collects on parental leave payments. Each step is to be met from the operating ' +
+        'allowance in Budgets 2027, 2028 and 2029.',
+    },
+
+    quotes: [
+      {
+        text: 'Each increase applies to parents whose entitlement commences on or after the effective date. Policy on maximum weekly rates and eligibility settings will be unchanged.',
+        context: 'Extending paid parental leave',
+      },
+      {
+        text: 'The largest extension of paid parental leave, scheduled for 1 July 2029, is timed to coincide with the forecast return to surplus that financial year.',
+        context: 'Fiscal impact',
+      },
+      {
+        text: 'This additional flexibility is not expected to generate any significant costs for the Crown, because by itself this policy does not increase paid parental leave entitlements for each child born.',
+        context: 'Shared parental leave',
+      },
+    ],
+
+    openQuestions: [
+      'The 40-week aim carries no date and is stated as subject to fiscal conditions.',
+      'The schedule depends on Budget operating allowances, and the largest step is timed to a forecast surplus — the document does not say what happens to it if that forecast changes.',
+      'Sharing divides the entitlement rather than adding to it, and the document does not say how the weeks would be apportioned if parents could not agree.',
+      'It does not say whether the maximum weekly payment would move over the period, only that the rate policy is unchanged.',
+    ],
+
+    source: {
+      documentTitle: 'Building the Future: Modernising Paid Parental Leave',
+      publisher: 'New Zealand National Party',
+      authorisedBy: 'J de Joux',
+      retrieved: '2026-08-14',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
