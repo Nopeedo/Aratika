@@ -10,6 +10,8 @@ import { Crown, Map, ArrowRight, PenLine, Sparkles, CheckCircle2, Highlighter, B
 import { createClient } from '@/lib/supabase/server'
 import { ManageBillingButton } from '@/components/billing/billing-buttons'
 import { CommandCentre, type TrackedItem } from '@/components/bookmarks/command-centre'
+import { NotifyToggle } from '@/components/notifications/notify-toggle'
+import { InstallButton } from '@/components/notifications/install-button'
 import { DashboardElection } from '@/components/dashboard/election-module'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { VideoSection } from '@/components/news/video-section'
@@ -186,6 +188,15 @@ export default async function DashboardPage() {
             <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Your command centre</h2>
           </div>
           <CommandCentre initial={enriched} />
+
+          {/* Directly under the tracked items, because that is what they notify
+              about — "get told when these move" only means something next to the
+              list of these. Both controls need a signed-in user, so the
+              dashboard is the only page they belong on. */}
+          <div style={{ marginTop: 20, display: 'grid', gap: 12 }}>
+            <NotifyToggle />
+            <InstallButton />
+          </div>
         </div>
 
         {/* From what you follow — personalised news + video (parties + issues) */}

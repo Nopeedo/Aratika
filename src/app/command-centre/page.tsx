@@ -19,8 +19,6 @@ import { getVideos } from '@/lib/news/videos'
 import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { CommandCentreTryIt } from '@/components/command-centre/try-it'
-import { NotifyToggle } from '@/components/notifications/notify-toggle'
-import { InstallButton } from '@/components/notifications/install-button'
 import type { BookmarkEntity } from '@/hooks/use-bookmarks'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
@@ -137,10 +135,10 @@ export default async function CommandCentrePage() {
           <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Try it now — no sign-up</h2>
           <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Tap Track on a few and watch your command centre take shape. Sign up later to keep it across devices.</p>
           <CommandCentreTryIt options={trackOptions} />
-          <div style={{ marginTop: 20, display: 'grid', gap: 12 }}>
-            <InstallButton />
-            <NotifyToggle />
-          </div>
+          {/* The notify and install controls used to sit here. Both need a
+              signed-in user, and this section is headed "no sign-up" — so a
+              visitor tapping them got a dead end. They now live on the
+              dashboard, under the tracked items they actually notify about. */}
         </div>
       </section>
 
