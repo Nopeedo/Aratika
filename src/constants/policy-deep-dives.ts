@@ -1863,6 +1863,173 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-14',
     },
   },
+
+  // ── The Opportunities Party ───────────────────────────────────────────────
+
+  {
+    // Both topics: the Land Value Tax is the party's housing policy as much as
+    // its revenue one, and their recorded housing position leads with it.
+    topics: ['economy', 'housing'],
+    party: 'top',
+    title: 'The Tax Reset: Citizen’s Income, Land Value Tax and KiwiSaver 2.0',
+    summary:
+      'TOP proposes three linked reforms. Every adult would receive a tax-free Citizen’s Income of $19,400 a year, ' +
+      'replacing most main benefits. Land would be taxed annually at 1.75 percent of its unimproved urban value and ' +
+      '0.5 percent rural, raising roughly $24 billion. And a new compulsory KiwiSaver 2.0 would build to 12 percent ' +
+      'of earnings. Income tax would be reset to three brackets. The party puts the package about $4 billion a year ' +
+      'in the black.',
+
+    facts: [
+      { label: 'Citizen’s Income', value: '$19,400 a year', note: 'Tax-free, every citizen and resident aged 18+' },
+      { label: 'Land Value Tax', value: '1.75% urban, 0.5% rural', note: 'On unimproved land value, not buildings' },
+      { label: 'Income tax', value: 'Three brackets', note: '28% to $50k, 34% to $200k, 39% above' },
+      { label: 'KiwiSaver 2.0', value: '12% compulsory', note: '6% employee and 6% employer, phased in' },
+      { label: 'LVT revenue', value: '~$24bn a year', note: 'From a national land value of about $1.7 trillion' },
+      { label: 'Net position', value: '+$4bn a year', note: 'The party’s own costing, on 2024 numbers' },
+    ],
+
+    coveredLabel: 'What it would replace',
+    exemptLabel: 'Land exempt from the tax',
+
+    covered: [
+      'Jobseeker Support, Sole Parent Support, Student Allowance and Supported Living Allowance',
+      'Working for Families — both the family tax credit and the in-work tax credit',
+      'Paid Parental Leave payments and Best Start',
+      'NZ Superannuation, replaced by the Citizen’s Income plus a top-up to current Super rates',
+    ],
+
+    exempt: [
+      'Communally-owned Māori land',
+      'Conservation land, public and private',
+      'Land owned by clubs, societies and non-commercial religious organisations',
+      'Local and central government land',
+      'Treaty settlement land, subject to consultation with iwi',
+      'Social housing',
+    ],
+
+    mechanics: [
+      {
+        heading: 'The Citizen’s Income',
+        body:
+          'A tax-free payment set at the current Jobseeker rate, $19,400 a year, paid fortnightly to every citizen and ' +
+          'resident aged 18 and over. The document is explicit that it comes with no forms, no Work and Income ' +
+          'appointments and no relationship status checks, and that at that level it is not enough to live on by ' +
+          'itself.',
+      },
+      {
+        heading: 'Income tax reset to three brackets',
+        body:
+          '28 percent up to $50,000, 34 percent from $50,001 to $200,000, and 39 percent above that. The document says ' +
+          'anyone earning under $60,000 would pay less income tax than the Citizen’s Income they receive.',
+      },
+      {
+        heading: 'Supplementary payments, paid automatically',
+        body:
+          'Rather than means-tested benefits, a set of universal supports applied for through My IRD or MyMSD and ' +
+          'approved automatically if the criteria are met. Each abates by 10 cents in the dollar once household income ' +
+          'passes somewhere between $50,000 and $75,000.',
+        bullets: [
+          'Child Support Income, highest in a child’s first year — $18,250 for a first child, $17,250 for each subsequent — falling to $7,750 and $6,750 for years 4 to 18',
+          'An extra $9,500 a year for sole parents',
+          'A disability allowance of $6,000',
+          'Superannuitant top-ups of $10,000 for a single person, or $5,250 in total for a couple',
+          'Housing Support Income set regionally, averaging $10,500 for families and $6,500 for couples and singles',
+        ],
+      },
+      {
+        heading: 'The Land Value Tax',
+        body:
+          'An annual charge on the unimproved value of land — explicitly not the buildings or other improvements on ' +
+          'it. The stated intent is to make land banking expensive and dense development comparatively cheaper, since ' +
+          'the bill does not rise when you build. Urban land values are already assessed in council rating valuations; ' +
+          'the document says rural land is harder to value, which is why its rate is lower.',
+      },
+      {
+        heading: 'Deferrals for superannuitants and farmers',
+        body:
+          'Superannuitants could defer the whole of the tax until the property is sold. Farmers would get a more ' +
+          'limited deferral, on the grounds that farm income is exposed to global prices and weather.',
+      },
+      {
+        heading: 'KiwiSaver 2.0',
+        body:
+          'A new compulsory scheme, entirely separate from the existing voluntary KiwiSaver, which would remain as a ' +
+          'supplementary option. Contributions build to 12 percent of gross earnings, split evenly between employee ' +
+          'and employer.',
+        bullets: [
+          'Balances could not be withdrawn for hardship or a first-home deposit, unlike current KiwiSaver',
+          'Instead, bank lending against the balance would be enabled for first home buyers',
+          'Existing KiwiSaver holders could move funds across if they chose',
+          'Once fully phased in, the whole 12 percent would be exempt from income tax, and fund income tax-exempt after twenty years',
+        ],
+      },
+      {
+        heading: 'What happens to NZ Superannuation',
+        body:
+          'It would be replaced by the Citizen’s Income plus a top-up bringing the total to current Super rates, and ' +
+          'the document states no one relying on it would receive less than now. Longer term, as KiwiSaver 2.0 ' +
+          'balances grow, it says that top-up could be reduced for wealthier superannuitants.',
+      },
+      {
+        heading: 'A ten-year transition',
+        body:
+          'The addendum sets out a decade-long pathway rather than a single switch: two years of planning first, then ' +
+          'the Citizen’s Income extended to roughly a quarter of the population at a time, beginning with 18 to ' +
+          '29-year-olds, and the Land Value Tax starting at 0.5 percent on urban land only before rising. The party ' +
+          'expects land values to fall across the period, with the largest effect before implementation as the market ' +
+          'prices the change in.',
+      },
+    ],
+
+    examples: [],
+
+    revenue: {
+      heading: 'What they expect it to raise and cost',
+      rows: [
+        { period: 'Land Value Tax', amount: '$24.3bn' },
+        { period: 'Administration savings', amount: '$1.7bn' },
+        { period: 'Citizen’s Income, net', amount: '−$13.6bn' },
+        { period: 'Supplementary support, net', amount: '−$8.3bn' },
+        { period: 'Net position', amount: '+$4.1bn' },
+      ],
+      basis:
+        'TOP’s own costing on 2024 numbers: $25,997 million of revenue against $21,916 million of cost. The Citizen’s ' +
+        'Income figure is net — a headline $69.6 billion, less $23.4 billion clawed back through income tax and $32.6 ' +
+        'billion of replaced benefits. Administration savings are attributed mostly to MSD and Inland Revenue. The ' +
+        'document notes this table was corrected on 7 August 2026 after earlier versions used incorrect data.',
+    },
+
+    quotes: [
+      {
+        text: 'Every New Zealand Citizen and resident aged 18 and over receives an annual amount equivalent to the Jobseeker benefit; currently $19,400 annually, paid fortnightly into their bank account.',
+        context: 'The Citizen’s Income',
+      },
+      {
+        text: 'An annual tax on the unimproved value of all urban land set at 1.75%. Critically, this does not include the value of buildings or other improvements.',
+        context: 'Make housing affordable through a Land Value Tax',
+      },
+      {
+        text: 'Unlike current Kiwisaver balances, Kiwisaver 2.0 will not be able to be withdrawn for hardship or first-home deposits.',
+        context: 'Compulsory and universal KiwiSaver 2.0',
+      },
+    ],
+
+    openQuestions: [
+      'The two documents describe the KiwiSaver 2.0 phase-in differently: the overview says 0.5 percentage points a year reaching full rates after eight years, while the addendum says 1 percent a year over six — and its own table does not reach 6 percent each until year nine.',
+      'Rural land is described as harder to value than urban land, but neither document says how it would be valued.',
+      'The farmer deferral is described only as “more limited” than the superannuitant one, without saying what the limit would be.',
+      'The costings are built on 2024 numbers, and the document records that the table was corrected in August 2026 after earlier versions used incorrect data.',
+    ],
+
+    source: {
+      documentTitle: 'Tax Reset Policy Overview',
+      publisher: 'The Opportunities Party',
+      retrieved: '2026-08-14',
+      alsoFrom: [
+        { documentTitle: 'Tax Reset Policy Addendum', note: 'which sets out the ten-year implementation pathway' },
+      ],
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
