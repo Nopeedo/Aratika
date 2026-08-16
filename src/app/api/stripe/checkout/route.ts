@@ -8,6 +8,7 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getStripe } from '@/lib/stripe'
+import { SITE } from '@/constants/site'
 
 export async function POST() {
   const supabase = await createClient()
@@ -17,7 +18,13 @@ export async function POST() {
   const priceId = process.env.STRIPE_MONTHLY_PRICE_ID || process.env.STRIPE_PRICE_ID
   if (!priceId) return NextResponse.json({ error: 'STRIPE_MONTHLY_PRICE_ID is not set' }, { status: 500 })
 
-  const site = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  // Falling back to localhost in production would return a paying customer to a
+  // dead address on their own machine after checkout — a failure nobody would
+  // see in testing, because locally the fallback is correct. The env var is
+  // still preferred; this only decides what happens when it is missing.
+  const site = process.env.NEXT_PUBLIC_APP_URL
+    || process.env.NEXT_PUBLIC_SITE_URL
+    || (process.env.NODE_ENV === 'production' ? SITE.url : 'http://localhost:3000')
 
   try {
     const stripe = getStripe()

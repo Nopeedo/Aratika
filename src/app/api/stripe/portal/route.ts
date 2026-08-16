@@ -8,13 +8,19 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getStripe } from '@/lib/stripe'
+import { SITE } from '@/constants/site'
 
 export async function POST() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Not signed in' }, { status: 401 })
 
-  const site = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  // See the note in ../checkout: a localhost fallback in production strands the
+  // customer on their own machine, and only in production, so testing never
+  // catches it.
+  const site = process.env.NEXT_PUBLIC_APP_URL
+    || process.env.NEXT_PUBLIC_SITE_URL
+    || (process.env.NODE_ENV === 'production' ? SITE.url : 'http://localhost:3000')
 
   try {
     const admin = createAdminClient()
