@@ -62,6 +62,16 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/detect-candidates.mjs
 
+      # Not bills data, but it belongs on the same daily tick: deep dives land
+      # when someone commits them, so a scheduled sweep is what turns "written"
+      # into "the people following that topic were told".
+      - name: Detect new policy deep dives → enqueue
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/detect-deep-dives.mjs
+
       - name: Election calendar reminders → enqueue
         continue-on-error: true
         env:

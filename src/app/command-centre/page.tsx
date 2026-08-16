@@ -13,6 +13,7 @@ import {
   Target, Bell, Radio, ArrowRight, ExternalLink, Check,
   Users, Landmark, Scale, Gavel, Newspaper, Video,
 } from 'lucide-react'
+import { createClient } from '@/lib/supabase/server'
 import { ElectionCountdown } from '@/components/homepage/election-countdown'
 import { getNews } from '@/lib/news/live'
 import { getVideos } from '@/lib/news/videos'
@@ -34,7 +35,11 @@ function shortDate(iso: string | null): string {
 }
 
 const TRACKABLES = [
-  { icon: Users, label: 'MPs', body: 'Follow an MP — their votes, the bills they put up, and the news that names them.' },
+  // No "their votes": Parliament publishes no machine-readable record of how
+  // MPs vote — no API, no feed, and a standing request on data.govt.nz asking
+  // for one. Promising it here would be a claim we cannot keep. What is real is
+  // the bills they put up and the coverage naming them, both of which we have.
+  { icon: Users, label: 'MPs', body: 'Follow an MP — the bills they put up, the questions they ask Ministers, and the news that names them.' },
   { icon: Landmark, label: 'Parties', body: 'Follow a party — policy announcements, their news and video, poll movement.' },
   { icon: Scale, label: 'Policies', body: 'Follow an issue like Housing — the bills on it and where every party stands.' },
   { icon: Gavel, label: 'Bills', body: 'Follow a bill — every stage from first reading to law, and how MPs voted.' },
@@ -44,12 +49,21 @@ const TRACKABLES = [
 
 const STEPS = [
   { n: 1, title: 'Pick what matters', body: 'Tap Track on any MP, party, issue or bill — no sign-up needed to start.' },
-  { n: 2, title: 'We watch it for you', body: 'Votes, bill stages, news and video on your things — gathered from official and credible sources.' },
+  { n: 2, title: 'We watch it for you', body: 'Bill stages, submission deadlines, news and video on your things — gathered from official and credible sources.' },
   { n: 3, title: 'Walk in ready for 2026', body: 'Your feed stays current, and on election night you track the results live.' },
 ]
 
 export default async function CommandCentrePage() {
   const [news, videos] = await Promise.all([getNews(6), getVideos(4)])
+
+  // A stale or malformed auth cookie should leave the page working as the
+  // logged-out explainer, which is what it primarily is — not error.
+  let isLoggedIn = false
+  try {
+    const supabase = await createClient()
+    const { data } = await supabase.auth.getUser()
+    isLoggedIn = !!data.user
+  } catch { /* treat as logged out */ }
 
   const trackOptions: BookmarkEntity[] = [
     ...PARTY_DIRECTORY_ORDER.slice(0, 3).map((slug) => ({
@@ -64,6 +78,28 @@ export default async function CommandCentrePage() {
 
   return (
     <div style={{ background: '#fff' }}>
+      {/* Someone with an account who lands here almost always wanted their own
+          command centre, not the page explaining what one is. They arrive from
+          the footer link, the homepage CTA, the explore carousel and anywhere
+          else pointing at /command-centre — fixing each of those separately
+          would mean an auth-aware footer on every page, and would still miss
+          the next one. One banner here catches every route in.
+
+          A link rather than a redirect: the explainer is a real page and
+          someone may genuinely want to read it. */}
+      {isLoggedIn && (
+        <div style={{ background: '#ecfdf5', borderBottom: `1px solid ${JADE}2e` }}>
+          <div style={{ maxWidth: 900, margin: '0 auto', padding: '10px clamp(18px, 5vw, 36px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: 13.5, color: INK, fontFamily: MANROPE, fontWeight: 600 }}>
+              You’re signed in — this is the explainer.
+            </span>
+            <Link href="/dashboard" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: '#fff', background: JADE, borderRadius: 999, padding: '7px 15px', textDecoration: 'none', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
+              Go to your command centre <ArrowRight style={{ width: 14, height: 14 }} />
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Hero */}
       <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
@@ -75,8 +111,8 @@ export default async function CommandCentrePage() {
           </h1>
           <p style={{ fontSize: 'clamp(15px, 2.4vw, 18px)', fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px', lineHeight: 1.55, maxWidth: 640 }}>
             Politics is scattered across a dozen sources. Pick the MPs, parties, issues and bills you care about —
-            and Arapono brings the news, video and votes on exactly those things into one place, kept up to date all
-            the way to the 2026 election.
+            and Arapono brings the news, video and bill updates on exactly those things into one place, kept up to date
+            all the way to the 2026 election.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
             <a href="#try" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 800, color: '#fff', background: JADE, borderRadius: 11, padding: '12px 20px', textDecoration: 'none', fontFamily: MANROPE }}>
