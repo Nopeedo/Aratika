@@ -71,6 +71,10 @@ export interface PolicyDeepDive {
   /** Topic pages this appears on. A tax on property sales is both. */
   topics: PolicyTopic[]
   party: PartySlug
+  /** URL segment under /policies/[topic]/[party]/. Hand-written, never derived
+   *  from the title — a title can be reworded without breaking a live link, and
+   *  these are pages we want indexed. Unique across the whole file. */
+  slug: string
   /** Arapono's neutral title for the policy. */
   title: string
   /** One paragraph, plain language, no advocacy. */
@@ -117,6 +121,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['housing', 'economy'],
     party: 'labour',
+    slug: 'capital-gains-tax',
     title: 'Targeted capital gains tax on property',
     summary:
       'Labour proposes a 28 percent tax on the profit made when a commercial or residential property is sold, ' +
@@ -285,6 +290,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['health'],
     party: 'labour',
+    slug: 'free-doctor-visits',
     title: 'Three free doctor’s visits a year, with a new Medicard',
     summary:
       'Labour proposes giving every New Zealander three free GP visits a year, claimed with a new Medicard at the ' +
@@ -435,6 +441,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['economy'],
     party: 'labour',
+    slug: 'future-fund',
     title: 'A New Zealand Future Fund',
     summary:
       'Labour proposes a state investment fund that would sit alongside, but separate from, the New Zealand Super ' +
@@ -552,6 +559,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['health'],
     party: 'labour',
+    slug: 'family-doctor-loan-scheme',
     title: 'A Family Doctor Loan Scheme',
     // Scoped to the loan scheme. The back half of this document repeats the
     // free-visits one — the 4.5 million appointments, independent pricing —
@@ -672,6 +680,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['health'],
     party: 'labour',
+    slug: 'free-cervical-screening',
     title: 'Free cervical screening',
     // The shortest source so far — a one-page factsheet — but a specific one:
     // age range, start date, delivery, funding source and a costing. Short deep
@@ -777,6 +786,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     // and it sits alongside Labour's capital gains tax there for comparison.
     topics: ['economy', 'housing'],
     party: 'green',
+    slug: 'tax-plan',
     title: 'A tax system for all of us',
     summary:
       'The Green Party proposes six revenue measures and an income tax cut. A 2.5 percent annual tax on net assets ' +
@@ -940,6 +950,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['climate'],
     party: 'green',
+    slug: 'energy-plan-kiwipower',
     title: 'Power for all of us — the energy plan and Kiwipower',
     // Covers both the energy policy and the standalone Kiwipower explainer.
     // They overlap heavily on Kiwipower, so two deep dives would repeat most of
@@ -1095,6 +1106,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['treaty-maori-affairs'],
     party: 'green',
+    slug: 'te-tiriti-policy',
     title: 'Te Tiriti o Waitangi policy',
     // A different kind of document from the costed ones: it sets constitutional
     // position and values rather than a programme with dates and dollars. The
@@ -1219,6 +1231,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['treaty-maori-affairs'],
     party: 'green',
+    slug: 'maori-manifesto',
     title: 'Māori Manifesto — kaupapa Māori and Te Tiriti commitments',
     // Scoped to two chapters of a document that spans about thirty policy
     // areas. Those two are where it names legislation and funds; the rest is a
@@ -1344,6 +1357,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['economy'],
     party: 'national',
+    slug: 'compulsory-kiwisaver',
     title: 'Compulsory KiwiSaver, and three changes around it',
     summary:
       'National proposes making KiwiSaver contributions compulsory for all workers from 1 July 2028, at the default ' +
@@ -1492,6 +1506,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['foreign-policy'],
     party: 'national',
+    slug: 'trade-agenda',
     title: 'New Zealand’s Next Billion Customers — the trade agenda',
     summary:
       'National proposes opening trade negotiations with seven new economies over five years, extending the ' +
@@ -1609,6 +1624,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     // so nobody expects a freshwater or emissions policy from the heading.
     topics: ['environment'],
     party: 'national',
+    slug: 'hunting-and-fishing',
     title: 'Hunting and fishing: game animals, access and Fish & Game',
     summary:
       'National proposes recognising valued introduced species in law so they are not treated as pests by default, ' +
@@ -1728,6 +1744,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     // is covered in the KiwiSaver deep dive rather than repeated here.
     topics: ['economy'],
     party: 'national',
+    slug: 'paid-parental-leave',
     title: 'Paid parental leave: 26 weeks to 30',
     summary:
       'National proposes lifting paid parental leave from 26 weeks to 30 in three annual steps between 2027 and ' +
@@ -1871,6 +1888,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     // its revenue one, and their recorded housing position leads with it.
     topics: ['economy', 'housing'],
     party: 'top',
+    slug: 'tax-reset',
     title: 'The Tax Reset: Citizen’s Income, Land Value Tax and KiwiSaver 2.0',
     summary:
       'TOP proposes three linked reforms. Every adult would receive a tax-free Citizen’s Income of $19,400 a year, ' +
@@ -2034,6 +2052,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['environment'],
     party: 'top',
+    slug: 'healthy-oceans',
     title: 'Healthy Oceans: fisheries reform, marine protection and a blue economy',
     summary:
       'TOP would move fisheries away from the Quota Management System’s single-species quotas toward ecosystem-based ' +
@@ -2239,6 +2258,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   {
     topics: ['climate'],
     party: 'top',
+    slug: 'abundant-energy',
     title: 'Abundant Energy: tripling renewable generation by 2050',
     summary:
       'TOP would set a 30 GW renewable capacity target for 2050 — roughly triple today’s — locked in through a ' +
@@ -2442,6 +2462,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     // have, so there is nothing here to put on the housing page.
     topics: ['economy'],
     party: 'top',
+    slug: 'intergenerational-infrastructure',
     title: 'Intergenerational Infrastructure: borrowing $60bn and taking the politics out',
     summary:
       'TOP would legislate Te Waihanga’s 30-year National Infrastructure Plan so a single government cannot dismantle ' +
@@ -2648,6 +2669,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     // for schools or migration.
     topics: ['economy'],
     party: 'top',
+    slug: 'breakthrough-economy',
     title: 'Breakthrough Economy: research, competition law and small business',
     summary:
       'TOP would lift research and development spending from 1.5 percent of GDP to 2 percent within a decade and 3 ' +
@@ -2834,5 +2856,19 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 export function getDeepDives(topic: string, party: string): PolicyDeepDive[] {
   return POLICY_DEEP_DIVES.filter(
     (d) => d.party === party && d.topics.includes(topic as PolicyTopic),
+  )
+}
+
+/** One deep dive by its URL. Scoped to the topic and party rather than looked up
+ *  on slug alone, so /policies/health/act/capital-gains-tax 404s instead of
+ *  serving Labour's tax policy under ACT's banner. */
+export function getDeepDive(topic: string, party: string, slug: string): PolicyDeepDive | undefined {
+  return getDeepDives(topic, party).find((d) => d.slug === slug)
+}
+
+/** Every deep dive URL, for the sitemap. */
+export function allDeepDivePaths(): { topic: PolicyTopic; party: PartySlug; slug: string }[] {
+  return POLICY_DEEP_DIVES.flatMap((d) =>
+    d.topics.map((topic) => ({ topic, party: d.party, slug: d.slug })),
   )
 }

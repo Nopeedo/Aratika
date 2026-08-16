@@ -14,7 +14,7 @@ import { CONTESTING_PARTIES } from '@/constants/parties'
 import { PolicyTopic, PartySlug } from '@/types'
 import { getApprovedPosition } from '@/lib/positions/live'
 import { PositionReader } from '@/components/policy/position-reader'
-import { PolicyDeepDive } from '@/components/policy/policy-deep-dive'
+import { DeepDiveCard } from '@/components/policy/deep-dive-card'
 import { getDeepDives } from '@/constants/policy-deep-dives'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
@@ -68,12 +68,16 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
           </div>
         )}
 
-        {/* Long-form breakdown, where the party has published a policy document
+        {/* Long-form breakdowns, where the party has published a policy document
             for this topic. Renders independently of `pos` — the document is its
             own source, so a deep dive can exist before we've recorded a summary
-            position, and the absence of one is not a gap in the page. */}
+            position, and the absence of one is not a gap in the page.
+
+            Cards, not the breakdowns themselves: each one runs to roughly ten
+            phone screens and a party can have several on one topic. The depth
+            is a click away at /policies/[topic]/[party]/[slug]. */}
         {deepDives.map((dive) => (
-          <PolicyDeepDive key={dive.title} dive={dive} accent={p.color} partyName={p.name} />
+          <DeepDiveCard key={dive.slug} dive={dive} accent={p.color} partyName={p.name} topic={topic} />
         ))}
       </div>
       <PolicyCoverage maxWidth={900} />

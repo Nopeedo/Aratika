@@ -18,6 +18,7 @@ import { MP_SLUGS } from '@/constants/mps-data'
 import { PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES } from '@/constants/parties-data'
 import { CONTESTING_PARTIES } from '@/constants/parties'
 import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
+import { allDeepDivePaths } from '@/constants/policy-deep-dives'
 import { BILL_SLUGS } from '@/constants/bills-data'
 import { DEFINING_BILLS } from '@/constants/defining-bills'
 import { ELECTION_SLUGS } from '@/constants/elections-data'
@@ -108,6 +109,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // position, so we never point a crawler at an empty "no position yet" page.
     for (const { topic, party } of await approvedPositionPairs()) {
       entries.push(entry(`/policies/${topic}/${party}`, 0.7, 'monthly'))
+    }
+
+    // Deep dives. Not gated on an approved position — a breakdown is sourced
+    // from the party's own published document, so the page stands up whether or
+    // not we've recorded a summary position beside it. Priority sits above the
+    // position pages because these are the most substantial thing on the site.
+    for (const { topic, party, slug } of allDeepDivePaths()) {
+      entries.push(entry(`/policies/${topic}/${party}/${slug}`, 0.75, 'monthly'))
     }
   }
 
