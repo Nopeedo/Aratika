@@ -5121,6 +5121,377 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-16',
     },
   },
+
+  // ── Animal Justice Party ───────────────────────────────────────────────────
+
+  {
+    topics: ['environment'],
+    party: 'animal-justice',
+    slug: 'animals-in-law',
+    title: 'Animals in law: legal standing, a Commissioner, and ending factory farming',
+    summary:
+      'The AJP would end the legal classification of animals as property, define sentience in legislation, and create ' +
+      'an independent Commissioner for Animals — taking oversight away from the ministry that also promotes farming ' +
+      'exports. It would ban the most harmful farming and fishing practices with funded transition support for ' +
+      'farmers, make no-kill the national default for pounds, ban recreational hunting, and replace cat culls with ' +
+      'desexing, Trap-Neuter-Return and predator-proof fencing.',
+
+    facts: [
+      { label: 'Animals in law', value: 'No longer property', note: 'Sentience defined in legislation, with legal rights' },
+      { label: 'Oversight', value: 'An independent Commissioner', note: 'Out of MPI, which also promotes agriculture exports' },
+      { label: 'Killed for food yearly', value: '27m + 120m', note: 'Sheep, cattle and pigs; plus chickens, on their figures' },
+      { label: 'Auckland pounds', value: '60% killed', note: 'Of dogs impounded last year, rather than rehomed' },
+      { label: 'Pounds', value: 'No-kill by default', note: 'Nationally, rather than as the exception' },
+      { label: 'Cats', value: 'Desexing, not culling', note: 'With Trap-Neuter-Return and predator-proof fencing' },
+    ],
+
+    coveredLabel: 'The legislative foundations they propose',
+    exemptLabel: 'What they would ban',
+
+    covered: [
+      'Define animal sentience in legislation',
+      'Strengthen legal protections recognising animals as sentient beings',
+      'A new legislative framework with positive welfare obligations',
+      'Constitutional rights for nature — legal personhood for ecosystems and species',
+      'Abolish the legal classification of animals as property and grant animals legal rights',
+    ],
+
+    exempt: [
+      'The most harmful farming and fishing practices, factory farming among them',
+      'Recreational hunting and hunting competitions',
+      'Live export by air, extending the existing ban',
+      'The private sale and use of fireworks',
+      'Rodeo, greyhound racing and animals in entertainment',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Taking animals out of property law',
+        body:
+          'The document’s foundational claim is that animals are property under New Zealand law, and that this makes ' +
+          'them very hard to protect in any meaningful way. The proposed framework defines sentience in legislation, ' +
+          'recognises animals as sentient beings, imposes positive welfare obligations rather than only prohibitions, ' +
+          'and grants animals legal rights — alongside advocating legal personhood for ecosystems and species.',
+      },
+      {
+        heading: 'An independent Commissioner for Animals',
+        body:
+          'Animal welfare is currently regulated by the Ministry for Primary Industries, which the party notes is the ' +
+          'same department responsible for export opportunities and agricultural productivity. Their argument is that ' +
+          'this is a conflict of interest and that welfare decisions are consequently driven by industry ' +
+          'stakeholders. The Commissioner would be independent, hold real powers, and answer to the public.',
+      },
+      {
+        heading: 'Ending factory farming, with transition support',
+        body:
+          'The long-term goal is stated plainly as abolishing animal farming and moving to plant-based, cellular and ' +
+          'sustainable agriculture. The nearer-term steps are banning the most harmful farming and fishing practices, ' +
+          'tougher enforcement, and financial support for farmers to change — the document is explicit that the ' +
+          'transition takes time and that change leaving rural communities behind is not good change.',
+      },
+      {
+        heading: 'Pound reform',
+        body:
+          'The problem named is structural rather than about individual dogs: short timeframes to claim a dog, ' +
+          'upfront costs families cannot pay in one go, and shelters past capacity. The policy makes rehoming and ' +
+          'no-kill the national default, and aims to reduce how many dogs go unclaimed in the first place.',
+      },
+      {
+        heading: 'Conservation without culling cats',
+        body:
+          'The party supports protecting indigenous species but rejects mass killing of cats, arguing there is no ' +
+          'reliable way to distinguish a feral cat from a companion animal or a community cat. Its alternative is ' +
+          'nationwide desexing, Trap-Neuter-Return, habitat restoration and predator-proof fencing, framed as ' +
+          'compassionate conservation.',
+      },
+      {
+        heading: 'Hunting',
+        body:
+          'Recreational hunting and hunting competitions would be banned. The stated reasons are the suffering caused ' +
+          'to target animals and to non-target species taken unintentionally, and the effect the party argues ' +
+          'competitions have in normalising killing — it names school activities such as “Toss the Poss” as teaching ' +
+          'children to treat some species as disposable.',
+      },
+      {
+        heading: 'Ecosystems and land use',
+        body:
+          'The environmental case runs through agriculture: a shift to productive land use without farming animals, ' +
+          'which the party argues opens up rewilding of farmland and carbon sequestration alongside habitat ' +
+          'restoration and action on pollutants and pesticides. It frames this through kaitiakitanga and guardianship ' +
+          'of the land.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'Every year in this country, around 27 million sheep, cows, and pigs are killed for food. 120 million chickens.',
+        context: 'Election 2026 Manifesto — a message from our co-leaders',
+      },
+      {
+        text: 'Right now, animals are property under New Zealand law. That makes it very hard to protect them in any meaningful way.',
+        context: 'Giving animals legal standing',
+      },
+      {
+        text: 'Animal welfare is currently overseen by the same ministry that promotes the farming industry. That’s a conflict of interest, and it shows.',
+        context: 'An independent voice for animals',
+      },
+      {
+        text: 'We want to ban the most harmful farming and fishing practices, and we want to support farmers to make that transition properly, with real funding and time to adjust. Change that leaves rural communities behind isn’t good change.',
+        context: 'Ending factory farming',
+      },
+      {
+        text: 'Cats didn’t put themselves in the wild. Humans did.',
+        context: 'Smarter conservation, not a war on cats',
+      },
+    ],
+
+    openQuestions: [
+      'No cost is given for any of it — not the Commissioner, the transition support for farmers, the desexing programme, or pound reform.',
+      'No timeline is given for the transition away from animal farming, which the document accepts will take time.',
+      'What "the most harmful farming and fishing practices" covers, and where the line falls, is not defined.',
+      'Granting animals legal rights is stated as an aim without describing how those rights would be exercised or enforced, or by whom.',
+      'The Commissioner’s statutory powers, appointment and relationship to MPI are not set out.',
+      'The manifesto figures carry footnoted sources, but the policy pages themselves cite none, and each links a separate PDF the site does not surface in full.',
+    ],
+
+    source: {
+      documentTitle: 'Election 2026 Manifesto',
+      publisher: 'Animal Justice Party Aotearoa NZ',
+      documentDate: '2026',
+      url: 'https://animaljustice.org.nz/election-2026/election-manifesto/',
+      retrieved: '2026-08-16',
+      alsoFrom: [
+        { documentTitle: 'Their policy pages', note: 'thirty-two of them, including Legislative Foundations, Commissioner for Animals, Hunting and Ecosystems' },
+      ],
+    },
+  },
+
+  {
+    topics: ['health'],
+    party: 'animal-justice',
+    slug: 'food-system-and-health',
+    title: 'The food system: plant-based public catering and vet costs',
+    summary:
+      'More plant-based food in schools, hospitals and public institutions, which the party argues would cut costs ' +
+      'and improve nutrition — citing modelling that a shift to plant-rich diets could save the health system up to ' +
+      '$22 billion in prevented chronic disease. Alongside it: clearer food labelling, fairer access to veterinary ' +
+      'care as vet bills become unaffordable, and bereavement leave for the loss of an animal.',
+
+    facts: [
+      { label: 'Claimed health saving', value: 'Up to $22bn', note: 'In prevented chronic disease, from cited modelling' },
+      { label: 'Where', value: 'Schools and hospitals', note: 'And other public institutions' },
+      { label: 'Labelling', value: 'Clearer', note: 'So people can make informed choices' },
+      { label: 'Vet care', value: 'Fairer access', note: 'Bills described as genuinely unaffordable for many' },
+      { label: 'Bereavement leave', value: 'Supported', note: 'For the loss of an animal companion' },
+      { label: 'Waterways', value: '95% over limits', note: 'In farming areas, on the figure they cite from MfE' },
+    ],
+
+    mechanics: [
+      {
+        heading: 'Plant-based food in public institutions',
+        body:
+          'The proposal is more plant-based food in schools, hospitals and other public institutions, argued on two ' +
+          'grounds at once: lower cost and better nutrition. The supporting figure is modelling the party cites ' +
+          'suggesting a shift toward plant-rich diets could save the health system up to $22 billion in prevented ' +
+          'chronic disease.',
+      },
+      {
+        heading: 'Food labelling',
+        body:
+          'Clearer labelling so people can make informed choices — presented as a consumer information measure ' +
+          'alongside the catering change rather than a restriction on what can be sold.',
+      },
+      {
+        heading: 'The cost of veterinary care',
+        body:
+          'The party’s framing is relational rather than clinical: for many people their animal is their closest ' +
+          'relationship, and vet bills have become genuinely unaffordable. It would push for fairer access to ' +
+          'veterinary care, and supports bereavement leave when someone loses an animal they love.',
+      },
+      {
+        heading: 'Why they treat food as a health policy',
+        body:
+          'The document links the food system to health costs, emissions and water quality in one argument — putting ' +
+          'sheep and cattle at nearly half of New Zealand’s greenhouse gas emissions and citing Ministry for the ' +
+          'Environment data that 95 percent of waterways in farming areas exceed safe contamination limits, with the ' +
+          'health costs of the current food system running into the billions.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'Estimates suggest a shift toward plant-rich diets could save New Zealand’s health system up to $22 billion in prevented chronic disease.',
+        context: 'Healthier food, lower costs',
+      },
+      {
+        text: 'More plant-based food in schools, hospitals, and public institutions would cut costs and improve nutrition.',
+        context: 'Healthier food, lower costs',
+      },
+      {
+        text: 'Vet bills have become genuinely unaffordable for a lot of families.',
+        context: 'Vet costs and the bonds that matter',
+      },
+    ],
+
+    openQuestions: [
+      'Whether plant-based catering would be mandated, offered alongside existing options, or phased in is not stated.',
+      'The $22 billion figure is cited to external modelling without a period over which the saving accrues.',
+      '“Fairer access to veterinary care” is not defined — no subsidy, scheme or price mechanism is described.',
+      'Bereavement leave is supported without saying how much, for whom, or whether it would be statutory.',
+      'What clearer food labelling would require is not specified.',
+      'No cost is given for any of the measures, including the catering change that carries the savings claim.',
+    ],
+
+    source: {
+      documentTitle: 'Election 2026 Manifesto',
+      publisher: 'Animal Justice Party Aotearoa NZ',
+      documentDate: '2026',
+      url: 'https://animaljustice.org.nz/election-2026/election-manifesto/',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  // ── Conservative Party ─────────────────────────────────────────────────────
+  //
+  // One dive rather than several. Their policies page lists announcements on
+  // finance, trade, foreign affairs, defence, police and fisheries, but each of
+  // those pages renders only a title and a date — the body does not load, so
+  // there is nothing to read. That is recorded as an open question rather than
+  // left as an apparent gap in our coverage.
+
+  {
+    topics: ['economy'],
+    party: 'conservative',
+    slug: 'smaller-government',
+    title: 'Smaller government: spending, agencies and regulation',
+    summary:
+      'The Conservatives would shrink government to what they call its core business — justice, defence, border ' +
+      'control and critical infrastructure — abolishing agencies and programmes they judge useless, ending all ' +
+      'climate-focused taxes, subsidies and regulations, and ending corporate welfare including media subsidies. ' +
+      'Working for Families would be replaced by FamilyBuilder tax cuts, legislation would curtail what they term ' +
+      'unconstitutional bureaucratic power, and spending would be redirected to roads, bridges and waterways.',
+
+    facts: [
+      { label: 'Core business', value: 'Four areas', note: 'Justice, defence, border control, critical infrastructure and services' },
+      { label: 'Climate policy', value: 'Taxes and rules ended', note: 'All climate-focused taxes, subsidies and regulations' },
+      { label: 'Working for Families', value: 'Replaced', note: 'By what they call FamilyBuilder tax cuts' },
+      { label: 'Corporate welfare', value: 'Ended', note: 'All forms, including subsidies for the media' },
+      { label: 'Spending redirected', value: 'Roads, bridges, waterways', note: 'Critical services and infrastructure' },
+      { label: 'Bureaucratic power', value: 'Curtailed by law', note: 'Legislation to limit what they call unconstitutional power' },
+    ],
+
+    coveredLabel: 'What they would cut',
+    exemptLabel: 'What they call core business',
+
+    covered: [
+      'Government agencies and programmes they judge useless',
+      'Wasteful spending and unnecessary regulation',
+      'All climate-focused taxes, subsidies and regulations',
+      'All forms of corporate welfare, including subsidies for the media',
+      'Working for Families, replaced by FamilyBuilder tax cuts',
+      'What they describe as the gravy train for public servants, consultants, tribal elites and politicians',
+    ],
+
+    exempt: [
+      'Justice',
+      'Defence',
+      'Border control',
+      'Critical infrastructure and services',
+      'Roads, bridges and waterways, which spending would be redirected towards',
+    ],
+
+    mechanics: [
+      {
+        heading: 'The core-business test',
+        body:
+          'The organising idea is a narrow definition of what government is for: justice, defence, border control, ' +
+          'and critical infrastructure and services. Everything measured against that. The stated premise is that ' +
+          'New Zealand is over-governed, over-regulated and over-taxed, and that debt levels are a crisis needing ' +
+          'attention now.',
+      },
+      {
+        heading: 'Curtailing bureaucratic power',
+        body:
+          'Legislation to curtail what the party calls unconstitutional bureaucratic power, alongside abolishing ' +
+          'agencies and programmes it judges useless and ending regulation it considers unnecessary. Their wider ' +
+          'priorities list adds a smaller government workforce, fewer layers of government, accountable local ' +
+          'government, and defending freedom of speech and assembly.',
+      },
+      {
+        heading: 'Welfare and education',
+        body:
+          'The welfare system would be reformed with Working for Families replaced by FamilyBuilder tax cuts, and ' +
+          'education reformed including early childhood education — the stated test being whether the system ' +
+          'supports the family rather than undermining it.',
+      },
+      {
+        heading: 'Ending climate-related economic policy',
+        body:
+          'All climate-focused taxes, subsidies and regulations would end, which the party frames as restoring ' +
+          'rational economic policy. Alongside it, all corporate welfare would go, with subsidies for the media named ' +
+          'specifically.',
+      },
+      {
+        heading: 'Where the money would go instead',
+        body:
+          'Spending redirected towards critical services and infrastructure — roads, bridges and waterways are named ' +
+          '— with major infrastructure projects reviewed for viability, real benefit, and delivery on time and within ' +
+          'budget.',
+      },
+      {
+        heading: 'Reviewing spending as a habit',
+        body:
+          'The party would regularly review current expenditure, which it notes is day-to-day spending that dwarfs ' +
+          'capital expenditure, with a view to reducing costs — presenting this as something every government should ' +
+          'do continuously rather than as a one-off exercise.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'New Zealand is over-governed, over-regulated, and over-taxed',
+        context: 'Opening statement',
+      },
+      {
+        text: 'The only solution is to shrink government, so that it focuses on its core business - justice, defence, border control, and critical infrastructure and services.',
+        context: 'On what government is for',
+      },
+      {
+        text: 'We do not need Big Government done better.',
+        context: 'On why they say incremental reform will not do',
+      },
+      {
+        text: 'Everyday New Zealanders have to work hard to balance their books, and they need government to do the same.',
+        context: 'On reviewing expenditure',
+      },
+    ],
+
+    openQuestions: [
+      'No figure is given for how much spending would be cut, over what period, or what it would mean for the deficit.',
+      'Which agencies and programmes are judged useless is not named anywhere on the page.',
+      'FamilyBuilder is named as the replacement for Working for Families, but the party’s own page describing it is marked “(deleted)” on their site, so no detail on it is available.',
+      'What “unconstitutional bureaucratic power” covers, and what the legislation would actually do, is not defined.',
+      'Ending all climate-focused taxes, subsidies and regulations is stated without saying what happens to the Emissions Trading Scheme or to existing international commitments.',
+      'The education reform, including early childhood education, is referred to without any detail at all.',
+      'Their policies page lists announcements on finance, trade, foreign affairs, defence, police and fisheries, but each of those pages loads only a title and a date with no readable content, so none of it could be covered here.',
+    ],
+
+    source: {
+      documentTitle: 'Small Government',
+      publisher: 'Conservative Party NZ',
+      url: 'https://www.conservatives.nz/small-government',
+      retrieved: '2026-08-16',
+      alsoFrom: [
+        { documentTitle: 'Our Policies', note: 'their policy index, for the Smaller Government priorities' },
+      ],
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
