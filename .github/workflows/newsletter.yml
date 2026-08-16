@@ -1,11 +1,24 @@
 name: Weekly newsletter
 
-# Builds and sends the Arapono Weekly. Manual for now — no scheduled cron until
-# it's been tested (send-to-self) and signed off. The "mode" input controls it:
+# Builds and sends the Arapono Weekly.
+#
+# Scheduled runs always SEND. A manual run defaults to a dry run, and the "mode"
+# input controls it:
 #   dry  → renders + logs, sends nothing (default)
 #   self → sends ONE real email to the address in "self_email"
 #   send → sends to every subscribed account
+#
+# 20:00 UTC Friday is Saturday morning in New Zealand — 8am NZST, 9am NZDT.
+# GitHub cron has no timezone and no daylight-saving awareness, so a fixed UTC
+# hour drifts by one across the DST boundary. Both sides of that land squarely
+# in Saturday morning, which is why this hour was chosen rather than an earlier
+# one: 19:00 UTC would be a 7am delivery for half the year. New Zealand moves to
+# NZDT in late September, so the whole run-up to the 7 November election sends at
+# 9am. Scheduled runs are also routinely delayed by GitHub under load — treat the
+# time as "Saturday morning", not as a guarantee.
 on:
+  schedule:
+    - cron: '0 20 * * 5'
   workflow_dispatch:
     inputs:
       mode:
@@ -39,6 +52,15 @@ jobs:
           ZOHO_SMTP_PASS: ${{ secrets.ZOHO_SMTP_PASS }}
           NEXT_PUBLIC_APP_URL: https://arapono.org.nz
         run: |
+          # A scheduled run has no inputs, so `mode` is empty and the case below
+          # would fall through to the dry-run default — the cron would have run
+          # every Saturday and delivered nothing, looking green the whole time.
+          # Scheduled means send, the same rule the notifications workflow uses.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "scheduled run — sending to all subscribers"
+            node scripts/newsletter.mjs --send
+            exit $?
+          fi
           case "${{ github.event.inputs.mode }}" in
             self) node scripts/newsletter.mjs --self "${{ github.event.inputs.self_email }}" ;;
             send) node scripts/newsletter.mjs --send ;;
