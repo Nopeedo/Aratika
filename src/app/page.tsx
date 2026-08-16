@@ -25,7 +25,7 @@ import { HomeMap } from '@/components/homepage/home-map'
 import { AllPartiesSection } from '@/components/homepage/all-parties-section'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
-// import { InstallBanner } from '@/components/notifications/install-banner' // hidden — see below
+import { AlertsBanner } from '@/components/notifications/alerts-banner'
 import { MarkSeen } from '@/components/homepage/mark-seen'
 
 // The navbar logo and the hub both link to /?full=1, so crawlers (which carry no
@@ -54,15 +54,12 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         {/* ── The choice: guided help, or explore ── */}
         <CinematicHero />
 
-        {/* Install prompt hidden for now — it's moving into a pop-up screen.
-            The component is intact (components/notifications/install-banner.tsx);
-            restore this line to bring the inline pill back.
-            NOTE for whoever builds the pop-up: the `beforeinstallprompt` capture
-            lives inside that component and the browser fires that event once,
-            early in page load. With nothing mounted to catch it, there's no
-            deferred prompt to fire later — so the pop-up will need to hoist that
-            listener somewhere always-mounted, not just call into this on click. */}
-        {/* <InstallBanner /> */}
+        {/* Alerts prompt. Inline rather than a modal on purpose: the browser
+            fires `beforeinstallprompt` once, early in page load, so the listener
+            has to be mounted with the page — open it on demand and there is no
+            deferred prompt left to fire. It hides itself when there is nothing
+            to offer, and remembers a dismissal. */}
+        <AlertsBanner />
 
         {/* Anchor for the hero's "I'll look around myself" jump. Kept as a
             zero-height marker (NOT a wrapper) so it doesn't become the sticky
