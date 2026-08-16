@@ -4628,6 +4628,499 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       ],
     },
   },
+
+  // ── Women's Rights Party ───────────────────────────────────────────────────
+  //
+  // From a single 54,000-word policy document. Contested subject matter, so
+  // rule 1 does the work it was written for: what follows is what the document
+  // sets out, in their terms, with claims attributed to them and the gaps in
+  // openQuestions. Included because they are a registered contesting party,
+  // which is the site's only test.
+
+  {
+    topics: ['economy'],
+    party: 'womens-rights',
+    slug: 'womens-incomes',
+    title: 'Women’s incomes: pay equity, carers and retirement savings',
+    summary:
+      'The party would legislate for pay equity in the private sector as well as the public, reinstate support for ' +
+      'Fair Pay Agreements, and pay income support to people raising children or caring for elders. On retirement, it ' +
+      'targets a KiwiSaver gap it puts at 25 percent between women and men, with four specific changes — including a ' +
+      'State contribution to the KiwiSaver of unpaid carers, and continued employer contributions through maternity ' +
+      'leave.',
+
+    facts: [
+      { label: 'KiwiSaver gap', value: '25% lower', note: 'Average balance for women, across all age groups' },
+      { label: 'Pay equity claims', value: '150,000 women', note: 'Whose claims they say were extinguished in April 2025' },
+      { label: 'The pay gap penalty', value: '3+ years', note: 'Of retirement income lost, on their estimate' },
+      { label: 'Fair Pay Agreements', value: 'Reinstated', note: 'Legislative support for them restored' },
+      { label: 'Carers', value: 'Income support', note: 'For raising children or caring for elders' },
+      { label: 'Working for Families', value: 'Reformed', note: 'Backing the Child Poverty Action Group campaign' },
+    ],
+
+    coveredLabel: 'Their four KiwiSaver changes',
+    covered: [
+      'Require an employer to treat all its employees the same for the employer contribution',
+      'Address pay equity, since the pay gap compounds into the retirement balance',
+      'Continue employer contributions to KiwiSaver during maternity leave',
+      'A State contribution to carers’ KiwiSaver, recognising unpaid childcare and care of dependants',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Pay equity in both sectors',
+        body:
+          'The argument is that work typically done by women, and particularly by Māori and Pasifika women, stays ' +
+          'undervalued, producing both a sex-based pay gap and a sex and ethnicity gap. The proposals are a strong ' +
+          'onus on employers, publication of average hourly pay statistics broken down by occupation, sex and ' +
+          'ethnicity, and reinstated legislative support for Fair Pay Agreements — applied to private sector jobs as ' +
+          'well as public.',
+      },
+      {
+        heading: 'Their account of the April 2025 changes',
+        body:
+          'The document records members’ concern at changes made to pay equity legislation under urgency in April ' +
+          '2025, putting the number of women whose claims were extinguished at an estimated 150,000, and says many of ' +
+          'those claims will not be able to restart under the new regime. It backs the People’s Select Committee ' +
+          'process examining the evidence for and against the changes.',
+      },
+      {
+        heading: 'Income support for carers',
+        body:
+          'Income support while raising children or caring for elders, on the stated basis that mothering and caring ' +
+          'is work that contributes to society. Alongside it, the party backs the Child Poverty Action Group’s ' +
+          'campaign to reform Working for Families so it reaches all lower income families, and singles out ' +
+          'discrimination against beneficiary families — many headed by single mothers — for removal.',
+      },
+      {
+        heading: 'Why retirement savings diverge',
+        body:
+          'The causes given are low pay in typically female jobs, lower lifetime income, part-time work, career breaks ' +
+          'to raise children, and disadvantage after relationship breakdowns. The document puts the resulting average ' +
+          'KiwiSaver balance for women at 25 percent below men’s across all age groups, and describes the compounding ' +
+          'effect of the pay gap as costing three or more years of retirement income — which it notes matters more ' +
+          'because women tend to live longer.',
+      },
+      {
+        heading: 'Financial stability in older age',
+        body:
+          'The document identifies older women as the fastest-growing group living in poverty globally, and links low ' +
+          'home ownership among older women to the same lifetime income pattern. Its proposals here are broader than ' +
+          'specific: minimum wages and benefits lifted to living incomes, affordable housing, accessible healthcare, ' +
+          'free financial advice available to women as needed, and work with the Office of Seniors on local and ' +
+          'national solutions.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'In New Zealand, the average KiwiSaver balance for women is 25% lower than the average balance for men across all age groups.',
+        context: 'Inequity in retirement savings',
+      },
+      {
+        text: 'The Women’s Rights Party advocates for income support while raising our children or caring for our elders, recognising that mothering and caring is work and contributes to society.',
+        context: 'Income support for carers',
+      },
+      {
+        text: 'An estimated 150,000 women workers whose pay equity claims have been extinguished are now in limbo.',
+        context: 'Pay Equity',
+      },
+      {
+        text: 'Globally, older women are the fastest-growing group living in poverty.',
+        context: 'Financial stability for women in older age',
+      },
+    ],
+
+    openQuestions: [
+      'No cost is given for the State contribution to carers’ KiwiSaver, or for continuing employer contributions through maternity leave.',
+      'The 25 percent KiwiSaver gap and the 150,000 pay equity claims figure are both given without a source.',
+      '“Income support for carers” is not defined — no rate, eligibility test, or relationship to existing benefits is set out.',
+      'What effective pay equity policy would require of private sector employers, beyond publishing pay statistics, is not stated.',
+      'Reinstating legislative support for Fair Pay Agreements is proposed without saying in what form.',
+      'Free financial advice for women is advocated without saying who would provide or fund it.',
+    ],
+
+    source: {
+      documentTitle: 'Policy of the Women’s Rights Party',
+      publisher: 'Women’s Rights Party',
+      documentDate: 'November 2025',
+      url: 'https://womensrightsparty.nz/policy/',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['health'],
+    party: 'womens-rights',
+    slug: 'maternity-and-medical-treatment',
+    title: 'Maternity care, screening, surrogacy and treatment for under-18s',
+    summary:
+      'On maternity: continuity of midwifery care funded properly, publicly funded primary maternity services rural ' +
+      'and urban, paid maternity leave extended from six months to twelve, and partner leave on top. Women’s ' +
+      'screening free and available. On treatment: a ban on puberty blockers and cross-sex hormones for under-18s ' +
+      'presenting with sex-related distress, government-funded masculinisation or feminisation surgery restricted to ' +
+      'over-25s, and an inquiry into Health NZ’s contracting of PATHA.',
+
+    facts: [
+      { label: 'Paid maternity leave', value: '6 to 12 months', note: 'Reviewed and extended' },
+      { label: 'Partner leave', value: 'At the birth', note: 'Additional to the mother’s entitlement' },
+      { label: 'Screening', value: 'Free and available', note: 'Cervical smears and breast screening' },
+      { label: 'Puberty blockers', value: 'Banned under 18', note: 'And cross-sex hormones, for sex-related distress' },
+      { label: 'Funded surgery', value: 'Age 25', note: 'Up from 18, for masculinisation or feminisation' },
+      { label: 'PATHA guidelines', value: 'Inquiry called for', note: 'Into Health NZ contracting them' },
+    ],
+
+    coveredLabel: 'What maternity services would get',
+    exemptLabel: 'The treatment changes for under-18s',
+
+    covered: [
+      'Continuity of midwifery care properly recognised and funded by Health NZ',
+      'Publicly funded primary maternity services in both rural and urban centres',
+      'Paid maternity leave extended from six months to twelve',
+      'Partner leave at the time of birth, on top of the mother’s entitlement',
+      'Wrap-around services for vulnerable mothers and their babies',
+      'Retention of the words “mother”, “woman” and “breastfeeding” in maternity services',
+    ],
+
+    exempt: [
+      'A ban on puberty blockers and cross-sex hormones for under-18s presenting with sex-related distress',
+      'Government-funded masculinisation or feminisation cosmetic surgery restricted to over-25s, currently over-18s',
+      'An inquiry into Health NZ contracting PATHA to update gender-affirming care guidelines',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Maternity and midwifery',
+        body:
+          'The document calls on Health NZ to properly recognise and fund continuity of midwifery care, and to provide ' +
+          'publicly funded primary maternity services in rural as well as urban centres, with services adequately ' +
+          'resourced for quality and affordable provision for all. Alongside it, wrap-around support for vulnerable ' +
+          'mothers and babies, tied to a stated aim of reducing the number of children removed from their families.',
+      },
+      {
+        heading: 'Leave and childcare',
+        body:
+          'Paid maternity leave reviewed and extended from six to twelve months, with partners entitled to paid leave ' +
+          'at the birth in addition. On childcare, quality and affordable or free provision with qualified and fairly ' +
+          'paid staff, and a complete review of the current for-profit early childhood education sector against ' +
+          'whether it meets the needs of women and children.',
+      },
+      {
+        heading: 'Women’s health services',
+        body:
+          'Cervical smears and breast screening free and easily available to all women. The document adds that such ' +
+          'services should be exclusively for biological women and use clear language including the word “women”.',
+      },
+      {
+        heading: 'Treatment for under-18s',
+        body:
+          'A ban on puberty blockers and cross-sex hormones for children and adolescents under 18 presenting with ' +
+          'what the document calls sex-related distress, and government-funded masculinisation or feminisation ' +
+          'cosmetic surgery restricted to those over 25 rather than the current 18.',
+      },
+      {
+        heading: 'The PATHA inquiry',
+        body:
+          'The document calls for an inquiry into Health NZ’s contracting of PATHA, the Professional Association for ' +
+          'Transgender Health Aotearoa, to update guidelines for gender-affirming care. Its stated basis is the Cass ' +
+          'Report’s assessment of guideline quality, which it says placed the New Zealand PATHA guidelines second to ' +
+          'last with a score of 149 out of 600.',
+      },
+      {
+        heading: 'Surrogacy',
+        body:
+          'Commercial surrogacy should remain illegal, and the document calls additionally for a ban on New Zealand ' +
+          'citizens entering commercial surrogacy arrangements overseas. It supports the current Bill’s preservation ' +
+          'of the birth mother as first legal parent but wants longer than seven days for her to decide on ' +
+          'transferring parentage, and supports surrogate-born children being able to learn their genetic and ' +
+          'gestational origins and whakapapa. It raises health and safety concerns about egg harvesting and embryo ' +
+          'transfer for donors and recipients.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'Maternity services should be adequately resourced and funded to ensure quality, affordable provision for all.',
+        context: 'Caring for mothers and children',
+      },
+      {
+        text: 'We support a review and extension of paid maternity leave from six to 12 months, and entitlement of women’s partners to paid leave at the time of the birth in addition to the mother’s entitlements.',
+        context: 'Caring for mothers and children',
+      },
+      {
+        text: 'Women’s health services, including cervical smears and breast screening, must be free and easily available to all women.',
+        context: 'Caring for mothers and children',
+      },
+      {
+        text: 'The Women’s Rights Party supports a ban on the use of puberty blockers and cross-sex hormones to treat children and adolescents under the age of 18 who are presenting with “sex-related distress”, and to restrict Government-funded masculinisation or feminisation cosmetic surgery to those aged over 25 (currently aged over 18).',
+        context: 'Key legislative issues',
+      },
+    ],
+
+    openQuestions: [
+      'No cost is given for extending paid maternity leave from six months to twelve, for the new partner leave, or for the maternity and childcare commitments.',
+      'The Cass Report score of 149 out of 600 for the PATHA guidelines is cited without a link to the assessment.',
+      'What would replace the PATHA guidelines, and who would write the replacement, is not stated.',
+      'The ban is framed around under-18s presenting with sex-related distress; whether it affects the same medicines prescribed for other indications is not addressed.',
+      'No transition arrangement is described for people already receiving treatment when a ban took effect.',
+      'Who would conduct the inquiry into Health NZ’s contracting of PATHA, and under what powers, is not said.',
+      'The call for a longer decision period for birth mothers in surrogacy does not say how long it should be.',
+    ],
+
+    source: {
+      documentTitle: 'Policy of the Women’s Rights Party',
+      publisher: 'Women’s Rights Party',
+      documentDate: 'November 2025',
+      url: 'https://womensrightsparty.nz/policy/',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['education'],
+    party: 'womens-rights',
+    slug: 'rse-and-schools',
+    title: 'The relationships and sexuality curriculum, and schools',
+    summary:
+      'The party supports the Ministry of Education’s Relationships and Sexuality Education Framework, with ' +
+      'unspecified reservations, because it recognises biological sex and drops references to gender. It would ' +
+      'require schools to disclose the curriculum fully to parents, dispose of resources conflating sex and gender, ' +
+      'keep named outside agencies out of classrooms, guarantee privacy from the opposite sex in toilets and changing ' +
+      'rooms, and stop teachers supporting social transition.',
+
+    facts: [
+      { label: 'RSE Framework', value: 'Supported', note: 'With reservations the document does not set out' },
+      { label: 'Consent teaching', value: 'Must stress under-16s', note: 'Cannot legally consent' },
+      { label: 'Parents', value: 'Full disclosure', note: 'Of what is taught in the curriculum' },
+      { label: 'Outside agencies', value: 'Kept out', note: 'Inside Out and Qtopia named' },
+      { label: 'Social transition', value: 'Not by teachers', note: 'Described as a clinical intervention' },
+      { label: 'Referrals', value: 'With parents involved', note: 'To professionals, per the Cass Report' },
+    ],
+
+    coveredLabel: 'What schools would be expected to do',
+    covered: [
+      'Give parents and caregivers full disclosure of what is taught in the relationships and sexuality curriculum',
+      'Dispose of resources that conflate “sex” and “gender”, or confuse sexual orientation with gender',
+      'Stop outside agencies such as Inside Out and Qtopia providing resources or instruction, especially without a teacher present',
+      'Guarantee all children privacy from the opposite sex in single-sex spaces such as toilets and changing rooms',
+      'Support children who do not conform to sex-based stereotypes, or who could grow up attracted to the same sex',
+      'Refer distress about sex to appropriate professionals, with parents involved in those discussions',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Why they back the RSE Framework',
+        body:
+          'The document supports the Ministry of Education’s Relationships and Sexuality Education Framework, which ' +
+          'replaced the previous guidelines, on the grounds that it recognises the reality of biological sex and ' +
+          'removes references to what the document calls the imprecise concept of gender. It records reservations ' +
+          'about the Framework but does not say what they are.',
+      },
+      {
+        heading: 'Consent',
+        body:
+          'Support for age-appropriate and scientifically accurate education about sexuality, relationships and ' +
+          'consent, with one stated requirement: that any discussion of consent in a sexual context must stress that ' +
+          'young people under 16 cannot legally consent.',
+      },
+      {
+        heading: 'Parents and classroom resources',
+        body:
+          'Schools would give parents and caregivers full disclosure of what is being taught, and dispose of resources ' +
+          'that conflate sex with gender or confuse sexual orientation with gender. Outside agencies are named — ' +
+          'Inside Out and Qtopia — and would not provide resources or instruction in schools, with the document ' +
+          'placing particular weight on cases where the teacher is not present.',
+      },
+      {
+        heading: 'Social transition in schools',
+        body:
+          'The document defines social transition as changing appearance to align with stereotypes of the opposite ' +
+          'sex or no sex, using different pronouns, and using opposite-sex toilets and changing facilities. Its ' +
+          'position is that teachers should not support it, on the stated basis that doing so is a clinical ' +
+          'intervention which often leads to medical transition and affects all students, and that it has been ' +
+          'happening without parents’ knowledge.',
+      },
+      {
+        heading: 'Where a child is distressed',
+        body:
+          'Teachers would refer concerns about children showing signs of distress about their sex to appropriate ' +
+          'professionals, which the document attributes to the recommendations of the Cass Report, and all such ' +
+          'discussions would involve parents. The document also states that children who do not conform to ' +
+          'sex-based stereotypes, or who could grow up same-sex attracted, should be supported.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'The Women’s Rights Party supports, with some reservations, the Ministry of Education’s Relationships and Sexuality Education Framework which replaces the previous guidelines.',
+        context: 'Educating our Young People',
+      },
+      {
+        text: 'any discussion about consent in the context of sexual activity must stress that young people cannot legally consent if they are under 16 years of age.',
+        context: 'Educating our Young People',
+      },
+      {
+        text: 'Teachers should not be supporting social transitioning in schools. Supporting social transition is a clinical intervention that often leads to medical transitioning and affects all students.',
+        context: 'Educating our Young People',
+      },
+      {
+        text: 'Children who do not conform to sex-based stereotypes or who could grow up to be attracted to the same sex, should be supported in this.',
+        context: 'Educating our Young People',
+      },
+    ],
+
+    openQuestions: [
+      'The reservations about the RSE Framework are referred to but never set out.',
+      'No mechanism is described for requiring schools to disclose curriculum content, dispose of resources or exclude named agencies — whether by guidance, funding condition or legislation.',
+      'The statement that supporting social transition is a clinical intervention leading often to medical transition is asserted; the Cass Report is cited for referral practice but not for this claim.',
+      'What happens where a child’s distress involves their parents, and involving parents may not be safe, is not addressed.',
+      'Whether the expectations apply to private and state-integrated schools as well as state schools is not stated.',
+      'No cost or timeline is attached to any part of it.',
+    ],
+
+    source: {
+      documentTitle: 'Policy of the Women’s Rights Party',
+      publisher: 'Women’s Rights Party',
+      documentDate: 'November 2025',
+      url: 'https://womensrightsparty.nz/policy/',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['crime-justice'],
+    party: 'womens-rights',
+    slug: 'prostitution-hate-crime-prisons',
+    title: 'Prostitution law, hate crime and women’s prisons',
+    summary:
+      'The Prostitution Reform Act 2003 would be replaced with the Equality Model — decriminalising the prostituted ' +
+      'person, criminalising buyers and brothel owners, and funding exit services. On hate crime the party opposes ' +
+      'new offences but wants “sex” added to the aggravating factors already in the Sentencing Act. It opposes ' +
+      'housing biological males in women’s prisons, and backs a ban on “rough sex” as a defence to murder or serious ' +
+      'harm.',
+
+    facts: [
+      { label: 'Prostitution Reform Act', value: 'Replaced', note: 'With the Equality, or Nordic, Model' },
+      { label: 'Who is criminalised', value: 'Buyers and brothel owners', note: 'Not the prostituted person' },
+      { label: 'Section 19', value: 'Kept', note: 'Barring temporary visa holders from prostitution' },
+      { label: 'Sentencing Act', value: 'Add “sex”', note: 'To the aggravating factors in section 9(1)(h)' },
+      { label: 'New hate crime laws', value: 'Opposed', note: 'Standalone sex-based laws preferred' },
+      { label: '“Rough sex” defence', value: 'Banned', note: 'In murder or serious harm cases' },
+    ],
+
+    coveredLabel: 'What the Equality Model would provide',
+    exemptLabel: 'Where they part from the hate crime proposals',
+
+    covered: [
+      'Decriminalisation for the prostituted person',
+      'Criminal liability for those who exploit them — the buyer and the brothel owner',
+      'Exit services including housing, education, training, legal and welfare services',
+      'Childcare, and emotional and psychological support to help women build new lives',
+    ],
+
+    exempt: [
+      'No new “hate crime” laws — the party opposes creating them',
+      '“Sex” added to the Sentencing Act’s existing aggravating factors instead',
+      '“Gender identity” opposed as an aggravating factor',
+      '“Hostility” kept as the statutory word rather than “hate”, which they call too subjective and vague',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Replacing the Prostitution Reform Act',
+        body:
+          'The Equality Model — also called the Nordic Model, Abolition Model or Sex Buyer Law — would replace the ' +
+          'Prostitution Reform Act 2003. It decriminalises the prostituted person while criminalising those who ' +
+          'exploit them, and pairs that with funded exit services for women wanting to leave: housing, education, ' +
+          'training, legal and welfare services, childcare, and emotional and psychological support.',
+      },
+      {
+        heading: 'Section 19 in the meantime',
+        body:
+          'While the 2003 Act remains, the document strongly opposes removing section 19, which bars people on ' +
+          'temporary visas such as student visas from prostitution. Its stated reason is preventing international ' +
+          'trafficking.',
+      },
+      {
+        heading: '“Rough sex” as a defence',
+        body:
+          'The party would work with other groups to call for a ban on using “rough sex” as a defence in a murder ' +
+          'case or one involving serious harm. The document links this to its opposition to pornography, which it ' +
+          'describes as filmed prostitution.',
+      },
+      {
+        heading: 'Hate crime and the Sentencing Act',
+        body:
+          'The position is against new hate crime laws but for a specific amendment. The Sentencing Act’s section ' +
+          '9(1)(h) lists characteristics including race, colour, nationality, religion, gender identity, sexual ' +
+          'orientation, age and disability — but not sex. The document argues that absence suggests hating women is ' +
+          'more acceptable than other hatreds, and would add “sex” to the list. It opposes hate crime laws generally ' +
+          'as creating what it calls a hierarchy of victimhood, and prefers standalone sex-based laws with penalties ' +
+          'matching the seriousness of the offence.',
+      },
+      {
+        heading: 'Single-sex spaces and prisons',
+        body:
+          'Women and girls would have the right to single-sex gatherings for any purpose, including women-only social ' +
+          'media groups, and to single-sex spaces the document lists as including toilets, changing rooms, prisons, ' +
+          'refuges, rape crisis centres, saunas, swimming facilities and hospital wards. It opposes housing ' +
+          'biological males in women’s prisons, and adds that women prisoners must have humane and supportive ' +
+          'conditions for pregnancy, birth and caring for babies.',
+      },
+      {
+        heading: 'Refuges, protection orders and exit services',
+        body:
+          'More resource to help women leave domestic violence, public funding for women-only refuge services, public ' +
+          'funding for services supporting detransitioners, and exit services for women leaving gangs or religious ' +
+          'cults. On the justice system: protection orders enforced, and applications for them accessible and ' +
+          'affordable.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'The Equality Model decriminalises prostitution for the prostituted person and criminalises those who exploit prostitutes, such as the buyer and brothel owner.',
+        context: 'Prostitution Reform',
+      },
+      {
+        text: 'We support Section 19, which helps to prevent international trafficking.',
+        context: 'Prostitution Reform',
+      },
+      {
+        text: 'The Women’s Rights Party does not support the creation of new “hate crime” laws.',
+        context: 'Hate Crimes Legislation',
+      },
+      {
+        text: 'The Women’s Rights Party opposes the housing of biological males in women’s prisons.',
+        context: 'Protecting women’s and children’s spaces and safety',
+      },
+    ],
+
+    openQuestions: [
+      'No cost is given for the exit services the Equality Model depends on, or for the increased refuge funding.',
+      'How the change from the Prostitution Reform Act would work for people currently working legally under it is not addressed.',
+      'The ban on “rough sex” as a defence is described as something the party would work with others to call for, without naming the legislative change required.',
+      'Where transgender prisoners would be housed instead is not stated.',
+      'Whether adding “sex” to section 9(1)(h) would sit alongside “gender identity”, which the party opposes as a listed factor, or replace it, is not resolved.',
+      'The standalone sex-based laws preferred to hate crime legislation are not specified.',
+    ],
+
+    source: {
+      documentTitle: 'Policy of the Women’s Rights Party',
+      publisher: 'Women’s Rights Party',
+      documentDate: 'November 2025',
+      url: 'https://womensrightsparty.nz/policy/',
+      retrieved: '2026-08-16',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
