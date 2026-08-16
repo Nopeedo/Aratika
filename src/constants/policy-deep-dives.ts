@@ -2235,6 +2235,206 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-16',
     },
   },
+
+  {
+    topics: ['climate'],
+    party: 'top',
+    title: 'Abundant Energy: tripling renewable generation by 2050',
+    summary:
+      'TOP would set a 30 GW renewable capacity target for 2050 — roughly triple today’s — locked in through a ' +
+      '25-year cross-party Energy Strategy. New generation would be underwritten by a Capacity Investment Scheme ' +
+      'modelled on Australia’s. Four energy regulators would merge into one, and 29 distribution companies into six ' +
+      'to eight. The Crown’s dividends from its gentailer shareholdings, about $500 million a year, would be ' +
+      'ringfenced to pay for household and community electrification.',
+
+    facts: [
+      { label: 'Capacity target', value: '30 GW by 2050', note: '19.2 GW of new build, 1.6 GW of coal and gas retired' },
+      { label: 'Spent offshore now', value: '$20bn+ a year', note: 'Buying imported fossil fuels' },
+      { label: 'Household saving', value: '$600 a year', note: 'From power alone; $2,700+ more from EVs, solar and appliances' },
+      { label: 'Jobs', value: '5,000', note: 'Sustained across a 30-year build-out' },
+      { label: 'Distributors', value: '29 → 6–8', note: 'Consolidating electricity distribution businesses' },
+      { label: 'Funding source', value: '~$500m a year', note: 'Ringfenced Crown gentailer dividends' },
+    ],
+
+    coveredLabel: 'What the ringfenced $500m would fund',
+    exemptLabel: 'What would merge into one regulator',
+
+    // Again not a covered/exempt pairing — two lists the document gives
+    // explicitly, and the most useful things to put side by side here.
+    covered: [
+      'Administering council lending for the electrification loan scheme — about $6m a year',
+      'Administering the Capacity Investment Scheme — about $5m a year',
+      'Helping communities and distributors enable distributed generation — about $10m a year',
+      'Co-funding small-scale community generation in isolated communities — up to $100m a year, supporting up to $2bn of capital spending',
+      'Expanding Warmer Kiwi Homes — about $80m a year',
+      'Electrifying council bus fleets — up to $125m a year, supporting up to $2.5bn of capital spending',
+    ],
+
+    exempt: [
+      'The Electricity Authority',
+      'The Commerce Commission’s energy-related functions',
+      'MBIE’s energy policy work',
+      'The Energy Efficiency and Conservation Authority (EECA)',
+      'Relevant transport-electrification functions',
+    ],
+
+    mechanics: [
+      {
+        heading: 'A 25-year strategy agreed across Parliament',
+        body:
+          'Transpower’s “Accelerated Electrification” scenario gets to roughly 22 GW by 2050, which the document says ' +
+          'is enough to muddle through decarbonisation but not to deliver abundance. Reaching 30 GW means building ' +
+          'slightly more each year than the 556 MW added in 2024, sustained for decades. Because that depends on ' +
+          'private investment over a very long horizon, TOP would seek a cross-party 25-year Energy Strategy — the ' +
+          'stated point being to end “on-again off-again” pumped hydro and LNG announcements.',
+      },
+      {
+        heading: 'A Capacity Investment Scheme',
+        body:
+          'Modelled on Australia’s, which the document says has already supported more than 18 GW and will unlock over ' +
+          '$70 billion of investment. Competitive tenders would award long-term government contracts guaranteeing new ' +
+          'renewables and storage a minimum revenue, with excess revenue above a ceiling price shared back with the ' +
+          'government. Two deliberate limits: the guarantee applies only to a project’s second decade of operation so ' +
+          'market price signals survive, and initial tender rounds are restricted to new entrants to build competition ' +
+          'against the incumbent gentailers.',
+      },
+      {
+        heading: 'The same deal, offered to industry',
+        body:
+          'A mirror-image scheme for large industrial energy users: long-term government guarantees, won through ' +
+          'competitive tender, that their electricity price will not exceed a set amount if they switch off fossil ' +
+          'fuels. The stated purpose is timing — creating baseline demand that arrives alongside the new generation ' +
+          'the capacity scheme brings on.',
+      },
+      {
+        heading: 'Ringfencing the Crown’s own dividends',
+        body:
+          'The document’s sharpest claim about the status quo is that the biggest single beneficiary of high power ' +
+          'prices is the government itself, through its majority stakes in three of the four big gentailers — which ' +
+          'leaves successive governments with no incentive to change the rules producing those profits. Ringfencing ' +
+          'that revenue is meant to break the conflict and pay for everything else in the policy.',
+      },
+      {
+        heading: 'One regulator, one ministry, one national policy statement',
+        body:
+          'Four bodies currently oversee energy with overlapping mandates. Their key functions would merge into a ' +
+          'single modern energy regulator and a single Ministry of Energy. A national policy statement on generation ' +
+          'and distribution would make consenting easier and less litigated, covering grid-scale generation and ' +
+          'storage, generation for direct commercial use, and small distributed infrastructure in homes.',
+      },
+      {
+        heading: 'Consolidating the lines companies',
+        body:
+          'New Zealand has 29 electricity distribution businesses, ranging from Vector with over 600,000 customers to ' +
+          'Buller Electricity with under 5,000. The document argues they lack the scale to fund decarbonisation, and ' +
+          'that the Commerce Commission’s light-handed regulation has held allowable capital investment down. It would ' +
+          'consolidate them into six to eight firms and rewrite the revenue rules for them and Transpower to permit ' +
+          'anticipatory investment — building capacity before it is needed rather than in response to demand.',
+      },
+      {
+        heading: 'Low-interest loans through your rates bill',
+        body:
+          'Rewiring Aotearoa’s electrification loans would be adopted as a national Ratepayer Assistance Scheme run by ' +
+          'councils, borrowing through the Local Government Funding Agency. The document is specific that because the ' +
+          'loan attaches to the rateable property and no shareholder holds more than 20 percent, the debt sits on ' +
+          'neither council nor central government books.',
+      },
+      {
+        heading: 'Community-owned energy',
+        body:
+          'Two funds: one supporting communities and electricity distributors to work together so local schemes are ' +
+          'accommodated on the wider grid, and direct government co-investment in community-owned generation and ' +
+          'storage up to 15 MW. The argument made for it is resilience and efficiency of the whole system, not just ' +
+          'local benefit.',
+      },
+      {
+        heading: 'Warmer Kiwi Homes, doubled and widened',
+        body:
+          'EECA’s existing insulation and heating programme would have its funding doubled and its scope extended to ' +
+          'appliance electrification and rooftop solar for low-income households — the households the document says ' +
+          'are least able to capture those benefits on their own.',
+      },
+      {
+        heading: 'Electric buses by 2030',
+        body:
+          'A mandate on councils to electrify urban bus fleets by 2030, fully centrally funded, covering both vehicles ' +
+          'and charging infrastructure. The document expects spillover benefits: the charging capacity built for buses ' +
+          'makes electrifying heavy freight easier later.',
+      },
+      {
+        heading: 'How the lights stay on',
+        body:
+          'Grid stability comes primarily from overbuilding — having more renewable capacity than the grid needs, so ' +
+          'wind and solar run ahead of hydro and water is left in the dams as a fast-response reserve, topped up by ' +
+          'new geothermal and hydro. Household and community storage is described as building resilience and shifting ' +
+          'peaks rather than solving dry years; grid-scale storage helps with peaks too. Huntly stays available as a ' +
+          'true-emergency backup rather than a routine part of the mix.',
+      },
+      {
+        heading: 'What they rule out, and why',
+        body:
+          'The document explicitly rejects three things. The LNG import terminal, on the grounds it locks in imported ' +
+          'fuel and exposure to volatile international prices. Structural separation of the gentailers, as lengthy and ' +
+          'costly without addressing what they see as the real problem — the incentive to underinvest. And counting ' +
+          'deep core geothermal or fusion in the planned generation mix, as unproven at grid scale, while supporting ' +
+          'research and noting the capacity scheme is technology-neutral if a breakthrough comes.',
+      },
+    ],
+
+    examples: [],
+
+    revenue: {
+      heading: 'What they say it would cost',
+      rows: [
+        { period: 'Ringfenced dividends', amount: '~$500m/yr' },
+        { period: 'Bus electrification', amount: 'Up to $125m/yr' },
+        { period: 'Community generation', amount: 'Up to $100m/yr' },
+        { period: 'Warmer Kiwi Homes', amount: '~$80m/yr' },
+        { period: 'Administration', amount: '~$21m/yr' },
+      ],
+      basis:
+        'Every operating cost is drawn from the ringfenced dividends rather than new revenue — but the document is ' +
+        'explicit that taking that money out of core Crown revenue is itself a cost needing another source, and names ' +
+        'the land value tax. The Capacity Investment Scheme sits separately as a contingent liability on the balance ' +
+        'sheet with a stated expected value of $0, since it is designed never to pay out. TOP also publishes the ' +
+        'assumptions behind its jobs, GDP and savings claims, citing MBIE and Sense Partners, BERL, Treasury, ' +
+        'Powerswitch, Rewiring Aotearoa and BBVA Research.',
+    },
+
+    quotes: [
+      {
+        text: 'New Zealand is an energy-rich country that behaves as though we are energy-poor.',
+        context: 'Opening line',
+      },
+      {
+        text: 'This will take this funding away from core crown revenue, so represents a direct cost that will need to be funded through other revenue sources; like the land value tax.',
+        context: 'Frequently asked questions — how much will all this cost?',
+      },
+      {
+        text: 'No. This locks us in to long-term reliance on imported LNG.',
+        context: 'Asked whether they support the Government’s LNG import terminal',
+      },
+      {
+        text: 'Modelling the impact of large-scale policies like these is necessarily difficult and uncertain. We have taken a conservative approach to the claims we make and based these on similar modelling by reputable bodies.',
+        context: 'Justifying the jobs, GDP and household savings claims',
+      },
+    ],
+
+    openQuestions: [
+      'The summary promises direct household savings of “$500+” a year, while the assumptions table behind it works to $600.',
+      'The whole plan is paid for by ringfencing dividends the Crown already collects, which the document says must then be replaced from elsewhere — it names the land value tax, so this policy leans on the tax policy passing too.',
+      'The Capacity Investment Scheme is carried as a contingent liability with an expected value of $0, and the document acknowledges risk if power prices fall sharply without quantifying it.',
+      'Consolidating 29 distributors into six to eight is stated as the outcome, but not whether it would happen by merger, regulation or compulsion.',
+      'The GDP claim rests on about $45 billion of capital spending — half of an estimated $30 billion grid and $60 billion generation total, assumed to be genuinely new rather than already planned. That assumption is stated but not tested.',
+      'Bus electrification is a mandate on councils that the document says will be fully centrally funded, but it does not say who ends up owning the vehicles and charging assets.',
+    ],
+
+    source: {
+      documentTitle: 'Abundant Energy Policy Overview',
+      publisher: 'The Opportunities Party',
+      retrieved: '2026-08-16',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
