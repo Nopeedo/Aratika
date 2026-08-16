@@ -102,10 +102,16 @@ function RegisterInner() {
         )}
         <SubmitButton loading={loading}>{isPremium ? 'Start free trial' : 'Create account'}</SubmitButton>
       </form>
+      {/* The weekly email is opt-OUT, so this page is the only place it can be
+          disclosed before it starts arriving. Saying so here turns consent
+          inferred from having an account into consent actually given, and
+          naming where the off-switch lives means nobody has to hunt for an old
+          email to find it. */}
       <p style={{ fontSize: 11.5, color: '#9aa0aa', fontFamily: MANROPE, textAlign: 'center', marginTop: 14, lineHeight: 1.5 }}>
         By signing up you agree to our{' '}
         <Link href="/terms" style={{ color: SECONDARY, fontWeight: 600 }}>Terms</Link> and{' '}
         <Link href="/privacy" style={{ color: SECONDARY, fontWeight: 600 }}>Privacy Policy</Link>.
+        {' '}We’ll send you the Arapono Weekly — one email a week, and you can turn it off any time from your dashboard.
       </p>
       <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, textAlign: 'center', marginTop: 14 }}>
         Already have an account?{' '}

@@ -11,6 +11,7 @@ import { createClient } from '@/lib/supabase/server'
 import { ManageBillingButton } from '@/components/billing/billing-buttons'
 import { CommandCentre, type TrackedItem } from '@/components/bookmarks/command-centre'
 import { NotifyToggle } from '@/components/notifications/notify-toggle'
+import { EmailToggle } from '@/components/notifications/email-toggle'
 import { InstallButton } from '@/components/notifications/install-button'
 import { DashboardElection } from '@/components/dashboard/election-module'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
@@ -40,6 +41,12 @@ export default async function DashboardPage() {
   if (!user) redirect('/login')
 
   const name = (user.user_metadata?.name as string) || user.email?.split('@')[0] || 'there'
+
+  // Seeded server-side so the toggle renders in its true state rather than
+  // flashing the wrong one. No row yet means never touched, and the newsletter
+  // is opt-out — so absent reads as subscribed, matching what the sender does.
+  const { data: prefs } = await supabase.from('notification_prefs').select('email_digest_enabled').eq('user_id', user.id).maybeSingle()
+  const emailDigestEnabled = prefs?.email_digest_enabled ?? true
 
   const { data: sub } = await supabase.from('subscriptions').select('status').eq('user_id', user.id).maybeSingle()
   // Paid tier off → treat everyone as premium so all features are free.
@@ -195,6 +202,7 @@ export default async function DashboardPage() {
               dashboard is the only page they belong on. */}
           <div style={{ marginTop: 20, display: 'grid', gap: 12 }}>
             <NotifyToggle />
+            <EmailToggle initialEnabled={emailDigestEnabled} />
             <InstallButton />
           </div>
         </div>
