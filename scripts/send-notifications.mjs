@@ -50,14 +50,53 @@ console.log(`${MODE}: ${rows.length} pending across ${byUser.size} user(s). ${LI
 let pushed = 0
 let failedUsers = 0
 
+/** Shorten to a whole word and mark the cut, rather than letting the OS slice
+ *  mid-word. Notification bodies are clipped hard and without warning. */
+function trim(s, max) {
+  const t = String(s || '').replace(/\s+/g, ' ').trim()
+  if (t.length <= max) return t
+  const cut = t.slice(0, max)
+  const space = cut.lastIndexOf(' ')
+  return `${(space > max * 0.6 ? cut.slice(0, space) : cut).replace(/[\s.,;:·-]+$/, '')}…`
+}
+
+/** The digest body: one item per line, and an honest count of the rest.
+ *
+ *  Three headlines joined by ' · ' ran together into a single wall the OS then
+ *  chopped mid-word, and anything past the third simply vanished — four updates
+ *  looked exactly like three. A line each is scannable at a glance, and the
+ *  overflow line means the number in the title always adds up to what you can
+ *  see plus what it says is missing. */
+const LISTED = 3
+function digestBody(items) {
+  const lines = items.slice(0, LISTED).map((i) => `• ${trim(i.title, 58)}`)
+  const rest = items.length - LISTED
+  if (rest > 0) lines.push(`+ ${rest} more`)
+  return lines.join('\n')
+}
+
 for (const [userId, items] of byUser) {
   const single = items.length === 1 ? items[0] : null
   const pushPayload = single
-    ? { title: single.title, body: single.body, url: single.url || '/', tag: `n-${single.category}` }
-    : { title: `${items.length} updates on what you follow`, body: items.slice(0, 3).map((i) => i.title).join(' · '), url: '/command-centre', tag: 'n-digest' }
+    // A single item keeps its own destination — tapping a news alert should
+    // open that article, not a dashboard.
+    ? { title: trim(single.title, 70), body: trim(single.body, 120), url: single.url || '/dashboard', tag: `n-${single.category}` }
+    : {
+        title: `${items.length} updates on what you follow`,
+        body: digestBody(items),
+        // /dashboard, not /command-centre. The latter is the public explainer;
+        // sending a signed-in reader there from their own digest dropped them
+        // on a page pitching the feature they already use.
+        url: '/dashboard',
+        tag: 'n-digest',
+      }
 
   if (!LIVE) {
-    console.log(`  ${userId.slice(0, 8)}… → push "${pushPayload.title}" (${items.length} item(s))`)
+    // Print the body too. The whole point of a dry run is to see what would
+    // land on someone's lock screen, and the body is where the readability
+    // lives — the title is just a count.
+    console.log(`  ${userId.slice(0, 8)}… → "${pushPayload.title}" (${items.length} item(s)) → ${pushPayload.url}`)
+    for (const line of pushPayload.body.split('\n')) console.log(`      ${line}`)
     continue
   }
 
