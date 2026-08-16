@@ -32,6 +32,39 @@ const CSP_REPORT_ONLY = [
 ].join('; ')
 
 const nextConfig: NextConfig = {
+  /**
+   * Send the production *.vercel.app hosts to the real domain.
+   *
+   * Without this the site answers on both, and whichever one you happen to be
+   * on becomes your origin for everything that is origin-scoped. Web Push is
+   * the visible case: a notification is labelled with the origin of the service
+   * worker that registered it, so a phone that subscribed on the Vercel URL
+   * shows "vercel.app" on every alert instead of arapono.org.nz. The same split
+   * affects the service worker itself, localStorage, and the auth cookie — one
+   * person can end up with two of each without ever noticing.
+   *
+   * Preview deployments are deliberately exempt: VERCEL_ENV is 'preview' for
+   * those, and redirecting them to production would make every branch preview
+   * useless. This is evaluated at build time, so each deployment bakes in the
+   * right answer for itself.
+   *
+   * 307 rather than 308 on purpose. A permanent redirect is cached hard by
+   * browsers and would be painful to walk back if the Vercel host is ever
+   * needed for debugging. Canonical tags and the sitemap already point search
+   * engines at arapono.org.nz, so nothing is lost by keeping this reversible.
+   */
+  async redirects() {
+    if (process.env.VERCEL_ENV !== 'production') return []
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: '(.*)\\.vercel\\.app' }],
+        destination: 'https://arapono.org.nz/:path*',
+        permanent: false,
+      },
+    ]
+  },
+
   async headers() {
     return [
       {
