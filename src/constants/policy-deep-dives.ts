@@ -3389,6 +3389,301 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-16',
     },
   },
+
+  // ── New Zealand First ──────────────────────────────────────────────────────
+  //
+  // Sourced from nzfirst.nz rather than a PDF. NZ First publishes its 2026
+  // campaign policy as web pages, so these are the first dives that can link
+  // straight to the document a reader is being asked to check. Their 2023
+  // manifesto is deliberately not used: it predates their term in government
+  // and their own site keeps it on a separate "2023 Election Policies" page.
+
+  {
+    topics: ['climate'],
+    party: 'nzfirst',
+    slug: 'breaking-up-the-gentailers',
+    title: 'Breaking up the gentailers',
+    summary:
+      'NZ First would split the four big power companies into separate generation and retail businesses, on the ' +
+      'argument that owning both keeps prices high and keeps cheaper retailers out. The pricing system in which the ' +
+      'most expensive generator sets the price for all electricity would be replaced, holding back supply to lift ' +
+      'prices would be stopped, new generation would get long-term fixed-price contracts and first use of its power, ' +
+      'and households with solar could sell back at the price they pay. All under a National Energy Strategy.',
+
+    facts: [
+      { label: 'Generation controlled', value: 'Almost 90%', note: 'By the big four power companies' },
+      { label: 'The split', value: 'Generators and retailers', note: 'So no company controls both the power and the price' },
+      { label: 'Pricing today', value: 'The dearest sets it', note: 'Even for electricity that is cheap to generate' },
+      { label: 'Solar buy-back', value: 'What you pay for it', note: 'Households selling back at the retail rate' },
+      { label: 'New generation', value: 'Fixed-price contracts', note: 'Plus a guarantee their power is used first' },
+      { label: 'Framework', value: 'A National Energy Strategy', note: 'Promised, with no detail given' },
+    ],
+
+    // One panel, no counterpart. These are the closures the document offers as
+    // evidence; inventing a second list to balance the layout would be padding.
+    coveredLabel: 'Closures the policy points to',
+    covered: [
+      'The mills at Karioi and Tangiwai',
+      'Oji Fibre Solutions’ Penrose mill',
+      'Carter Holt Harvey’s Tokoroa plywood plant and Eves Valley sawmill',
+      'Balance Agri-Nutrients’ Kapuni fertiliser plant',
+      'Heinz Wattie’s, which has proposed ending New Zealand manufacturing, putting 350 jobs at risk',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Splitting generation from retail',
+        body:
+          'The four big power companies would be broken into separate generators and retailers. The stated problem is ' +
+          'that they control almost 90 percent of generation and then sell it back to themselves, which the document ' +
+          'says makes it very difficult for innovative and low-cost retailers to enter, keeping prices high.',
+      },
+      {
+        heading: 'Changing how the price is set',
+        body:
+          'Under the current system the most expensive generator sets the price for all electricity, including power ' +
+          'that costs very little to produce. NZ First would replace that, and stop companies holding back supply to ' +
+          'drive prices higher.',
+      },
+      {
+        heading: 'Certainty for new power stations',
+        body:
+          'Long-term fixed-price contracts would be guaranteed for new-build generation, along with a guarantee that ' +
+          'their power is first to be used. The claimed result is more power stations, more renewable energy, more ' +
+          'competition and more resilience.',
+      },
+      {
+        heading: 'Selling your own solar back',
+        body:
+          'Households generating their own power would be able to sell it back to the grid at the same price they pay ' +
+          'for power — a straight retail-rate buy-back rather than the lower rates typically offered now.',
+      },
+      {
+        heading: 'A National Energy Strategy',
+        body:
+          'The whole package sits under a promised National Energy Strategy. The document commits to delivering one ' +
+          'but does not describe what it would contain or when it would arrive.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'We will be breaking up the power companies so they can no longer control both the power and the price.',
+        context: 'Opening statement of the policy',
+      },
+      { text: 'Energy security is national security.', context: 'On why it matters' },
+      {
+        text: 'Under the current system, the most expensive generator sets the price for all electricity - even electricity that costs peanuts to generate.',
+        context: 'On how the price is set',
+      },
+      {
+        text: 'If you generate power at home like solar, you should be able to sell it back to the grid at the same price you pay for it.',
+        context: 'On household generation',
+      },
+    ],
+
+    openQuestions: [
+      'No cost, timeline or legislative vehicle is given for the split.',
+      'Whether the separation would be by ownership or operational within existing companies is not stated — the difference decides how far it goes.',
+      'What replaces the current pricing system is not described, beyond ending the rule that the most expensive generator sets the price.',
+      'The solar buy-back is set at the retail price a household pays, and the document does not say who absorbs the gap between that and the wholesale rate.',
+      'Who would hold the fixed-price contracts for new generation, and what happens if wholesale prices fall below the fixed price, is not addressed.',
+      'The National Energy Strategy is promised without content or timing.',
+    ],
+
+    source: {
+      documentTitle: 'Breaking up the Gentailers',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/breaking_up_the_gentailers',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['economy'],
+    party: 'nzfirst',
+    slug: 'kiwisaver-generation',
+    title: 'A KiwiSaver Generation: enrolment at birth',
+    summary:
+      'NZ First would make KiwiSaver enrolment automatic at birth, with an immediate $1,000 Crown contribution for New ' +
+      'Zealand citizens only — a once-per-lifetime payment meant to compound for decades. It is designed to work with ' +
+      'their existing campaign policy of compulsory KiwiSaver across the workforce, with employee and employer ' +
+      'contributions rising to 8 percent and eventually 10.',
+
+    facts: [
+      { label: 'Enrolment', value: 'Compulsory at birth', note: 'Described as universal, removing the enrolment gap' },
+      { label: 'Crown contribution', value: '$1,000', note: 'Automatic and immediate' },
+      { label: 'Who gets the money', value: 'NZ citizens only', note: 'The contribution is citizenship-restricted' },
+      { label: 'How often', value: 'Once per lifetime', note: 'Intended to compound for decades' },
+      { label: 'Workforce contributions', value: '8%, then 10%', note: 'Employee and employer, under their existing policy' },
+      { label: 'Workforce enrolment', value: 'Compulsory', note: 'Their existing campaign policy, which this extends' },
+    ],
+
+    mechanics: [
+      {
+        heading: 'Enrolment from day one',
+        body:
+          'Every child would begin their financial life as a KiwiSaver member rather than joining on entering work. ' +
+          'The document frames this as removing the enrolment gap entirely for the next generation and normalising ' +
+          'saving as a lifelong habit, so that no New Zealander reaches adulthood without a savings foundation.',
+      },
+      {
+        heading: 'The $1,000 contribution',
+        body:
+          'An automatic, immediate Crown payment into the new account, restricted to New Zealand citizens. It is a ' +
+          'once-per-lifetime investment rather than a recurring one, and the case for it rests on decades of ' +
+          'compounding rather than the size of the sum.',
+      },
+      {
+        heading: 'How it fits their wider KiwiSaver policy',
+        body:
+          'This extends an existing NZ First campaign policy of compulsory KiwiSaver enrolment across the workforce ' +
+          'with employee and employer contributions rising to 8 percent initially and eventually 10 percent. The ' +
+          'document’s argument is that if participation is to be the default rather than the exception, birth ' +
+          'enrolment is the logical starting point.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'New Zealand First is going to make KiwiSaver enrolment compulsory at birth and there will be an automatic immediate Crown contribution of $1000 for New Zealand citizens only.',
+        context: 'Opening statement of the policy',
+      },
+      { text: 'This is a once-per-lifetime investment that compounds for decades.', context: 'On the $1,000 contribution' },
+      {
+        text: 'Universal birth enrolment will ensure every child begins their financial life as a KiwiSaver member, with a meaningful balance already growing on their behalf.',
+        context: 'On enrolment at birth',
+      },
+    ],
+
+    openQuestions: [
+      'Enrolment is described as universal while the $1,000 is for citizens only, and the document does not say whether a non-citizen child is enrolled without the payment or not enrolled at all.',
+      'No total cost is given, and none can be worked out from the document, which states no number of births.',
+      'Which fund a newborn’s account would default to, and who would choose it, is not stated.',
+      'When the balance could be accessed, and whether the existing first-home withdrawal rules would apply to it, is not addressed.',
+      'The rise to 8 and then 10 percent contributions is referred to as existing policy, with no timeline given here.',
+      'Whether the $1,000 would be indexed, or fixed at that amount for future cohorts, is not said.',
+    ],
+
+    source: {
+      documentTitle: 'Establishing a KiwiSaver Generation',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/establishing_a_kiwisaver_generation',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['economy'],
+    party: 'nzfirst',
+    slug: 'break-up-the-supermarket-duopoly',
+    title: 'Breaking up the supermarket duopoly',
+    summary:
+      'NZ First would legislate to split Foodstuffs into two nationwide cooperatives by brand — New World and Four ' +
+      'Square in one, Pak’nSave in the other — putting both in direct competition with Woolworths. Commerce ' +
+      'Commission penalties would rise to match Australia’s, the Grocery Commissioner would gain power to ' +
+      'investigate, make binding decisions and impose penalties, and a new industry-rules framework under the ' +
+      'Commerce Act 1986 would allow faster targeted action on the path from farm to shelf.',
+
+    facts: [
+      { label: 'Market share', value: 'Over 80%', note: 'Held between Woolworths and Foodstuffs' },
+      { label: 'Excess profits', value: '~$1m a day', note: 'A previous Commerce Commission finding' },
+      { label: 'The split', value: 'Foodstuffs into two', note: 'New World and Four Square; Pak’nSave' },
+      { label: 'Maximum penalty', value: '$10m', note: 'Or three times the gain, or 10% of turnover' },
+      { label: 'Grocery Commissioner', value: 'Binding decisions', note: 'Plus powers to investigate and penalise' },
+      { label: 'The supply chain gap', value: '60c to $5.79', note: 'A grower’s price per kg of peas against the shelf price' },
+    ],
+
+    coveredLabel: 'What the Commerce Commission would gain',
+    exemptLabel: 'What the Grocery Commissioner would gain',
+
+    covered: [
+      'Penalties lifted to match Australia — up to $10 million, three times the gain, or 10 percent of turnover',
+      'Faster investigations',
+      'Real enforcement powers for serious breaches',
+      'A new industry-rules framework under the Commerce Act 1986, allowing targeted action without waiting for new legislation',
+    ],
+
+    exempt: [
+      'Power to investigate',
+      'Power to make binding decisions',
+      'Power to impose penalties directly',
+      'In place of a role the document describes as sitting on the sidelines giving warnings',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Splitting Foodstuffs in two',
+        body:
+          'Legislation would break Foodstuffs into two nationwide cooperatives along brand lines — one holding New ' +
+          'World and Four Square, the other Pak’nSave — so that both compete directly with Woolworths New Zealand ' +
+          'and with each other. The stated aim is real pressure to lower prices, improve value and treat suppliers ' +
+          'fairly.',
+      },
+      {
+        heading: 'Penalties matched to Australia',
+        body:
+          'Tougher penalties, faster investigations and real enforcement powers for the Commerce Commission, with ' +
+          'fines for serious breaches lifted to Australian levels: up to $10 million, three times the gain made, or ' +
+          '10 percent of turnover.',
+      },
+      {
+        heading: 'A Grocery Commissioner with teeth',
+        body:
+          'The document calls the current role toothless and would reform it to give the Commissioner power to ' +
+          'investigate, make binding decisions and impose penalties directly, rather than issuing warnings.',
+      },
+      {
+        heading: 'Fixing the farm-to-shelf pathway',
+        body:
+          'The argument is that controlling who gets shelf access means controlling the price. A new framework for ' +
+          'industry rules under the Commerce Act 1986 would allow targeted action on competition problems without ' +
+          'waiting for lengthy legislative change, with the stated aim of stopping New Zealand producers being ' +
+          'squeezed off the shelf.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'For too long, New Zealanders have faced rising grocery bills while Woolworths and Foodstuffs control more than 80 percent of the grocery market.',
+        context: 'Opening statement of the problem',
+      },
+      {
+        text: 'recently a grower received just 60c per kg of peas, while those same peas retail for as much as $5.79',
+        context: 'On the imbalance across the supply chain',
+      },
+      {
+        text: 'When they control the pathway from farm to shelf, they control the price.',
+        context: 'Fixing the ‘Farm to Shelf’ Pathway',
+      },
+      {
+        text: 'The role of the current toothless Groceries Commissioner, belatedly established by Labour in 2023, will also be reformed giving the position the proper powers to investigate, make binding decisions, and impose penalties directly - not just sit on the sidelines and give warnings.',
+        context: 'Stronger Powers for Commerce Commission and Grocery Commissioner',
+      },
+    ],
+
+    openQuestions: [
+      'Foodstuffs is a cooperative owned by its member grocers, and the document does not describe how legislation would divide it or what happens to those members’ ownership.',
+      'No timeline or cost is given, and no view on whether compensation would arise.',
+      'Nothing says whether the two new cooperatives would be barred from re-merging or from coordinating on price.',
+      'The $1 million a day in excess profits is attributed to a previous Commerce Commission finding without a date or report named.',
+      'The pea price comparison gives no date, region, or account of what happens between the grower and the shelf.',
+      'What the new industry-rules framework would cover, and who would write the rules, is not stated.',
+    ],
+
+    source: {
+      documentTitle: 'Break up the Supermarket Duopoly',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/break_up_the_supermarket_duopoly',
+      retrieved: '2026-08-16',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
