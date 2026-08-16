@@ -96,8 +96,24 @@
 /* overflow-x: hidden on both html and body — belt-and-braces against any single
    element (a fixed-position bar, a full-bleed rail, etc.) being a hair wider
    than the viewport and causing the whole page to shift/scroll sideways on
-   mobile. Neither element is meant to scroll horizontally on its own. */
-html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
+   mobile. Neither element is meant to scroll horizontally on its own.
+
+   NO scroll-behavior: smooth here, deliberately. It used to be, and it broke
+   navigation: the App Router scrolls to the top on every route change, and a
+   global smooth turns that instant jump into an animation. The destination is
+   still laying out while it runs — fonts swapping, images arriving, streamed
+   content landing — so the animation chases a moving target and stops short.
+   Measured on /policies/economy/top → /policies/economy: the reader arrived at
+   235px instead of 0, below the page heading. On longer pages it lands further
+   down, which reads as "it jumped to the bottom and I can't see what I came
+   for".
+
+   Nothing is lost by removing it. Every deliberate smooth scroll in the app
+   already opts in per call — scrollIntoView({ behavior: 'smooth' }) in the
+   policy explorer, the bills tracker, the bill reader and the battlegrounds
+   map. Those keep working; only the accidental animation of route changes
+   stops. */
+html { overflow-x: hidden; width: 100%; }
 
 body {
   background-color: var(--background);
