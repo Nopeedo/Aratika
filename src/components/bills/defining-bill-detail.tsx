@@ -10,6 +10,8 @@ import { ArrowLeft, ArrowRight, ExternalLink, CheckCircle2, XCircle, Clock } fro
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
+import { BILLS_54 } from '@/constants/bills-54'
+import DEFINING_BILL_MAP from '@/constants/defining-bill-map.json'
 import type { PolicyTopic } from '@/types'
 import { INK, MANROPE } from '@/constants/theme'
 
@@ -22,11 +24,42 @@ const STATUS: Record<DefiningBill['statusKind'], { fg: string; bg: string; icon:
   'in-progress': { fg: '#92400e', bg: '#f8ecd4', icon: Clock },
 }
 
+/** Today in NZ, resolved once at module scope. This is a server component on a
+ *  statically generated route, so it is fixed at build — fine, because the bills
+ *  dataset itself is rebuilt daily and the page with it. */
+const TODAY_NZ = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })
+
+/** "13 August 2026" — a deadline should read like a date. */
+function fmtDate(iso?: string | null) {
+  if (!iso) return null
+  const d = new Date(`${iso}T00:00:00Z`)
+  return isNaN(d.getTime()) ? iso : d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+}
+
+/** The real bills behind an editorial grouping.
+ *
+ *  These pages carry a name the public uses — "Replacing the Resource Management
+ *  Act" — while Parliament is actually moving three separately-titled bills. The
+ *  mapping already existed for matching bookmarks and submission alerts, but the
+ *  page never showed it, so a reader who tracked the topic had no way to reach
+ *  the legislation itself or see how far along any of it was.
+ *
+ *  Linking out to Parliament rather than to /bills/<slug>: only the ten curated
+ *  bills in bills-data have pages here. These live in the 270-bill snapshot,
+ *  which the tracker renders but which has no individual routes — an internal
+ *  link would 404. */
+function coveredBills(slug: string) {
+  const mapped = (DEFINING_BILL_MAP as Record<string, string[] | string>)[slug]
+  if (!Array.isArray(mapped)) return []
+  return mapped.map((s) => BILLS_54.find((b) => b.slug === s)).filter((b): b is (typeof BILLS_54)[number] => !!b)
+}
+
 export function DefiningBillDetail({ bill }: { bill: DefiningBill }) {
   const st = STATUS[bill.statusKind]
   const StatusIcon = st.icon
   const topic = bill.topic ? POLICY_TOPICS[bill.topic as PolicyTopic] : null
   const dotColor = bill.statusKind === 'defeated' ? '#c23b3b' : bill.statusKind === 'in-progress' ? '#c07a12' : ACCENT
+  const covered = coveredBills(bill.slug)
 
   return (
     <div style={{ background: GROUND, minHeight: '100vh' }}>
@@ -89,6 +122,54 @@ export function DefiningBillDetail({ bill }: { bill: DefiningBill }) {
         {bill.publicResponse && <Section label="Public response"><p style={pStyle}>{bill.publicResponse}</p></Section>}
         <Section label="Who championed it"><p style={pStyle}>{bill.champion}</p></Section>
         {bill.outcome && <Section label="Where it landed"><p style={pStyle}>{bill.outcome}</p></Section>}
+
+        {covered.length > 0 && (
+          <div style={{ marginTop: 28 }}>
+            <h2 style={labelStyle}>{covered.length === 1 ? 'The bill itself' : `The ${covered.length} bills this covers`}</h2>
+            <p style={{ fontSize: 13.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 12px' }}>
+              {covered.length === 1
+                ? 'The legislation behind this, with where it has got to.'
+                : `“${bill.title}” is how this is talked about; Parliament is moving ${covered.length} separately-titled bills to do it. Here they are, with where each has got to.`}
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {covered.map((b) => {
+                const closes = fmtDate(b.submissionsClose)
+                // submissionsCalled alone only says a window existed, not that
+                // it is still open — one of these bills has been law since
+                // February. Comparing against the date makes the difference
+                // between something a reader can act on and a date that has
+                // long passed, and the second must never be dressed as the
+                // first. Resolved at build; the bills dataset rebuilds daily.
+                const stillOpen = !!(b.submissionsCalled && b.submissionsClose && b.submissionsClose >= TODAY_NZ)
+                const closed = !!(b.submissionsCalled && closes && !stillOpen)
+                const open = stillOpen
+                return (
+                  <div key={b.slug} style={{ background: CARD, border: `1px solid ${open ? '#bfd4fe' : LINE}`, borderRadius: 12, padding: '12px 14px' }}>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.35 }}>{b.title}</div>
+                    <div style={{ fontSize: 12.5, color: MUTED, fontFamily: MANROPE, marginTop: 3 }}>{b.status}</div>
+                    {/* The one thing on this page a reader can act on, so it is
+                        called out rather than left as another status line. */}
+                    {open && (
+                      <div style={{ fontSize: 12.5, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, marginTop: 6 }}>
+                        Open for public submissions until {closes}
+                      </div>
+                    )}
+                    {closed && (
+                      <div style={{ fontSize: 12.5, color: MUTED, fontFamily: MANROPE, marginTop: 6 }}>
+                        Submissions closed {closes}
+                      </div>
+                    )}
+                    {b.officialUrl && (
+                      <a href={b.officialUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: ACCENT_DK, fontFamily: MANROPE, textDecoration: 'none', marginTop: 7 }}>
+                        Read it on parliament.nz <ExternalLink style={{ width: 12, height: 12 }} />
+                      </a>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 28, paddingTop: 22, borderTop: `1px solid ${LINE}` }}>
           {topic && bill.topic && (
