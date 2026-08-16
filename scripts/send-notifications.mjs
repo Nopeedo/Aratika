@@ -48,6 +48,7 @@ for (const r of rows) { if (!byUser.has(r.user_id)) byUser.set(r.user_id, []); b
 console.log(`${MODE}: ${rows.length} pending across ${byUser.size} user(s). ${LIVE ? 'SENDING' : 'DRY RUN (add --send to deliver)'}`)
 
 let pushed = 0
+let failedUsers = 0
 
 for (const [userId, items] of byUser) {
   const single = items.length === 1 ? items[0] : null
@@ -60,10 +61,43 @@ for (const [userId, items] of byUser) {
     continue
   }
 
-  const { sent } = await sendPushToUser(userId, pushPayload)
-  if (sent) pushed++
-  await sb().from('notification_queue').update({ sent_at: new Date().toISOString(), channels: 'push' }).in('id', items.map((i) => i.id))
+  const { sent, devices, unconfigured } = await sendPushToUser(userId, pushPayload)
+  const ids = items.map((i) => i.id)
+
+  if (sent) {
+    pushed++
+    await sb().from('notification_queue').update({ sent_at: new Date().toISOString(), channels: 'push' }).in('id', ids)
+  } else if (unconfigured) {
+    // Keys missing from this environment. Nothing is wrong with the queue or
+    // the user's devices, so leave every row pending — they go out on the
+    // first run after the keys are added.
+    failedUsers++
+  } else if (devices === 0) {
+    // Nothing to deliver to — they turned push off, or the last device was
+    // pruned. Retrying forever would leave these pending indefinitely and
+    // resurface as a stale flood the day they re-subscribe, so close them off
+    // and record that no channel carried them.
+    await sb().from('notification_queue').update({ sent_at: new Date().toISOString(), channels: 'none' }).in('id', ids)
+    console.log(`  ${userId.slice(0, 8)}… → no devices; ${items.length} item(s) closed undelivered`)
+  } else {
+    // Had devices, delivered to none of them. This used to mark them sent
+    // anyway, which burned the queue rows on a failure and meant they were
+    // never retried. Leave them pending for the next sweep instead.
+    failedUsers++
+    console.error(`  ${userId.slice(0, 8)}… → delivered to 0 of ${devices} device(s); leaving ${items.length} item(s) queued`)
+  }
 }
 
-console.log(LIVE ? `Done. Pushed to ${pushed} user(s).` : 'Dry run complete — no notifications sent, nothing marked.')
+if (!LIVE) {
+  console.log('Dry run complete — no notifications sent, nothing marked.')
+  process.exit(0)
+}
+
+console.log(`Done. Pushed to ${pushed} user(s).`)
+// Exit non-zero when nobody could be reached but somebody should have been.
+// A green run that delivered nothing is what hid this for forty runs.
+if (failedUsers > 0) {
+  console.error(`${failedUsers} user(s) had queued items and received nothing — their rows are still pending.`)
+  process.exit(1)
+}
 process.exit(0)

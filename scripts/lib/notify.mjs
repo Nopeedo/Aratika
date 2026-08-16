@@ -46,6 +46,7 @@ function vapidReady() {
   return true
 }
 export const pushConfigured = () => !!(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY)
+let warnedNoVapid = false
 
 // ── Email (Zoho SMTP) ─────────────────────────────────────────────────────────
 let _mail
@@ -80,9 +81,21 @@ export async function enqueue({ userId, urgency, category, dedup, title, body, u
 // ── Send: push ────────────────────────────────────────────────────────────────
 /** Send a push to every device a user opted in on. Prunes expired subs. */
 export async function sendPushToUser(userId, payload) {
-  if (!vapidReady()) return { sent: 0 }
+  // Silently returning here is how a whole run reported success having sent
+  // nothing: no keys, no attempt, no complaint. Missing keys is a deployment
+  // fault, not a normal state, so say so — once, not per user.
+  if (!vapidReady()) {
+    if (!warnedNoVapid) {
+      warnedNoVapid = true
+      console.error('  push NOT CONFIGURED: NEXT_PUBLIC_VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY missing from this environment. Nothing will be delivered.')
+    }
+    return { sent: 0, devices: 0, unconfigured: true }
+  }
   const { data: subs } = await sb().from('push_subscriptions').select('id, endpoint, p256dh, auth').eq('user_id', userId)
-  if (!subs?.length) return { sent: 0 }
+  // `devices` must be reported here too, not just on the paths below — without
+  // it the caller reads undefined, and "no devices" gets misreported as
+  // "delivered to 0 of undefined devices".
+  if (!subs?.length) return { sent: 0, devices: 0 }
   if (DRY) { console.log(`  [DRY push] ${userId.slice(0, 8)}… → ${subs.length} device(s): "${payload.title}"`); return { sent: subs.length } }
   let sent = 0
   for (const s of subs) {
@@ -90,10 +103,25 @@ export async function sendPushToUser(userId, payload) {
       await webpush.sendNotification({ endpoint: s.endpoint, keys: { p256dh: s.p256dh, auth: s.auth } }, JSON.stringify(payload))
       sent++
     } catch (e) {
-      if (e?.statusCode === 404 || e?.statusCode === 410) await sb().from('push_subscriptions').delete().eq('id', s.id)
+      // 404/410 mean the browser has thrown this subscription away — prune it
+      // and move on. That is the one failure that is expected and final.
+      if (e?.statusCode === 404 || e?.statusCode === 410) {
+        await sb().from('push_subscriptions').delete().eq('id', s.id)
+        console.warn(`  push: subscription gone (${e.statusCode}) — pruned`)
+      } else {
+        // Everything else was being swallowed here, with no log and no signal
+        // to the caller. A push rejected by the push service looked exactly
+        // like a delivered one, which is how four notifications got marked
+        // sent without reaching anyone.
+        //
+        // A 403 is nearly always a VAPID key mismatch: the browser subscribed
+        // with one public key and the sender signed with a different pair. The
+        // status and body are printed because the body is what names it.
+        console.error(`  push failed: ${e?.statusCode ?? 'no status'} — ${String(e?.body || e?.message || e).slice(0, 200)}`)
+      }
     }
   }
-  return { sent }
+  return { sent, devices: subs.length }
 }
 
 // ── Send: email ───────────────────────────────────────────────────────────────
