@@ -11,8 +11,10 @@ import {
   ArrowLeft, ArrowUpRight, Landmark, Users, Info, FileText, Lock, PenLine,
 } from 'lucide-react'
 import {
-  getBill, BILL_SLUGS, BILLS_SOURCE_URL, BILLS_SNAPSHOT_DATE,
+  getBill, BILL_SLUGS, BILLS_SOURCE_URL,
 } from '@/constants/bills-data'
+import { BILLS_54, BILLS_54_META } from '@/constants/bills-54'
+import type { BillStatus } from '@/types'
 import { DEFINING_BILLS, getDefiningBill } from '@/constants/defining-bills'
 import { DefiningBillDetail } from '@/components/bills/defining-bill-detail'
 import { StageTracker } from '@/components/bills/stage-tracker'
@@ -25,6 +27,48 @@ import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVE
 
 export function generateStaticParams() {
   return [...BILL_SLUGS, ...DEFINING_BILLS.map((b) => b.slug)].map((slug) => ({ slug }))
+}
+
+/** Today in NZ. Fixed at build, which is fine: the bills dataset and this page
+ *  are rebuilt together every morning by refresh-bills.yml. */
+const TODAY_NZ = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })
+
+/** Parliament's own wording → the enum the badge and stage tracker take. Only
+ *  six values appear across all 270 bills, so this covers the dataset; anything
+ *  unrecognised falls back to the curated stage rather than guessing. */
+const STAGE_FROM_STATUS: Record<string, BillStatus> = {
+  'first reading': 'first-reading',
+  'select committee': 'select-committee',
+  'second reading': 'second-reading',
+  'committee of whole house': 'committee-of-whole-house',
+  'third reading': 'third-reading',
+  'royal assent': 'royal-assent',
+}
+
+const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+
+/** The daily record behind a curated bill.
+ *
+ *  bills-data.ts is ten hand-written entries, unchanged since the initial commit
+ *  and labelled "snapshot 28 May 2026". bills-54.ts is the whole register,
+ *  rebuilt every morning. Both describe the same bills, and by August four of the
+ *  ten had moved on — one of them all the way to Royal Assent while this page
+ *  still called it "before select committee", and another into a live submission
+ *  window the page gave no hint of.
+ *
+ *  Matched on normalised title, not slug: the two datasets slug differently, and
+ *  title matched 10/10 where slug did not. The hand-written summaries stay —
+ *  they are the part worth keeping — only the moving facts come from the feed. */
+function liveRecord(title: string) {
+  const t = normTitle(title)
+  return BILLS_54.find((b) => normTitle(b.title) === t)
+}
+
+/** "13 August 2026" — a deadline should read like a date. */
+function fmtCloseDate(iso?: string | null) {
+  if (!iso) return null
+  const d = new Date(`${iso}T00:00:00Z`)
+  return isNaN(d.getTime()) ? iso : d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 }
 
 export async function generateMetadata(
@@ -58,6 +102,20 @@ export default async function BillDetailPage(
   const bill = getBill(slug)
   if (!bill) notFound()
 
+  // Moving facts from the daily register; the written summary stays ours.
+  const live = liveRecord(bill.title)
+  const stage = (live && STAGE_FROM_STATUS[live.status.toLowerCase()]) ?? bill.stage
+  const lastActivity = live?.date ?? bill.lastActivity
+  const committee = live?.committee ?? bill.selectCommittee
+  const officialUrl = live?.officialUrl ?? BILLS_SOURCE_URL
+
+  // submissionsCalled records only that a window existed. Whether it is still
+  // open is the difference between something a reader can act on and a date
+  // that passed months ago, so the close date decides which is shown.
+  const closes = fmtCloseDate(live?.submissionsClose)
+  const submissionsOpen = !!(live?.submissionsCalled && live.submissionsClose && live.submissionsClose >= TODAY_NZ)
+  const submissionsClosed = !!(live?.submissionsCalled && closes && !submissionsOpen)
+
   return (
     <div style={WOVEN_PAGE}>
 
@@ -80,7 +138,7 @@ export default async function BillDetailPage(
               {bill.kind === 'government' ? 'Government Bill' : "Member's Bill"}
             </span>
             <span style={{ fontSize: 12.5, color: TERTIARY, fontFamily: DISPLAY }}>Bill no. {bill.number}</span>
-            <BillStatusBadge status={bill.stage} />
+            <BillStatusBadge status={stage} />
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
@@ -89,8 +147,8 @@ export default async function BillDetailPage(
                 {bill.title}
               </h1>
               <p style={{ fontSize: 13, color: TERTIARY, fontFamily: MANROPE, margin: 0 }}>
-                Last activity {formatDate(bill.lastActivity)}
-                {bill.selectCommittee ? ` · ${bill.selectCommittee} Committee` : ''}
+                Last activity {formatDate(lastActivity)}
+                {committee ? ` · ${committee} Committee` : ''}
               </p>
             </div>
             <BookmarkButton
@@ -123,19 +181,62 @@ export default async function BillDetailPage(
         </Card>
 
         {/* Stage progress — shared component with the per-stage colour scheme */}
-        <StageTracker stage={bill.stage} selectCommittee={bill.selectCommittee} />
+        <StageTracker stage={stage} selectCommittee={committee ?? undefined} />
 
-        {/* Have your say — submission CTA (bills open at select committee) */}
-        {bill.stage === 'select-committee' && (
+        {/* Have your say.
+            Driven by the register's own submission window rather than by the
+            stage, which is what let this page invite submissions on a bill whose
+            window had shut — and stay silent on one where it was open. The three
+            states are deliberately distinct: an open window names its deadline,
+            a closed one says so plainly instead of vanishing, and a bill sitting
+            at select committee with no dates published gets the general case. */}
+        {submissionsOpen ? (
+          <Card style={{ background: '#eff6ff', border: '1px solid #bfd4fe' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 10 }}>
+              <PenLine style={{ width: 17, height: 17, color: '#1e40af' }} />
+              <h2 style={{ fontSize: 16, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, margin: 0 }}>You can have your say — until {closes}</h2>
+            </div>
+            <p style={{ fontSize: 13.5, color: '#1e40af', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 14px' }}>
+              This bill is open for public submissions{committee ? ` to the ${committee} Committee` : ''}. Anyone can make one
+              and you don&apos;t need to be an expert — it closes <b>{closes}</b>. Draft yours with Arapono, then lodge it
+              through the official Parliament process.
+            </p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <Link
+                href={`/take-action/submission?bill=${bill.slug}`}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 14, fontWeight: 800, fontFamily: MANROPE, padding: '10px 16px', borderRadius: 11, background: '#1F8A4C', color: '#fff', textDecoration: 'none' }}
+              >
+                <PenLine style={{ width: 15, height: 15 }} /> Draft a submission
+              </Link>
+              <a
+                href={officialUrl} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, fontFamily: MANROPE, padding: '10px 16px', borderRadius: 11, background: '#fff', border: '1px solid #bfd4fe', color: '#1e3a8a', textDecoration: 'none' }}
+              >
+                How to lodge it <ArrowUpRight style={{ width: 14, height: 14 }} />
+              </a>
+            </div>
+          </Card>
+        ) : submissionsClosed ? (
+          <Card>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 8 }}>
+              <PenLine style={{ width: 17, height: 17, color: TERTIARY }} />
+              <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Submissions have closed</h2>
+            </div>
+            <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
+              The public submission window{committee ? ` to the ${committee} Committee` : ''} closed on {closes}. The
+              committee&apos;s report and the submissions it received are published on the official page.
+            </p>
+          </Card>
+        ) : stage === 'select-committee' ? (
           <Card>
             <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 10 }}>
               <PenLine style={{ width: 17, height: 17, color: JADE }} />
               <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Have your say</h2>
             </div>
             <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 14px' }}>
-              This bill is at the select committee stage — the time when the public can make submissions
-              {bill.selectCommittee ? ` to the ${bill.selectCommittee} Committee` : ''}. Draft your submission with Arapono,
-              then lodge it through the official Parliament process before the closing date.
+              This bill is at the select committee stage — the point where the public can make submissions
+              {committee ? ` to the ${committee} Committee` : ''}. No closing date has been published yet; check the
+              official page for when the window opens.
             </p>
             <Link
               href={`/take-action/submission?bill=${bill.slug}`}
@@ -144,7 +245,7 @@ export default async function BillDetailPage(
               <PenLine style={{ width: 15, height: 15 }} /> Draft a submission
             </Link>
           </Card>
-        )}
+        ) : null}
 
         {/* Member in charge + votes (pending) */}
         <Card>
@@ -177,8 +278,13 @@ export default async function BillDetailPage(
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '20px 36px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <SectionDivider type="official" label="Source" />
           <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
-            Bill status from the official NZ Parliament register (snapshot {formatDate(BILLS_SNAPSHOT_DATE)}).{' '}
-            <a href={BILLS_SOURCE_URL} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>
+            {/* Two vintages, stated separately. The stage and dates refresh
+                every morning; the plain-language summary is hand-written and
+                does not. One date covering both was how this page came to claim
+                a May stage in August. */}
+            Stage and dates from the official NZ Parliament register, updated {BILLS_54_META.asOf}. Plain-language
+            summary written by Arapono.{' '}
+            <a href={officialUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>
               View on parliament.nz <ArrowUpRight style={{ width: 11, height: 11, display: 'inline' }} />
             </a>
           </p>
