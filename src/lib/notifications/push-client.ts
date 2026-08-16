@@ -83,9 +83,49 @@ export async function unsubscribeFromPush(): Promise<void> {
   await sub.unsubscribe().catch(() => {})
 }
 
-/** Whether this browser currently has an active push subscription. */
+/** Whether this browser currently has an active push subscription.
+ *
+ *  Browser-side only — it does NOT prove the server knows about it. See
+ *  resyncSubscription for why that gap matters. */
 export async function isSubscribed(): Promise<boolean> {
   if (!pushSupported()) return false
   const reg = await navigator.serviceWorker.getRegistration()
   return !!(await reg?.pushManager.getSubscription())
+}
+
+/** Re-send this browser's existing subscription to the server, if it has one.
+ *
+ *  A subscription lives in two places and they can silently diverge. While the
+ *  push tables were missing their GRANTs, /api/push/subscribe returned 500
+ *  AFTER the browser had already created a subscription — so permission was
+ *  granted, the browser held a valid subscription, and the server had no row.
+ *  Every UI check we have asks the browser, so those users read as "On for this
+ *  device" while nothing could ever reach them, with no way to notice.
+ *
+ *  Re-posting is safe and cheap: the route upserts on `endpoint`, so this is a
+ *  no-op for anyone already recorded and a repair for anyone who isn't. Runs
+ *  once per session, and only when a subscription actually exists. */
+export async function resyncSubscription(): Promise<void> {
+  if (!pushSupported()) return
+  try {
+    if (sessionStorage.getItem('arapono.push.resynced') === '1') return
+  } catch { /* private mode — just proceed */ }
+
+  const reg = await navigator.serviceWorker.getRegistration()
+  const sub = await reg?.pushManager.getSubscription()
+  if (!sub) return
+
+  try {
+    // 401 is the ordinary case for a signed-out visitor whose browser still
+    // holds a subscription — nothing to repair until they sign in, so leave the
+    // session flag unset and try again next time.
+    const res = await fetch('/api/push/subscribe', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ subscription: sub.toJSON(), userAgent: navigator.userAgent }),
+    })
+    if (res.ok) {
+      try { sessionStorage.setItem('arapono.push.resynced', '1') } catch { /* private mode */ }
+    }
+  } catch { /* offline — next load retries */ }
 }
