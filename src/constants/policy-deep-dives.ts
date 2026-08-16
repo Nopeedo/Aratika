@@ -2435,6 +2435,394 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       retrieved: '2026-08-16',
     },
   },
+
+  {
+    // Economy only. The document's housing content — the Crown Build Guarantee
+    // and the GST return on new builds — defers to a Housing Policy we don't
+    // have, so there is nothing here to put on the housing page.
+    topics: ['economy'],
+    party: 'top',
+    title: 'Intergenerational Infrastructure: borrowing $60bn and taking the politics out',
+    summary:
+      'TOP would legislate Te Waihanga’s 30-year National Infrastructure Plan so a single government cannot dismantle ' +
+      'it, and borrow up to $60 billion — about 15 percent of GDP — over five to ten years to fund it through six ' +
+      'named funds. Sixty percent of infrastructure spending would be mandated to maintaining what already exists. ' +
+      'Te Waihanga would grow into a National Infrastructure Agency with backstop powers over councils and agencies ' +
+      'that let their assets run down.',
+
+    facts: [
+      { label: 'Spent now', value: '$20bn+ a year', note: 'Roughly 5% of GDP' },
+      { label: 'Proposed borrowing', value: '$60bn', note: 'Up to 15% of GDP extra, built up over 5–10 years' },
+      { label: 'Interest cost', value: '$2.5–3.5bn a year', note: 'Under 1% of GDP' },
+      { label: 'Maintenance mandate', value: '60% of spend', note: 'Directed to the assets we already own' },
+      { label: 'Public debt today', value: '51% of GDP', note: 'Against an OECD average around 112%' },
+      { label: 'Operating cost', value: '~$167m a year', note: 'Separate from the capital borrowing' },
+    ],
+
+    coveredLabel: 'Where the $60 billion would go',
+    exemptLabel: 'New funding tools for councils',
+
+    covered: [
+      'New Zealand Infrastructure Fund — $32bn, subsuming the Local Government Funding Agency and NIFFCo',
+      'Local Government Regeneration Fund — $15bn for the council maintenance backlog',
+      'The full Ratepayer Assistance Scheme — $5.3bn across solar, rates deferral and developer credit',
+      'Climate Resilience Fund — $5bn for nature-based solutions',
+      'National Land Transport Fund — $3bn ringfenced for rail, active and public transport',
+      'Crown Build Guarantee and Housing Fund — $0.5bn',
+    ],
+
+    exempt: [
+      'Congestion charging and tolling',
+      'Value capture levies and accommodation levies',
+      'User charges for services',
+      'Repeal of the 30 percent cap on the Uniform Annual General Charge',
+      'GST returned on high-performance new builds',
+      'An end to unfunded mandates from central government',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Putting the 30-year plan into law',
+        body:
+          'Te Waihanga published New Zealand’s first 30-year National Infrastructure Plan in February 2026 and the ' +
+          'Government accepted all 16 recommendations, with Labour and Green support. TOP’s argument is that ' +
+          'acceptance is not implementation. The Plan and its Pipeline would be given a legislative basis agreed ' +
+          'across party lines, with reviews limited to a three-yearly cycle timed to fall in the middle of a ' +
+          'parliamentary term rather than at the start of a new government.',
+      },
+      {
+        heading: 'Making cancellation cost something',
+        body:
+          'Major projects a new government wants to cancel would need an enabling Bill and a full select committee ' +
+          'process — the same route by which the commitment was made. The document is careful that this is not a veto: ' +
+          'the point is a visible parliamentary process and a public record instead of a Budget footnote. Alongside it, ' +
+          'a public progress scorecard published at 100 days, 12 months and three years against the pipeline.',
+      },
+      {
+        heading: 'Readiness reviews tied to the money',
+        body:
+          'All major government-funded investment proposals would face an independent readiness review by Te Waihanga ' +
+          'before approval. The Government has already accepted this; TOP’s addition is enforcement — Treasury capital ' +
+          'allocations would be conditional on passing it. Projects that fail the review, CBAx cost-benefit analysis or ' +
+          'the maintenance threshold do not proceed.',
+      },
+      {
+        heading: 'Maintenance before new builds',
+        body:
+          'The Plan proposes 60 percent of future infrastructure spending go to maintenance, and TOP would mandate and ' +
+          'fund it, with Te Waihanga setting the standards that central and local entities are measured against. The ' +
+          'document’s evidence for the problem is blunt: in 2025, 12 of 31 central government agencies — including ' +
+          'Police and Defence — had no asset register at all. Every asset-owning public entity would have to name an ' +
+          'executive legally and professionally accountable for asset stewardship.',
+      },
+      {
+        heading: 'Backstop powers',
+        body:
+          'Where poor planning or deferred maintenance is found, Te Waihanga could ask the Audit Office to open a ' +
+          'formal review, publicly reprimand the chief executive and the mayor or chair, and in extreme cases send ' +
+          'experts in directly. The document compares this to the Auditor-General — an independent officer who can ' +
+          'make adverse findings about elected bodies without replacing them — and reserves direct intervention for ' +
+          'extreme cases.',
+      },
+      {
+        heading: 'The skills gap, and using what exists first',
+        body:
+          'The OECD ranks New Zealand last of 33 countries for professionalisation and accountability in asset ' +
+          'management. Public entities managing assets above a threshold would have to staff their leadership with ' +
+          'certified asset management practitioners. Separately, every infrastructure body would have to formally ' +
+          'consider demand management — load-spreading, time-of-use charging, better use of what exists — before ' +
+          'committing to new capital.',
+      },
+      {
+        heading: 'The case for borrowing $60 billion',
+        body:
+          'Gross public debt is around 51 percent of GDP against an OECD average near 112 percent, with an AA to AAA ' +
+          'credit rating. On that basis the document argues an extra 15 percent of GDP in special infrastructure debt ' +
+          'is safe, costing $2.5 to $3.5 billion a year in interest and lifting infrastructure spending from 5–6 ' +
+          'percent of GDP to 6–7 percent. Its counter-argument is that deferring maintenance is also borrowing — just ' +
+          'invisibly, from future generations, as degraded assets.',
+      },
+      {
+        heading: 'A New Zealand Infrastructure Fund',
+        body:
+          'The largest of the six funds at $32 billion. It would absorb and extend the Local Government Funding ' +
+          'Agency, whose lending book is approaching $30 billion, and NIFFCo. It could issue special purpose bonds ' +
+          'against user-pays revenue for water, energy and tolled roads, borrow generally where costs cannot be ' +
+          'recovered, and keep lending to councils and council-controlled organisations.',
+      },
+      {
+        heading: 'Rebuilding local government funding',
+        body:
+          'The document’s position is that central government has captured the tax windfall from regional growth while ' +
+          'passing councils unfunded mandates, leaving them dependent on rates. It calls centrally imposed rate caps a ' +
+          'blunt instrument that misses the real problem. Alongside the new revenue tools: benchmarking and ' +
+          'value-for-money audits, regional pooling of back-office functions and procurement, and technical support ' +
+          'for smaller and rural councils on complex financing.',
+      },
+      {
+        heading: 'Why not public-private partnerships',
+        body:
+          'The objection is specifically to the financing model, not private delivery. The document cites a 2023 ' +
+          'Treasury review finding higher financing costs than direct Crown borrowing in most New Zealand PPPs, with ' +
+          'risk transfer proving illusory in several contracts, and argues PPPs end up on the Crown balance sheet ' +
+          'either formally or in practice. Design-and-build contracts, operations and maintenance concessions and ' +
+          'service contracts are all supported.',
+      },
+      {
+        heading: 'Avoiding a Christchurch-style cost spike',
+        body:
+          'The document names construction cost inflation as “the most legitimate technical risk in the policy”. Its ' +
+          'answer is that Christchurch was a sudden unplanned demand spike in one region, where this is a paced, ' +
+          'nationally coordinated build-up with Te Waihanga levelling workloads in dialogue with industry — and that ' +
+          'the 60 percent maintenance share means much of the money goes to repair and renewal, which is less ' +
+          'inflation-prone than greenfield building.',
+      },
+      {
+        heading: 'Where KiwiSaver 2.0 comes in',
+        body:
+          'The link to TOP’s tax policy is explicit: as compulsory KiwiSaver 2.0 balances grow they will need ' +
+          'securities to invest in, and infrastructure bonds owned by New Zealanders keep the cashflows domestic, ' +
+          'reduce reliance on offshore debt markets and give citizens a direct stake in the assets.',
+      },
+    ],
+
+    examples: [],
+
+    revenue: {
+      heading: 'What they say it would cost',
+      rows: [
+        { period: 'Additional borrowing', amount: '$60bn' },
+        { period: 'Annual interest', amount: '$2.5–3.5bn' },
+        { period: 'Total operating', amount: '~$167m/yr' },
+        { period: 'Free public transport', amount: '$150m/yr' },
+        { period: 'Enhanced Te Waihanga', amount: '$27m/yr' },
+      ],
+      basis:
+        'The $60 billion is capital borrowed over about ten years, not annual spending. Operating costs are small ' +
+        'beside it: an enlarged Te Waihanga is benchmarked at $80 million against the UK’s new combined ' +
+        'infrastructure agency, of which about $53 million already exists across Te Waihanga, NIFFCo and Crown ' +
+        'Infrastructure Delivery, leaving $27 million new. Free public transport is costed net — roughly $300 million ' +
+        'of fare revenue forgone, less savings the document puts at $80–90 million on the planned national ticketing ' +
+        'system, $30–40 million on cash handling and back office, and $30–40 million from 20 percent faster boarding.',
+    },
+
+    quotes: [
+      {
+        text: 'The problem is not money alone. It is politics.',
+        context: 'Opening statement of the problem',
+      },
+      {
+        text: 'In 2025, 12 of 31 central government agencies; including Police, Defence and several Ministries failed to meet the basic requirement of having an asset register.',
+        context: 'Use and maintain what we have before building new',
+      },
+      {
+        text: 'The enhanced Te Waihanga’s first job is ruthless prioritisation: hospitals before roads, maintenance before new builds, evidence before politics.',
+        context: 'Asked whether this adds to an already unaffordable pipeline',
+      },
+      {
+        text: 'politicians find it far easier to cut a ribbon on a new building than to fund a pipe replacement programme that no one photographs.',
+        context: 'Asked how the 60 percent maintenance mandate handles genuinely new needs',
+      },
+    ],
+
+    openQuestions: [
+      'Free public transport is costed at $150 million a year in the FAQ but appears nowhere in the policy itself — there is no description of what it covers, who is eligible, or when it would start.',
+      'The enabling Bill requirement applies to projects “over a certain threshold” in the policy and over $250 million in the FAQ.',
+      'The Regeneration Fund is described in the FAQ as “$6,000-per-head”, but $15 billion across New Zealand’s population is closer to $2,800 each, and the document does not say what the figure is per.',
+      'The $275 billion existing pipeline is called explicitly unaffordable and Te Waihanga is to prioritise ruthlessly, but nothing in the document names what would be dropped.',
+      'The 60 percent maintenance mandate is said to apply to the portfolio rather than any individual agency, and Te Waihanga would assess each entity against its own asset base — so what the 60 percent actually binds is left open.',
+      'Certified asset management staffing is required of entities holding assets “over a certain threshold”, which is not specified.',
+    ],
+
+    source: {
+      documentTitle: 'Intergenerational Infrastructure Policy Overview',
+      publisher: 'The Opportunities Party',
+      retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    // Economy only, though it carries real education content (polytechnic
+    // funding, student loans) and an immigration section. Filing it on those
+    // pages too would surface mostly-irrelevant material to a reader who came
+    // for schools or migration.
+    topics: ['economy'],
+    party: 'top',
+    title: 'Breakthrough Economy: research, competition law and small business',
+    summary:
+      'TOP would lift research and development spending from 1.5 percent of GDP to 2 percent within a decade and 3 ' +
+      'percent by 2050, add a tax credit covering up to a quarter of the cost of adopting new technology, and give ' +
+      'the Commerce Commission power to ask the High Court to break up dominant companies. Smaller measures cover ' +
+      'polytechnics, start-ups, student loan interest for returning graduates and a new Impact Company structure. ' +
+      'The whole package is costed at $1.33 billion a year.',
+
+    facts: [
+      { label: 'R&D spending now', value: '1.5% of GDP', note: 'OECD average is 2.7%; frontier economies over 3%' },
+      { label: 'R&D target', value: '2% within 10 years', note: 'At least 0.6% public science, rising to 3% by 2050' },
+      { label: 'Technology credit', value: 'Up to 25%', note: 'Of the cost of AI, plant, machinery and autonomous equipment' },
+      { label: 'Cost', value: '$1.33bn a year', note: 'Additional operating funding, itemised across 13 lines' },
+      { label: 'Concentration cost', value: '$30 a week', note: 'Claimed cost to the average household' },
+      { label: 'The gap with Australia', value: '35%', note: 'In per-capita GDP' },
+    ],
+
+    coveredLabel: 'New powers for the Commerce Commission',
+    exemptLabel: 'Support aimed at small business',
+
+    covered: [
+      'Ask the High Court to order dominant companies to sell assets or separate operations where competition has clearly failed',
+      'Require access to key infrastructure when market power is too concentrated',
+      'Impose industry-wide remedies after a market study, or where there is tacit collusion',
+      'Take binding commitments as part of market dominance investigations',
+      'Launch investigations and market studies proactively, without waiting for a complaint',
+      'A Consumer Advocacy Fund so consumers are represented in reviews as effectively as corporates',
+    ],
+
+    exempt: [
+      'FinCap funded to give small businesses simple financial and accounting advice',
+      'A review of ACC levies toward risk-weighting for people doing several kinds of work',
+      'Reversing the ban on merchant surcharges, if it passes',
+      'A simplified R&D tax credit track for spending under $250,000, with processing time requirements',
+      'Innovation access programmes letting small firms join R&D consortia with universities and polytechnics',
+      'A new Impact Company structure, with investment deductible like a charitable donation up to $100,000 a year',
+    ],
+
+    mechanics: [
+      {
+        heading: 'Getting research spending up',
+        body:
+          'The document’s framing figure is that New Zealand spends 1.5 percent of GDP on R&D, which it compares to ' +
+          'Poland and Turkey, against an OECD average of 2.7 percent. It would recommit to a 2 percent target within ' +
+          'ten years with at least 0.6 percent public science, and set 3 percent by 2050. In the near term that means ' +
+          'restoring the 2024 science reorganisation cuts — which the Save Science Coalition puts at $90 million a ' +
+          'year and 550 jobs, and the Royal Society Fellows at $300 million in total — and lifting funding back to ' +
+          'inflation-adjusted 2018 levels, with a new fund for early and mid-career researchers and the humanities and ' +
+          'social sciences brought into contestable rounds.',
+      },
+      {
+        heading: 'A credit for adopting technology, not just inventing it',
+        body:
+          'The existing R&D tax credit is described as delivering good returns but stopping short of the large ' +
+          'investments needed to actually roll technology out. A new credit would let firms claim back up to 25 ' +
+          'percent of the cost of deploying AI and digital platforms, new plant and machinery, and networked or ' +
+          'autonomous equipment. At $600 million it is by far the largest line in the policy.',
+      },
+      {
+        heading: 'Polytechnics as regional productivity engines',
+        body:
+          'Baseline funding cut by the current government would be restored and pointed at practical business skills — ' +
+          'market development, export access, cashflow, finance. Polytechnics and public research organisations would ' +
+          'be bulk-funded up to $10,000 per business enquiry to work on real problems, and given an explicit mandate ' +
+          'to lead regional productivity growth as hubs for sector initiatives.',
+      },
+      {
+        heading: 'Doubling the start-up ecosystem',
+        body:
+          'Government funding for incubators, accelerators, deep tech and young enterprise programmes would double. ' +
+          'The document is unusually frank here: it says these programmes appear to have crowded in private investment ' +
+          'and improved start-up survival, but that monitoring and evaluation has been weak, and commits to a ' +
+          'systematic review before any further expansion.',
+      },
+      {
+        heading: 'Forgiving loan interest to bring graduates home',
+        body:
+          'Student loan interest accrued over up to three years spent overseas would be rolled back, for both new ' +
+          'graduates and those already abroad. The relief applies at the end of loan repayment and is conditional on ' +
+          'being resident in New Zealand when the loan is repaid — the stated intent being to encourage people to go ' +
+          'and get experience, then come back with it.',
+      },
+      {
+        heading: 'A population policy instead of ad hoc migration',
+        body:
+          'Rather than a target, the policy is a process: a long-term population strategy setting out desired ' +
+          'population outcomes with average net migration to match, shaped by input from business, unions, NGOs and ' +
+          'the public. The document’s own position within that is “moderate sustained positive migration”, and it ' +
+          'argues migration has not been matched by investment in infrastructure and services for decades.',
+      },
+      {
+        heading: 'Rewriting competition law',
+        body:
+          'The central claim is that New Zealand has one of the weakest competition regimes in the world, that it is ' +
+          'modelled on Australia’s, and that the two are near-unique among developed nations in lacking the power to ' +
+          'break up monopolies, impose industry-wide conduct obligations or address tacit collusion. The proposal is ' +
+          'modelled on recent EU and UK provisions, and is aimed at banking, supermarkets, insurance, building ' +
+          'supplies, aviation and utilities. The document calls this a shakeup rather than tinkering, and names the ' +
+          'Commerce Act Amendment Bill currently before Parliament as the tinkering.',
+      },
+      {
+        heading: 'Why not simply break up the banks and supermarkets',
+        body:
+          'TOP says it is open to structural separation in banking, supermarkets and electricity generation, but ' +
+          'treats it as a blunt instrument that always imposes cost and disruption, so it should follow expert ' +
+          'analysis and be supervised by the courts. The argument for the power rather than the act: the threat of it ' +
+          'improves behaviour across the board, and a court route lets the Commission reach concentrated sectors that ' +
+          'attract no political or media attention.',
+      },
+      {
+        heading: 'The Impact Company',
+        body:
+          'A new structure in the Companies Act for businesses that want both growth and a social or environmental ' +
+          'purpose, modelled on structures in the UK, Canada, the United States and Italy. Qualifying means stating ' +
+          'the purpose in the constitution and publishing annual Impact Reports on social and environmental outcomes. ' +
+          'Investors could deduct up to $100,000 a year as they would a charitable donation.',
+      },
+    ],
+
+    examples: [],
+
+    revenue: {
+      heading: 'What they say it would cost',
+      rows: [
+        { period: 'Technology adoption credit', amount: '$600m' },
+        { period: 'Science funding', amount: '$400m' },
+        { period: 'Polytechnics', amount: '$100m' },
+        { period: 'Student loan interest', amount: '$95m' },
+        { period: 'Everything else', amount: '$135.5m' },
+        { period: 'Total', amount: '$1.33bn' },
+      ],
+      basis:
+        'The document itemises all 13 components with an assumption stated against each, and the lines add to $1,330.5 ' +
+        'million — exactly the $1.33 billion total it claims. Science funding here combines restoring recent cuts ' +
+        '($125m), early and mid-career researchers ($100m) and the major contestable funds ($175m). Polytechnics ' +
+        'combines restored baseline funding ($80m) with bulk funding for business enquiries ($20m). The party labels ' +
+        'two of its own estimates arbitrary — the Commerce Commission uplift and the widened R&D credit — and says ' +
+        'remaining measures are legislative changes absorbable within departmental baselines.',
+    },
+
+    quotes: [
+      {
+        text: 'New Zealand’s economy is stuck in low gear. But we have the talent, resources, and opportunity to shift up.',
+        context: 'Opening line',
+      },
+      {
+        text: 'Mining the conservation estate and trawling our ocean-floors are short term solutions, and the economic, social and environmental bills are coming due.',
+        context: 'On good and bad ways to grow the economy',
+      },
+      {
+        text: 'New Zealand has one of the weakest competition regimes in the world.',
+        context: 'Strengthen competition law and enforcement',
+      },
+      {
+        text: 'Yes. We think the current state of competition in many business sectors warrants a shakeup, rather than continued tinkering like the current Commerce Act Amendment Bill before Parliament.',
+        context: 'Asked whether this is a dramatic shakeup of competition law',
+      },
+    ],
+
+    openQuestions: [
+      'The document is titled Breakthrough Economy but refers to itself twice as “Productivity Unleashed” in its own FAQ, without reconciling the two names.',
+      'The claim that market concentration in banking, supermarkets and building materials costs the average household $30 a week is stated without a source.',
+      'Two costings are described by the party itself as arbitrary — a 20 percent uplift to the Commerce Commission’s budget and a 5 percent expansion of the R&D credit.',
+      'The claim of up to 2 percent additional long-term GDP growth is supported by comparison to Singapore and Estonia and a list of multipliers from other jurisdictions, but is not modelled for New Zealand.',
+      'Student loan interest forgiveness is costed at half the $170–215 million annual accrual, and the document notes much of that is paper accrual on defaulted loans and that borrower behaviour could change — but does not test what happens if it does.',
+      'The population policy sets no migration number, deferring it to a consultation; “moderate sustained positive migration” is the only stated direction.',
+      'AI regulation is central to the productivity case but deferred entirely to a separate AI policy not included in this document.',
+    ],
+
+    source: {
+      documentTitle: 'Breakthrough Economy Policy Overview',
+      publisher: 'The Opportunities Party',
+      retrieved: '2026-08-16',
+    },
+  },
 ]
 
 /** Every deep dive for a topic/party pair, in declaration order.
