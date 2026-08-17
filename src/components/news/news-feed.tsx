@@ -27,7 +27,7 @@ function fmtDate(iso: string | null): string {
   return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`
 }
 
-export function NewsFeed({ items, videos = [] }: { items: NewsItem[]; videos?: VideoItem[] }) {
+export function NewsFeed({ items, videos = [], interviews = [] }: { items: NewsItem[]; videos?: VideoItem[]; interviews?: VideoItem[] }) {
   const [party, setParty] = useState<string>('all')
   const [topic, setTopic] = useState<string>('all')
 
@@ -57,6 +57,15 @@ export function NewsFeed({ items, videos = [] }: { items: NewsItem[]; videos?: V
 
       {/* Leaders & the press — video rail */}
       <VideoSection videos={videos} />
+
+      {/* Interviews — kept separate from the official-channel rail above so the
+          outlet asking the questions is never ambiguous. Renders nothing when
+          empty, so it stays invisible until the independent tier has content. */}
+      <VideoSection
+        videos={interviews}
+        heading="Interviews"
+        blurb="Long-form interviews with leaders and candidates, from independent outlets — the questions aren't ours, and neither are the answers."
+      />
 
       {/* Filters */}
       <div style={{ marginBottom: 8, fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Follow a party</div>

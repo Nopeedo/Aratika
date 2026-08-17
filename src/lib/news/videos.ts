@@ -25,6 +25,10 @@ export interface VideoItem {
   debate: boolean
   /** Leader press event / update (standup, post-cabinet, or names a party leader). */
   presser: boolean
+  /** An interview with a named leader or candidate — see INTERVIEW_TERMS. */
+  interview: boolean
+  /** From the independent tier: not a party channel, not a national broadcaster. */
+  independent: boolean
 }
 
 /** Nothing older than this can surface. Te Pāti Māori's official channel has been
@@ -59,6 +63,8 @@ export async function getVideos(limit = 48): Promise<VideoItem[]> {
       electionRelevant: d.electionRelevant === true,
       debate: d.debate === true,
       presser: d.presser === true,
+      interview: d.interview === true,
+      independent: d.independent === true,
     }
   })
   const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 86_400_000).toISOString().slice(0, 10)
@@ -107,6 +113,55 @@ export async function getDebateVideos(limit = 12): Promise<VideoItem[]> {
   return [...keep, ...guaranteed].sort(
     (a, b) => Number(b.debate) - Number(a.debate) || (b.pubDate ?? '').localeCompare(a.pubDate ?? ''),
   )
+}
+
+/**
+ * The "Interviews" rail: long-form interviews with leaders and candidates from
+ * the independent tier — outlets that are neither a party's own channel nor a
+ * national broadcaster (see the CHANNELS block in scripts/ingest-videos.mjs).
+ *
+ * Kept as its own rail rather than mixed into "Leaders & the press" so the
+ * outlet is unmistakable. An interview is a party's voice getting extended
+ * airtime on someone else's platform, and a reader deciding who to vote for is
+ * owed a clear view of who is asking the questions.
+ *
+ * Ordering is newest-first but round-robined by party, because straight
+ * recency hands the whole rail to whichever leader had a busy fortnight. The
+ * round-robin changes what you see FIRST, never what exists — scroll on and
+ * every interview is still there, in recency order within its party.
+ */
+export async function getInterviewVideos(limit = 12): Promise<VideoItem[]> {
+  const all = await getVideos(300)
+  const pool = all.filter((v) => v.independent && v.interview)
+
+  // Bucket by first tagged party; untagged clips ride in their own bucket so an
+  // interview we couldn't attribute is never silently dropped.
+  const buckets = new Map<string, VideoItem[]>()
+  for (const v of pool) {
+    const key = v.parties[0] ?? '—'
+    if (!buckets.has(key)) buckets.set(key, [])
+    buckets.get(key)!.push(v)
+  }
+  for (const list of buckets.values()) list.sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+
+  // Parties enter the rotation ordered by their own newest item, so the single
+  // most recent interview still leads the rail.
+  const order = [...buckets.entries()].sort(
+    (a, b) => (b[1][0]?.pubDate ?? '').localeCompare(a[1][0]?.pubDate ?? ''),
+  )
+
+  const out: VideoItem[] = []
+  for (let round = 0; out.length < limit; round++) {
+    let placed = false
+    for (const [, list] of order) {
+      if (round >= list.length) continue
+      out.push(list[round])
+      placed = true
+      if (out.length >= limit) break
+    }
+    if (!placed) break   // every bucket exhausted
+  }
+  return out
 }
 
 /** Videos naming a specific battleground electorate — see getNewsForElectorate. */

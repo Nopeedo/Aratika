@@ -9,7 +9,7 @@ import type { Metadata } from 'next'
 import { ExternalLink, Newspaper } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { getNews } from '@/lib/news/live'
-import { getVideos } from '@/lib/news/videos'
+import { getVideos, getInterviewVideos } from '@/lib/news/videos'
 import { NewsFeed } from '@/components/news/news-feed'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -29,7 +29,7 @@ const SOURCES = [
 ]
 
 export default async function NewsPage() {
-  const [items, videos] = await Promise.all([getNews(), getVideos()])
+  const [items, videos, interviews] = await Promise.all([getNews(), getVideos(), getInterviewVideos()])
 
   return (
     <div style={WOVEN_PAGE}>
@@ -47,7 +47,7 @@ export default async function NewsPage() {
 
       <div style={{ maxWidth: 920, margin: '0 auto', padding: '26px 36px 64px' }}>
         {items.length > 0 ? (
-          <NewsFeed items={items} videos={videos} />
+          <NewsFeed items={items} videos={videos} interviews={interviews} />
         ) : (
           <div style={{ textAlign: 'center', padding: '50px 24px', color: SECONDARY, fontFamily: MANROPE }}>
             <Newspaper style={{ width: 30, height: 30, color: '#cbd0d6', margin: '0 auto 12px' }} />

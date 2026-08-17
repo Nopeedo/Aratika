@@ -24,12 +24,17 @@ function fmtDate(iso: string | null): string {
   return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`
 }
 
-export function VideoSection({ videos, hideHeading = false }: {
+export function VideoSection({ videos, hideHeading = false, heading, blurb }: {
   videos: VideoItem[]
   /** Suppress the built-in "Leaders & the press" title + blurb. Set this when the
    *  rail sits inside a zone that already has its own header — otherwise the
    *  section shows two competing headings, which is what the Election Centre did. */
   hideHeading?: boolean
+  /** Override the title/blurb so the same rail can serve the Interviews section.
+   *  Parameterised rather than forked: the card, the party filter, the pop-up
+   *  player and the keyboard handling are identical, and two copies would drift. */
+  heading?: string
+  blurb?: string
 }) {
   const [party, setParty] = useState('all')
   const [open, setOpen] = useState<VideoItem | null>(null)
@@ -51,13 +56,13 @@ export function VideoSection({ videos, hideHeading = false }: {
   return (
     <section style={{ marginBottom: 30 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: hideHeading ? 'flex-end' : 'space-between', gap: 12, marginBottom: 4 }}>
-        {!hideHeading && <h2 style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Leaders &amp; the press</h2>}
+        {!hideHeading && <h2 style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>{heading ?? 'Leaders & the press'}</h2>}
         <div style={{ display: 'flex', gap: 8 }}>
           <button onClick={() => scroll(-1)} aria-label="Scroll left" style={arrowBtn}><ChevronLeft style={{ width: 18, height: 18 }} /></button>
           <button onClick={() => scroll(1)} aria-label="Scroll right" style={arrowBtn}><ChevronRight style={{ width: 18, height: 18 }} /></button>
         </div>
       </div>
-      {!hideHeading && <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 12px' }}>Press standups, leader updates and debates — straight from official channels.</p>}
+      {!hideHeading && <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 12px' }}>{blurb ?? 'Press standups, leader updates and debates — straight from official channels.'}</p>}
 
       {/* party filter */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 14 }}>
@@ -86,7 +91,15 @@ export function VideoSection({ videos, hideHeading = false }: {
             </div>
             <div style={{ padding: '11px 13px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 5 }}>
-                <span style={{ fontSize: 11, fontWeight: 800, color: SECONDARY }}>{v.source}</span>
+                {/* The outlet is load-bearing on an interview card, not decoration:
+                    the viewer is watching a politician answer questions, and who
+                    chose the questions is part of what they are judging. */}
+                <span style={{ fontSize: 11, fontWeight: 800, color: SECONDARY, display: 'inline-flex', alignItems: 'center', gap: 5, minWidth: 0 }}>
+                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{v.source}</span>
+                  {v.independent && (
+                    <span title="Independent outlet — not a party channel or national broadcaster" style={{ flexShrink: 0, fontSize: 9.5, fontWeight: 800, letterSpacing: '.03em', color: SECONDARY, background: '#f1f5f9', border: `1px solid ${BORDER}`, borderRadius: 999, padding: '1px 6px' }}>IND</span>
+                  )}
+                </span>
                 {v.pubDate && <span style={{ fontSize: 11, fontWeight: 600, color: TERTIARY }}>{fmtDate(v.pubDate)}</span>}
               </div>
               <div style={{ fontSize: 13.5, fontWeight: 700, color: INK, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{v.title}</div>
