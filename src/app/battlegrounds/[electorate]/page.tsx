@@ -7,10 +7,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2, ScrollText, ArrowUpRight } from 'lucide-react'
+import { ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2, ScrollText, ArrowUpRight, Newspaper, PlayCircle } from 'lucide-react'
 import { ELECTORATE_SLUGS, getElectorateBySlug, classifyMargin } from '@/lib/battlegrounds'
 import { getCandidates } from '@/constants/candidates-2026'
 import { getApprovedCandidates } from '@/lib/candidates/live'
+import { getCoverageForCandidates } from '@/lib/candidates/coverage'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { MP_MEMBERS_BILLS } from '@/constants/mps-members-bills'
@@ -23,6 +24,22 @@ import { RosterAccordion, type RosterItem } from '@/components/battlegrounds/ros
 import { ElectorateNews } from '@/components/battlegrounds/electorate-news'
 import type { PartySlug } from '@/types'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+/** Deterministic UTC date label — no clock read during render, which is how this
+ *  codebase has produced hydration mismatches before. */
+function fmtShort(iso: string): string {
+  const d = new Date(iso)
+  if (isNaN(d.getTime())) return ''
+  return `${d.getUTCDate()} ${MONTHS_SHORT[d.getUTCMonth()]}`
+}
+
+/** Show a citation as its outlet's domain, so the reader can see who recorded
+ *  the candidate before deciding whether to follow it. */
+function hostOf(url: string): string {
+  try { return new URL(url).hostname.replace(/^www\./, '') } catch { return 'source' }
+}
 
 // Warm palette carried over from the homepage / Election Centre.
 
@@ -50,6 +67,10 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   const live = await getApprovedCandidates(electorate, { excludeName: info.mpName })
   const curatedNames = new Set(curated.map((c) => c.name.toLowerCase()))
   const candidates = [...curated, ...live.filter((c) => !curatedNames.has(c.name.toLowerCase()))]
+  // Coverage naming each candidate by name, joined through the data.candidates
+  // tag. Most challengers have no curated profile at all, so this is often the
+  // only substantive thing a reader can learn about them here.
+  const coverage = await getCoverageForCandidates(candidates.map((c) => c.key).filter((k): k is string => !!k))
   // Resolve the incumbent's profile slug (stored, or derived from their name to
   // match the /mps profile slug convention).
   const resolvedSlug = info.mpSlug ?? (info.mpName ? mpSlugFromName(info.mpName) : undefined)
@@ -318,6 +339,69 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
                     </ul>
                   </div>
                 )}
+                {/* Sourced background from the candidate ingest. Not written by
+                    us — it comes from the announcement they were recorded from. */}
+                {c.notes && (
+                  <div>
+                    <Label icon={Info} text="Background" />
+                    <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '6px 0 0' }}>{c.notes}</p>
+                  </div>
+                )}
+
+                {/* Coverage naming this person specifically, not the seat. For
+                    most challengers this is the only substantive material here,
+                    so an honest empty state matters as much as the list: a
+                    first-time candidate in a safe seat may genuinely have none,
+                    and padding that would be the dishonest option. */}
+                {(() => {
+                  const items = (c.key && coverage.get(c.key)) || []
+                  if (items.length === 0) {
+                    return (
+                      <div>
+                        <Label icon={Newspaper} text="Coverage naming them" />
+                        <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '6px 0 0' }}>
+                          Nothing in our tracked feeds names {c.name.split(' ')[0]} yet. This fills in automatically as outlets report on the race.
+                        </p>
+                      </div>
+                    )
+                  }
+                  return (
+                    <div>
+                      <Label icon={Newspaper} text={`Coverage naming them (${items.length})`} />
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 6 }}>
+                        {items.map((it) => (
+                          <a key={it.id} href={it.url} target="_blank" rel="noopener noreferrer"
+                            style={{ display: 'flex', gap: 8, alignItems: 'flex-start', fontFamily: MANROPE, textDecoration: 'none' }}>
+                            {it.kind === 'video'
+                              ? <PlayCircle style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0, marginTop: 2 }} />
+                              : <Newspaper style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0, marginTop: 2 }} />}
+                            <span style={{ minWidth: 0 }}>
+                              <span style={{ fontSize: 13, fontWeight: 600, color: INK, lineHeight: 1.45 }}>{it.title}</span>
+                              <span style={{ fontSize: 11.5, color: TERTIARY, display: 'block', marginTop: 1 }}>
+                                {it.source}{it.pubDate ? ` · ${fmtShort(it.pubDate)}` : ''}
+                              </span>
+                            </span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                })()}
+
+                {c.citations && c.citations.length > 0 && (
+                  <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6 }}>
+                    Recorded from{' '}
+                    {c.citations.map((u, i) => (
+                      <span key={u}>
+                        {i > 0 && ', '}
+                        <a href={u} target="_blank" rel="noopener noreferrer" style={{ color: SECONDARY, textDecoration: 'underline' }}>
+                          {hostOf(u)}
+                        </a>
+                      </span>
+                    ))}
+                  </div>
+                )}
+
                 {c.mpSlug && (
                   <Link href={`/mps/${c.mpSlug}`} style={cta}>Full profile <ArrowRight style={ic} /></Link>
                 )}

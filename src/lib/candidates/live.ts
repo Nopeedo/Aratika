@@ -19,6 +19,14 @@ import { PARTY_NAMES } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import type { PartySlug } from '@/types'
 
+interface CandidateRow {
+  electorateSlug?: string
+  name?: string
+  party?: string | null
+  notes?: string
+  citations?: unknown[]
+}
+
 const isKnownParty = (p: unknown): p is PartySlug | 'independent' =>
   p === 'independent' || (typeof p === 'string' && p in PARTY_NAMES)
 
@@ -31,18 +39,30 @@ export async function getApprovedCandidates(electorateSlug: string, opts?: { exc
   const supabase = await createClient()
   const { data } = await supabase
     .from('content_items')
-    .select('data')
+    .select('source_id, data')
     .eq('type', 'candidate')
     .eq('status', 'approved')
   const rows = (data ?? [])
-    .map((r) => r.data as { electorateSlug?: string; name?: string; party?: string | null })
-    .filter((d) => d?.electorateSlug === electorateSlug && typeof d.name === 'string')
+    .map((r) => ({ key: r.source_id as string | null, d: r.data as CandidateRow }))
+    .filter(({ d }) => d?.electorateSlug === electorateSlug && typeof d.name === 'string')
   const out: Candidate2026[] = []
-  for (const d of rows) {
+  for (const { key, d } of rows) {
     if (!isKnownParty(d.party)) continue
     if (opts?.excludeName && d.name!.toLowerCase() === opts.excludeName.toLowerCase()) continue
     const mpSlug = MP_BY_NAME.get(d.name!.toLowerCase())
-    out.push({ name: d.name!, party: d.party, confirmed: true, ...(mpSlug ? { mpSlug } : {}) })
+    // notes and citations were being dropped here. They are the only sourced
+    // things we hold about most challengers — without them a candidate panel
+    // opens onto an empty box, which is exactly how it read for 319 of the 321
+    // candidates, since only two have curated profiles.
+    out.push({
+      name: d.name!,
+      party: d.party,
+      confirmed: true,
+      ...(key ? { key } : {}),
+      ...(mpSlug ? { mpSlug } : {}),
+      ...(typeof d.notes === 'string' && d.notes.trim() ? { notes: d.notes.trim() } : {}),
+      ...(Array.isArray(d.citations) && d.citations.length ? { citations: d.citations.filter((c) => typeof c === 'string') } : {}),
+    })
   }
   return out.sort((a, b) => a.name.localeCompare(b.name))
 }

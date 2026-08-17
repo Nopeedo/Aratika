@@ -28,6 +28,21 @@ export interface Candidate2026 {
   bills?: string[]
   confirmed: boolean
   /**
+   * The candidate ingest's own source_id (`cand:<seat>|<name>`), present on
+   * live-ingested candidates only. It is what content tagging keys on, so it is
+   * how a candidate joins to the coverage naming them — see
+   * scripts/candidate-terms.mjs and getCoverageForCandidates.
+   */
+  key?: string
+  /**
+   * A sourced one-liner from the candidate ingest, e.g. "Contested Christchurch
+   * East in 2023". Not a bio and not written by us — it comes from the
+   * announcement the candidate was recorded from.
+   */
+  notes?: string
+  /** URLs backing the announcement. The whole record rests on these. */
+  citations?: string[]
+  /**
    * Illustrative-only poll standing (0-100). NZ has no verified electorate-level
    * horse-race polling for most seats — only national party-vote polls and, rarely,
    * a one-off media-commissioned electorate poll for a marquee race. Do NOT populate
