@@ -115,6 +115,40 @@ export async function getUploads(channelId, max = 50) {
 }
 
 /**
+ * Durations in seconds, keyed by video id.
+ *
+ * Needed because reading deeper than RSS drags in the shorts. A channel that
+ * posts one interview and fifteen clips from it looks, in a title-only view,
+ * like sixteen interviews — Dave Letele's leader-naming uploads are ten
+ * 30-second cuts ("GROCERY PRICES", "BECOMING PM") whose titles name nobody and
+ * which match only through the description they inherit from the full episode.
+ * Staging those buries the actual interview in the review queue.
+ *
+ * videos.list costs 1 unit per 50 ids, so this is close to free. Returns an
+ * empty map without a key, and callers must treat "unknown" as "keep" — a
+ * missing duration should never silently drop a real interview.
+ */
+export async function getDurations(videoIds) {
+  const out = new Map()
+  if (!hasApiKey() || videoIds.length === 0) return out
+  for (let i = 0; i < videoIds.length; i += 50) {
+    const batch = videoIds.slice(i, i + 50)
+    try {
+      const body = await json(`${API}/videos?part=contentDetails&id=${batch.join(',')}&key=${apiKey()}`)
+      for (const it of body.items || []) {
+        const d = it.contentDetails?.duration || ''
+        const m = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(d)
+        if (!m) continue
+        out.set(it.id, (+m[1] || 0) * 3600 + (+m[2] || 0) * 60 + (+m[3] || 0))
+      }
+    } catch (e) {
+      console.warn(`  ⚠ duration lookup failed (${e.reason || e.message}) — those clips keep their place`)
+    }
+  }
+  return out
+}
+
+/**
  * Search, for discovery. Region-locked to NZ and English so a query like
  * "Chris Hipkins interview" is not answered with unrelated results from
  * elsewhere — something the HTML-scraping fallback cannot express at all.

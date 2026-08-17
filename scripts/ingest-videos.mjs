@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
 import { buildElectorateTerms, addCandidateTerms } from './electorate-terms.mjs'
-import { getUploads, hasApiKey, announceMode } from './lib/youtube.mjs'
+import { getUploads, getDurations, hasApiKey, announceMode } from './lib/youtube.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -39,7 +39,26 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/
 //
 // Deduplication is on the video link, so re-reading entries is free; a wider
 // window only costs a slightly longer first run.
-const PER_CHANNEL = hasApiKey() ? 60 : 15
+// Depth is per channel KIND, not global. A flat 60 pulled 371 videos in one
+// run — 45 each from the National, Green and Te Pāti Māori channels — which is
+// not coverage, it is a review queue nobody will get through. Party and official
+// channels post constantly and only their recent output matters; the interview
+// tier is where depth actually buys something, because that is where a
+// three-month-old leader interview is still worth surfacing.
+const depthFor = (ch) => {
+  if (!hasApiKey()) return 15              // RSS caps here regardless
+  return ch.interviewsOnly ? 60 : 20
+}
+
+// Anything shorter than this is a clip, not an interview, and is skipped for
+// interview-tier channels. Three minutes is deliberately generous: a genuinely
+// short news interview should survive, a 45-second promo cut should not.
+const MIN_INTERVIEW_SECONDS = 180
+
+// Nothing older than this is ingested at all. src/lib/news/videos.ts already
+// refuses to DISPLAY anything over two years old, so without a floor here we
+// would stage months of stale campaign material purely for a human to reject.
+const MAX_AGE_DAYS = 180
 
 // Official channels (resolved + RSS-verified). party=null → tag by who's mentioned.
 const CHANNELS = [
@@ -225,12 +244,29 @@ if (RESET) { const { error } = await sb.from('content_items').delete().eq('type'
 const { data: existing } = await sb.from('content_items').select('source_id').eq('type', 'video')
 const have = new Set((existing || []).map((r) => r.source_id))
 
-let staged = 0
+let staged = 0, shorts = 0, old = 0
+const ageFloor = new Date(Date.now() - MAX_AGE_DAYS * 86400000).toISOString()
 for (const ch of CHANNELS) {
   // Uploads come from lib/youtube.mjs, which uses the Data API when a key is
   // configured and falls back to RSS otherwise — see PER_CHANNEL above for why
   // the depth matters.
-  const uploads = await getUploads(ch.id, PER_CHANNEL)
+  const uploads = await getUploads(ch.id, depthFor(ch))
+
+  // Drop shorts from the interview tier. "Long-form interview" is the whole
+  // admission test for these channels, and reading deeper than RSS surfaces
+  // every promo cut alongside the episode it came from — clips that inherit the
+  // full episode's description, so they match a leader's name while their own
+  // title names nobody. Unknown duration means keep: without an API key there
+  // are no durations at all, and this must never quietly drop a real interview.
+  let durations = new Map()
+  if (ch.interviewsOnly && hasApiKey()) {
+    durations = await getDurations(uploads.filter((u) => !u.published || u.published >= ageFloor).map((u) => u.videoId))
+  }
+  const tooShort = (id) => {
+    const s = durations.get(id)
+    return s !== undefined && s < MIN_INTERVIEW_SECONDS
+  }
+
   const rows = []
   for (const e of uploads) {
     const vid = e.videoId
@@ -240,6 +276,7 @@ for (const ch of CHANNELS) {
     const link = `https://www.youtube.com/watch?v=${vid}`
     if (have.has(link)) continue
     have.add(link)
+    if (published && published < ageFloor) { old++; continue }
     // Tag on title AND description. Title alone was enough while every channel
     // here was a party or Parliament, where the title names the subject. It is
     // not enough for an interview show: "The Hui Episode 02:11" names nobody, so
@@ -271,6 +308,7 @@ for (const ch of CHANNELS) {
     // never says the word "interview", and that is exactly the clip we want.
     const namesSomeone = mps.length > 0 || LEADER_NAMES.some((x) => t.includes(x))
     if (ch.interviewsOnly && !(namesSomeone && (electionRelevant || isPolitical(t, parties) || topics.length > 0))) continue
+    if (ch.interviewsOnly && tooShort(vid)) { shorts++; continue }
 
     const isNoise = VIDEO_NOISE_TERMS.some((x) => t.includes(x))
     if (isNoise && !debate && !electionRelevant && !isPolitical(t, parties) && topics.length === 0) continue
@@ -307,6 +345,6 @@ for (const ch of CHANNELS) {
   staged += rows.length
   console.log(`✓ ${ch.source}: +${rows.length}${DRY ? ' (dry)' : ''}`)
 }
-console.log(`\nDone. Staged ${staged} videos.`)
+console.log(`\nDone. Staged ${staged} videos${shorts ? `, skipped ${shorts} clip(s) under ${MIN_INTERVIEW_SECONDS}s` : ''}${old ? `, skipped ${old} older than ${MAX_AGE_DAYS} days` : ''}.`)
 // Supabase client keeps the event loop alive — exit explicitly so the step ends.
 process.exit(0)
