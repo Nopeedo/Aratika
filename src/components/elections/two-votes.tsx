@@ -56,7 +56,7 @@ export function TwoVotes() {
         <Link href="/guide" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 16px', borderRadius: 11, background: JADE, color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
           Guide me <ArrowRight style={{ width: 15, height: 15 }} />
         </Link>
-        <Link href="/compare" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 16px', borderRadius: 11, background: '#fff', color: INK, border: `1px solid ${BORDER}`, fontSize: 14, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
+        <Link href="/policies" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 16px', borderRadius: 11, background: '#fff', color: INK, border: `1px solid ${BORDER}`, fontSize: 14, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
           Compare parties <ArrowRight style={{ width: 15, height: 15 }} />
         </Link>
       </div>

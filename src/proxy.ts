@@ -19,6 +19,22 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  // /compare is retired. Its two jobs now live elsewhere: the coverage matrix
+  // became a per-party "N of 11 topics" line on each party page, and the
+  // side-by-side comparison is /policies/[topic], which shows every party on one
+  // issue. Redirect rather than gate — the phase gate sends a route to
+  // /coming-soon, and this page is not coming, it has moved.
+  //
+  // Redirecting rather than deleting because /compare is linked from about
+  // twenty places in the app plus anyone's bookmarks, and "compare the parties"
+  // is a reasonable thing to have saved.
+  if (pathname === '/compare' || pathname.startsWith('/compare/')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/policies'
+    url.search = ''
+    return NextResponse.redirect(url)
+  }
+
   if (isPathBlocked(request.nextUrl.pathname)) {
     const url = request.nextUrl.clone()
     url.pathname = '/coming-soon'

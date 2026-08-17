@@ -11,7 +11,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import {
-  ChevronDown, ChevronLeft, ChevronRight, ArrowRight, X, ExternalLink, Quote,
+  ChevronDown, ChevronLeft, ArrowRight, X, ExternalLink, Quote,
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
@@ -32,14 +32,6 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/the
 // two drift apart the moment anyone edits one of them in isolation.
 const PANEL_DELAY = 240, PANEL_DUR = 500
 const CHIP_FLIGHT = PANEL_DELAY + PANEL_DUR
-
-// Desktop-only rail nav buttons (‹ ›). `display` is set by the .pe-rail-arrow class (hidden on mobile).
-const ARROW_BASE: React.CSSProperties = {
-  position: 'absolute', top: 'calc(50% - 3px)', transform: 'translateY(-50%)',
-  width: 40, height: 40, borderRadius: '50%', background: '#fff', border: `1px solid ${BORDER}`,
-  boxShadow: '0 4px 14px rgba(12,14,18,.14)', alignItems: 'center', justifyContent: 'center',
-  color: INK, cursor: 'pointer', zIndex: 3, transition: 'opacity .2s ease',
-}
 
 export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; positions: PartyPosition[] }) {
   const [sel, setSel] = useState<string | null>(null)
@@ -153,22 +145,6 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
     panelRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   }, [sel])
 
-  // Desktop has no swipe — arrow buttons cycle the topic rail. Track which way it can scroll.
-  const railRef = useRef<HTMLDivElement>(null)
-  const [arrows, setArrows] = useState({ left: false, right: false })
-  const updateArrows = () => {
-    const el = railRef.current
-    if (!el) return
-    setArrows({ left: el.scrollLeft > 4, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 })
-  }
-  useEffect(() => {
-    updateArrows()
-    window.addEventListener('resize', updateArrows)
-    return () => window.removeEventListener('resize', updateArrows)
-  }, [])
-  const scrollRail = (dir: number) => {
-    railRef.current?.scrollBy({ left: dir * Math.max(240, railRef.current.clientWidth * 0.7), behavior: 'smooth' })
-  }
 
   const topicsWithData = new Set(positions.map((p) => p.topic))
   const selTopic = sel ? POLICY_TOPICS[sel as keyof typeof POLICY_TOPICS] : null
@@ -192,17 +168,6 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
             back chip on the left and the chosen issue on the right.
           - Desktop: unchanged horizontal rail with ‹ › arrow buttons. */}
       <style>{`
-        .pe-topic-rail {
-          display: flex; gap: 14px; overflow-x: auto;
-          scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-          padding-bottom: 6px; scrollbar-width: none; -ms-overflow-style: none;
-          scroll-padding-left: 2px;
-        }
-        .pe-topic-rail::-webkit-scrollbar { display: none; }
-        .pe-topic-card { flex: 0 0 auto; width: 200px; scroll-snap-align: start; }
-        .pe-rail-hint { display: flex; }
-        .pe-rail-arrow { display: none; }
-        .pe-topic-rail-wrap { display: none; }
         /* relative so the head row can be pinned out of flow while its chip
            flies back down into the grid on close. */
         .pe-mobile { display: block; position: relative; }
@@ -245,9 +210,6 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
              they are the three least likely to be guessed at. The grid wraps to
              two rows on a wide screen and every topic is visible without
              scrolling. */
-          .pe-rail-hint { display: none; }
-          .pe-rail-arrow { display: none; }
-          .pe-topic-rail-wrap { display: none; }
           .pe-panel-close { display: flex; }
           .pe-panel {
             margin-top: 18px; border: 1px solid ${BORDER}; border-radius: 18px;
@@ -354,74 +316,6 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
         </div>
       </div>
 
-      {/* Desktop — original horizontal rail, unchanged. */}
-      <div className="pe-topic-rail-wrap">
-        <div className="pe-rail-hint" style={{ alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, margin: '-2px 0 10px' }}>
-          Swipe issues, tap one to compare <ArrowRight style={{ width: 13, height: 13 }} />
-        </div>
-        <div style={{ position: 'relative' }}>
-          <button
-            className="pe-rail-arrow"
-            aria-label="Previous topics"
-            onClick={() => scrollRail(-1)}
-            style={{ ...ARROW_BASE, left: -6, opacity: arrows.left ? 1 : 0, pointerEvents: arrows.left ? 'auto' : 'none' }}
-          >
-            <ChevronLeft style={{ width: 20, height: 20 }} />
-          </button>
-          <button
-            className="pe-rail-arrow"
-            aria-label="More topics"
-            onClick={() => scrollRail(1)}
-            style={{ ...ARROW_BASE, right: -6, opacity: arrows.right ? 1 : 0, pointerEvents: arrows.right ? 'auto' : 'none' }}
-          >
-            <ChevronRight style={{ width: 20, height: 20 }} />
-          </button>
-          <div className="pe-topic-rail" ref={railRef} onScroll={updateArrows}>
-          {topicKeys.map((key) => {
-            const t = POLICY_TOPICS[key as keyof typeof POLICY_TOPICS]
-            const Icon = TOPIC_ICONS[t.icon]
-            const on = sel === key
-            return (
-              <button
-                key={key}
-                className="pe-topic-card"
-                onClick={(e) => {
-                  setSel(on ? null : key)
-                  if (!on) {
-                    e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
-                    // Same freeze as the mobile path — opening an issue locks
-                    // whichever party is on screen right now, so it can't roll
-                    // to a different party mid-read.
-                    if (panelSlug) select(panelSlug)
-                  }
-                }}
-                aria-expanded={on}
-                style={{
-                  textAlign: 'left', cursor: 'pointer', background: '#fff', fontFamily: MANROPE,
-                  border: `1px solid ${on ? INK : BORDER}`, borderRadius: 20, padding: '22px 20px 18px',
-                  boxShadow: on ? '0 6px 18px rgba(12,14,18,.10)' : '0 2px 4px rgba(12,14,18,.03)',
-                  display: 'flex', flexDirection: 'column', gap: 10, height: '100%',
-                  transition: 'box-shadow .15s, border-color .15s',
-                }}
-              >
-                <div className={t.color} style={{ width: 40, height: 40, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  {Icon && <Icon className={`size-5 ${t.textColor}`} />}
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 17, fontWeight: 800, color: INK, marginBottom: 4 }}>{t.label}</div>
-                  <div style={{ fontSize: 14, color: SECONDARY, lineHeight: 1.5 }}>{t.description}</div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: on ? INK : JADE, display: 'flex', alignItems: 'center', gap: 3 }}>
-                    {on ? 'Hide' : 'Compare'} <ChevronDown style={{ width: 12, height: 12, transform: on ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
-                  </span>
-                </div>
-              </button>
-            )
-          })}
-          </div>
-        </div>
-      </div>
 
       {sel && selTopic && (
         <div

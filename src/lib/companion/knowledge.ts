@@ -30,7 +30,7 @@ const PAGES: KnowledgeItem[] = [
   { id: 'page-mps', type: 'page', title: 'MPs directory', text: 'A searchable, filterable directory of all 123 current Members of Parliament with profiles.', href: '/mps' },
   { id: 'page-parties', type: 'page', title: 'Parties overview', text: 'All six parliamentary parties plus profiles — leaders, history, values and key policy areas.', href: '/parties' },
   { id: 'page-policies', type: 'page', title: 'Policy comparison', text: 'Compare where each party stands across the major policy topics, side by side, from official party material.', href: '/policies' },
-  { id: 'page-compare', type: 'page', title: 'Compare parties', text: 'Put parties side by side on the issues to see their positions together.', href: '/compare' },
+  { id: 'page-compare', type: 'page', title: 'Compare parties', text: 'Put parties side by side on the issues to see their positions together.', href: '/policies' },
   { id: 'page-bills', type: 'page', title: 'Bills tracker', text: 'Bills currently before the House — their type, stage, and what they propose.', href: '/bills' },
   { id: 'page-learn', type: 'page', title: 'Learn how Parliament works', text: 'Interactive lessons from beginner to expert: MMP, your two votes, how a bill becomes law, select committees and more. Also a Kids tier.', href: '/learn' },
   { id: 'page-take-action', type: 'page', title: 'Take Action studio', text: 'Draft a letter to your MP or a Minister, make a select-committee submission, or file an Official Information Act (OIA) request. A Premium feature.', href: '/take-action' },

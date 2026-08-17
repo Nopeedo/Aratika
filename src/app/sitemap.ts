@@ -77,7 +77,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   if (isEnabled('map')) entries.push(entry('/map', 0.8, 'monthly'))
-  if (isEnabled('compare')) entries.push(entry('/compare', 0.8, 'weekly'))
+  // /compare is retired and redirects to /policies — a sitemap must not list
+  // a URL that redirects.
 
   // ── People & parties ──────────────────────────────────────────────────────
   if (isEnabled('parties')) {

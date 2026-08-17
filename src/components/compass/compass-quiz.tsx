@@ -302,7 +302,7 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
           </div>
           <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '10px 0 0', lineHeight: 1.5 }}>
             Tap a square to read what that party has actually said on that issue — our neutral summary, with the source. Want the full picture?{' '}
-            <Link href="/compare" style={{ color: SECONDARY, fontWeight: 700 }}>Compare every party side by side →</Link>
+            <Link href="/policies" style={{ color: SECONDARY, fontWeight: 700 }}>Compare every party side by side →</Link>
           </p>
         </div>
       )}

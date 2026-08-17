@@ -38,7 +38,7 @@ interface Feature {
 
 const FEATURES: Feature[] = [
   { feature: 'elections', title: 'Election Centre', desc: 'Polls, seat projection & live results on the night', href: '/elections/2026', Icon: BarChart3, tint: '#eef4ff' },
-  { feature: 'compare', title: 'Compare parties', desc: 'Every party, side by side on the issues', href: '/compare', Icon: Scale, tint: '#f2fbf6' },
+  { feature: 'compare', title: 'Compare parties', desc: 'Every party, side by side on the issues', href: '/policies', Icon: Scale, tint: '#f2fbf6' },
   { feature: 'bills', title: 'The Record', desc: 'Bills and what this Parliament has actually done', href: '/bills', Icon: FileText, tint: '#fdf4ff' },
   { feature: 'budget', title: 'Budget 2026', desc: 'Where the Government is spending your money', href: '/budget', Icon: Wallet, tint: '#fff7ed' },
   { feature: 'news', title: 'Latest news & video', desc: 'Election coverage across every party', href: '/news', Icon: Newspaper, tint: '#eff6ff' },

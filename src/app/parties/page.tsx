@@ -10,8 +10,8 @@ import { BORDER, INK, JADE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/
 export const metadata: Metadata = {
   title: 'Political Parties',
   description:
-    'All political parties currently represented in New Zealand\'s 54th Parliament — ' +
-    'seat counts, leadership, ideology, and policy positions.',
+    'Every registered party contesting the 2026 New Zealand election — those in the 54th ' +
+    'Parliament and those outside it. Seat counts, leadership, and where each one stands on every issue.',
 }
 
 // Warm woven palette — shared with the homepage, Election Centre and the party
@@ -73,8 +73,9 @@ export default function PartiesPage() {
             maxWidth:   560,
             lineHeight: 1.6,
           }}>
-            All parties currently represented in New Zealand&apos;s{' '}
-            <b style={{ color: INK }}>54th Parliament</b>.
+            Every <b style={{ color: INK }}>registered party contesting 2026</b> — those in the
+            54th Parliament, and those outside it. Open any party to read where they stand on
+            every issue, in our words with their source.
             {' '}Seat counts sourced from the 2023 General Election official results.
           </p>
 

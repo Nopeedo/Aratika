@@ -294,7 +294,7 @@ export default async function DashboardPage() {
           <Link href="/mps" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, background: '#fff', border: `1px solid ${BORDER}`, color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
             Browse MPs <ArrowRight style={{ width: 15, height: 15 }} />
           </Link>
-          <Link href="/compare" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, background: '#fff', border: `1px solid ${BORDER}`, color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
+          <Link href="/policies" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, background: '#fff', border: `1px solid ${BORDER}`, color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
             Compare parties <ArrowRight style={{ width: 15, height: 15 }} />
           </Link>
           {isEnabled('take-action') && (

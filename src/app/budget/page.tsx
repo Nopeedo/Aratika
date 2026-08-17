@@ -176,7 +176,7 @@ export default function BudgetPage() {
         <h2 style={{ ...sectionH2(), marginTop: 48 }}>Put it in context</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 12 }}>
           <CrossLink href="/policies/economy" title="Compare party economic policy" body="See how each party’s stated economy and tax policy stacks up against what’s actually budgeted." />
-          <CrossLink href="/compare" title="Compare all parties" body="Where every party stands across health, education, housing, crime and more — side by side." />
+          <CrossLink href="/policies" title="Compare all parties" body="Where every party stands across health, education, housing, crime and more — side by side." />
           <CrossLink href="/record" title="Were the promises funded?" body="Track the government’s promises against the record (private accountability deep-dive)." />
         </div>
 

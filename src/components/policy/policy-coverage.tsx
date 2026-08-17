@@ -24,7 +24,7 @@ export async function PolicyCoverage({ maxWidth = 1100 }: { maxWidth?: number })
             <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Coverage at a glance</h2>
             <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>Which party holds a published position on which topic.</p>
           </div>
-          <Link href="/compare" style={{ fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>Open the compare tool →</Link>
+          <Link href="/policies" style={{ fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>Open the compare tool →</Link>
         </div>
         <CoverageMatrix positions={positions} topics={topics} />
       </div>

@@ -30,7 +30,6 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Election Centre', href: '/elections/2026', description: 'Polls, seat projection, your electorate and live results on the night', feature: 'elections', highlight: true },
   { label: 'Your Vote', href: '/start', description: 'Find what matters to you, then build your plan', feature: 'onboarding' },
-  { label: 'Compare', href: '/compare', description: 'Where every party stands, side by side', feature: 'compare' },
   { label: 'Parties', href: '/parties', description: 'Every party, their leaders and policies', feature: 'parties' },
   {
     label: 'Your Electorate', description: 'Find your seat, your MP and the 2026 race', feature: 'map',
@@ -92,7 +91,6 @@ export const FOOTER_LINKS: Record<'learn' | 'explore' | 'account' | 'legal', Foo
     { label: 'Interactive Map', href: '/map', feature: 'map' },
     { label: 'MPs Directory', href: '/mps', feature: 'mps' },
     { label: 'Party Policies', href: '/policies', feature: 'policies' },
-    { label: 'Compare Parties', href: '/compare', feature: 'compare' },
     { label: 'Budget 2026', href: '/budget', feature: 'budget' },
     { label: 'Bills Tracker', href: '/bills', feature: 'bills' },
     { label: 'Take Action', href: '/take-action', feature: 'take-action' },

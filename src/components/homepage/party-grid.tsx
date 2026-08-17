@@ -45,7 +45,7 @@ export function PartyGrid() {
               Tap any party for the full picture — leadership, where they stand, and their record.
             </p>
           </div>
-          <Link href="/compare" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 11, background: INK, color: '#fff', fontSize: 13.5, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+          <Link href="/policies" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 11, background: INK, color: '#fff', fontSize: 13.5, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>
             Compare all parties <ArrowRight style={{ width: 15, height: 15 }} />
           </Link>
         </div>

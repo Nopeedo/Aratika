@@ -372,7 +372,7 @@ function PanelStance({ p }: { p: TileParty }) {
 
       {/* footer links */}
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginTop: 14, paddingTop: 12, borderTop: `1px solid ${LINE}` }}>
-        <Link href="/compare" style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Compare topics →</Link>
+        <Link href="/policies" style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Compare topics →</Link>
         <Link href={p.profileHref} style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Full profile →</Link>
         <a href={p.website} target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Official website ↗</a>
       </div>

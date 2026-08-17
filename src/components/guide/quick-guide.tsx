@@ -209,7 +209,7 @@ function Result({ issues, readiness, depth, onRestart }: { issues: PolicyTopic[]
               ))}
             </div>
           )}
-          <PrimaryLink href="/compare">Compare the parties on these issues</PrimaryLink>
+          <PrimaryLink href="/policies">Compare the parties on these issues</PrimaryLink>
         </Card>
 
         {/* 2 — readiness */}

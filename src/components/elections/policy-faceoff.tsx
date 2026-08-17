@@ -222,7 +222,7 @@ export function PolicyFaceoff({ positions }: { positions: PartyPosition[] }) {
                 <span style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE }}>
                   You’re leaning <b style={{ color: INK }}>{partyName(leader)}</b> so far.
                 </span>
-                <Link href="/compare" style={pickBtn(false)}>
+                <Link href="/policies" style={pickBtn(false)}>
                   See the full comparison <ArrowRight style={{ width: 15, height: 15 }} />
                 </Link>
                 <Link href="/start" style={{ ...cta, fontSize: 14 }}>

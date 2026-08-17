@@ -183,7 +183,7 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
         <div style={{ display: 'flex', gap: 9, flexWrap: 'wrap', justifyContent: 'center' }}>
           <Link href="/map" style={cta(true)}><MapIcon style={{ width: 15, height: 15 }} /> Find your electorate</Link>
           <Link href="/mps" style={cta(false)}>Browse MPs <ArrowRight style={{ width: 15, height: 15 }} /></Link>
-          <Link href="/compare" style={cta(false)}>Compare parties <ArrowRight style={{ width: 15, height: 15 }} /></Link>
+          <Link href="/policies" style={cta(false)}>Compare parties <ArrowRight style={{ width: 15, height: 15 }} /></Link>
         </div>
       </div>
     )

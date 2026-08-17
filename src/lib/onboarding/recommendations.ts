@@ -41,7 +41,7 @@ export function buildPlan(p: Preferences): Rec[] {
 
   // ── Goals (strongest intent signal) ──
   if (has('decide-vote')) {
-    recs.push({ href: '/compare', title: 'Compare the parties side by side', reason: 'You want to work out who to vote for — line all six parties up on the issues.', icon: 'Scale', weight: 92 })
+    recs.push({ href: '/policies', title: 'Compare the parties side by side', reason: 'You want to work out who to vote for — line all six parties up on the issues.', icon: 'Scale', weight: 92 })
     recs.push({ href: '/map', title: 'Find your local MP', reason: 'See who represents you right now — and who’s standing in your seat in 2026.', icon: 'MapPin', weight: 90 })
   }
   if (has('understand')) {
