@@ -31,7 +31,12 @@ export function CompassCta() {
   const bg = reduce ? '#C2410C' : CYCLE[i]
 
   return (
-    <section style={{ background: '#fff', borderBottom: '1px solid #e9e7e2' }}>
+    // Transparent, not white. The homepage paints one continuous woven
+    // background behind every section (see HomeBackground), and a section that
+    // fills its own white plus a hairline border cuts a band straight through
+    // it — which is exactly what happened when this card was placed above the
+    // map. Same convention as PolicyHubGrid. The card itself is untouched.
+    <section style={{ background: 'transparent' }}>
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: 'clamp(40px, 7vw, 72px) clamp(18px, 5vw, 36px)' }}>
         <div className="party-card" style={{ position: 'relative', overflow: 'hidden', borderRadius: 24, backgroundColor: bg, transition: 'background-color 1.3s ease-in-out' }}>
           {/* fixed dark wash for depth + bottom legibility, regardless of the cycling colour */}
