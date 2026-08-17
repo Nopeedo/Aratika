@@ -91,6 +91,15 @@ export const POLICY_TOPICS: Record<PolicyTopic, PolicyTopicMeta> = {
     color: 'bg-teal-100',
     textColor: 'text-teal-700',
   },
+  'democracy-government': {
+    label: 'Democracy & Government',
+    description: 'How decisions get made, and who answers for them',
+    longDescription:
+      'Covers how the state is organised and held to account: the structure of departments and ministries, the powers of officials and how they are appointed, electoral rules and who is entitled to vote, referendums and citizens’ assemblies, local government, and the machinery through which public decisions are made and reviewed.',
+    icon: 'Vote',
+    color: 'bg-violet-100',
+    textColor: 'text-violet-700',
+  },
   immigration: {
     label: 'Immigration',
     description: 'Visas, residency, and migrant rights',
@@ -113,4 +122,5 @@ export const POLICY_TOPIC_ORDER: PolicyTopic[] = [
   'treaty-maori-affairs',
   'immigration',
   'foreign-policy',
+  'democracy-government',
 ]

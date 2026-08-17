@@ -4,16 +4,13 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { PARTY_COLORS } from '@/constants/parties'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
+import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import {
   Home, Heart, Leaf, GraduationCap, Scale,
   Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { BORDER, INK, JADE, SECONDARY } from '@/constants/theme'
 
-const TOPIC_ICONS: Record<string, React.ElementType> = {
-  Home, Heart, TrendingUp, Leaf, GraduationCap,
-  Scale, Globe, Landmark, Wind, Users,
-}
 
 const PARTY_DOT_ORDER = ['green', 'labour', 'tpm', 'nzfirst', 'national', 'act'] as const
 

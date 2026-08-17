@@ -2858,6 +2858,116 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     },
   },
 
+  {
+    topics: ['democracy-government'],
+    party: 'top',
+    slug: 'citizens-voice',
+    title: 'Citizens’ assemblies and a Commissioner for Citizens’ Voice',
+    summary:
+      'TOP would create citizens’ assemblies — randomly selected groups of New Zealanders, the same number as there ' +
+      'are MPs, working for up to a year on one long-term problem — overseen by a new Parliamentary Commissioner for ' +
+      'Citizens’ Voice. Parliament would have to formally debate and respond to each set of recommendations, and the ' +
+      'Commissioner would report publicly on what happened next.',
+
+    facts: [
+      { label: 'Assembly size', value: 'One per MP', note: 'The same number of citizens as there are MPs in the current Parliament' },
+      { label: 'Who takes part', value: 'Randomly selected', note: 'Chosen to be representative, not elected or appointed' },
+      { label: 'How long', value: 'Up to a year', note: 'Depending on the complexity of the issue' },
+      { label: 'New office', value: 'Commissioner', note: 'A Parliamentary Commissioner for Citizens’ Voice, appointed by Parliament' },
+      { label: 'Parliament must', value: 'Debate and respond', note: 'Formally, to each set of recommendations' },
+      { label: 'Petition example', value: '150,000 signatures', note: 'Given as an example of a public trigger, not a fixed rule' },
+    ],
+
+    mechanics: [
+      {
+        heading: 'What a citizens’ assembly is',
+        body:
+          'A group of New Zealanders — the same number as there are MPs — selected at random so the group is broadly ' +
+          'representative of the country. They are given one issue, access to evidence and expert briefings, and up to ' +
+          'a year to work through it, ending in a set of recommendations. The document’s central claim is about who ' +
+          'those recommendations come from: the participants themselves, rather than politicians, officials, experts ' +
+          'or groups with an interest in the outcome.',
+      },
+      {
+        heading: 'The Commissioner',
+        body:
+          'A Parliamentary Commissioner for Citizens’ Voice would run the process. The document draws the comparison ' +
+          'to the Ombudsman: appointed by Parliament, but independent of both Parliament and the government of the ' +
+          'day. The Commissioner would convene assemblies, choose which issues go to them, and report on what ' +
+          'Parliament did with the results.',
+      },
+      {
+        heading: 'How an issue gets picked',
+        body:
+          'Four routes are described. Parliament can ask the Commissioner to take up a question. The public can ' +
+          'petition — the document uses 150,000 signatories as its example of the kind of threshold involved. The ' +
+          'Commissioner can initiate an assembly independently, drawing on research or public debate. And iwi, ' +
+          'community organisations or experts can raise an issue directly.',
+      },
+      {
+        heading: 'What Parliament has to do with the result',
+        body:
+          'Recommendations are not binding. What is proposed instead is a duty to engage: Parliament would be ' +
+          'required to formally debate them and respond. The Commissioner would then publish annual reports tracking ' +
+          'those responses, with assembly documents and proceedings public so the reasoning behind a set of ' +
+          'recommendations can be read alongside the government’s answer to it.',
+      },
+      {
+        heading: 'The problem it is aimed at',
+        body:
+          'The case made is about time horizons. Some questions — the document’s framing is long-term challenges ' +
+          'needing public buy-in — sit badly with a three-year electoral cycle, and others have become too ' +
+          'politically charged for Parliament to handle. An assembly is offered as a way to get a considered public ' +
+          'answer on exactly those.',
+      },
+      {
+        heading: 'The example it uses',
+        body:
+          'The document points to the Treaty Principles Bill as its illustration: a constitutional question it argues ' +
+          'should have been worked through as a national conversation involving both Treaty partners, rather than ' +
+          'settled by the politics of one term. The characterisation is TOP’s own — the point being made is about ' +
+          'process, not about the Bill’s contents.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'What if there were a way to ensure that New Zealanders had a direct voice in the big, long-term decisions that will affect their lives most?',
+        context: 'The question the policy opens with',
+      },
+      {
+        text: 'The critical difference here is that recommendations will come directly from the people involved in these processes, not from politicians, officials or experts, or groups with vested interests.',
+        context: 'On what makes an assembly different',
+      },
+      {
+        text: 'Citizens assemblies can consider issues that politicians are too scared to touch, or that have become too politicised for reasonable debate, finding a way through the mire.',
+        context: 'On the kind of issue it is for',
+      },
+      {
+        text: 'It has the potential to shape how we define ourselves as a nation for generations to come - far too important an issue to leave to the politicians.',
+        context: 'On the Treaty Principles Bill, given as the worked example',
+      },
+    ],
+
+    openQuestions: [
+      'No cost is given — not for the Commissioner’s office, not for running an assembly, and not for supporting participants for up to a year.',
+      'The 150,000-signature figure is offered as an example rather than a commitment, so the actual petition threshold is undecided.',
+      'Members are described as randomly selected and representative, but how they are recruited, paid, or released from work for a year is not set out.',
+      'Parliament must debate and respond, but nothing follows from a rejection — the accountability described is publicity through annual reports, not consequence.',
+      'The Commissioner would choose between competing topics using transparent criteria, which are named but never defined.',
+      'This document is dated June 2025, a year older than the rest of TOP’s published policy set, so it may not reflect the party’s current 2026 position.',
+    ],
+
+    source: {
+      documentTitle: 'Citizen’s Voice Policy Overview',
+      publisher: 'The Opportunities Party',
+      documentDate: 'June 2025',
+      retrieved: '2026-08-16',
+    },
+  },
+
   // ── ACT ───────────────────────────────────────────────────────────────────
 
   {
@@ -3256,10 +3366,12 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
   },
 
   {
-    // Machinery of government rather than fiscal policy, but economy is the
-    // closest topic we carry. Reinforces the case for a governance topic — see
-    // also TOP's Citizens' Voice, which has no home at all.
-    topics: ['economy'],
+    // Now on democracy-government, the topic this document is part of the
+    // reason for. It stays on economy too: the case it makes is fiscal —
+    // the "common pool" effect, deficit per spending minister, savings
+    // redirected to the frontline — so a reader comparing economic policy
+    // should still find it.
+    topics: ['democracy-government', 'economy'],
     party: 'act',
     slug: 'smaller-government',
     title: 'A consolidated bureaucracy: 43 departments into 19',
@@ -4404,6 +4516,90 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       publisher: 'New Zealand First',
       url: 'https://www.nzfirst.nz/referendum_on_maori_seats',
       retrieved: '2026-08-16',
+    },
+  },
+
+  {
+    topics: ['democracy-government'],
+    party: 'nzfirst',
+    slug: 'citizens-only-voting',
+    title: 'Restricting the vote to citizens',
+    summary:
+      'NZ First would change electoral law so that only New Zealand citizens can vote. Permanent residents can currently ' +
+      'vote after two years, and holders of certain visas with no expiry date after one. The party would keep ' +
+      'permanent residence as the right to live, work, study and build a life here, while reserving the vote for those ' +
+      'who have taken citizenship.',
+
+    facts: [
+      { label: 'The change', value: 'Citizens only', note: 'In electoral law, for the right to vote' },
+      { label: 'Residents can vote now', value: 'After 2 years', note: 'Permanent residents, through the normal process' },
+      { label: 'Some visa holders', value: 'After 1 year', note: 'Certain visas with no expiry date' },
+      { label: 'What residence keeps', value: 'Live, work, study', note: 'The right to build a life here is unchanged' },
+      { label: 'Their distinction', value: 'Allegiance', note: 'Citizenship framed as a formal bond, residence as permission to stay' },
+      { label: 'Local elections', value: 'Not addressed', note: 'Council voting is named as a problem but not in the remedy' },
+    ],
+
+    mechanics: [
+      {
+        heading: 'What the rule is now',
+        body:
+          'The document sets out the current position as its starting point: a permanent resident who has been through ' +
+          'the normal process can vote after two years living here, and someone on certain visas with no expiry date ' +
+          'is technically eligible after one. It notes this covers who forms the government, who sits on local ' +
+          'councils, and referendums.',
+      },
+      {
+        heading: 'The line they would draw',
+        body:
+          'Permanent residence and citizenship are treated as different things doing different jobs. Residence gives ' +
+          'the right to live, work, study and build a life; citizenship is described as the formal bond of allegiance, ' +
+          'belonging, responsibility and democratic authority. The policy is that only the second should carry the ' +
+          'vote — the party’s phrase is that the distinction “should matter again”.',
+      },
+      {
+        heading: 'How it is argued',
+        body:
+          'The case is put in terms of commitment rather than administration: voting is framed as a privilege of those ' +
+          'who have sworn allegiance and made New Zealand their home and their future. The document is explicit that ' +
+          'people who have not done so remain welcome to live here permanently.',
+      },
+    ],
+
+    examples: [],
+
+    quotes: [
+      {
+        text: 'New Zealand First has announced that we will be campaigning to change the electoral law to ensure that only citizens have the right to vote.',
+        context: 'Opening statement of the policy',
+      },
+      {
+        text: 'Currently, any permanent resident who has gone through the normal process, after just two years living in New Zealand, can vote.',
+        context: 'On the current rule',
+      },
+      {
+        text: 'Permanent residence gives people the right to live, work, study, and build a life in New Zealand. Citizenship is different.',
+        context: 'On the distinction they draw',
+      },
+      {
+        text: 'New Zealand First will restore the basic democratic principle that the right to decide New Zealand’s future belongs to New Zealand citizens.',
+        context: 'On what the change would do',
+      },
+    ],
+
+    openQuestions: [
+      'Local council voting and referendums are both named as part of the problem, but the stated remedy covers general elections — whether local elections change too is not said.',
+      'Nothing is said about people already enrolled as residents: whether they would be removed from the roll, and if so when or how they would be told.',
+      'The document does not say whether the change would apply from a future election or immediately.',
+      'No estimate is given of how many current voters it would affect.',
+      'Citizenship carries its own residence and character requirements; whether the party would change those alongside the voting rule is not addressed.',
+      'New Zealand is one of a small number of countries allowing resident non-citizens to vote nationally, and the document makes no comparison to how others handle it.',
+    ],
+
+    source: {
+      documentTitle: 'Citizen’s Only Voting',
+      publisher: 'New Zealand First',
+      url: 'https://www.nzfirst.nz/citizens_only_voting',
+      retrieved: '2026-08-17',
     },
   },
 

@@ -15,6 +15,7 @@ import {
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
+import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { getProposalGrouping, type GroupedProposal } from '@/constants/policy-proposal-groups'
 import { TopicChip } from '@/components/homepage/topic-chip'
@@ -24,7 +25,6 @@ import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
-const TOPIC_ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
 
 // Mobile open sequence. The chip that flies up into the head row and the panel
 // that opens below it must SETTLE ON THE SAME FRAME, so the chip's flight time

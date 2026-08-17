@@ -13,6 +13,7 @@ import {
   Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
+import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PolicyTopic } from '@/types'
 import { Avatar } from '@/components/ui/avatar'
@@ -25,9 +26,6 @@ import { BillsForTopic } from '@/components/bills/bills-for-topic'
 import { BackLink } from '@/components/ui/back-link'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
-const ICONS: Record<string, React.ElementType> = {
-  Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users,
-}
 
 export function generateStaticParams() {
   return POLICY_TOPIC_ORDER.map((topic) => ({ topic }))
@@ -48,7 +46,7 @@ export default async function PolicyTopicPage(
   const { topic } = await params
   const t = POLICY_TOPICS[topic as PolicyTopic]
   if (!t) notFound()
-  const Icon = ICONS[t.icon]
+  const Icon = TOPIC_ICONS[t.icon]
 
   const priorityParties = PARTY_DIRECTORY_ORDER.filter((p) => PARTY_PROFILES[p].keyPolicyAreas.includes(topic as PolicyTopic))
   const otherParties = PARTY_DIRECTORY_ORDER.filter((p) => !priorityParties.includes(p))

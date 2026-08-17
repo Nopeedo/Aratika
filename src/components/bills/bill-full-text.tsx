@@ -15,6 +15,7 @@ import {
   Home, Heart, TrendingUp, Leaf, GraduationCap, Globe, Landmark, Wind, Users, X,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
+import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import type { PolicyTopic } from '@/types'
 import type { PolicyLink } from '@/components/bills/bill-breakdown'
 import { useUser } from '@/hooks/use-user'
@@ -23,7 +24,6 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/cons
 
 const HL = '#fff3bf', HL_BORDER = '#ffe08a'
 
-const ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9āēīōū ]+/g, ' ').replace(/\s+/g, ' ').trim()
 const isHeading = (p: string) => /^(part|subpart|schedule|new part|new schedule)\b/i.test(p.trim()) && p.length < 100
@@ -148,7 +148,7 @@ export function BillFullText({ fullText, policyLinks, docType = 'bill', contentI
           {topicsPresent.length > 0 && (
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8, padding: '12px 22px', background: SURFACE, borderBottom: `1px solid ${BORDER}` }}>
               <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Policy sections:</span>
-              {topicsPresent.map((t) => { const meta = POLICY_TOPICS[t as PolicyTopic]; const Icon = ICONS[meta.icon] || Scale; return <button key={t} onClick={() => scrollTo(topicFirstId[t])} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontFamily: MANROPE, fontSize: 12.5, fontWeight: 700, padding: '6px 12px', borderRadius: 999, border: `1px solid ${BORDER}`, background: '#fff', color: INK }}><Icon style={{ width: 13, height: 13, color: JADE }} /> {meta.label}</button> })}
+              {topicsPresent.map((t) => { const meta = POLICY_TOPICS[t as PolicyTopic]; const Icon = TOPIC_ICONS[meta.icon] || Scale; return <button key={t} onClick={() => scrollTo(topicFirstId[t])} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontFamily: MANROPE, fontSize: 12.5, fontWeight: 700, padding: '6px 12px', borderRadius: 999, border: `1px solid ${BORDER}`, background: '#fff', color: INK }}><Icon style={{ width: 13, height: 13, color: JADE }} /> {meta.label}</button> })}
             </div>
           )}
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px', background: '#fffdf5', borderBottom: `1px solid ${BORDER}`, fontSize: 12, color: '#92400e', fontFamily: MANROPE }}>

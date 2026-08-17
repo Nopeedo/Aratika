@@ -11,6 +11,7 @@ import {
   Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
+import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PolicyTopic } from '@/types'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -24,9 +25,6 @@ export const metadata: Metadata = {
     'housing, health, the economy, climate and more.',
 }
 
-const ICONS: Record<string, React.ElementType> = {
-  Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users,
-}
 
 function partiesForTopic(topic: PolicyTopic) {
   return PARTY_DIRECTORY_ORDER.filter((p) => PARTY_PROFILES[p].keyPolicyAreas.includes(topic))
@@ -54,7 +52,7 @@ export default function PolicyHubPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: 16 }}>
           {POLICY_TOPIC_ORDER.map((key) => {
             const topic = POLICY_TOPICS[key]
-            const Icon = ICONS[topic.icon]
+            const Icon = TOPIC_ICONS[topic.icon]
             const parties = partiesForTopic(key)
             return (
               <Link key={key} href={`/policies/${key}`} style={{ textDecoration: 'none' }}>

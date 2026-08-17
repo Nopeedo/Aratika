@@ -143,6 +143,11 @@ export type PolicyTopic =
   | 'treaty-maori-affairs'
   | 'climate'
   | 'immigration'
+  // Added because three parties published substantial policy with nowhere to
+  // put it — TOP's citizens' assemblies and electoral reform, ACT's
+  // restructure of departments and ministers, NZ First's voting-rights
+  // change. ACT's was filed under 'economy' as a stretch until this existed.
+  | 'democracy-government'
 
 export interface Policy {
   id: string

@@ -12,6 +12,7 @@ import {
   Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
+import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { TopicStances, type TopicStance } from './topic-stances'
 import type { PolicyTopic } from '@/types'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
@@ -23,7 +24,6 @@ export interface PolicyLink {
   excerpts: string[]
 }
 
-const ICONS: Record<string, React.ElementType> = { Home, Heart, TrendingUp, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, Users }
 
 export function BillBreakdown({ summary, summaryBasic = null, policyLinks, docType = 'bill', linkTopics = true, stances = {} }: {
   summary: string | null
@@ -63,7 +63,7 @@ export function BillBreakdown({ summary, summaryBasic = null, policyLinks, docTy
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
             {topics.map((t) => {
               const meta = POLICY_TOPICS[t.topic as PolicyTopic]
-              const Icon = ICONS[meta.icon] || Scale
+              const Icon = TOPIC_ICONS[meta.icon] || Scale
               const on = active === t.topic
               return (
                 <button key={t.topic} type="button" onClick={() => setActive(t.topic)} style={{
