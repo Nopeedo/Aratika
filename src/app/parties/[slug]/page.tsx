@@ -17,13 +17,16 @@ import {
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES } from '@/constants/parties-data'
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
-import { POLICY_TOPICS } from '@/constants/policy-topics'
-import { PartySlug, PolicyTopic } from '@/types'
+import { PartySlug } from '@/types'
 import { BackLink } from '@/components/ui/back-link'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { PartyLegislativeRecord } from '@/components/parties/legislative-record'
+import { PartyPolicyExplorer } from '@/components/parties/party-policy-explorer'
+import { PartySwitcher } from '@/components/parties/party-switcher'
+import { getAllApprovedPositions } from '@/lib/positions/live'
+import { allDeepDivePaths } from '@/constants/policy-deep-dives'
 import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
@@ -40,6 +43,12 @@ function tint(hex: string, a: number) {
 }
 
 // ─── Static generation ────────────────────────────────────────────────────────
+
+// Dynamic, not static. Positions are approved continuously in /editor, and a
+// party page baked at build time would show whatever was approved on the day
+// we last deployed. /compare and the policy pages are dynamic for the same
+// reason; this page now reads the same data, so it follows the same rule.
+export const dynamic = 'force-dynamic'
 
 export function generateStaticParams() {
   return [...PARTY_DIRECTORY_ORDER, ...PROFILED_MINOR_PARTIES].map((slug) => ({ slug }))
@@ -108,6 +117,13 @@ export default async function PartyProfilePage(
   const leaderSlug   = mpSlugForName(party.leader)
   const coLeaderSlug = party.coLeader ? mpSlugForName(party.coLeader) : null
 
+  // Live positions for this party. Current policy only — a 2023 manifesto entry
+  // exists for the then-and-now comparison and would misrepresent the party if
+  // shown as what they say today.
+  const allPositions = await getAllApprovedPositions()
+  const partyPositions = allPositions.filter((p) => p.party === slug && p.period !== '2023')
+  const diveTopics = [...new Set(allDeepDivePaths().filter((d) => d.party === slug).map((d) => d.topic))]
+
   return (
     // Same woven ground as the homepage and Election Centre, so a party page
     // stops looking like a page from another site.
@@ -127,8 +143,15 @@ export default async function PartyProfilePage(
           <BackLink fallbackHref="/parties" label="All parties" style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
             fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none',
-            fontFamily: MANROPE, marginBottom: 24,
+            fontFamily: MANROPE, marginBottom: 16,
           }} />
+
+          {/* The top layer: change party without going back to the index.
+              Sits above the identity block so the reader can see, before
+              anything else, that every registered party has a page here. */}
+          <div style={{ marginBottom: 24 }}>
+            <PartySwitcher current={slug} />
+          </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 28, flexWrap: 'wrap' }}>
             {/* Left: identity */}
@@ -270,30 +293,19 @@ export default async function PartyProfilePage(
           </Card>
 
           {/* Key policy areas */}
+          {/* Where /compare's job now lives. The old card listed this party's
+              "key policy areas" and sent you to a grid of every party — out of
+              the party you came to read. This answers the question you actually
+              asked, on every topic, without a navigation. */}
           <Card accent={party.color}>
-            <SectionHeading icon={Star} title="Key policy areas" accent={party.color} />
-            <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px', lineHeight: 1.5 }}>
-              Policy topics most associated with {party.name}. Tap any topic to compare every party&apos;s position side by side.
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {party.keyPolicyAreas.map((topicKey) => {
-                const topic = POLICY_TOPICS[topicKey as PolicyTopic]
-                if (!topic) return null
-                return (
-                  <Link key={topicKey} href={`/policies/${topicKey}`} style={{ textDecoration: 'none' }}>
-                    <span style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 6,
-                      fontSize: 13, fontWeight: 600, color: INK,
-                      background: SURFACE, border: `1px solid ${BORDER}`,
-                      borderRadius: 999, padding: '6px 14px', fontFamily: MANROPE,
-                    }}>
-                      {topic.label}
-                      <ArrowRight style={{ width: 13, height: 13, color: TERTIARY }} />
-                    </span>
-                  </Link>
-                )
-              })}
-            </div>
+            <SectionHeading icon={Star} title="Where they stand" accent={party.color} />
+            <PartyPolicyExplorer
+              partySlug={slug}
+              partyName={party.name}
+              accent={party.color}
+              positions={partyPositions}
+              deepDiveTopics={diveTopics}
+            />
           </Card>
 
           {/* Legislative record this term */}
