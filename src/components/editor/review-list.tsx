@@ -7,8 +7,8 @@
  * Only approved items ever reach the public site.
  */
 
-import { useState } from 'react'
-import { Check, FileText, ExternalLink, Loader2, Eye } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Check, FileText, ExternalLink, Loader2, Eye, Clock } from 'lucide-react'
 import { BillBreakdown, type PolicyLink } from '@/components/bills/bill-breakdown'
 import { StageTracker } from '@/components/bills/stage-tracker'
 import { HaveYourSay } from '@/components/bills/have-your-say'
@@ -25,6 +25,52 @@ export interface PendingItem {
   source_url: string | null
   fetched_at: string | null
 }
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+/** Deterministic absolute date (UTC) — safe to render on the server. */
+function absDate(iso: string): string {
+  const d = new Date(iso)
+  if (isNaN(d.getTime())) return ''
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`
+}
+
+/**
+ * "3 days ago", and how alarmed to be about it.
+ *
+ * Deliberately NOT computed during render: this codebase has already shipped a
+ * hydration mismatch from reading the clock inside a component, and the answer
+ * here changes every second by definition. The badge renders the absolute date
+ * on first paint and upgrades to the relative age after mount, so the server and
+ * client always agree on the first pass.
+ */
+function useAge(iso: string | null): { label: string; tone: 'fresh' | 'ageing' | 'stale' } | null {
+  const [age, setAge] = useState<{ label: string; tone: 'fresh' | 'ageing' | 'stale' } | null>(null)
+  useEffect(() => {
+    if (!iso) return setAge(null)
+    const t = Date.parse(iso)
+    if (isNaN(t)) return setAge(null)
+    const days = Math.floor((Date.now() - t) / 86_400_000)
+    const label =
+      days <= 0 ? 'today'
+        : days === 1 ? 'yesterday'
+          : days < 7 ? `${days} days ago`
+            : days < 14 ? 'last week'
+              : days < 60 ? `${Math.floor(days / 7)} weeks ago`
+                : `${Math.floor(days / 30)} months ago`
+    // A reviewer's real question is "is this still worth publishing?". Under a
+    // week is current, under a month is usable with context, older than that is
+    // usually a no during a campaign.
+    setAge({ label, tone: days < 7 ? 'fresh' : days < 30 ? 'ageing' : 'stale' })
+  }, [iso])
+  return age
+}
+
+const AGE_STYLE = {
+  fresh: { bg: '#ecfdf5', bd: '#cfe9d8', fg: '#166638' },
+  ageing: { bg: '#fff7ed', bd: '#fed7aa', fg: '#9a3412' },
+  stale: { bg: '#fef2f2', bd: '#fecaca', fg: '#991b1b' },
+} as const
 
 export function ReviewList({ initial }: { initial: PendingItem[] }) {
   const [items, setItems] = useState(initial)
@@ -147,6 +193,16 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
     }
   }
 
+  // When the SOURCE published it — not when we ingested it. A video we picked up
+  // this morning can be a month old, and "is this still worth publishing?" is the
+  // first question a reviewer asks. It was previously an ISO string buried
+  // mid-way down an unordered field dump.
+  const published = typeof item.data?.pubDate === 'string' ? item.data.pubDate
+    : typeof item.data?.published === 'string' ? item.data.published
+      : item.fetched_at
+  const age = useAge(published)
+  const ageTone = AGE_STYLE[age?.tone ?? 'fresh']
+
   const otherFields = Object.entries(item.data).filter(([k, v]) => v != null && v !== '' && !['policy_links', 'enriched', 'enriched_at'].includes(k))
 
   return (
@@ -156,6 +212,16 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
         <input type="checkbox" checked={selected} onChange={() => onToggleSelect(item.id)} title="Select for bulk action" style={{ width: 16, height: 16, cursor: 'pointer', accentColor: JADE }} />
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, color: JADE, background: '#ecfdf5', border: '1px solid #cfe9d8', borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE, textTransform: 'capitalize' }}><FileText style={{ width: 12, height: 12 }} /> {isLegislation ? docType : item.type}</span>
         <span style={{ fontSize: 11, fontWeight: 700, color: item.change_kind === 'new' ? '#1e40af' : '#92400e', background: item.change_kind === 'new' ? '#eff6ff' : '#fff7ed', border: `1px solid ${item.change_kind === 'new' ? '#bfdbfe' : '#fed7aa'}`, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>{item.change_kind === 'new' ? 'New' : 'Updated'}</span>
+        {published && (
+          <span
+            title={`Published by the source on ${absDate(published)}`}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, fontFamily: MANROPE, borderRadius: 999, padding: '3px 10px', color: ageTone.fg, background: ageTone.bg, border: `1px solid ${ageTone.bd}` }}
+          >
+            <Clock style={{ width: 12, height: 12 }} />
+            {/* Absolute on first paint, relative once mounted — see useAge. */}
+            {age ? `${age.label} · ${absDate(published)}` : absDate(published)}
+          </span>
+        )}
         {(item.source_url || link) && <a href={(item.source_url || link)!} target="_blank" rel="noopener noreferrer" style={{ marginLeft: 'auto', fontSize: 12, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}>Official source <ExternalLink style={{ width: 12, height: 12 }} /></a>}
       </div>
 
