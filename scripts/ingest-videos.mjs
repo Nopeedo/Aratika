@@ -49,7 +49,13 @@ const CHANNELS = [
   // /editor before going public.
   // debatesOnly: general broadcasters — we only want their debate/leader-interview
   // clips, not their weather/sport/general-news feed.
-  { id: 'UCxPAYgO8OpFev3PUTKbsxNw', source: '1News (TVNZ) — Q+A / Jack Tame', party: null, debatesOnly: true },
+  // This is general 1News, NOT Q+A — the label claimed Q+A for years while the
+  // feed served the main bulletin (latest at time of writing: "ASB Good as Gold:
+  // the Naenae Knitters"), so the debatesOnly gate correctly dropped nearly
+  // everything and Q+A itself was never ingested at all. Q+A has its own channel;
+  // it is in the interview tier below. Found by discover-yt-channels.mjs, which
+  // surfaced Q+A as the single broadest source of leader interviews we did not have.
+  { id: 'UCxPAYgO8OpFev3PUTKbsxNw', source: '1News', party: null, debatesOnly: true },
   { id: 'UCBTMdHIU_I0KLPDmWCqTbYg', source: 'ThreeNews', party: null, debatesOnly: true },
   { id: 'UCG0xyRVgb5Yf1lvQxkRrYYQ', source: 'NZ Herald — Herald NOW / Ryan Bridge', party: null, debatesOnly: true },
 
@@ -73,9 +79,36 @@ const CHANNELS = [
   { id: 'UCYKvkaqOJFwji8-Jgm8pjhA', source: 'The Platform', party: null, interviewsOnly: true },
   { id: 'UCprQWxc91NtC1Jx1iuEbC-Q', source: 'The Spinoff', party: null, interviewsOnly: true },
   { id: 'UCDR2gVFmKy9xRU09ibm5S0A', source: 'Newsroom', party: null, interviewsOnly: true },
-  // Checked and deliberately NOT added — record so nobody re-adds them:
-  //   Marae (UCd_uV1LZOdOeTUuehv10-ZA) — resolves and parses, but its newest
-  //   upload is from December 2015. Dormant, would contribute nothing.
+
+  // Found by discover-yt-channels.mjs rather than by anyone remembering them,
+  // ranked by how many different leaders each interviews. Every ID re-verified
+  // through resolve-yt-channel.mjs and confirmed active within the last week.
+  { id: 'UCUmUXLkoEYuMkKmks68wlNw', source: 'Q+A with Jack Tame', party: null, interviewsOnly: true },
+  { id: 'UClzBpZhuLm4JgpmPGlDxOyw', source: 'Pacific Media Network', party: null, interviewsOnly: true },
+  { id: 'UC4j_V-ezhyyNA1lquf1M4zw', source: 'The Bradbury Group', party: null, interviewsOnly: true },
+  { id: 'UCgSIWmLRoSgFklpOr9rVjfg', source: 'Newstalk ZB', party: null, interviewsOnly: true },
+  { id: 'UCZgnsVbXJPZRg5kmtKyq6Ew', source: 'Stuff', party: null, interviewsOnly: true },
+  { id: 'UCSypyI8wbnZgJDYY0VCdwJQ', source: 'Duncan Garner — Editor-in-Chief', party: null, interviewsOnly: true },
+
+  // ── Checked and deliberately NOT added ──────────────────────────────────────
+  // Recorded so the same candidates are not re-litigated, and so the reasoning
+  // is auditable rather than remembered.
+  //
+  //   Marae (UCd_uV1LZOdOeTUuehv10-ZA) — resolves and parses, newest upload is
+  //     December 2015. Dormant.
+  //   The Office of the Mayor of Auckland (UCwwQtm0HmS89e1Y1PMIblcA) — surfaced
+  //     for "Winston Peters: Why NZFirst Deserves Your Vote" and a Swarbrick
+  //     election pitch. It is a serving politician's office publishing campaign
+  //     content, i.e. a political actor, not a media outlet. The interview test
+  //     admits outlets that QUESTION politicians, not ones that platform them.
+  //   Rewiring Aotearoa (UCy0MdcqxBnloVBwlQCsbqQQ) — its "Political Power"
+  //     series does interview leaders, but it is an electrification advocacy
+  //     organisation with a direct stake in the policies discussed. Same
+  //     objection as the mayor's office, one step removed.
+  //   Big Hairy Network (UC_vLFXwlByZ8d6JPeOKMVjw) — mostly commentary ABOUT
+  //     interviews ("Chloe Swarbrick on Q&A was a waste of an opportunity")
+  //     rather than interviews. It does run some of its own; revisit if that
+  //     becomes the bulk of its output.
 ]
 
 // Party + political term lists — generated from the current MP roster
@@ -211,7 +244,12 @@ for (const ch of CHANNELS) {
         // only got here by naming someone); elsewhere it needs the phrasing, so
         // a party's own attack ad naming a rival is not filed as an interview.
         interview: ch.interviewsOnly ? true : isInterview(t),
-        independent: !!ch.interviewsOnly,
+        // "came from the interview tier", nothing more. It was briefly called
+        // `independent` and rendered as an IND badge, which became a false claim
+        // the moment the tier included Q+A (TVNZ), Newstalk ZB (NZME) and Stuff.
+        // The outlet's name is the honest disclosure; a badge asserting
+        // independence we cannot define is not.
+        interviewTier: !!ch.interviewsOnly,
       },
     })
   }

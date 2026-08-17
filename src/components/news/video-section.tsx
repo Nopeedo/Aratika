@@ -93,13 +93,11 @@ export function VideoSection({ videos, hideHeading = false, heading, blurb }: {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 5 }}>
                 {/* The outlet is load-bearing on an interview card, not decoration:
                     the viewer is watching a politician answer questions, and who
-                    chose the questions is part of what they are judging. */}
-                <span style={{ fontSize: 11, fontWeight: 800, color: SECONDARY, display: 'inline-flex', alignItems: 'center', gap: 5, minWidth: 0 }}>
-                  <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{v.source}</span>
-                  {v.independent && (
-                    <span title="Independent outlet — not a party channel or national broadcaster" style={{ flexShrink: 0, fontSize: 9.5, fontWeight: 800, letterSpacing: '.03em', color: SECONDARY, background: '#f1f5f9', border: `1px solid ${BORDER}`, borderRadius: 999, padding: '1px 6px' }}>IND</span>
-                  )}
-                </span>
+                    chose the questions is part of what they are judging. Naming
+                    it is the whole disclosure — an earlier "IND" badge tried to
+                    say more than that and could not survive a tier holding both
+                    Q+A and a two-person podcast. */}
+                <span style={{ fontSize: 11, fontWeight: 800, color: SECONDARY, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{v.source}</span>
                 {v.pubDate && <span style={{ fontSize: 11, fontWeight: 600, color: TERTIARY }}>{fmtDate(v.pubDate)}</span>}
               </div>
               <div style={{ fontSize: 13.5, fontWeight: 700, color: INK, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{v.title}</div>

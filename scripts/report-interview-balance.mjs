@@ -1,6 +1,6 @@
 /**
  * report-interview-balance.mjs — who is actually getting airtime in the
- * independent interview tier.
+ * interview tier.
  *
  * The tier admits channels on an objective test (do they publish original
  * on-the-record interviews with named leaders and candidates) rather than on
@@ -39,7 +39,7 @@ const { data, error } = await sb()
   .gte('fetched_at', since)
 if (error) { console.error(error.message); process.exit(1) }
 
-const items = (data || []).filter((it) => it.data?.independent)
+const items = (data || []).filter((it) => it.data?.interviewTier)
 console.log(`Independent-tier videos in the last ${DAYS} days: ${items.length}\n`)
 if (items.length === 0) {
   console.log('Nothing yet — the tier was added recently, or the ingest has not run since.')
@@ -70,7 +70,9 @@ for (const [s, n] of tally(items, (r) => [r.data?.source || '?'])) console.log(`
 
 console.log('\nOutlets contributing nothing in this window:')
 const seen = new Set(items.map((i) => i.data?.source))
-const KNOWN = ['The Hui', 'Te Ao Māori News', 'The Platform', 'The Spinoff', 'Newsroom']
+const KNOWN = ['The Hui', 'Te Ao Māori News', 'The Platform', 'The Spinoff', 'Newsroom',
+  'Q+A with Jack Tame', 'Pacific Media Network', 'The Bradbury Group', 'Newstalk ZB', 'Stuff',
+  'Duncan Garner — Editor-in-Chief']
 const silent = KNOWN.filter((k) => !seen.has(k))
 console.log(silent.length ? silent.map((s) => `  ${s}`).join('\n') : '  (none — all are contributing)')
 console.log('\nAn outlet silent for a long stretch is worth checking: it may have')

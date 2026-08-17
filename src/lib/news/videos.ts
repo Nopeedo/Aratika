@@ -27,8 +27,11 @@ export interface VideoItem {
   presser: boolean
   /** An interview with a named leader or candidate — see INTERVIEW_TERMS. */
   interview: boolean
-  /** From the independent tier: not a party channel, not a national broadcaster. */
-  independent: boolean
+  /** Came from the interview tier — see the CHANNELS block in ingest-videos.mjs.
+   *  Says where it came from, and nothing about the outlet's independence: the
+   *  tier includes Q+A (TVNZ), Newstalk ZB (NZME) and Stuff alongside smaller
+   *  outlets, so any claim beyond provenance would be false. */
+  interviewTier: boolean
 }
 
 /** Nothing older than this can surface. Te Pāti Māori's official channel has been
@@ -64,7 +67,7 @@ export async function getVideos(limit = 48): Promise<VideoItem[]> {
       debate: d.debate === true,
       presser: d.presser === true,
       interview: d.interview === true,
-      independent: d.independent === true,
+      interviewTier: d.interviewTier === true,
     }
   })
   const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 86_400_000).toISOString().slice(0, 10)
@@ -117,8 +120,9 @@ export async function getDebateVideos(limit = 12): Promise<VideoItem[]> {
 
 /**
  * The "Interviews" rail: long-form interviews with leaders and candidates from
- * the independent tier — outlets that are neither a party's own channel nor a
- * national broadcaster (see the CHANNELS block in scripts/ingest-videos.mjs).
+ * the interview tier — outlets admitted because they put leaders and candidates
+ * on the record, from Q+A down to small independent shows (see CHANNELS in
+ * scripts/ingest-videos.mjs).
  *
  * Kept as its own rail rather than mixed into "Leaders & the press" so the
  * outlet is unmistakable. An interview is a party's voice getting extended
@@ -132,7 +136,7 @@ export async function getDebateVideos(limit = 12): Promise<VideoItem[]> {
  */
 export async function getInterviewVideos(limit = 12): Promise<VideoItem[]> {
   const all = await getVideos(300)
-  const pool = all.filter((v) => v.independent && v.interview)
+  const pool = all.filter((v) => v.interviewTier)
 
   // Bucket by first tagged party; untagged clips ride in their own bucket so an
   // interview we couldn't attribute is never silently dropped.
