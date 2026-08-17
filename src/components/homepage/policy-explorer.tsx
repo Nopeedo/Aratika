@@ -237,10 +237,17 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           100% { opacity: 1; transform: scale(1) translate(0, 0); }
         }
         @media (min-width: 768px) {
+          /* The wrapping chip grid is now the picker at EVERY width.
+             It was mobile-only, and desktop kept a horizontal card rail — which
+             showed about five of the eleven topics and hid the rest behind a
+             small arrow. Immigration, Foreign Policy and Democracy & Government
+             were off-screen entirely, which is the worst possible set to bury:
+             they are the three least likely to be guessed at. The grid wraps to
+             two rows on a wide screen and every topic is visible without
+             scrolling. */
           .pe-rail-hint { display: none; }
-          .pe-rail-arrow { display: flex; }
-          .pe-topic-rail-wrap { display: block; }
-          .pe-mobile { display: none; }
+          .pe-rail-arrow { display: none; }
+          .pe-topic-rail-wrap { display: none; }
           .pe-panel-close { display: flex; }
           .pe-panel {
             margin-top: 18px; border: 1px solid ${BORDER}; border-radius: 18px;
