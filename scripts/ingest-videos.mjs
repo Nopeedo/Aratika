@@ -1,6 +1,8 @@
 /**
- * ingest-videos.mjs — "Leaders & the press" video feed from official YouTube
- * channel RSS (Parliament, RNZ, each party). We store the videoId + title +
+ * ingest-videos.mjs — the video feed: "Leaders & the press" from official
+ * channels (Parliament, RNZ, each party) plus the interview tier (see CHANNELS).
+ * Uploads are read through lib/youtube.mjs, which uses the YouTube Data API when
+ * YOUTUBE_API_KEY is set and otherwise falls back to channel RSS. We store the videoId + title +
  * thumbnail and EMBED via the privacy-enhanced player; we never host/rebroadcast.
  *
  * Party channels' videos are tagged to that party; Parliament/RNZ videos are
@@ -17,22 +19,27 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
 import { buildElectorateTerms, addCandidateTerms } from './electorate-terms.mjs'
+import { getUploads, hasApiKey, announceMode } from './lib/youtube.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
-// The channel RSS feed carries 15 entries; take all of them.
+// How far back to read per channel.
 //
 // This was 6, which quietly produced a monoculture. Every outlet covers the same
 // dominant story at once, so during the August 2026 National leadership crisis
 // the newest six uploads on nearly every channel were about Luxon — the first
 // interview-tier run staged 19 National items against 2 Green, and neither Green
-// item was actually a Green interview. Leader interviews from three weeks ago
-// were already outside the window on any busy channel.
+// item was actually a Green interview.
 //
-// Deduplication is on the video link, so re-reading the same entries is free;
-// the only cost of a wider window is a slightly longer first run.
-const PER_CHANNEL = 15
+// RSS caps at 15 regardless of what we ask for. With a Data API key the full
+// upload history is reachable, which is what lets an interview podcast
+// contribute at all: Dave Letele's Chlöe Swarbrick episode is ~30 episodes back
+// and is simply absent from the feed.
+//
+// Deduplication is on the video link, so re-reading entries is free; a wider
+// window only costs a slightly longer first run.
+const PER_CHANNEL = hasApiKey() ? 60 : 15
 
 // Official channels (resolved + RSS-verified). party=null → tag by who's mentioned.
 const CHANNELS = [
@@ -208,6 +215,7 @@ const tagElectorates = (t) => Object.keys(ELECTORATE_TERMS).filter((name) => ELE
 // point of a new source tier is what it lets through, and that is invisible once
 // the rows are in the table.
 const DRY = process.argv.includes('--dry-run')
+announceMode()
 if (DRY) console.log('DRY RUN — feeds fetched and tagged, nothing written.\n')
 
 const RESET = process.argv.includes('--reset')
@@ -219,15 +227,15 @@ const have = new Set((existing || []).map((r) => r.source_id))
 
 let staged = 0
 for (const ch of CHANNELS) {
-  let xml
-  try { xml = await fetch('https://www.youtube.com/feeds/videos.xml?channel_id=' + ch.id, { headers: { 'User-Agent': UA } }).then((r) => r.text()) }
-  catch (e) { console.warn(`✗ ${ch.source}: ${e.message}`); continue }
-  const entries = xml.split('<entry>').slice(1, PER_CHANNEL + 1)
+  // Uploads come from lib/youtube.mjs, which uses the Data API when a key is
+  // configured and falls back to RSS otherwise — see PER_CHANNEL above for why
+  // the depth matters.
+  const uploads = await getUploads(ch.id, PER_CHANNEL)
   const rows = []
-  for (const e of entries) {
-    const vid = (e.match(/<yt:videoId>([^<]+)<\/yt:videoId>/) || [])[1]
-    const title = (e.match(/<title>([^<]+)<\/title>/) || [])[1]
-    const published = (e.match(/<published>([^<]+)<\/published>/) || [])[1] || null
+  for (const e of uploads) {
+    const vid = e.videoId
+    const title = e.title
+    const published = e.published
     if (!vid || !title) continue
     const link = `https://www.youtube.com/watch?v=${vid}`
     if (have.has(link)) continue
@@ -236,10 +244,8 @@ for (const ch of CHANNELS) {
     // here was a party or Parliament, where the title names the subject. It is
     // not enough for an interview show: "The Hui Episode 02:11" names nobody, so
     // the clip tagged no party, no MP and no topic, and reached no one tracking
-    // any of them. The feed carries media:description; use it.
-    const descRaw = (e.match(/<media:description>([\s\S]*?)<\/media:description>/) || [])[1] || ''
-    const desc = decode(descRaw)
-    const t = (title + ' ' + desc).toLowerCase()
+    // any of them.
+    const t = (title + ' ' + (e.description || '')).toLowerCase()
     const parties = ch.party ? [ch.party] : tag(PARTY_TERMS, t)
     const topics = tag(TOPIC_TERMS, t)
     const mps = tagMPs(t)

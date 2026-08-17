@@ -10,8 +10,10 @@
  * the room thinks to name.
  *
  * So: search YouTube for each leader by name, read who is publishing the
- * results, and subtract what we already have. No API key needed — the search
- * page ships its data as ytInitialData.
+ * results, and subtract what we already have. Uses the Data API when
+ * YOUTUBE_API_KEY is set (region-locked to NZ, and it returns descriptions);
+ * otherwise it scrapes the search page, which ships its data as ytInitialData.
+ * No key is a smaller, noisier window — never a failure.
  *
  * This SUGGESTS, it does not add. Output is a ranked candidate list for a human
  * to look at, because the tier's admission test (does this outlet publish
@@ -27,6 +29,7 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { searchVideos, announceMode } from './lib/youtube.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
@@ -66,6 +69,21 @@ function ageDays(label) {
 }
 
 async function search(query) {
+  // Data API first when a key is configured: it is region-locked to NZ and
+  // language-locked to English, which the HTML page cannot express, and it
+  // returns the description as well as the title. Falls back silently to
+  // scraping so this works with no key at all.
+  const api = await searchVideos(query, { max: 40 })
+  if (api) {
+    return api.map((r) => ({
+      title: r.title,
+      owner: r.channelTitle,
+      chId: r.channelId,
+      when: r.published,
+      age: r.published ? Math.round((Date.now() - Date.parse(r.published)) / 86400000) : null,
+    }))
+  }
+
   const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`
   let html
   try { html = await fetch(url, { headers: { 'User-Agent': UA, 'Accept-Language': 'en-NZ,en;q=0.9' } }).then((r) => r.text()) }
@@ -89,6 +107,7 @@ async function search(query) {
 
 const unesc = (s) => s.replace(/\\u0026/g, '&').replace(/\\"/g, '"').replace(/\\\//g, '/').replace(/\\n/g, ' ')
 
+announceMode(' (discovery)')
 const known = knownChannelIds()
 console.log(`Already ingesting ${known.size} channels — those are excluded from the results.\n`)
 

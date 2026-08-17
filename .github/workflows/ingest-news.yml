@@ -35,6 +35,10 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          # Optional. Unset, the ingest falls back to channel RSS and only sees
+          # each channel's newest 15 uploads — enough for party channels, not
+          # enough for interview shows. See scripts/lib/youtube.mjs.
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
       - name: Ingest polls
         run: node scripts/ingest-polls.mjs
         env:
