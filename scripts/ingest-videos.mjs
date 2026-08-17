@@ -140,6 +140,17 @@ const CHANNELS = [
   // qualifies. Its commentary will lean on the /editor gate more than most.
   { id: 'UC_vLFXwlByZ8d6JPeOKMVjw', source: 'Big Hairy Network', party: null, interviewsOnly: true },
 
+  // Found by discover-race-channels.mjs, which searches CANDIDATES in the most
+  // marginal seats rather than leaders. Neither of these would ever surface from
+  // a search for a party leader, and both cover races the national outlets do
+  // not touch.
+  { id: 'UCtgvSkmjzkGoFMflc_ztVwQ', source: 'Te Karere TVNZ', party: null, interviewsOnly: true },
+  // Small, and that is the point: it interviewed the Legalise Cannabis, Green
+  // and Labour candidates for Te Tai Tokerau in turn. Interviewing across
+  // parties is exactly what the admission test asks for, and audience size is
+  // not a criterion — applying one would quietly exclude every local outlet.
+  { id: 'UCxMMtCyUYe_yBVY7WrVAYCA', source: 'a Curious Family', party: null, interviewsOnly: true },
+
   // ── Checked and deliberately NOT added ──────────────────────────────────────
   // Recorded so the same candidates are not re-litigated, and so the reasoning
   // is auditable rather than remembered.
@@ -163,6 +174,11 @@ const CHANNELS = [
   //     July 2026.
   //   APT (UCpLEtz3H0jSfEneSdf1YKnw) — a wire service reposting a Luxon
   //     livestream. Not an interview outlet.
+  //   Chris Baillie (UCQigy6RIqmXGqlzJFSIKC-A) — surfaced by race discovery,
+  //     but it is the candidate's OWN channel. Self-publication, same category
+  //     as a party channel and the mayor's office: the test admits outlets that
+  //     question candidates, not candidates publishing themselves. (Its top hit
+  //     was also a 2025 council campaign video, not this election.)
   //
   // Undecided, worth a human call — Engineering New Zealand
   // (UCX11-WjWI7XcDjYYuDt71tg) runs an "Election Conversations" series that
