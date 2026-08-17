@@ -1,6 +1,6 @@
 /**
  * detect-deep-dives.mjs — enqueue a DIGEST notification when a new policy
- * breakdown lands on a topic a user tracks.
+ * breakdown lands on a topic OR a party a user tracks.
  *
  * Tracking a policy topic only ever notified on news and video tagged to it.
  * Forty-one deep dives went up across ten parties and nobody following those
@@ -90,22 +90,31 @@ console.log(`New since last run: ${fresh.length}`)
 for (const d of fresh) console.log(`  · ${d.party} — ${d.title}`)
 
 if (fresh.length > 0) {
-  const { data: bms, error } = await sb().from('bookmarks').select('user_id, ref_id').eq('kind', 'policy')
+  // Topic trackers AND party trackers. Following a party and not being told when
+  // that party's policy gets broken down is the more surprising of the two
+  // omissions — it was the original miss here. It also matters most for a dive
+  // on a brand-new topic, which by definition nobody is tracking yet: without
+  // the party side, such a dive notifies literally no one.
+  const { data: bms, error } = await sb().from('bookmarks').select('user_id, kind, ref_id').in('kind', ['policy', 'party'])
   if (error) { console.error(error.message); process.exit(1) }
 
   const byTopic = new Map()
+  const byParty = new Map()
   for (const b of bms || []) {
+    const m = b.kind === 'party' ? byParty : byTopic
     const key = lc(b.ref_id)
-    if (!byTopic.has(key)) byTopic.set(key, new Set())
-    byTopic.get(key).add(b.user_id)
+    if (!m.has(key)) m.set(key, new Set())
+    m.get(key).add(b.user_id)
   }
+  console.log(`Trackers: ${byTopic.size} topic(s), ${byParty.size} part(ies)`)
 
   let enqueued = 0
   for (const d of fresh) {
-    // A dive can sit on two topics; dedup is on the dive, not the topic, so
-    // someone tracking both is told once.
+    // A dive can sit on two topics, and a user can track both the party and the
+    // topic. Dedup is on the dive, so all of those collapse to one notification.
     const users = new Set()
     for (const t of d.topics) for (const u of byTopic.get(lc(t)) || []) users.add(u)
+    for (const u of byParty.get(lc(d.party)) || []) users.add(u)
     for (const userId of users) {
       await enqueue({
         userId,
