@@ -1,6 +1,6 @@
 /**
  * detect-content.mjs — enqueue DIGEST notifications when new news/video lands on
- * something a user tracks (a party, MP, policy issue, or electorate).
+ * something a user tracks (a party, MP, policy issue, electorate, or bill).
  *
  * Recent approved content_items (news/video, last ~26h) carry tag arrays in
  * `data` (parties / mps / topics / electorates — set by the ingest tagger). We
@@ -32,9 +32,9 @@ if (e1) { console.error(e1.message); process.exit(1) }
 console.log(`Recent approved news/video (last ${WINDOW_HOURS}h): ${items?.length ?? 0}`)
 
 // Bookmarks that can match content, indexed by kind → ref_id → Set(userId).
-const { data: bms, error: e2 } = await sb().from('bookmarks').select('user_id, kind, ref_id').in('kind', ['party', 'mp', 'policy', 'electorate'])
+const { data: bms, error: e2 } = await sb().from('bookmarks').select('user_id, kind, ref_id').in('kind', ['party', 'mp', 'policy', 'electorate', 'bill'])
 if (e2) { console.error(e2.message); process.exit(1) }
-const idx = { party: new Map(), mp: new Map(), policy: new Map(), electorate: new Map() }
+const idx = { party: new Map(), mp: new Map(), policy: new Map(), electorate: new Map(), bill: new Map() }
 for (const b of bms || []) {
   const m = idx[b.kind]; if (!m) continue
   const key = lc(b.ref_id)
@@ -43,7 +43,11 @@ for (const b of bms || []) {
 }
 
 // data-tag field → bookmark kind it maps to.
-const TAG_TO_KIND = { parties: 'party', mps: 'mp', topics: 'policy', electorates: 'electorate' }
+// `bills` was added later than the rest: tracking a bill got you status changes
+// and submission windows but no coverage of it, which is the thing people
+// actually notice. Items ingested before that tag existed simply have no
+// `bills` key and are skipped, which is the right way to fail.
+const TAG_TO_KIND = { parties: 'party', mps: 'mp', topics: 'policy', electorates: 'electorate', bills: 'bill' }
 
 let enqueued = 0
 for (const it of items || []) {

@@ -23,6 +23,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
 import { buildElectorateTerms, addCandidateTerms } from './electorate-terms.mjs'
+import { buildBillTerms, tagBills } from './bill-terms.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -107,6 +108,13 @@ function tagElectorates(text) {
   return Object.keys(ELECTORATE_TERMS).filter((name) => ELECTORATE_TERMS[name].some((term) => t.includes(term)))
 }
 
+// Bill tagging: curated aliases for the eight bills that have pages here (and so
+// are the only bills a bookmark can hold), plus the formal titles of the real
+// bills each covers. Curated rather than derived — see bill-terms.mjs for the
+// measurement that ruled derivation out.
+const BILL_TERMS = buildBillTerms()
+console.log(`Bill tagging: ${Object.keys(BILL_TERMS).length} bills, ${Object.values(BILL_TERMS).flat().length} terms`)
+
 // Directly about the 2026 election / the contest for votes.
 const ELECTION_TERMS = ['election', 'campaign', 'candidate', 'poll', 'voter', 'ballot', 'coalition', 'preferred prime minister', 'hustings', 'leaders debate', "leaders' debate", '2026', 'on the campaign']
 function isElectionRelevant(text, parties) {
@@ -124,7 +132,16 @@ const NEWS_NOISE_TERMS = [
   'movie review', 'tv review', 'what to watch', 'travel guide',
 ]
 
+// --dry-run: fetch and tag as normal, print the result, write nothing. Added so
+// the tagging can be checked against live feeds before it goes into the table.
+const DRY = process.argv.includes('--dry-run')
+if (DRY) console.log('DRY RUN — feeds are fetched and tagged, nothing is written.\n')
+
 const RESET = process.argv.includes('--reset')
+if (RESET && DRY) {
+  console.error('--reset with --dry-run would still delete every news item. Refusing.')
+  process.exit(1)
+}
 if (RESET) {
   const { error } = await sb.from('content_items').delete().eq('type', 'news')
   console.log(error ? 'reset error: ' + error.message : 'cleared existing news')
@@ -168,6 +185,7 @@ for (const feed of FEEDS) {
     const topics = tag(TOPIC_TERMS, title + ' ' + snippetRaw)
     const mps = tagMPs(title + ' ' + snippetRaw)
     const electorates = tagElectorates(title + ' ' + snippetRaw)
+    const bills = tagBills(title + ' ' + snippetRaw, BILL_TERMS)
     const electionRelevant = isElectionRelevant(title + ' ' + snippetRaw, parties)
     // Noise gate — a DENYLIST, not an allowlist: keyword-based political detection
     // misses MP/minister surnames, so an allowlist would wrongly drop real coverage
@@ -194,15 +212,32 @@ for (const feed of FEEDS) {
     rows.push({
       type: 'news', source_id: link, title, summary: snippet, status: NEWS_STATUS,
       change_kind: 'new', source_url: link,
-      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, mps, electorates, featured: false, image, electionRelevant },
+      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, mps, electorates, bills, featured: false, image, electionRelevant },
     })
   }
-  for (let i = 0; i < rows.length; i += 50) {
-    const { error } = await sb.from('content_items').insert(rows.slice(i, i + 50))
-    if (error) { console.error(`insert error (${feed.outlet}): ${error.message}`); break }
+  if (DRY) {
+    // Print what WOULD be written, tags and all. The tagging is the part worth
+    // eyeballing — a term that quietly matches nothing, or matches everything,
+    // is invisible once the rows are in the table.
+    for (const r of rows) {
+      const d = r.data
+      const tags = [
+        d.parties.length ? `parties:${d.parties.join('/')}` : '',
+        d.topics.length ? `topics:${d.topics.join('/')}` : '',
+        d.mps.length ? `mps:${d.mps.length}` : '',
+        d.electorates.length ? `seats:${d.electorates.join('/')}` : '',
+        d.bills.length ? `BILLS:${d.bills.join('/')}` : '',
+      ].filter(Boolean).join('  ')
+      console.log(`  · ${r.title.slice(0, 78)}\n      ${tags || '(no tags)'}`)
+    }
+  } else {
+    for (let i = 0; i < rows.length; i += 50) {
+      const { error } = await sb.from('content_items').insert(rows.slice(i, i + 50))
+      if (error) { console.error(`insert error (${feed.outlet}): ${error.message}`); break }
+    }
   }
   staged += rows.length
-  console.log(`✓ ${feed.outlet}: +${rows.length} new`)
+  console.log(`✓ ${feed.outlet}: +${rows.length} new${DRY ? ' (dry run — nothing written)' : ''}`)
 }
 console.log(`\nDone. Staged ${staged} news items, skipped ${skipped} dupes, ${failedFeeds} feeds failed.`)
 // The Supabase client keeps the event loop alive (open keep-alive sockets), so a
