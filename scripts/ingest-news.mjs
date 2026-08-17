@@ -23,6 +23,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
 import { buildElectorateTerms, addCandidateTerms } from './electorate-terms.mjs'
+import { buildCandidateTerms, tagCandidates } from './candidate-terms.mjs'
 import { buildBillTerms, tagBills } from './bill-terms.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
@@ -105,6 +106,10 @@ function tag(map, text) {
 // tags their battle even when the seat itself isn't mentioned. Previously only
 // the 21 closest 2023 races were taggable, leaving 51 battle pages unable to
 // ever receive news.
+// 2026 candidates by name — sitting MPs come through tagMPs, this is everyone
+// else standing. A challenger's name in a story is often the only thing that
+// ties it to a race.
+const { terms: CANDIDATE_TERMS } = await buildCandidateTerms(sb)
 const ELECTORATE_TERMS = buildElectorateTerms()
 const challengerTerms = await addCandidateTerms(ELECTORATE_TERMS, sb)
 console.log(`Electorate tagging: ${Object.keys(ELECTORATE_TERMS).length} seats, +${challengerTerms} challenger names`)
@@ -191,6 +196,7 @@ for (const feed of FEEDS) {
     const mps = tagMPs(title + ' ' + snippetRaw)
     const electorates = tagElectorates(title + ' ' + snippetRaw)
     const bills = tagBills(title + ' ' + snippetRaw, BILL_TERMS)
+    const candidates = tagCandidates(title + ' ' + snippetRaw, CANDIDATE_TERMS)
     const electionRelevant = isElectionRelevant(title + ' ' + snippetRaw, parties)
     // Noise gate — a DENYLIST, not an allowlist: keyword-based political detection
     // misses MP/minister surnames, so an allowlist would wrongly drop real coverage
@@ -217,7 +223,7 @@ for (const feed of FEEDS) {
     rows.push({
       type: 'news', source_id: link, title, summary: snippet, status: NEWS_STATUS,
       change_kind: 'new', source_url: link,
-      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, mps, electorates, bills, featured: false, image, electionRelevant },
+      data: { link, outlet: feed.outlet, kind: feed.kind, cc: feed.cc, pubDate: it.isoDate || it.pubDate || null, parties, topics, mps, electorates, bills, candidates, featured: false, image, electionRelevant },
     })
   }
   if (DRY) {

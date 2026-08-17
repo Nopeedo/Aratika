@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
 import { buildElectorateTerms, addCandidateTerms } from './electorate-terms.mjs'
+import { buildCandidateTerms, tagCandidates } from './candidate-terms.mjs'
 import { getUploads, getDurations, hasApiKey, announceMode } from './lib/youtube.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
@@ -230,6 +231,11 @@ const ELECTORATE_TERMS = buildElectorateTerms()
 await addCandidateTerms(ELECTORATE_TERMS, sb)
 const tagElectorates = (t) => Object.keys(ELECTORATE_TERMS).filter((name) => ELECTORATE_TERMS[name].some((term) => t.includes(term)))
 
+// 2026 candidates by name. Sitting MPs come through tagMPs; this is everyone
+// else standing — 233 of the 321 candidate records — who could not be tagged at
+// all before, and who the interview gate therefore treated as nobody.
+const { terms: CANDIDATE_TERMS } = await buildCandidateTerms(sb)
+
 // --dry-run: fetch, tag and classify as normal, print, write nothing. The whole
 // point of a new source tier is what it lets through, and that is invisible once
 // the rows are in the table.
@@ -287,6 +293,7 @@ for (const ch of CHANNELS) {
     const topics = tag(TOPIC_TERMS, t)
     const mps = tagMPs(t)
     const electorates = tagElectorates(t)
+    const candidates = tagCandidates(t, CANDIDATE_TERMS)
     const electionRelevant = parties.length > 0 || ELECTION_TERMS.some((x) => t.includes(x))
     const debate = DEBATE_TERMS.some((x) => t.includes(x))
     // Noise gate. Keyword relevance detection is too weak to use as an allowlist
@@ -306,7 +313,10 @@ for (const ch of CHANNELS) {
     // common surname qualifies. Interview phrasing is recorded but not
     // required — an outlet that leads with "Chlöe Swarbrick on fossil fuels"
     // never says the word "interview", and that is exactly the clip we want.
-    const namesSomeone = mps.length > 0 || LEADER_NAMES.some((x) => t.includes(x))
+    // A challenger counts as "someone". Before this, an interview with a
+    // first-time candidate was dropped unless it also named a sitting MP —
+    // which is precisely backwards during an election campaign.
+    const namesSomeone = mps.length > 0 || candidates.length > 0 || LEADER_NAMES.some((x) => t.includes(x))
     if (ch.interviewsOnly && !(namesSomeone && (electionRelevant || isPolitical(t, parties) || topics.length > 0))) continue
     if (ch.interviewsOnly && tooShort(vid)) { shorts++; continue }
 
@@ -316,6 +326,7 @@ for (const ch of CHANNELS) {
       type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'pending', source_url: link,
       data: {
         videoId: vid, source: ch.source, party: ch.party, parties, topics, mps, electorates,
+        candidates,
         pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`,
         electionRelevant, debate, presser: isPresser(t), featured: false,
         // Drives the Interviews rail. Independent-tier clips all qualify (they
