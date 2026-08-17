@@ -13,11 +13,14 @@ import {
   COMPASS_STATEMENTS, COMPASS_STANCES, STANCE_AXIS, COMPASS_PARTY_ORDER,
 } from '@/constants/compass'
 import type { LikertValue } from '@/constants/compass'
-import type { PartySlug } from '@/types'
+import type { PartySlug, PolicyTopic } from '@/types'
 
 export type AgreeKind = 'agree' | 'disagree' | 'partial' | 'na'
 
 export interface StatementOverlap {
+  /** Policy topic, so the result can link to OUR sourced page for this
+   *  party on this issue rather than only to the party's own website. */
+  topic: PolicyTopic
   id: string
   label: string
   userValue: LikertValue
@@ -52,7 +55,7 @@ export function computeOverlap(answers: Record<string, number>): PartyOverlap[] 
         else kind = 'disagree'
       }
       return {
-        id: s.id, label: s.label, userValue, partyAxis, kind,
+        id: s.id, topic: s.topic, label: s.label, userValue, partyAxis, kind,
         sourceUrl: cell?.sourceUrl ?? null, summary: cell?.summary ?? null, quote: cell?.quote ?? null,
       }
     })

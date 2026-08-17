@@ -273,14 +273,27 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
                     <span style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, marginLeft: 'auto' }}>
                       {po.counted > 0 ? <>same side on <b style={{ color: INK }}>{po.sameSide}</b> of {po.counted}</> : 'no comparable positions yet'}
                     </span>
+                    {/* A row-level way out, for the reader who wants the whole
+                        party rather than the one issue they just tapped. */}
+                    <Link href={`/parties/${po.party}`} style={{ fontSize: 12, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+                      All their policies →
+                    </Link>
                   </div>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                     {po.statements.map((st) => {
                       const dot = <Indicator kind={st.kind} />
-                      const tip = `${st.label}: ${st.quote ? `“${st.quote}”` : (st.summary ?? '')}${st.sourceUrl ? ' — source ↗' : ''}`
-                      return st.sourceUrl ? (
-                        <a key={st.id} href={st.sourceUrl} target="_blank" rel="noopener noreferrer" title={tip} style={{ textDecoration: 'none' }}>{dot}</a>
-                      ) : <span key={st.id} title={`${st.label}: position not yet captured`}>{dot}</span>
+                      const tip = `${st.label}: ${st.quote ? `“${st.quote}”` : (st.summary ?? '')} — read the sourced position`
+                      // Link to OUR page for this party on this issue, not to the
+                      // party's own policy index. A result that says "you agree
+                      // with them here" and then sends you to their marketing is
+                      // asking you to take our word for it; this sends you to the
+                      // neutral summary, the key proposals and the quotes we hold,
+                      // which carry the primary source themselves. Every one of
+                      // these routes exists — where we have not recorded a
+                      // position, the page says so plainly rather than 404ing.
+                      return (
+                        <Link key={st.id} href={`/policies/${st.topic}/${po.party}`} title={tip} style={{ textDecoration: 'none' }}>{dot}</Link>
+                      )
                     })}
                   </div>
                 </div>
@@ -288,7 +301,7 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
             })}
           </div>
           <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '10px 0 0', lineHeight: 1.5 }}>
-            Tap a square to read that party’s position at its source. Want the full picture?{' '}
+            Tap a square to read what that party has actually said on that issue — our neutral summary, with the source. Want the full picture?{' '}
             <Link href="/compare" style={{ color: SECONDARY, fontWeight: 700 }}>Compare every party side by side →</Link>
           </p>
         </div>
