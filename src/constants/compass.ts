@@ -87,7 +87,12 @@ export interface PartyStance {
 // statement id → party slug → stance. Populated by the sourcing step (Phase 1)
 // and reviewed before launch. Parties shown in the result in this fixed,
 // non-ranked order (current seat order); TOP is extra-parliamentary, omitted here.
-export const COMPASS_PARTY_ORDER: PartySlug[] = ['national', 'labour', 'green', 'act', 'nzfirst', 'tpm']
+// Seat order, then extra-parliamentary. TOP was absent while it held no seats,
+// but inclusion here follows the same rule as everywhere else on the site —
+// registered and contesting, not polling — and it now has an approved 2026
+// position on all seven compass topics. A quiz that quietly omits a party the
+// reader may be considering is the one thing this tool cannot afford to do.
+export const COMPASS_PARTY_ORDER: PartySlug[] = ['national', 'labour', 'green', 'act', 'nzfirst', 'tpm', 'top']
 
 export type CompassStances = Record<string, Partial<Record<PartySlug, PartyStance>>>
 

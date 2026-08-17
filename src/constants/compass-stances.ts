@@ -29,6 +29,13 @@ const S = {
   nzfirst:  'https://www.nzfirst.nz/policies',
   tpm:      'https://www.maoriparty.org.nz/',
   tracker:  'https://en.wikipedia.org/wiki/2026_New_Zealand_general_election', // 2026 announcements, with citations
+  top:      'https://www.opportunity.org.nz/policy',
+  topTax:   'https://www.opportunity.org.nz/tax-reset',
+  topHealth:'https://www.opportunity.org.nz/healthy_people',
+  topHouse: 'https://www.opportunity.org.nz/affordable_housing',
+  topEd:    'https://www.opportunity.org.nz/future_fit_education',
+  topClim:  'https://www.opportunity.org.nz/climate_action',
+  topCrime: 'https://www.opportunity.org.nz/smart_on_crime',
   nzfManifesto: 'https://assets.nationbuilder.com/nzfirst/pages/4158/attachments/original/1696631089/2023-New-Zealand-First-Policy-Manifesto-1.pdf',
 } as const
 
@@ -50,6 +57,7 @@ export const COMPASS_STANCES: CompassStances = {
     act:      { stance: 'strongly_support', summary: 'Campaigns to cut government spending, lower taxes and merge ministries.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
     nzfirst:  { stance: 'mixed',            summary: 'Economically interventionist rather than tax-cutting; focus on cost of living.', quote: null, sourceUrl: S.nzfirst, sourceLabel: lbl.nzfirst },
     tpm:      { stance: 'strongly_oppose',  summary: 'Favours redistribution and higher taxes on wealth over lower taxes.', quote: null, sourceUrl: S.tpm, sourceLabel: lbl.tpm },
+    top:      { stance: 'oppose',      summary: 'Restructures tax rather than shrinking it: a Land Value Tax and a Citizen’s Income alongside lower income-tax brackets.', quote: null, sourceUrl: S.topTax, sourceLabel: lbl.top },
   },
 
   // 2 ── Public health should get significantly more funding, even via higher tax ──
@@ -60,6 +68,7 @@ export const COMPASS_STANCES: CompassStances = {
     act:      { stance: 'oppose',           summary: 'Opposes higher taxes; favours efficiency, e.g. pharmacists easing GP load.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
     nzfirst:  { stance: 'support',          summary: 'Supports stronger public-health funding as part of core public services.', quote: null, sourceUrl: S.nzfirst, sourceLabel: lbl.nzfirst },
     tpm:      { stance: 'strongly_support', summary: 'Prioritises major investment in health, especially Māori health equity.', quote: null, sourceUrl: S.tpm, sourceLabel: lbl.tpm },
+    top:      { stance: 'support',     summary: 'Wants core health services properly funded, framed as prevention and primary care that saves money later.', quote: null, sourceUrl: S.topHealth, sourceLabel: lbl.top },
   },
 
   // 3 ── Government should directly build more public housing ──
@@ -70,6 +79,7 @@ export const COMPASS_STANCES: CompassStances = {
     act:      { stance: 'strongly_oppose',  summary: 'Favours private supply via deregulation rather than government building.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
     nzfirst:  { stance: 'mixed',            summary: 'Supports state intervention on housing/prices but not large-scale state builds.', quote: null, sourceUrl: S.nzfirst, sourceLabel: lbl.nzfirst },
     tpm:      { stance: 'support',          summary: 'Backs public and papakāinga/Māori housing to address the shortage.', quote: null, sourceUrl: S.tpm, sourceLabel: lbl.tpm },
+    top:      { stance: 'mixed',       summary: 'Wants many more homes built and prices to fall, but through a land tax and zoning reform rather than state building.', quote: null, sourceUrl: S.topHouse, sourceLabel: lbl.top },
   },
 
   // 4 ── Increase funding for public schools and teachers ──
@@ -80,6 +90,7 @@ export const COMPASS_STANCES: CompassStances = {
     act:      { stance: 'mixed',            summary: 'Prioritises school choice and autonomy over higher across-the-board funding.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
     nzfirst:  { stance: 'support',          summary: 'Supports public-education funding and removing extra costs for families.', quote: null, sourceUrl: S.nzfirst, sourceLabel: lbl.nzfirst },
     tpm:      { stance: 'support',          summary: 'Backs more education funding, especially kaupapa Māori education.', quote: null, sourceUrl: S.tpm, sourceLabel: lbl.tpm },
+    top:      { stance: 'support',     summary: 'Backs pay parity for early-childhood teachers and better staffing ratios in the public system.', quote: null, sourceUrl: S.topEd, sourceLabel: lbl.top },
   },
 
   // 5 ── Cut emissions faster, even with short-term economic cost ──
@@ -90,6 +101,7 @@ export const COMPASS_STANCES: CompassStances = {
     act:      { stance: 'strongly_oppose',  summary: 'Proposes a split-gas target to ease methane limits; wary of climate costs.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.act },
     nzfirst:  { stance: 'strongly_oppose',  summary: 'Would expand mining and curb conservation enforcement; sceptical of fast action.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.nzfirst },
     tpm:      { stance: 'support',          summary: 'Backs strong climate action framed through environmental and Māori justice.', quote: null, sourceUrl: S.tpm, sourceLabel: lbl.tpm },
+    top:      { stance: 'support',     summary: 'Would bring agricultural emissions into the ETS and have the Climate Change Commission set carbon budgets.', quote: null, sourceUrl: S.topClim, sourceLabel: lbl.top },
   },
 
   // 6 ── Justice should prioritise tougher sentencing over rehabilitation ──
@@ -100,6 +112,7 @@ export const COMPASS_STANCES: CompassStances = {
     act:      { stance: 'strongly_support', summary: 'Long-standing tough-on-crime stance with firmer sentencing.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
     nzfirst:  { stance: 'support',          summary: 'Supports tougher law-and-order and firmer sentencing.', quote: 'Getting tough on rising crime', sourceUrl: S.nzfManifesto, sourceLabel: 'NZ First 2023 manifesto' },
     tpm:      { stance: 'strongly_oppose',  summary: 'Would phase out prisons by 2040 in favour of community-led approaches.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.tpm },
+    top:      { stance: 'strongly_oppose', summary: 'Explicitly favours rehabilitation and early intervention over punishment; would raise the youth court age to 25.', quote: null, sourceUrl: S.topCrime, sourceLabel: lbl.top },
   },
 
   // 7 ── Treaty-based partnerships and Māori-specific policies maintained or expanded ──
@@ -110,6 +123,7 @@ export const COMPASS_STANCES: CompassStances = {
     act:      { stance: 'strongly_oppose',  summary: 'Advocates "one law for all" and merging Māori-specific agencies.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.act },
     nzfirst:  { stance: 'strongly_oppose',  summary: 'Seeks a referendum on Māori seats and to remove Māori-specific bodies.', quote: 'Rule out working with any political party that promotes separatism.', sourceUrl: S.nzfManifesto, sourceLabel: 'NZ First 2023 manifesto' },
     tpm:      { stance: 'strongly_support', summary: 'Proposes a Treaty Commissioner able to audit and veto non-compliant bills.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.tpm },
+    top:      { stance: 'strongly_support', summary: 'Says the Crown must take its Treaty partner role seriously; would repeal the Treaty Principles Bill if passed.', quote: null, sourceUrl: S.top, sourceLabel: lbl.top },
   },
 
   // 8 ── Do more to reduce inequality and support people on low incomes ──
@@ -120,5 +134,6 @@ export const COMPASS_STANCES: CompassStances = {
     act:      { stance: 'oppose',           summary: 'Emphasises personal responsibility; tighter welfare settings.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
     nzfirst:  { stance: 'support',          summary: 'Targets cost of living via market interventions on banks, energy and groceries.', quote: "New Zealand First's seven-point solution for the cost of living crisis", sourceUrl: S.nzfManifesto, sourceLabel: 'NZ First 2023 manifesto' },
     tpm:      { stance: 'strongly_support', summary: 'Centres reducing poverty and inequality, especially for Māori and low-income whānau.', quote: null, sourceUrl: S.tpm, sourceLabel: lbl.tpm },
+    top:      { stance: 'strongly_support', summary: 'Its Citizen’s Income would pay nearly all adults up to $370 a week, replacing most existing benefits.', quote: null, sourceUrl: S.topTax, sourceLabel: lbl.top },
   },
 }
