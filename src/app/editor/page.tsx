@@ -52,17 +52,28 @@ export default async function EditorPage() {
 
 async function loadPending(): Promise<PendingItem[]> {
   const supabase = await createClient()
-  const { data } = await supabase
-    .from('content_items')
-    .select('id, type, title, data, summary, change_kind, source_url, fetched_at')
-    .eq('status', 'pending')
-    .order('fetched_at', { ascending: false })
-    .limit(400)
+  // Paginate rather than take one capped page. This used to fetch 400 and then
+  // slice to 100 — with 252 items pending, 151 of them were unreachable through
+  // the interface entirely. Not a display preference: an editorial gate that
+  // cannot show you a third of the queue is not a gate.
+  const rows: PendingItem[] = []
+  const PAGE = 1000
+  for (let from = 0; from < 5000; from += PAGE) {
+    const { data } = await supabase
+      .from('content_items')
+      .select('id, type, title, data, summary, change_kind, source_url, fetched_at')
+      .eq('status', 'pending')
+      .order('fetched_at', { ascending: false })
+      .range(from, from + PAGE - 1)
+    if (!data || data.length === 0) break
+    rows.push(...(data as PendingItem[]))
+    if (data.length < PAGE) break
+  }
   // Only show items that are READY for editorial review — i.e. legislation that's
   // been AI-drafted (has a summary + breakdown). Raw, un-enriched feed items are
   // "pending enrichment", not "pending review", so they're hidden here.
-  const items = (data as (PendingItem & { data: { enriched?: boolean } })[] | null) ?? []
-  return items.filter((it) => it.type !== 'legislation' || it.data?.enriched === true).slice(0, 100)
+  return (rows as (PendingItem & { data: { enriched?: boolean } })[])
+    .filter((it) => it.type !== 'legislation' || it.data?.enriched === true)
 }
 
 function Gate({ title, body, children }: { title: string; body: string; children: React.ReactNode }) {

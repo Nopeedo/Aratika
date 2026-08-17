@@ -66,6 +66,39 @@ function useAge(iso: string | null): { label: string; tone: 'fresh' | 'ageing' |
   return age
 }
 
+/** The source's publish date, not our ingest time — see the badge comment. */
+function publishedOf(i: PendingItem): string | null {
+  const d = i.data || {}
+  if (typeof d.pubDate === 'string') return d.pubDate
+  if (typeof d.published === 'string') return d.published
+  return i.fetched_at
+}
+
+/** Outlet (news) or channel (video), for the per-outlet filter. */
+function sourceOf(i: PendingItem): string | null {
+  const d = i.data || {}
+  if (typeof d.source === 'string') return d.source
+  if (typeof d.outlet === 'string') return d.outlet
+  return null
+}
+
+/**
+ * Age bucket, computed WITHOUT the clock during render — filter counts are
+ * derived on the server pass too, and a bucket that shifts between server and
+ * client is the same hydration bug the badge avoids.
+ *
+ * Resolved against a date fixed at module load rather than per call, so every
+ * item in one render is bucketed against the same instant.
+ */
+const NOW_AT_LOAD = Date.now()
+function ageBucket(iso: string | null): 'fresh' | 'ageing' | 'stale' | null {
+  if (!iso) return null
+  const t = Date.parse(iso)
+  if (isNaN(t)) return null
+  const days = (NOW_AT_LOAD - t) / 86_400_000
+  return days < 7 ? 'fresh' : days < 30 ? 'ageing' : 'stale'
+}
+
 const AGE_STYLE = {
   fresh: { bg: '#ecfdf5', bd: '#cfe9d8', fg: '#166638' },
   ageing: { bg: '#fff7ed', bd: '#fed7aa', fg: '#9a3412' },
@@ -85,9 +118,39 @@ export function ReviewList({ initial }: { initial: PendingItem[] }) {
     setDone((d) => ({ ...d, [action === 'approve' ? 'approved' : 'rejected']: d[action === 'approve' ? 'approved' : 'rejected'] + 1 }))
   }
 
+  // ── Filtering ───────────────────────────────────────────────────────────────
+  const [typeFilter, setTypeFilter] = useState('all')
+  const [sourceFilter, setSourceFilter] = useState('all')
+  const [ageFilter, setAgeFilter] = useState<'all' | 'fresh' | 'ageing' | 'stale'>('all')
+  const [sortNewestFirst, setSortNewestFirst] = useState(true)
+
+  const typeCounts: Record<string, number> = {}
+  for (const i of items) typeCounts[i.type] = (typeCounts[i.type] || 0) + 1
+  const typeKeys = Object.keys(typeCounts).sort((a, b) => typeCounts[b] - typeCounts[a])
+
+  const sourceCounts: Record<string, number> = {}
+  for (const i of items) { const s = sourceOf(i); if (s) sourceCounts[s] = (sourceCounts[s] || 0) + 1 }
+  const sourceKeys = Object.keys(sourceCounts).sort((a, b) => sourceCounts[b] - sourceCounts[a])
+
+  const ageCounts = { fresh: 0, ageing: 0, stale: 0 }
+  for (const i of items) { const b = ageBucket(publishedOf(i)); if (b) ageCounts[b]++ }
+
+  const shown = items
+    .filter((i) => typeFilter === 'all' || i.type === typeFilter)
+    .filter((i) => sourceFilter === 'all' || sourceOf(i) === sourceFilter)
+    .filter((i) => ageFilter === 'all' || ageBucket(publishedOf(i)) === ageFilter)
+    .sort((a, b) => {
+      const x = publishedOf(a) ?? '', y = publishedOf(b) ?? ''
+      return sortNewestFirst ? y.localeCompare(x) : x.localeCompare(y)
+    })
+
   const toggleSel = (id: string) => setSelected((s) => { const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n })
-  const allSelected = items.length > 0 && selected.size === items.length
-  const toggleAll = () => setSelected(allSelected ? new Set() : new Set(items.map((i) => i.id)))
+  // "Select all" acts on what is VISIBLE, not the whole queue. Selecting 250
+  // hidden items from a filtered view of 12 is how a bulk action becomes an
+  // accident.
+  const allSelected = shown.length > 0 && shown.every((i) => selected.has(i.id))
+  const toggleAll = () => setSelected(allSelected ? new Set() : new Set(shown.map((i) => i.id)))
+  const selectStale = () => setSelected(new Set(items.filter((i) => ageBucket(publishedOf(i)) === 'stale').map((i) => i.id)))
 
   async function bulk(action: 'approve' | 'reject') {
     if (selected.size === 0) return
@@ -128,8 +191,16 @@ export function ReviewList({ initial }: { initial: PendingItem[] }) {
       <div style={{ position: 'sticky', top: 8, zIndex: 5, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 12, padding: '10px 14px', boxShadow: '0 2px 8px rgba(12,14,18,.05)' }}>
         <label style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 700, color: INK, fontFamily: MANROPE, cursor: 'pointer' }}>
           <input type="checkbox" checked={allSelected} onChange={toggleAll} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: JADE }} />
-          Select all ({items.length})
+          Select all shown ({shown.length})
         </label>
+        {ageCounts.stale > 0 && (
+          // Over 30 days is 42% of the queue and almost always a reject during a
+          // campaign. This selects them so they can go in one action — it never
+          // rejects anything on its own, the decision stays yours.
+          <button onClick={selectStale} style={{ fontSize: 12.5, fontWeight: 700, fontFamily: MANROPE, padding: '5px 11px', borderRadius: 999, cursor: 'pointer', color: '#991b1b', background: '#fef2f2', border: '1px solid #fecaca' }}>
+            Select {ageCounts.stale} over 30 days
+          </button>
+        )}
         <span style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}><b style={{ color: INK }}>{selected.size}</b> selected</span>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
           <button onClick={() => bulk('approve')} disabled={selected.size === 0 || bulkBusy} style={bBtn(selected.size === 0 || bulkBusy, true)}>
@@ -143,11 +214,126 @@ export function ReviewList({ initial }: { initial: PendingItem[] }) {
         </div>
       </div>
 
+      {/* Filters. With 250 items from 21 outlets, working one outlet at a time
+          is far faster than a single undifferentiated scroll — you learn that
+          outlet's pattern and judge in seconds. */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, alignItems: 'center' }}>
+        <FilterChip label={`All types (${items.length})`} active={typeFilter === 'all'} onClick={() => setTypeFilter('all')} />
+        {typeKeys.map((t) => <FilterChip key={t} label={`${t} (${typeCounts[t]})`} active={typeFilter === t} onClick={() => setTypeFilter(typeFilter === t ? 'all' : t)} />)}
+        <span style={{ width: 1, height: 22, background: BORDER, margin: '0 4px' }} />
+        <FilterChip label="Any age" active={ageFilter === 'all'} onClick={() => setAgeFilter('all')} />
+        <FilterChip label={`Under 7 days (${ageCounts.fresh})`} active={ageFilter === 'fresh'} onClick={() => setAgeFilter('fresh')} />
+        <FilterChip label={`7–30 days (${ageCounts.ageing})`} active={ageFilter === 'ageing'} onClick={() => setAgeFilter('ageing')} />
+        <FilterChip label={`Over 30 days (${ageCounts.stale})`} active={ageFilter === 'stale'} onClick={() => setAgeFilter('stale')} />
+        <span style={{ width: 1, height: 22, background: BORDER, margin: '0 4px' }} />
+        <FilterChip label={sortNewestFirst ? 'Newest first' : 'Oldest first'} active={false} onClick={() => setSortNewestFirst((s) => !s)} />
+      </div>
+      {sourceKeys.length > 1 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+          <FilterChip label="All outlets" active={sourceFilter === 'all'} onClick={() => setSourceFilter('all')} />
+          {sourceKeys.map((s) => <FilterChip key={s} label={`${s} (${sourceCounts[s]})`} active={sourceFilter === s} onClick={() => setSourceFilter(sourceFilter === s ? 'all' : s)} />)}
+        </div>
+      )}
+
       <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>
-        <b style={{ color: INK }}>{items.length}</b> item{items.length === 1 ? '' : 's'} awaiting review.
+        Showing <b style={{ color: INK }}>{shown.length}</b> of <b style={{ color: INK }}>{items.length}</b> item{items.length === 1 ? '' : 's'} awaiting review.
         {done.approved + done.rejected > 0 && <> · {done.approved} approved, {done.rejected} rejected this session.</>}
       </div>
-      {items.map((item) => <ReviewCard key={item.id} item={item} onDone={remove} selected={selected.has(item.id)} onToggleSelect={toggleSel} />)}
+      {shown.map((item) => (
+        // Video is 251 of the 252 pending items and needs none of the summary
+        // editing the full card is built around — VideoSection renders title and
+        // outlet only. A compact row fits ~15 to a screen instead of one.
+        item.type === 'video'
+          ? <VideoRow key={item.id} item={item} onDone={remove} selected={selected.has(item.id)} onToggleSelect={toggleSel} />
+          : <ReviewCard key={item.id} item={item} onDone={remove} selected={selected.has(item.id)} onToggleSelect={toggleSel} />
+      ))}
+    </div>
+  )
+}
+
+function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
+  return (
+    <button onClick={onClick} style={{
+      fontSize: 12, fontWeight: 700, fontFamily: MANROPE, padding: '5px 11px', borderRadius: 999, cursor: 'pointer',
+      color: active ? '#fff' : INK, background: active ? INK : '#fff', border: `1px solid ${active ? INK : BORDER}`,
+      textTransform: 'capitalize',
+    }}>{label}</button>
+  )
+}
+
+/**
+ * VideoRow — the compact form, used for video only.
+ *
+ * The full ReviewCard is built around editing a Basic and Detailed summary.
+ * VideoSection displays neither: a video card on the site shows the title, the
+ * outlet and the party chips. So for 251 of 252 pending items the editing
+ * fields were pure scroll cost, and the real decision — is this current, is it
+ * about someone we cover, is it worth publishing — was spread across a screen
+ * and a half. Everything needed for that decision is now on one line.
+ */
+function VideoRow({ item, onDone, selected, onToggleSelect }: { item: PendingItem; onDone: (id: string, action: 'approve' | 'reject') => void; selected: boolean; onToggleSelect: (id: string) => void }) {
+  const [busy, setBusy] = useState<'approve' | 'reject' | null>(null)
+  const [err, setErr] = useState<string | null>(null)
+
+  const d = item.data || {}
+  const asArr = (k: string) => (Array.isArray(d[k]) ? (d[k] as string[]) : [])
+  const published = publishedOf(item)
+  const age = useAge(published)
+  const tone = AGE_STYLE[age?.tone ?? 'fresh']
+  const thumb = typeof d.thumbnail === 'string' ? d.thumbnail : null
+  const source = sourceOf(item) ?? 'Source'
+  const tags = [...asArr('parties'), ...asArr('mps').map((m) => m.replace(/-/g, ' ')), ...asArr('electorates')]
+
+  async function act(action: 'approve' | 'reject') {
+    setBusy(action); setErr(null)
+    try {
+      const res = await fetch('/api/editor/review', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: item.id, action }),
+      })
+      if (!res.ok) { const j = await res.json().catch(() => ({})); throw new Error(j.message || 'Failed') }
+      onDone(item.id, action)
+    } catch (e) { setErr(e instanceof Error ? e.message : 'Failed'); setBusy(null) }
+  }
+
+  const sBtn = (primary: boolean): React.CSSProperties => ({
+    display: 'inline-flex', alignItems: 'center', gap: 5, padding: '6px 11px', borderRadius: 9,
+    fontSize: 12.5, fontWeight: 800, fontFamily: MANROPE, cursor: busy ? 'default' : 'pointer', opacity: busy ? 0.5 : 1,
+    border: primary ? 'none' : `1px solid ${BORDER}`, background: primary ? JADE : '#fff', color: primary ? '#fff' : '#b42318',
+  })
+
+  return (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center', background: '#fff', border: `1px solid ${selected ? JADE : BORDER}`, borderRadius: 12, padding: '10px 12px' }}>
+      <input type="checkbox" checked={selected} onChange={() => onToggleSelect(item.id)} style={{ width: 16, height: 16, cursor: 'pointer', accentColor: JADE, flexShrink: 0 }} />
+      {thumb && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={thumb} alt="" loading="lazy" referrerPolicy="no-referrer" style={{ width: 92, height: 52, objectFit: 'cover', borderRadius: 7, background: '#000', flexShrink: 0 }} />
+      )}
+      <div style={{ minWidth: 0, flex: 1 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap', marginBottom: 3 }}>
+          <span style={{ fontSize: 11, fontWeight: 800, color: SECONDARY, fontFamily: MANROPE }}>{source}</span>
+          {published && (
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10.5, fontWeight: 800, fontFamily: MANROPE, borderRadius: 999, padding: '1px 7px', color: tone.fg, background: tone.bg, border: `1px solid ${tone.bd}` }}>
+              <Clock style={{ width: 10, height: 10 }} />{age ? age.label : absDate(published)}
+            </span>
+          )}
+          {tags.slice(0, 4).map((t) => (
+            <span key={t} style={{ fontSize: 10.5, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '1px 7px', fontFamily: MANROPE, textTransform: 'capitalize' }}>{t}</span>
+          ))}
+          {tags.length === 0 && <span style={{ fontSize: 10.5, fontWeight: 700, color: TERTIARY, fontFamily: MANROPE }}>no tags</span>}
+        </div>
+        <a href={item.source_url ?? '#'} target="_blank" rel="noopener noreferrer"
+          style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35, textDecoration: 'none', display: 'block' }}>
+          {item.title}
+        </a>
+        {err && <div style={{ fontSize: 11.5, color: '#b42318', fontFamily: MANROPE, marginTop: 3 }}>{err}</div>}
+      </div>
+      <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+        <button onClick={() => act('approve')} disabled={!!busy} style={sBtn(true)}>
+          {busy === 'approve' ? <Loader2 style={{ width: 12, height: 12 }} className="animate-spin" /> : <Check style={{ width: 12, height: 12 }} />} Approve
+        </button>
+        <button onClick={() => act('reject')} disabled={!!busy} style={sBtn(false)}>Reject</button>
+      </div>
     </div>
   )
 }
