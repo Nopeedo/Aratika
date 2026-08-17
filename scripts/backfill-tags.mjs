@@ -1,6 +1,6 @@
 /**
- * backfill-candidate-tags.mjs — add data.candidates to news and video already in
- * the table.
+ * backfill-tags.mjs — add data.candidates and data.bills to news and video
+ * already in the table.
  *
  * Candidate tagging was added to the ingests, which meant it only applied going
  * forward. That was an acceptable trade while the tag existed purely to widen
@@ -15,7 +15,7 @@
  * no status changes, nothing is published. An item that names no candidate is
  * left alone entirely.
  *
- * Run: node scripts/backfill-candidate-tags.mjs [--apply]
+ * Run: node scripts/backfill-tags.mjs [--apply]
  */
 
 import dotenv from 'dotenv'
@@ -23,6 +23,7 @@ import { createClient } from '@supabase/supabase-js'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { buildCandidateTerms, tagCandidates } from './candidate-terms.mjs'
+import { buildBillTerms, tagBills } from './bill-terms.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -31,6 +32,11 @@ const APPLY = process.argv.includes('--apply')
 
 const { terms, meta } = await buildCandidateTerms(sb)
 if (Object.keys(terms).length === 0) { console.error('No candidate terms — refusing to touch anything.'); process.exit(1) }
+
+// Bills too. The video ingest only started tagging them today, so every video
+// already staged carries none — and a half-tagged table is the kind of thing
+// that later reads as "no video ever covers bills".
+const BILL_TERMS = buildBillTerms()
 
 // Paginate. PostgREST caps a plain select at 1000 rows and there are 2352 news
 // and video items — the first version of this script read one unordered
@@ -54,14 +60,20 @@ console.log(`news + video items: ${data.length}`)
 
 const updates = []
 for (const r of data || []) {
-  const found = tagCandidates(`${r.title} ${r.summary || ''}`, terms)
-  const existing = Array.isArray(r.data?.candidates) ? r.data.candidates : null
-  if (found.length === 0) continue                                   // nothing to add
-  if (existing && existing.length === found.length && found.every((k) => existing.includes(k))) continue  // already right
-  updates.push({ id: r.id, type: r.type, status: r.status, title: r.title, found, data: { ...r.data, candidates: found } })
+  const text = `${r.title} ${r.summary || ''}`
+  const found = tagCandidates(text, terms)
+  const foundBills = tagBills(text, BILL_TERMS)
+  const same = (a, b) => { const x = Array.isArray(a) ? a : null; return x && x.length === b.length && b.every((k) => x.includes(k)) }
+  if (found.length === 0 && foundBills.length === 0) continue        // nothing to add
+  if (same(r.data?.candidates, found) && same(r.data?.bills, foundBills)) continue   // already right
+  const data = { ...r.data }
+  if (found.length) data.candidates = found
+  if (foundBills.length) data.bills = foundBills
+  updates.push({ id: r.id, type: r.type, status: r.status, title: r.title, found, foundBills, data })
 }
 
-console.log(`items that name at least one candidate and need updating: ${updates.length}`)
+console.log(`items needing a tag update: ${updates.length}`)
+console.log(`  naming a candidate: ${updates.filter((u) => u.found.length).length}   naming a bill: ${updates.filter((u) => u.foundBills.length).length}`)
 const people = new Map()
 for (const u of updates) for (const k of u.found) people.set(k, (people.get(k) || 0) + 1)
 console.log(`distinct candidates referenced: ${people.size}\n`)

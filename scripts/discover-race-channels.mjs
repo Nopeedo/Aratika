@@ -26,6 +26,8 @@
  * count.
  *
  * Run: node scripts/discover-race-channels.mjs [--seats 8] [--max-searches 40] [--min 2]
+ *      add --rotate to advance the seat window by ISO week (for the weekly job),
+ *      or --offset N to pick the window by hand.
  */
 
 import dotenv from 'dotenv'
@@ -39,14 +41,40 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 dotenv.config({ path: join(root, '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
 
+// Number(...) || fallback treats 0 as absent, so `--max-searches 0` silently
+// ran the default of 40 and spent 4000 quota units on what was meant to be a
+// dry inspection. Explicit NaN check instead.
 const arg = (name, fallback) => {
   const i = process.argv.indexOf(`--${name}`)
-  return i >= 0 ? Number(process.argv[i + 1]) || fallback : fallback
+  if (i < 0) return fallback
+  const n = Number(process.argv[i + 1])
+  return Number.isFinite(n) ? n : fallback
 }
 const SEATS = arg('seats', 8)
 const MAX_SEARCHES = arg('max-searches', 40)
 const MIN_CANDIDATES = arg('min', 2)
 const UNITS_PER_SEARCH = 100
+
+/**
+ * Where in the seat list to start.
+ *
+ * Quota caps a run at roughly 90 searches, and there are 72 seats holding a few
+ * hundred challengers, so one run can never be a full sweep. --rotate advances
+ * the window by ISO week, so a weekly job walks the whole country over a couple
+ * of months and comes back around.
+ *
+ * Derived from the week number rather than a committed state file: no write-back
+ * from CI, no state to drift, and any run is reproducible from its date alone.
+ * A missed week costs that week's seats, not the rotation.
+ */
+function weekOffset(windowSize) {
+  const now = new Date()
+  const start = Date.UTC(now.getUTCFullYear(), 0, 1)
+  const week = Math.floor((Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) - start) / 604800000)
+  return week * windowSize
+}
+const ROTATE = process.argv.includes('--rotate')
+const OFFSET = arg('offset', ROTATE ? weekOffset(SEATS) : 0)
 
 /** Channel IDs already ingested — parsed from the source of truth. */
 function knownChannelIds() {
@@ -76,7 +104,11 @@ function marginalSeats(limit) {
     out.push({ slug: seatSlug(name), name, majority: majority ? Number(majority) : Infinity, mpName: mpName || null })
   }
   if (out.length === 0) { console.error('Parsed no electorates — refusing to run a search sweep blind.'); process.exit(1) }
-  return out.sort((a, b) => a.majority - b.majority).slice(0, limit)
+  const sorted = out.sort((a, b) => a.majority - b.majority)
+  // Wrap, so a rotation that runs past the end of the list starts again at the
+  // most marginal seat rather than quietly returning nothing.
+  const start = ((OFFSET % sorted.length) + sorted.length) % sorted.length
+  return Array.from({ length: Math.min(limit, sorted.length) }, (_, i) => sorted[(start + i) % sorted.length])
 }
 
 announceMode(' (race discovery)')
@@ -88,7 +120,8 @@ if (!hasApiKey()) {
 
 const known = knownChannelIds()
 const seats = marginalSeats(SEATS)
-console.log(`Seats (most marginal first): ${seats.map((s) => `${s.name} (${s.majority === Infinity ? '?' : s.majority})`).join(', ')}\n`)
+console.log(`Window: seats ${OFFSET}–${OFFSET + SEATS - 1} of the marginal ordering${ROTATE ? ' (rotating weekly)' : ''}`)
+console.log(`Seats: ${seats.map((s) => `${s.name} (${s.majority === Infinity ? '?' : s.majority})`).join(', ')}\n`)
 
 const { data: cands } = await sb
   .from('content_items').select('data').eq('type', 'candidate').eq('status', 'approved')

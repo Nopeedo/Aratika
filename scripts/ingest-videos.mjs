@@ -20,6 +20,7 @@ import { dirname, join } from 'node:path'
 import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
 import { buildElectorateTerms, addCandidateTerms } from './electorate-terms.mjs'
 import { buildCandidateTerms, tagCandidates } from './candidate-terms.mjs'
+import { buildBillTerms, tagBills } from './bill-terms.mjs'
 import { getUploads, getDurations, hasApiKey, announceMode } from './lib/youtube.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
@@ -252,6 +253,12 @@ const tagElectorates = (t) => Object.keys(ELECTORATE_TERMS).filter((name) => ELE
 // all before, and who the interview gate therefore treated as nobody.
 const { terms: CANDIDATE_TERMS } = await buildCandidateTerms(sb)
 
+// Bills, the same curated aliases the news ingest uses. Tracking a bill
+// surfaced articles about it but never the interview where a minister defends
+// it — an odd gap once Q+A and The Platform were in the tier.
+const BILL_TERMS = buildBillTerms()
+console.log(`Bill tagging: ${Object.keys(BILL_TERMS).length} bills, ${Object.values(BILL_TERMS).flat().length} terms`)
+
 // --dry-run: fetch, tag and classify as normal, print, write nothing. The whole
 // point of a new source tier is what it lets through, and that is invisible once
 // the rows are in the table.
@@ -310,6 +317,7 @@ for (const ch of CHANNELS) {
     const mps = tagMPs(t)
     const electorates = tagElectorates(t)
     const candidates = tagCandidates(t, CANDIDATE_TERMS)
+    const bills = tagBills(t, BILL_TERMS)
     const electionRelevant = parties.length > 0 || ELECTION_TERMS.some((x) => t.includes(x))
     const debate = DEBATE_TERMS.some((x) => t.includes(x))
     // Noise gate. Keyword relevance detection is too weak to use as an allowlist
@@ -342,7 +350,7 @@ for (const ch of CHANNELS) {
       type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'pending', source_url: link,
       data: {
         videoId: vid, source: ch.source, party: ch.party, parties, topics, mps, electorates,
-        candidates,
+        candidates, bills,
         pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`,
         electionRelevant, debate, presser: isPresser(t), featured: false,
         // Drives the Interviews rail. Independent-tier clips all qualify (they
