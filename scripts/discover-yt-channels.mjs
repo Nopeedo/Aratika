@@ -37,9 +37,16 @@ const JSON_OUT = process.argv.includes('--json')
 
 // Search one query per leader. Their name is the strongest possible signal for
 // "someone interviewed this person" and needs no guessing about outlet names.
+// EVERY contesting party's leader, not just the ones that come to mind. The
+// first version of this list quietly omitted TOP's leader, which is the same
+// failure mode the search is meant to fix: a discovery tool that only looks for
+// who you remembered is a recall tool wearing a disguise. Under-covered parties
+// are exactly the ones whose interviews we most need to find, because the big
+// parties saturate the feed on their own.
 const LEADERS = [
-  'Christopher Luxon', 'Chris Hipkins', 'Chlöe Swarbrick', 'David Seymour',
-  'Winston Peters', 'Rawiri Waititi', 'Debbie Ngarewa-Packer', 'Marama Davidson',
+  'Christopher Luxon', 'Chris Hipkins', 'Chlöe Swarbrick', 'Marama Davidson',
+  'David Seymour', 'Winston Peters', 'Rawiri Waititi', 'Debbie Ngarewa-Packer',
+  'Qiulae Wong',
 ]
 
 /** Channel IDs already in ingest-videos.mjs — parsed so this can never suggest

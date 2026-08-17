@@ -21,7 +21,18 @@ import { buildElectorateTerms, addCandidateTerms } from './electorate-terms.mjs'
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
-const PER_CHANNEL = 6
+// The channel RSS feed carries 15 entries; take all of them.
+//
+// This was 6, which quietly produced a monoculture. Every outlet covers the same
+// dominant story at once, so during the August 2026 National leadership crisis
+// the newest six uploads on nearly every channel were about Luxon — the first
+// interview-tier run staged 19 National items against 2 Green, and neither Green
+// item was actually a Green interview. Leader interviews from three weeks ago
+// were already outside the window on any busy channel.
+//
+// Deduplication is on the video link, so re-reading the same entries is free;
+// the only cost of a wider window is a slightly longer first run.
+const PER_CHANNEL = 15
 
 // Official channels (resolved + RSS-verified). party=null → tag by who's mentioned.
 const CHANNELS = [
@@ -90,6 +101,18 @@ const CHANNELS = [
   { id: 'UCZgnsVbXJPZRg5kmtKyq6Ew', source: 'Stuff', party: null, interviewsOnly: true },
   { id: 'UCSypyI8wbnZgJDYY0VCdwJQ', source: 'Duncan Garner — Editor-in-Chief', party: null, interviewsOnly: true },
 
+  // Found on a second discovery pass, after the first list of leaders quietly
+  // omitted TOP's. Adding her surfaced a whole layer of outlets that interview
+  // the smaller parties — which the big-party saturation had hidden. All three
+  // carry long-form Green and TOP interviews the tier otherwise had none of.
+  { id: 'UCYwnKdpXjLdEvkhk1p1wU-g', source: 'Unfiltered with Dave Letele', party: null, interviewsOnly: true },
+  { id: 'UCs4cTIpx0lHo3gvTyaorqbA', source: 'Chris Lynch Media', party: null, interviewsOnly: true },
+  // Reversing an earlier rejection: it was dismissed as "mostly commentary",
+  // which is a volume judgement, and the agreed test is not about volume. It
+  // does conduct its own interviews (Marama Davidson, Qiulae Wong), so it
+  // qualifies. Its commentary will lean on the /editor gate more than most.
+  { id: 'UC_vLFXwlByZ8d6JPeOKMVjw', source: 'Big Hairy Network', party: null, interviewsOnly: true },
+
   // ── Checked and deliberately NOT added ──────────────────────────────────────
   // Recorded so the same candidates are not re-litigated, and so the reasoning
   // is auditable rather than remembered.
@@ -105,10 +128,21 @@ const CHANNELS = [
   //     series does interview leaders, but it is an electrification advocacy
   //     organisation with a direct stake in the policies discussed. Same
   //     objection as the mayor's office, one step removed.
-  //   Big Hairy Network (UC_vLFXwlByZ8d6JPeOKMVjw) — mostly commentary ABOUT
-  //     interviews ("Chloe Swarbrick on Q&A was a waste of an opportunity")
-  //     rather than interviews. It does run some of its own; revisit if that
-  //     becomes the bulk of its output.
+  //   WhangareiTim (UCpaC4vpape5nPWdiXn259XQ) — ranked well on breadth (three
+  //     leaders) which is exactly why breadth alone cannot be the test. It
+  //     repackages other people's clips under attack framing ("Nicola Willis
+  //     Slaughters Green MP Chlöe Swarbrick", "MP Debbie Ngarewa-Packer Should
+  //     Be Prosecuted !!!"). It does not interview anyone. Also signed off in
+  //     July 2026.
+  //   APT (UCpLEtz3H0jSfEneSdf1YKnw) — a wire service reposting a Luxon
+  //     livestream. Not an interview outlet.
+  //
+  // Undecided, worth a human call — Engineering New Zealand
+  // (UCX11-WjWI7XcDjYYuDt71tg) runs an "Election Conversations" series that
+  // interviews small-party leaders the mainstream barely covers (Swarbrick,
+  // Qiulae Wong). It questions rather than platforms, which is the right side of
+  // the line — but it is a professional body with infrastructure policy
+  // interests, which is the wrong side of the Rewiring Aotearoa precedent.
 ]
 
 // Party + political term lists — generated from the current MP roster
