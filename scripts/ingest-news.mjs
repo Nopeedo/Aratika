@@ -86,7 +86,12 @@ const TOPIC_TERMS = {
   housing: ['housing', 'rent', 'tenan', 'house price', 'homeless'],
   health: ['health', 'hospital', 'gp ', 'pharmac', 'doctor', 'mental health'],
   education: ['school', 'educat', 'teacher', 'student', 'ncea', 'university'],
-  climate: ['climate', 'emissions', 'environment', 'rma', 'freshwater', 'conservation'],
+  // NOT bare 'rma'. It is a substring of "information", "transformation",
+  // "performance" and "format", and on a 1000-item sample it was responsible for
+  // 92 of the 123 climate-tagged items — stories about police despatch systems,
+  // manufacturing output and books of the week, filed under Climate and pushed
+  // to everyone tracking that topic.
+  climate: ['climate', 'emissions', 'environment', 'resource management', 'rma reform', ' rma ', 'freshwater', 'conservation'],
   'crime-justice': ['crime', 'police', 'gang', 'court', 'sentenc', 'justice', 'prison'],
 }
 function tag(map, text) {

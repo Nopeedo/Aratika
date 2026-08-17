@@ -52,6 +52,30 @@ const CHANNELS = [
   { id: 'UCxPAYgO8OpFev3PUTKbsxNw', source: '1News (TVNZ) — Q+A / Jack Tame', party: null, debatesOnly: true },
   { id: 'UCBTMdHIU_I0KLPDmWCqTbYg', source: 'ThreeNews', party: null, debatesOnly: true },
   { id: 'UCG0xyRVgb5Yf1lvQxkRrYYQ', source: 'NZ Herald — Herald NOW / Ryan Bridge', party: null, debatesOnly: true },
+
+  // ── Independent tier ────────────────────────────────────────────────────────
+  // Leaders and candidates give substantial interviews well outside the
+  // broadcasters above, and those interviews are often where someone actually
+  // explains themselves at length. Admitted on the objective test described
+  // near INTERVIEW_TERMS, not on editorial sympathy — the set below deliberately
+  // spans kaupapa Māori, right-leaning and left-leaning independents.
+  //
+  // Every ID below was resolved with scripts/resolve-yt-channel.mjs from the
+  // channel's own externalId, never typed from memory. That is not ceremony:
+  // @TheHuiNZ resolves to an abandoned channel whose only upload is from 2013,
+  // @TheWorkingGroup resolves to a US anti-hate organisation, and @SpinoffTV is
+  // a Portuguese-language channel. Each looked exactly right. Verify or omit.
+  //
+  // interviewsOnly: these channels also cover culture, sport and general news,
+  // so a clip is staged only when it names someone we track AND is political.
+  { id: 'UCfH71_VJFvfj-lURA9w4frw', source: 'The Hui', party: null, interviewsOnly: true },
+  { id: 'UCm2YVvo3blxPgvu5wAHcm2Q', source: 'Te Ao Māori News', party: null, interviewsOnly: true },
+  { id: 'UCYKvkaqOJFwji8-Jgm8pjhA', source: 'The Platform', party: null, interviewsOnly: true },
+  { id: 'UCprQWxc91NtC1Jx1iuEbC-Q', source: 'The Spinoff', party: null, interviewsOnly: true },
+  { id: 'UCDR2gVFmKy9xRU09ibm5S0A', source: 'Newsroom', party: null, interviewsOnly: true },
+  // Checked and deliberately NOT added — record so nobody re-adds them:
+  //   Marae (UCd_uV1LZOdOeTUuehv10-ZA) — resolves and parses, but its newest
+  //   upload is from December 2015. Dormant, would contribute nothing.
 ]
 
 // Party + political term lists — generated from the current MP roster
@@ -60,7 +84,10 @@ const CHANNELS = [
 const TOPIC_TERMS = {
   economy: ['econom', 'tax', 'budget', 'inflation', 'cost of living', 'wages'], housing: ['housing', 'rent', 'tenan', 'homeless'],
   health: ['health', 'hospital', 'pharmac', 'doctor'], education: ['school', 'educat', 'teacher', 'ncea'],
-  climate: ['climate', 'emissions', 'environment', 'rma', 'conservation'], 'crime-justice': ['crime', 'police', 'gang', 'court', 'sentenc', 'justice'],
+  // NOT bare 'rma' — it is a substring of "information", "transformation",
+  // "performance" and "format", so it tagged 75% of all climate items on text
+  // with no climate content in it whatsoever.
+  climate: ['climate', 'emissions', 'environment', 'resource management', 'rma reform', ' rma ', 'conservation'], 'crime-justice': ['crime', 'police', 'gang', 'court', 'sentenc', 'justice'],
 }
 const ELECTION_TERMS = ['election', 'campaign', 'candidate', 'poll', 'voter', 'coalition', 'debate', '2026', 'leader']
 // Leaders'/minor-party debates and long-form leader interviews — surfaced as a
@@ -81,6 +108,28 @@ const isPresser = (t) => PRESS_TERMS.some((x) => t.includes(x)) || LEADER_NAMES.
 // — only when the clip also mentions no party, no election term and no policy topic.
 const VIDEO_NOISE_TERMS = ['gardener', 'once were', 'matariki', 'trailer', 'weather', 'forecast', 'recipe', 'all blacks', 'super rugby', 'silver ferns', 'black caps', 'good as gold', 'episode ']
 const tag = (map, t) => Object.keys(map).filter((k) => map[k].some((x) => t.includes(x)))
+// Feed text is XML-escaped; descriptions carry &amp; &quot; &#39; routinely.
+const decode = (s) => s
+  .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
+  .replace(/&#3[49];/g, "'").replace(/&apos;/g, "'").replace(/&amp;/g, '&')
+
+// ── Independent tier ──────────────────────────────────────────────────────────
+// Channels that are neither a party's own channel nor a national broadcaster,
+// admitted on one objective test: they publish original, on-the-record
+// interviews with named leaders or candidates. Leaning is NOT a criterion —
+// applying one would mean this site deciding which outlets are legitimate. What
+// keeps it honest instead is disclosure and measurement: the outlet is named on
+// every card, and report-interview-balance.mjs counts interviews per party so a
+// skew in the tier is visible rather than silent.
+//
+// Everything still lands status='pending' for /editor, so nothing here reaches
+// the public without a human seeing it first.
+const INTERVIEW_TERMS = [
+  'interview', 'in conversation', 'sits down with', 'sat down with', 'one on one',
+  'one-on-one', 'full interview', 'exclusive interview', 'speaks to', 'speaks with',
+  'talks to', 'in the studio', 'at large with', 'on the record', 'long read',
+]
+const isInterview = (t) => INTERVIEW_TERMS.some((x) => t.includes(x))
 
 // Shared electorate tagging (all 72 seats + curated battleground judgement +
 // announced 2026 challengers) — the same map ingest-news.mjs uses.
@@ -88,7 +137,14 @@ const ELECTORATE_TERMS = buildElectorateTerms()
 await addCandidateTerms(ELECTORATE_TERMS, sb)
 const tagElectorates = (t) => Object.keys(ELECTORATE_TERMS).filter((name) => ELECTORATE_TERMS[name].some((term) => t.includes(term)))
 
+// --dry-run: fetch, tag and classify as normal, print, write nothing. The whole
+// point of a new source tier is what it lets through, and that is invisible once
+// the rows are in the table.
+const DRY = process.argv.includes('--dry-run')
+if (DRY) console.log('DRY RUN — feeds fetched and tagged, nothing written.\n')
+
 const RESET = process.argv.includes('--reset')
+if (RESET && DRY) { console.error('--reset with --dry-run would still delete every video. Refusing.'); process.exit(1) }
 if (RESET) { const { error } = await sb.from('content_items').delete().eq('type', 'video'); console.log(error ? 'reset err: ' + error.message : 'cleared existing videos') }
 
 const { data: existing } = await sb.from('content_items').select('source_id').eq('type', 'video')
@@ -109,7 +165,14 @@ for (const ch of CHANNELS) {
     const link = `https://www.youtube.com/watch?v=${vid}`
     if (have.has(link)) continue
     have.add(link)
-    const t = title.toLowerCase()
+    // Tag on title AND description. Title alone was enough while every channel
+    // here was a party or Parliament, where the title names the subject. It is
+    // not enough for an interview show: "The Hui Episode 02:11" names nobody, so
+    // the clip tagged no party, no MP and no topic, and reached no one tracking
+    // any of them. The feed carries media:description; use it.
+    const descRaw = (e.match(/<media:description>([\s\S]*?)<\/media:description>/) || [])[1] || ''
+    const desc = decode(descRaw)
+    const t = (title + ' ' + desc).toLowerCase()
     const parties = ch.party ? [ch.party] : tag(PARTY_TERMS, t)
     const topics = tag(TOPIC_TERMS, t)
     const mps = tagMPs(t)
@@ -125,16 +188,46 @@ for (const ch of CHANNELS) {
     //  • Political sources (Parliament, RNZ) and party channels stage as before, minus
     //    obvious lifestyle/sport noise via a denylist.
     if (ch.debatesOnly && !debate && !electionRelevant) continue
+
+    // Independent tier: the admission test is "names someone we track, and is
+    // political". Both halves are needed. Without the first, Newsroom's
+    // documentary on a supplement founder and Te Ao Māori News's school stories
+    // flood the review queue. Without the second, any clip mentioning a
+    // common surname qualifies. Interview phrasing is recorded but not
+    // required — an outlet that leads with "Chlöe Swarbrick on fossil fuels"
+    // never says the word "interview", and that is exactly the clip we want.
+    const namesSomeone = mps.length > 0 || LEADER_NAMES.some((x) => t.includes(x))
+    if (ch.interviewsOnly && !(namesSomeone && (electionRelevant || isPolitical(t, parties) || topics.length > 0))) continue
+
     const isNoise = VIDEO_NOISE_TERMS.some((x) => t.includes(x))
     if (isNoise && !debate && !electionRelevant && !isPolitical(t, parties) && topics.length === 0) continue
     rows.push({
       type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'pending', source_url: link,
-      data: { videoId: vid, source: ch.source, party: ch.party, parties, topics, mps, electorates, pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`, electionRelevant, debate, presser: isPresser(t), featured: false },
+      data: {
+        videoId: vid, source: ch.source, party: ch.party, parties, topics, mps, electorates,
+        pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`,
+        electionRelevant, debate, presser: isPresser(t), featured: false,
+        // Drives the Interviews rail. Independent-tier clips all qualify (they
+        // only got here by naming someone); elsewhere it needs the phrasing, so
+        // a party's own attack ad naming a rival is not filed as an interview.
+        interview: ch.interviewsOnly ? true : isInterview(t),
+        independent: !!ch.interviewsOnly,
+      },
     })
   }
-  if (rows.length) { const { error } = await sb.from('content_items').insert(rows); if (error) { console.error(`insert err (${ch.source}): ${error.message}`); continue } }
+  if (DRY) {
+    for (const r of rows) {
+      const d = r.data
+      const flags = [d.interview && 'INTERVIEW', d.debate && 'debate', d.presser && 'presser'].filter(Boolean).join(' ')
+      console.log(`  · ${r.title.slice(0, 76)}`)
+      console.log(`      ${[d.parties.length && `parties:${d.parties.join('/')}`, d.mps.length && `mps:${d.mps.join('/')}`, d.topics.length && `topics:${d.topics.join('/')}`].filter(Boolean).join('  ') || '(no tags)'}${flags ? `   [${flags}]` : ''}`)
+    }
+  } else if (rows.length) {
+    const { error } = await sb.from('content_items').insert(rows)
+    if (error) { console.error(`insert err (${ch.source}): ${error.message}`); continue }
+  }
   staged += rows.length
-  console.log(`✓ ${ch.source}: +${rows.length}`)
+  console.log(`✓ ${ch.source}: +${rows.length}${DRY ? ' (dry)' : ''}`)
 }
 console.log(`\nDone. Staged ${staged} videos.`)
 // Supabase client keeps the event loop alive — exit explicitly so the step ends.
