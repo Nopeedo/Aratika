@@ -22,6 +22,7 @@ import { HomeBackground } from '@/components/homepage/home-background'
 import { PartyTilesSection, PartyStanceSection } from '@/components/homepage/party-tiles-section'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { HomeMap } from '@/components/homepage/home-map'
+import { CompassCta } from '@/components/compass/compass-cta'
 import { AllPartiesSection } from '@/components/homepage/all-parties-section'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
@@ -76,6 +77,14 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         {/* Summary of Party Stance — moved below "Where do the parties stand?"
             instead of directly under the tiles. */}
         <PartyStanceSection />
+
+        {/* The compass, back on the homepage. It was built as a homepage entry
+            card and then rendered nowhere — orphaned in the first-impression
+            diet. It sits after the issue sections deliberately: it asks the
+            reader for twelve answers, which is a fair thing to ask only once
+            they have seen what the site does with them. Its results now link
+            to our own sourced positions for all seven parties. */}
+        <CompassCta />
 
         {/* ═══ CORE 3 — your electorate ═══ */}
         <HomeMap />
