@@ -311,7 +311,11 @@ const TRACKER_CSS = `
 .bills-search { flex: 1 1 240px; min-width: 200px; }
 .bills-select { max-width: 200px; }
 @media (max-width: 760px) {
-  .bills-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  /* Two fixed columns cut ~140px cells, which is narrower than the longest
+     label ("Open for submissions") can render on one line. auto-fit with a
+     real minimum drops to a single column on a phone and takes the second
+     back as soon as the width is actually there. */
+  .bills-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; }
   .bills-stats > button { width: 100%; padding: 9px 10px; gap: 7px; }
   .bills-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .bills-search { grid-column: 1 / -1; min-width: 0; }
@@ -322,7 +326,7 @@ const TRACKER_CSS = `
 
 function StatChip({ icon: Icon, value, label, active, onClick }: { icon: React.ElementType; value: number; label: string; active: boolean; onClick: () => void }) {
   return (
-    <button onClick={onClick} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '10px 14px', borderRadius: 12, border: `1px solid ${active ? JADE : BORDER}`, background: active ? '#ecfdf5' : '#fff', cursor: 'pointer', fontFamily: MANROPE }}>
+    <button onClick={onClick} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '10px 14px', borderRadius: 12, border: `1px solid ${active ? JADE : BORDER}`, background: active ? '#ecfdf5' : '#fff', cursor: 'pointer', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
       <Icon style={{ width: 17, height: 17, color: JADE }} />
       <span style={{ fontSize: 18, fontWeight: 800, color: INK }}>{value}</span>
       <span style={{ fontSize: 12.5, fontWeight: 600, color: SECONDARY }}>{label}</span>

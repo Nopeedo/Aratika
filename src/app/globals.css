@@ -440,3 +440,11 @@ a, button, [role='button'], summary {
     padding-right: 16px !important;
   }
 }
+
+/* The map's layer toggle reads "General electorates" / "Māori electorates".
+   Two buttons plus icons will not fit that on a phone, so each label wrapped
+   onto two lines. Drop the shared word below 768px — with the two sitting side
+   by side under "Find your MP", "General" and "Māori" are unambiguous. */
+@media (max-width: 767px) {
+  .map-toggle-word { display: none; }
+}

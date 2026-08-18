@@ -193,7 +193,10 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
               }}
             >
               <Layers style={{ width: 14, height: 14 }} />
-              {l === 'general' ? 'General' : 'Māori'} electorates
+              <span style={{ whiteSpace: 'nowrap' }}>
+                {l === 'general' ? 'General' : 'Māori'}
+                <span className="map-toggle-word"> electorates</span>
+              </span>
             </button>
           ))}
         </div>
@@ -205,8 +208,8 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search your address, suburb or electorate…"
-              style={{ flex: 1, border: 'none', outline: 'none', padding: '9px 0', fontSize: 14, fontFamily: 'var(--font-geist-sans), sans-serif', color: INK }}
+              placeholder="Search address or electorate"
+              style={{ flex: 1, minWidth: 0, border: 'none', outline: 'none', padding: '9px 0', fontSize: 14, fontFamily: 'var(--font-geist-sans), sans-serif', color: INK }}
             />
             <button type="submit" disabled={searching} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, border: 'none', background: JADE, color: '#fff', padding: '9px 14px', fontSize: 13, fontWeight: 700, fontFamily: MANROPE, cursor: searching ? 'default' : 'pointer', opacity: searching ? 0.75 : 1 }}>
               {searching && <Loader2 className="animate-spin" style={{ width: 14, height: 14 }} />}

@@ -109,7 +109,11 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
               background: layer === l ? '#fff' : 'transparent', color: layer === l ? INK : TERTIARY,
               boxShadow: layer === l ? '0 1px 3px rgba(12,14,18,.08)' : 'none',
             }}>
-              <Layers style={{ width: 14, height: 14 }} />{l === 'general' ? 'General' : 'Māori'} electorates
+              <Layers style={{ width: 14, height: 14 }} />
+              <span style={{ whiteSpace: 'nowrap' }}>
+                {l === 'general' ? 'General' : 'Māori'}
+                <span className="map-toggle-word"> electorates</span>
+              </span>
             </button>
           ))}
         </div>
