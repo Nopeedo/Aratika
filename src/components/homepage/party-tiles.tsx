@@ -273,6 +273,13 @@ export function PartyStanceSummary({ parties }: { parties: TileParty[] }) {
                 style={{
                   gridColumn: 1,
                   gridRow: 1,
+                  // Fill the cell. The container is already as tall as the
+                  // tallest party (that is what the stacking is for), but each
+                  // panel was hugging its own content and sitting at the top —
+                  // so the footer links landed 63px apart between the shortest
+                  // party and the tallest, and moved under the cursor as the
+                  // cycle turned. Clicking one was a moving target.
+                  height: '100%',
                   opacity: active ? (fading ? 0 : 1) : 0,
                   visibility: active ? 'visible' : 'hidden',
                   pointerEvents: active ? 'auto' : 'none',
@@ -349,7 +356,7 @@ function SeatsRow({ p }: { p: TileParty }) {
  *  Seats in Parliament lives outside, in its own standalone SeatsRow section. */
 function PanelStance({ p }: { p: TileParty }) {
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: p.color, fontFamily: MANROPE, marginBottom: 10 }}>Summary of Party Stance</div>
       <p style={{ fontSize: 13, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.08em', color: SUB, margin: '0 0 9px', fontFamily: MANROPE }}>Where they stand · in their words</p>
       {p.positions.map((pos, i) => (
@@ -370,8 +377,10 @@ function PanelStance({ p }: { p: TileParty }) {
         </p>
       )}
 
-      {/* footer links */}
-      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginTop: 14, paddingTop: 12, borderTop: `1px solid ${LINE}` }}>
+      {/* footer links — pinned to the bottom of the cell (marginTop:auto) so they
+          sit in the same place for every party instead of following the length
+          of that party's stance list. */}
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginTop: 'auto', paddingTop: 12, borderTop: `1px solid ${LINE}` }}>
         <Link href="/policies" style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Compare topics →</Link>
         <Link href={p.profileHref} style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Full profile →</Link>
         <a href={p.website} target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>Official website ↗</a>
