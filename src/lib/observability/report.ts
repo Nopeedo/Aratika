@@ -16,20 +16,26 @@
 
 const DSN = process.env.NEXT_PUBLIC_SENTRY_DSN
 
-// Parse a Sentry DSN → { url, key } for the store endpoint. Returns null if unset/invalid.
-function parseDsn(dsn: string | undefined): { url: string; key: string } | null {
+// Parse a Sentry DSN → { url, key, dsn } for the ingest endpoint. Returns null if unset/invalid.
+function parseDsn(dsn: string | undefined): { url: string; key: string; dsn: string } | null {
   if (!dsn) return null
   try {
     const u = new URL(dsn)
     const projectId = u.pathname.replace(/^\//, '')
     if (!u.username || !projectId) return null
-    return { url: `${u.protocol}//${u.host}/api/${projectId}/store/`, key: u.username }
+    // The envelope endpoint, not the legacy /store/ one. Sentry deprecated
+    // /store/ and newer projects can refuse it outright — and since we never
+    // see the response body, that refusal would look exactly like success.
+    return { url: `${u.protocol}//${u.host}/api/${projectId}/envelope/`, key: u.username, dsn }
   } catch {
     return null
   }
 }
 
 const target = parseDsn(DSN)
+
+// One transport complaint per page load / per server instance — see below.
+let warned = false
 
 export function reportError(error: unknown, context?: Record<string, unknown>) {
   const err = error instanceof Error ? error : new Error(String(error))
@@ -46,13 +52,36 @@ export function reportError(error: unknown, context?: Record<string, unknown>) {
     exception: { values: [{ type: err.name, value: err.message, stacktrace: { frames: [] } }] },
     extra: { stack: err.stack, ...context },
   }
-  // Fire-and-forget; never let reporting throw into the caller.
+  // Envelope format: three newline-delimited JSON lines — header, item header,
+  // then the event itself.
+  const body = [
+    JSON.stringify({ event_id: event.event_id, sent_at: new Date().toISOString(), dsn: target.dsn }),
+    JSON.stringify({ type: 'event' }),
+    JSON.stringify(event),
+  ].join('\n')
+
+  // Fire-and-forget; never let reporting throw into the caller. But DO check the
+  // reply once: silently swallowing a 400 from Sentry is how you end up trusting
+  // an empty dashboard. Complaining once per page load is enough to notice, and
+  // little enough to ignore.
   void fetch(target.url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/x-sentry-envelope',
       'X-Sentry-Auth': `Sentry sentry_version=7, sentry_client=arapono-lite/1.0, sentry_key=${target.key}`,
     },
-    body: JSON.stringify(event),
-  }).catch(() => { /* swallow — reporting must never break the app */ })
+    body,
+  })
+    .then((res) => {
+      if (!res.ok && !warned) {
+        warned = true
+        console.warn(`[reportError] Sentry rejected the event (HTTP ${res.status}). Errors are being logged but NOT forwarded — check NEXT_PUBLIC_SENTRY_DSN.`)
+      }
+    })
+    .catch(() => {
+      if (!warned) {
+        warned = true
+        console.warn('[reportError] could not reach Sentry — errors are logged but not forwarded.')
+      }
+    })
 }
