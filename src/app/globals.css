@@ -353,3 +353,49 @@ body {
 @media (max-width: 480px) {
   .mp-stat-grid { grid-template-columns: 1fr; }
 }
+
+/* ─── Click feedback ─────────────────────────────────────────────────────────
+   Navigation on this site takes 0.8–2.3 seconds to first byte, and the App
+   Router keeps the current page on screen while the next one loads. With no
+   response to the press itself, a reader had no way to tell a click had
+   landed — the reported behaviour was people clicking tiles and nav items a
+   second time because nothing had happened.
+
+   This is the half that costs nothing: the press state paints on the same
+   frame as the pointer-down, before any request is made. RouteProgress covers
+   the wait that follows.
+
+   :active only — no hover changes, so nothing shifts under a finger on touch,
+   and keyboard focus styling is left to the browser. */
+a:active,
+button:active,
+[role='button']:active,
+summary:active {
+  transform: scale(0.985);
+}
+
+/* Links that are laid out inline (in a sentence) must not scale — it nudges
+   the surrounding text. Dim them instead. */
+p a:active,
+li a:active,
+span a:active {
+  transform: none;
+  opacity: 0.65;
+}
+
+a, button, [role='button'], summary {
+  /* Short, and only on transform, so it never fights an element's own
+     transition (the topic chips animate transform on open/close). */
+  transition: transform 0.08s ease;
+  /* Stops the grey flash Safari/Chrome paint over tapped elements on mobile,
+     which reads as a rendering glitch rather than feedback. */
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a:active, button:active, [role='button']:active, summary:active {
+    transform: none;
+    opacity: 0.7;
+  }
+  a, button, [role='button'], summary { transition: none; }
+}

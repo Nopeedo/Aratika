@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import { Suspense } from 'react'
 import { Geist, Geist_Mono, Manrope, Space_Grotesk } from 'next/font/google'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
@@ -8,6 +9,7 @@ import { CompanionWidget } from '@/components/companion/companion-widget'
 import { SoundToggle } from '@/components/homepage/sound-toggle'
 import { SWRegister } from '@/components/notifications/sw-register'
 import { NavHistory } from '@/components/ui/nav-history'
+import { RouteProgress } from '@/components/ui/route-progress'
 import { OrganizationSchema } from '@/components/seo/organization-schema'
 import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -116,6 +118,10 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <OrganizationSchema />
         <SWRegister />
+        {/* Every route takes 0.8-2.3s to first byte and the App Router keeps the
+            old page on screen meanwhile, so without this a click looked like it
+            had missed. Readers were clicking twice. */}
+        <Suspense fallback={null}><RouteProgress /></Suspense>
         {/* Records the previous in-app route so BackLink can return you to where
             you actually came from rather than a page's fixed parent. */}
         <NavHistory />
