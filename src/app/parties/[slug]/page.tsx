@@ -25,6 +25,7 @@ import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { PartyLegislativeRecord } from '@/components/parties/legislative-record'
 import { PartyPolicyExplorer } from '@/components/parties/party-policy-explorer'
 import { PartySwitcher } from '@/components/parties/party-switcher'
+import { isLightHex } from '@/components/homepage/battleground-card'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { allDeepDivePaths } from '@/constants/policy-deep-dives'
 import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
@@ -220,7 +221,13 @@ export default async function PartyProfilePage(
 
               {/* Links */}
               <div style={{ display: 'flex', gap: 9, flexWrap: 'wrap' }}>
-                <a href={party.website} target="_blank" rel="noopener noreferrer" style={btnPrimary}>
+                {/* The party's own colour, not the site's jade — a green
+                    primary button on a page washed in Labour red read as
+                    something borrowed from another site. Light party colours
+                    (ACT's yellow, TOP's teal) take ink rather than white, or
+                    the label disappears into the fill. */}
+                <a href={party.website} target="_blank" rel="noopener noreferrer"
+                  style={{ ...btnBase, background: party.color, color: isLightHex(party.color) ? INK : '#ffffff' }}>
                   <Globe style={{ width: 15, height: 15 }} /> Official website
                 </a>
                 <a href={party.parliamentUrl} target="_blank" rel="noopener noreferrer" style={btnSecondary}>
@@ -421,5 +428,4 @@ const btnBase: React.CSSProperties = {
   padding: '9px 16px', borderRadius: 10, fontSize: 13.5, fontWeight: 700,
   fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap',
 }
-const btnPrimary: React.CSSProperties = { ...btnBase, background: JADE, color: '#ffffff' }
 const btnSecondary: React.CSSProperties = { ...btnBase, background: '#ffffff', border: `1px solid ${BORDER}`, color: INK }
