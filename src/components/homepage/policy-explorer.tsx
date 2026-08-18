@@ -5,8 +5,9 @@
  * doesn't leave the page: it opens a panel below the grid with the stance of
  * whichever party is on screen right now (auto-cycling until the reader taps a
  * tile), plus a link to the full topic page for the deep dive. One topic open at
- * a time. Comparing ALL parties lives in its own section further down the page
- * (see all-parties-compare.tsx), not behind a toggle in here.
+ * a time. Comparing ALL parties on one issue lives at /policies/[topic] — it
+ * used to be repeated further down this page as "Compare every party", which
+ * was the same chips and the same positions a second time.
  */
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'

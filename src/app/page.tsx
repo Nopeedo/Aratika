@@ -23,7 +23,6 @@ import { PartyTilesSection, PartyStanceSection } from '@/components/homepage/par
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { HomeMap } from '@/components/homepage/home-map'
 import { CompassCta } from '@/components/compass/compass-cta'
-import { AllPartiesSection } from '@/components/homepage/all-parties-section'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 import { AlertsBanner } from '@/components/notifications/alerts-banner'
@@ -88,10 +87,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
         {/* ═══ CORE 3 — your electorate ═══ */}
         <HomeMap />
-
-        {/* Every party side by side, with its own issue picker. Used to be a
-            "Show all parties" toggle buried inside the issue panel above. */}
-        <AllPartiesSection />
 
         {/* ── Why you can trust it (slim) ── */}
         <CredibilityStrip />
