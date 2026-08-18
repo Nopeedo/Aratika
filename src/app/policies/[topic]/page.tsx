@@ -6,20 +6,15 @@
  */
 
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import {
-  ArrowRight, Info, Home, Heart, Leaf, GraduationCap, Scale,
-  Globe, Landmark, Wind, TrendingUp, Users,
-} from 'lucide-react'
+import { Info } from 'lucide-react'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
-import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PolicyTopic } from '@/types'
-import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { getApprovedPositions } from '@/lib/positions/live'
+import { TopicSwitcher } from '@/components/policy/topic-switcher'
 import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BillsForTopic } from '@/components/bills/bills-for-topic'
@@ -48,8 +43,6 @@ export default async function PolicyTopicPage(
   if (!t) notFound()
   const Icon = TOPIC_ICONS[t.icon]
 
-  const priorityParties = PARTY_DIRECTORY_ORDER.filter((p) => PARTY_PROFILES[p].keyPolicyAreas.includes(topic as PolicyTopic))
-  const otherParties = PARTY_DIRECTORY_ORDER.filter((p) => !priorityParties.includes(p))
 
   const positions = await getApprovedPositions(topic)
 
@@ -84,38 +77,16 @@ export default async function PolicyTopicPage(
           <p style={{ fontSize: 14.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>{t.longDescription}</p>
         </div>
 
-        {/* Parties prioritising this */}
-        <div>
-          <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Parties prioritising {t.label}</h2>
-          <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px' }}>
-            Parties that list this as one of their key policy areas. Tap a party to see its full profile.
-          </p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(220px, 100%), 1fr))', gap: 12 }}>
-            {priorityParties.map((p) => {
-              const party = PARTY_PROFILES[p]
-              return (
-                <Link key={p} href={`/parties/${p}`} style={{ textDecoration: 'none' }}>
-                  <div className="party-card" style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden', boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
-                    <div style={{ height: 4, background: party.color }} />
-                    <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 11 }}>
-                      <Avatar name={party.leader} party={p} size="sm" />
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{party.name}</div>
-                        <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE }}>{party.leader}</div>
-                      </div>
-                      <ArrowRight style={{ width: 14, height: 14, color: TERTIARY }} />
-                    </div>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-          {otherParties.length > 0 && (
-            <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 12 }}>
-              Other parties in Parliament also hold positions on {t.label.toLowerCase()} — view any party&apos;s profile for their full policy areas.
-            </p>
-          )}
-        </div>
+        {/* Every issue, so a reader can pivot topic without backing out to the
+            index. The mirror of the party switcher on /parties/[slug] — the two
+            pages are transposes of one dataset and now navigate the same way.
+
+            This replaces a "Parties prioritising {t.label}" card grid. Every
+            party in it appeared again in the comparison directly below, so it
+            was a duplicate list standing between the reader and the content —
+            and it ranked parties by hand-maintained keyPolicyAreas metadata
+            rather than by anything sourced. */}
+        <TopicSwitcher current={topic} />
 
         {/* Detailed party-by-party comparison */}
         {positions.length > 0 ? (
