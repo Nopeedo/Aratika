@@ -158,8 +158,18 @@ if (RESET) {
 }
 
 // existing links (dedup)
-const { data: existing } = await sb.from('content_items').select('source_id').eq('type', 'news')
-const have = new Set((existing || []).map((r) => r.source_id))
+// Paginate. A plain select stops at 1000 rows and there are ~1530 news items,
+// so this set was blind to 530 of them — every one of those links looked new
+// again on the next run. They could not become duplicates (the table is unique
+// on (type, source_id)) but they broke the INSERT instead, which was worse: see
+// the batching below.
+const have = new Set()
+for (let from = 0; ; from += 1000) {
+  const { data: page } = await sb.from('content_items')
+    .select('source_id').eq('type', 'news').order('id').range(from, from + 999)
+  for (const r of page || []) have.add(r.source_id)
+  if (!page || page.length < 1000) break
+}
 
 // ── Publish mode ──────────────────────────────────────────────────────────────
 // News auto-publishes (status='approved') OUTSIDE the regulated election period.
@@ -178,11 +188,12 @@ const holdForReview = process.env.NEWS_AUTOPUBLISH === '1' ? false
 const NEWS_STATUS = holdForReview ? 'pending' : 'approved'
 console.log(`Publish mode: ${NEWS_STATUS}${inRegulatedPeriod ? ' — regulated election period' : ''} (NZ date ${nzToday})`)
 
-let staged = 0, skipped = 0, failedFeeds = 0
+let staged = 0, skipped = 0, failedFeeds = 0, failedRows = 0
 for (const feed of FEEDS) {
   let parsed
   try { parsed = await rss.parseURL(feed.url) } catch (e) { console.warn(`✗ ${feed.outlet}: ${e.message}`); failedFeeds++; continue }
   const rows = []
+  let wrote = 0
   for (const it of (parsed.items || [])) {
     const link = (it.link || '').split('?')[0].trim()
     if (!link || have.has(link)) { if (link) skipped++; continue }
@@ -242,13 +253,24 @@ for (const feed of FEEDS) {
       console.log(`  · ${r.title.slice(0, 78)}\n      ${tags || '(no tags)'}`)
     }
   } else {
+    // upsert-ignore rather than insert: one already-seen link used to fail the
+    // whole batch of 50 on the unique constraint, and `break` then abandoned
+    // every remaining batch for that feed. Genuinely new articles were dropped.
     for (let i = 0; i < rows.length; i += 50) {
-      const { error } = await sb.from('content_items').insert(rows.slice(i, i + 50))
-      if (error) { console.error(`insert error (${feed.outlet}): ${error.message}`); break }
+      const batch = rows.slice(i, i + 50)
+      const { data: ins, error } = await sb.from('content_items')
+        .upsert(batch, { onConflict: 'type,source_id', ignoreDuplicates: true })
+        .select('id')
+      // Carry on with the next batch. One bad batch is not a reason to abandon
+      // the rest of an outlet's feed.
+      if (error) { console.error(`insert error (${feed.outlet}): ${error.message}`); failedRows += batch.length; continue }
+      wrote += ins?.length ?? 0
     }
   }
-  staged += rows.length
-  console.log(`✓ ${feed.outlet}: +${rows.length} new${DRY ? ' (dry run — nothing written)' : ''}`)
+  // Count what the database actually took. This used to add rows.length whether
+  // the insert succeeded or not, so a failed run still reported staging them.
+  staged += DRY ? rows.length : wrote
+  console.log(`✓ ${feed.outlet}: +${DRY ? rows.length : wrote} new${DRY ? ' (dry run — nothing written)' : ''}`)
 }
 console.log(`\nDone. Staged ${staged} news items, skipped ${skipped} dupes, ${failedFeeds} feeds failed.`)
 // The Supabase client keeps the event loop alive (open keep-alive sockets), so a

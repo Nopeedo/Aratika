@@ -270,8 +270,16 @@ const RESET = process.argv.includes('--reset')
 if (RESET && DRY) { console.error('--reset with --dry-run would still delete every video. Refusing.'); process.exit(1) }
 if (RESET) { const { error } = await sb.from('content_items').delete().eq('type', 'video'); console.log(error ? 'reset err: ' + error.message : 'cleared existing videos') }
 
-const { data: existing } = await sb.from('content_items').select('source_id').eq('type', 'video')
-const have = new Set((existing || []).map((r) => r.source_id))
+// Paginate, same reason as the news ingest: a plain select stops at 1000 rows.
+// Video sits at ~920 today so it has not bitten yet, which is exactly why it is
+// worth fixing now rather than when the count crosses over unnoticed.
+const have = new Set()
+for (let from = 0; ; from += 1000) {
+  const { data: page } = await sb.from('content_items')
+    .select('source_id').eq('type', 'video').order('id').range(from, from + 999)
+  for (const r of page || []) have.add(r.source_id)
+  if (!page || page.length < 1000) break
+}
 
 let staged = 0, shorts = 0, old = 0
 const ageFloor = new Date(Date.now() - MAX_AGE_DAYS * 86400000).toISOString()
@@ -374,7 +382,10 @@ for (const ch of CHANNELS) {
       console.log(`      ${[d.parties.length && `parties:${d.parties.join('/')}`, d.mps.length && `mps:${d.mps.join('/')}`, d.topics.length && `topics:${d.topics.join('/')}`].filter(Boolean).join('  ') || '(no tags)'}${flags ? `   [${flags}]` : ''}`)
     }
   } else if (rows.length) {
-    const { error } = await sb.from('content_items').insert(rows)
+    // upsert-ignore so one already-seen link cannot fail the whole channel's
+    // batch on the unique (type, source_id) constraint.
+    const { error } = await sb.from('content_items')
+      .upsert(rows, { onConflict: 'type,source_id', ignoreDuplicates: true })
     if (error) { console.error(`insert err (${ch.source}): ${error.message}`); continue }
   }
   staged += rows.length
