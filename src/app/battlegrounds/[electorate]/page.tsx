@@ -436,7 +436,11 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
            Follows this seat into the Command Centre alongside tracked MPs,
            parties and bills. */
         action={<BookmarkButton entity={{
-          kind: 'electorate',
+          // 'battleground', not 'electorate'. Both maps used to save the same
+          // kind with the same ref_id, and the table is unique on
+          // (user_id, kind, ref_id) — so following your seat on the map and
+          // following a race here were one row overwriting the other.
+          kind: 'battleground',
           refId: info.name,
           label: info.name,
           sublabel: `${tier.label} battleground${info.party ? ` · ${mp?.name ?? info.mpName}` : ''}`,

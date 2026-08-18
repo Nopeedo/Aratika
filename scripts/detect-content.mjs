@@ -32,9 +32,9 @@ if (e1) { console.error(e1.message); process.exit(1) }
 console.log(`Recent approved news/video (last ${WINDOW_HOURS}h): ${items?.length ?? 0}`)
 
 // Bookmarks that can match content, indexed by kind → ref_id → Set(userId).
-const { data: bms, error: e2 } = await sb().from('bookmarks').select('user_id, kind, ref_id').in('kind', ['party', 'mp', 'policy', 'electorate', 'bill'])
+const { data: bms, error: e2 } = await sb().from('bookmarks').select('user_id, kind, ref_id').in('kind', ['party', 'mp', 'policy', 'electorate', 'bill', 'battleground'])
 if (e2) { console.error(e2.message); process.exit(1) }
-const idx = { party: new Map(), mp: new Map(), policy: new Map(), electorate: new Map(), bill: new Map() }
+const idx = { party: new Map(), mp: new Map(), policy: new Map(), electorate: new Map(), bill: new Map(), battleground: new Map() }
 for (const b of bms || []) {
   const m = idx[b.kind]; if (!m) continue
   const key = lc(b.ref_id)
@@ -47,14 +47,21 @@ for (const b of bms || []) {
 // and submission windows but no coverage of it, which is the thing people
 // actually notice. Items ingested before that tag existed simply have no
 // `bills` key and are skipped, which is the right way to fail.
-const TAG_TO_KIND = { parties: 'party', mps: 'mp', topics: 'policy', electorates: 'electorate', bills: 'bill' }
+// One tag can feed more than one kind. An electorate tag reaches BOTH the
+// people following that seat on the map and the people following its race on
+// the battlegrounds map — splitting those into separate kinds was about where
+// they file in the Command Centre, not about who hears the news.
+const TAG_TO_KIND = {
+  parties: ['party'], mps: ['mp'], topics: ['policy'],
+  electorates: ['electorate', 'battleground'], bills: ['bill'],
+}
 
 let enqueued = 0
 for (const it of items || []) {
   const users = new Set()
-  for (const [tagField, kind] of Object.entries(TAG_TO_KIND)) {
+  for (const [tagField, kinds] of Object.entries(TAG_TO_KIND)) {
     const tags = Array.isArray(it.data?.[tagField]) ? it.data[tagField] : []
-    for (const t of tags) for (const u of idx[kind].get(lc(t)) || []) users.add(u)
+    for (const t of tags) for (const kind of kinds) for (const u of idx[kind].get(lc(t)) || []) users.add(u)
   }
   if (users.size === 0) continue
 

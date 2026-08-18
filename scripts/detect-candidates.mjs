@@ -43,7 +43,7 @@ console.log(`Candidates approved in the last ${WINDOW_HOURS}h: ${items?.length ?
 if (!items?.length) process.exit(0)
 
 // Who tracks which seat, by display name.
-const { data: bms, error: e2 } = await sb().from('bookmarks').select('user_id, ref_id').eq('kind', 'electorate')
+const { data: bms, error: e2 } = await sb().from('bookmarks').select('user_id, ref_id').in('kind', ['electorate', 'battleground'])
 if (e2) { console.error(e2.message); process.exit(1) }
 const byElectorate = new Map()
 for (const b of bms || []) {

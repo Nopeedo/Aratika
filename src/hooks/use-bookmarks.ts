@@ -18,7 +18,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useUser } from '@/hooks/use-user'
 
 export interface BookmarkEntity {
-  kind: 'mp' | 'party' | 'electorate' | 'policy' | 'bill'
+  kind: 'mp' | 'party' | 'electorate' | 'policy' | 'bill' | 'battleground'
   refId: string
   label: string
   sublabel?: string

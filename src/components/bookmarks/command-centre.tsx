@@ -9,7 +9,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink } from 'lucide-react'
+import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink, Swords } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { BILLS_54, type Bill54 } from '@/constants/bills-54'
 import { PARTY_COLORS } from '@/constants/parties'
@@ -39,6 +39,10 @@ const GROUPS: { kind: Bookmark['kind']; label: string; icon: React.ElementType }
   { kind: 'policy', label: 'Tracked policy topics', icon: Scale },
   { kind: 'bill', label: 'Tracked bills', icon: Gavel },
   { kind: 'electorate', label: 'Tracked electorates', icon: MapPin },
+  // Separate from electorates on purpose: "my seat, who represents me" and
+  // "this contest is worth watching" are different questions, and they used to
+  // collide on the same row because both maps saved kind='electorate'.
+  { kind: 'battleground', label: 'Tracked battlegrounds', icon: Swords },
 ]
 
 // Each section gets its own colour identity — light tint + deep 700-level ink —
@@ -48,7 +52,8 @@ const KIND_STYLE: Record<Bookmark['kind'], { tint: string; ink: string }> = {
   party:      { tint: '#f5f3ff', ink: '#6d28d9' },
   policy:     { tint: '#f0fdfa', ink: '#0f766e' },
   bill:       { tint: '#fdf3ff', ink: '#a21caf' },
-  electorate: { tint: '#fef1f2', ink: '#be123c' },
+  electorate:   { tint: '#fef1f2', ink: '#be123c' },
+  battleground: { tint: '#fff7ed', ink: '#c2410c' },
 }
 
 /** The card's ground and edge.
