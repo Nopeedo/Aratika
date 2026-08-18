@@ -48,7 +48,9 @@ export function TopicChip({ topicKey, active, onClick, style }: {
     <button
       onClick={onClick}
       aria-pressed={active}
-      className={t.color}
+      // Stable hook so the chip can be shrunk at narrow widths from CSS —
+      // media queries cannot live in an inline style object.
+      className={`ap-chip ${t.color}`}
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 7,
         padding: '9px 14px', borderRadius: 12, borderStyle: 'solid',

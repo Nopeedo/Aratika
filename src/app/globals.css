@@ -399,3 +399,44 @@ a, button, [role='button'], summary {
   }
   a, button, [role='button'], summary { transition: none; }
 }
+
+/* ─── Topic chips on narrow screens ──────────────────────────────────────────
+   Eleven chips, and the longest ("Treaty & Māori Affairs", "Democracy &
+   Government") run to about 215px at full size. On a 360px phone that is one
+   chip per row, so the picker ran to eleven rows and pushed the actual content
+   two screens down.
+
+   Two changes, both width: shrink the chip, and on the party page let the grid
+   use the full width of the phone instead of sitting inside a card's padding. */
+@media (max-width: 767px) {
+  .ap-chip {
+    padding: 7px 11px !important;
+    gap: 5px !important;
+    border-radius: 10px !important;
+  }
+  .ap-chip span { font-size: 13px !important; }
+  .ap-chip svg  { width: 14px !important; height: 14px !important; }
+
+  /* "Where they stand" drops its card chrome on phones and sits straight on the
+     woven ground, the way the homepage picker does — that alone returns ~48px
+     of horizontal space, which is the difference between one chip per row and
+     two. The border and padding earn their place on desktop, where width is not
+     the constraint. */
+  .ap-stand {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
+
+/* The party page's content column keeps 36px gutters, which is a fifth of a
+   360px phone. Tighten them so the topic chips get the width they need — with
+   the card chrome already removed, this is what takes the picker from one chip
+   per row to two. */
+@media (max-width: 767px) {
+  .ap-col {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}

@@ -77,9 +77,9 @@ function mpSlugForName(name: string): string | null {
 
 /** Outlined in the party's own colour. A neutral 1px hairline on a textured
  *  background reads as no edge at all — the cards dissolved into the weave. */
-function Card({ children, accent, style }: { children: React.ReactNode; accent?: string; style?: React.CSSProperties }) {
+function Card({ children, accent, style, className }: { children: React.ReactNode; accent?: string; style?: React.CSSProperties; className?: string }) {
   return (
-    <div style={{
+    <div className={className} style={{
       background: '#ffffff', border: `2px solid ${accent ? tint(accent, 0.45) : BORDER}`, borderRadius: 18,
       padding: '22px 24px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)', ...style,
     }}>
@@ -138,7 +138,7 @@ export default async function PartyProfilePage(
       }}>
         <div style={{ height: 6, background: party.color }} />
 
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 36px' }}>
+        <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 36px' }}>
 
           <BackLink fallbackHref="/parties" label="All parties" style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
@@ -255,7 +255,7 @@ export default async function PartyProfilePage(
       </div>
 
       {/* ═══════════════ Body ═══════════════ */}
-      <div className="detail-two-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '36px 36px 64px' }}>
+      <div className="detail-two-col ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '36px 36px 64px' }}>
 
         {/* ── Main column ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -297,7 +297,7 @@ export default async function PartyProfilePage(
               "key policy areas" and sent you to a grid of every party — out of
               the party you came to read. This answers the question you actually
               asked, on every topic, without a navigation. */}
-          <Card accent={party.color}>
+          <Card accent={party.color} className="ap-stand">
             <SectionHeading icon={Star} title="Where they stand" accent={party.color} />
             <PartyPolicyExplorer
               partySlug={slug}
