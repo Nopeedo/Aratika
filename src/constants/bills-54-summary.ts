@@ -17,8 +17,8 @@ export const BILLS_54_TOPIC_COUNTS: Record<string, { passed: number; active: num
     "active": 1
   },
   "climate": {
-    "passed": 29,
-    "active": 9
+    "passed": 30,
+    "active": 8
   },
   "crime-justice": {
     "passed": 16,
