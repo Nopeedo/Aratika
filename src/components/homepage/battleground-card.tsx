@@ -14,7 +14,7 @@ import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import type { BattlegroundEntry } from '@/lib/battlegrounds'
 import type { PartySlug } from '@/types'
-import { MANROPE } from '@/constants/theme'
+import { MANROPE, INK, SECONDARY, BORDER } from '@/constants/theme'
 
 export function isLightHex(hex: string): boolean {
   const m = hex.replace('#', '')
@@ -28,21 +28,35 @@ function mpSlugForName(name?: string): string | null {
   return entry ? entry.slug : null
 }
 
+/** Party colour faded to a tint, for the chip and the MP row on a paper card. */
+function hexToRgba(hex: string, alpha: number): string {
+  const h = hex.replace('#', '')
+  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h
+  const n = parseInt(full, 16)
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`
+}
+
 export function BattlegroundCard({ b, rank }: { b: BattlegroundEntry; rank: number }) {
   const party = b.info.party as PartySlug | null
   const color = party ? PARTY_COLORS[party].bg : '#6B7280'
-  const light = isLightHex(color)
-  const txt = light ? '#1c1605' : '#fff'
-  const sub = light ? 'rgba(28,22,5,.7)' : 'rgba(255,255,255,.8)'
-  const chipBg = light ? 'rgba(28,22,5,.12)' : 'rgba(255,255,255,.18)'
-  const rowBg = light ? 'rgba(28,22,5,.08)' : 'rgba(255,255,255,.12)'
+  // Paper card with the sitting MP's party as a top band, not a full-bleed slab.
+  // Three of these sit side by side and the closest races are mostly Labour
+  // seats, so as solid fills the row read as a wall of red — the party of the
+  // incumbent drowning out the thing the card is actually about, which is how
+  // close the contest was.
+  const txt = INK
+  const sub = SECONDARY
+  const chipBg = hexToRgba(color, 0.12)
+  const rowBg = hexToRgba(color, 0.07)
 
   const slug = b.info.mpSlug || mpSlugForName(b.info.mpName)
   const photo = slug ? MP_PROFILES[slug]?.photo : undefined
 
   return (
     <Link href={`/battlegrounds/${b.slug}`} style={{ textDecoration: 'none' }}>
-      <div style={{ borderRadius: 16, overflow: 'hidden', background: color, color: txt, height: '100%' }}>
+      <div style={{ borderRadius: 16, overflow: 'hidden', background: '#fff', border: `1px solid ${BORDER}`, color: txt, height: '100%', boxShadow: '0 2px 6px rgba(42,18,6,.06)' }}>
+        {/* Party of the sitting MP, as a band across the top. */}
+        <div aria-hidden style={{ height: 5, background: color }} />
         <div style={{ padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 12, height: '100%' }}>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10 }}>

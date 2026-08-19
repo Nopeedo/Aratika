@@ -128,15 +128,21 @@ export default async function PartyProfilePage(
   return (
     // Same woven ground as the homepage and Election Centre, so a party page
     // stops looking like a page from another site.
-    <div style={WOVEN_PAGE}>
+    <div style={{
+      ...WOVEN_PAGE,
+      // The party wash runs the FULL height of the page rather than fading out
+      // below the header. It was a 180deg gradient that reached transparent at
+      // 60% of the header band, so the page changed identity halfway down the
+      // first screen — party-coloured at the top, generic paper from there on.
+      // A two-stop gradient of one colour is a flat layer: it tints the whole
+      // page evenly and keeps the woven texture underneath it.
+      backgroundImage: `linear-gradient(${tint(party.color, 0.12)}, ${tint(party.color, 0.12)}), url(/back2.jpg)`,
+    }}>
 
       {/* ═══════════════ Header band ═══════════════ */}
-      {/* Washed in the party's own colour — the identity cue the old 6px strip
-          was too thin to carry. */}
-      <div style={{
-        background: `linear-gradient(180deg, ${tint(party.color, 0.16)} 0%, ${tint(party.color, 0.04)} 60%, rgba(255,255,255,0) 100%)`,
-        borderBottom: `1px solid ${BORDER}`,
-      }}>
+      {/* No background of its own — it sits on the page wash above, so there is
+          no seam where the header ends. */}
+      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ height: 6, background: party.color }} />
 
         <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 36px' }}>
