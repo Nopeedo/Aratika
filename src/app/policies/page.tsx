@@ -9,7 +9,6 @@ import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { FollowIssues } from '@/components/policy/follow-issues'
 import { TopicChip } from '@/components/homepage/topic-chip'
 import { SectionDivider } from '@/components/ui/section-divider'
-import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
@@ -53,7 +52,6 @@ export default function PolicyHubPage() {
           ))}
         </div>
       </div>
-      <PolicyCoverage maxWidth={1100} />
     </div>
   )
 }
