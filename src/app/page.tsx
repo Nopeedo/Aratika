@@ -19,7 +19,8 @@ import { redirect } from 'next/navigation'
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
 import { HomeBackground } from '@/components/homepage/home-background'
-import { PartyTilesSection, PartyStanceSection } from '@/components/homepage/party-tiles-section'
+import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
+// import { PartyStanceSection } from '@/components/homepage/party-tiles-section' // hidden — see below
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { HomeMap } from '@/components/homepage/home-map'
 import { CompassCta } from '@/components/compass/compass-cta'
@@ -73,9 +74,10 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         {/* ═══ CORE 2 — explore by issue ═══ */}
         <PolicyHubGrid />
 
-        {/* Summary of Party Stance — moved below "Where do the parties stand?"
-            instead of directly under the tiles. */}
-        <PartyStanceSection />
+        {/* "Summary of Party Stance" disabled on the front page — component
+            is intact (party-tiles-section.tsx / party-tiles.tsx PanelStance),
+            uncomment to bring it back. */}
+        {/* <PartyStanceSection /> */}
 
         {/* The compass, back on the homepage. It was built as a homepage entry
             card and then rendered nowhere — orphaned in the first-impression
