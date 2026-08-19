@@ -23,9 +23,18 @@ import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
-import { pollOfPolls } from '@/constants/polls-data'
+import {
+  pollOfPolls, pollOfPollsOthers, seatProjection, RECENT_POLLS, POLL_PARTIES, PREFERRED_PM,
+  TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, POLLS_AS_AT, POLLS_SOURCE,
+  PROJECTION_SEATS,
+} from '@/constants/polls-data'
+import { getAllApprovedPositions } from '@/lib/positions/live'
 import { getPolls } from '@/lib/polls/live'
 import { CommandHero } from './command-hero'
+import { KeyDates } from './key-dates'
+import { PollSnapshot } from './poll-snapshot'
+import { CoalitionExplorer } from './coalition-explorer'
+import { PolicyFaceoff } from './policy-faceoff'
 import { TwoVotes } from './two-votes'
 import { PartiesContesting } from './parties-contesting'
 import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
@@ -42,7 +51,7 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } 
 // tint/ink follow the homepage policy-chip language (deep 700-level borders).
 const STEPS = [
   { icon: UserPlus, title: 'Enrol or check your details', body: 'You must be enrolled to vote. Enrol or update your address anytime at vote.nz.', href: 'https://vote.nz', cta: 'Enrol at vote.nz', tint: '#ecfdf3', ink: '#15803d' },
-  { icon: Clock, title: 'Vote early or on the day', body: 'Advance voting usually opens about two weeks before election day. Dates confirmed closer to the time.', href: null, cta: null, tint: '#ecfeff', ink: '#0e7490' },
+  { icon: Clock, title: 'Vote early or on the day', body: 'Advance voting runs 26 October to 6 November, then election day is Saturday 7 November. Enrolment closes the day before advance voting starts.', href: null, cta: null, tint: '#ecfeff', ink: '#0e7490' },
 ]
 
 export async function UpcomingView({ e }: { e: ElectionData }) {
@@ -53,6 +62,11 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const hasRealDebates = debates.some((v) => v.debate)
   const polls = await getPolls()
   const pop = pollOfPolls(polls)
+  // The three tools below were built for this page and never rendered on it.
+  const projection = seatProjection(polls)
+  const positions = await getAllApprovedPositions()
+  // NZ local date — the calendar's deadlines are NZ deadlines.
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })
 
   return (
     // One continuous woven texture behind the whole page — hero included — so it
@@ -63,6 +77,9 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(34px, 5vh, 48px)' }}>
 
+          {/* ── WHEN — the only section where being wrong costs someone a vote ── */}
+          <KeyDates today={today} />
+
           {/* ── PARTIES CONTESTING — the fill tiles carry the standings now ──── */}
           <section id="parties" style={{ scrollMarginTop: 80 }}>
             <ZoneHead eyebrow="Who’s standing" title="Parties contesting 2026"
@@ -70,6 +87,38 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               link={{ href: '/party-inclusion', label: 'Who’s included' }} />
             <PartiesContesting pop={pop} />
           </section>
+
+          {/* ── WHERE THEY STAND — the condensed poll of polls ────────────────
+              Built for this page ("PollSnapshot — the condensed poll-of-polls
+              for the Election Centre") and rendered nowhere until now. It
+              carries its own heading, so there is no ZoneHead here. */}
+          <section id="polling" style={{ scrollMarginTop: 80 }}>
+            <PollSnapshot
+              pop={pop}
+              othersPct={pollOfPollsOthers(polls)}
+              pollCount={polls.length}
+              asAt={POLLS_AS_AT}
+              pollParties={POLL_PARTIES}
+              polls={polls}
+              preferredPM={PREFERRED_PM}
+              turnout={TURNOUT_2023}
+              enrolment={ENROLMENT_2023}
+              enrolmentUrl={ENROLMENT_LIVE_URL}
+              pollsSource={POLLS_SOURCE}
+            />
+          </section>
+
+          {/* ── WHO COULD GOVERN — the interactive coalition builder ─────────── */}
+          <section id="coalitions" style={{ scrollMarginTop: 80 }}>
+            <CoalitionExplorer seats={projection} total={PROJECTION_SEATS} asAt={POLLS_AS_AT} />
+          </section>
+
+          {/* ── WHERE DO YOU SIT — react to stances, no sign-in ──────────────── */}
+          {positions.length > 0 && (
+            <section id="faceoff" style={{ scrollMarginTop: 80 }}>
+              <PolicyFaceoff positions={positions} />
+            </section>
+          )}
 
           {/* ── YOUR ELECTORATE — the closest races, then the marginality map ── */}
           <section id="your-seat" style={{ scrollMarginTop: 80 }}>

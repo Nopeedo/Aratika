@@ -448,3 +448,11 @@ a, button, [role='button'], summary {
 @media (max-width: 767px) {
   .map-toggle-word { display: none; }
 }
+
+/* The key-dates strip is four columns of date plus label. Below 700px that
+   leaves each about 70px, too narrow for "Advance voting opens", so it folds to
+   two. Marked important because the column count is set inline on the element,
+   derived from how many milestones are shown. */
+@media (max-width: 700px) {
+  .keydates-row { grid-template-columns: 1fr 1fr !important; }
+}
