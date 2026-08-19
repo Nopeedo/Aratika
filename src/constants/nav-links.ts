@@ -31,6 +31,13 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Election Centre', href: '/elections/2026', description: 'Polls, seat projection, your electorate and live results on the night', feature: 'elections', highlight: true },
   { label: 'Your Vote', href: '/start', description: 'Find what matters to you, then build your plan', feature: 'onboarding' },
   { label: 'Parties', href: '/parties', description: 'Every party, their leaders and policies', feature: 'parties' },
+  // The policy hub reached the main nav late. It was linked only from the
+  // footer and a few in-page cards, which is also where topic TRACKING lives —
+  // the follow button for an issue is on /policies/[topic] and nowhere else. Two
+  // people have ever tracked a topic (housing and economy, last on 7 Aug),
+  // against seven electorates, and the `policy` bookmark kind feeds a whole
+  // notification path that was therefore starved of subscribers.
+  { label: 'Policies', href: '/policies', description: 'Where the parties stand issue by issue — and follow the issues you care about', feature: 'policies' },
   {
     label: 'Your Electorate', description: 'Find your seat, your MP and the 2026 race', feature: 'map',
     children: [
