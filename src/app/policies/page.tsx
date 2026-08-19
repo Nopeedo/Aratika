@@ -5,30 +5,18 @@
  */
 
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import {
-  ArrowRight, Home, Heart, Leaf, GraduationCap, Scale,
-  Globe, Landmark, Wind, TrendingUp, Users,
-} from 'lucide-react'
-import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
+import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { FollowIssues } from '@/components/policy/follow-issues'
-import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
-import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
-import { PolicyTopic } from '@/types'
+import { TopicChip } from '@/components/homepage/topic-chip'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Policy Hub',
   description:
     'Compare where New Zealand\'s political parties stand on the issues that matter — ' +
     'housing, health, the economy, climate and more.',
-}
-
-
-function partiesForTopic(topic: PolicyTopic) {
-  return PARTY_DIRECTORY_ORDER.filter((p) => PARTY_PROFILES[p].keyPolicyAreas.includes(topic))
 }
 
 export default function PolicyHubPage() {
@@ -53,42 +41,16 @@ export default function PolicyHubPage() {
         {/* Following an issue was only possible from inside a topic page, which
             is why almost nobody had done it. */}
         <FollowIssues />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: 16 }}>
-          {POLICY_TOPIC_ORDER.map((key) => {
-            const topic = POLICY_TOPICS[key]
-            const Icon = TOPIC_ICONS[topic.icon]
-            const parties = partiesForTopic(key)
-            return (
-              <Link key={key} href={`/policies/${key}`} style={{ textDecoration: 'none' }}>
-                <div className="policy-card" style={{
-                  background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 20,
-                  padding: '22px 22px 18px', boxShadow: '0 2px 4px rgba(12,14,18,.03)',
-                  height: '100%', display: 'flex', flexDirection: 'column', gap: 12,
-                }}>
-                  <div className={topic.color} style={{ width: 44, height: 44, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    {Icon && <Icon className={`size-5 ${topic.textColor}`} />}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{topic.label}</div>
-                    <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5, marginTop: 4 }}>{topic.description}</div>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <span style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE }}>Priority for</span>
-                      <div style={{ display: 'flex', gap: 3 }}>
-                        {parties.map((p) => (
-                          <span key={p} title={PARTY_PROFILES[p].name} style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_PROFILES[p].color, border: '1.5px solid rgba(255,255,255,.6)' }} />
-                        ))}
-                      </div>
-                    </div>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 12, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>
-                      Compare <ArrowRight style={{ width: 12, height: 12 }} />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            )
-          })}
+        {/* Pills, not cards. The eleven topic cards each carried an icon, a
+            title, a description and a party-dot row, which pushed the grid past
+            a full screen for what is a navigation list. Same TopicChip the
+            homepage and party pages use, so an issue looks the same wherever it
+            appears — in link mode here, because on this page the chip's job is
+            to take you to the topic. */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 9 }}>
+          {POLICY_TOPIC_ORDER.map((key) => (
+            <TopicChip key={key} topicKey={key} active={false} href={`/policies/${key}`} />
+          ))}
         </div>
       </div>
       <PolicyCoverage maxWidth={1100} />

@@ -7,6 +7,7 @@
  * the icon is "imprinted" (no background box behind it).
  */
 
+import Link from 'next/link'
 import {
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
@@ -34,16 +35,46 @@ export const TOPIC_BORDER_HEX: Record<string, { rest: string; active: string }> 
   indigo: { rest: '#4338ca', active: '#312e81' },
 }
 
-export function TopicChip({ topicKey, active, onClick, style }: {
+export function TopicChip({ topicKey, active, onClick, href, style }: {
   topicKey: string
   active: boolean
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
+  /** Required unless `href` is given. */
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
+  /**
+   * Render as a link instead of a button. The policy hub uses the chip to
+   * navigate, and a button that calls router.push looks identical but cannot be
+   * middle-clicked, opened in a new tab, or read as a link by a screen reader.
+   */
+  href?: string
   style?: React.CSSProperties
 }) {
   const t = POLICY_TOPICS[topicKey as keyof typeof POLICY_TOPICS]
   const Icon = TOPIC_ICONS[t.icon]
   const hue = t.textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
   const b = TOPIC_BORDER_HEX[hue] ?? TOPIC_BORDER_HEX.slate
+  const shared: React.CSSProperties = {
+    display: 'inline-flex', alignItems: 'center', gap: 7,
+    padding: '9px 14px', borderRadius: 12, borderStyle: 'solid',
+    borderWidth: active ? 3 : 2, borderColor: active ? b.active : b.rest,
+    cursor: 'pointer', fontFamily: MANROPE, transformOrigin: '0 0',
+    textDecoration: 'none',
+    ...style,
+  }
+  const inner = (
+    <>
+      {Icon && <Icon className={`size-4 ${t.textColor}`} />}
+      <span style={{ fontSize: 14, fontWeight: 800, color: INK, whiteSpace: 'nowrap' }}>{t.label}</span>
+    </>
+  )
+
+  if (href) {
+    return (
+      <Link href={href} className={`ap-chip ${t.color}`} style={shared}>
+        {inner}
+      </Link>
+    )
+  }
+
   return (
     <button
       onClick={onClick}
