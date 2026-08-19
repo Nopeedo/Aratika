@@ -21,7 +21,11 @@ import { PARTY_TERMS, isPolitical, tagMPs } from './political-terms.mjs'
 import { buildElectorateTerms, addCandidateTerms } from './electorate-terms.mjs'
 import { buildCandidateTerms, tagCandidates } from './candidate-terms.mjs'
 import { buildBillTerms, tagBills } from './bill-terms.mjs'
-import { getUploads, getDurations, hasApiKey, announceMode } from './lib/youtube.mjs'
+import { getUploads, getDurations, hasApiKey, announceMode, synopsis } from './lib/youtube.mjs'
+import {
+  anyTerm, tag, TOPIC_TERMS, ELECTION_TERMS, DEBATE_TERMS, LEADER_NAMES,
+  VIDEO_NOISE_TERMS, isPresser, isInterview,
+} from './lib/video-tagging.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -192,61 +196,19 @@ const CHANNELS = [
 // Party + political term lists — generated from the current MP roster
 // (scripts/gen-political-terms.mjs). Every current MP is mapped to their party by
 // full name, so "…Chris Bishop", "Cushla Tangaere-Manuel" etc. tag correctly.
-const TOPIC_TERMS = {
-  economy: ['econom', 'tax', 'budget', 'inflation', 'cost of living', 'wages'], housing: ['housing', 'rent', 'tenan', 'homeless'],
-  health: ['health', 'hospital', 'pharmac', 'doctor'], education: ['school', 'educat', 'teacher', 'ncea'],
-  // NOT bare 'rma' — it is a substring of "information", "transformation",
-  // "performance" and "format", so it tagged 75% of all climate items on text
-  // with no climate content in it whatsoever.
-  climate: ['climate', 'emissions', 'environment', 'resource management', 'rma reform', ' rma ', 'conservation'], 'crime-justice': ['crime', 'police', 'gang', 'court', 'sentenc', 'justice'],
-}
-const ELECTION_TERMS = ['election', 'campaign', 'candidate', 'poll', 'voter', 'coalition', 'debate', '2026', 'leader']
-// Leaders'/minor-party debates and long-form leader interviews — surfaced as a
-// dedicated "Debates" rail in the Election Centre. Broadcast by media channels
-// (see CHANNELS), reviewed in /editor before showing.
-// No bare 'debate' — "bitter medical debate" is not a leaders' debate. Only
-// phrases that specifically mean an election debate / leader interview.
-const DEBATE_TERMS = ['leaders debate', "leaders' debate", 'leaders’ debate', 'election debate', 'the great debate', 'head to head', 'head-to-head', 'q+a', 'q&a', 'minor party', 'leaders interview', 'leader interview', 'young voters debate', 'finance debate']
-
-// "Leaders & the press" rail: its subtitle promises press standups, leader
-// updates AND debates, but only debate-flagged clips ever qualified — so it sat
-// nearly empty until debate season (Sep–Oct). The presser flag admits official-
-// channel clips that are leader press events or name a party leader.
-const PRESS_TERMS = ['press conference', 'media conference', 'post-cabinet', 'standup', 'stand-up', 'press standup', 'state of the nation', 'campaign launch', 'speech to', 'address to']
-const LEADER_NAMES = ['luxon', 'hipkins', 'swarbrick', 'marama davidson', 'seymour', 'winston peters', 'waititi', 'ngarewa-packer', 'qiulae wong']
-const isPresser = (t) => PRESS_TERMS.some((x) => t.includes(x)) || LEADER_NAMES.some((x) => t.includes(x))
-// Obvious non-political categories dropped from political channels (Parliament/RNZ)
-// — only when the clip also mentions no party, no election term and no policy topic.
-const VIDEO_NOISE_TERMS = ['gardener', 'once were', 'matariki', 'trailer', 'weather', 'forecast', 'recipe', 'all blacks', 'super rugby', 'silver ferns', 'black caps', 'good as gold', 'episode ']
-const tag = (map, t) => Object.keys(map).filter((k) => map[k].some((x) => t.includes(x)))
+// Tagging vocabulary and the word-anchored matchers now live in
+// lib/video-tagging.mjs, shared with retag-pending-videos.mjs so the two
+// cannot drift apart.
 // Feed text is XML-escaped; descriptions carry &amp; &quot; &#39; routinely.
 const decode = (s) => s
   .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
   .replace(/&#3[49];/g, "'").replace(/&apos;/g, "'").replace(/&amp;/g, '&')
 
-// ── Independent tier ──────────────────────────────────────────────────────────
-// Channels that are neither a party's own channel nor a national broadcaster,
-// admitted on one objective test: they publish original, on-the-record
-// interviews with named leaders or candidates. Leaning is NOT a criterion —
-// applying one would mean this site deciding which outlets are legitimate. What
-// keeps it honest instead is disclosure and measurement: the outlet is named on
-// every card, and report-interview-balance.mjs counts interviews per party so a
-// skew in the tier is visible rather than silent.
-//
-// Everything still lands status='pending' for /editor, so nothing here reaches
-// the public without a human seeing it first.
-const INTERVIEW_TERMS = [
-  'interview', 'in conversation', 'sits down with', 'sat down with', 'one on one',
-  'one-on-one', 'full interview', 'exclusive interview', 'speaks to', 'speaks with',
-  'talks to', 'in the studio', 'at large with', 'on the record', 'long read',
-]
-const isInterview = (t) => INTERVIEW_TERMS.some((x) => t.includes(x))
-
 // Shared electorate tagging (all 72 seats + curated battleground judgement +
 // announced 2026 challengers) — the same map ingest-news.mjs uses.
 const ELECTORATE_TERMS = buildElectorateTerms()
 await addCandidateTerms(ELECTORATE_TERMS, sb)
-const tagElectorates = (t) => Object.keys(ELECTORATE_TERMS).filter((name) => ELECTORATE_TERMS[name].some((term) => t.includes(term)))
+const tagElectorates = (t) => Object.keys(ELECTORATE_TERMS).filter((name) => anyTerm(ELECTORATE_TERMS[name], t))
 
 // 2026 candidates by name. Sitting MPs come through tagMPs; this is everyone
 // else standing — 233 of the 321 candidate records — who could not be tagged at
@@ -319,15 +281,20 @@ for (const ch of CHANNELS) {
     // not enough for an interview show: "The Hui Episode 02:11" names nobody, so
     // the clip tagged no party, no MP and no topic, and reached no one tracking
     // any of them.
-    const t = (title + ' ' + (e.description || '')).toLowerCase()
+    //
+    // But only the SYNOPSIS half of the description — see synopsis() in
+    // lib/youtube.mjs. Reading the promo boilerplate too meant The Platform's
+    // on-air roster tagged every one of its uploads as a Waitaki candidate, and
+    // a sponsor's "crafted the old school way" tagged them education.
+    const t = (title + ' ' + synopsis(e.description)).toLowerCase()
     const parties = ch.party ? [ch.party] : tag(PARTY_TERMS, t)
     const topics = tag(TOPIC_TERMS, t)
     const mps = tagMPs(t)
     const electorates = tagElectorates(t)
     const candidates = tagCandidates(t, CANDIDATE_TERMS)
     const bills = tagBills(t, BILL_TERMS)
-    const electionRelevant = parties.length > 0 || ELECTION_TERMS.some((x) => t.includes(x))
-    const debate = DEBATE_TERMS.some((x) => t.includes(x))
+    const electionRelevant = parties.length > 0 || anyTerm(ELECTION_TERMS, t)
+    const debate = anyTerm(DEBATE_TERMS, t)
     // Noise gate. Keyword relevance detection is too weak to use as an allowlist
     // (it misses bare party names and minister surnames, e.g. "National promises…",
     // "ACT announces…", "…Chris Bishop"), so we DON'T filter political channels by it.
@@ -348,11 +315,11 @@ for (const ch of CHANNELS) {
     // A challenger counts as "someone". Before this, an interview with a
     // first-time candidate was dropped unless it also named a sitting MP —
     // which is precisely backwards during an election campaign.
-    const namesSomeone = mps.length > 0 || candidates.length > 0 || LEADER_NAMES.some((x) => t.includes(x))
+    const namesSomeone = mps.length > 0 || candidates.length > 0 || anyTerm(LEADER_NAMES, t)
     if (ch.interviewsOnly && !(namesSomeone && (electionRelevant || isPolitical(t, parties) || topics.length > 0))) continue
     if (ch.interviewsOnly && tooShort(vid)) { shorts++; continue }
 
-    const isNoise = VIDEO_NOISE_TERMS.some((x) => t.includes(x))
+    const isNoise = anyTerm(VIDEO_NOISE_TERMS, t)
     if (isNoise && !debate && !electionRelevant && !isPolitical(t, parties) && topics.length === 0) continue
     rows.push({
       type: 'video', source_id: link, title: title.replace(/&amp;/g, '&'), summary: '', status: 'pending', source_url: link,
@@ -361,10 +328,14 @@ for (const ch of CHANNELS) {
         candidates, bills,
         pubDate: published, thumbnail: `https://i.ytimg.com/vi/${vid}/hqdefault.jpg`,
         electionRelevant, debate, presser: isPresser(t), featured: false,
-        // Drives the Interviews rail. Independent-tier clips all qualify (they
-        // only got here by naming someone); elsewhere it needs the phrasing, so
-        // a party's own attack ad naming a rival is not filed as an interview.
-        interview: ch.interviewsOnly ? true : isInterview(t),
+        // A judgement about THIS clip, from its own words. It used to be forced
+        // true for every interview-tier channel, which made it a restatement of
+        // interviewTier and useless for ranking — "Who Is The Banger Of The Week
+        // In The Friday Fry Up?" was filed as an interview alongside a leader
+        // sitting down for twenty minutes. The Interviews rail keys off
+        // interviewTier (see getInterviewVideos), so nothing public changes;
+        // this now gives review a signal that actually separates the two.
+        interview: isInterview(t),
         // "came from the interview tier", nothing more. It was briefly called
         // `independent` and rendered as an IND badge, which became a false claim
         // the moment the tier included Q+A (TVNZ), Newstalk ZB (NZME) and Stuff.

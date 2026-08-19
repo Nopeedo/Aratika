@@ -149,6 +149,31 @@ export async function getDurations(videoIds) {
 }
 
 /**
+ * Titles + descriptions for videos we have already stored. Needed to re-tag rows
+ * that were staged before a tagging fix: we keep the videoId but not the source
+ * text, so the text has to be fetched again. 1 quota unit per 50 ids, same as
+ * getDurations. Returns a Map keyed by videoId; ids YouTube no longer serves
+ * (deleted or made private) are simply absent, which the caller should treat as
+ * "leave that row alone" rather than "it has no tags".
+ */
+export async function getSnippets(videoIds) {
+  const out = new Map()
+  if (!hasApiKey() || videoIds.length === 0) return out
+  for (let i = 0; i < videoIds.length; i += 50) {
+    const batch = videoIds.slice(i, i + 50)
+    try {
+      const body = await json(`${API}/videos?part=snippet&id=${batch.join(',')}&key=${apiKey()}`)
+      for (const it of body.items || []) {
+        out.set(it.id, { title: it.snippet?.title || '', description: it.snippet?.description || '' })
+      }
+    } catch (e) {
+      console.warn(`  ⚠ snippet lookup failed (${e.reason || e.message}) — those rows are left untouched`)
+    }
+  }
+  return out
+}
+
+/**
  * Search, for discovery. Region-locked to NZ and English so a query like
  * "Chris Hipkins interview" is not answered with unrelated results from
  * elsewhere — something the HTML-scraping fallback cannot express at all.
@@ -176,4 +201,49 @@ export async function searchVideos(query, { max = 25, publishedAfter } = {}) {
     console.warn(`  ⚠ search failed for "${query}" (${e.reason || e.message}) — falling back to HTML`)
     return null
   }
+}
+
+/**
+ * A YouTube description is two documents glued together: a short synopsis whoever
+ * uploaded it actually wrote, and a block of promo boilerplate the channel appends
+ * to every single upload — subscribe links, app downloads, socials, sponsor copy,
+ * the on-air roster.
+ *
+ * Tagging read the whole thing, so the boilerplate became content:
+ *   • The Platform's host schedule line "Michael Laws: 10am - 1pm" tagged EVERY
+ *     one of its uploads as a candidate for Waitaki.
+ *   • A sponsor's "crafted the old school way" tagged them "education".
+ *   • NZ Herald's standard footer put its whole show rundown on unrelated clips.
+ *
+ * Reading the description is still right — "The Hui Episode 02:11" names nobody in
+ * its title — so the fix is to stop at the boilerplate rather than ignore the text.
+ * Keep everything up to the first line that is unmistakably channel furniture.
+ * Where a description is nothing BUT furniture (the Friday Fry Up), that correctly
+ * yields an empty synopsis and the clip is judged on its title alone.
+ */
+// Regex literals, not strings: '\b' inside a quoted string is a BACKSPACE
+// character, not a word boundary, so a string-built version of this silently
+// matched nothing at all.
+const BOILERPLATE = [
+  /https?:\/\//i, /www\./i,                          // any link block
+  /^\s*#/,                                           // hashtag footer
+  /\bsubscribe\b/i, /\bfollow us\b/i, /\bsign up\b/i, /\bjoin now\b/i,
+  /\bbrought to you by\b/i, /\bsponsored by\b/i,     // sponsor copy
+  /\bwatch\b.{0,24}\blive\b/i, /\bdownload\b.{0,16}\bapp\b/i,
+  /\bapp store\b/i, /\bgoogle play\b/i, /\bpatreon\b/i, /\bmerch\b/i,
+  /\bcheck out our\b/i, /\bstandard sms\b/i, /\btext us\b/i, /\bcall 0800\b/i,
+  /\blisten to\b.{0,40}\b(hosts?|weekday)\b/i,       // station roster intro
+  /^\s*[a-z .'-]{3,28}:\s*\d{1,2}\s*(am|pm)\b/i,     // "Michael Laws: 10am - 1pm"
+]
+const isBoilerplate = (line) => BOILERPLATE.some((re) => re.test(line))
+
+export function synopsis(description, { maxChars = 600 } = {}) {
+  if (!description) return ''
+  const kept = []
+  for (const line of String(description).split(/\r?\n/)) {
+    if (isBoilerplate(line)) break
+    kept.push(line)
+    if (kept.join(' ').length >= maxChars) break
+  }
+  return kept.join(' ').replace(/\s+/g, ' ').slice(0, maxChars).trim()
 }
