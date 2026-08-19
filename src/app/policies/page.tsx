@@ -11,6 +11,7 @@ import {
   Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
+import { FollowIssues } from '@/components/policy/follow-issues'
 import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
 import { PolicyTopic } from '@/types'
@@ -49,6 +50,9 @@ export default function PolicyHubPage() {
       </div>
 
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: 'clamp(18px, 5vw, 36px) clamp(18px, 5vw, 36px) 64px' }}>
+        {/* Following an issue was only possible from inside a topic page, which
+            is why almost nobody had done it. */}
+        <FollowIssues />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: 16 }}>
           {POLICY_TOPIC_ORDER.map((key) => {
             const topic = POLICY_TOPICS[key]
