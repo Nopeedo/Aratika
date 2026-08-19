@@ -94,3 +94,33 @@ export async function getNewsForElectorate(electorateName: string, limit = 6): P
   const all = await getNews(300)
   return all.filter((i) => i.electorates.includes(electorateName)).slice(0, limit)
 }
+
+/**
+ * News tagged to a party, for that party's own page.
+ *
+ * Filtered in the QUERY, not after fetching the newest N. The pattern used by
+ * getNewsForElectorate — pull 300 rows then filter in memory — silently hides
+ * everything about a party that has not been in the news lately: with ~60 items
+ * arriving a day, 300 rows is under a week, so a minor party's coverage falls
+ * off the end and the page renders "no coverage" while the rows sit in the
+ * table. This is the same class of bug that made a frontbencher's 14 articles
+ * invisible on the candidate view.
+ *
+ * `cs` is JSONB containment on data->parties. A party's own releases are tagged
+ * with its slug by the ingest, so they come through here too.
+ */
+export async function getNewsForParty(slug: string, limit = 6): Promise<NewsItem[]> {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('content_items')
+    .select('id, title, summary, data, created_at')
+    .eq('type', 'news')
+    .eq('status', 'approved')
+    .filter('data->parties', 'cs', JSON.stringify([slug]))
+    .order('created_at', { ascending: false })
+    .limit(limit * 4)
+  return (data ?? [])
+    .map(toItem)
+    .sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+    .slice(0, limit)
+}

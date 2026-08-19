@@ -18,6 +18,7 @@ import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES } from '@
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { PartySlug } from '@/types'
+import { PartyCoverage } from '@/components/parties/party-coverage'
 import { BackLink } from '@/components/ui/back-link'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -374,6 +375,11 @@ export default async function PartyProfilePage(
 
         </div>
       </div>
+
+      {/* ═══════════════ Latest coverage ═══════════════ */}
+      {/* Sits below the party's own material on purpose: the page leads with
+          what the party says, then shows what is being reported about it. */}
+      <PartyCoverage slug={slug} name={party.name} colour={party.color} />
 
       {/* ═══════════════ Source attribution ═══════════════ */}
       <div style={{ borderTop: `1px solid ${BORDER}`, background: SURFACE }}>

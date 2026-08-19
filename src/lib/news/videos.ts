@@ -40,6 +40,29 @@ export interface VideoItem {
  *  current is worse than showing nothing for that party. */
 const MAX_AGE_DAYS = 730
 
+/** One approved video row -> VideoItem. Shared so every query maps identically. */
+function toVideoItem(r: { id: string; title: string; data: unknown }): VideoItem {
+  const d = (r.data || {}) as Record<string, unknown>
+  return {
+    id: r.id,
+    title: r.title,
+    videoId: String(d.videoId ?? ''),
+    source: String(d.source ?? 'YouTube'),
+    party: (d.party as string) ?? null,
+    parties: Array.isArray(d.parties) ? (d.parties as string[]) : [],
+    topics: Array.isArray(d.topics) ? (d.topics as string[]) : [],
+    mps: Array.isArray(d.mps) ? (d.mps as string[]) : [],
+    electorates: Array.isArray(d.electorates) ? (d.electorates as string[]) : [],
+    pubDate: (d.pubDate as string) ?? null,
+    thumbnail: String(d.thumbnail ?? ''),
+    electionRelevant: d.electionRelevant === true,
+    debate: d.debate === true,
+    presser: d.presser === true,
+    interview: d.interview === true,
+    interviewTier: d.interviewTier === true,
+  }
+}
+
 export async function getVideos(limit = 48): Promise<VideoItem[]> {
   const supabase = await createClient()
   const { data } = await supabase
@@ -49,27 +72,7 @@ export async function getVideos(limit = 48): Promise<VideoItem[]> {
     .eq('status', 'approved')
     .order('created_at', { ascending: false })
     .limit(limit)
-  const items = (data ?? []).map((r) => {
-    const d = (r.data || {}) as Record<string, unknown>
-    return {
-      id: r.id,
-      title: r.title,
-      videoId: String(d.videoId ?? ''),
-      source: String(d.source ?? 'YouTube'),
-      party: (d.party as string) ?? null,
-      parties: Array.isArray(d.parties) ? (d.parties as string[]) : [],
-      topics: Array.isArray(d.topics) ? (d.topics as string[]) : [],
-      mps: Array.isArray(d.mps) ? (d.mps as string[]) : [],
-      electorates: Array.isArray(d.electorates) ? (d.electorates as string[]) : [],
-      pubDate: (d.pubDate as string) ?? null,
-      thumbnail: String(d.thumbnail ?? ''),
-      electionRelevant: d.electionRelevant === true,
-      debate: d.debate === true,
-      presser: d.presser === true,
-      interview: d.interview === true,
-      interviewTier: d.interviewTier === true,
-    }
-  })
+  const items = (data ?? []).map(toVideoItem)
   const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 86_400_000).toISOString().slice(0, 10)
   return items
     .filter((v) => !v.pubDate || v.pubDate.slice(0, 10) >= cutoff)
@@ -172,4 +175,31 @@ export async function getInterviewVideos(limit = 12): Promise<VideoItem[]> {
 export async function getVideosForElectorate(electorateName: string, limit = 3): Promise<VideoItem[]> {
   const all = await getVideos(200)
   return all.filter((v) => v.electorates.includes(electorateName)).slice(0, limit)
+}
+
+/**
+ * Video tagged to a party, for that party's own page. Server-side filtered for
+ * the same reason as getNewsForParty — see the note there.
+ *
+ * Deliberately NOT restricted to the interview tier or to election-relevant
+ * clips: on a party's own page the party's own channel output is exactly what a
+ * reader came for, and those clips are tagged to it by the channel rather than
+ * by keyword.
+ */
+export async function getVideosForParty(slug: string, limit = 4): Promise<VideoItem[]> {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('content_items')
+    .select('id, title, data, created_at')
+    .eq('type', 'video')
+    .eq('status', 'approved')
+    .filter('data->parties', 'cs', JSON.stringify([slug]))
+    .order('created_at', { ascending: false })
+    .limit(limit * 5)
+  const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 86_400_000).toISOString().slice(0, 10)
+  return (data ?? [])
+    .map(toVideoItem)
+    .filter((v) => !v.pubDate || v.pubDate.slice(0, 10) >= cutoff)
+    .sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+    .slice(0, limit)
 }
