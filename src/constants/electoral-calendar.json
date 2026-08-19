@@ -1,0 +1,112 @@
+{
+  "source": {
+    "name": "Electoral Commission — 2026 General Election timetable",
+    "url": "https://elections.nz/assets/2026-Media-Kit-/2026-General-Election-media-kit.pdf",
+    "page": "2026 General Election Media Kit, p6 (timetable) and p7 (what's new this election)",
+    "retrieved": "2026-08-19"
+  },
+  "electionDay": "2026-11-07",
+  "milestones": [
+    {
+      "id": "maori-roll-change-2026",
+      "date": "2026-08-06",
+      "timeNote": "midnight",
+      "label": "Last day for Māori who are already enrolled to change roll types",
+      "detail": "The deadline to switch between the Māori roll and the general roll for this election.",
+      "notify": true,
+      "remindDaysBefore": [
+        7,
+        1
+      ]
+    },
+    {
+      "id": "nominations-open-2026",
+      "date": "2026-09-07",
+      "label": "Candidate nominations open",
+      "detail": "Candidates can formally put their names forward from today.",
+      "notify": false
+    },
+    {
+      "id": "dissolution-2026",
+      "date": "2026-10-01",
+      "label": "Dissolution of Parliament",
+      "detail": "Parliament is dissolved. Sitting MPs stop being MPs and become candidates.",
+      "notify": false
+    },
+    {
+      "id": "writ-day-2026",
+      "date": "2026-10-04",
+      "label": "Writ Day",
+      "detail": "Enrol by today and voting is straightforward. Anyone who enrols after today casts a special vote, which takes longer to process.",
+      "notify": true,
+      "remindDaysBefore": [
+        7,
+        1
+      ]
+    },
+    {
+      "id": "nominations-close-2026",
+      "date": "2026-10-08",
+      "timeNote": "noon",
+      "label": "Nominations close for candidates",
+      "detail": "The final list of candidates for every electorate is set from here.",
+      "notify": false
+    },
+    {
+      "id": "overseas-voting-2026",
+      "date": "2026-10-21",
+      "label": "Overseas voting starts",
+      "detail": "New Zealanders overseas can start voting today.",
+      "notify": true,
+      "remindDaysBefore": [
+        3
+      ]
+    },
+    {
+      "id": "enrolment-closes-2026",
+      "date": "2026-10-25",
+      "label": "Last day to enrol to vote in the election",
+      "detail": "The final deadline to enrol or update your details. New for 2026: enrolment closes 13 days before election day, so unlike 2023 you cannot enrol once advance voting starts, or on election day. If you are not enrolled by tonight, you cannot vote in this election.",
+      "notify": true,
+      "remindDaysBefore": [
+        14,
+        7,
+        3,
+        1
+      ]
+    },
+    {
+      "id": "advance-voting-2026",
+      "date": "2026-10-26",
+      "label": "Advance voting starts",
+      "detail": "You can vote from today, without waiting for election day. Enrolment is now closed.",
+      "notify": true,
+      "remindDaysBefore": [
+        3
+      ]
+    },
+    {
+      "id": "election-day-2026",
+      "date": "2026-11-07",
+      "timeNote": "voting places open 9.00am to 7.00pm",
+      "label": "Election day",
+      "detail": "Voting places are open 9.00am to 7.00pm. Preliminary results are released from 7.00pm.",
+      "notify": true,
+      "remindDaysBefore": [
+        30,
+        7,
+        1
+      ]
+    },
+    {
+      "id": "official-results-2026",
+      "date": "2026-11-27",
+      "label": "Official results for the 2026 General Election declared",
+      "detail": "The final count, including special votes, is declared today.",
+      "notify": true,
+      "remindDaysBefore": [
+        1
+      ]
+    }
+  ]
+}

@@ -104,7 +104,13 @@ export function CommandHero() {
           ))}
         </div>
         <p style={{ textAlign: 'center', fontSize: 12, color: SUB, fontFamily: MANROPE, margin: '4px 0 clamp(20px, 3.4vh, 30px)' }}>
-          Final date &amp; advance-voting period confirmed by the Electoral Commission closer to the day.
+          {/* This used to say the date and advance-voting period would be
+              "confirmed closer to the day". They have been: the Electoral
+              Commission published the full timetable, and the line stayed up
+              telling readers the opposite. The dates below come from that
+              timetable (see src/constants/electoral-calendar.json). */}
+          Enrolment closes <b>25 October</b> — new for 2026, you cannot enrol once advance voting starts.
+          Advance voting runs <b>26 October</b> to <b>6 November</b>. Dates from the Electoral Commission.
         </p>
 
         {/* Jump nav — coloured chips, same language as the policy chips */}
