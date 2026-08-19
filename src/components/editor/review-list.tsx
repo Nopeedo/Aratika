@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect } from 'react'
-import { Check, FileText, ExternalLink, Loader2, Eye, Clock } from 'lucide-react'
+import { Check, FileText, ExternalLink, Loader2, Eye, Clock, ChevronDown, ChevronRight } from 'lucide-react'
 import { BillBreakdown, type PolicyLink } from '@/components/bills/bill-breakdown'
 import { StageTracker } from '@/components/bills/stage-tracker'
 import { HaveYourSay } from '@/components/bills/have-your-say'
@@ -105,6 +105,27 @@ const AGE_STYLE = {
   stale: { bg: '#fef2f2', bd: '#fecaca', fg: '#991b1b' },
 } as const
 
+const SIGNAL_FIELDS = ['parties', 'mps', 'topics', 'electorates', 'candidates', 'bills'] as const
+
+/**
+ * How much the taggers actually found: parties, MPs, topics, electorates,
+ * candidates, bills. Zero means nothing this site tracks was mentioned.
+ *
+ * Deliberately NOT an auto-reject. The zero-signal bucket has held an ACT policy
+ * announcement, a poll showing National down, and a TOP donor investigation
+ * sitting alongside the crosswords and the weather — the taggers miss things,
+ * and a queue that silently bins them is worse than one that is merely long.
+ * So it gets its own group at the end, to skim rather than read.
+ */
+function signalOf(i: PendingItem): number {
+  let n = 0
+  for (const f of SIGNAL_FIELDS) {
+    const v = i.data?.[f]
+    if (Array.isArray(v)) n += v.length
+  }
+  return n
+}
+
 export function ReviewList({ initial }: { initial: PendingItem[] }) {
   const [items, setItems] = useState(initial)
   const [done, setDone] = useState<{ approved: number; rejected: number }>({ approved: 0, rejected: 0 })
@@ -123,6 +144,7 @@ export function ReviewList({ initial }: { initial: PendingItem[] }) {
   const [sourceFilter, setSourceFilter] = useState('all')
   const [ageFilter, setAgeFilter] = useState<'all' | 'fresh' | 'ageing' | 'stale'>('all')
   const [sortNewestFirst, setSortNewestFirst] = useState(true)
+  const [showLow, setShowLow] = useState(false)
 
   const typeCounts: Record<string, number> = {}
   for (const i of items) typeCounts[i.type] = (typeCounts[i.type] || 0) + 1
@@ -143,6 +165,11 @@ export function ReviewList({ initial }: { initial: PendingItem[] }) {
       const x = publishedOf(a) ?? '', y = publishedOf(b) ?? ''
       return sortNewestFirst ? y.localeCompare(x) : x.localeCompare(y)
     })
+
+  // Split, rather than filter: everything is still reachable, but the items with
+  // nothing tagged stop being interleaved with the ones worth reading.
+  const strong = shown.filter((i) => signalOf(i) > 0)
+  const low = shown.filter((i) => signalOf(i) === 0)
 
   const toggleSel = (id: string) => setSelected((s) => { const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n })
   // "Select all" acts on what is VISIBLE, not the whole queue. Selecting 250
@@ -239,16 +266,40 @@ export function ReviewList({ initial }: { initial: PendingItem[] }) {
         Showing <b style={{ color: INK }}>{shown.length}</b> of <b style={{ color: INK }}>{items.length}</b> item{items.length === 1 ? '' : 's'} awaiting review.
         {done.approved + done.rejected > 0 && <> · {done.approved} approved, {done.rejected} rejected this session.</>}
       </div>
-      {shown.map((item) => (
-        // Video is 251 of the 252 pending items and needs none of the summary
-        // editing the full card is built around — VideoSection renders title and
-        // outlet only. A compact row fits ~15 to a screen instead of one.
-        item.type === 'video'
-          ? <VideoRow key={item.id} item={item} onDone={remove} selected={selected.has(item.id)} onToggleSelect={toggleSel} />
-          : <ReviewCard key={item.id} item={item} onDone={remove} selected={selected.has(item.id)} onToggleSelect={toggleSel} />
-      ))}
+      {strong.map((item) => renderRow(item))}
+
+      {low.length > 0 && (
+        <div style={{ border: `1px dashed ${BORDER}`, borderRadius: 12, background: '#fbfaf7' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', padding: '11px 14px' }}>
+            <button onClick={() => setShowLow((v) => !v)} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: MANROPE, fontSize: 13.5, fontWeight: 800, color: INK }}>
+              {showLow ? <ChevronDown style={{ width: 15, height: 15 }} /> : <ChevronRight style={{ width: 15, height: 15 }} />}
+              Nothing tagged ({low.length})
+            </button>
+            <span style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, flex: '1 1 240px', lineHeight: 1.4 }}>
+              No party, MP, topic, electorate or bill matched. Usually crosswords, weather and sport —
+              but the taggers do miss things, so skim before clearing.
+            </span>
+            <button onClick={() => setSelected(new Set(low.map((i) => i.id)))} style={{ fontSize: 12.5, fontWeight: 700, fontFamily: MANROPE, padding: '5px 11px', borderRadius: 999, cursor: 'pointer', color: '#991b1b', background: '#fef2f2', border: '1px solid #fecaca', whiteSpace: 'nowrap' }}>
+              Select all {low.length}
+            </button>
+          </div>
+          {showLow && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '0 10px 12px' }}>
+              {low.map((item) => renderRow(item))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
+
+  // Video is the bulk of the queue and needs none of the summary editing the
+  // full card is built around — a compact row fits ~15 to a screen.
+  function renderRow(item: PendingItem) {
+    return item.type === 'video'
+      ? <VideoRow key={item.id} item={item} onDone={remove} selected={selected.has(item.id)} onToggleSelect={toggleSel} />
+      : <ReviewCard key={item.id} item={item} onDone={remove} selected={selected.has(item.id)} onToggleSelect={toggleSel} />
+  }
 }
 
 function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
