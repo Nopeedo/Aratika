@@ -70,7 +70,10 @@ export async function PartyCoverage({ slug, name, colour }: { slug: string; name
           by others — inclusion is not endorsement, and the outlet is named on every item.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 28 }}>
+        <div style={{ display: 'grid', // min() so the track can never be wider than its container: a bare
+          // minmax(300px, …) is 300px even inside a 288px column on a 320px
+          // phone, and the overflow only hides because the page gutter absorbs it.
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 28 }}>
 
           <div>
             <ColumnHeading icon={Newspaper} label="In the news" accent={colour} />
@@ -99,7 +102,7 @@ export async function PartyCoverage({ slug, name, colour }: { slug: string; name
           <div>
             <ColumnHeading icon={Play} label="On video" accent={colour} />
             {videos.length === 0 ? <Empty what="video" /> : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: 12 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(130px, 100%), 1fr))', gap: 12 }}>
                 {videos.map((v) => (
                   <a key={v.id} href={`https://www.youtube.com/watch?v=${v.videoId}`} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
                     <span style={{ position: 'relative', display: 'block', aspectRatio: '16 / 9', borderRadius: 9, overflow: 'hidden', background: tint(colour, 0.1) }}>
