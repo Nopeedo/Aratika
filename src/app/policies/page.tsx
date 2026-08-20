@@ -6,8 +6,8 @@
 
 import type { Metadata } from 'next'
 import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
-import { FollowIssues } from '@/components/policy/follow-issues'
-import { TopicChip } from '@/components/homepage/topic-chip'
+import { PolicyHubExplorer, type TopicCoverage } from '@/components/policy/policy-hub-explorer'
+import { getAllApprovedPositions } from '@/lib/positions/live'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -18,7 +18,22 @@ export const metadata: Metadata = {
     'housing, health, the economy, climate and more.',
 }
 
-export default function PolicyHubPage() {
+export default async function PolicyHubPage() {
+  // Grouped on the server: the panel needs to know which parties have said
+  // something on each issue, and the full position objects are far larger than
+  // the summary the panel shows.
+  const positions = await getAllApprovedPositions()
+  const coverage: TopicCoverage[] = POLICY_TOPIC_ORDER.map((topic) => ({
+    topic,
+    // Current policy only. Parties can hold both a 2023 and a 2026 position on
+    // the same issue, and including both listed a party twice in the panel with
+    // two different stances — which reads as a contradiction rather than as a
+    // change over time. Same filter the party pages use.
+    parties: positions
+      .filter((p) => p.topic === topic && p.period !== '2023')
+      .map((p) => ({ slug: p.party, stance: p.stance, noPosition: p.noPosition })),
+  }))
+
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
@@ -37,20 +52,10 @@ export default function PolicyHubPage() {
       </div>
 
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: 'clamp(18px, 5vw, 36px) clamp(18px, 5vw, 36px) 64px' }}>
-        {/* Following an issue was only possible from inside a topic page, which
-            is why almost nobody had done it. */}
-        <FollowIssues />
-        {/* Pills, not cards. The eleven topic cards each carried an icon, a
-            title, a description and a party-dot row, which pushed the grid past
-            a full screen for what is a navigation list. Same TopicChip the
-            homepage and party pages use, so an issue looks the same wherever it
-            appears — in link mode here, because on this page the chip's job is
-            to take you to the topic. */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 9 }}>
-          {POLICY_TOPIC_ORDER.map((key) => (
-            <TopicChip key={key} topicKey={key} active={false} href={`/policies/${key}`} />
-          ))}
-        </div>
+        {/* Tapping an issue opens it here rather than replacing the page, and
+            the follow button lives in that panel — it used to be two
+            navigations deep, which is why almost nobody found it. */}
+        <PolicyHubExplorer coverage={coverage} />
       </div>
     </div>
   )
