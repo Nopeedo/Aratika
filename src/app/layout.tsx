@@ -71,18 +71,19 @@ export const metadata: Metadata = {
     icon: [{ url: '/icon-192.png', sizes: '192x192', type: 'image/png' }, { url: '/icon-512.png', sizes: '512x512', type: 'image/png' }],
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
+  // NO title/description here. A literal openGraph.title in the root overrides
+  // every page's own, so sharing the Housing comparison, the Election Centre and
+  // the battlegrounds map all produced the identical card — one title, one
+  // description, nothing to tell them apart. Left unset, Next falls back to each
+  // page's `title` and `description`, which every page already defines.
   openGraph: {
     type: 'website',
     locale: 'en_NZ',
     url: SITE.url,
     siteName: SITE.name,
-    title: `${SITE.name} — ${SITE.tagline}`,
-    description: SITE.description,
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${SITE.name} — ${SITE.tagline}`,
-    description: SITE.description,
   },
   robots: { index: true, follow: true },
 }

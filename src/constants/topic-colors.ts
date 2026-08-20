@@ -1,0 +1,25 @@
+/**
+ * topic-colors.ts — deep border colours per policy topic hue.
+ *
+ * Lives here rather than in topic-chip.tsx because that file is 'use client':
+ * importing this map into a server route (the Open Graph card generator) gave a
+ * client reference instead of the object, and every lookup came back undefined.
+ *
+ * Keyed by the Tailwind hue in each topic's textColor ("text-orange-700" ->
+ * "orange"). Real hex values, NOT a class string built with .replace() —
+ * Tailwind's scanner only emits CSS for class names written literally in source,
+ * so a runtime-built "border-orange-700" never compiles and the border silently
+ * falls back to black. `active` is a shade darker so a selected chip stands out.
+ */
+export const TOPIC_BORDER_HEX: Record<string, { rest: string; active: string }> = {
+  blue: { rest: '#1d4ed8', active: '#1e3a8a' },
+  orange: { rest: '#c2410c', active: '#7c2d12' },
+  red: { rest: '#b91c1c', active: '#7f1d1d' },
+  green: { rest: '#15803d', active: '#14532d' },
+  purple: { rest: '#7e22ce', active: '#581c87' },
+  slate: { rest: '#334155', active: '#0f172a' },
+  cyan: { rest: '#0e7490', active: '#164e63' },
+  amber: { rest: '#b45309', active: '#78350f' },
+  teal: { rest: '#0f766e', active: '#134e4a' },
+  indigo: { rest: '#4338ca', active: '#312e81' },
+}

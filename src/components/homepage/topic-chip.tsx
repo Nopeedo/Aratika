@@ -16,24 +16,10 @@ import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { INK, MANROPE } from '@/constants/theme'
 
 
-// Deep border colours keyed by the Tailwind hue in each topic's textColor
-// (e.g. "text-orange-700" → "orange"). Real hex values, NOT a class string
-// built with .replace() — Tailwind's scanner only emits CSS for class names
-// written literally in source, so a runtime-built "border-orange-700" never
-// gets compiled and the border silently falls back to plain black. `active`
-// is a shade darker so the selected chip stands out from the resting state.
-export const TOPIC_BORDER_HEX: Record<string, { rest: string; active: string }> = {
-  blue: { rest: '#1d4ed8', active: '#1e3a8a' },
-  orange: { rest: '#c2410c', active: '#7c2d12' },
-  red: { rest: '#b91c1c', active: '#7f1d1d' },
-  green: { rest: '#15803d', active: '#14532d' },
-  purple: { rest: '#7e22ce', active: '#581c87' },
-  slate: { rest: '#334155', active: '#0f172a' },
-  cyan: { rest: '#0e7490', active: '#164e63' },
-  amber: { rest: '#b45309', active: '#78350f' },
-  teal: { rest: '#0f766e', active: '#134e4a' },
-  indigo: { rest: '#4338ca', active: '#312e81' },
-}
+// Moved to constants/topic-colors.ts so server routes (the OG card) can read
+// it — importing a value from a 'use client' module gave a client reference.
+export { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
+import { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
 
 export function TopicChip({ topicKey, active, onClick, href, style }: {
   topicKey: string
