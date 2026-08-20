@@ -24,7 +24,7 @@ import { ArrowRight, Users } from 'lucide-react'
 import { POLICY_TOPIC_ORDER, POLICY_TOPICS } from '@/constants/policy-topics'
 import { TopicChip } from '@/components/homepage/topic-chip'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
-import { PARTY_COLORS, PARTY_NAMES } from '@/constants/parties'
+import { PARTY_COLORS, PARTY_NAMES, CURRENT_SEATS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
@@ -34,6 +34,16 @@ export interface TopicCoverage {
   topic: string
   parties: { slug: string; stance: string; noPosition: boolean }[]
 }
+
+/** Same split the party switcher and the Election Centre tiles use: who holds
+ *  seats now, then everyone else registered to contest. Inclusion is by
+ *  registration, not by polling — the site's rule everywhere else — so the
+ *  grouping shows the smaller parties are present rather than asking a reader to
+ *  take it on trust. */
+const GROUPS = [
+  { key: 'parliament', label: 'In Parliament', has: (slug: string) => (CURRENT_SEATS[slug as PartySlug] ?? 0) > 0 },
+  { key: 'contesting', label: 'Also contesting 2026', has: (slug: string) => (CURRENT_SEATS[slug as PartySlug] ?? 0) === 0 },
+]
 
 export function PolicyHubExplorer({ coverage }: { coverage: TopicCoverage[] }) {
   const byTopic = new Map(coverage.map((c) => [c.topic, c]))
@@ -68,8 +78,8 @@ export function PolicyHubExplorer({ coverage }: { coverage: TopicCoverage[] }) {
               <h2 style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0, letterSpacing: '-.01em' }}>
                 {open.label}
               </h2>
-              <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '4px 0 0', lineHeight: 1.5 }}>
-                {open.description}
+              <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '4px 0 0', lineHeight: 1.55 }}>
+                {open.longDescription}
               </p>
             </div>
             {/* The reason this panel exists. Anonymous-capable — see useBookmarks. */}
@@ -90,19 +100,41 @@ export function PolicyHubExplorer({ coverage }: { coverage: TopicCoverage[] }) {
             </div>
 
             {withPosition.length > 0 ? (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
-                {withPosition.map((p) => {
-                  const colour = PARTY_COLORS[p.slug as PartySlug]?.bg ?? '#6B7280'
-                  const name = PARTY_NAMES[p.slug as PartySlug]?.short ?? p.slug
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {GROUPS.map(({ key, label, has }) => {
+                  const inGroup = withPosition.filter((p) => has(p.slug))
+                  if (inGroup.length === 0) return null
                   return (
-                    <Link key={p.slug} href={`/policies/${topic}/${p.slug}`} style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 6, textDecoration: 'none',
-                      border: `1px solid ${BORDER}`, borderLeft: `3px solid ${colour}`, borderRadius: 9,
-                      padding: '7px 11px', background: '#fff',
-                    }}>
-                      <span style={{ fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{name}</span>
-                      <span style={{ fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE }}>{p.stance}</span>
-                    </Link>
+                    <div key={key}>
+                      <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 6 }}>
+                        {label}
+                      </div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+                        {inGroup.map((p) => {
+                          const colour = PARTY_COLORS[p.slug as PartySlug]?.bg ?? '#6B7280'
+                          const name = PARTY_NAMES[p.slug as PartySlug]?.short ?? p.slug
+                          return (
+                            <Link
+                              key={p.slug}
+                              href={`/policies/${topic}/${p.slug}`}
+                              // The one-line stance was visible on every row before
+                              // and is now a hover hint, so the summary is still
+                              // reachable without the panel becoming a wall of text.
+                              title={p.stance}
+                              style={{
+                                display: 'inline-flex', alignItems: 'center', gap: 6, textDecoration: 'none',
+                                fontSize: 12.5, fontWeight: 700, fontFamily: MANROPE,
+                                padding: '5px 11px', borderRadius: 999,
+                                color: INK, background: '#fff', border: `1px solid ${BORDER}`,
+                              }}
+                            >
+                              <span style={{ width: 8, height: 8, borderRadius: '50%', background: colour, flexShrink: 0 }} />
+                              {name}
+                            </Link>
+                          )
+                        })}
+                      </div>
+                    </div>
                   )
                 })}
               </div>
