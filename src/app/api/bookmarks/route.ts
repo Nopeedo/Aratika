@@ -14,7 +14,11 @@ import { createClient } from '@/lib/supabase/server'
 
 export const runtime = 'nodejs'
 
-const KINDS = ['mp', 'party', 'electorate', 'policy', 'bill']
+// Must match the bookmarks_kind_check constraint (migration 0012). When
+// 'battleground' was split out of 'electorate' the constraint was widened and
+// this list was not, so every attempt to track a battleground returned 400 for
+// three days while the map's button appeared to work.
+const KINDS = ['mp', 'party', 'electorate', 'policy', 'bill', 'battleground']
 
 export async function GET() {
   const supabase = await createClient()

@@ -10,6 +10,7 @@ import { Crown, Map, ArrowRight, PenLine, Sparkles, CheckCircle2, Highlighter, B
 import { createClient } from '@/lib/supabase/server'
 import { ManageBillingButton } from '@/components/billing/billing-buttons'
 import { CommandCentre, type TrackedItem } from '@/components/bookmarks/command-centre'
+import { NotificationInbox, type InboxItem } from '@/components/notifications/inbox'
 import { NotifyToggle } from '@/components/notifications/notify-toggle'
 import { EmailToggle } from '@/components/notifications/email-toggle'
 import { InstallButton } from '@/components/notifications/install-button'
@@ -71,6 +72,24 @@ export default async function DashboardPage() {
     .select('id, kind, ref_id, label, sublabel, href, accent, created_at')
     .order('created_at', { ascending: false })
   const bookmarks = (bookmarksRaw ?? []) as BookmarkType[]
+
+  // The inbox, server-rendered so it is there on first paint rather than
+  // appearing a beat later. Errors degrade to an empty inbox: this runs before
+  // migration 0013 is applied, and a dashboard that 500s over a missing column
+  // is worse than one whose inbox is briefly empty.
+  const [{ data: inboxRaw }, { count: unreadCount }] = await Promise.all([
+    supabase
+      .from('notification_queue')
+      .select('id, urgency, category, title, body, url, created_at, read_at')
+      .order('created_at', { ascending: false })
+      .limit(30),
+    supabase
+      .from('notification_queue')
+      .select('id', { count: 'exact', head: true })
+      .is('read_at', null),
+  ])
+  const inbox = (inboxRaw ?? []) as InboxItem[]
+  const unread = unreadCount ?? 0
 
   // Enrich tracked MP/party cards with display details (photo, party, leader) — server-side
   // so we don't ship the full MP/party dataset to the client.
@@ -195,6 +214,20 @@ export default async function DashboardPage() {
             <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Your command centre</h2>
           </div>
           <CommandCentre initial={enriched} />
+
+          {/* The inbox, directly under what it reports on. Every alert already
+              carried a headline and a destination; until now it existed only as
+              a push, so missing one lost the update for good and the red dot on
+              the tiles above could say something had changed but not what. */}
+          <div style={{ marginTop: 24 }}>
+            <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 2px' }}>
+              What you&rsquo;ve missed
+            </h2>
+            <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px', lineHeight: 1.5 }}>
+              Every update on something you track, whether or not the notification reached your phone.
+            </p>
+            <NotificationInbox initial={inbox} initialUnread={unread} />
+          </div>
 
           {/* Directly under the tracked items, because that is what they notify
               about — "get told when these move" only means something next to the
