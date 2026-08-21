@@ -79,6 +79,13 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/detect-positions.mjs
 
+      # Runs AFTER the bill/MP datasets are rebuilt above, so it diffs the fresh
+      # numbers against yesterday's. Writes scripts/.state/mp-stats.json and
+      # src/constants/mp-stat-changes.json, both committed by the step below.
+      - name: Record MP stat changes
+        continue-on-error: true
+        run: node scripts/detect-mp-stat-changes.mjs
+
       - name: Election calendar reminders → enqueue
         continue-on-error: true
         env:

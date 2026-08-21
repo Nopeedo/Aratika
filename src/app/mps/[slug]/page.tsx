@@ -33,6 +33,8 @@ import { StatusBadge } from '@/components/ui/badge'
 import { MPCard } from '@/components/mp/mp-card'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { MpCoverage } from '@/components/mps/mp-coverage'
+import { MpChanges, type StatChange } from '@/components/mps/mp-changes'
+import MP_STAT_CHANGES from '@/constants/mp-stat-changes.json'
 import { getNewsForMp } from '@/lib/news/live'
 import { getVideosForMp } from '@/lib/news/videos'
 import { formatNumber } from '@/lib/utils/format'
@@ -110,6 +112,10 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
   const isActive = mp.status === 'active'
   const isMinister = !!mp.title && /minister/i.test(mp.title)
   const policies = policiesForMP(mp)
+
+  // Anything on this MP's record that moved, from the dated changelog the daily
+  // refresh writes. Filtered here so the client only receives this MP's entries.
+  const statChanges = (MP_STAT_CHANGES.changes as StatChange[]).filter((c) => c.mp === slug)
 
   // Coverage tagged to this MP. Server-side so the profile renders complete;
   // both helpers filter in the query — see getNewsForMp.
@@ -226,6 +232,10 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
             <Card>
               <SectionHeading icon={Activity} title="Impact this term" />
               <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '-6px 0 14px' }}>{CURRENT_TERM.label} · {CURRENT_TERM.sinceLabel}</p>
+              {/* These tiles are rebuilt from Parliament's API daily, so nothing
+                  used to remember yesterday's values — a member's bill could pass
+                  and the number would tick from 0 to 1 unremarked. */}
+              <MpChanges slug={slug} changes={statChanges} />
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(120px, 100%), 1fr))', gap: 10 }}>
                 <ImpactTile label="Roles & spokesperson areas" value={mp.portfolios?.length ?? 0} />
                 <ImpactTile label="Select committees" value={mp.committees?.length ?? 0} />

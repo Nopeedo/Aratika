@@ -20,7 +20,7 @@
  * party's news would not be.
  */
 
-import { useEffect, useRef, useState } from 'react'
+import { useLastSeen } from '@/hooks/use-last-seen'
 import { Newspaper, Play, ExternalLink } from 'lucide-react'
 import type { NewsItem } from '@/lib/news/live'
 import type { VideoItem } from '@/lib/news/videos'
@@ -42,27 +42,10 @@ export function MpCoverage({ slug, name, accent, news, videos }: {
   news: NewsItem[]
   videos: VideoItem[]
 }) {
-  // Read the OLD stamp, mark against it, then write now — so the highlight
-  // survives this visit and clears on the next.
-  //
-  // The ref is load-bearing, not defensive. React StrictMode runs an effect
-  // twice in development: the first pass reads the real stamp and writes now,
-  // the second reads the now it just wrote, and nothing is ever newer than that.
-  // command-centre.tsx carries the same guard for the same reason.
-  const [since, setSince] = useState<number | null>(null)
-  const stamped = useRef<string | null>(null)
-  useEffect(() => {
-    if (stamped.current === slug) return
-    stamped.current = slug
-    const KEY = `mp_seen_${slug}`
-    let prev: number | null = null
-    try {
-      const raw = localStorage.getItem(KEY)
-      prev = raw ? Number(raw) : null
-      localStorage.setItem(KEY, String(Date.now()))
-    } catch { /* private mode — nothing gets marked, which is the safe failure */ }
-    setSince(prev && Number.isFinite(prev) ? prev : null)
-  }, [slug])
+  // Shared with MpChanges through useLastSeen: both need the same "previous
+  // visit" value, and when each read-and-stamped its own copy the second one to
+  // mount always compared against the timestamp the first had just written.
+  const since = useLastSeen(`mp_seen_${slug}`)
 
   const isNew = (iso: string | null) => {
     if (since == null || !iso) return false
