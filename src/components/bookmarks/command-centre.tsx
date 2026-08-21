@@ -16,7 +16,8 @@ import { PARTY_COLORS } from '@/constants/parties'
 import DEFINING_BILL_MAP from '@/constants/defining-bill-map.json'
 import type { PartySlug } from '@/types'
 import type { Bookmark } from '@/hooks/use-bookmarks'
-import { TileUpdates, type TileUpdate } from '@/components/bookmarks/tile-updates'
+import { TileFocus, type TileUpdate } from '@/components/bookmarks/tile-focus'
+import { stillCounts } from '@/lib/notifications/rules'
 import { BORDER, CARD_SHADOW, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
@@ -72,7 +73,11 @@ const KIND_STYLE: Record<Bookmark['kind'], { tint: string; ink: string }> = {
 function tileColours(b: TrackedItem): { wash: string; edge: string } {
   const slug = b.kind === 'party' ? b.ref_id : b.kind === 'mp' ? b.party : undefined
   const pc = slug ? PARTY_COLORS[slug as PartySlug] : undefined
-  if (pc) return { wash: pc.light, edge: pc.bg }
+  // washFrom rather than the designed `light`: those palettes were drawn for
+  // full-bleed party pages and several are almost white at tile size, which is
+  // what made an outline-only card look bland. Deriving from `bg` gives every
+  // party the same fill strength.
+  if (pc) return { wash: washFrom(pc.bg), edge: pc.bg }
   // Saved accent but no party record — a tracked electorate carries its
   // incumbent's colour. The ground is derived from that same colour rather than
   // taken from the kind: pairing a National-blue border with the electorate
@@ -90,7 +95,9 @@ function washFrom(hex: string): string {
   const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h
   const n = parseInt(full, 16)
   if (Number.isNaN(n)) return '#fff'
-  const mix = (c: number) => Math.round(c + (255 - c) * 0.92)
+  // 0.86 = a 14% wash. Enough fill that the tile reads as the party's without
+  // the label losing contrast on the dark palettes (Labour, NZ First).
+  const mix = (c: number) => Math.round(c + (255 - c) * 0.86)
   return `rgb(${mix((n >> 16) & 255)}, ${mix((n >> 8) & 255)}, ${mix(n & 255)})`
 }
 
@@ -106,6 +113,36 @@ function hrefFor(b: Bookmark): string {
   }
 }
 
+/**
+ * The avatar + name + sublabel, shared by both tile forms — a tile with updates
+ * is a button that opens the focused view, one without is a plain link.
+ *
+ * Only kinds with something genuinely per-item get a face: an MP has their
+ * photo, a party its own mark. Bills, policies and electorates were all showing
+ * the SAME kind icon on every card — three identical pins in a row under a
+ * heading that already says "Tracked electorates". The heading names the kind;
+ * the card names the thing.
+ */
+function TileFace({ b, sub, edge }: { b: TrackedItem; sub?: string | null; edge: string }) {
+  return (
+    <>
+      {b.kind === 'mp' ? (
+        <Avatar name={b.label} party={b.party as PartySlug | undefined} src={b.photo} size="md" />
+      ) : b.kind === 'party' ? (
+        // Initials in ink on white, ringed in the party colour, rather than
+        // white on the colour itself: solid fills forced the text to flip
+        // between near-black on ACT's yellow and white on National's blue, and
+        // several palettes are too light to carry white at all.
+        <span style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: '#fff', border: `2px solid ${edge}`, color: INK, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, fontFamily: MANROPE }}>{initials(b.label)}</span>
+      ) : null}
+      <span style={{ minWidth: 0 }}>
+        <span style={{ display: 'block', fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{b.label}</span>
+        {sub && <span style={{ display: 'block', fontSize: 12, color: TERTIARY, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{sub}</span>}
+      </span>
+    </>
+  )
+}
+
 export function CommandCentre({ initial, updates: initialUpdates = {} }: {
   initial: TrackedItem[]
   /** Unread notifications keyed `kind:ref`, from notification_queue (0014). */
@@ -113,6 +150,17 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
 }) {
   // Local so marking read clears the badge immediately rather than on reload.
   const [updates, setUpdates] = useState(initialUpdates)
+  const [focused, setFocused] = useState<string | null>(null)
+
+  // Routine coverage older than three days stops contributing to the count. It
+  // is not deleted or marked read — it stays in full on the tracked item's own
+  // page. See lib/notifications/rules.ts for why.
+  const visibleFor = useCallback(
+    (b: TrackedItem) => (updates[`${b.kind}:${b.ref_id}`] ?? []).filter((u) => stillCounts(u)),
+    [updates],
+  )
+  const tileCount = useCallback((b: TrackedItem) => visibleFor(b).length, [visibleFor])
+
   const markRead = useCallback(async (ids: string[]) => {
     const gone = new Set(ids)
     setUpdates((u) => Object.fromEntries(
@@ -265,41 +313,40 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
                   // A bill open for submissions keeps its blue over the top,
                   // because that state matters more than the tile's identity.
                   <div key={b.id} className="party-card" style={{ position: 'relative', border: `3px solid ${open ? '#bfd4fe' : edge}`, borderRadius: 14, background: open ? '#eef4ff' : wash, overflow: 'hidden', boxShadow: CARD_SHADOW }}>
-                    {/* A count of what actually moved, not a dot. The dot came
-                        from a localStorage "since your last visit" guess: it
-                        could not say what had changed, could not link to it, and
-                        cleared itself on render. These are real unread rows
-                        attributed to this tracked item. */}
-                    <TileUpdates
-                      label={b.label}
-                      updates={updates[`${b.kind}:${b.ref_id}`] ?? []}
-                      onRead={markRead}
-                    />
+                    {/* The count sits inside the tile row below, not pinned over
+                        the border. Clicking anywhere on a tile with updates
+                        opens the focused view rather than expanding in place:
+                        an inline expand pushes every tile beneath it down, which
+                        is the reflow that made the old inbox feel like it kept
+                        growing the page. */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px' }}>
+                    {/* Whole tile opens the focused view when there is something
+                        to show; otherwise it stays a plain link to the item. */}
+                    {tileCount(b) > 0 ? (
+                      <button
+                        onClick={() => setFocused(`${b.kind}:${b.ref_id}`)}
+                        aria-label={`${tileCount(b)} update${tileCount(b) === 1 ? '' : 's'} on ${b.label}`}
+                        style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 11, background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}
+                      >
+                        <TileFace b={b} sub={sub} edge={edge} />
+                      </button>
+                    ) : (
                     <Link href={hrefFor(b)} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none' }}>
-                      {/* Only kinds with something genuinely per-item get a tile:
-                          an MP has their face, a party its own mark. Bills,
-                          policies and electorates were all showing the SAME kind
-                          icon on every card — three identical pins in a row under
-                          a heading that already says "Tracked electorates". The
-                          heading names the kind; the card names the thing. */}
-                      {b.kind === 'mp' ? (
-                        <Avatar name={b.label} party={b.party as PartySlug | undefined} src={b.photo} size="md" />
-                      ) : b.kind === 'party' ? (
-                        // Initials in ink on white, ringed in the party colour,
-                        // rather than white on the colour itself. Solid fills
-                        // forced the text to flip between near-black on ACT's
-                        // yellow and white on National's blue; several palettes
-                        // are too light to carry white at all. Keeping the
-                        // colour in the ring is the same fix the party tiles
-                        // and their share chips already use.
-                        <span style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: '#fff', border: `2px solid ${edge}`, color: INK, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, fontFamily: MANROPE }}>{initials(b.label)}</span>
-                      ) : null}
-                      <div style={{ minWidth: 0 }}>
-                        <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{b.label}</div>
-                        {sub && <div style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{sub}</div>}
-                      </div>
+                      <TileFace b={b} sub={sub} edge={edge} />
                     </Link>
+                    )}
+                    {/* Ink, not the site's jade. JADE is byte-identical to the
+                        Green Party's colour, and a green count sitting on a
+                        National or ACT tile reads as a party mark rather than a
+                        number. Ink is the same espresso every heading uses, so
+                        the badge belongs to the site and to nobody's party. */}
+                    {tileCount(b) > 0 && (
+                      <span aria-hidden style={{
+                        flexShrink: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                        minWidth: 20, height: 20, padding: '0 6px', borderRadius: 999,
+                        background: INK, color: '#fff', fontSize: 11.5, fontWeight: 800, fontFamily: MANROPE, lineHeight: 1,
+                      }}>{tileCount(b)}</span>
+                    )}
                     <button
                       onClick={() => remove(b)}
                       aria-label={`Stop tracking ${b.label}`}
@@ -330,6 +377,23 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
           </div>
         )
       })}
+
+      {/* One overlay for whichever tile is focused. Rendered here rather than
+          inside the tile so the grid keeps its layout and nothing reflows. */}
+      {focused && (() => {
+        const b = initial.find((x) => `${x.kind}:${x.ref_id}` === focused)
+        if (!b) return null
+        return (
+          <TileFocus
+            label={b.label}
+            sublabel={b.sublabel ?? undefined}
+            href={`/dashboard/tracked/${b.kind}/${encodeURIComponent(b.ref_id)}`}
+            updates={visibleFor(b)}
+            onClose={() => setFocused(null)}
+            onRead={markRead}
+          />
+        )
+      })()}
     </div>
   )
 }

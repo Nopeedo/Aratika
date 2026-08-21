@@ -10,7 +10,7 @@ import { Crown, Map, ArrowRight, PenLine, Sparkles, CheckCircle2, Highlighter, B
 import { createClient } from '@/lib/supabase/server'
 import { ManageBillingButton } from '@/components/billing/billing-buttons'
 import { CommandCentre, type TrackedItem } from '@/components/bookmarks/command-centre'
-import type { TileUpdate } from '@/components/bookmarks/tile-updates'
+import type { TileUpdate } from '@/components/bookmarks/tile-focus'
 import { NotifyToggle } from '@/components/notifications/notify-toggle'
 import { EmailToggle } from '@/components/notifications/email-toggle'
 import { InstallButton } from '@/components/notifications/install-button'
