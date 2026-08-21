@@ -43,7 +43,7 @@ export function TierGate({ children, isLocked, feature, className }: TierGatePro
           )}
         </div>
         <Button variant="premium" size="sm" asChild>
-          <Link href="/subscription">Upgrade — $20/month</Link>
+          <Link href="/subscription">Upgrade for $20/month</Link>
         </Button>
         <p className="text-xs text-muted">14-day free trial · Cancel anytime</p>
       </div>

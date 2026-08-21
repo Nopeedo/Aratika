@@ -8,7 +8,10 @@ import { ShieldCheck } from 'lucide-react'
 import { BORDER, INK, JADE, MANROPE, TERTIARY } from '@/constants/theme'
 
 const STATS = [
-  { value: '2026', label: 'General Election', sublabel: '~Oct 2026' },
+  // 7 November 2026, from the Electoral Commission's media kit — the same date
+  // electoral-calendar.json is built from. This tile said "~Oct 2026", which the
+  // countdown at the top of the page already contradicted.
+  { value: '2026', label: 'General Election', sublabel: '7 November' },
   { value: '72', label: 'Electorates', sublabel: 'General & Māori' },
   { value: '6', label: 'Parties', sublabel: 'In Parliament' },
   { value: '123', label: 'MPs', sublabel: 'You can look up' },

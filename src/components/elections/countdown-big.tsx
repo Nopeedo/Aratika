@@ -27,7 +27,7 @@ export function CountdownBig() {
         <CalendarClock style={{ width: 26, height: 26, color: '#36e08a' }} />
         <div style={{ fontFamily: MANROPE }}>
           <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: '#36e08a' }}>2026 General Election</div>
-          <div style={{ fontSize: 13, color: '#9aa0aa' }}>Approximate — official date to be confirmed</div>
+          <div style={{ fontSize: 13, color: '#9aa0aa' }}>Election day is 7 November 2026</div>
         </div>
       </div>
       <div style={{ marginLeft: 'auto', textAlign: 'right', fontFamily: MANROPE }}>

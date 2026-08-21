@@ -137,7 +137,7 @@ export function BillFullText({ fullText, policyLinks, docType = 'bill', contentI
         <FileText style={{ width: 18, height: 18, color: JADE, flexShrink: 0 }} />
         <span style={{ flex: 1 }}>
           <span style={{ display: 'block', fontSize: 16, fontWeight: 800, color: INK }}>Read the full {docType} text</span>
-          <span style={{ display: 'block', fontSize: 12.5, color: SECONDARY, marginTop: 1 }}>{canAnnotate ? 'Select any passage to highlight it and add a note.' : 'The official text, in full — with key sections highlighted.'}</span>
+          <span style={{ display: 'block', fontSize: 12.5, color: SECONDARY, marginTop: 1 }}>{canAnnotate ? 'Select any passage to highlight it and add a note.' : 'The official text in full, with key sections highlighted.'}</span>
         </span>
         {open ? <ChevronUp style={{ width: 18, height: 18, color: TERTIARY }} /> : <ChevronDown style={{ width: 18, height: 18, color: TERTIARY }} />}
       </button>
@@ -153,7 +153,7 @@ export function BillFullText({ fullText, policyLinks, docType = 'bill', contentI
           )}
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '10px 22px', background: '#fffdf5', borderBottom: `1px solid ${BORDER}`, fontSize: 12, color: '#92400e', fontFamily: MANROPE }}>
             <Highlighter style={{ width: 14, height: 14, color: '#b45309' }} />
-            {canAnnotate ? <span>Select any text to <b>highlight it and add a note</b> — saved to your dashboard.</span>
+            {canAnnotate ? <span>Select any text to <b>highlight it and add a note</b>. Notes save to your dashboard.</span>
               : user && PREMIUM_ENABLED ? <span>Highlighting &amp; notes are a Premium feature. <Link href="/subscription" style={{ color: '#b45309', fontWeight: 800 }}>Upgrade →</Link></span>
                 : <span><Link href="/login" style={{ color: '#b45309', fontWeight: 800 }}>Sign in</Link>{PREMIUM_ENABLED ? ' (Premium)' : ''} to highlight passages and keep notes.</span>}
           </div>

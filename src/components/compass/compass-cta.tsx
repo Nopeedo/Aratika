@@ -50,7 +50,7 @@ export function CompassCta() {
               Find where you stand
             </h2>
             <p style={{ fontSize: 'clamp(15px, 2.2vw, 17px)', fontWeight: 500, color: 'rgba(255,255,255,.85)', fontFamily: MANROPE, lineHeight: 1.6, maxWidth: 560, margin: '0 auto 24px' }}>
-              12 quick questions. We point you to the tools that help you most — and show where you overlap with every party on the issues, <b style={{ color: '#fff' }}>sourced and side by side</b>. It’s not voting advice.
+              12 quick questions about the issues. You’ll see where you line up with each party, and where to go next.
             </p>
             <Link href="/start" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 26px', borderRadius: 13, background: '#fff', color: '#1a1208', fontSize: 15.5, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
               <Compass style={{ width: 17, height: 17 }} /> Take the compass <ArrowRight style={{ width: 17, height: 17 }} />

@@ -76,7 +76,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await params
   const defining = getDefiningBill(slug)
-  if (defining) return { title: `${defining.title} — what it does & why it matters`, description: defining.what }
+  if (defining) return { title: `${defining.title}: what it does and why it matters`, description: defining.what }
   const bill = getBill(slug)
   if (!bill) return { title: 'Bill not found' }
   return { title: bill.title, description: bill.summary }
@@ -194,7 +194,7 @@ export default async function BillDetailPage(
           <Card style={{ background: '#eff6ff', border: '1px solid #bfd4fe' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 10 }}>
               <PenLine style={{ width: 17, height: 17, color: '#1e40af' }} />
-              <h2 style={{ fontSize: 16, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, margin: 0 }}>You can have your say — until {closes}</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, margin: 0 }}>You can have your say until {closes}</h2>
             </div>
             <p style={{ fontSize: 13.5, color: '#1e40af', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 14px' }}>
               This bill is open for public submissions{committee ? ` to the ${committee} Committee` : ''}. Anyone can make one
@@ -265,7 +265,7 @@ export default async function BillDetailPage(
             <div style={{ marginTop: 12, padding: '12px 14px', borderRadius: 10, background: 'linear-gradient(145deg,#fff9e6,#fffdf5)', border: '1px solid #fde68a', display: 'flex', alignItems: 'center', gap: 10 }}>
               <Lock style={{ width: 15, height: 15, color: '#b45309', flexShrink: 0 }} />
               <span style={{ fontSize: 12.5, color: '#92400e', fontFamily: MANROPE, lineHeight: 1.5 }}>
-                <b>Premium:</b> full reading history, division results, and submission counts — with alerts when this bill progresses.{' '}
+                <b>Premium:</b> full reading history, division results and submission counts, with alerts when this bill progresses.{' '}
                 <Link href="/subscription" style={{ color: '#b45309', fontWeight: 700 }}>Upgrade →</Link>
               </span>
             </div>

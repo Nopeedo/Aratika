@@ -127,7 +127,7 @@ export function CompanionWidget() {
                     <button type="submit" disabled={!input.trim() || sending} aria-label="Send" style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 11, border: 'none', background: input.trim() && !sending ? JADE : '#cdd2d8', color: '#fff', cursor: input.trim() && !sending ? 'pointer' : 'default', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Send style={{ width: 17, height: 17 }} /></button>
                   </form>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 7 }}>
-                    <span style={{ fontSize: 10.5, color: TERTIARY, display: 'inline-flex', alignItems: 'center', gap: 4 }}><ShieldCheck style={{ width: 11, height: 11, color: JADE }} /> Sourced from Arapono · can make mistakes — check sources</span>
+                    <span style={{ fontSize: 10.5, color: TERTIARY, display: 'inline-flex', alignItems: 'center', gap: 4 }}><ShieldCheck style={{ width: 11, height: 11, color: JADE }} /> Sourced from Arapono · can make mistakes, so check the sources</span>
                     {remaining !== null && <span style={{ fontSize: 10.5, color: TERTIARY }}>{remaining} left today</span>}
                   </div>
                 </div>

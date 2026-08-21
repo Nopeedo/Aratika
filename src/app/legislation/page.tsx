@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Legislation, made readable',
-  description: 'Plain-language, non-partisan breakdowns of New Zealand bills and acts — what they do and which policy areas they affect.',
+  description: 'Plain-language, non-partisan breakdowns of New Zealand bills and acts: what they do, and which policy areas they affect.',
 }
 
 export default async function LegislationIndexPage() {

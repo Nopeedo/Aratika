@@ -64,7 +64,7 @@ export function CoalitionExplorer({ seats, total, asAt }: { seats: SeatEntry[]; 
       </div>
       <h2 style={{ fontSize: 'clamp(20px, 4vw, 26px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Build a majority</h2>
       <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 16px', maxWidth: 580, lineHeight: 1.55 }}>
-        Under MMP the biggest party doesn’t automatically govern — a bloc needs <b style={{ color: INK }}>{majority} of {total}</b> seats.
+        Under MMP the biggest party doesn’t automatically govern. A bloc needs <b style={{ color: INK }}>{majority} of {total}</b> seats.
         Tap parties to add them to a government and see if they get there. Seats estimated from poll averages as at {asAt}.
       </p>
 
@@ -93,7 +93,7 @@ export function CoalitionExplorer({ seats, total, asAt }: { seats: SeatEntry[]; 
               <div title={`${majority} seats`} style={{ position: 'absolute', left: `${(majority / total) * 100}%`, top: -3, bottom: -3, width: 2, background: 'rgba(12,14,18,.45)' }} />
             </div>
             <div style={{ marginTop: 8, fontSize: 13.5, fontFamily: MANROPE, color: hasMajority ? JADE : INK, fontWeight: 800 }}>
-              {chosenSeats === 0 ? 'Pick parties to form a government' : hasMajority ? `Majority — this bloc could govern (${chosenSeats} seats)` : `${need} more ${need === 1 ? 'seat' : 'seats'} needed for a majority`}
+              {chosenSeats === 0 ? 'Pick parties to form a government' : hasMajority ? `This bloc could govern (${chosenSeats} seats)` : `${need} more ${need === 1 ? 'seat' : 'seats'} needed for a majority`}
             </div>
           </div>
 
@@ -135,8 +135,8 @@ export function CoalitionExplorer({ seats, total, asAt }: { seats: SeatEntry[]; 
         <p style={{ fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
           A teaching tool, not a prediction. Seats are a Sainte-Laguë estimate from current poll averages; the real result depends on
           the vote, electorate wins and each poll’s margin of error. Which parties would actually work together is their decision, not ours.
-          Only parties currently polling at or above the <b>5%</b> threshold (or holding an electorate seat) can be projected seats here —
-          other registered parties are contesting but don’t yet register enough in polling to model, not a judgement on their standing.
+          Only parties currently polling at or above the <b>5%</b> threshold (or holding an electorate seat) can be projected seats here.
+          Other registered parties are contesting but don’t yet register enough in polling to model. That isn’t a judgement on their standing.
         </p>
       </div>
     </div>

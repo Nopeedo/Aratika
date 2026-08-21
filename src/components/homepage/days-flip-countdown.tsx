@@ -125,7 +125,7 @@ export function DaysFlipCountdown() {
         {digits.map((d, i) => <SplitFlapDigit key={i} target={d} startDelay={i * STAGGER} animate={animate} />)}
       </div>
       <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: '.04em', color: '#5b3d2a', fontFamily: MANROPE }}>
-        Days until 2026 elections
+        Days until the election
       </div>
     </div>
   )

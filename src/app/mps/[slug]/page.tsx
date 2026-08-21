@@ -54,8 +54,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!mp) return { title: 'MP not found' }
   const party = PARTY_PROFILES[mp.party]
   return {
-    title: `${mp.name} — ${mp.title ?? (mp.role === 'electorate' ? `MP for ${mp.electorate}` : 'List MP')}`,
-    description: `${mp.name}, ${party.name} ${mp.role === 'electorate' ? `MP for ${mp.electorate}` : 'list MP'} — roles, bills, voting record and impact this term.`,
+    title: `${mp.name}, ${mp.title ?? (mp.role === 'electorate' ? `MP for ${mp.electorate}` : 'List MP')}`,
+    description: `${mp.name}, ${party.name} ${mp.role === 'electorate' ? `MP for ${mp.electorate}` : 'list MP'}. Roles, bills, voting record and impact this term.`,
   }
 }
 
@@ -247,7 +247,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
               </div>
               <div style={{ marginTop: 14 }}>
                 <ComingNote>
-                  These are factual counts from the public record — not a score. MPs do different jobs: {isMinister ? 'ministers run portfolios rather than sponsoring members’ bills' : 'list and electorate MPs, ministers and backbenchers all contribute differently'}, and MPs first elected in 2023 have a shorter record. We show the facts so <b>you</b> can decide what counts as doing enough.
+                  These are factual counts from the public record, not a score. MPs do different jobs: {isMinister ? 'ministers run portfolios rather than sponsoring members’ bills' : 'list and electorate MPs, ministers and backbenchers all contribute differently'}, and MPs first elected in 2023 have a shorter record. We show the facts so <b>you</b> can decide what counts as doing enough.
                 </ComingNote>
               </div>
             </Card>
@@ -256,7 +256,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
           {/* Policies they shape & why */}
           {isActive && (
             <Card>
-              <SectionHeading icon={Scale} title="Policies they shape — and why" />
+              <SectionHeading icon={Scale} title="Policies they shape, and why" />
               {policies.length > 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
                   {policies.map((p) => (
@@ -314,7 +314,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
                   {/* Government bills the MP is in charge of (Ministers) */}
                   {govBills.length > 0 && (
                     <div>
-                      <div style={billGroupLabel}>Government bills — member in charge ({govBills.length})</div>
+                      <div style={billGroupLabel}>Government bills: member in charge ({govBills.length})</div>
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         {govBills.slice(0, 8).map((b, i) => {
                           const l = billLink(b.title)
@@ -360,7 +360,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
             <Card>
               <SectionHeading icon={Vote} title="Voting record" />
               <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 14px' }}>
-                Most votes in Parliament are <b>party votes</b> — MPs vote as a block with their party, so on the large majority of votes {mp.name} voted the same way as {party.name}. The votes that reveal an MP’s own view are <b>conscience (personal) votes</b>, where MPs vote individually.
+                Most votes in Parliament are <b>party votes</b>, where MPs vote as a block with their party. So on the large majority of votes {mp.name} voted the same way as {party.name}. The votes that show an MP’s own view are <b>conscience (personal) votes</b>, where MPs vote individually.
               </p>
               {notableVotes.length > 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -379,7 +379,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
                 // inside Hansard text (no per-MP source — see the Information Gaps
                 // Register), so this can't be auto-backfilled. They're also genuinely
                 // rare, so "none recorded" is usually the true state.
-                <ComingNote>No conscience (personal) votes are recorded for {mp.name} this term. These votes are rare — Parliament decides most matters by party vote — and we record them from Hansard as they occur.</ComingNote>
+                <ComingNote>No conscience (personal) votes are recorded for {mp.name} this term. These votes are rare, because Parliament decides most matters by party vote. We record them from Hansard as they occur.</ComingNote>
               )}
               {PREMIUM_ENABLED && (
                 <div style={{ marginTop: 16, padding: '12px 14px', borderRadius: 10, background: 'linear-gradient(145deg,#fff9e6,#fffdf5)', border: '1px solid #fde68a', display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -397,7 +397,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
             <Card>
               <SectionHeading icon={Landmark} title="Declared interests" />
               <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '-6px 0 12px' }}>
-                What {mp.name} has declared in the official register — directorships, property, trusts, debts and gifts. Registers actual and potential conflicts of interest; it is not a measure of wealth.
+                What {mp.name} has declared in the official register: directorships, property, trusts, debts and gifts. Registers actual and potential conflicts of interest; it is not a measure of wealth.
               </p>
               <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>{MP_INTERESTS[mp.slug].interests}</p>
               <a href={MP_INTERESTS[mp.slug].sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginTop: 12 }}>
@@ -521,8 +521,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
             Latest coverage
           </h2>
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 16px', lineHeight: 1.5 }}>
-            News and video mentioning {mp.name}, published by others — inclusion is not endorsement,
-            and the outlet is named on every item.
+            News and video mentioning {mp.name}, from the sources on our coverage page.
           </p>
           <MpCoverage slug={slug} name={mp.name} accent={party.color} news={mpNews} videos={mpVideos} />
         </div>

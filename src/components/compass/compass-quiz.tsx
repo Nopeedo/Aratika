@@ -55,7 +55,7 @@ const VOTING: Opt<VotingStatus>[] = [
   { key: 'always',     label: 'I always vote',          Icon: CheckCircle2 },
 ]
 const LEVELS: Opt<ComfortLevel>[] = [
-  { key: 'beginner',     label: 'New to this',     blurb: 'Keep it simple — explain the basics.', Icon: Sprout },
+  { key: 'beginner',     label: 'New to this',     blurb: 'Explain the basics.', Icon: Sprout },
   { key: 'intermediate', label: 'I follow a bit',  blurb: 'I know the basics, want more.', Icon: TrendingUp },
   { key: 'expert',       label: 'Pretty clued up', blurb: 'Give me the detail.', Icon: Award },
 ]
@@ -126,8 +126,7 @@ export function CompassQuiz() {
               <div style={{ width: 56, height: 56, borderRadius: 16, background: CLAY_LIGHT, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}><Compass style={{ width: 28, height: 28, color: CLAY }} /></div>
               <h1 style={{ fontSize: 'clamp(26px, 6vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Your political compass</h1>
               <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 auto 22px', maxWidth: 520 }}>
-                About 12 quick questions. We’ll point you to the tools that help most — and show where you overlap with each party on the issues, sourced and side by side.
-                <b style={{ color: INK }}> It’s not voting advice.</b>
+                About 12 quick questions on the issues. At the end you’ll see where you line up with each party, and where to go next.
               </p>
               <button onClick={() => setStep(1)} style={primaryBtn}>Start <ArrowRight style={ic} /></button>
               <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 14 }}>No account needed. Nothing is shared.</p>
@@ -136,17 +135,17 @@ export function CompassQuiz() {
         )}
 
         {step === 1 && (
-          <Slide k="goal"><Head title="What brings you to Arapono?" sub="Pick whatever fits — more than one is fine." />
+          <Slide k="goal"><Head title="What brings you to Arapono?" sub="Pick as many as you like." />
             <Grid>{GOALS.map((o) => <Choice key={o.key} Icon={o.Icon} label={o.label} blurb={o.blurb} selected={goals.includes(o.key)} onClick={() => toggle(goals, setGoals, o.key)} />)}</Grid>
           </Slide>
         )}
         {step === 2 && (
-          <Slide k="voting"><Head title="Where are you with voting?" sub="No judgement — lots of people haven’t voted. That’s exactly who this is for." />
+          <Slide k="voting"><Head title="Where are you with voting?" sub="Plenty of people haven’t voted before." />
             <Col>{VOTING.map((o) => <Choice key={o.key} Icon={o.Icon} label={o.label} blurb={o.blurb} selected={voting === o.key} onClick={() => setVoting(o.key)} />)}</Col>
           </Slide>
         )}
         {step === 3 && (
-          <Slide k="level"><Head title="How well do you know politics?" sub="No wrong answer — we’ll match explanations to it." />
+          <Slide k="level"><Head title="How well do you know politics?" sub="We’ll pitch the explanations to match." />
             <Col>{LEVELS.map((o) => <Choice key={o.key} Icon={o.Icon} label={o.label} blurb={o.blurb} selected={level === o.key} onClick={() => setLevel(o.key)} />)}</Col>
           </Slide>
         )}
@@ -154,7 +153,7 @@ export function CompassQuiz() {
         {onStatement && curStmt && (
           <Slide k={curStmt.id}>
             <div style={{ marginBottom: 6, fontSize: 12, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: CLAY, fontFamily: MANROPE }}>{curStmt.label}</div>
-            <Head title={curStmt.text} sub="How much do you agree? There’s no right answer — be honest." />
+            <Head title={curStmt.text} sub="How much do you agree?" />
             <Col>
               {LIKERT_SCALE.map((o) => (
                 <Choice key={o.value} label={o.label} Icon={Check} selected={stances[curStmt.id] === o.value} hideIcon onClick={() => setStances((s) => ({ ...s, [curStmt.id]: o.value }))} />
@@ -164,7 +163,7 @@ export function CompassQuiz() {
         )}
 
         {step === LAST && (
-          <Slide k="style"><Head title="How do you like to learn?" sub="Pick whatever suits — we’ll lean that way." />
+          <Slide k="style"><Head title="How do you like to learn?" sub="Pick any that suit." />
             <Grid>{STYLES.map((o) => <Choice key={o.key} Icon={o.Icon} label={o.label} blurb={o.blurb} selected={styles.includes(o.key)} onClick={() => toggle(styles, setStyles, o.key)} />)}</Grid>
           </Slide>
         )}
@@ -250,8 +249,7 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
         <div style={{ marginBottom: 18 }}>
           <h3 style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Where you line up</h3>
           <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 12px', lineHeight: 1.5 }}>
-            How your answers overlap with each party’s <b style={{ color: INK }}>sourced</b> position — shown in seat order, not ranked.
-            <b style={{ color: INK }}> This isn’t voting advice.</b>
+            How your answers line up with each party’s <b style={{ color: INK }}>sourced</b> positions. Listed in seat order, not ranked by match.
           </p>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px 14px', marginBottom: 12 }}>
@@ -282,7 +280,7 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                     {po.statements.map((st) => {
                       const dot = <Indicator kind={st.kind} />
-                      const tip = `${st.label}: ${st.quote ? `“${st.quote}”` : (st.summary ?? '')} — read the sourced position`
+                      const tip = `${st.label}: ${st.quote ? `“${st.quote}”` : (st.summary ?? '')} · read the sourced position`
                       // Link to OUR page for this party on this issue, not to the
                       // party's own policy index. A result that says "you agree
                       // with them here" and then sends you to their marketing is
@@ -301,7 +299,7 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
             })}
           </div>
           <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '10px 0 0', lineHeight: 1.5 }}>
-            Tap a square to read what that party has actually said on that issue — our neutral summary, with the source. Want the full picture?{' '}
+            Tap a square to read what that party has said on that issue, in our neutral summary with the source. Want the full picture?{' '}
             <Link href="/policies" style={{ color: SECONDARY, fontWeight: 700 }}>Compare every party side by side →</Link>
           </p>
         </div>
@@ -329,7 +327,7 @@ function Result({ goals, voting, level, styles, stances, onRestart }: {
           <Vote style={{ width: 18, height: 18, color: '#9A3412', flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 13, color: '#9A3412', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
             Not enrolled yet? Check or enrol in a few minutes at{' '}
-            <a href="https://vote.nz" target="_blank" rel="noopener noreferrer" style={{ color: '#7c2d12', fontWeight: 800, textDecoration: 'underline' }}>vote.nz <ExternalLink style={{ width: 12, height: 12, display: 'inline', verticalAlign: '-1px' }} /></a> — the official Electoral Commission site.
+            <a href="https://vote.nz" target="_blank" rel="noopener noreferrer" style={{ color: '#7c2d12', fontWeight: 800, textDecoration: 'underline' }}>vote.nz <ExternalLink style={{ width: 12, height: 12, display: 'inline', verticalAlign: '-1px' }} /></a>, run by the Electoral Commission.
           </p>
         </div>
       )}

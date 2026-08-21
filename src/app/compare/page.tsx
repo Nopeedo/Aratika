@@ -17,7 +17,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Compare the parties',
-  description: 'Compare where every party stands on the issues, side by side — summarised neutrally from official policy, with sources.',
+  description: 'Compare where every party stands on the issues, side by side. Summarised neutrally from official policy, with sources.',
 }
 
 export default async function ComparePage() {

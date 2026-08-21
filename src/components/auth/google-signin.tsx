@@ -111,7 +111,7 @@ export function GoogleSignIn({ next = '/dashboard', onError }: { next?: string; 
         nonce: hashedNonce,
         use_fedcm_for_prompt: true,
         callback: async (resp: { credential?: string }) => {
-          if (!resp.credential) { onError?.('Google didn’t return a sign-in token — try again.'); return }
+          if (!resp.credential) { onError?.('Google didn’t return a sign-in token. Try again.'); return }
           const supabase = createClient()
           const { error } = await supabase.auth.signInWithIdToken({ provider: 'google', token: resp.credential, nonce: rawNonceRef.current })
           if (error) { onError?.(error.message); return }

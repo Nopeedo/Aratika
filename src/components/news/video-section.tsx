@@ -62,7 +62,7 @@ export function VideoSection({ videos, hideHeading = false, heading, blurb }: {
           <button onClick={() => scroll(1)} aria-label="Scroll right" style={arrowBtn}><ChevronRight style={{ width: 18, height: 18 }} /></button>
         </div>
       </div>
-      {!hideHeading && <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 12px' }}>{blurb ?? 'Press standups, leader updates and debates — straight from official channels.'}</p>}
+      {!hideHeading && <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 12px' }}>{blurb ?? 'Press standups, leader updates and debates, straight from official channels.'}</p>}
 
       {/* party filter */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 14 }}>

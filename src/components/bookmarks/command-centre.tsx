@@ -249,9 +249,9 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
         <div style={{ width: 46, height: 46, borderRadius: 13, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>
           <MapIcon style={{ width: 22, height: 22, color: JADE }} />
         </div>
-        <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 6 }}>Your command centre is empty</div>
+        <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 6 }}>Nothing tracked yet</div>
         <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, maxWidth: 460, margin: '0 auto 16px' }}>
-          Track the MPs, parties, electorates and policy topics that matter to you, and they’ll all live here in one place — ready for the decision ahead.
+          Track an MP, a party, an electorate or an issue and it shows up here.
         </p>
         <div style={{ display: 'flex', gap: 9, flexWrap: 'wrap', justifyContent: 'center' }}>
           <Link href="/map" style={cta(true)}><MapIcon style={{ width: 15, height: 15 }} /> Find your electorate</Link>

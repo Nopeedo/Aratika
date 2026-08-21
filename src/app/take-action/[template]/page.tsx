@@ -31,7 +31,7 @@ export async function generateMetadata(
   const { template } = await params
   const t = LETTER_TEMPLATES[template as LetterTemplateId]
   if (!t) return { title: 'Template not found' }
-  return { title: `${t.label} — Take Action`, description: t.blurb }
+  return { title: `${t.label} · Take Action`, description: t.blurb }
 }
 
 function mpRole(slug: string): string {
@@ -99,7 +99,7 @@ export default async function TakeActionTemplatePage(
           preview={<LetterPreview text={sample} />}
           perks={[
             'All four templates: MP letters, submissions, ministerial letters, OIA requests',
-            'Guided structure + official wording — you write it in your own words',
+            'Guided structure and official wording. You write it in your own words',
             'Copy, download, print or email, with official-channel links',
             'Private: drafted in your browser, never stored or auto-sent',
           ]}

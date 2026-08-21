@@ -13,8 +13,8 @@ import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 export const metadata: Metadata = {
   title: 'Members of Parliament',
   description:
-    'Browse all current Members of Parliament in New Zealand\'s 54th Parliament — ' +
-    'searchable and filterable by party and electorate.',
+    'Every current Member of Parliament in New Zealand\'s 54th Parliament. ' +
+    'Search by name, or filter by party and electorate.',
 }
 
 export default function MPsDirectoryPage() {

@@ -50,7 +50,7 @@ export function EmailToggle({ initialEnabled }: { initialEnabled: boolean }) {
           <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>The Arapono Weekly</div>
           <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.5, margin: '3px 0 0' }}>
             One email a week: what moved in Parliament, what’s coming up, and news on the things you follow.
-            {' '}Nothing else — we don’t sell or share your address.
+            {' '}Nothing else. We don’t sell or share your address.
           </p>
 
           {error && <div style={{ marginTop: 10, fontSize: 13, color: '#991b1b' }}>{error}</div>}

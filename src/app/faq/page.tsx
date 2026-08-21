@@ -71,7 +71,7 @@ export default function FaqPage() {
             group. We are working to formalise it as a registered charitable trust with an independent board, so that its
             independence and governance are structurally guaranteed rather than just promised.
           </QA>
-          <QA q="How is Arapono funded — and will it stay free?">
+          <QA q="How is Arapono funded, and will it stay free?">
             Arapono is free, with no ads and no paywall, and we’re committed to keeping it that way. Our model is civic and
             philanthropic grant funding — not advertising, subscriptions, or selling your data — so the platform can stay open
             to everyone. We’ll always be transparent about where our support comes from.
@@ -87,8 +87,8 @@ export default function FaqPage() {
           </QA>
           <QA q="What if you get something wrong?">
             Tell us and we’ll fix it fast. Accuracy is what makes Arapono worth using, so we check every report against the
-            official source and correct it promptly. Use <Link href="/contact" style={linkS}>submit a correction</Link> — and
-            thank you, it keeps the platform trustworthy.
+            official source and correct it promptly. Use <Link href="/contact" style={linkS}>submit a correction</Link>. Thank you
+            for it, because that’s what keeps the platform trustworthy.
           </QA>
         </Section>
 
@@ -97,10 +97,10 @@ export default function FaqPage() {
             The whole platform is free, and you don’t need an account to use it. An optional free account lets you track the
             parties, MPs and issues you care about — but everything essential works without signing in.
           </QA>
-          <QA q="I’m new to politics — where do I start?">
+          <QA q="I’m new to politics. Where do I start?">
             Right at the top of the <Link href="/" style={linkS}>home page</Link>. Use “Start here” to explore the parties, or
             take the 3-minute compass to find the issues that matter to you. And if a political word ever trips you up, switch
-            on <strong>Explain terms</strong> in the menu — it adds plain-language definitions to key words across the site.
+            on <strong>Explain terms</strong> in the menu. It adds plain-language definitions to key words across the site.
           </QA>
           <QA q="Does it work on my phone?">
             Yes — Arapono works on phones, tablets and computers.

@@ -17,7 +17,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   return ogCard({
     eyebrow: 'Party profile',
     title: p.name,
-    subtitle: 'Policies, leadership and record — sourced, not summarised for you',
+    subtitle: 'Policies, leadership and record, with the source for each',
     stat: seats > 0 ? { value: String(seats), label: seats === 1 ? 'seat in Parliament' : 'seats in Parliament' } : undefined,
     accent: p.color,
   })

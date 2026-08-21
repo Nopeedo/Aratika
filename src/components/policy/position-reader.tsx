@@ -84,7 +84,7 @@ export function PositionReader({ position, accent, topicLabel }: { position: Par
       <div style={{ display: 'flex', gap: 10, padding: '14px 16px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 12 }}>
         <ShieldCheck style={{ width: 17, height: 17, color: JADE, flexShrink: 0, marginTop: 1 }} />
         <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-          Summarised neutrally from {position.partyName}’s own official policy{position.asOf ? ` (as at ${position.asOf})` : ''} and checked by an editor — never paraphrased without the source linked, and never an endorsement.{' '}
+          Summarised neutrally from {position.partyName}’s own official policy{position.asOf ? ` (as at ${position.asOf})` : ''} and checked by an editor. Nothing is paraphrased without the source linked.{' '}
           {position.sourceUrl && <a href={position.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>Read the original ↗</a>}{' '}
           Arapono is non-partisan. <Link href="/policies" style={{ color: JADE, fontWeight: 700 }}>Compare all parties on {topicLabel} →</Link>
         </p>

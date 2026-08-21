@@ -16,8 +16,8 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } 
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Latest — election news',
-  description: 'Live New Zealand political news for the 2026 election, from credible outlets — RNZ, the Beehive, NZ Herald, Stuff and Newsroom — tagged by party and issue.',
+  title: 'Latest election news',
+  description: 'Live New Zealand political news for the 2026 election, tagged by party and issue, from RNZ, the Beehive, NZ Herald, Stuff and Newsroom.',
 }
 
 const SOURCES = [
@@ -35,7 +35,7 @@ export default async function NewsPage() {
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 920, margin: '0 auto', padding: '40px 36px 30px' }}>
-          <div style={{ marginBottom: 12 }}><SectionDivider type="official" label="Live — credible NZ sources" /></div>
+          <div style={{ marginBottom: 12 }}><SectionDivider type="official" label="Live from credible NZ sources" /></div>
           <h1 style={{ fontSize: 'clamp(30px, 4.5vw, 44px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.08 }}>
             The Latest
           </h1>
@@ -63,7 +63,7 @@ export default async function NewsPage() {
             Arapono aggregates headlines from credible outlets’ own news feeds and links straight to the original — we don’t republish articles. Party and issue tags are applied automatically, using the same rules for every registered party, and we never rank or rate them.
           </p>
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>
-            One thing to read this feed with: <b style={{ color: INK }}>how much coverage each party gets reflects how much the news media write about them — not an editorial choice by us.</b> Larger parties are simply written about more often. One of our sources is also the Beehive, the Government’s own release feed, which naturally carries more from whichever parties are in government.
+            One thing to read this feed with: <b style={{ color: INK }}>how much coverage each party gets reflects how much the news media write about them, not an editorial choice by us.</b> Larger parties are written about more often. One of our sources is also the Beehive, the Government’s own release feed, which naturally carries more from whichever parties are in government.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
             {SOURCES.map((s) => (

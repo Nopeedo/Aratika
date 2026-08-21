@@ -24,8 +24,8 @@ export function ExplainToggle({ className }: { className?: string }) {
       type="button"
       role="switch"
       aria-checked={on}
-      aria-label="Explain the terms — plain-language definitions for key political words"
-      title="Explain the terms — plain-language definitions for key political words"
+      aria-label="Explain the terms: plain-language definitions for key political words"
+      title="Explain the terms: plain-language definitions for key political words"
       onClick={onClick}
       className={cn(
         'inline-flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors',

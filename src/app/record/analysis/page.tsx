@@ -49,7 +49,7 @@ export default async function PolicyAnalysisPage() {
         <div style={{ display: 'flex', gap: 12, padding: '15px 17px', background: '#fff9e6', border: '1px solid #fde68a', borderRadius: 14, marginBottom: 30 }}>
           <ShieldAlert style={{ width: 18, height: 18, color: '#b45309', flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 12.5, color: '#92400e', fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
-            <b>Drafted summaries — verify.</b> The arguments below describe the <b>documented public debate</b> (attributed to
+            <b>Drafted summaries. Verify before use.</b> The arguments below describe the <b>documented public debate</b> (attributed to
             who made them) — they are contested claims, not Arapono’s verdict, assessed to a January 2026 cutoff. Who’s
             affected points to the official Regulatory Impact Statement; figures live there. Nothing here attributes an
             economic outcome to a single policy.

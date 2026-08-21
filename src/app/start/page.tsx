@@ -11,7 +11,7 @@ import { BORDER, WOVEN_PAGE } from '@/constants/theme'
 export const metadata: Metadata = {
   title: 'Your political compass',
   description:
-    'A 12-question, no-jargon compass: find the tools that help you most and see where you overlap with each party on the issues — sourced, side by side. Not voting advice.',
+    'Twelve questions on the issues. See where you line up with each party, using their own sourced positions, and where to go next.',
 }
 
 export default function StartPage() {

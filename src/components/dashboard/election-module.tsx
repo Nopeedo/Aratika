@@ -52,7 +52,7 @@ export function DashboardElection({ parties, electorates }: { parties: ElectionP
 
       {/* Your parties — seats they hold going in */}
       <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 12, fontWeight: 800, color: 'rgba(245,233,221,.6)', fontFamily: MANROPE, textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 10 }}>Your parties — seats going in (2023)</div>
+        <div style={{ fontSize: 12, fontWeight: 800, color: 'rgba(245,233,221,.6)', fontFamily: MANROPE, textTransform: 'uppercase', letterSpacing: '.06em', marginBottom: 10 }}>Your parties, seats going in (2023)</div>
         {parties.length > 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {parties.map((p) => (
@@ -100,7 +100,7 @@ export function DashboardElection({ parties, electorates }: { parties: ElectionP
       </div>
       <div style={{ display: 'flex', gap: 8, marginTop: 14, fontSize: 11.5, color: 'rgba(245,233,221,.55)', fontFamily: MANROPE, lineHeight: 1.5 }}>
         <Info style={{ width: 13, height: 13, flexShrink: 0, marginTop: 1 }} />
-        <span>Live results — party vote, seats and your electorate — land here on election night, from the Electoral Commission. Date is approximate until officially set.</span>
+        <span>Live results land here on election night, from the Electoral Commission: party vote, seats and your electorate.</span>
       </div>
     </div>
   )

@@ -12,7 +12,7 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } 
 
 export const metadata: Metadata = {
   title: 'Elections',
-  description: 'New Zealand general elections — the upcoming 2026 election and official results from 2023.',
+  description: 'New Zealand general elections: the 2026 election ahead, and the official results from 2023.',
 }
 
 export default function ElectionsHub() {

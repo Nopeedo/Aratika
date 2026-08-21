@@ -123,7 +123,7 @@ export function WarRoomHero({
               </div>
             </div>
             <p style={{ fontSize: 12.5, color: BODY, fontFamily: MANROPE, lineHeight: 1.55, margin: '12px 0 0' }}>
-              {incumbentName} won by <b style={{ color: ESPRESSO }}>{majority.toLocaleString('en-NZ')}</b> votes in 2023 — {closeRace ? 'just ' : ''}<b style={{ color: ESPRESSO }}>{swing.toLocaleString('en-NZ')}</b> {swing === 1 ? 'voter' : 'voters'} switching to {challengerLabel} would have flipped {electorateName}.
+              {incumbentName} won by <b style={{ color: ESPRESSO }}>{majority.toLocaleString('en-NZ')}</b> votes in 2023. {closeRace ? 'Just ' : ''}<b style={{ color: ESPRESSO }}>{swing.toLocaleString('en-NZ')}</b> {swing === 1 ? 'voter' : 'voters'} switching to {challengerLabel} would have flipped {electorateName}.
             </p>
           </div>
         )}

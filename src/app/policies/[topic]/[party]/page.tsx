@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ topic: st
   const t = POLICY_TOPICS[topic as PolicyTopic]
   const p = PARTY_PROFILES[party as PartySlug]
   if (!t || !p) return { title: 'Position not found' }
-  return { title: `${p.name} on ${t.label}`, description: `${p.name}'s stated position on ${t.label} — a neutral breakdown sourced from their official policy.` }
+  return { title: `${p.name} on ${t.label}`, description: `${p.name}'s stated position on ${t.label}, broken down neutrally from their official policy.` }
 }
 
 export default async function PositionPage({ params }: { params: Promise<{ topic: string; party: string }> }) {

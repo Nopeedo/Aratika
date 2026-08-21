@@ -15,9 +15,9 @@ import { LearnProgressBanner } from '@/components/learn/learn-progress-banner'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
-  title: 'Learn — How Parliament Works',
+  title: 'Learn how Parliament works',
   description:
-    'Interactive, beginner-to-expert lessons on how New Zealand’s Parliament and government work — ' +
+    'Interactive, beginner-to-expert lessons on how New Zealand’s Parliament and government work, ' +
     'with hands-on widgets and quizzes. Free for everyone.',
 }
 
@@ -44,7 +44,7 @@ export default function LearnHubPage() {
                 How Parliament works
               </h1>
               <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.6, margin: 0 }}>
-                Learn how New Zealand’s democracy actually works — not by reading, but by <b style={{ color: INK }}>doing</b>.
+                Learn how New Zealand’s democracy works by <b style={{ color: INK }}>doing</b>, not by reading.
                 Each module has hands-on widgets, a quick quiz, and four levels from <b style={{ color: INK }}>Kids</b> to <b style={{ color: INK }}>Expert</b>. Always free.
               </p>
             </div>

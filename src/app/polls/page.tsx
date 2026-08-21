@@ -12,7 +12,7 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } 
 
 export const metadata: Metadata = {
   title: 'Public Polls',
-  description: 'Arapono community polls — share your view on the issues. Non-scientific; for engagement, not measurement.',
+  description: 'Arapono community polls. Share your view on the issues. Non-scientific, and built for engagement rather than measurement.',
 }
 
 export default function PollsPage() {

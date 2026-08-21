@@ -158,7 +158,7 @@ export function PlanView() {
             })}
           </div>
           <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '10px 0 0' }}>
-            What this Parliament has actually done on your issues — the record beside the promises.
+            What this Parliament has done on your issues, with the record beside the promises.
           </p>
         </div>
       )}

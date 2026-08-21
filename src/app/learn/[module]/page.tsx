@@ -22,7 +22,7 @@ export async function generateMetadata(
   const { module } = await params
   const m = getModule(module)
   if (!m) return { title: 'Module not found' }
-  return { title: `${m.title} — Learn`, description: m.subtitle }
+  return { title: `${m.title} · Learn`, description: m.subtitle }
 }
 
 export default async function LearnModulePage(

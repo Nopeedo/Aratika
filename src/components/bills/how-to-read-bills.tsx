@@ -13,7 +13,7 @@ export function HowToReadBills() {
     <div style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px' }}>
       <div style={{ fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 8 }}>How to read this</div>
       <p style={{ fontSize: 13, color: '#3f444c', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>
-        A <b>bill</b> is a proposed law. <b style={{ color: '#3730a3' }}>Government bills</b> are led by a Minister; <b style={{ color: '#166638' }}>Member’s bills</b> are put forward by backbench MPs via a ballot. Each bill moves through stages — introduction → <b>select committee</b> (where the public can make submissions) → three readings → <b>Royal Assent</b>, when it becomes law.
+        A <b>bill</b> is a proposed law. <b style={{ color: '#3730a3' }}>Government bills</b> are led by a Minister; <b style={{ color: '#166638' }}>Member’s bills</b> are put forward by backbench MPs via a ballot. Each bill moves through stages: introduction →<b>select committee</b> (where the public can make submissions) → three readings → <b>Royal Assent</b>, when it becomes law.
       </p>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
         {[

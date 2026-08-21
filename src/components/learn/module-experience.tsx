@@ -75,7 +75,7 @@ export function ModuleExperience({ module }: { module: LearnModule }) {
               <KiwiMascot size={64} />
               <div style={{ fontFamily: MANROPE }}>
                 <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>Kia ora! I’m Kiri the Kiwi.</div>
-                <div style={{ fontSize: 14, color: '#33373f', lineHeight: 1.5 }}>Let’s learn how it all works together. Tap, slide and have a go — then try the questions!</div>
+                <div style={{ fontSize: 14, color: '#33373f', lineHeight: 1.5 }}>Let’s learn how it all works together. Tap, slide and have a go, then try the questions.</div>
               </div>
             </div>
           )}

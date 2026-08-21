@@ -195,7 +195,7 @@ export function PolicyFaceoff({ positions }: { positions: PartyPosition[] }) {
         </div>
         {totalPicks === 0 ? (
           <p style={{ fontSize: 14.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-            Tap the stance that speaks to you in either card. Your leaning builds up here — no sign-up, nothing leaves the page.
+            Tap the stance that speaks to you in either card. Your leaning builds up here. No sign-up, and nothing leaves the page.
           </p>
         ) : (
           <>
@@ -326,9 +326,9 @@ function FaceoffShell({ children }: { children: React.ReactNode }) {
         <Sparkles style={{ width: 17, height: 17, color: JADE }} />
         <span style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Not sure who to vote for?</span>
       </div>
-      <h2 style={{ fontSize: 'clamp(23px, 4.5vw, 30px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Face them off — find your fit</h2>
+      <h2 style={{ fontSize: 'clamp(23px, 4.5vw, 30px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Face them off</h2>
       <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 18px', maxWidth: 580, lineHeight: 1.6 }}>
-        Pick an issue, read where two parties stand, and tap the one you agree with. We’ll build your leaning as you go — summarised neutrally, with sources.
+        Pick an issue, read where two parties stand, and tap the one you agree with. We’ll build your leaning as you go, summarised neutrally and with sources.
       </p>
       {children}
     </div>

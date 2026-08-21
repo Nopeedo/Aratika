@@ -109,7 +109,7 @@ export function CommandHero() {
               Commission published the full timetable, and the line stayed up
               telling readers the opposite. The dates below come from that
               timetable (see src/constants/electoral-calendar.json). */}
-          Enrolment closes <b>25 October</b> — new for 2026, you cannot enrol once advance voting starts.
+          Enrolment closes <b>25 October</b>. New for 2026: you can’t enrol once advance voting starts.
           Advance voting runs <b>26 October</b> to <b>6 November</b>. Dates from the Electoral Commission.
         </p>
 

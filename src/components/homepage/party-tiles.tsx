@@ -187,7 +187,7 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
                 <button
                   key={p.slug}
                   onClick={() => select(on ? null : p.slug)}
-                  aria-label={p.name + ' — show snapshot'}
+                  aria-label={p.name + ': show snapshot'}
                   aria-expanded={on}
                   title={p.name}
                   style={{

@@ -146,7 +146,7 @@ export function LetterStudio({ templateId, ctx: ctx0 }: { templateId: LetterTemp
             <input style={inputStyle} value={subject} onChange={(e) => setSubject(e.target.value)} />
           </div>
           <div>
-            <label style={labelStyle}>Your letter — write it in your own words</label>
+            <label style={labelStyle}>Your letter, in your own words</label>
             <textarea style={{ ...inputStyle, minHeight: 200, lineHeight: 1.6, resize: 'vertical' }} value={body} onChange={(e) => setBody(e.target.value)} />
           </div>
 
@@ -192,7 +192,7 @@ export function LetterStudio({ templateId, ctx: ctx0 }: { templateId: LetterTemp
               <p style={{ fontSize: 12.5, color: SECONDARY, lineHeight: 1.55, margin: 0 }}>
                 {emailSuggestion && <>Suggested email (Parliament’s standard format): <b style={{ color: INK }}>{emailSuggestion}</b>. </>}
                 Always verify the address on their official page
-                {ctx0.recipientUrl && <> — <a href={ctx0.recipientUrl} target="_blank" rel="noopener noreferrer" style={link}>view contact details <ExternalLink style={icSm} /></a></>}.
+                {ctx0.recipientUrl && <> · <a href={ctx0.recipientUrl} target="_blank" rel="noopener noreferrer" style={link}>view contact details <ExternalLink style={icSm} /></a></>}.
               </p>
             )}
           </div>

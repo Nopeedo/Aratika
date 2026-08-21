@@ -29,12 +29,12 @@ export function ElectionCountdown() {
   }, [])
 
   if (days === null) return <span>● 2026 General Election</span>
-  if (days <= 0) return <span>● 2026 General Election — Election Day</span>
+  if (days <= 0) return <span>● 2026 General Election: Election Day</span>
 
   return (
     <span>
       ● 2026 General Election
-      <span style={{ color: '#36e08a', fontWeight: 800 }}> — {days} days to go</span>
+      <span style={{ color: '#36e08a', fontWeight: 800 }}> · {days} days to go</span>
       <span style={{ color: '#9aa0aa', fontWeight: 500, fontSize: 13 }}>
         {' '}(Saturday 7 November)
       </span>

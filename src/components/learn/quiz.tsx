@@ -55,7 +55,7 @@ export function Quiz({
         </div>
         <div style={{ fontSize: 24, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{score} / {questions.length}</div>
         <div style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, marginTop: 4 }}>
-          {great ? 'Nicely done — you’ve got this!' : 'Good effort — review and try again to ace it.'}
+          {great ? 'Nicely done. You’ve got this.' : 'Good effort. Review it and have another go.'}
         </div>
         {playful && great && (
           <motion.div initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 200, damping: 12, delay: 0.15 }}

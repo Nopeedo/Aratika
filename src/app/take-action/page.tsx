@@ -14,17 +14,17 @@ import { SectionDivider } from '@/components/ui/section-divider'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
-  title: 'Take Action — Write to an MP or make a submission',
+  title: 'Take Action: write to an MP or make a submission',
   description:
     'Draft letters to MPs and Ministers, make select committee submissions, and file Official Information ' +
-    'Act requests — with guided templates and official-channel links. An Arapono Premium feature.',
+    'Act requests, with guided templates and official-channel links. An Arapono Premium feature.',
 }
 
 const ICONS: Record<string, React.ElementType> = { Mail, FileText, Briefcase, FileSearch }
 
 const STEPS = [
   { n: '1', t: 'Pick a template', d: 'Choose who you’re writing to and why.' },
-  { n: '2', t: 'Write it your way', d: 'A correct structure with prompts — you write every word.' },
+  { n: '2', t: 'Write it your way', d: 'A correct structure with prompts. You write every word.' },
   { n: '3', t: 'Send it officially', d: 'Copy, download or email it, and lodge via official channels.' },
 ]
 

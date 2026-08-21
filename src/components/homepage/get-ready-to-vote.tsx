@@ -24,7 +24,7 @@ export function GetReadyToVote() {
             <div className="party-card" style={{ height: '100%', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 22px' }}>
               <div style={{ width: 40, height: 40, borderRadius: 11, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}><Vote style={{ width: 20, height: 20, color: JADE }} /></div>
               <div style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 5 }}>1. Enrol or check your details</div>
-              <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 14px' }}>Free, takes a couple of minutes — at vote.nz, the official Electoral Commission site.</p>
+              <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 14px' }}>Free, and it takes a couple of minutes at vote.nz, run by the Electoral Commission.</p>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>Go to vote.nz <ArrowUpRight style={{ width: 14, height: 14 }} /></span>
             </div>
           </a>
@@ -33,7 +33,7 @@ export function GetReadyToVote() {
             <div className="party-card" style={{ height: '100%', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 22px' }}>
               <div style={{ width: 40, height: 40, borderRadius: 11, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}><Compass style={{ width: 20, height: 20, color: JADE }} /></div>
               <div style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 5 }}>2. Learn how voting works</div>
-              <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 14px' }}><Term name="MMP">MMP</Term>, your two votes, and how to actually cast them — in plain language.</p>
+              <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 14px' }}><Term name="MMP">MMP</Term>, your two votes, and how to cast them, in plain language.</p>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>Start learning <ArrowRight style={{ width: 14, height: 14 }} /></span>
             </div>
           </Link>

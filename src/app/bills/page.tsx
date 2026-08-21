@@ -25,8 +25,8 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'Bills Tracker',
   description:
-    'Track bills currently before the New Zealand House of Representatives — ' +
-    'their type, stage, and progress, with plain-language breakdowns.',
+    'Track bills currently before the New Zealand House of Representatives: ' +
+    'their type, stage and progress, with plain-language breakdowns.',
 }
 
 export default async function BillsPage({ searchParams }: { searchParams: Promise<{ party?: string }> }) {
@@ -56,7 +56,7 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
             Bills Tracker
           </h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
-            Bills before the <b style={{ color: INK }}>House of Representatives</b> — what they propose, their
+            Bills before the <b style={{ color: INK }}>House of Representatives</b>: what they propose, their
             type, and how far they&apos;ve progressed. Read plain-language breakdowns of the ones we&apos;ve explained.
           </p>
         </div>
@@ -77,7 +77,7 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
         <div style={{ marginBottom: 16 }}>
           <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>All bills before Parliament</h2>
           <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
-            Every bill of this Parliament — filter by policy area, type or stage. {BILLS_54_META.passed} have passed into law.
+            Every bill of this Parliament. Filter by policy area, type or stage. {BILLS_54_META.passed} have passed into law.
           </p>
         </div>
 

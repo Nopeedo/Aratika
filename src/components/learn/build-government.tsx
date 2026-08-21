@@ -75,7 +75,7 @@ export function BuildGovernment() {
         <div style={{ minHeight: 26, marginTop: 10, marginBottom: 14 }}>
           {hasMajority ? (
             <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>
-              <PartyPopper style={{ width: 15, height: 15 }} /> Majority reached — this bloc can form a government!
+              <PartyPopper style={{ width: 15, height: 15 }} /> Majority reached. This bloc can form a government.
             </motion.div>
           ) : (
             <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>

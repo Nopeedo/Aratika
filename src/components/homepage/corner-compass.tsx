@@ -121,7 +121,7 @@ export function CornerCompass() {
   return (
     <motion.a
       href="/start"
-      aria-label="Take the compass — find where you stand"
+      aria-label="Take the compass and find where you stand"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, delay: 0.5 }}

@@ -21,7 +21,7 @@ export function SeatHemicycle({ results, total }: { results: PartyResult[]; tota
   const majority = Math.floor(total / 2) + 1
 
   return (
-    <svg viewBox={`0 0 ${geo.width} ${geo.height}`} style={{ width: '100%', maxWidth: 520 }} role="img" aria-label={`Seat distribution — ${total} seats`}>
+    <svg viewBox={`0 0 ${geo.width} ${geo.height}`} style={{ width: '100%', maxWidth: 520 }} role="img" aria-label={`Seat distribution, ${total} seats`}>
       {geo.seats.map((s, i) => (
         <circle key={i} cx={s.x} cy={s.y} r={geo.dotR} fill={colours[i] || '#e2e1dc'} />
       ))}

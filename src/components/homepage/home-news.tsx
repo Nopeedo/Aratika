@@ -11,9 +11,9 @@ import { SectionDivider } from '@/components/ui/section-divider'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 const NEWS_SOURCES = [
-  { name: 'RNZ — Politics', url: 'https://www.rnz.co.nz/news/political', desc: 'NZ’s public broadcaster — independent political coverage.' },
+  { name: 'RNZ Politics', url: 'https://www.rnz.co.nz/news/political', desc: 'NZ’s public broadcaster, with independent political coverage.' },
   { name: 'The Beehive', url: 'https://www.beehive.govt.nz', desc: 'Official Government press releases and ministerial statements.' },
-  { name: 'NZ Parliament', url: 'https://www.parliament.nz/en/get-involved/news-and-media/', desc: 'Official news — bills, debates and proceedings.' },
+  { name: 'NZ Parliament', url: 'https://www.parliament.nz/en/get-involved/news-and-media/', desc: 'Official news on bills, debates and proceedings.' },
 ]
 
 function NewsSourceCard({ item }: { item: typeof NEWS_SOURCES[number] }) {
@@ -62,7 +62,7 @@ export function HomeNews() {
             <div style={{ marginBottom: 16 }}>
               <SectionDivider type="sentiment" label="Make it yours" />
               <h2 style={{ fontSize: 23, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '10px 0 4px' }}>What matters most to you?</h2>
-              <p style={{ fontSize: 14, color: TERTIARY, fontFamily: MANROPE, margin: 0 }}>Answer a few quick questions — we&apos;ll show you where parties stand on it.</p>
+              <p style={{ fontSize: 14, color: TERTIARY, fontFamily: MANROPE, margin: 0 }}>Answer a few quick questions and we&apos;ll show you where parties stand on it.</p>
             </div>
             <div style={{ background: 'linear-gradient(155deg,#0f9152,#0c0e12)', borderRadius: 20, padding: '24px 22px', boxShadow: '0 6px 24px rgba(12,14,18,.10)' }}>
               <div style={{ width: 44, height: 44, borderRadius: 12, marginBottom: 16, background: 'rgba(255,255,255,.16)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

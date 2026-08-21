@@ -25,7 +25,7 @@ export function TwoVotes() {
           </div>
           <div style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Your party vote</div>
           <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-            Decides the <b style={{ color: INK }}>share of Parliament’s ~120 seats</b> each party gets — the vote that shapes who can form a government. A party needs 5% of the party vote, or to win an electorate, to get in.
+            Decides the <b style={{ color: INK }}>share of Parliament’s ~120 seats</b> each party gets. This is the vote that shapes who can form a government. A party needs 5% of the party vote, or to win an electorate, to get in.
           </p>
         </div>
 
@@ -36,7 +36,7 @@ export function TwoVotes() {
           </div>
           <div style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Your electorate vote</div>
           <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-            Picks the <b style={{ color: INK }}>one MP to represent your local area</b> — your electorate. There are 72 electorates, seven of them Māori electorates.
+            Picks the <b style={{ color: INK }}>one MP who represents your local area</b>, your electorate. There are 72 electorates, seven of them Māori electorates.
           </p>
         </div>
       </div>
@@ -45,7 +45,7 @@ export function TwoVotes() {
       <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginTop: 14, padding: '12px 15px', background: '#f8fafc', border: `1px solid ${BORDER}`, borderRadius: 12 }}>
         <Info style={{ width: 16, height: 16, color: JADE, flexShrink: 0, marginTop: 1 }} />
         <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-          <b style={{ color: INK }}>Most of your influence is in the party vote</b> — it sets the overall balance of Parliament.{' '}
+          <b style={{ color: INK }}>Most of your influence is in the party vote.</b> It sets the overall balance of Parliament.{' '}
           <Link href="/learn/mmp" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>How MMP works in full →</Link>
         </p>
       </div>

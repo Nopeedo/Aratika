@@ -111,7 +111,7 @@ function RegisterInner() {
         By signing up you agree to our{' '}
         <Link href="/terms" style={{ color: SECONDARY, fontWeight: 600 }}>Terms</Link> and{' '}
         <Link href="/privacy" style={{ color: SECONDARY, fontWeight: 600 }}>Privacy Policy</Link>.
-        {' '}We’ll send you the Arapono Weekly — one email a week, and you can turn it off any time from your dashboard.
+        {' '}We’ll send you the Arapono Weekly. One email a week, and you can turn it off any time from your dashboard.
       </p>
       <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, textAlign: 'center', marginTop: 14 }}>
         Already have an account?{' '}

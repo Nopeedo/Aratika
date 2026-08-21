@@ -19,7 +19,7 @@ const STAGES: Stage[] = [
   { label: 'Second Reading',         detail: 'MPs debate the bill and the committee’s recommendations. This is a key vote on the bill’s principles.' },
   { label: 'Committee of the House', detail: 'The whole House examines the bill part by part and can make detailed amendments.' },
   { label: 'Third Reading',          detail: 'The final debate and vote on the bill in its final form.' },
-  { label: 'Royal Assent',           detail: 'The Governor-General signs the bill into law. It is now an Act of Parliament — the law of New Zealand.' },
+  { label: 'Royal Assent',           detail: 'The Governor-General signs the bill into law. It is now an Act of Parliament, and the law of New Zealand.' },
 ]
 
 export function BillJourney() {
@@ -31,7 +31,7 @@ export function BillJourney() {
     <div style={{ border: `1px solid ${BORDER}`, borderRadius: 20, overflow: 'hidden', background: '#fff' }}>
       <div style={{ padding: '14px 18px', borderBottom: `1px solid ${BORDER}`, background: SURFACE }}>
         <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>A Bill’s Journey</div>
-        <div style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE }}>Step through each stage — click a stage or use the buttons.</div>
+        <div style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE }}>Step through each stage. Click a stage, or use the buttons.</div>
       </div>
 
       <div style={{ padding: '26px 18px 20px' }}>

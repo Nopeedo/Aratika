@@ -63,7 +63,7 @@ export async function generateMetadata(
   const party = PARTY_PROFILES[slug as PartySlug]
   if (!party || slug === 'independent') return { title: 'Party not found' }
   return {
-    title: `${party.name} — ${party.fullName}`,
+    title: `${party.name}: ${party.fullName}`,
     description: party.tagline,
   }
 }

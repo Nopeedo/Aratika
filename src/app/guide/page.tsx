@@ -10,7 +10,7 @@ import { QuickGuide } from '@/components/guide/quick-guide'
 import { BORDER, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
-  title: 'Get started — a quick, no-jargon guide',
+  title: 'Get started: a quick, no-jargon guide',
   description:
     'New to this, or not sure where to start? Three quick questions and we’ll point you to where the parties stand on what you care about, how to enrol, and your local seat. Skippable, no account needed.',
 }

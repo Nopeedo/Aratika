@@ -13,29 +13,29 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } 
 export const metadata: Metadata = {
   title: 'How we decide which parties are included',
   description:
-    'Arapono’s inclusion policy — every party registered to contest the 2026 party vote is represented equally, by registration not polling. Poll figures are labelled, never inferred.',
+    'Arapono’s inclusion policy: every party registered to contest the 2026 party vote is represented equally, by registration rather than polling. Poll figures are labelled, never inferred.',
 }
 
 const PRINCIPLES = [
   {
     icon: Scale,
     title: 'Inclusion by registration, not polling',
-    body: 'Any party registered with the Electoral Commission to contest the party vote is included — with a profile, policy coverage and an equal place in our comparisons. A party’s poll standing never decides whether it appears. That is the line that keeps us fair to smaller and newer parties.',
+    body: 'Any party registered with the Electoral Commission to contest the party vote is included, with a profile, policy coverage and an equal place in our comparisons. A party’s poll standing never decides whether it appears. That is the line that keeps us fair to smaller and newer parties.',
   },
   {
     icon: ListChecks,
     title: 'Equal in structure, neutral in order',
-    body: 'Every contesting party gets the same sections and the same treatment. We group parties by whether they currently hold seats — a plain fact, not a ranking — and order the rest alphabetically, never by size or polling. Where a party hasn’t published a position on a topic, we say so honestly rather than leaving them out.',
+    body: 'Every contesting party gets the same sections and the same treatment. We group parties by whether they currently hold seats, which is a plain fact rather than a ranking, and order the rest alphabetically instead of by size or polling. Where a party hasn’t published a position on a topic, we say so honestly rather than leaving them out.',
   },
   {
     icon: BarChart3,
     title: 'Polls are labelled, never inferred',
-    body: 'Published polls only survey the larger parties, so poll-of-polls, the seat projection and the coalition explorer can only show those. We label this limit plainly, group smaller parties as “Others”, and note where the 5% threshold excludes a contesting party — we never invent a number for a party polls don’t measure, and we never present polling as a prediction.',
+    body: 'Published polls only survey the larger parties, so poll-of-polls, the seat projection and the coalition explorer can only show those. We label this limit plainly, group smaller parties as “Others”, and note where the 5% threshold excludes a contesting party. We never invent a number for a party polls don’t measure, and we never present polling as a prediction.',
   },
   {
     icon: ShieldCheck,
     title: 'Sourced, or marked as a gap',
-    body: 'A party’s stated positions are summarised only from what they have actually published, with the source linked and an editor check before it appears. If we don’t yet have something, the page says “not recorded yet” — we don’t fill gaps with assumptions.',
+    body: 'A party’s stated positions are summarised only from what they have actually published, with the source linked and an editor check before it appears. If we don’t yet have something, the page says “not recorded yet”. We don’t fill gaps with assumptions.',
   },
 ]
 

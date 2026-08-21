@@ -64,7 +64,7 @@ export function NewsFeed({ items, videos = [], interviews = [] }: { items: NewsI
       <VideoSection
         videos={interviews}
         heading="Interviews"
-        blurb="Long-form interviews with leaders and candidates, from independent outlets — the questions aren't ours, and neither are the answers."
+        blurb="Long-form interviews with leaders and candidates, from independent outlets. The questions aren't ours, and neither are the answers."
       />
 
       {/* Filters */}
@@ -103,7 +103,7 @@ export function NewsFeed({ items, videos = [], interviews = [] }: { items: NewsI
                     {gov ? <Landmark style={{ width: 11, height: 11 }} /> : <Newspaper style={{ width: 11, height: 11 }} />}{it.outlet}
                   </span>
                   {it.pubDate && <span style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE }}>{fmtDate(it.pubDate)}</span>}
-                  {it.cc && <span style={{ fontSize: 10, fontWeight: 700, color: '#065f46', background: '#ecfdf5', borderRadius: 5, padding: '1px 6px', fontFamily: MANROPE }} title="Creative Commons — openly licensed">CC</span>}
+                  {it.cc && <span style={{ fontSize: 10, fontWeight: 700, color: '#065f46', background: '#ecfdf5', borderRadius: 5, padding: '1px 6px', fontFamily: MANROPE }} title="Creative Commons: openly licensed">CC</span>}
                 </div>
                 <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.35, marginBottom: 6 }}>{it.title}</div>
                 {it.snippet && <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5, margin: '0 0 10px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{it.snippet}</p>}

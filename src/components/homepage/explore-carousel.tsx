@@ -39,7 +39,7 @@ interface Feature {
 const FEATURES: Feature[] = [
   { feature: 'elections', title: 'Election Centre', desc: 'Polls, seat projection & live results on the night', href: '/elections/2026', Icon: BarChart3, tint: '#eef4ff' },
   { feature: 'compare', title: 'Compare parties', desc: 'Every party, side by side on the issues', href: '/policies', Icon: Scale, tint: '#f2fbf6' },
-  { feature: 'bills', title: 'The Record', desc: 'Bills and what this Parliament has actually done', href: '/bills', Icon: FileText, tint: '#fdf4ff' },
+  { feature: 'bills', title: 'The Record', desc: 'Bills, and what this Parliament has passed', href: '/bills', Icon: FileText, tint: '#fdf4ff' },
   { feature: 'budget', title: 'Budget 2026', desc: 'Where the Government is spending your money', href: '/budget', Icon: Wallet, tint: '#fff7ed' },
   { feature: 'news', title: 'Latest news & video', desc: 'Election coverage across every party', href: '/news', Icon: Newspaper, tint: '#eff6ff' },
   { feature: 'battlegrounds', title: 'Battlegrounds', desc: 'The marginal seats that decide the election', href: '/battlegrounds', Icon: Swords, tint: '#fef2f2' },
@@ -66,8 +66,8 @@ export function ExploreCarousel() {
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
           <div>
             <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 6 }}>The rest of the toolkit</div>
-            <h2 style={{ fontSize: 'clamp(24px,3.4vw,30px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>Explore more, whenever you want</h2>
-            <p style={{ fontSize: 15.5, color: SUB, fontFamily: MANROPE, margin: '6px 0 0' }}>Everything else lives here — dip in when you&rsquo;re ready, no pressure.</p>
+            <h2 style={{ fontSize: 'clamp(24px,3.4vw,30px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>Explore more</h2>
+            <p style={{ fontSize: 15.5, color: SUB, fontFamily: MANROPE, margin: '6px 0 0' }}>Everything else on the site, in one place.</p>
           </div>
           <div className="ec-arrows" style={{ display: 'flex', gap: 8 }}>
             <button onClick={() => scroll(-1)} aria-label="Scroll left" style={arrowBtn}><ArrowLeft style={{ width: 18, height: 18 }} /></button>

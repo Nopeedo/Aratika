@@ -18,12 +18,12 @@ const DURATION = 5000
 type Key = 'mp' | 'party' | 'policy' | 'bill' | 'news' | 'video'
 
 const SLIDES: { key: Key; tab: string; icon: React.ElementType; title: string; what: string; impact: string; where: string }[] = [
-  { key: 'mp', tab: 'MPs', icon: Users, title: 'Follow an MP', what: 'Their votes, the bills they put up, and the news that names them — in one place.', impact: 'See how the person representing you actually acts, not just what they say.', where: 'Tap Track on any MP’s profile.' },
-  { key: 'party', tab: 'Parties', icon: Landmark, title: 'Follow a party', what: 'Policy announcements, their news and video, and how they’re polling.', impact: 'Keep tabs on the team you’re weighing up — without visiting five sites.', where: 'Tap Track on any party page.' },
+  { key: 'mp', tab: 'MPs', icon: Users, title: 'Follow an MP', what: 'Their votes, the bills they put up, and the news that names them, in one place.', impact: 'See how the person representing you actually acts, not just what they say.', where: 'Tap Track on any MP’s profile.' },
+  { key: 'party', tab: 'Parties', icon: Landmark, title: 'Follow a party', what: 'Policy announcements, their news and video, and how they’re polling.', impact: 'Keep tabs on the team you’re weighing up without visiting five sites.', where: 'Tap Track on any party page.' },
   { key: 'policy', tab: 'Policies', icon: Scale, title: 'Follow an issue', what: 'The bills on it, and where every party stands.', impact: 'Cut through to the one or two issues that decide your vote.', where: 'Tap Track on any policy topic.' },
-  { key: 'bill', tab: 'Bills', icon: Gavel, title: 'Follow a bill', what: 'Every stage from first reading to law — and how MPs voted.', impact: 'Catch the vote that matters before it’s law, not after.', where: 'Tap Track on any bill.' },
-  { key: 'news', tab: 'News', icon: Newspaper, title: 'News comes to you', what: 'Headlines tagged to what you follow, from credible outlets — you don’t chase it.', impact: 'One feed, only your things, always current.', where: 'Automatic — it flows from what you track.' },
-  { key: 'video', tab: 'Video', icon: Video, title: 'Video comes to you', what: 'Leaders, debates and the press — clipped to the people and issues you follow.', impact: 'See it happen, don’t just read about it.', where: 'Automatic — it flows from what you track.' },
+  { key: 'bill', tab: 'Bills', icon: Gavel, title: 'Follow a bill', what: 'Every stage from first reading to law, and how MPs voted.', impact: 'Catch the vote that matters before it’s law, not after.', where: 'Tap Track on any bill.' },
+  { key: 'news', tab: 'News', icon: Newspaper, title: 'News comes to you', what: 'Headlines tagged to what you follow, from credible outlets. You don’t chase it.', impact: 'One feed, only your things, always current.', where: 'Automatic, once you track something.' },
+  { key: 'video', tab: 'Video', icon: Video, title: 'Video comes to you', what: 'Leaders, debates and the press, clipped to the people and issues you follow.', impact: 'See it happen, don’t just read about it.', where: 'Automatic, once you track something.' },
 ]
 
 function TrackPill() {
@@ -124,7 +124,7 @@ function Preview({ k }: { k: Key }) {
         <span style={{ position: 'absolute', bottom: 8, right: 8, fontSize: 13, fontWeight: 700, color: '#fff', background: 'rgba(0,0,0,.6)', borderRadius: 5, padding: '2px 6px', fontFamily: MANROPE }}>12:04</span>
       </div>
       <div style={{ padding: '12px 14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10 }}>
-        <span style={{ fontSize: 16, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35 }}>Leaders’ debate — full</span>
+        <span style={{ fontSize: 16, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35 }}>Leaders’ debate, in full</span>
         <InFeedBadge />
       </div>
     </div>

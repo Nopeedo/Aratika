@@ -46,7 +46,7 @@ export interface DefiningBill {
 
 export const DEFINING_BILLS_META = {
   asOf: 'January 2026',
-  note: 'A curated selection of the term’s most-debated bills. Descriptions are neutral; statuses are to January 2026 — confirm later changes at the official source.',
+  note: 'A curated selection of the term’s most-debated bills. Descriptions are neutral; statuses are to January 2026, so confirm later changes at the official source.',
 }
 
 const LEG = (q: string) => ({ label: 'legislation.govt.nz', url: `https://www.legislation.govt.nz/` + (q ? `?search=${encodeURIComponent(q)}` : '') })
@@ -59,7 +59,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
     what: 'Proposed to define the principles of the Treaty of Waitangi in legislation.',
     status: 'Defeated at second reading (April 2025)',
     statusKind: 'defeated',
-    why: 'One of the most debated bills of the term — it drew the largest public response to any bill in New Zealand history and a national hīkoi to Parliament.',
+    why: 'One of the most debated bills of the term. It drew the largest public response to any bill in New Zealand history and a national hīkoi to Parliament.',
     champion: 'Championed by ACT; supported by National and NZ First only to select committee under the coalition agreement.',
     source: PARL,
     overview:
@@ -96,7 +96,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
         { label: 'Defeated', state: 'stop' },
       ],
       stats: [
-        { to: 300000, suffix: '+', label: 'public submissions — a national record' },
+        { to: 300000, suffix: '+', label: 'public submissions, a national record' },
         { to: 90, suffix: '%', label: 'of submissions opposed' },
         { text: '112–11', label: 'vote against, at second reading' },
       ],

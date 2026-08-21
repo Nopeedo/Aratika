@@ -37,7 +37,7 @@ export function CommandCentreTryIt({ options }: { options: BookmarkEntity[] }) {
           <span style={{ fontSize: 15, color: TERTIARY, fontFamily: MANROPE }}>Loading your tracked items…</span>
         ) : n === 0 ? (
           <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 16, color: SECONDARY, fontFamily: MANROPE }}>
-            <Target style={{ width: 15, height: 15, color: TERTIARY }} /> Nothing tracked yet — tap <b style={{ color: INK }}>Track</b> on a few above and watch this fill up.
+            <Target style={{ width: 15, height: 15, color: TERTIARY }} /> Nothing tracked yet. Tap <b style={{ color: INK }}>Track</b> on a few above and watch this fill up.
           </span>
         ) : (
           <div>

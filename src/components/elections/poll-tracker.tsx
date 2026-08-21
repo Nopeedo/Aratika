@@ -91,7 +91,7 @@ export function PollTracker() {
         <div style={{ display: 'flex', gap: 8, marginTop: 12, padding: '10px 12px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10 }}>
           <Info style={{ width: 15, height: 15, color: SECONDARY, flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-            An <b style={{ color: INK }}>estimate</b>, not a prediction — {totalSeats} seats shown; <b style={{ color: INK }}>{MAJORITY_SEATS}</b> are needed to govern.
+            An <b style={{ color: INK }}>estimate</b>, not a prediction. {totalSeats} seats shown, and <b style={{ color: INK }}>{MAJORITY_SEATS}</b> are needed to govern.
             Actual seats depend on electorate results (Te Pāti Māori’s electorate wins can add overhang seats), turnout, and each poll’s margin of error.
           </p>
         </div>

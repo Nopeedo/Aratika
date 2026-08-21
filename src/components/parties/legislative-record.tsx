@@ -57,8 +57,8 @@ export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug;
           </div>
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
             As a governing party, {partyName}’s ministers lead government legislation. Government bills are the{' '}
-            <b style={{ color: INK }}>coalition’s collective programme</b> — counted here by the party of the minister in charge,
-            not as one party’s alone.{r.membersInBallot > 0 && <> {partyName} also has <b style={{ color: INK }}>{r.membersInBallot}</b> members’ bill{r.membersInBallot === 1 ? '' : 's'} in the ballot.</>}
+            <b style={{ color: INK }}>coalition’s collective programme</b>, counted here by the party of the minister in charge
+            rather than as one party’s alone.{r.membersInBallot > 0 && <> {partyName} also has <b style={{ color: INK }}>{r.membersInBallot}</b> members’ bill{r.membersInBallot === 1 ? '' : 's'} in the ballot.</>}
           </p>
         </>
       ) : (
@@ -66,12 +66,12 @@ export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug;
           <div style={{ display: 'flex', gap: 10, padding: '12px 14px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 11, marginBottom: 14 }}>
             <Info style={{ width: 16, height: 16, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 12.5, color: '#1e3a8a', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-              As an opposition party, {partyName} doesn’t lead government bills (only ministers can). Its MPs advance policy through <b>members’ bills</b>: each MP may lodge one in a ballot, and a few are drawn at random each fortnight to be introduced. Most never are — so the ballot figure below is what’s <i>waiting</i>, not what’s before Parliament.
+              As an opposition party, {partyName} doesn’t lead government bills (only ministers can). Its MPs advance policy through <b>members’ bills</b>: each MP may lodge one in a ballot, and a few are drawn at random each fortnight to be introduced. Most never are, so the ballot figure below is what’s <i>waiting</i> rather than what’s before Parliament.
             </p>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
             <Stat value={r.membersPassed} label="Members’ bills passed into law" accent />
-            <Stat value={r.membersInBallot} label="Lodged in the ballot — not yet introduced" />
+            <Stat value={r.membersInBallot} label="Lodged in the ballot, not yet introduced" />
             <Stat value={trackerCount} label="Before the House now" />
           </div>
           {r.passedMembersBills.length > 0 && (

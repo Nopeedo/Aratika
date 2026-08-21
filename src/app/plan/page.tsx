@@ -10,7 +10,7 @@ import { BORDER, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Your plan',
-  description: 'Your personalised, tick-as-you-go plan — the issues you care about and the parts of Arapono that help you most.',
+  description: 'Your personalised, tick-as-you-go plan: the issues you care about, and the parts of Arapono that help you most.',
 }
 
 export default function PlanPage() {

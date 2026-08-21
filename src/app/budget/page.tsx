@@ -24,7 +24,7 @@ import { BUDGET_BASELINE } from '@/constants/budget-links'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
-  title: 'Budget 2026 — what the Government is spending',
+  title: 'Budget 2026: what the Government is spending',
   description:
     'A plain-English, non-partisan breakdown of New Zealand’s Budget 2026: where the money goes by sector, key initiatives and the fiscal outlook. Sourced from The Treasury.',
 }
@@ -49,7 +49,7 @@ export default function BudgetPage() {
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 36px 30px' }}>
           <div style={{ marginBottom: 12 }}>
-            <SectionDivider type="official" label="Official — The Treasury" />
+            <SectionDivider type="official" label="Official: The Treasury" />
           </div>
           <h1 style={{ fontSize: 'clamp(30px, 5vw, 46px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.08 }}>
             Budget {BUDGET_META.year}: where the money goes
@@ -123,7 +123,7 @@ export default function BudgetPage() {
             ))}
           </ul>
           <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: '10px 0 0', lineHeight: 1.5 }}>
-            New Budget funding (below) is mostly money added <em>on top of</em> existing spending — read it against this baseline.
+            New Budget funding (below) is mostly money added <em>on top of</em> existing spending. Read it against this baseline.
           </p>
           <a href={BUDGET_BASELINE.source.url} target="_blank" rel="noopener noreferrer" style={{ ...verifyLink(), marginTop: 8 }}>
             {BUDGET_BASELINE.source.label} <ExternalLink style={{ width: 13, height: 13 }} />
@@ -176,7 +176,7 @@ export default function BudgetPage() {
         <h2 style={{ ...sectionH2(), marginTop: 48 }}>Put it in context</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 12 }}>
           <CrossLink href="/policies/economy" title="Compare party economic policy" body="See how each party’s stated economy and tax policy stacks up against what’s actually budgeted." />
-          <CrossLink href="/policies" title="Compare all parties" body="Where every party stands across health, education, housing, crime and more — side by side." />
+          <CrossLink href="/policies" title="Compare all parties" body="Where every party stands across health, education, housing, crime and the rest, side by side." />
           <CrossLink href="/record" title="Were the promises funded?" body="Track the government’s promises against the record (private accountability deep-dive)." />
         </div>
 

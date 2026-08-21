@@ -16,7 +16,7 @@ import { SectionDivider } from '@/components/ui/section-divider'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
-  title: 'Parliament — Current Overview',
+  title: 'Parliament: Current Overview',
   description:
     'The 54th New Zealand Parliament: seat distribution, the governing coalition and Cabinet, the Opposition, and key roles.',
 }

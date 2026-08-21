@@ -10,7 +10,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      subtitle="How we handle your information — and the things we deliberately don't collect."
+      subtitle="How we handle your information, and the things we deliberately don't collect."
       updated="June 2026"
     >
       <h2>Who we are</h2>
@@ -22,10 +22,10 @@ export default function PrivacyPage() {
 
       <h2>What we collect</h2>
       <ul>
-        <li><strong>Account details</strong> — your email address and (optionally) your name, when you create an account.</li>
-        <li><strong>Subscription status</strong> — whether you hold an active Premium subscription (managed through Stripe).</li>
-        <li><strong>Learning progress</strong> — which Learn modules you’ve completed, so we can show your progress. For signed-out users this stays in your browser; for signed-in users it’s saved to your account.</li>
-        <li><strong>Basic technical data</strong> — standard server and security logs needed to run the site reliably.</li>
+        <li><strong>Account details</strong>: your email address and (optionally) your name, when you create an account.</li>
+        <li><strong>Subscription status</strong>: whether you hold an active Premium subscription (managed through Stripe).</li>
+        <li><strong>Learning progress</strong>: which Learn modules you’ve completed, so we can show your progress. For signed-out users this stays in your browser; for signed-in users it’s saved to your account.</li>
+        <li><strong>Basic technical data</strong>: standard server and security logs needed to run the site reliably.</li>
       </ul>
 
       <h2>What we deliberately do not collect</h2>
@@ -41,9 +41,9 @@ export default function PrivacyPage() {
       <h2>Who we share it with</h2>
       <p>We use trusted service providers who process data on our behalf:</p>
       <ul>
-        <li><strong>Supabase</strong> — accounts and database.</li>
-        <li><strong>Stripe</strong> — subscription payments.</li>
-        <li><strong>Vercel</strong> — website hosting.</li>
+        <li><strong>Supabase</strong>: accounts and database.</li>
+        <li><strong>Stripe</strong>: subscription payments.</li>
+        <li><strong>Vercel</strong>: website hosting.</li>
       </ul>
       <p>Each handles your data under its own privacy and security obligations. We don’t otherwise disclose your information except where required by law.</p>
 

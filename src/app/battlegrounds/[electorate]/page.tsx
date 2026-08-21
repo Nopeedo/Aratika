@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: { params: Promise<{ electorat
   const { electorate } = await params
   const info = getElectorateBySlug(electorate)
   if (!info) return { title: 'Electorate not found' }
-  return { title: `${info.name} — Battleground`, description: `The contest for ${info.name}: the 2023 result, the incumbent, and the 2026 candidates as they're confirmed.` }
+  return { title: `${info.name} battleground`, description: `The contest for ${info.name}: the 2023 result, the incumbent, and the 2026 candidates as they're confirmed.` }
 }
 
 export default async function BattlePage({ params }: { params: Promise<{ electorate: string }> }) {
@@ -95,7 +95,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
       <div>
         {info.majority != null && (
           <div style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, marginBottom: 10 }}>
-            Won {info.name} by a majority of <b style={{ color: INK }}>{info.majority.toLocaleString('en-NZ')}</b> in 2023 — a <b style={{ color: tier.color }}>{tier.label.toLowerCase()}</b> seat.
+            Won {info.name} by a majority of <b style={{ color: INK }}>{info.majority.toLocaleString('en-NZ')}</b> in 2023, making it a <b style={{ color: tier.color }}>{tier.label.toLowerCase()}</b> seat.
           </div>
         )}
         {mp?.bio && <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>{mp.bio}</p>}
@@ -160,7 +160,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             </div>
           ) : (
             <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
-              No government bill in charge, members' bill passed, or members' bill currently in the ballot for {firstName} this term — checked against the official record, not a gap in our data.
+              No government bill in charge, members' bill passed, or members' bill currently in the ballot for {firstName} this term. We checked that against the official record, so it isn't a gap in our data.
             </p>
           )}
         </div>
@@ -183,7 +183,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
                 What is this, and why does it matter to you?
               </summary>
               <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '8px 0 0', lineHeight: 1.55 }}>
-                Any MP can put a written question to a Minister to formally demand information on the record — the Minister must reply, usually within days. It costs nothing and needs no debate, which makes it the main day-to-day tool MPs use to hold the government accountable between bills — especially for opposition MPs, who can't pass laws but can still force information into the open. Which Ministers an MP questions most, below, is a real, numbers-based picture of what they're actually watching on your behalf — worth comparing against what they say they prioritise.
+                Any MP can put a written question to a Minister, demanding information on the record. The Minister must reply, usually within days. It costs nothing and needs no debate, which makes it the main day-to-day tool MPs use to hold the government to account between bills. It matters most for opposition MPs, who can't pass laws but can still force information into the open. Which Ministers an MP questions most, below, is a numbers-based picture of what they watch on your behalf, and it's worth comparing against what they say they prioritise.
               </p>
             </details>
 
@@ -194,7 +194,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
 
             {topMinisters.length > 0 && (
               <div style={{ marginBottom: 18 }}>
-                <Label icon={Landmark} text="Where it's gone — by Minister" />
+                <Label icon={Landmark} text="Where it's gone, by Minister" />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginTop: 9 }}>
                   {topMinisters.map((m) => (
                     <div key={m.minister} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -463,7 +463,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
           <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>The roster</h2>
           <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px' }}>
             The defender's record, and who's confirmed to challenge them in 2026.
-            {hasPollData && <> Poll standing shown is illustrative only — no verified electorate-level polling exists for this preview.</>}
+            {hasPollData && <> Poll standing shown is illustrative only. No verified electorate-level polling exists for this preview.</>}
           </p>
           <RosterAccordion items={rosterItems} />
         </section>

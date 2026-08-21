@@ -14,8 +14,8 @@ import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 export const metadata: Metadata = {
   title: 'Policy Hub',
   description:
-    'Compare where New Zealand\'s political parties stand on the issues that matter — ' +
-    'housing, health, the economy, climate and more.',
+    'Compare where New Zealand\'s political parties stand on housing, health, ' +
+    'the economy, climate and the rest of the issues.',
 }
 
 export default async function PolicyHubPage() {

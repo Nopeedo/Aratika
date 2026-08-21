@@ -32,7 +32,7 @@ export function ElectoratePanel({ electorateName }: { electorateName: string | n
             Find your MP
           </p>
           <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5, margin: 0 }}>
-            Click any electorate on the map — or search your suburb — to see who
+            Click any electorate on the map, or search your suburb, to see who
             represents that area and what they stand for.
           </p>
         </div>
@@ -168,8 +168,8 @@ export function ElectoratePanel({ electorateName }: { electorateName: string | n
         <div style={{ display: 'flex', gap: 9, padding: '12px 14px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 12 }}>
           <Info style={{ width: 15, height: 15, color: TERTIARY, flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
-            Under MMP, your <b>party vote</b> also elects list MPs who represent the whole country —
-            you&apos;re represented by more than just your electorate MP.{' '}
+            Under MMP, your <b>party vote</b> also elects list MPs who represent the whole country.
+            You&apos;re represented by more than just your electorate MP.{' '}
             <Link href="/learn/mmp" style={{ color: JADE, fontWeight: 700 }}>How MMP works →</Link>
           </p>
         </div>

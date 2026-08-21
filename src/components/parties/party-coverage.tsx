@@ -66,8 +66,7 @@ export async function PartyCoverage({ slug, name, colour }: { slug: string; name
           Latest coverage
         </h2>
         <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 20px', lineHeight: 1.5 }}>
-          News and video mentioning {name}, from the sources listed on our coverage page. Published
-          by others — inclusion is not endorsement, and the outlet is named on every item.
+          News and video mentioning {name}, from the sources on our coverage page.
         </p>
 
         <div style={{ display: 'grid', // min() so the track can never be wider than its container: a bare

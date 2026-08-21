@@ -38,7 +38,7 @@ export function ElectionAnchor() {
             </h2>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'rgba(255,255,255,.55)', fontFamily: MANROPE }}>
-            <Radio style={{ width: 13, height: 13, color: '#36e08a' }} /> Sourced, dated — as at {POLLS_AS_AT}
+            <Radio style={{ width: 13, height: 13, color: '#36e08a' }} /> Sourced and dated, as at {POLLS_AS_AT}
           </div>
         </div>
 
@@ -69,7 +69,7 @@ export function ElectionAnchor() {
         <p style={{ fontSize: 16, fontWeight: 500, color: 'rgba(255,255,255,.72)', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 20px', maxWidth: 620 }}>
           <b style={{ color: '#fff', fontWeight: 700 }}>What this means:</b> {leadingSeatBloc.seats < MAJORITY_SEATS
             ? `on these polls no single party is near the ${MAJORITY_SEATS} seats needed to govern alone, so parties will likely have to team up to form a government.`
-            : `a party is polling near the ${MAJORITY_SEATS} seats needed to govern.`} That&apos;s <Term name="MMP">MMP</Term> — your <Term name="Party vote">party vote</Term> decides how many seats each party gets.
+            : `a party is polling near the ${MAJORITY_SEATS} seats needed to govern.`} That&apos;s <Term name="MMP">MMP</Term>. Your <Term name="Party vote">party vote</Term> decides how many seats each party gets.
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>

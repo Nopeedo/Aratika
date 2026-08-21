@@ -171,7 +171,7 @@ function Tile({ slug, pct }: { slug: PartySlug; pct: number | null }) {
             </span>
             <span style={{ display: 'block', fontSize: 10, fontWeight: 700, color: belowThreshold ? INK : SECONDARY, fontFamily: MANROPE, marginTop: 3 }}>
               {belowThreshold
-                ? (seats > 0 ? 'below 5% — in via electorates' : 'below the 5% threshold')
+                ? (seats > 0 ? 'below 5%, in via electorates' : 'below the 5% threshold')
                 : 'poll of polls'}
             </span>
           </span>
@@ -182,7 +182,7 @@ function Tile({ slug, pct }: { slug: PartySlug; pct: number | null }) {
           </span>
         ) : (
           <span style={{ display: 'block', fontSize: 11, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.45 }}>
-            Not broken out in published polls — counted in pollsters&rsquo; &ldquo;Others&rdquo;
+            Not broken out in published polls, and counted in pollsters&rsquo; &ldquo;Others&rdquo;
           </span>
         )}
       </span>

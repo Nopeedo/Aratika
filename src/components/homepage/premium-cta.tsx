@@ -52,7 +52,7 @@ export function PremiumCta() {
               <span style={{ fontSize: 37, fontWeight: 700, color: '#ffffff', fontFamily: 'var(--font-space-grotesk), system-ui, sans-serif' }}>$20</span>
               <span style={{ fontSize: 15, color: '#6b7078', fontFamily: MANROPE }}>/month</span>
             </div>
-            <div style={{ fontSize: 13, color: '#6b7078', fontFamily: MANROPE, marginBottom: 20 }}>or $200/year — save $40</div>
+            <div style={{ fontSize: 13, color: '#6b7078', fontFamily: MANROPE, marginBottom: 20 }}>or $200/year, saving $40</div>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: 8 }}>
               {['Everything in Free', 'Detailed voting records', 'Bookmark MPs & bills', 'Live personal dashboard', 'Alerts & notifications', 'Advanced comparisons', 'Data export (PDF/CSV)'].map((f) => (
                 <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 15, fontWeight: 500, color: '#9aa0aa', fontFamily: MANROPE }}>

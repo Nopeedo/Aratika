@@ -13,9 +13,9 @@ import Link from 'next/link'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
-  title: 'Battlegrounds — Seats to Watch',
+  title: 'Battlegrounds: Seats to Watch',
   description:
-    'New Zealand’s most marginal electorates — the closest 2023 contests and the seats most likely to change hands in 2026.',
+    'New Zealand’s most marginal electorates: the closest 2023 contests, and the seats most likely to change hands in 2026.',
 }
 
 export default function BattlegroundsHub() {
@@ -44,7 +44,7 @@ export default function BattlegroundsHub() {
                   a page, the close ones are the ones to watch, colour = margin),
                   without the aside that was costing four lines on a phone. */}
               <p style={{ fontSize: 'clamp(14.5px, 3.9vw, 17px)', fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.55, margin: 0 }}>
-                Every electorate has its own battle page — defender, record and contest. The closest 2023 races are the
+                Every electorate has its own battle page, with the defender, the record and the contest. The closest 2023 races are the
                 likeliest to change hands in 2026; hotter colours mean tighter races.
               </p>
             </div>
@@ -66,7 +66,7 @@ export default function BattlegroundsHub() {
 
         {/* All electorates, filterable by margin tier */}
         <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Every seat, ranked by margin</h2>
-        <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 16px' }}>Closest races first — filter to a tier, or browse them all.</p>
+        <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 16px' }}>Closest races first. Filter to a tier, or browse them all.</p>
         <BattlegroundsList all={all} tiers={MARGIN_TIERS} />
 
         <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginTop: 22, padding: '13px 15px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 12 }}>

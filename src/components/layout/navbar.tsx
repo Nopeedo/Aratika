@@ -25,7 +25,7 @@ function AraponoLogo() {
     // returning visitor hitting / is redirected to /hub (see app/page.tsx), so
     // without the flag clicking the logo bounces them to the hub instead of the
     // homepage, which reads as the logo being broken.
-    <Link href="/?full=1" className="flex items-center gap-2 shrink-0" aria-label={`${SITE.name} — home`}>
+    <Link href="/?full=1" className="flex items-center gap-2 shrink-0" aria-label={`${SITE.name} home`}>
       <span className="flex items-center justify-center size-8 rounded-lg bg-white shadow-md shrink-0">
         <LogoMark size={19} />
       </span>

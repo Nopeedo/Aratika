@@ -71,8 +71,8 @@ export function InstallButton() {
           <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>Install the Arapono app</div>
           <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.5, margin: '3px 0 0' }}>
             {needsSafari
-              ? <>It&rsquo;s not in the App Store — on iPhone you add it straight from <b>Safari</b>. This browser can&rsquo;t, so open <b>arapono.org.nz in Safari</b> first.</>
-              : <>Add Arapono to your home screen — opens like an app, and lets you get notifications{isIOS ? ' (required on iPhone)' : ''}. It&rsquo;s not an App Store download.</>}
+              ? <>There&rsquo;s no App Store download. On iPhone you add it straight from <b>Safari</b>. This browser can&rsquo;t, so open <b>arapono.org.nz in Safari</b> first.</>
+              : <>Add Arapono to your home screen. It opens like an app, and lets you get notifications{isIOS ? ' (required on iPhone)' : ''}. It&rsquo;s not an App Store download.</>}
           </p>
 
           <div style={{ marginTop: 14 }}>
@@ -90,7 +90,7 @@ export function InstallButton() {
                 {needsSafari && <li>First open <b>arapono.org.nz in Safari</b> (this in-app browser can&rsquo;t install). Tap the <b>•••</b> or share icon → <b>Open in Safari</b>.</li>}
                 <li>In Safari, tap the <b>Share</b> button <Share style={{ width: 13, height: 13, verticalAlign: '-2px' }} /> (the box with an ↑).</li>
                 <li>Scroll down, tap <b>Add to Home Screen</b> <SquarePlus style={{ width: 13, height: 13, verticalAlign: '-2px' }} />, then <b>Add</b>.</li>
-                <li>Open Arapono from your Home Screen — now it&rsquo;s an app.</li>
+                <li>Open Arapono from your Home Screen. It now behaves like an app.</li>
               </ol>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, fontSize: 12.5, color: JADE, fontWeight: 700 }}>
                 <Check style={{ width: 14, height: 14 }} /> Then you can turn on notifications.

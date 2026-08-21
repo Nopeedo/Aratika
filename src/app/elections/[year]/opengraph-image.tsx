@@ -6,14 +6,14 @@ import { ELECTORAL_CALENDAR } from '@/constants/electoral-calendar'
 
 export const size = OG_SIZE
 export const contentType = OG_CONTENT_TYPE
-export const alt = '2026 General Election — key dates'
+export const alt = '2026 General Election key dates'
 
 export default async function Image() {
   const enrol = ELECTORAL_CALENDAR.find((m) => m.id === 'enrolment-closes-2026')
   return ogCard({
     eyebrow: 'Election Centre',
     title: 'Enrolment closes before advance voting opens',
-    subtitle: enrol ? 'New for 2026 — you cannot enrol on election day' : undefined,
+    subtitle: enrol ? 'New for 2026: you cannot enrol on election day' : undefined,
     stat: { value: '25 Oct', label: 'last day to enrol' },
     accent: '#B42318',
   })

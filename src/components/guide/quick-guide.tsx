@@ -73,7 +73,7 @@ export function QuickGuide() {
         </div>
         {step < 3 && (
           <Link href="/" style={{ fontSize: 13, fontWeight: 600, color: TERTIARY, textDecoration: 'none' }}>
-            Skip — I&rsquo;ll look around myself
+            Skip, I&rsquo;ll look around myself
           </Link>
         )}
       </div>
@@ -88,7 +88,7 @@ export function QuickGuide() {
         <div>
           <h1 style={{ fontSize: 'clamp(24px,4vw,30px)', fontWeight: 800, letterSpacing: '-.02em', margin: '0 0 6px' }}>What&rsquo;s on your mind?</h1>
           <p style={{ fontSize: 15.5, color: SUB, lineHeight: 1.5, margin: '0 0 22px' }}>
-            Pick a few things you care about. We&rsquo;ll show you where the parties actually stand — no jargon, no spin.
+            Pick a few things you care about. We&rsquo;ll show you where the parties stand on them.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))', gap: 10 }}>
             {POLICY_TOPIC_ORDER.map((t) => {
@@ -111,7 +111,7 @@ export function QuickGuide() {
             })}
           </div>
           <p style={{ fontSize: 12.5, color: TERTIARY, margin: '14px 0 0' }}>
-            {issues.length}/{MAX_ISSUES} picked{issues.length >= MAX_ISSUES ? ' — that&rsquo;s plenty to start' : ''}
+            {issues.length}/{MAX_ISSUES} picked{issues.length >= MAX_ISSUES ? '. That&rsquo;s plenty to start' : ''}
           </p>
         </div>
       )}
@@ -121,7 +121,7 @@ export function QuickGuide() {
         <div>
           <h1 style={{ fontSize: 'clamp(24px,4vw,30px)', fontWeight: 800, letterSpacing: '-.02em', margin: '0 0 6px' }}>Are you enrolled to vote?</h1>
           <p style={{ fontSize: 15.5, color: SUB, lineHeight: 1.5, margin: '0 0 22px' }}>
-            No wrong answer — this just tells us whether to help you sort that out first.
+            This tells us whether to help you sort that out first.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {([['enrolled', 'Yes, I’m enrolled'], ['not-yet', 'Not yet'], ['unsure', 'I’m not sure']] as [Readiness, string][]).map(([val, label]) => {
@@ -148,7 +148,7 @@ export function QuickGuide() {
             You can change your mind any time — this just sets where we point you next.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {([['basics', 'Just the basics', 'A quick starting point I can act on today.'], ['compare', 'I want to compare properly', 'Take me deeper — the full picture across every party.']] as [Depth, string, string][]).map(([val, label, desc]) => {
+            {([['basics', 'Just the basics', 'A quick starting point I can act on today.'], ['compare', 'I want to compare properly', 'The full picture across every party.']] as [Depth, string, string][]).map(([val, label, desc]) => {
               const on = depth === val
               return (
                 <button key={val} onClick={() => setDepth(val)}
@@ -220,7 +220,7 @@ function Result({ issues, readiness, depth, onRestart }: { issues: PolicyTopic[]
             </p>
           ) : (
             <p style={{ fontSize: 14, color: SUB, lineHeight: 1.55, margin: '0 0 12px' }}>
-              {readiness === 'unsure' ? 'Not sure? You can check and enrol in the same place — it takes about two minutes.' : 'Enrolling takes about two minutes and you can do it online.'}
+              {readiness === 'unsure' ? 'Not sure? You can check and enrol in the same place, and it takes about two minutes.' : 'Enrolling takes about two minutes and you can do it online.'}
             </p>
           )}
           {readiness === 'enrolled' ? (

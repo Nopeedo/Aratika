@@ -153,11 +153,11 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
         setSearchMsg(null)
       } else {
         setSearchMsg(
-          `Found “${geo.label}”, but it isn’t inside the ${layer === 'maori' ? 'Māori' : 'general'} electorates shown — try the ${layer === 'maori' ? 'General' : 'Māori'} layer.`,
+          `Found “${geo.label}”, but it isn’t inside the ${layer === 'maori' ? 'Māori' : 'general'} electorates shown. Try the ${layer === 'maori' ? 'General' : 'Māori'} layer.`,
         )
       }
     } catch {
-      setSearchMsg('Address lookup is unavailable right now — you can still search by electorate name.')
+      setSearchMsg('Address lookup isn’t working right now. You can still search by electorate name.')
     } finally {
       setSearching(false)
     }

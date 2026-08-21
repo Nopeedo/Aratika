@@ -158,7 +158,7 @@ export function PolicyDeepDive({
             {dive.quotes.map((q) => (
               <blockquote key={q.text} style={{ margin: 0, background: '#fff', border: `1px solid ${BORDER}`, borderLeft: `3px solid ${accent}`, borderRadius: '0 12px 12px 0', padding: '13px 16px' }}>
                 <p style={{ fontSize: 14, color: '#23262c', fontFamily: MANROPE, lineHeight: 1.65, margin: 0, fontStyle: 'italic' }}>“{q.text}”</p>
-                <footer style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 7 }}>{dive.source.documentTitle} — {q.context}</footer>
+                <footer style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 7 }}>{dive.source.documentTitle} · {q.context}</footer>
               </blockquote>
             ))}
           </div>

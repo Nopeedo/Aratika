@@ -52,8 +52,8 @@ export function TrackCta() {
         <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 22, padding: 'clamp(20px, 4vw, 32px)', marginTop: 14 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, flexWrap: 'wrap', marginBottom: 16 }}>
             <div>
-              <h3 style={{ fontSize: 21, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px' }}>Try it now — no sign-up</h3>
-              <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Tap Track and watch your command centre take shape, right here.</p>
+              <h3 style={{ fontSize: 21, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px' }}>Try it now, no sign-up</h3>
+              <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Tap Track and watch your command centre take shape.</p>
             </div>
             <Link href="/command-centre" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: JADE, textDecoration: 'none', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
               Live feed &amp; election tracker <ArrowRight style={{ width: 14, height: 14 }} />

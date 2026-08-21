@@ -32,7 +32,7 @@ export async function generateMetadata(
   const { topic } = await params
   const t = POLICY_TOPICS[topic as PolicyTopic]
   if (!t) return { title: 'Policy topic not found' }
-  return { title: `${t.label} — Party Positions`, description: t.longDescription }
+  return { title: `${t.label}: party positions`, description: t.longDescription }
 }
 
 export default async function PolicyTopicPage(

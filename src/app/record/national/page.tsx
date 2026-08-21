@@ -26,7 +26,7 @@ import { IndicatorChart } from '@/components/record/indicator-chart'
 import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
-  title: 'National — Accountability Record (private)',
+  title: 'National: Accountability Record (private)',
   robots: { index: false, follow: false },
 }
 
@@ -81,10 +81,10 @@ export default async function NationalRecordPage() {
         <div style={{ display: 'flex', gap: 12, padding: '15px 17px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 14, marginBottom: 30 }}>
           <ShieldAlert style={{ width: 18, height: 18, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 12.5, color: '#1e3a8a', fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
-            <b>Personal research view.</b> Compiled from the public record — the coalition agreements, the government’s
-            100-day plan, and enacted Acts — with a source on each item. Statuses are assessed to a <b>January 2026</b>{' '}
-            knowledge cutoff; confirm anything dated later against the linked source. Economic indicators are shown as{' '}
-            <b>context only</b> — they reflect global and domestic factors and are not attributed to any single policy.
+            <b>Personal research view.</b> Compiled from the public record, meaning the coalition agreements, the government’s
+            100-day plan and enacted Acts, with a source on each item. Statuses are assessed to a <b>January 2026</b>{' '}
+            knowledge cutoff, so confirm anything dated later against the linked source. Economic indicators are shown as{' '}
+            <b>context only</b>. They reflect global and domestic factors and are not attributed to any single policy.
           </p>
         </div>
 
@@ -152,7 +152,7 @@ export default async function NationalRecordPage() {
 
         {/* ── Budget 2026: funding the agenda ── */}
         <div style={{ marginTop: 38 }}>
-          <SectionTitle icon={Wallet} title="Budget 2026 — funding the agenda" sub="Where the latest Budget puts money behind the commitments — and what’s new" />
+          <SectionTitle icon={Wallet} title="Budget 2026: funding the agenda" sub="Where the latest Budget puts money behind the commitments, and what’s new" />
 
           {/* What this is / isn't */}
           <div style={{ display: 'flex', gap: 10, padding: '13px 15px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12, marginBottom: 14 }}>
@@ -257,12 +257,12 @@ export default async function NationalRecordPage() {
 
         {/* ── Economic context ── */}
         <div style={{ marginTop: 38 }}>
-          <SectionTitle icon={TrendingUp} title="The economy this term" sub="Official indicators — context, not causation" />
+          <SectionTitle icon={TrendingUp} title="The economy this term" sub="Official indicators: context, not causation" />
           <div style={{ display: 'flex', gap: 10, padding: '13px 15px', background: '#fff9e6', border: '1px solid #fde68a', borderRadius: 12, marginBottom: 16 }}>
             <ShieldAlert style={{ width: 16, height: 16, color: '#b45309', flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 12.5, color: '#92400e', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
               These series move with global conditions, migration, weather, the business cycle and many policies at once.
-              They show <b>what happened during</b> the term — not what any single policy caused. Figures reflect the
+              They show <b>what happened during</b> the term, not what any single policy caused. Figures reflect the
               public record to ~early 2026; confirm the latest at each source.
             </p>
           </div>

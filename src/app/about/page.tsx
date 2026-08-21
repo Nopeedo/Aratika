@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const PRINCIPLES = [
   { icon: Scale, title: 'Non-partisan', body: 'We present every party, MP and policy even-handedly. We don’t endorse anyone, and we never tell you how to vote.' },
   { icon: ShieldCheck, title: 'Credible', body: 'Everything is drawn from official sources and attributed. If we get something wrong, we fix it fast.' },
-  { icon: Unlock, title: 'Accessible', body: 'The core information is free for everyone, in plain language — from a Kids level all the way to expert detail.' },
+  { icon: Unlock, title: 'Accessible', body: 'The core information is free for everyone, in plain language, from a Kids level all the way to expert detail.' },
   { icon: Compass, title: 'Independent', body: 'We’re not affiliated with the Government, Parliament, or any political party. We answer to our users.' },
 ]
 
@@ -93,7 +93,7 @@ export default function AboutPage() {
           <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>Independent &amp; non-partisan</h2>
           <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
             Arapono is not affiliated with the Government, Parliament, the Electoral Commission, or any political party. Spotted
-            something that looks wrong or one-sided? Please <Link href="/contact" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>tell us</Link> — holding ourselves to account is part of the deal.
+            something that looks wrong or one-sided? Please <Link href="/contact" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>tell us</Link>. Holding ourselves to account is part of the deal.
           </p>
         </section>
       </div>

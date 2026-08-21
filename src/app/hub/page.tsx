@@ -154,7 +154,7 @@ export default async function HubPage() {
               <div>
                 <h2 style={{ margin: 0, fontSize: 19, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE }}>Your Command Centre</h2>
                 <div style={{ fontSize: 13, color: SUB, fontFamily: MANROPE, marginTop: 1 }}>
-                  {tracked > 0 ? `${tracked} thing${tracked === 1 ? '' : 's'} tracked — news on exactly these follows you.` : 'Track the MPs, parties, issues and bills you care about.'}
+                  {tracked > 0 ? `${tracked} thing${tracked === 1 ? '' : 's'} tracked. News on these follows you.` : 'Track the MPs, parties, issues and bills you care about.'}
                 </div>
               </div>
             </div>

@@ -71,7 +71,7 @@ export function PollSnapshot({
         )}
         <div style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.6 }}>
           The line marks the <b>5%</b> a party needs (or one electorate) to enter Parliament. <b>Others</b> is the smaller
-          registered parties pollsters group together and don’t report individually — <Link href="/party-inclusion" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>see every contesting party</Link>. Arapono reports polls — it doesn’t predict the result.
+          registered parties pollsters group together and don’t report individually. <Link href="/party-inclusion" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>See every contesting party</Link>. Arapono reports polls. It doesn’t predict the result.
         </div>
       </div>
 

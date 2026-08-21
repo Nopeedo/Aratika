@@ -45,7 +45,7 @@ export function NotifyToggle() {
     if (r.reason === 'ios_install') return setState('ios')
     if (r.reason === 'unsupported') return setState('unsupported')
     if (r.reason === 'denied') return setState('denied')
-    if (r.reason === 'not_configured') return setError('Notifications aren’t switched on for the site yet — check back soon.')
+    if (r.reason === 'not_configured') return setError('Notifications aren’t switched on for the site yet. Check back soon.')
     if (r.reason === 'auth') return setError('Please sign in first.')
     setError('Couldn’t turn on notifications. Please try again.')
   }
@@ -62,7 +62,7 @@ export function NotifyToggle() {
     try {
       const res = await fetch('/api/push/test', { method: 'POST' })
       const j = await res.json().catch(() => ({}))
-      setTestMsg(res.ok ? (j.sent ? 'Sent — check your device 🔔' : 'No devices found for this account.') : 'Couldn’t send a test.')
+      setTestMsg(res.ok ? (j.sent ? 'Sent. Check your device 🔔' : 'No devices found for this account.') : 'Couldn’t send a test.')
     } catch { setTestMsg('Couldn’t send a test.') }
     setBusy(false)
   }

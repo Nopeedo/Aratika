@@ -55,7 +55,7 @@ export function BookmarkButton({
         disabled={authLoading}
         aria-pressed={saved}
         aria-label={saved ? `Stop tracking ${entity.label}` : `Track ${entity.label}`}
-        title={saved ? 'Tracking — in your command centre' : 'Track this'}
+        title={saved ? 'Tracking, in your command centre' : 'Track this'}
         style={{
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           width: 36, height: 36, borderRadius: 10, cursor: authLoading ? 'default' : 'pointer',

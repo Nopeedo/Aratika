@@ -3,7 +3,7 @@ import { LegalPage } from '@/components/legal/legal-page'
 
 export const metadata: Metadata = {
   title: 'Terms of Use',
-  description: 'The terms for using Arapono — an independent, non-partisan New Zealand political information platform.',
+  description: 'The terms for using Arapono, an independent, non-partisan New Zealand political information platform.',
 }
 
 export default function TermsPage() {

@@ -51,7 +51,7 @@ export function StageTracker({ stage, selectCommittee }: { stage: string | null;
       </div>
 
       {currentIdx === -1 && (
-        <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 18px', fontStyle: 'italic' }}>Current stage being confirmed — here are the steps every bill passes through.</p>
+        <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 18px', fontStyle: 'italic' }}>Current stage being confirmed. Here are the steps every bill passes through.</p>
       )}
 
       {/* Seven stages across a phone is about 40px a column — too narrow for

@@ -83,7 +83,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
           {/* ── PARTIES CONTESTING — the fill tiles carry the standings now ──── */}
           <section id="parties" style={{ scrollMarginTop: 80 }}>
             <ZoneHead eyebrow="Who’s standing" title="Parties contesting 2026"
-              sub="Every party registered with the Electoral Commission to contest the party vote, grouped by whether they hold seats now — not ranked. Each tile fills to that party’s current poll-of-polls share, with the 5% threshold marked. The final list is confirmed when nominations close."
+              sub="Every party registered with the Electoral Commission to contest the party vote, grouped by whether they hold seats now rather than ranked. Each tile fills to that party’s current poll-of-polls share, with the 5% threshold marked. The final list is confirmed when nominations close."
               link={{ href: '/party-inclusion', label: 'Who’s included' }} />
             <PartiesContesting pop={pop} />
           </section>
@@ -123,7 +123,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
           {/* ── YOUR ELECTORATE — the closest races, then the marginality map ── */}
           <section id="your-seat" style={{ scrollMarginTop: 80 }}>
             <ZoneHead eyebrow="Your electorate" title="The seats to watch in 2026"
-              sub="Where 2023 was closest is where 2026 will likely be fought hardest — these were the five tightest results."
+              sub="Where 2023 was closest is where 2026 will likely be fought hardest. These were the five tightest results."
               link={{ href: '/battlegrounds', label: 'All battlegrounds' }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               {/* `embedded` drops the teaser's own eyebrow/title so this zone keeps
@@ -137,7 +137,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                 <MapPin style={{ width: 17, height: 17, color: '#dc2626', flexShrink: 0, marginTop: 2 }} />
                 <p style={{ fontSize: 13.5, color: '#3f372f', fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
                   <b style={{ color: INK }}>Those five are the red seats on the map below.</b> It shows all 72 electorates
-                  on the same scale — the closer the 2023 result, the hotter the colour, down to light green for the
+                  on the same scale, so the closer the 2023 result the hotter the colour, down to light green for the
                   safest. Tap any seat for its contest, not just the closest ones.
                 </p>
               </div>
@@ -153,7 +153,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
           {/* ── GET READY — how your vote works ─────────────────────────────── */}
           <section id="your-vote" style={{ scrollMarginTop: 80 }}>
             <ZoneHead eyebrow="Get ready to vote" title="How your vote works"
-              sub="You get two votes under MMP. Here’s what each one does — then sort your enrolment." />
+              sub="You get two votes under MMP. Here’s what each one does." />
             <TwoVotes />
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 14, marginTop: 14 }}>
               {STEPS.map((s) => (
@@ -179,8 +179,8 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                   press standups. */}
               <ZoneHead eyebrow="Watch" title={hasRealDebates ? 'Debates & leader interviews' : 'Leaders & the press'}
                 sub={hasRealDebates
-                  ? 'Leaders in their own words — debates and interviews as they’re published.'
-                  : 'Leaders in their own words — press standups and campaign updates. Debates appear here once they’re broadcast.'} />
+                  ? 'Leaders in their own words. Debates and interviews as they’re published.'
+                  : 'Leaders in their own words. Press standups and campaign updates for now, with debates appearing here once they’re broadcast.'} />
               <VideoSection videos={railVideos} hideHeading />
             </section>
           )}
@@ -191,7 +191,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                 banner that described the poll-of-polls, which no longer sits in
                 this zone. */}
             <ZoneHead eyebrow="Your baseline" title="The Parliament you’re voting to change"
-              sub={`The current make-up, from the ${base.year} General Election — the starting point 2026 changes.`}
+              sub={`The current make-up, from the ${base.year} General Election. This is the starting point 2026 changes.`}
               link={{ href: `/elections/${base.slug}`, label: `Full ${base.year} results` }} />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -220,8 +220,8 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
           <div style={{ display: 'flex', gap: 10, padding: '16px 18px', background: SURFACE, border: `1px dashed ${TERTIARY}`, borderRadius: 14 }}>
             <Info style={{ width: 17, height: 17, color: SECONDARY, flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-              <b style={{ color: INK }}>On election night,</b> live results — party vote, seats, the new hemicycle, and a side-by-side
-              comparison against {base.year} — will appear here as they’re published by the Electoral Commission.
+              <b style={{ color: INK }}>On election night,</b> live results appear here as the Electoral Commission publishes them: party
+              vote, seats, the new hemicycle, and a side-by-side comparison against {base.year}.
             </p>
           </div>
 

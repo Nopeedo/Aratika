@@ -43,8 +43,7 @@ export function HomeMap() {
             </div>
             <h2 style={{ fontSize: 'clamp(28px,5.5vw,35px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>Find your MP</h2>
             <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55, maxWidth: 620 }}>
-              Search your address or tap your electorate to see who represents you and what they stand for — right here.
-              Boundaries are the official Stats NZ 2020 electorates.
+              Search your address, or tap your electorate on the map. Boundaries are the 2020 Stats NZ electorates.
             </p>
           </div>
           <Link href="/map" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>
@@ -58,7 +57,7 @@ export function HomeMap() {
           <MapExperience embedded />
         ) : (
           <div style={{ height: 'clamp(380px, 54vh, 540px)', borderRadius: 18, border: `1px solid ${BORDER}`, background: '#eaf2f7', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, color: TERTIARY, fontFamily: MANROPE, fontSize: 15, fontWeight: 600 }}>
-            <Loader2 className="animate-spin" style={{ width: 18, height: 18, color: JADE }} /> The electorate map loads as you reach it…
+            <Loader2 className="animate-spin" style={{ width: 18, height: 18, color: JADE }} /> Loading the map…
           </div>
         )}
       </div>

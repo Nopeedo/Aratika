@@ -39,7 +39,7 @@ export default function ContactPage() {
               <Mail style={{ width: 21, height: 21, color: JADE }} />
             </div>
             <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>General enquiries</div>
-            <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '4px 0 14px' }}>Questions, feedback, partnerships, or media — drop us a line.</p>
+            <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '4px 0 14px' }}>Questions, feedback, partnerships or media: drop us a line.</p>
             <a href={`mailto:${EMAIL}?subject=Arapono%20enquiry`} style={btn(true)}>Email us <ArrowUpRight style={ic} /></a>
           </div>
 

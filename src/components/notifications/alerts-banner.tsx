@@ -131,7 +131,7 @@ export function AlertsBanner() {
   const copy =
     mode === 'notify' ? 'Get told when something you follow moves.'
     : mode === 'ios' ? 'Add Arapono to your Home Screen to get alerts.'
-    : 'Install Arapono — it opens like an app.'
+    : 'Install Arapono. It opens like an app.'
 
   return (
     <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px)' }}>
@@ -152,7 +152,7 @@ export function AlertsBanner() {
             <>
               <span className="ab-copy" style={{ fontSize: 12.5, color: INK, fontWeight: 600 }}>
                 {result === 'auth' ? 'Sign in to turn these on.'
-                  : result === 'denied' ? 'Your browser is blocking alerts — allow them in site settings.'
+                  : result === 'denied' ? 'Your browser is blocking alerts. Allow them in site settings.'
                   : result === 'error' ? 'That didn’t work. Try again?'
                   : copy}
               </span>
@@ -187,12 +187,12 @@ export function AlertsBanner() {
         {steps && mode === 'ios' && (
           <div style={{ maxWidth: 330, padding: '10px 12px', borderRadius: 12, background: '#fff', border: `1px solid ${JADE}22`, boxShadow: '0 6px 18px rgba(12,14,18,.10)', fontFamily: MANROPE }}>
             <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: INK, lineHeight: 1.7 }}>
-              {needsSafari && <li>Open <b>arapono.org.nz in Safari</b> — this browser can’t install it.</li>}
+              {needsSafari && <li>Open <b>arapono.org.nz in Safari</b>. This browser can’t install it.</li>}
               <li>Tap <b>Share</b> <Share style={{ width: 12, height: 12, verticalAlign: '-1px' }} /> in Safari.</li>
               <li>Tap <b>Add to Home Screen</b> <SquarePlus style={{ width: 12, height: 12, verticalAlign: '-1px' }} />.</li>
               <li>Open it from your Home Screen, then turn alerts on.</li>
             </ol>
-            <div style={{ fontSize: 11.5, color: SUB, marginTop: 8 }}>Arapono isn’t in the App Store — you add it from Safari.</div>
+            <div style={{ fontSize: 11.5, color: SUB, marginTop: 8 }}>There’s no App Store download. You add it from Safari.</div>
           </div>
         )}
       </div>

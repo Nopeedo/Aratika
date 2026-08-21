@@ -24,8 +24,8 @@ import type { BookmarkEntity } from '@/hooks/use-bookmarks'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export const metadata: Metadata = {
-  title: 'Your Command Centre — track what matters',
-  description: 'Track the MPs, parties, issues and bills that matter to you, and Arapono keeps you current with news and video on exactly those things — live through the 2026 election.',
+  title: 'Your Command Centre: track what matters',
+  description: 'Track the MPs, parties, issues and bills that matter to you, and Arapono keeps you current with news and video on exactly those things, live through the 2026 election.',
 }
 
 function shortDate(iso: string | null): string {
@@ -39,17 +39,17 @@ const TRACKABLES = [
   // MPs vote — no API, no feed, and a standing request on data.govt.nz asking
   // for one. Promising it here would be a claim we cannot keep. What is real is
   // the bills they put up and the coverage naming them, both of which we have.
-  { icon: Users, label: 'MPs', body: 'Follow an MP — the bills they put up, the questions they ask Ministers, and the news that names them.' },
-  { icon: Landmark, label: 'Parties', body: 'Follow a party — policy announcements, their news and video, poll movement.' },
-  { icon: Scale, label: 'Policies', body: 'Follow an issue like Housing — the bills on it and where every party stands.' },
-  { icon: Gavel, label: 'Bills', body: 'Follow a bill — every stage from first reading to law, and how MPs voted.' },
-  { icon: Newspaper, label: 'News', body: 'You don’t chase it — news about what you follow comes to you, from credible outlets.' },
-  { icon: Video, label: 'Video', body: 'Leaders, debates and the press — clips tagged to the people and issues you track.' },
+  { icon: Users, label: 'MPs', body: 'Follow an MP for the bills they put up, the questions they ask Ministers, and the news that names them.' },
+  { icon: Landmark, label: 'Parties', body: 'Follow a party for policy announcements, their news and video, and poll movement.' },
+  { icon: Scale, label: 'Policies', body: 'Follow an issue like Housing for the bills on it, and where every party stands.' },
+  { icon: Gavel, label: 'Bills', body: 'Follow a bill through every stage from first reading to law, and see how MPs voted.' },
+  { icon: Newspaper, label: 'News', body: 'You don’t chase it. News about what you follow comes to you, from credible outlets.' },
+  { icon: Video, label: 'Video', body: 'Leaders, debates and the press, tagged to the people and issues you track.' },
 ]
 
 const STEPS = [
-  { n: 1, title: 'Pick what matters', body: 'Tap Track on any MP, party, issue or bill — no sign-up needed to start.' },
-  { n: 2, title: 'We watch it for you', body: 'Bill stages, submission deadlines, news and video on your things — gathered from official and credible sources.' },
+  { n: 1, title: 'Pick what matters', body: 'Tap Track on any MP, party, issue or bill. No sign-up needed to start.' },
+  { n: 2, title: 'We watch it for you', body: 'Bill stages, submission deadlines, news and video on your things, gathered from official and credible sources.' },
   { n: 3, title: 'Walk in ready for 2026', body: 'Your feed stays current, and on election night you track the results live.' },
 ]
 
@@ -145,7 +145,7 @@ export default async function CommandCentrePage() {
       <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px)' }}>
           <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>What you can track</h2>
-          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px', lineHeight: 1.55 }}>Six kinds of things — the last two come to you automatically.</p>
+          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px', lineHeight: 1.55 }}>Six kinds of things. The last two come to you automatically.</p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: 14 }}>
             {TRACKABLES.map((t) => {
               const Icon = t.icon
@@ -168,7 +168,7 @@ export default async function CommandCentrePage() {
       {/* Try it now */}
       <section id="try" style={{ background: SURFACE, borderBottom: `1px solid ${BORDER}`, scrollMarginTop: 72 }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px)' }}>
-          <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Try it now — no sign-up</h2>
+          <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Try it now, no sign-up</h2>
           <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Tap Track on a few and watch your command centre take shape. Sign up later to keep it across devices.</p>
           <CommandCentreTryIt options={trackOptions} />
           {/* The notify and install controls used to sit here. Both need a
@@ -185,7 +185,7 @@ export default async function CommandCentrePage() {
             <Radio style={{ width: 14, height: 14 }} /> A live look
           </div>
           <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>This is the kind of update that lands in your feed</h2>
-          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Real, current headlines and clips — tagged to parties and issues, so only the ones you follow reach you. Sourced, with a link out to the original.</p>
+          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Real, current headlines and clips, tagged to parties and issues, so only the ones you follow reach you. Sourced, with a link out to the original.</p>
 
           {news.length > 0 ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -201,7 +201,7 @@ export default async function CommandCentrePage() {
               ))}
             </div>
           ) : (
-            <p style={{ fontSize: 13.5, color: TERTIARY, fontFamily: MANROPE, fontStyle: 'italic' }}>The live news feed is warming up — check <Link href="/news" style={{ color: JADE }}>Latest</Link> for the current stream.</p>
+            <p style={{ fontSize: 13.5, color: TERTIARY, fontFamily: MANROPE, fontStyle: 'italic' }}>The live news feed is warming up. Check <Link href="/news" style={{ color: JADE }}>Latest</Link> for the current stream.</p>
           )}
 
           {videos.length > 0 && (
@@ -259,7 +259,7 @@ export default async function CommandCentrePage() {
       <section style={{ background: '#fff' }}>
         <div style={{ maxWidth: 760, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px)', textAlign: 'center' }}>
           <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Start with one thing you care about</h2>
-          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Track an MP, a party, or an issue — and let Arapono keep you current all the way to the vote.</p>
+          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Track an MP, a party or an issue, and let Arapono keep you current all the way to the vote.</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
             <Link href="/parties" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 800, color: '#fff', background: JADE, borderRadius: 11, padding: '12px 20px', textDecoration: 'none', fontFamily: MANROPE }}>
               Browse parties <ArrowRight style={{ width: 15, height: 15 }} />

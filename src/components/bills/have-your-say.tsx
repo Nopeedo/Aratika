@@ -66,7 +66,7 @@ export function HaveYourSay({ stage, selectCommittee, slug, officialUrl, submiss
       <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 14px' }}>
         {open ? (
           <>
-            This bill is open for public submissions{selectCommittee ? ` to the ${selectCommittee} Committee` : ''} — anyone can tell the committee what they think, and you don’t need to be an expert.
+            This bill is open for public submissions{selectCommittee ? ` to the ${selectCommittee} Committee` : ''}. Anyone can tell the committee what they think, and you don’t need to be an expert.
             {closeDate ? <> Submissions close <b style={{ color: INK }}>{closeDate}</b>.</> : null}
           </>
         ) : closed ? (

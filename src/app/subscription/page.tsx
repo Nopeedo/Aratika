@@ -28,7 +28,7 @@ const FREE = [
 ]
 const PREMIUM = [
   'Everything in Free',
-  'Take Action studio — draft & export letters and submissions',
+  'Take Action studio: draft and export letters and submissions',
   'Bookmark & track MPs, bills and policies',
   'Activity alerts when things you follow change',
   'Support an independent, non-partisan platform',

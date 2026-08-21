@@ -73,7 +73,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
                     {/* The cell spans the full table, so pinned at left:0 on a
                         phone its label ran off the visible edge mid-word. The
                         inner span wraps to the viewport instead. */}
-                    <span className="coverage-band">Also contesting — not currently in Parliament</span>
+                    <span className="coverage-band">Also contesting, without seats in Parliament</span>
                   </th>
                 </tr>
                 {minors.map((slug) => (

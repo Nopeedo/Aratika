@@ -93,7 +93,7 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
     <div style={{ height: '100%', minHeight: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', border: `1px solid ${BORDER}`, borderRadius: 14, background: SURFACE, padding: 24, color: TERTIARY, fontFamily: MANROPE }}>
       <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
       <div style={{ fontSize: 14, fontWeight: 700, color: SECONDARY }}>Tap a seat</div>
-      <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests — the seats most likely to change hands.</div>
+      <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests, the seats most likely to change hands.</div>
     </div>
   )
 
@@ -118,7 +118,7 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
           ))}
         </div>
         <span style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>
-          The two rolls cover the same land — view one at a time.
+          The two rolls cover the same land, so view one at a time.
         </span>
       </div>
 
@@ -189,7 +189,7 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
               <div style={{ height: '100%', minHeight: 260, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: TERTIARY, fontFamily: MANROPE }}>
                 <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
                 <div style={{ fontSize: 14, fontWeight: 700, color: SECONDARY }}>Tap a seat</div>
-                <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests — the seats most likely to change hands.</div>
+                <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests, the seats most likely to change hands.</div>
               </div>
             ) : info ? (
               // Stack info tile above the photo — a 340px column is too narrow for

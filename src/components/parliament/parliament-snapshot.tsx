@@ -193,7 +193,7 @@ function HemicycleSVG() {
         viewBox={`0 0 ${arc.width} ${arc.height}`}
         width="100%"
         style={{ display: 'block' }}
-        aria-label="Parliament hemicycle — 123 seats coloured by party"
+        aria-label="Parliament hemicycle, 123 seats coloured by party"
         role="img"
       >
         {arc.seats.map((seat, i) => (

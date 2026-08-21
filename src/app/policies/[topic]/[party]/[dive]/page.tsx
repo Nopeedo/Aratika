@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const d = getDeepDive(topic, party, dive)
   if (!t || !p || !d) return { title: 'Breakdown not found' }
   return {
-    title: `${d.title} — ${p.name}`,
+    title: `${d.title} · ${p.name}`,
     description: d.summary.slice(0, 200),
     alternates: { canonical: `${SITE.url}/policies/${topic}/${party}/${dive}` },
   }
