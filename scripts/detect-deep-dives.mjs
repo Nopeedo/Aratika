@@ -121,6 +121,7 @@ if (fresh.length > 0) {
         urgency: 'digest',
         category: 'policy',
         dedup: dedupKey('deep_dive', d.party, d.slug, userId),
+        entity: { kind: 'policy', ref: d.topic ?? d.slug },
         title: 'New policy breakdown',
         body: d.title,
         url: `/policies/${d.topics[0]}/${d.party}/${d.slug}`,

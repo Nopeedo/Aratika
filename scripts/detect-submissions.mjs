@@ -78,6 +78,7 @@ for (const bm of bms || []) {
     urgency: 'immediate',
     category: 'bill_submission',
     dedup: dedupKey('bill_submission', bill.slug, bill.submissionsClose, bm.user_id),
+    entity: { kind: bm.kind, ref: bm.ref_id },
     title: 'You can have your say',
     body: `${bill.title} is open for public submissions until ${fmtDate(bill.submissionsClose)}. You don’t need to be an expert.`,
     url: '/bills',

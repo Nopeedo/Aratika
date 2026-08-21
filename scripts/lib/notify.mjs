@@ -76,11 +76,25 @@ export function inQuietHours() {
 }
 
 // ── Enqueue ───────────────────────────────────────────────────────────────────
-/** Add a pending notification. Idempotent on (user_id, dedup_key). */
-export async function enqueue({ userId, urgency, category, dedup, title, body, url }) {
-  if (DRY) { console.log(`  [DRY enqueue ${urgency}/${category}] ${userId.slice(0, 8)}… "${title}"`); return }
+/**
+ * Add a pending notification. Idempotent on (user_id, dedup_key).
+ *
+ * `entity` names the tracked thing this is ABOUT — { kind, ref } matching a
+ * bookmark. Optional, but pass it wherever the caller knows: without it the
+ * dashboard can only say something changed, not that three things changed on
+ * Shane Jones, which is the difference between a red dot and a useful count.
+ */
+export async function enqueue({ userId, urgency, category, dedup, title, body, url, entity }) {
+  if (DRY) {
+    const on = entity ? ` on ${entity.kind}:${entity.ref}` : ''
+    console.log(`  [DRY enqueue ${urgency}/${category}${on}] ${userId.slice(0, 8)}… "${title}"`)
+    return
+  }
   const { error } = await sb().from('notification_queue').upsert(
-    { user_id: userId, urgency, category, dedup_key: dedup, title, body, url: url || null },
+    {
+      user_id: userId, urgency, category, dedup_key: dedup, title, body, url: url || null,
+      entity_kind: entity?.kind ?? null, entity_ref: entity?.ref ?? null,
+    },
     { onConflict: 'user_id,dedup_key', ignoreDuplicates: true },
   )
   if (error) console.error(`  enqueue failed: ${error.message}`)

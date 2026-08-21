@@ -7,7 +7,7 @@
  * dashboard. Empty state nudges the user toward the things worth tracking.
  */
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink, Swords } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
@@ -16,6 +16,7 @@ import { PARTY_COLORS } from '@/constants/parties'
 import DEFINING_BILL_MAP from '@/constants/defining-bill-map.json'
 import type { PartySlug } from '@/types'
 import type { Bookmark } from '@/hooks/use-bookmarks'
+import { TileUpdates, type TileUpdate } from '@/components/bookmarks/tile-updates'
 import { BORDER, CARD_SHADOW, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
@@ -105,7 +106,26 @@ function hrefFor(b: Bookmark): string {
   }
 }
 
-export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
+export function CommandCentre({ initial, updates: initialUpdates = {} }: {
+  initial: TrackedItem[]
+  /** Unread notifications keyed `kind:ref`, from notification_queue (0014). */
+  updates?: Record<string, TileUpdate[]>
+}) {
+  // Local so marking read clears the badge immediately rather than on reload.
+  const [updates, setUpdates] = useState(initialUpdates)
+  const markRead = useCallback(async (ids: string[]) => {
+    const gone = new Set(ids)
+    setUpdates((u) => Object.fromEntries(
+      Object.entries(u).map(([k, list]) => [k, list.filter((i) => !gone.has(i.id))]),
+    ))
+    try {
+      await fetch('/api/notifications', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids }),
+      })
+    } catch { /* offline — the optimistic clear stands until a reload */ }
+  }, [])
+
   const [items, setItems] = useState<TrackedItem[]>(initial)
 
   // Resolved after mount, never in render: server and browser can straddle
@@ -245,10 +265,16 @@ export function CommandCentre({ initial }: { initial: TrackedItem[] }) {
                   // A bill open for submissions keeps its blue over the top,
                   // because that state matters more than the tile's identity.
                   <div key={b.id} className="party-card" style={{ position: 'relative', border: `3px solid ${open ? '#bfd4fe' : edge}`, borderRadius: 14, background: open ? '#eef4ff' : wash, overflow: 'hidden', boxShadow: CARD_SHADOW }}>
-                    {isUpdated(b) && (
-                      <span className="cc-update-badge" role="status" aria-label={`New updates on ${b.label}`} title="New updates"
-                        style={{ position: 'absolute', top: 7, right: 7, zIndex: 2, width: 12, height: 12, borderRadius: '50%', background: '#e11d48', border: '2px solid #fff' }} />
-                    )}
+                    {/* A count of what actually moved, not a dot. The dot came
+                        from a localStorage "since your last visit" guess: it
+                        could not say what had changed, could not link to it, and
+                        cleared itself on render. These are real unread rows
+                        attributed to this tracked item. */}
+                    <TileUpdates
+                      label={b.label}
+                      updates={updates[`${b.kind}:${b.ref_id}`] ?? []}
+                      onRead={markRead}
+                    />
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px' }}>
                     <Link href={hrefFor(b)} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none' }}>
                       {/* Only kinds with something genuinely per-item get a tile:

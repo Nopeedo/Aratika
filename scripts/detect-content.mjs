@@ -56,22 +56,47 @@ const TAG_TO_KIND = {
   electorates: ['electorate', 'battleground'], bills: ['bill'],
 }
 
+/**
+ * Which tracked thing a story gets FILED under, when it matches several.
+ *
+ * One item can be tagged to a party, an MP and an electorate at once, and a user
+ * may track all three — but dedup is per (user, item), so there is exactly one
+ * row and it needs one owner. Filing it under the narrowest match is what makes
+ * the dashboard count read sensibly: a story naming Luxon belongs on Luxon
+ * rather than on National, where it would sit alongside everything else the
+ * party did that week.
+ *
+ * Splitting into one row per matched entity was the alternative and is worse —
+ * a reader tracking both would be told about the same story twice, and the
+ * volume problem here is already the main complaint.
+ */
+const SPECIFICITY = ['bill', 'mp', 'battleground', 'electorate', 'policy', 'party']
+
 let enqueued = 0
 for (const it of items || []) {
-  const users = new Set()
+  // user -> the best entity match we have for them on this item.
+  const best = new Map()
   for (const [tagField, kinds] of Object.entries(TAG_TO_KIND)) {
     const tags = Array.isArray(it.data?.[tagField]) ? it.data[tagField] : []
-    for (const t of tags) for (const kind of kinds) for (const u of idx[kind].get(lc(t)) || []) users.add(u)
+    for (const t of tags) {
+      for (const kind of kinds) {
+        for (const u of idx[kind].get(lc(t)) || []) {
+          const prev = best.get(u)
+          const rank = SPECIFICITY.indexOf(kind)
+          if (!prev || rank < SPECIFICITY.indexOf(prev.kind)) best.set(u, { kind, ref: t })
+        }
+      }
+    }
   }
-  if (users.size === 0) continue
+  if (best.size === 0) continue
 
   const url = it.data?.link || it.source_url || '/news'
   const body = it.data?.outlet ? `${it.type === 'video' ? 'Video' : 'News'} · ${it.data.outlet}` : (it.type === 'video' ? 'New video' : 'New article')
-  for (const userId of users) {
+  for (const [userId, entity] of best) {
     await enqueue({
       userId, urgency: 'digest', category: it.type,
       dedup: dedupKey('content', it.id, userId),
-      title: it.title, body, url,
+      title: it.title, body, url, entity,
     })
     enqueued++
   }

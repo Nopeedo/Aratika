@@ -11,6 +11,7 @@ import { createClient } from '@/lib/supabase/server'
 import { ManageBillingButton } from '@/components/billing/billing-buttons'
 import { CommandCentre, type TrackedItem } from '@/components/bookmarks/command-centre'
 import { NotificationInbox, type InboxItem } from '@/components/notifications/inbox'
+import type { TileUpdate } from '@/components/bookmarks/tile-updates'
 import { NotifyToggle } from '@/components/notifications/notify-toggle'
 import { EmailToggle } from '@/components/notifications/email-toggle'
 import { InstallButton } from '@/components/notifications/install-button'
@@ -90,6 +91,26 @@ export default async function DashboardPage() {
   ])
   const inbox = (inboxRaw ?? []) as InboxItem[]
   const unread = unreadCount ?? 0
+
+  // Unread notifications grouped by the tracked item that caused them, so each
+  // tile can show a real count instead of a dot. entity_kind/entity_ref were
+  // added in migration 0014; rows predating it carry null and simply do not
+  // contribute to any tile, which is honest — we cannot reconstruct which
+  // bookmark matched a story after the fact.
+  const { data: taggedRaw } = await supabase
+    .from('notification_queue')
+    .select('id, category, title, url, created_at, entity_kind, entity_ref')
+    .is('read_at', null)
+    .not('entity_kind', 'is', null)
+    .order('created_at', { ascending: false })
+    .limit(200)
+  const tileUpdates: Record<string, TileUpdate[]> = {}
+  for (const r of taggedRaw ?? []) {
+    const key = `${r.entity_kind}:${r.entity_ref}`
+    ;(tileUpdates[key] ||= []).push({
+      id: r.id, category: r.category, title: r.title, url: r.url, created_at: r.created_at,
+    })
+  }
 
   // Enrich tracked MP/party cards with display details (photo, party, leader) — server-side
   // so we don't ship the full MP/party dataset to the client.
@@ -213,7 +234,7 @@ export default async function DashboardPage() {
             <Bookmark style={{ width: 18, height: 18, color: JADE }} />
             <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Your command centre</h2>
           </div>
-          <CommandCentre initial={enriched} />
+          <CommandCentre initial={enriched} updates={tileUpdates} />
 
           {/* The inbox, directly under what it reports on. Every alert already
               carried a headline and a destination; until now it existed only as

@@ -86,6 +86,8 @@ if (changes.length > 0) {
       urgency: c.urgency,
       category: 'bill_status',
       dedup: dedupKey('bill_status', change.slug, change.to, bm.user_id),
+      // The bookmark that matched — so the dashboard files it under that bill.
+      entity: { kind: bm.kind, ref: bm.ref_id },
       title: c.title,
       body: c.body(change.title),
       url: '/bills',
