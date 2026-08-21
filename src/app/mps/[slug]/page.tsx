@@ -32,6 +32,9 @@ import { resolveBillLink, normBillTitle, type BillLink } from '@/lib/bills/bill-
 import { StatusBadge } from '@/components/ui/badge'
 import { MPCard } from '@/components/mp/mp-card'
 import { SectionDivider } from '@/components/ui/section-divider'
+import { MpCoverage } from '@/components/mps/mp-coverage'
+import { getNewsForMp } from '@/lib/news/live'
+import { getVideosForMp } from '@/lib/news/videos'
 import { formatNumber } from '@/lib/utils/format'
 import { BackLink } from '@/components/ui/back-link'
 import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
@@ -107,6 +110,13 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
   const isActive = mp.status === 'active'
   const isMinister = !!mp.title && /minister/i.test(mp.title)
   const policies = policiesForMP(mp)
+
+  // Coverage tagged to this MP. Server-side so the profile renders complete;
+  // both helpers filter in the query — see getNewsForMp.
+  const [mpNews, mpVideos] = await Promise.all([
+    getNewsForMp(slug, 5),
+    getVideosForMp(slug, 3),
+  ])
 
   // 54th-Parliament bill activity from the official bills API (mps-bill-activity.ts)
   // + the members' bill ballot (mps-members-bills.ts).
@@ -487,6 +497,24 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
             {mp.website && <LinkRow icon={Globe} label="Party website" href={mp.website} />}
             {mp.email && <LinkRow icon={Mail} label={mp.email} href={`mailto:${mp.email}`} />}
           </Card>
+        </div>
+      </div>
+
+      {/* ═══════════════ Latest coverage ═══════════════ */}
+      {/* Below the record, because the page leads with what this MP has actually
+          done and then shows what is being reported about them. Arriving here
+          from a notification, the reader wants to see which items are new — so
+          anything published since their last visit is flagged. */}
+      <div style={{ borderTop: `1px solid ${BORDER}` }}>
+        <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '26px 36px 32px' }}>
+          <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px' }}>
+            Latest coverage
+          </h2>
+          <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 16px', lineHeight: 1.5 }}>
+            News and video mentioning {mp.name}, published by others — inclusion is not endorsement,
+            and the outlet is named on every item.
+          </p>
+          <MpCoverage slug={slug} name={mp.name} accent={party.color} news={mpNews} videos={mpVideos} />
         </div>
       </div>
 

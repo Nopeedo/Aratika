@@ -203,3 +203,22 @@ export async function getVideosForParty(slug: string, limit = 4): Promise<VideoI
     .sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
     .slice(0, limit)
 }
+
+/** Video tagged to one MP — see getNewsForMp for why this filters in the query. */
+export async function getVideosForMp(slug: string, limit = 3): Promise<VideoItem[]> {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('content_items')
+    .select('id, title, data, created_at')
+    .eq('type', 'video')
+    .eq('status', 'approved')
+    .filter('data->mps', 'cs', JSON.stringify([slug]))
+    .order('created_at', { ascending: false })
+    .limit(limit * 5)
+  const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 86_400_000).toISOString().slice(0, 10)
+  return (data ?? [])
+    .map(toVideoItem)
+    .filter((v) => !v.pubDate || v.pubDate.slice(0, 10) >= cutoff)
+    .sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+    .slice(0, limit)
+}
