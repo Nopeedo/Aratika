@@ -193,7 +193,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Dana_Kirkpatrick"
   },
   "barbara-kuriger": {
-    "bio": "Barbara Joan Kuriger is a New Zealand politician who has served as Deputy Speaker of the New Zealand House of Representatives since December 2023. A member of the National Party, Kuriger was first elected as the Member of Parliament (MP) for Taranaki-King Country since 2014.",
+    "bio": "Barbara Joan Kuriger is a New Zealand politician who has served as Deputy Speaker of the New Zealand House of Representatives since December 2023. A member of the National Party, Kuriger was first elected as the Member of Parliament (MP) for Taranaki-King Country in 2014.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Barbara_Kuriger"
   },
   "ingrid-leary": {
@@ -297,7 +297,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Tamatha_Paul"
   },
   "chris-penk": {
-    "bio": "Christopher Aidan Penk is a New Zealand politician who has been a member of Parliament in the House of Representatives for the National Party since 2017. Following the 2023 New Zealand general election, he assumed the building and construction, land and information, veterans, associate defence, and associate immigration portfolios, and later the small business and manufacturing portfolio in 2025. In 2026, Penk gained the defence and space portfolios, along with the portfolios for the intelligence agencies New Zealand Security Intelligence Service (NZSIS) and the Government Communications…",
+    "bio": "Christopher Aidan Penk is a New Zealand politician who has been a member of Parliament in the House of Representatives with the National Party representing the western/northern Auckland electorates of Helensville and Kaipara ki Mahurangi since 2017.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Chris_Penk"
   },
   "winston-peters": {
