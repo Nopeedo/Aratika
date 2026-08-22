@@ -33,6 +33,17 @@ create table if not exists public.email_alerts (
 -- denial rather than an oversight.
 alter table public.email_alerts enable row level security;
 
+-- The GRANT is not optional and is not implied by any of the above. 0009 and
+-- 0010 created tables with RLS policies and no grants, and notifications were
+-- dead for 40 scheduled runs because "the service role bypasses RLS" was taken
+-- to mean it needs no privileges. It does: with no grant, every role is refused
+-- at the table before RLS is consulted. This migration made the same mistake on
+-- its first run and was caught by the job failing loudly rather than sending.
+--
+-- service_role only. No grant to `authenticated` or `anon`, because no client
+-- ever reads this.
+grant all on public.email_alerts to service_role;
+
 comment on table public.email_alerts is
   'One row per alert email actually sent. The primary key is the send lock — claim before sending, delete the claim if the send throws.';
 comment on column public.email_alerts.dedup_key is

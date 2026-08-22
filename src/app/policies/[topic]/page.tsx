@@ -18,7 +18,6 @@ import { TopicSwitcher } from '@/components/policy/topic-switcher'
 import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BillsForTopic } from '@/components/bills/bills-for-topic'
-import { BackLink } from '@/components/ui/back-link'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 
@@ -52,7 +51,9 @@ export default async function PolicyTopicPage(
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) clamp(18px, 5vw, 36px)' }}>
-          <BackLink fallbackHref="/policies" label="All policy topics" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 22 }} />
+          {/* No "All policy topics" link any more. /policies redirects here, so
+              it pointed at the page you were already on. The chip row below is
+              the topic navigation, and it is always in reach. */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <div className={t.color} style={{ width: 56, height: 56, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               {Icon && <Icon className={`size-7 ${t.textColor}`} />}

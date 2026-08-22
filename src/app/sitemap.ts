@@ -101,9 +101,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // ── Policy ────────────────────────────────────────────────────────────────
   if (isEnabled('policies')) {
-    entries.push(entry('/policies', 0.9, 'weekly'))
+    // /policies is not listed: it now redirects to the first topic, and a
+    // sitemap must not list a URL that redirects — the same rule /compare is
+    // held to above. The topic pages carry the content and the priority.
     for (const topic of POLICY_TOPIC_ORDER) {
-      entries.push(entry(`/policies/${topic}`, 0.8, 'weekly'))
+      entries.push(entry(`/policies/${topic}`, 0.9, 'weekly'))
     }
 
     // Per-party positions: only list combinations that actually have an approved

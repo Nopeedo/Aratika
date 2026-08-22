@@ -43,16 +43,39 @@ const DRY = process.argv.includes('--dry-run')
 const here = dirname(fileURLToPath(import.meta.url))
 const root = join(here, '..')
 
-/** Keyed on the bill slug ALONE, deliberately.
- *
- *  detect-submissions.mjs includes the closing date in its key so that a
- *  genuinely re-opened window notifies once more. That is right for push, which
- *  is cheap and dismissible. It is wrong for email: Parliament corrects a close
- *  date often enough, and each correction would put a second copy of the same
- *  message in everyone's inbox. Email errs toward once, ever. A genuinely
- *  re-opened window still reaches them by push. */
 const ALERT_KIND = 'bill_submission'
-const keyOf = (slug) => `${ALERT_KIND}:${slug}`
+
+/** Parliament's own id for a bill, out of its bills.parliament.nz URL.
+ *
+ *  NOT the slug. bills-54.ts slugs are derived from the title and rebuilt every
+ *  morning, and bills get retitled — commonly at select committee, which is the
+ *  exact stage this email fires on. A retitle would change the slug, miss the
+ *  ledger, and re-email everyone tracking it. The GUID never moves.
+ *
+ *  Falls back to the slug if the URL shape ever changes, which restores the old
+ *  rename-resends behaviour rather than silently keying everything to one value. */
+function billKey(bill) {
+  const m = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i.exec(bill.officialUrl || '')
+  return m ? m[1] : bill.slug
+}
+
+/** One alert per (bookmark, bill).
+ *
+ *  Keyed on the BOOKMARK's ref_id, not the bill's slug: they are different slug
+ *  spaces and this pair matched on title, not id. The bookmark tracked
+ *  "bill-members-2026-302" while bills-54 calls the same bill
+ *  "criminal-records-clean-slate-additional-eligibility-amendment-bill".
+ *
+ *  The bill is in the key too because one editorial "defining bill" bookmark can
+ *  span several real bills, and each open window is its own thing to tell
+ *  someone about.
+ *
+ *  No closing date, unlike detect-submissions.mjs, which includes it so a
+ *  re-opened window notifies again. Right for push: cheap, dismissible. Wrong
+ *  for email — Parliament corrects close dates, and every correction would put a
+ *  second copy of the same message in every tracker's inbox. Email errs toward
+ *  once, ever; a genuinely re-opened window still reaches them by push. */
+const keyOf = (refId, bill) => `${ALERT_KIND}:${refId}:${billKey(bill)}`
 
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
 
@@ -89,14 +112,14 @@ if (e1) { console.error(e1.message); process.exit(1) }
 const pairs = []
 for (const bm of bms || []) {
   const direct = bySlug.get(bm.ref_id) || byTitle.get(normTitle(bm.label))
-  if (direct) { pairs.push({ userId: bm.user_id, bill: direct, href: bm.href }); continue }
+  if (direct) { pairs.push({ userId: bm.user_id, refId: bm.ref_id, bill: direct, href: bm.href }); continue }
   const mapped = DEFINING_MAP[bm.ref_id]
   if (!Array.isArray(mapped)) continue
   for (const slug of mapped) {
     const bill = bySlug.get(slug)
     // The editorial page is what they tracked and what they should come back
     // to, even where it covers several bills.
-    if (bill) pairs.push({ userId: bm.user_id, bill, href: bm.href })
+    if (bill) pairs.push({ userId: bm.user_id, refId: bm.ref_id, bill, href: bm.href })
   }
 }
 console.log(`tracked-bill bookmarks: ${(bms || []).length} → matches on open bills: ${pairs.length}`)
@@ -111,7 +134,7 @@ const { data: already, error: e3 } = await sb
   .eq('kind', ALERT_KIND)
 if (e3) { console.error(`email_alerts unreadable: ${e3.message}`); process.exit(1) }
 const sentSet = new Set((already || []).map((r) => `${r.user_id}|${r.dedup_key}`))
-const due = pairs.filter((p) => !sentSet.has(`${p.userId}|${keyOf(p.bill.slug)}`))
+const due = pairs.filter((p) => !sentSet.has(`${p.userId}|${keyOf(p.refId, p.bill)}`))
 console.log(`already alerted: ${pairs.length - due.length} → due now: ${due.length}`)
 if (due.length === 0) { console.log('Nothing to send.'); process.exit(0) }
 
@@ -179,7 +202,7 @@ const emailFor = (bill, href) => {
 let sent = 0
 let skipped = 0
 for (const j of jobs) {
-  const dedup = keyOf(j.bill.slug)
+  const dedup = keyOf(j.refId, j.bill)
 
   // Claim BEFORE sending. The insert either succeeds (we own this send) or
   // violates the primary key (someone already sent it, or a concurrent run just
