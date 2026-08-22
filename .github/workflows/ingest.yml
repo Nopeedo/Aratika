@@ -55,9 +55,14 @@ jobs:
 
       # Email users when a bill they track opens for public submissions — the one
       # proactive notification we send: rare, actionable, and mission-core. Sends
-      # from hello@arapono.org.nz via Zoho SMTP; exits cleanly (no send, no state
-      # change) while the SMTP secrets are absent. Dedupe state is a committed
-      # file of opaque hashes — see the commit-back step below.
+      # from hello@arapono.org.nz via Zoho SMTP; exits cleanly (no send, nothing
+      # recorded) while the SMTP secrets are absent.
+      #
+      # Dedupe is a row in public.email_alerts, claimed before each send. It used
+      # to be a state file committed back by a step here, which meant "has this
+      # person been emailed?" hung on a git push winning a race against every
+      # other workflow pushing to main. It lost, the file never landed, and the
+      # job stood ready to re-send the same alert every morning.
       - name: Send submission alerts
         if: ${{ !cancelled() }}
         run: node scripts/alert-submission-emails.mjs
@@ -67,17 +72,6 @@ jobs:
           ZOHO_SMTP_USER: ${{ secrets.ZOHO_SMTP_USER }}
           ZOHO_SMTP_PASS: ${{ secrets.ZOHO_SMTP_PASS }}
 
-      # Persist the sent-alert hashes so tomorrow's run doesn't re-email anyone.
-      - name: Commit alert state
-        if: ${{ !cancelled() }}
-        run: |
-          if [ -n "$(git status --porcelain scripts/.state/)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add scripts/.state/
-            git commit -m "Record sent submission alerts"
-            git pull --rebase origin main
-            git push
-          else
-            echo "No new alerts recorded."
-          fi
+      # No commit-back step. The send ledger is public.email_alerts, written in
+      # the same transaction that claims the send, so there is nothing here that
+      # can fail after the mail has gone out.

@@ -11,8 +11,18 @@
  *   × bookmarks (kind='bill', matched by slug then normalised title — the same
  *     fallback the command centre uses)
  *   × auth users (email from Supabase admin API)
- *   minus alerts already sent (scripts/.state/submission-alerts.json — sha256
- *     hashes of user|bill so the committed state file identifies no one).
+ *   minus alerts already sent (public.email_alerts — see 0015).
+ *
+ * Dedupe lives in the DATABASE, not in a committed state file. It used to be
+ * scripts/.state/submission-alerts.json, written after each send and committed
+ * back by the ingest workflow. That made "has this person already been emailed?"
+ * depend on a git push succeeding inside CI, and when the push lost a race the
+ * file simply never appeared — leaving the job ready to re-send the same email
+ * every morning. Exactly that happened on 21 August 2026.
+ *
+ * The claim is the INSERT: the primary key on (user_id, dedup_key) means two
+ * concurrent runs cannot both win, and nothing depends on a later write landing.
+ * If the send then throws, the claim is deleted so a future run retries.
  *
  * Sends via the existing hello@arapono.org.nz Zoho mailbox (SMTP, SPF/DKIM
  * already verified) — no third-party mail provider. Needs ZOHO_SMTP_USER and
@@ -24,8 +34,7 @@
 import { createClient } from '@supabase/supabase-js'
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
-import { createHash } from 'node:crypto'
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 
@@ -33,7 +42,17 @@ dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.
 const DRY = process.argv.includes('--dry-run')
 const here = dirname(fileURLToPath(import.meta.url))
 const root = join(here, '..')
-const STATE_PATH = join(here, '.state', 'submission-alerts.json')
+
+/** Keyed on the bill slug ALONE, deliberately.
+ *
+ *  detect-submissions.mjs includes the closing date in its key so that a
+ *  genuinely re-opened window notifies once more. That is right for push, which
+ *  is cheap and dismissible. It is wrong for email: Parliament corrects a close
+ *  date often enough, and each correction would put a second copy of the same
+ *  message in everyone's inbox. Email errs toward once, ever. A genuinely
+ *  re-opened window still reaches them by push. */
+const ALERT_KIND = 'bill_submission'
+const keyOf = (slug) => `${ALERT_KIND}:${slug}`
 
 const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
 
@@ -82,11 +101,17 @@ for (const bm of bms || []) {
 }
 console.log(`tracked-bill bookmarks: ${(bms || []).length} → matches on open bills: ${pairs.length}`)
 
-// ── Dedupe against alerts already sent (opaque hashes only) ─────────────────
-const state = existsSync(STATE_PATH) ? JSON.parse(readFileSync(STATE_PATH, 'utf8')) : { sent: [] }
-const sentSet = new Set(state.sent)
-const keyOf = (userId, slug) => createHash('sha256').update(`${userId}|${slug}`).digest('hex').slice(0, 24)
-const due = pairs.filter((p) => !sentSet.has(keyOf(p.userId, p.bill.slug)))
+// ── Dedupe against alerts already sent ───────────────────────────────────────
+// A cheap pre-filter so the log reads honestly and we don't attempt a claim per
+// bookmark every morning. It is NOT the safety net — the primary key is. Two
+// runs overlapping would both pass this filter and only one would win the claim.
+const { data: already, error: e3 } = await sb
+  .from('email_alerts')
+  .select('user_id, dedup_key')
+  .eq('kind', ALERT_KIND)
+if (e3) { console.error(`email_alerts unreadable: ${e3.message}`); process.exit(1) }
+const sentSet = new Set((already || []).map((r) => `${r.user_id}|${r.dedup_key}`))
+const due = pairs.filter((p) => !sentSet.has(`${p.userId}|${keyOf(p.bill.slug)}`))
 console.log(`already alerted: ${pairs.length - due.length} → due now: ${due.length}`)
 if (due.length === 0) { console.log('Nothing to send.'); process.exit(0) }
 
@@ -152,19 +177,37 @@ const emailFor = (bill, href) => {
 }
 
 let sent = 0
+let skipped = 0
 for (const j of jobs) {
+  const dedup = keyOf(j.bill.slug)
+
+  // Claim BEFORE sending. The insert either succeeds (we own this send) or
+  // violates the primary key (someone already sent it, or a concurrent run just
+  // did). Claiming afterwards would leave a window where the mail is out and
+  // nothing records it — which is the failure we are here to remove.
+  const { error: claimErr } = await sb
+    .from('email_alerts')
+    .insert({ user_id: j.userId, dedup_key: dedup, kind: ALERT_KIND })
+  if (claimErr) {
+    // 23505 = unique_violation. Anything else is a real fault, and sending
+    // without a durable record is how people get emailed twice, so don't.
+    if (claimErr.code === '23505') { skipped++; console.log(`· already claimed, skipping ${j.email}`) }
+    else console.error(`✗ ${j.email} — could not claim (${claimErr.message}); not sending`)
+    continue
+  }
+
   const { subject, text, html } = emailFor(j.bill, j.href)
   try {
     await transporter.sendMail({ from: `"Arapono" <${SMTP_USER}>`, to: j.email, subject, text, html })
-    sentSet.add(keyOf(j.userId, j.bill.slug))
     sent++
     console.log(`✓ sent to ${j.email}`)
   } catch (err) {
-    console.error(`✗ ${j.email} — ${err.message}`)
+    // Release the claim so a later run retries. Better a possible duplicate
+    // after a genuine SMTP failure than an alert silently never sent.
+    const { error: relErr } = await sb.from('email_alerts').delete().eq('user_id', j.userId).eq('dedup_key', dedup)
+    console.error(`✗ ${j.email} — ${err.message}${relErr ? ` (claim NOT released: ${relErr.message})` : ' (claim released, will retry)'}`)
   }
 }
 
-mkdirSync(dirname(STATE_PATH), { recursive: true })
-writeFileSync(STATE_PATH, JSON.stringify({ sent: [...sentSet] }, null, 1))
-console.log(`\nDone. Sent ${sent}/${jobs.length}; state updated (${sentSet.size} total alerts recorded).`)
+console.log(`\nDone. Sent ${sent}/${jobs.length}${skipped ? `, ${skipped} already claimed` : ''}. Dedupe is in public.email_alerts — no state file to commit.`)
 process.exit(0)
