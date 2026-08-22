@@ -43,13 +43,18 @@ console.log(`Candidates approved in the last ${WINDOW_HOURS}h: ${items?.length ?
 if (!items?.length) process.exit(0)
 
 // Who tracks which seat, by display name.
-const { data: bms, error: e2 } = await sb().from('bookmarks').select('user_id, ref_id').in('kind', ['electorate', 'battleground'])
+// kind, ref_id AND href. `kind` because a seat can be tracked two ways and the
+// notification has to file under the one this reader actually chose; `href`
+// because those two ways have different pages — the map for an electorate, the
+// contest page for a battleground — and sending an electorate follower to the
+// battleground page is not where they asked to be.
+const { data: bms, error: e2 } = await sb().from('bookmarks').select('user_id, kind, ref_id, href').in('kind', ['electorate', 'battleground'])
 if (e2) { console.error(e2.message); process.exit(1) }
 const byElectorate = new Map()
 for (const b of bms || []) {
   const key = lc(b.ref_id)
-  if (!byElectorate.has(key)) byElectorate.set(key, new Set())
-  byElectorate.get(key).add(b.user_id)
+  if (!byElectorate.has(key)) byElectorate.set(key, [])
+  byElectorate.get(key).push(b)
 }
 
 let enqueued = 0
@@ -59,21 +64,33 @@ for (const it of items) {
   const electorate = d.electorate
   if (!name || !electorate) continue
 
-  const users = byElectorate.get(lc(electorate))
-  if (!users?.size) continue
+  const followers = byElectorate.get(lc(electorate))
+  if (!followers?.length) continue
 
   // partyLabel is the source's own wording, kept because it is what the row was
   // staged with; the mapped slug can be null where the label is unrecognised.
   const party = d.partyLabel || d.party
-  for (const userId of users) {
+  // One row per follower, filed under the seat THEY track and linked to the
+  // page they track it on.
+  //
+  // This passed no entity at all, so a new challenger appearing — which the
+  // site treats as urgent, and which therefore never expires — counted on
+  // nobody's tile and appeared on no tracked item's page. The dashboard filters
+  // on entity_kind being present, so these were push-only and invisible in the
+  // app entirely.
+  const seen = new Set()
+  for (const b of followers) {
+    if (seen.has(b.user_id)) continue
+    seen.add(b.user_id)
     await enqueue({
-      userId,
+      userId: b.user_id,
       urgency: 'digest',
       category: 'candidate',
-      dedup: dedupKey('candidate', it.id, userId),
+      dedup: dedupKey('candidate', it.id, b.user_id),
+      entity: { kind: b.kind, ref: b.ref_id },
       title: `New candidate in ${electorate}`,
       body: party ? `${name} is standing for ${party}.` : `${name} is standing.`,
-      url: d.electorateSlug ? `/battlegrounds/${d.electorateSlug}` : '/battlegrounds',
+      url: b.href || (d.electorateSlug ? `/battlegrounds/${d.electorateSlug}` : '/battlegrounds'),
     })
     enqueued++
   }

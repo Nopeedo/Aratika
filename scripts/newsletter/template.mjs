@@ -10,7 +10,19 @@
 
 const JADE = '#1F8A4C', ESPRESSO = '#2A1206', WARM = '#5b3d2a', INK = '#0c0e12', BODY = '#3f372f', SUB = '#6b6157', FAINT = '#9a9186'
 const LINE = '#e9e4db', CREAM = '#f4f1ec', GROUND = '#f4f2ec'
-const PARTY_TILES = ['#0A5BA8', '#D5202B', '#1F8A4C', '#F5C518', '#181a1f', '#B11226']
+// Slug AND colour, because all six tiles used to link to /parties: six
+// different party colours, one destination, so the National tile and the Green
+// tile did the same thing. Mirrors PARTY_COLORS in src/constants/parties.ts —
+// this file is .mjs and cannot import the TS constants, so if a party colour
+// changes there it has to change here too.
+const PARTY_TILES = [
+  { slug: 'national', color: '#0A5BA8' },
+  { slug: 'labour',   color: '#D5202B' },
+  { slug: 'green',    color: '#1F8A4C' },
+  { slug: 'act',      color: '#F5C518' },
+  { slug: 'nzfirst',  color: '#181a1f' },
+  { slug: 'tpm',      color: '#B11226' },
+]
 
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
@@ -31,7 +43,7 @@ function trackedRow(t) {
     <table role="presentation" cellpadding="0" cellspacing="0" width="100%"><tr>
       <td width="14" valign="top" style="padding-top:5px"><div style="width:9px;height:9px;border-radius:50%;background:${t.dot || FAINT}"></div></td>
       <td style="font-family:Arial,sans-serif">
-        <div style="font-size:14.5px;font-weight:800;color:${INK};line-height:1.35">${esc(t.title)}${t.chip ? ` <span style="font-size:10.5px;font-weight:800;color:${JADE};background:#eef7f0;padding:2px 8px;border-radius:10px">${esc(t.chip)}</span>` : ''}</div>
+        <div style="font-size:14.5px;font-weight:800;color:${INK};line-height:1.35">${t.url ? `<a href="${esc(t.url)}" style="color:${INK};text-decoration:none">${esc(t.title)}</a>` : esc(t.title)}${t.chip ? ` <span style="font-size:10.5px;font-weight:800;color:${JADE};background:#eef7f0;padding:2px 8px;border-radius:10px">${esc(t.chip)}</span>` : ''}</div>
         ${t.meta ? `<div style="font-size:13px;color:${SUB};line-height:1.5;margin-top:3px">${t.meta}</div>` : ''}
       </td>
     </tr></table>
@@ -61,14 +73,14 @@ export function renderNewsletter({ name, daysToElection, tracked, general, siteU
   const g = general || {}
   const generalCard = card(`${eyebrow('Across the motu this week')}${h2('The week in brief')}
     <table role="presentation" cellpadding="0" cellspacing="0" width="100%">${(g.stories || []).map(storyRow).join('')}</table>
-    ${g.video ? `<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border:1px solid ${LINE};border-radius:12px;margin-top:12px"><tr><td style="padding:11px 13px;font-family:Arial,sans-serif"><div style="font-size:13.5px;font-weight:800;color:${INK}">▶ ${esc(g.video.title)}</div><div style="font-size:12px;color:${FAINT};margin-top:2px">${esc(g.video.meta || '')}</div></td></tr></table>` : ''}
+    ${g.video ? `<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border:1px solid ${LINE};border-radius:12px;margin-top:12px"><tr><td style="padding:11px 13px;font-family:Arial,sans-serif"><div style="font-size:13.5px;font-weight:800;color:${INK}">${g.video.url ? `<a href="${esc(g.video.url)}" style="color:${INK};text-decoration:none">▶ ${esc(g.video.title)}</a>` : `▶ ${esc(g.video.title)}`}</div><div style="font-size:12px;color:${FAINT};margin-top:2px">${esc(g.video.meta || '')}</div></td></tr></table>` : ''}
     ${g.stats ? `<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin-top:14px"><tr>
-      <td width="33%" style="padding:0 4px"><table role="presentation" width="100%" style="border:1px solid ${LINE};border-radius:12px"><tr><td style="padding:12px 4px;text-align:center;font-family:Arial,sans-serif"><div style="font-size:24px;font-weight:800;color:${JADE}">${g.stats.passed ?? 0}</div><div style="font-size:11px;color:${SUB}">passed into law</div></td></tr></table></td>
-      <td width="33%" style="padding:0 4px"><table role="presentation" width="100%" style="border:1px solid ${LINE};border-radius:12px"><tr><td style="padding:12px 4px;text-align:center;font-family:Arial,sans-serif"><div style="font-size:24px;font-weight:800;color:${JADE}">${g.stats.newBills ?? 0}</div><div style="font-size:11px;color:${SUB}">new bills</div></td></tr></table></td>
-      <td width="33%" style="padding:0 4px"><table role="presentation" width="100%" style="border:1px solid ${LINE};border-radius:12px"><tr><td style="padding:12px 4px;text-align:center;font-family:Arial,sans-serif"><div style="font-size:24px;font-weight:800;color:${JADE}">${g.stats.submissions ?? 0}</div><div style="font-size:11px;color:${SUB}">open for submissions</div></td></tr></table></td>
+      <td width="33%" style="padding:0 4px"><table role="presentation" width="100%" style="border:1px solid ${LINE};border-radius:12px"><tr><td style="padding:12px 4px;text-align:center;font-family:Arial,sans-serif"><a href="${site}/bills" style="text-decoration:none;display:block"><div style="font-size:24px;font-weight:800;color:${JADE}">${g.stats.passed ?? 0}</div><div style="font-size:11px;color:${SUB}">passed into law</div></a></td></tr></table></td>
+      <td width="33%" style="padding:0 4px"><table role="presentation" width="100%" style="border:1px solid ${LINE};border-radius:12px"><tr><td style="padding:12px 4px;text-align:center;font-family:Arial,sans-serif"><a href="${site}/bills" style="text-decoration:none;display:block"><div style="font-size:24px;font-weight:800;color:${JADE}">${g.stats.newBills ?? 0}</div><div style="font-size:11px;color:${SUB}">new bills</div></a></td></tr></table></td>
+      <td width="33%" style="padding:0 4px"><table role="presentation" width="100%" style="border:1px solid ${LINE};border-radius:12px"><tr><td style="padding:12px 4px;text-align:center;font-family:Arial,sans-serif"><a href="${site}/bills" style="text-decoration:none;display:block"><div style="font-size:24px;font-weight:800;color:${JADE}">${g.stats.submissions ?? 0}</div><div style="font-size:11px;color:${SUB}">open for submissions</div></a></td></tr></table></td>
     </tr></table>` : ''}`)
 
-  const tiles = PARTY_TILES.map((c) => `<td style="padding:0 3px"><a href="${site}/parties" style="display:block;width:44px;height:44px;border-radius:9px;background:${c}">&nbsp;</a></td>`).join('')
+  const tiles = PARTY_TILES.map((p) => `<td style="padding:0 3px"><a href="${site}/parties/${p.slug}" title="${p.slug}" style="display:block;width:44px;height:44px;border-radius:9px;background:${p.color}">&nbsp;</a></td>`).join('')
 
   const html = `<!-- Arapono Weekly -->
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:${GROUND};margin:0;padding:0">
@@ -102,7 +114,8 @@ export function renderNewsletter({ name, daysToElection, tracked, general, siteU
           <tr><td align="center" style="padding:20px">
             <div style="font-family:Arial,sans-serif;font-size:18px;font-weight:800;color:${ESPRESSO}">${daysToElection} days to go — are you enrolled?</div>
             <div style="font-family:Arial,sans-serif;font-size:14px;color:${WARM};margin:4px 0 14px">Two minutes, and it’s the one thing that has to happen first.</div>
-            <a href="${site}/guide" style="display:inline-block;background:${JADE};color:#ffffff;font-family:Arial,sans-serif;font-size:14.5px;font-weight:800;padding:12px 22px;border-radius:12px;text-decoration:none">Check or enrol</a>
+            <a href="https://vote.nz/enrolling/enrol-or-update/" style="display:inline-block;background:${JADE};color:#ffffff;font-family:Arial,sans-serif;font-size:14.5px;font-weight:800;padding:12px 22px;border-radius:12px;text-decoration:none">Check or enrol at vote.nz</a>
+            <div style="font-family:Arial,sans-serif;font-size:12.5px;color:${WARM};margin-top:10px">New to it all? <a href="${site}/guide" style="color:${ESPRESSO};font-weight:700">Start with our guide</a> instead.</div>
           </td></tr>
         </table>
 

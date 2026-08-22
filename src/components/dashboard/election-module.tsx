@@ -11,8 +11,9 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
-import { ArrowRight, MapPin, Vote, Info } from 'lucide-react'
+import { ArrowRight, MapPin, Vote, Info, CalendarClock } from 'lucide-react'
 import { ELECTION_DATE } from '@/components/homepage/election-countdown'
+import CALENDAR from '@/constants/electoral-calendar.json'
 import { INK, MANROPE } from '@/constants/theme'
 
 /** Warm cream, and the same cream at an alpha. The panel used pure white and a
@@ -24,10 +25,41 @@ const soft = (a: number) => `rgba(245,233,221,${a})`
 export interface ElectionPartyLine { slug: string; short: string; color: string; seats2023: number }
 export interface ElectionElectorate { label: string; href: string }
 
+/** "25 October". Every milestone falls in the election year, so the year would
+ *  be noise on all ten of them. */
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+function readable(iso: string): string {
+  const [, m, d] = iso.split('-').map(Number)
+  return `${d} ${MONTHS[m - 1]}`
+}
+
 export function DashboardElection({ parties, electorates }: { parties: ElectionPartyLine[]; electorates: ElectionElectorate[] }) {
   const [days, setDays] = useState<number | null>(null)
+  // The next dated milestone from the Electoral Commission's own timetable.
+  //
+  // detect-electoral-dates.mjs pushes these as they approach, and the dashboard
+  // never showed them: it builds tiles from notifications that name a tracked
+  // item, and an enrolment deadline belongs to no bookmark, so every one of
+  // them was push-only and invisible here. Reading the calendar directly is
+  // better than inventing an entity to hang them on — the date is a fact about
+  // the election, true whether or not a notification fired, and it does not
+  // bring back the inbox to say so.
+  const [next, setNext] = useState<{ label: string; date: string; days: number } | null>(null)
   useEffect(() => {
     setDays(Math.ceil((ELECTION_DATE.getTime() - Date.now()) / 86_400_000))
+    // Resolved after mount, never in render: server and browser can straddle
+    // midnight, and a date computed during render is a hydration mismatch.
+    const todayNZ = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })
+    const upcoming = (CALENDAR.milestones as { date: string; label: string }[])
+      .filter((m) => m.date >= todayNZ)
+      .sort((a, b) => a.date.localeCompare(b.date))[0]
+    if (upcoming) {
+      setNext({
+        label: upcoming.label,
+        date: readable(upcoming.date),
+        days: Math.round((Date.parse(`${upcoming.date}T00:00:00Z`) - Date.parse(`${todayNZ}T00:00:00Z`)) / 86_400_000),
+      })
+    }
   }, [])
 
   return (
@@ -45,10 +77,30 @@ export function DashboardElection({ parties, electorates }: { parties: ElectionP
             {days === null ? '—' : days > 0 ? days : '0'}
           </div>
           <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(245,233,221,.6)', fontFamily: MANROPE, textTransform: 'uppercase', letterSpacing: '.06em', marginTop: 3 }}>
-            {days !== null && days <= 0 ? 'Election day' : 'days to go (approx)'}
+            {days !== null && days <= 0 ? 'Election day' : 'days to go'}
           </div>
         </div>
       </div>
+
+      {/* Next milestone from the Electoral Commission timetable. Placed above
+          everything else in the panel because it is the only thing here with a
+          deadline attached: missing it costs someone their vote. */}
+      {next && (
+        <Link href="/elections/2026" style={{
+          display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none',
+          background: soft(.08), border: `1px solid ${soft(.18)}`, borderRadius: 12,
+          padding: '11px 13px', marginBottom: 16,
+        }}>
+          <CalendarClock style={{ width: 16, height: 16, color: CREAM, flexShrink: 0 }} />
+          <span style={{ flex: 1, minWidth: 0 }}>
+            <span style={{ display: 'block', fontSize: 13.5, fontWeight: 800, color: CREAM, fontFamily: MANROPE, lineHeight: 1.3 }}>{next.label}</span>
+            <span style={{ display: 'block', fontSize: 11.5, color: 'rgba(245,233,221,.62)', fontFamily: MANROPE, marginTop: 2 }}>
+              {next.date} · {next.days === 0 ? 'today' : next.days === 1 ? 'tomorrow' : `in ${next.days} days`}
+            </span>
+          </span>
+          <ArrowRight style={{ width: 14, height: 14, color: soft(.7), flexShrink: 0 }} />
+        </Link>
+      )}
 
       {/* Your parties — seats they hold going in */}
       <div style={{ marginBottom: 16 }}>

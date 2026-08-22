@@ -64,7 +64,7 @@ const video = (content || []).find((c) => c.type === 'video')
 
 const general = {
   stories: news.slice(0, 5).map((n) => ({ title: n.title, blurb: n.summary || '', url: n.data?.link || n.source_url || `${SITE}/news`, source: n.data?.outlet || '' })),
-  video: video ? { title: video.title, meta: video.data?.outlet || 'from the debates rail' } : null,
+  video: video ? { title: video.title, meta: video.data?.outlet || 'from the debates rail', url: video.data?.link || video.source_url || `${SITE}/news` } : null,
   stats,
 }
 
@@ -85,9 +85,27 @@ if (SELF) {
 }
 
 // all bookmarks grouped by user (for the personalised block)
-const { data: bms } = await sb().from('bookmarks').select('user_id, kind, ref_id, label')
+// `href` is the page the reader tracked from. Without it every row in the
+// personalised block was dead text: the one section built around what someone
+// follows was the one section they could not click.
+const { data: bms } = await sb().from('bookmarks').select('user_id, kind, ref_id, label, href')
 const bmByUser = new Map()
 for (const b of bms || []) { if (!bmByUser.has(b.user_id)) bmByUser.set(b.user_id, []); bmByUser.get(b.user_id).push(b) }
+
+/** Where a tracked row points.
+ *
+ *  The bookmark's own href first — it is the page they tracked from, and for
+ *  bills it is the ONLY link that resolves: /bills/[slug] serves the ten curated
+ *  bills and the defining ones, not the daily register, so /bills/<register-slug>
+ *  is a 404. The per-kind fallbacks are for bookmarks saved before href was
+ *  stored, and bills fall back to the tracker rather than to a guess. */
+function linkFor(b) {
+  if (b.href) return `${SITE}${b.href}`
+  if (b.kind === 'party') return `${SITE}/parties/${b.ref_id}`
+  if (b.kind === 'mp') return `${SITE}/mps/${b.ref_id}`
+  if (b.kind === 'policy') return `${SITE}/policies/${b.ref_id}`
+  return `${SITE}/bills`
+}
 
 function trackedFor(userId) {
   const out = []
@@ -95,13 +113,13 @@ function trackedFor(userId) {
     if (out.length >= 5) break
     if (b.kind === 'bill') {
       const bill = billStatusBySlug.get(b.ref_id) || billByTitle.get(lc(b.label).replace(/[^a-z0-9]/g, ''))
-      if (bill) out.push({ dot: '#3730a3', title: bill.title, chip: bill.status, meta: 'A bill you follow.' })
+      if (bill) out.push({ dot: '#3730a3', title: bill.title, chip: bill.status, meta: 'A bill you follow.', url: linkFor(b) })
     } else if (b.kind === 'party' || b.kind === 'mp' || b.kind === 'policy') {
       const field = b.kind === 'party' ? 'parties' : b.kind === 'mp' ? 'mps' : 'topics'
       const matches = tagIndex.filter((t) => t[field].includes(lc(b.ref_id)))
       if (matches.length) {
         const p = PARTY[b.ref_id]
-        out.push({ dot: p?.color || '#9a9186', title: p?.name || b.label, chip: `${matches.length} new`, meta: matches[0].c.title })
+        out.push({ dot: p?.color || '#9a9186', title: p?.name || b.label, chip: `${matches.length} new`, meta: matches[0].c.title, url: linkFor(b) })
       }
     }
   }
