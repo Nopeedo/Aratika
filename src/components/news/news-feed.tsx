@@ -208,10 +208,14 @@ const arrowBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'cen
 
 function Thumb({ src, gov, outlet, portrait }: { src: string | null; gov: boolean; outlet: string; portrait?: { src: string; name: string } | null }) {
   const [err, setErr] = useState(false)
-  const box: React.CSSProperties = { width: 116, height: 88, flexShrink: 0, borderRadius: 10, overflow: 'hidden', background: gov ? '#fff7e6' : '#eef4ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }
+  // Width/height live in globals.css (.nf-thumb), not here: at 375px this box
+  // took 116 of the card's 273 usable pixels and left 141 for the headline,
+  // which broke it to roughly one word a line. An inline width cannot be
+  // overridden by a media query.
+  const box: React.CSSProperties = { flexShrink: 0, borderRadius: 10, overflow: 'hidden', background: gov ? '#fff7e6' : '#eef4ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }
   if (src && !err) {
     return (
-      <div style={box}>
+      <div className="nf-thumb" style={box}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setErr(true)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
       </div>
@@ -221,14 +225,14 @@ function Thumb({ src, gov, outlet, portrait }: { src: string | null; gov: boolea
   // their name as alt text so it is announced as a person, not a story photo.
   if (portrait) {
     return (
-      <div style={box} title={portrait.name}>
+      <div className="nf-thumb" style={box} title={portrait.name}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={portrait.src} alt={portrait.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center' }} />
       </div>
     )
   }
   return (
-    <div style={box} aria-hidden title={outlet}>
+    <div className="nf-thumb" style={box} aria-hidden title={outlet}>
       {gov ? <Landmark style={{ width: 24, height: 24, color: '#b4810b' }} /> : <Newspaper style={{ width: 24, height: 24, color: '#5b7cc4' }} />}
     </div>
   )

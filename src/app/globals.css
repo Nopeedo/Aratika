@@ -456,3 +456,22 @@ a, button, [role='button'], summary {
 @media (max-width: 700px) {
   .keydates-row { grid-template-columns: 1fr 1fr !important; }
 }
+
+/* A nowrap status chip beside flexible text is a squeeze, not a layout. On the
+   per-topic bills band, "Committee of whole House" measured 178px of a 288px
+   row at 375px, leaving 49px for the bill title — seven lines of one word each.
+   Below 560px the chip drops to its own line and the title gets the full row. */
+@media (max-width: 560px) {
+  .bft-row { flex-wrap: wrap; }
+  /* 25px = the status icon (15) plus the row gap (10), so the chip sits under
+     the title rather than under the icon. */
+  .bft-chip { flex-basis: 100%; margin-left: 25px; }
+}
+
+/* News card thumbnail. Sized here rather than inline so this media query can
+   reach it: at 375px the 116px thumb took 116 of the card's 273 usable pixels
+   and left 141 for the headline, which broke to about one word a line. */
+.nf-thumb { width: 116px; height: 88px; }
+@media (max-width: 420px) {
+  .nf-thumb { width: 88px; height: 66px; }
+}

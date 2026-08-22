@@ -34,12 +34,12 @@ export function BillsForTopic({ topic, label }: { topic: PolicyTopic; label: str
         {show.map((b) => {
           const isLaw = b.status === 'Royal Assent'
           return (
-            <div key={b.slug + b.number} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10 }}>
+            <div key={b.slug + b.number} className="bft-row" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10 }}>
               {isLaw
                 ? <BadgeCheck style={{ width: 15, height: 15, color: '#166638', flexShrink: 0 }} />
                 : <Clock style={{ width: 15, height: 15, color: '#b45309', flexShrink: 0 }} />}
               <span style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 600, color: INK, fontFamily: MANROPE, lineHeight: 1.4 }}>{b.title}</span>
-              <span style={{ fontSize: 10.5, fontWeight: 800, whiteSpace: 'nowrap', color: isLaw ? '#065f46' : '#92400e', background: isLaw ? '#d1fae5' : '#fff7e6', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
+              <span className="bft-chip" style={{ fontSize: 10.5, fontWeight: 800, whiteSpace: 'nowrap', color: isLaw ? '#065f46' : '#92400e', background: isLaw ? '#d1fae5' : '#fff7e6', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
                 {isLaw ? 'Now law' : b.status}
               </span>
             </div>
