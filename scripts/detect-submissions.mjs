@@ -54,7 +54,18 @@ const openBySlug = new Map(open.map((b) => [b.slug, b]))
 const openByTitle = new Map(open.map((b) => [normTitle(b.title), b]))
 const DEFINING_MAP = JSON.parse(readFileSync(join(root, 'src/constants/defining-bill-map.json'), 'utf8'))
 
-const { data: bms, error } = await sb().from('bookmarks').select('user_id, ref_id, label').eq('kind', 'bill')
+// `kind` and `href` are selected, not just filtered on and assumed.
+//
+// `kind` was filtered in the query but never selected, so `bm.kind` was
+// undefined and every one of these landed in the queue with entity_kind NULL —
+// which meant the notification never attached to the tile for the bill it was
+// about. The count stayed at zero on the very item the reader was tracking.
+//
+// `href` is where the reader actually tracked the bill from, and it is the only
+// reliable link: /bills/[slug] serves the ten curated bills and the defining
+// ones, NOT the 270-bill daily register, so /bills/bill-government-2026-259 is
+// a 404. Three of the five tracked bills are register slugs.
+const { data: bms, error } = await sb().from('bookmarks').select('user_id, kind, ref_id, label, href').eq('kind', 'bill')
 if (error) { console.error(error.message); process.exit(1) }
 
 /** How close is "closing soon". Three days leaves a weekend to write something
@@ -81,7 +92,7 @@ for (const bm of bms || []) {
     entity: { kind: bm.kind, ref: bm.ref_id },
     title: 'You can have your say',
     body: `${bill.title} is open for public submissions until ${fmtDate(bill.submissionsClose)}. You don’t need to be an expert.`,
-    url: '/bills',
+    url: bm.href || '/bills',
   })
   enqueued++
 
@@ -105,9 +116,13 @@ for (const bm of bms || []) {
       urgency: 'immediate',
       category: 'bill_submission',
       dedup: dedupKey('bill_submission_closing', bill.slug, bill.submissionsClose, bm.user_id),
+      // Same entity as the opening notice. It was missing here, so the reminder
+      // that matters most — the one sent as the window shuts — was the one that
+      // never showed on the bill's tile.
+      entity: { kind: bm.kind, ref: bm.ref_id },
       title: daysLeft <= 0 ? 'Last day to have your say' : `Submissions close ${when}`,
       body: `${bill.title} closes for public submissions ${when} (${fmtDate(bill.submissionsClose)}). After that the committee stops accepting them.`,
-      url: '/bills',
+      url: bm.href || '/bills',
     })
     closingSoon++
   }

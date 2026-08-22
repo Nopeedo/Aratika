@@ -59,17 +59,25 @@ const byTitle = new Map(openBills.map((b) => [normTitle(b.title), b]))
 const DEFINING_MAP = JSON.parse(readFileSync(join(root, 'src/constants/defining-bill-map.json'), 'utf8'))
 
 // ── Who tracks them ──────────────────────────────────────────────────────────
-const { data: bms, error: e1 } = await sb.from('bookmarks').select('user_id, ref_id, label').eq('kind', 'bill')
+// `href` comes along because it is the page the reader tracked the bill from,
+// and the only link that reliably resolves. This email used to send everyone to
+// /bills, the whole tracker, leaving them to find their bill in a list of 270 —
+// and /bills/[slug] is not a substitute: it serves the ten curated bills and the
+// defining ones, so /bills/bill-government-2026-259 is a 404. The bookmark knows
+// (/bills/… for curated, /legislation/… for the register), so ask it.
+const { data: bms, error: e1 } = await sb.from('bookmarks').select('user_id, ref_id, label, href').eq('kind', 'bill')
 if (e1) { console.error(e1.message); process.exit(1) }
 const pairs = []
 for (const bm of bms || []) {
   const direct = bySlug.get(bm.ref_id) || byTitle.get(normTitle(bm.label))
-  if (direct) { pairs.push({ userId: bm.user_id, bill: direct }); continue }
+  if (direct) { pairs.push({ userId: bm.user_id, bill: direct, href: bm.href }); continue }
   const mapped = DEFINING_MAP[bm.ref_id]
   if (!Array.isArray(mapped)) continue
   for (const slug of mapped) {
     const bill = bySlug.get(slug)
-    if (bill) pairs.push({ userId: bm.user_id, bill })
+    // The editorial page is what they tracked and what they should come back
+    // to, even where it covers several bills.
+    if (bill) pairs.push({ userId: bm.user_id, bill, href: bm.href })
   }
 }
 console.log(`tracked-bill bookmarks: ${(bms || []).length} → matches on open bills: ${pairs.length}`)
@@ -88,7 +96,9 @@ if (e2) { console.error(e2.message); process.exit(1) }
 const emailOf = new Map((usersPage?.users || []).map((u) => [u.id, u.email]))
 
 const jobs = due.map((p) => ({ ...p, email: emailOf.get(p.userId) })).filter((p) => p.email)
-for (const j of jobs) console.log(`  → ${j.email}: "${j.bill.title.slice(0, 60)}" closes ${j.bill.submissionsClose}`)
+// The link is logged because it is the part that was silently wrong: the send
+// reported success while pointing every reader at the tracker index.
+for (const j of jobs) console.log(`  → ${j.email}: "${j.bill.title.slice(0, 60)}" closes ${j.bill.submissionsClose} · link ${j.href || '/bills (no href on bookmark)'}`)
 
 if (DRY) { console.log('\n(dry run — nothing sent, state unchanged)'); process.exit(0) }
 
@@ -100,8 +110,12 @@ if (!SMTP_USER || !SMTP_PASS) {
 }
 const transporter = nodemailer.createTransport({ host: 'smtp.zoho.com.au', port: 465, secure: true, auth: { user: SMTP_USER, pass: SMTP_PASS } })
 
-const emailFor = (bill) => {
+const SITE = 'https://arapono.org.nz'
+
+const emailFor = (bill, href) => {
   const closes = fmtDate(bill.submissionsClose)
+  // Falls back to the tracker only when a bookmark predates href being stored.
+  const billUrl = `${SITE}${href || '/bills'}`
   const member = bill.member ? bill.member.split(',').reverse().join(' ').replace(/\b(Rt\s+Hon|Hon|Dr)\b\.?/g, '').replace(/\s+/g, ' ').trim() : null
   const subject = `Have your say: ${bill.title} is open for submissions`
   const text = [
@@ -115,10 +129,9 @@ const emailFor = (bill) => {
     `Anyone can make a submission — you don't need to be an expert.`,
     ``,
     `Make a submission at Parliament: ${bill.officialUrl}`,
-    `Read our plain-language breakdown: https://arapono.org.nz/bills`,
+    `Read our plain-language breakdown: ${billUrl}`,
     ``,
-    `—`,
-    `You're receiving this because you track this bill on Arapono. To stop, untrack it in your command centre: https://arapono.org.nz/dashboard`,
+    `You're receiving this because you track this bill on Arapono. To stop, untrack it in your command centre: ${SITE}/dashboard`,
     `Arapono is free and non-partisan. We take no position on this bill.`,
   ].filter((l) => l !== null).join('\n')
   const html = `
@@ -132,15 +145,15 @@ const emailFor = (bill) => {
       <tr><td style="color:#667066;padding-right:10px">Closes</td><td><b>${closes}</b></td></tr>
     </tbody></table>
     <p style="margin:20px 0"><a href="${bill.officialUrl}" style="background:#1F8A4C;color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px 18px;border-radius:10px;display:inline-block">Make a submission at Parliament</a></p>
-    <p style="font-size:13px;margin:0 0 24px"><a href="https://arapono.org.nz/bills" style="color:#1F8A4C">Read our plain-language breakdown first →</a></p>
-    <p style="font-size:12px;color:#667066;line-height:1.6;border-top:1px solid #e4ebe2;padding-top:12px">You're receiving this because you track this bill on Arapono. <a href="https://arapono.org.nz/dashboard" style="color:#667066">Untrack it</a> to stop these alerts. Arapono is free and non-partisan — we take no position on this bill.</p>
+    <p style="font-size:13px;margin:0 0 24px"><a href="${billUrl}" style="color:#1F8A4C">Read our plain-language breakdown first →</a></p>
+    <p style="font-size:12px;color:#667066;line-height:1.6;border-top:1px solid #e4ebe2;padding-top:12px">You're receiving this because you track this bill on Arapono. <a href="${SITE}/dashboard" style="color:#667066">Untrack it</a> to stop these alerts. Arapono is free and non-partisan — we take no position on this bill.</p>
   </div>`
   return { subject, text, html }
 }
 
 let sent = 0
 for (const j of jobs) {
-  const { subject, text, html } = emailFor(j.bill)
+  const { subject, text, html } = emailFor(j.bill, j.href)
   try {
     await transporter.sendMail({ from: `"Arapono" <${SMTP_USER}>`, to: j.email, subject, text, html })
     sentSet.add(keyOf(j.userId, j.bill.slug))
