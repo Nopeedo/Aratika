@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
-import { PartySwitcher } from '@/components/parties/party-switcher'
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { PartyTileGrid, PlainPartyTile } from '@/components/parties/party-tile'
@@ -144,14 +143,20 @@ export default function PartiesPage() {
 
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 36px' }}>
 
-        {/* The same switcher that sits on every party page, so the "click
-            through the parties" motion starts here rather than beginning with a
-            grid of cards and only appearing once you are already inside one.
-            The cards below still work — this is the fast path for a reader who
-            knows which party they want, and the slow one for a reader browsing. */}
-        <div style={{ marginBottom: 34 }}>
-          <PartySwitcher current="" />
-        </div>
+        {/* No PartySwitcher here, though it is still the top layer of every
+            /parties/[slug] page. There it earns its place: that page has no
+            other index, so without it comparing two parties means coming back
+            here first. On THIS page the tiles below are already a complete,
+            clickable index of the same thirteen parties, so the switcher put
+            every party on screen twice, a few centimetres apart.
+
+            The trade is real and worth naming: the pill row was the only place
+            a reader saw all thirteen without scrolling, so on a phone the
+            parties without seats now sit below six full-height tiles. They are
+            still listed in full, equally and alphabetically, in their own
+            section — the inclusion rule is about presence and equal treatment,
+            not about being first. Keeping a pill row for the smaller parties
+            alone would have broken that rule rather than served it. */}
 
         {/* Solid party-colour tiles, the same format as the Election Centre's
             contesting grid — the coloured-edge-on-white cards didn't read as
