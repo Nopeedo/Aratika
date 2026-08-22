@@ -86,8 +86,13 @@ export function inQuietHours() {
  */
 export async function enqueue({ userId, urgency, category, dedup, title, body, url, entity }) {
   if (DRY) {
-    const on = entity ? ` on ${entity.kind}:${entity.ref}` : ''
-    console.log(`  [DRY enqueue ${urgency}/${category}${on}] ${userId.slice(0, 8)}… "${title}"`)
+    // The destination is printed, not just the subject. Where a notification
+    // SENDS someone has been wrong twice — submission alerts pointed at the
+    // /bills index instead of the bill, and deep dives sent topic trackers to
+    // whichever topic happened to be first on the dive. Both were invisible in
+    // a dry run that only showed the title.
+    const on = entity ? ` on ${entity.kind}:${entity.ref}` : ' UNATTACHED'
+    console.log(`  [DRY enqueue ${urgency}/${category}${on}] ${userId.slice(0, 8)}… "${title}" → ${url || '(no url)'}`)
     return
   }
   const { error } = await sb().from('notification_queue').upsert(

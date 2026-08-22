@@ -34,12 +34,19 @@ console.log(`Recent approved news/video (last ${WINDOW_HOURS}h): ${items?.length
 // Bookmarks that can match content, indexed by kind → ref_id → Set(userId).
 const { data: bms, error: e2 } = await sb().from('bookmarks').select('user_id, kind, ref_id').in('kind', ['party', 'mp', 'policy', 'electorate', 'bill', 'battleground'])
 if (e2) { console.error(e2.message); process.exit(1) }
+// Each entry carries the bookmark's OWN ref_id, not only the user. Matching is
+// case-insensitive on purpose (ingest tags and bookmark refs are written by
+// different code paths), but what gets STORED as entity_ref has to be the
+// bookmark's exact ref_id — the dashboard looks tiles up with .eq(), so a tag
+// that differs only in case would file the notification against a tile that
+// does not exist. Every current tag happens to be a lowercase slug, so this has
+// been correct by luck rather than by construction.
 const idx = { party: new Map(), mp: new Map(), policy: new Map(), electorate: new Map(), bill: new Map(), battleground: new Map() }
 for (const b of bms || []) {
   const m = idx[b.kind]; if (!m) continue
   const key = lc(b.ref_id)
-  if (!m.has(key)) m.set(key, new Set())
-  m.get(key).add(b.user_id)
+  if (!m.has(key)) m.set(key, [])
+  m.get(key).push({ userId: b.user_id, refId: b.ref_id })
 }
 
 // data-tag field → bookmark kind it maps to.
@@ -80,10 +87,10 @@ for (const it of items || []) {
     const tags = Array.isArray(it.data?.[tagField]) ? it.data[tagField] : []
     for (const t of tags) {
       for (const kind of kinds) {
-        for (const u of idx[kind].get(lc(t)) || []) {
-          const prev = best.get(u)
+        for (const b of idx[kind].get(lc(t)) || []) {
+          const prev = best.get(b.userId)
           const rank = SPECIFICITY.indexOf(kind)
-          if (!prev || rank < SPECIFICITY.indexOf(prev.kind)) best.set(u, { kind, ref: t })
+          if (!prev || rank < SPECIFICITY.indexOf(prev.kind)) best.set(b.userId, { kind, ref: b.refId })
         }
       }
     }

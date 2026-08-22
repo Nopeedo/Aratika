@@ -98,13 +98,16 @@ if (fresh.length > 0) {
   const { data: bms, error } = await sb().from('bookmarks').select('user_id, kind, ref_id').in('kind', ['policy', 'party'])
   if (error) { console.error(error.message); process.exit(1) }
 
+  // Carries each bookmark's OWN ref_id, not just the lowercased join key:
+  // entity_ref must match bookmarks.ref_id exactly or the per-tile query finds
+  // nothing.
   const byTopic = new Map()
   const byParty = new Map()
   for (const b of bms || []) {
     const m = b.kind === 'party' ? byParty : byTopic
     const key = lc(b.ref_id)
-    if (!m.has(key)) m.set(key, new Set())
-    m.get(key).add(b.user_id)
+    if (!m.has(key)) m.set(key, [])
+    m.get(key).push({ userId: b.user_id, refId: b.ref_id })
   }
   console.log(`Trackers: ${byTopic.size} topic(s), ${byParty.size} part(ies)`)
 
@@ -112,19 +115,39 @@ if (fresh.length > 0) {
   for (const d of fresh) {
     // A dive can sit on two topics, and a user can track both the party and the
     // topic. Dedup is on the dive, so all of those collapse to one notification.
-    const users = new Set()
-    for (const t of d.topics) for (const u of byTopic.get(lc(t)) || []) users.add(u)
-    for (const u of byParty.get(lc(d.party)) || []) users.add(u)
-    for (const userId of users) {
+    // One notification per user, filed under the thing THEY track and linked
+    // through THEIR topic.
+    //
+    // The entity was `{ kind: 'policy', ref: d.topic ?? d.slug }` and a dive
+    // record has `topics`, plural — there is no `d.topic`, so it always fell
+    // through to the dive's own slug. Every one of these was filed under a
+    // policy ref that matches no bookmark that has ever existed, which is worse
+    // than null: it looks attached and counts toward nothing.
+    //
+    // The link had the same shape of fault. It always used topics[0], so a
+    // reader who follows Housing and gets a dive filed under both Economy and
+    // Housing was sent to the Economy route for it. Now they land on Housing.
+    const targets = new Map()
+    for (const t of d.topics) {
+      for (const b of byTopic.get(lc(t)) || []) {
+        if (!targets.has(b.userId)) targets.set(b.userId, { entity: { kind: 'policy', ref: b.refId }, topic: t })
+      }
+    }
+    // Party trackers keep the dive's own primary topic in the link — they did
+    // not ask for a topic, so there is no better one to choose.
+    for (const b of byParty.get(lc(d.party)) || []) {
+      if (!targets.has(b.userId)) targets.set(b.userId, { entity: { kind: 'party', ref: b.refId }, topic: d.topics[0] })
+    }
+    for (const [userId, t] of targets) {
       await enqueue({
         userId,
         urgency: 'digest',
         category: 'policy',
         dedup: dedupKey('deep_dive', d.party, d.slug, userId),
-        entity: { kind: 'policy', ref: d.topic ?? d.slug },
+        entity: t.entity,
         title: 'New policy breakdown',
         body: d.title,
-        url: `/policies/${d.topics[0]}/${d.party}/${d.slug}`,
+        url: `/policies/${t.topic}/${d.party}/${d.slug}`,
       })
       enqueued++
     }

@@ -67,7 +67,14 @@ if (changes.length > 0) {
   const changedByTitle = new Map(changes.map((c) => [normTitle(c.title), c]))
   const DEFINING_MAP = JSON.parse(readFileSync(join(root, 'src/constants/defining-bill-map.json'), 'utf8'))
 
-  const { data: bms, error } = await sb().from('bookmarks').select('user_id, ref_id, label').eq('kind', 'bill')
+  // `kind` and `href` are SELECTED, not merely filtered on. The entity below
+  // reads bm.kind, which was undefined because only user_id/ref_id/label were
+  // fetched — so every bill-status notification landed with entity_kind NULL and
+  // the comment claiming the dashboard files it under that bill was wrong.
+  // `href` is the page the reader tracked from and the only link that resolves:
+  // /bills/[slug] does not serve the daily register, so /bills/<register-slug>
+  // is a 404. Same fault, same fix, as detect-submissions.mjs.
+  const { data: bms, error } = await sb().from('bookmarks').select('user_id, kind, ref_id, label, href').eq('kind', 'bill')
   if (error) { console.error(error.message); process.exit(1) }
 
   let enqueued = 0
@@ -90,7 +97,7 @@ if (changes.length > 0) {
       entity: { kind: bm.kind, ref: bm.ref_id },
       title: c.title,
       body: c.body(change.title),
-      url: '/bills',
+      url: bm.href || '/bills',
     })
     enqueued++
   }

@@ -67,13 +67,18 @@ const { data: bms, error: e2 } = await sb()
   .from('bookmarks').select('user_id, kind, ref_id').in('kind', ['party', 'policy'])
 if (e2) { console.error(e2.message); process.exit(1) }
 
+// The bookmark's OWN ref_id is carried alongside the user, not just the
+// lowercased join key. entity_ref has to match bookmarks.ref_id exactly or the
+// dashboard's per-tile query finds nothing — matching case-insensitively and
+// then storing the folded value would attach the notification to a tile that
+// does not exist.
 const byParty = new Map()
 const byTopic = new Map()
 for (const b of bms || []) {
   const m = b.kind === 'party' ? byParty : byTopic
   const key = lc(b.ref_id)
-  if (!m.has(key)) m.set(key, new Set())
-  m.get(key).add(b.user_id)
+  if (!m.has(key)) m.set(key, [])
+  m.get(key).push({ userId: b.user_id, refId: b.ref_id })
 }
 console.log(`Trackers: ${byParty.size} part(ies), ${byTopic.size} topic(s)`)
 
@@ -86,10 +91,20 @@ for (const it of current) {
   // a tracker. Skip loudly rather than enqueue a notification going nowhere.
   if (!party || !topic) { console.warn(`  ⚠ skipped ${it.id}: missing party or topic`); skipped++; continue }
 
-  const users = new Set()
-  for (const u of byParty.get(party) || []) users.add(u)
-  for (const u of byTopic.get(topic) || []) users.add(u)
-  if (users.size === 0) continue
+  // One notification per user, filed under the tracked thing it is about.
+  //
+  // This passed no entity at all, so every position update landed with
+  // entity_kind NULL: it counted on nobody's tile and appeared on no tracked
+  // item's page. Following "Economy" and being told a party moved on Economy,
+  // with the Economy tile still reading zero, is the red dot all over again.
+  //
+  // Topic before party, the same order of specificity detect-content uses: a
+  // reader tracking both wants "National on Economy" under Economy, which is
+  // the narrower of the two things they asked to hear about.
+  const targets = new Map()
+  for (const b of byTopic.get(topic) || []) targets.set(b.userId, { kind: 'policy', ref: b.refId })
+  for (const b of byParty.get(party) || []) if (!targets.has(b.userId)) targets.set(b.userId, { kind: 'party', ref: b.refId })
+  if (targets.size === 0) continue
 
   const partyName = it.data?.partyName || it.data?.party
   const topicLabel = it.data?.topicLabel || it.data?.topic
@@ -99,9 +114,10 @@ for (const it of current) {
   // shows; fall back to the summary if an entry has none.
   const stance = String(it.data?.stance || it.summary || '').trim()
 
-  for (const userId of users) {
+  for (const [userId, entity] of targets) {
     await enqueue({
       userId,
+      entity,
       urgency: 'digest',
       category: 'position',
       // On the position, not the topic or party — so tracking both gets one.
