@@ -115,12 +115,15 @@ const PARTIES = [
     education: 'https://www.labour.org.nz/apprenticeshipboost',
   } },
   { slug: 'green',    name: 'Green',          sources: { default: 'https://www.greens.org.nz/policy', manifesto: 'https://assets.nationbuilder.com/beachheroes/pages/17789/attachments/original/1688864858/Final-online-PDF-pages.pdf' } },
-  { slug: 'act',      name: 'ACT',            sources: { default: 'https://www.act.org.nz/policies', economy: 'https://www.act.org.nz/economy' } },
+  // /policies is a section index with no prose, so a topic drafted from it
+  // finds nothing. Each section has its own page; list them as they are needed.
+  { slug: 'act',      name: 'ACT',            sources: { default: 'https://www.act.org.nz/policies', economy: 'https://www.act.org.nz/economy', 'democracy-government': 'https://www.act.org.nz/policies/democracy' } },
   { slug: 'nzfirst',  name: 'NZ First',       sources: { default: 'https://www.nzfirst.nz/2023_policies', manifesto: 'https://www.nzfirst.nz/2023_policies' } },
   { slug: 'tpm',      name: 'Te Pāti Māori',  sources: { default: 'https://www.maoriparty.org.nz/policy' } },
   // TOP keeps one page per policy (opportunity.org.nz, formerly top.org.nz) — point each topic at its dedicated page.
   { slug: 'top',      name: 'The Opportunities Party', sources: {
     default:        'https://www.opportunity.org.nz/policy',
+    'democracy-government': 'https://www.opportunity.org.nz/clean_up_politics',
     economy:        'https://www.opportunity.org.nz/tax-reset',
     housing:        'https://www.opportunity.org.nz/affordable_housing',
     health:         'https://www.opportunity.org.nz/healthy_people',
@@ -139,7 +142,7 @@ const PARTIES = [
   // Registered 5 August 2026. Without these the pipeline cannot draft or even
   // record an absence for them, which is how a party ends up with a profile
   // on the site and no route to policy coverage at all.
-  { slug: 'alliance',     name: 'Alliance',       sources: { default: 'https://allianceparty.nz/policies/' } },
+  { slug: 'alliance',     name: 'Alliance',       sources: { default: 'https://allianceparty.nz/what-we-stand-for/' } },
   { slug: 'free-palestine', name: 'Free Palestine', sources: { default: 'https://palfree.nz/' } },
   { slug: 'nz-loyal',     name: 'NZ Loyal',       sources: { default: 'https://nzloyal.com/policy/' } },
   { slug: 'te-tai-tokerau-party', name: 'Te Tai Tokerau Party', sources: { default: 'https://tetaitokerauparty.org.nz/' } },
