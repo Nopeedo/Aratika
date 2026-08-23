@@ -1,0 +1,58 @@
+name: Detect new party policy pages
+
+# The daily position refresh watches pages we already point at. It cannot see a
+# page that did not exist when we last looked — which is the more common event
+# during a campaign. A party announces a policy on a topic we have nothing for,
+# and the topic stays empty because nothing was configured to look there.
+#
+# That is not hypothetical: ACT's conservation page was reachable from their own
+# policy index the whole time their environment topic read as a gap, and "no
+# clear position found" looks identical whether a party is silent or we pointed
+# at the wrong URL.
+#
+# This crawls each party's policy index, diffs the links against a committed
+# baseline, and reports pages that are new AND on a topic we hold nothing for.
+# No model calls, no writes to content_items — it hands a person a URL and the
+# command to draft from it, because adding a source is a code change that should
+# be reviewed like one.
+#
+# Runs an hour before the position refresh, so a source added in response to it
+# gets drafted on the same day.
+on:
+  schedule:
+    - cron: '0 5 * * *'    # 5pm NZST daily, an hour before refresh-positions
+  workflow_dispatch:
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+
+      - name: Crawl party policy indexes
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/detect-policy-pages.mjs
+
+      # The baseline is what makes "new" mean anything. Committing it is the same
+      # pattern the bill and deep-dive detectors use — but unlike the submission
+      # alerts, losing this commit is harmless: the next run re-reports a page as
+      # new rather than emailing anyone twice.
+      - name: Commit the page baseline
+        if: ${{ !cancelled() }}
+        run: |
+          if [ -n "$(git status --porcelain scripts/.state/policy-pages.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add scripts/.state/policy-pages.json
+            git commit -m "Record party policy-page baseline"
+            git pull --rebase origin main
+            git push
+          else
+            echo "No change to the policy-page baseline."
+          fi
