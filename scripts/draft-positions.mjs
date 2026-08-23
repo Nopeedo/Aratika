@@ -77,6 +77,11 @@ const TOPICS = {
   'treaty-maori-affairs': { label: 'Treaty & Māori Affairs', desc: 'Te Tiriti o Waitangi, Māori rights and representation, co-governance, and Māori wellbeing' },
   immigration: { label: 'Immigration', desc: 'visa and migration settings, the border, work and skills migration, refugees and citizenship' },
   'foreign-policy': { label: 'Foreign Policy', desc: 'international relations, trade agreements, defence, security and foreign affairs' },
+  // Added to the site taxonomy after this map was written, so for a while the
+  // pipeline could not draft or record ANYTHING for it, for any party — the
+  // topic existed on the site and was permanently unfillable. If a topic is
+  // added to POLICY_TOPIC_ORDER it has to be added here too.
+  'democracy-government': { label: 'Democracy & Government', desc: 'elections and electoral law, the constitution, local government, public service, transparency and how decisions get made' },
 }
 
 // Each party's official policy source(s). `default` is used unless a
