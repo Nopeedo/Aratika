@@ -21,8 +21,18 @@ async function status(path, opts = {}) {
 }
 
 // Key public pages must render.
-for (const p of ['/', '/compare', '/parties', '/legislation', '/battlegrounds', '/battlegrounds/mt-albert', '/elections/2026', '/learn']) {
+for (const p of ['/', '/parties', '/policies/economy', '/legislation', '/battlegrounds', '/battlegrounds/mt-albert', '/elections/2026', '/learn']) {
   ok((await status(p)) === 200, `GET ${p} → 200`)
+}
+
+// Retired URLs must keep redirecting rather than 404. Both were asserted at 200
+// before, which failed the moment they became redirects — and a smoke test that
+// cries wolf is one nobody reads when it finally catches something real. What
+// matters for these is that an old link still lands somewhere, so a 3xx is the
+// pass and a 404 or a 200 (meaning the redirect was dropped) is the failure.
+for (const [from, why] of [['/compare', 'retired, now the policy hub'], ['/policies', 'now opens on the first topic']]) {
+  const code = await status(from)
+  ok(code >= 300 && code < 400, `GET ${from} → ${code} (expect 3xx — ${why})`)
 }
 
 // The editor WRITE api must reject an unauthenticated caller — this is the

@@ -23,6 +23,20 @@
 import { redirect } from 'next/navigation'
 import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 
+/**
+ * Rendered per request, not prerendered.
+ *
+ * Without this Next treats the route as static, and a static page cannot issue
+ * an HTTP redirect: it shipped a 200 with the redirect happening client-side
+ * after hydration, so anyone hitting /policies loaded a whole page before being
+ * moved. The smoke test caught it asserting a 3xx and getting 200.
+ *
+ * The alternative is a rule in next.config.ts, which would be an edge redirect
+ * and marginally cheaper — but it would hardcode which topic is first, and that
+ * belongs to POLICY_TOPIC_ORDER.
+ */
+export const dynamic = 'force-dynamic'
+
 export default function PolicyHubPage() {
   // The first issue in the site-wide order, the same one the chip row leads
   // with everywhere else. Not an editorial ranking — just the existing order.
