@@ -7,7 +7,7 @@
  * sourced depth (bio, record, questions, policies) stays one tap away.
  */
 
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import type { PartySlug } from '@/types'
@@ -34,6 +34,40 @@ export interface RosterItem {
 export function RosterAccordion({ items, defaultOpenKey }: { items: RosterItem[]; defaultOpenKey?: string }) {
   const [openKey, setOpenKey] = useState<string | null>(defaultOpenKey ?? items[0]?.key ?? null)
 
+  // Keep the row you tapped where it is on screen.
+  //
+  // Opening one row closes the previous one, and the first row — the incumbent,
+  // whose dossier is the tallest — is open by default. So tapping a challenger
+  // below it deletes a screen or more of content ABOVE the tap. The browser
+  // holds scrollTop while the document shrinks under it, which throws the page
+  // down and, near the end, clamps it to the new bottom: you land past the row
+  // you opened and have to scroll back up to read it. Worst on a phone, where
+  // the dossier is tallest relative to the viewport.
+  //
+  // Measure the tapped header before the state change, then put it back at the
+  // same offset after layout. useLayoutEffect, not useEffect: this has to run
+  // before paint or the jump is visible as a flash.
+  const rows = useRef<Record<string, HTMLDivElement | null>>({})
+  const anchor = useRef<{ key: string; top: number } | null>(null)
+
+  function toggle(key: string, isOpen: boolean) {
+    const el = rows.current[key]
+    anchor.current = el ? { key, top: el.getBoundingClientRect().top } : null
+    setOpenKey(isOpen ? null : key)
+  }
+
+  useLayoutEffect(() => {
+    const a = anchor.current
+    if (!a) return
+    anchor.current = null
+    const el = rows.current[a.key]
+    if (!el) return
+    const drift = el.getBoundingClientRect().top - a.top
+    // Two-arg scrollBy is always instant, so the correction never animates
+    // against the user's own scrolling.
+    if (drift) window.scrollBy(0, drift)
+  }, [openKey])
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
       {items.map((item) => {
@@ -49,9 +83,9 @@ export function RosterAccordion({ items, defaultOpenKey }: { items: RosterItem[]
           // panels — and running the tint behind all of that both buried the
           // content and clashed with the insets. The list reads by party; the
           // dossier reads on a neutral ground.
-          <div key={item.key} style={{ background: '#fff', border: `2px solid ${item.light ? item.color : BORDER}`, borderRadius: 14, overflow: 'hidden' }}>
+          <div key={item.key} ref={(el) => { rows.current[item.key] = el }} style={{ background: '#fff', border: `2px solid ${item.light ? item.color : BORDER}`, borderRadius: 14, overflow: 'hidden' }}>
             <button
-              onClick={() => setOpenKey(open ? null : item.key)}
+              onClick={() => toggle(item.key, open)}
               style={{
                 display: 'flex', alignItems: 'center', gap: 12, width: '100%', textAlign: 'left',
                 padding: '13px 16px', background: item.light ?? 'none', border: 'none', cursor: 'pointer',
