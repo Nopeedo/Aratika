@@ -136,6 +136,13 @@ const PARTIES = [
   { slug: 'conservative',   name: 'Conservative Party NZ',             sources: { default: 'https://www.conservatives.nz/' } },
   { slug: 'nz-outdoors',    name: 'NZ Outdoors & Freedom Party',       sources: { default: 'http://outdoorsparty.co.nz/policy/' } },
   { slug: 'vision-nz',      name: 'Vision New Zealand',                sources: { default: 'https://www.vision.org.nz/' } },
+  // Registered 5 August 2026. Without these the pipeline cannot draft or even
+  // record an absence for them, which is how a party ends up with a profile
+  // on the site and no route to policy coverage at all.
+  { slug: 'alliance',     name: 'Alliance',       sources: { default: 'https://allianceparty.nz/policies/' } },
+  { slug: 'free-palestine', name: 'Free Palestine', sources: { default: 'https://palfree.nz/' } },
+  { slug: 'nz-loyal',     name: 'NZ Loyal',       sources: { default: 'https://nzloyal.com/policy/' } },
+  { slug: 'te-tai-tokerau-party', name: 'Te Tai Tokerau Party', sources: { default: 'https://tetaitokerauparty.org.nz/' } },
   { slug: 'womens-rights',  name: 'The New Zealand Women’s Rights Party', sources: { default: 'https://womensrightsparty.nz/policy/' } },
 ]
 
