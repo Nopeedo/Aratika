@@ -20,6 +20,7 @@
  */
 
 import { createClient } from '@supabase/supabase-js'
+import { createHash } from 'node:crypto'
 import Anthropic from '@anthropic-ai/sdk'
 import dotenv from 'dotenv'
 import { execFileSync } from 'node:child_process'
@@ -34,6 +35,13 @@ dotenv.config({ path: '.env.local' })
 
 const args = process.argv.slice(2)
 const FORCE = args.includes('--force')
+// Re-check approved positions against their source and re-draft only the ones
+// whose source page has actually changed. Without this the drafter only ever
+// FILLS GAPS: once a position is approved it is skipped forever, so a party
+// could rewrite a policy and the site would keep summarising the old one
+// indefinitely. Cheap because the comparison is a hash of the fetched text —
+// a model call happens only when the page really moved.
+const IF_CHANGED = args.includes('--if-changed')
 const topicArg = (args.find((a) => a.startsWith('--topic=')) || '').split('=')[1] || 'economy'
 const partyArg = (args.find((a) => a.startsWith('--party=')) || '').split('=')[1] || null
 // Record a VERIFIED "no stated position" (after checking the party's policy index):
@@ -272,6 +280,14 @@ function isVerbatim(source, s) {
   return normText(source).includes(q)
 }
 
+/** Fingerprint of the source text a position was drafted from.
+ *
+ *  Whitespace-normalised so a reflow or a rotating "last updated" line does not
+ *  read as a policy change, and truncated to the same window the model sees —
+ *  a change past that point could not have affected the summary anyway. */
+const sourceFingerprint = (text) =>
+  createHash('sha256').update(String(text || '').replace(/\s+/g, ' ').trim().slice(0, 40000)).digest('hex').slice(0, 32)
+
 async function draftOne(party, topic) {
   const sourceId = `${party.slug}-${topic}-${PERIOD}`
   let url
@@ -289,12 +305,30 @@ async function draftOne(party, topic) {
 
   // Don't clobber an editor-approved row unless --force (which AUGMENTS — see below).
   const { data: existing } = await supabase.from('content_items').select('id, status, summary, data').eq('type', 'position').eq('source_id', sourceId).maybeSingle()
-  if (existing?.status === 'approved' && !FORCE) { console.log(`⏭  ${party.slug}/${topic} already approved — skipping (use --force to add the deeper breakdown)`); return }
+  if (existing?.status === 'approved' && !FORCE && !IF_CHANGED) { console.log(`⏭  ${party.slug}/${topic} already approved — skipping (use --force to add the deeper breakdown)`); return }
 
   let text = FROM_CACHE ? readCache(party.slug, topic) : null
   if (text) { console.log(`  📄 ${party.slug}/${topic}: using browser-captured cache`) }
   else { try { text = await fetchSource(url) } catch (e) { console.warn(`✗ ${party.slug}: fetch failed (${e.message})`); return } }
   if (!text || text.length < 400) { console.warn(`✗ ${party.slug}: source text too thin (${text?.length || 0} chars) — needs a better URL`); return }
+
+  const fingerprint = sourceFingerprint(text)
+  // Any existing row, not just an approved one. A row already waiting in the
+  // review queue would otherwise be re-drafted on every run, spending a model
+  // call to produce the same text an editor has not looked at yet.
+  if (IF_CHANGED && existing) {
+    const prior = existing.data?.sourceHash
+    // No fingerprint means the row predates this check. Record one and leave the
+    // approved summary alone: re-drafting every old row on the first run would
+    // be a bill for no information, since we cannot tell whether it changed.
+    if (!prior) {
+      await supabase.from('content_items').update({ data: { ...existing.data, sourceHash: fingerprint } }).eq('id', existing.id)
+      console.log(`  ⋯ ${party.slug}/${topic}: baseline fingerprint recorded, no re-draft`)
+      return
+    }
+    if (prior === fingerprint) { console.log(`⏭  ${party.slug}/${topic}: source unchanged`); return }
+    console.log(`  ⚠ ${party.slug}/${topic}: SOURCE CHANGED — re-drafting for review`)
+  }
 
   const cap = /\.pdf($|\?)/i.test(url) ? 120000 : 40000
   let raw = await callModel(systemPrompt(topic), `Party: ${party.name}\nTopic: ${TOPICS[topic].label}\n\nOFFICIAL TEXT (may be truncated — find the ${TOPICS[topic].label} section):\n${text.slice(0, cap)}\n\nReturn ONLY the JSON.`)
@@ -319,7 +353,7 @@ async function draftOne(party, topic) {
   if (existing) {
     // Preserve the editor-approved text; only ADD the deeper breakdown; back to pending for a quick re-review.
     const ed = existing.data || {}
-    const mergedData = { ...ed, keyProposals, whoAffected, excerpts, asOf: ed.asOf || today }
+    const mergedData = { ...ed, keyProposals, whoAffected, excerpts, asOf: ed.asOf || today, sourceHash: fingerprint }
     const { error } = await supabase.from('content_items').update({ data: mergedData, status: 'pending', change_kind: 'updated', updated_at: today }).eq('id', existing.id)
     if (error) { console.warn(`✗ ${party.slug}: update failed (${error.message})`); return }
     console.log(`✓ ${party.slug}/${topic}: breakdown added (kept your approved text) → pending re-approve`)
@@ -341,6 +375,9 @@ async function draftOne(party, topic) {
       keyProposals, whoAffected, excerpts,
       source_label: PERIOD === '2023' ? `${party.name} — 2023 manifesto` : `${party.name} — official policy page`,
       asOf: today,
+      // What the source said when this was written. --if-changed compares
+      // against it to decide whether the party has moved.
+      sourceHash: fingerprint,
     },
     source_url: url,
     change_kind: 'new',

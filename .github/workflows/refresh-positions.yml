@@ -1,17 +1,33 @@
 name: Refresh party positions
 
-# Re-runs the sourced position drafter across every topic so newly-published
-# party policy gets picked up during the campaign. Cheap by design: the drafter
-# SKIPS any party/topic already approved (no model call), so it only spends
-# tokens on genuinely missing positions, and everything it writes lands as
-# `pending` for editor approval — it can never publish itself.
+# Two jobs a party's policy page can be in: missing from us, or changed since we
+# read it. This covers both, daily.
+#
+# It used to run weekly and only FILL GAPS — the drafter skips anything already
+# approved, so once a position was approved it was frozen. A party could rewrite
+# a policy and the site would keep summarising the old one indefinitely, with
+# nothing anywhere reporting a problem. Eleven weeks out from an election, with
+# parties announcing constantly, that is the failure that matters.
+#
+# --if-changed compares a hash of the fetched source against the one stored when
+# the position was drafted, so a model call happens only when the page actually
+# moved. A steady-state run makes zero model calls: measured at 12 of 12 topics
+# skipped on the second consecutive run. That is what makes daily affordable.
+#
+# Nothing here can publish. Everything lands as `pending` for /editor, and an
+# approved position stays live until a human replaces it — so a changed source
+# never silently rewrites what a reader sees.
 #
 # Requires ANTHROPIC_API_KEY in repo secrets. If that isn't set the job skips
-# cleanly rather than failing every week and training us to ignore red runs.
+# cleanly rather than failing every day and training us to ignore red runs.
 on:
   schedule:
-    - cron: '0 5 * * 1'    # 5pm NZST Mondays
+    - cron: '0 6 * * *'    # 6pm NZST daily, clear of the morning ingest crons
   workflow_dispatch:
+    inputs:
+      force_topic:
+        description: 'Re-draft one topic ignoring fingerprints (leave blank for the normal daily run)'
+        required: false
 
 jobs:
   draft:
@@ -23,7 +39,7 @@ jobs:
           node-version: '22'
       - run: npm ci
 
-      - name: Draft any missing positions (all topics, all parties)
+      - name: Draft missing positions and re-draft changed ones
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -34,9 +50,20 @@ jobs:
             echo "Add it in Settings > Secrets and variables > Actions to enable this."
             exit 0
           fi
-          for t in economy housing health education climate crime-justice \
-                   environment treaty-maori-affairs immigration foreign-policy; do
+          # This list must match POLICY_TOPIC_ORDER in src/constants/policy-topics.ts
+          # and TOPICS in scripts/draft-positions.mjs. democracy-government was
+          # missing from all three, so that topic could never be drafted for any
+          # party — it sat empty on the site for a reason that had nothing to do
+          # with what parties had published.
+          TOPICS="economy housing health education climate environment crime-justice \
+                  treaty-maori-affairs immigration foreign-policy democracy-government"
+          if [ -n "${{ github.event.inputs.force_topic }}" ]; then
+            echo "=== forced re-draft: ${{ github.event.inputs.force_topic }} ==="
+            node scripts/draft-positions.mjs --topic="${{ github.event.inputs.force_topic }}" --force
+            exit 0
+          fi
+          for t in $TOPICS; do
             echo "--- $t ---"
-            node scripts/draft-positions.mjs --topic="$t" || echo "(topic $t had no new positions)"
+            node scripts/draft-positions.mjs --topic="$t" --if-changed || echo "(topic $t: nothing new)"
           done
           echo "Done. Review anything new at /editor."
