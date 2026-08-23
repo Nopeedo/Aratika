@@ -24,7 +24,6 @@ dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.
 
 const LIVE = process.argv.includes('--send')
 const MODE = process.argv.includes('--digest') ? 'digest' : 'immediate'
-const CAP = 3
 const SITE = (process.env.NEXT_PUBLIC_APP_URL || 'https://arapono.org.nz').replace(/\/$/, '')
 const abs = (url) => (url?.startsWith('http') ? url : `${SITE}${url || '/'}`)
 
