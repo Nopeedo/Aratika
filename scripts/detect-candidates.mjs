@@ -84,7 +84,19 @@ for (const it of items) {
     seen.add(b.user_id)
     await enqueue({
       userId: b.user_id,
-      urgency: 'digest',
+      // Immediate, not digest.
+      //
+      // A new name entering a race you follow is one of the four things this
+      // site treats as urgent, and it was sitting in the queue until the 7am
+      // roll-up — by which point it arrives as one line among a dozen headlines
+      // rather than as the thing that changed. The immediate sweeps run three
+      // times a day and skip quiet hours, so this reaches someone within hours
+      // while staying off their phone overnight.
+      //
+      // No burst risk from a bulk ingest: the sender collapses everything a user
+      // has pending in one run into a single push, so 40 new candidates is one
+      // notification, not 40.
+      urgency: 'immediate',
       category: 'candidate',
       dedup: dedupKey('candidate', it.id, b.user_id),
       entity: { kind: b.kind, ref: b.ref_id },

@@ -16,6 +16,7 @@
 import { createClient } from '@/lib/supabase/server'
 import type { Candidate2026 } from '@/constants/candidates-2026'
 import { PARTY_NAMES } from '@/constants/parties'
+import { PARTY_PROFILES } from '@/constants/parties-data'
 import { MP_PROFILES } from '@/constants/mps-data'
 import type { PartySlug } from '@/types'
 
@@ -27,8 +28,29 @@ interface CandidateRow {
   citations?: unknown[]
 }
 
+/**
+ * PARTY_PROFILES as well as PARTY_NAMES.
+ *
+ * PARTY_NAMES holds eight slugs: the six in Parliament, TOP, and independent.
+ * Everything else was dropped here silently — including Animal Justice, ALCP,
+ * NZ Outdoors and Vision NZ, which have full profiles on this site and tiles on
+ * /parties. Audited 23 August 2026: 30 of 321 approved candidates never reached
+ * a page, and 23 of 72 seats showed an incomplete field with no sign anyone was
+ * missing. Sue Grey in West Coast-Tasman, Hannah Tamaki in Papakura and Maki
+ * Herbert in Te Tai Tokerau were all invisible on the seats they are contesting.
+ *
+ * That contradicted /party-inclusion, which states inclusion is by registration
+ * rather than polling. The rule held on the parties page and broke here.
+ *
+ * Still dropped, deliberately: labels the ingest could not map to any party we
+ * profile — Alliance, New Conservative, Te Tai Tokerau Party, Build the Nation.
+ * Those need checking against the Electoral Commission register before they
+ * appear, since the rule is about REGISTERED parties. "New Conservative" is not
+ * obviously the same entity as the profiled "Conservative Party NZ", and
+ * guessing is how a candidate gets mislabelled.
+ */
 const isKnownParty = (p: unknown): p is PartySlug | 'independent' =>
-  p === 'independent' || (typeof p === 'string' && p in PARTY_NAMES)
+  p === 'independent' || (typeof p === 'string' && (p in PARTY_NAMES || p in PARTY_PROFILES))
 
 // 82 of the announced candidates are sitting MPs (list MPs contesting seats,
 // MPs switching electorates). Matching them to their profile wires up the

@@ -13,6 +13,7 @@ import { getCandidates } from '@/constants/candidates-2026'
 import { getApprovedCandidates } from '@/lib/candidates/live'
 import { getCoverageForCandidates } from '@/lib/candidates/coverage'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
+import { PARTY_PROFILES } from '@/constants/parties-data'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { MP_MEMBERS_BILLS } from '@/constants/mps-members-bills'
 import { MP_PASSED_BILLS, MP_GOV_BILLS, BILL_ACTIVITY_META } from '@/constants/mps-bill-activity'
@@ -262,6 +263,28 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
     ? Math.max(0, 100 - candidates.reduce((n, c) => n + (c.pollPct ?? 0), 0))
     : undefined
 
+  // A challenger's party may be one this site profiles but that PARTY_COLORS
+  // and PARTY_NAMES do not carry — those two maps hold only the six in
+  // Parliament plus TOP. Falling through to PARTY_PROFILES is what lets an
+  // Animal Justice or NZ Outdoors candidate render at all; before this they
+  // were dropped upstream and 23 of 72 seats showed an incomplete field.
+  // PARTY_PROFILES is typed Record<PartySlug, …> and a candidate's party arrives
+  // as a plain string from the ingest, so it is read through one narrow accessor
+  // rather than casting at four call sites.
+  const profileOf = (slug: string) =>
+    (PARTY_PROFILES as Record<string, { name?: string; fullName?: string; color?: string } | undefined>)[slug]
+
+  const partyColour = (slug: string): string =>
+    slug === 'independent' ? '#6B7280'
+      : PARTY_COLORS[slug as PartySlug]?.bg ?? profileOf(slug)?.color ?? '#6B7280'
+  const partyLight = (slug: string): string | undefined =>
+    PARTY_COLORS[slug as PartySlug]?.light
+  const partyLabel = (slug: string): string =>
+    slug === 'independent' ? 'Independent'
+      : PARTY_NAMES[slug as PartySlug]?.full ?? profileOf(slug)?.fullName ?? profileOf(slug)?.name ?? slug
+  /** Only parties with a profile have somewhere to send a reader. */
+  const partyHasProfile = (slug: string): boolean => slug !== 'independent' && !!profileOf(slug)
+
   const rosterItems: RosterItem[] = [
     {
       key: 'defender',
@@ -295,16 +318,16 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
           ),
         } satisfies RosterItem]
       : candidates.map((c): RosterItem => {
-          const color = c.party === 'independent' ? '#6B7280' : PARTY_COLORS[c.party].bg
+          const color = partyColour(c.party)
           return {
             key: c.name,
             color,
-            light: PARTY_COLORS[c.party]?.light,
+            light: partyLight(c.party),
             avatarName: c.name,
             avatarParty: c.party === 'independent' ? undefined : c.party,
             avatarPhoto: c.mpSlug ? MP_PROFILES[c.mpSlug]?.photo : undefined,
             title: c.name,
-            subtitle: `${c.party === 'independent' ? 'Independent' : PARTY_NAMES[c.party].full} · Challenging`,
+            subtitle: `${partyLabel(c.party)} · Challenging`,
             badge: c.incumbent ? 'Incumbent' : undefined,
             pollPct: c.pollPct,
             body: (
@@ -348,45 +371,47 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
                   </div>
                 )}
 
-                {/* Coverage naming this person specifically, not the seat. For
-                    most challengers this is the only substantive material here,
-                    so an honest empty state matters as much as the list: a
-                    first-time candidate in a safe seat may genuinely have none,
-                    and padding that would be the dishonest option. */}
-                {(() => {
-                  const items = (c.key && coverage.get(c.key)) || []
-                  if (items.length === 0) {
-                    return (
-                      <div>
-                        <Label icon={Newspaper} text="Coverage naming them" />
-                        <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '6px 0 0' }}>
-                          Nothing in our tracked feeds names {c.name.split(' ')[0]} yet. This fills in automatically as outlets report on the race.
-                        </p>
-                      </div>
-                    )
-                  }
-                  return (
-                    <div>
-                      <Label icon={Newspaper} text={`Coverage naming them (${items.length})`} />
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 6 }}>
-                        {items.map((it) => (
-                          <a key={it.id} href={it.url} target="_blank" rel="noopener noreferrer"
-                            style={{ display: 'flex', gap: 8, alignItems: 'flex-start', fontFamily: MANROPE, textDecoration: 'none' }}>
-                            {it.kind === 'video'
-                              ? <PlayCircle style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0, marginTop: 2 }} />
-                              : <Newspaper style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0, marginTop: 2 }} />}
-                            <span style={{ minWidth: 0 }}>
-                              <span style={{ fontSize: 13, fontWeight: 600, color: INK, lineHeight: 1.45 }}>{it.title}</span>
-                              <span style={{ fontSize: 11.5, color: TERTIARY, display: 'block', marginTop: 1 }}>
-                                {it.source}{it.pubDate ? ` · ${fmtShort(it.pubDate)}` : ''}
-                              </span>
-                            </span>
-                          </a>
-                        ))}
-                      </div>
+                {/* Where the coverage block used to be.
+                    It was an empty state on almost every challenger: 218 of the
+                    321 approved candidates have no sourced note at all, only two
+                    are sitting MPs, and none has a curated bio. So the panel
+                    promised a dossier and delivered "nothing names them yet".
+
+                    What replaces it is real and already ours: the party's own
+                    sourced, editor-checked positions. It is clearly THEIR PARTY'S
+                    position, not this candidate's — a first-time candidate has no
+                    published record of their own, and inventing one would be the
+                    dishonest option. But someone weighing up this seat can act on
+                    what the party they would sit with stands for. */}
+                {partyHasProfile(c.party) && (
+                  <div>
+                    <Label icon={Landmark} text={`What ${profileOf(c.party)?.name ?? partyLabel(c.party)} stands for`} />
+                    <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '6px 0 8px' }}>
+                      {c.name.split(' ')[0]} hasn&apos;t published a personal platform we can source yet. These are their party&apos;s
+                      positions, summarised from its own policy documents and editor-checked.
+                    </p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+                      <Link href={`/parties/${c.party}`} style={pill(false)}>
+                        Party profile <ArrowRight style={ic} />
+                      </Link>
+                      <Link href="/policies" style={pill(false)}>
+                        Where they stand on the issues <ArrowRight style={ic} />
+                      </Link>
                     </div>
-                  )
-                })()}
+                  </div>
+                )}
+
+                {/* The gap, stated rather than left to be felt. Nominations close
+                    8 October 2026 (Electoral Commission timetable), which is when
+                    the official candidate list lands and there is something worth
+                    building a page around. */}
+                <div style={{ display: 'flex', gap: 9, padding: '10px 12px', background: SURFACE, border: `1px dashed ${TERTIARY}`, borderRadius: 10 }}>
+                  <Info style={{ width: 14, height: 14, color: SECONDARY, flexShrink: 0, marginTop: 2 }} />
+                  <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+                    Still to come: a background, priorities and the policies {c.name.split(' ')[0]} campaigns on. Nominations close
+                    on <b>8 October</b>, and candidate detail fills in as parties and the Electoral Commission publish it.
+                  </p>
+                </div>
 
                 {c.citations && c.citations.length > 0 && (
                   <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6 }}>
