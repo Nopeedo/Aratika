@@ -45,6 +45,14 @@ const PARTY_MAP = [
   // not substring-match 'conservative'. Mapping it to null keeps the candidate
   // staged (visible in /editor with their real label) without mislabelling.
   ['new conservative', null],
+  // Registered 5 August 2026. Order matters: 'te tai tokerau' must be tested
+  // BEFORE the te-pati-maori entries, because the party its founder left is
+  // matched on 'maori party' and a Te Tai Tokerau row would otherwise be
+  // labelled with the party she resigned from.
+  ['te tai tokerau', 'te-tai-tokerau-party'],
+  ['alliance', 'alliance'],
+  ['free palestine', 'free-palestine'], ['palestine', 'free-palestine'],
+  ['nz loyal', 'nz-loyal'], ['new zealand loyal', 'nz-loyal'],
   ['te pati maori', 'tpm'], ['maori party', 'tpm'],
   ['new zealand first', 'nzfirst'], ['nz first', 'nzfirst'],
   ["women's rights", 'womens-rights'], ['womens rights', 'womens-rights'],
