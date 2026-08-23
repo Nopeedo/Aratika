@@ -162,6 +162,39 @@ for (const f of found) {
     data: { ...f, asOf: today, sourceLabel: 'Party announcement (via Wikipedia candidates-by-electorate)' },
   })
 }
+// ── Candidates the source no longer lists ────────────────────────────────────
+//
+// The only signal we get that someone may have pulled out. It is a WEAK one:
+// Wikipedia rows get respelled, reorganised, and occasionally lost, and a
+// partial parse would otherwise read as a mass withdrawal. So this reports and
+// never writes — scripts/mark-withdrawn.mjs is where a human records it, with a
+// citation.
+//
+// Guarded twice. The parse must have succeeded broadly (checked above), and the
+// disappearances must be a small fraction of the field: if a tenth of every
+// approved candidate vanished at once, that is the source breaking, not eighty
+// people quitting on the same day.
+{
+  const parsedIds = new Set(found.map((f) => `cand:${f.electorateSlug}|${norm(f.name)}`))
+  const approved = (existing || []).filter((r) => r.data && !r.data.withdrawn)
+  const gone = approved.filter((r) => !parsedIds.has(r.source_id))
+  const share = approved.length ? gone.length / approved.length : 0
+  if (gone.length === 0) {
+    console.log('no approved candidate has disappeared from the source')
+  } else if (share > 0.1) {
+    console.warn(`⚠ ${gone.length} of ${approved.length} approved candidates (${Math.round(share * 100)}%) are missing from this parse.`)
+    console.warn('  That is the source changing shape, not a wave of withdrawals. Listing nothing; check the page before trusting this run.')
+  } else {
+    console.log(`
+possible withdrawals — ${gone.length} approved candidate(s) no longer listed by the source:`)
+    for (const r of gone) {
+      console.log(`  · ${r.data?.name} (${r.data?.electorateSlug})`)
+      console.log(`      node scripts/mark-withdrawn.mjs --seat ${r.data?.electorateSlug} --name "${r.data?.name}" --source <url>`)
+    }
+    console.log('  Verify each against a real report before running any of those. Absence here is not evidence.')
+  }
+}
+
 const withCite = found.filter((f) => f.citations.length > 0).length
 console.log(`rows with at least one citation URL: ${withCite}/${found.length}`)
 console.log(`new (not previously staged): ${rows.length} | existing needing citation backfill: ${updates.length}`)

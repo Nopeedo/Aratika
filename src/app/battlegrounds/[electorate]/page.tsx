@@ -36,6 +36,14 @@ function fmtShort(iso: string): string {
   return `${d.getUTCDate()} ${MONTHS_SHORT[d.getUTCMonth()]}`
 }
 
+/** "8 October 2026" — a withdrawal date should read like a date. Parsed from an
+ *  ISO string with no clock read, so it stays deterministic through SSR. */
+function fmtLongDate(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number)
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  return (m >= 1 && m <= 12 && d) ? `${d} ${MONTHS[m - 1]} ${y}` : iso
+}
+
 /** Show a citation as its outlet's domain, so the reader can see who recorded
  *  the candidate before deciding whether to follow it. */
 function hostOf(url: string): string {
@@ -68,6 +76,15 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   const live = await getApprovedCandidates(electorate, { excludeName: info.mpName })
   const curatedNames = new Set(curated.map((c) => c.name.toLowerCase()))
   const candidates = [...curated, ...live.filter((c) => !curatedNames.has(c.name.toLowerCase()))]
+  // Withdrawn candidates stay on the page but leave the race. Anything that
+  // answers "who is standing here" — the hero's lead challenger, the count, the
+  // empty state — reads `standing`; the roster below still lists both, so a
+  // reader who saw someone here last week learns what happened rather than
+  // finding them quietly gone.
+  const standing = candidates.filter((c) => !c.withdrawn)
+  const withdrawn = candidates.filter((c) => c.withdrawn)
+  // Withdrawn drop to the bottom of the roster.
+  const rostered = [...standing, ...withdrawn]
   // Coverage naming each candidate by name, joined through the data.candidates
   // tag. Most challengers have no curated profile at all, so this is often the
   // only substantive thing a reader can learn about them here.
@@ -252,8 +269,8 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   // Each confirmed challenger's dossier, in the same roster shape as the defender.
   // The candidate with the highest illustrative poll standing (or simply the first
   // listed, if none has one) is treated as "the" rival shown in the hero gauge.
-  const leadChallenger = candidates.length > 0
-    ? [...candidates].sort((a, b) => (b.pollPct ?? 0) - (a.pollPct ?? 0))[0]
+  const leadChallenger = standing.length > 0
+    ? [...standing].sort((a, b) => (b.pollPct ?? 0) - (a.pollPct ?? 0))[0]
     : undefined
   const challengerColor = leadChallenger
     ? (leadChallenger.party === 'independent' ? '#6B7280' : PARTY_COLORS[leadChallenger.party].bg)
@@ -299,7 +316,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
       pollPct: defenderPollPct,
       body: defenderBody,
     },
-    ...(candidates.length === 0
+    ...(standing.length === 0
       ? [{
           key: 'challengers-empty',
           color: TERTIARY,
@@ -317,21 +334,38 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             </div>
           ),
         } satisfies RosterItem]
-      : candidates.map((c): RosterItem => {
+      : rostered.map((c): RosterItem => {
           const color = partyColour(c.party)
+          const isOut = !!c.withdrawn
           return {
             key: c.name,
             color,
-            light: partyLight(c.party),
+            light: isOut ? undefined : partyLight(c.party),
             avatarName: c.name,
             avatarParty: c.party === 'independent' ? undefined : c.party,
             avatarPhoto: c.mpSlug ? MP_PROFILES[c.mpSlug]?.photo : undefined,
             title: c.name,
-            subtitle: `${partyLabel(c.party)} · Challenging`,
-            badge: c.incumbent ? 'Incumbent' : undefined,
+            subtitle: `${partyLabel(c.party)} · ${isOut ? 'Withdrew' : 'Challenging'}`,
+            badge: isOut ? 'Withdrew' : c.incumbent ? 'Incumbent' : undefined,
             pollPct: c.pollPct,
             body: (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 16 }}>
+                {/* Leads the panel when they are out. Everything below it — the
+                    party's positions, what is still to come — is written for
+                    someone still in the race, so the reader needs this first or
+                    the rest misleads them. */}
+                {c.withdrawn && (
+                  <div style={{ display: 'flex', gap: 9, padding: '11px 13px', background: '#fff7e6', border: '1px solid #f0d9a8', borderRadius: 10 }}>
+                    <Info style={{ width: 15, height: 15, color: '#92400e', flexShrink: 0, marginTop: 1 }} />
+                    <p style={{ fontSize: 12.5, color: '#7c4a12', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+                      <b>{c.name.split(' ')[0]} is no longer standing in {info.name}.</b> Withdrew {fmtLongDate(c.withdrawn.date)}.
+                      Kept here rather than deleted, so the record of who was in this race stays straight.{' '}
+                      <a href={c.withdrawn.source} target="_blank" rel="noopener noreferrer" style={{ color: '#7c4a12', textDecoration: 'underline' }}>
+                        {hostOf(c.withdrawn.source)}
+                      </a>
+                    </p>
+                  </div>
+                )}
                 {c.bio && <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{c.bio}</p>}
                 {c.priorities && c.priorities.length > 0 && (
                   <div>

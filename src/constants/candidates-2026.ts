@@ -43,6 +43,20 @@ export interface Candidate2026 {
   /** URLs backing the announcement. The whole record rests on these. */
   citations?: string[]
   /**
+   * Set when a candidate has pulled out of the race.
+   *
+   * Recorded, never inferred. A candidate vanishing from the source we scrape is
+   * NOT evidence they withdrew — the page restructures, names get respelled, and
+   * a broken parse would otherwise read as a mass withdrawal. This is only ever
+   * written by scripts/mark-withdrawn.mjs, which requires a citation.
+   *
+   * Withdrawn candidates are kept and shown as withdrawn rather than deleted.
+   * Someone who read about them on this page a week ago comes back and needs to
+   * learn what happened; silently removing the row tells them nothing and looks
+   * like we got it wrong the first time.
+   */
+  withdrawn?: { date: string; source: string }
+  /**
    * Illustrative-only poll standing (0-100). NZ has no verified electorate-level
    * horse-race polling for most seats — only national party-vote polls and, rarely,
    * a one-off media-commissioned electorate poll for a marquee race. Do NOT populate

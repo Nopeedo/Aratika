@@ -26,6 +26,8 @@ interface CandidateRow {
   party?: string | null
   notes?: string
   citations?: unknown[]
+  /** Written only by scripts/mark-withdrawn.mjs, and only with a citation. */
+  withdrawn?: { date?: string; source?: string }
 }
 
 /**
@@ -84,6 +86,11 @@ export async function getApprovedCandidates(electorateSlug: string, opts?: { exc
       ...(mpSlug ? { mpSlug } : {}),
       ...(typeof d.notes === 'string' && d.notes.trim() ? { notes: d.notes.trim() } : {}),
       ...(Array.isArray(d.citations) && d.citations.length ? { citations: d.citations.filter((c) => typeof c === 'string') } : {}),
+      // Carried through, not filtered out. A withdrawn candidate still renders,
+      // marked as withdrawn — see the field's note in candidates-2026.ts.
+      ...(d.withdrawn?.date && d.withdrawn?.source
+        ? { withdrawn: { date: d.withdrawn.date, source: d.withdrawn.source } }
+        : {}),
     })
   }
   return out.sort((a, b) => a.name.localeCompare(b.name))
