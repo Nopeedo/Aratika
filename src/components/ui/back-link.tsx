@@ -78,7 +78,28 @@ export function BackLink({ fallbackHref, label = 'Back', style }: {
   // descendant, or the current page itself, falls through to fallbackHref.
   const isBelow = !!rawPrev && !!pathname && (rawPrev === pathname || rawPrev.startsWith(pathname === '/' ? '/' : pathname + '/'))
 
-  const d = rawPrev && !isBelow ? describe(rawPrev) : null
+  // Nor SIDEWAYS to a sibling. Switching National -> Te Pāti Māori in the party
+  // switcher left this pointing at /parties/national while still reading "Back
+  // to parties", so the one control on the page that promises to take you out
+  // of the section quietly kept you inside it, one party back. Same shape on
+  // /policies/[topic] and /mps/[slug].
+  //
+  // It got worse the day party switching became instant: switching is now
+  // cheap, so people do it repeatedly, and every switch makes back point at
+  // whichever party they happened to view before this one.
+  //
+  // A sibling is a previous page under the same section as the current one, but
+  // not the section index itself — arriving from the index is exactly the case
+  // where going back to it is right.
+  const section = pathname ? [...KNOWN].sort((a, b) => b.prefix.length - a.prefix.length)
+    .find((k) => pathname === k.prefix || pathname.startsWith(k.prefix + '/'))?.prefix : undefined
+  const isSibling = !!rawPrev && !!section && rawPrev !== section &&
+    (rawPrev === section || rawPrev.startsWith(section + '/'))
+
+  // Either way the answer is the same: leave the section by the front door.
+  const stayInSection = isBelow || isSibling
+
+  const d = rawPrev && !stayInSection ? describe(rawPrev) : null
   const prev = d && d.href !== fallbackHref ? d : null
 
   const base: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none', padding: 0, cursor: 'pointer', textDecoration: 'none', ...style }
@@ -98,7 +119,7 @@ export function BackLink({ fallbackHref, label = 'Back', style }: {
         // router.back() would land on the same descendant the named link was
         // just stopped from pointing at, so when the previous page is below
         // this one, go up to the fallback instead.
-        if (!isBelow && typeof window !== 'undefined' && window.history.length > 1) router.back()
+        if (!stayInSection && typeof window !== 'undefined' && window.history.length > 1) router.back()
         else router.push(fallbackHref)
       }}
       style={base}
