@@ -4,7 +4,8 @@
  * un-reviewed reaches the public site.
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createClient as createPublicClient } from '@supabase/supabase-js'
+import { unstable_cache } from 'next/cache'
 
 export interface WhoAffected { group: string; detail: string }
 
@@ -58,30 +59,50 @@ function toPosition(r: Row): PartyPosition | null {
   }
 }
 
+/**
+ * Approved positions, read WITHOUT cookies and cached.
+ *
+ * These rows are public: status='approved' is what the site renders to everyone,
+ * and RLS already refuses anon any other status (checked — anon sees 116
+ * approved and 0 pending). Reading them through the cookie-bound server client
+ * was therefore asking a question whose answer never depended on who was asking,
+ * and it cost every consuming route its ability to be cached: /parties/[slug]
+ * was force-dynamic, so switching party meant a server render plus a Supabase
+ * round trip, measured at 1.7-2.4s per click on production.
+ *
+ * Cached for a minute. Positions are approved by hand in /editor a few times a
+ * day, so a minute of lag is invisible; the alternative the old comment worried
+ * about was build-time staleness, which is days, not seconds.
+ */
+const readApproved = unstable_cache(
+  async (): Promise<Row[]> => {
+    const supabase = createPublicClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { auth: { persistSession: false } },
+    )
+    const { data } = await supabase
+      .from('content_items')
+      .select('summary, source_url, data')
+      .eq('type', 'position')
+      .eq('status', 'approved')
+      .limit(800)
+    return (data as Row[] | null) ?? []
+  },
+  ['approved-positions'],
+  { revalidate: 60, tags: ['positions'] },
+)
+
 /** Approved positions for one topic. */
 export async function getApprovedPositions(topic: string): Promise<PartyPosition[]> {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('content_items')
-    .select('summary, source_url, data')
-    .eq('type', 'position')
-    .eq('status', 'approved')
-    .limit(400)
-  return (data as Row[] | null ?? [])
+  return (await readApproved())
     .map(toPosition)
     .filter((p): p is PartyPosition => !!p && p.topic === topic)
 }
 
 /** Every approved position across all topics (for the /compare tool). */
 export async function getAllApprovedPositions(): Promise<PartyPosition[]> {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('content_items')
-    .select('summary, source_url, data')
-    .eq('type', 'position')
-    .eq('status', 'approved')
-    .limit(800)
-  return (data as Row[] | null ?? []).map(toPosition).filter((p): p is PartyPosition => !!p)
+  return (await readApproved()).map(toPosition).filter((p): p is PartyPosition => !!p)
 }
 
 /** A single approved position for one party + topic (latest period preferred). */

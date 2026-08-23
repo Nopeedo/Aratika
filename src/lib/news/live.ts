@@ -4,7 +4,7 @@
  * We only ever store/show headline + outlet + short feed snippet + link-out.
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { publicClient } from '@/lib/supabase/public'
 import { MP_PROFILES } from '@/constants/mps-data'
 
 export interface NewsItem {
@@ -69,7 +69,7 @@ function toItem(r: { id: string; title: string; summary: string | null; data: Re
 
 /** Newest-first political news. Sorted by published date (falls back to insert order). */
 export async function getNews(limit = 150): Promise<NewsItem[]> {
-  const supabase = await createClient()
+  const supabase = publicClient()
   const { data } = await supabase
     .from('content_items')
     .select('id, title, summary, data, created_at')
@@ -110,7 +110,7 @@ export async function getNewsForElectorate(electorateName: string, limit = 6): P
  * with its slug by the ingest, so they come through here too.
  */
 export async function getNewsForParty(slug: string, limit = 6): Promise<NewsItem[]> {
-  const supabase = await createClient()
+  const supabase = publicClient()
   const { data } = await supabase
     .from('content_items')
     .select('id, title, summary, data, created_at')
@@ -136,7 +136,7 @@ export async function getNewsForParty(slug: string, limit = 6): Promise<NewsItem
  * 300-row window.
  */
 export async function getNewsForMp(slug: string, limit = 5): Promise<NewsItem[]> {
-  const supabase = await createClient()
+  const supabase = publicClient()
   const { data } = await supabase
     .from('content_items')
     .select('id, title, summary, data, created_at')

@@ -475,3 +475,19 @@ a, button, [role='button'], summary {
 @media (max-width: 420px) {
   .nf-thumb { width: 88px; height: 66px; }
 }
+
+/* Party page cross-fade.
+   The switcher changes route, so the subtree remounts and this replays. A short
+   fade with a few pixels of lift reads as the page changing rather than
+   blinking — at ~45ms of actual navigation the animation IS the perceived
+   transition, so it is deliberately longer than the load it covers. */
+@keyframes party-swap-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+.party-swap { animation: party-swap-in .26s cubic-bezier(.2, .8, .3, 1) both; }
+
+/* Anyone who has asked for less motion gets the content, not the movement. */
+@media (prefers-reduced-motion: reduce) {
+  .party-swap { animation: none; }
+}

@@ -46,11 +46,19 @@ function tint(hex: string, a: number) {
 
 // ─── Static generation ────────────────────────────────────────────────────────
 
-// Dynamic, not static. Positions are approved continuously in /editor, and a
-// party page baked at build time would show whatever was approved on the day
-// we last deployed. /compare and the policy pages are dynamic for the same
-// reason; this page now reads the same data, so it follows the same rule.
-export const dynamic = 'force-dynamic'
+// Revalidated, not force-dynamic.
+//
+// The worry that made this dynamic was real but the remedy was too strong: a
+// page baked at BUILD time shows whatever was approved on the day we deployed,
+// which is days stale. Sixty seconds is not. Meanwhile force-dynamic meant a
+// server render plus a Supabase round trip on every party switch — measured at
+// 1.7-2.4s per click on production, which is why switching party read as a full
+// page reload rather than a change of view.
+//
+// The positions read is cookie-free and cached now (see lib/positions/live.ts),
+// so this route can be cached at all. With generateStaticParams below, each
+// party is prerendered and Link prefetch makes the switch immediate.
+export const revalidate = 60
 
 export function generateStaticParams() {
   return [...PARTY_DIRECTORY_ORDER, ...PROFILED_MINOR_PARTIES].map((slug) => ({ slug }))
@@ -129,7 +137,13 @@ export default async function PartyProfilePage(
   return (
     // Same woven ground as the homepage and Election Centre, so a party page
     // stops looking like a page from another site.
-    <div style={{
+    //
+    // key={slug} + .party-swap cross-fades the whole page when you switch party
+    // in the switcher. Keyed on the slug so React remounts the subtree and the
+    // entry animation replays on every switch rather than only on first paint.
+    // Worth nothing until the switch was fast: at the 1.9s this used to take, a
+    // fade would only have drawn attention to the wait.
+    <div key={slug} className="party-swap" style={{
       ...WOVEN_PAGE,
       // The party wash runs the FULL height of the page rather than fading out
       // below the header. It was a 180deg gradient that reached transparent at

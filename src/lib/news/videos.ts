@@ -4,7 +4,7 @@
  * We store the videoId/thumbnail and EMBED via the privacy player; never rehost.
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { publicClient } from '@/lib/supabase/public'
 
 export interface VideoItem {
   id: string
@@ -64,7 +64,7 @@ function toVideoItem(r: { id: string; title: string; data: unknown }): VideoItem
 }
 
 export async function getVideos(limit = 48): Promise<VideoItem[]> {
-  const supabase = await createClient()
+  const supabase = publicClient()
   const { data } = await supabase
     .from('content_items')
     .select('id, title, data, created_at')
@@ -187,7 +187,7 @@ export async function getVideosForElectorate(electorateName: string, limit = 3):
  * by keyword.
  */
 export async function getVideosForParty(slug: string, limit = 4): Promise<VideoItem[]> {
-  const supabase = await createClient()
+  const supabase = publicClient()
   const { data } = await supabase
     .from('content_items')
     .select('id, title, data, created_at')
@@ -206,7 +206,7 @@ export async function getVideosForParty(slug: string, limit = 4): Promise<VideoI
 
 /** Video tagged to one MP — see getNewsForMp for why this filters in the query. */
 export async function getVideosForMp(slug: string, limit = 3): Promise<VideoItem[]> {
-  const supabase = await createClient()
+  const supabase = publicClient()
   const { data } = await supabase
     .from('content_items')
     .select('id, title, data, created_at')
