@@ -545,6 +545,135 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     ],
     keyPolicyAreas: ['treaty-maori-affairs', 'immigration', 'economy'],
   },
+
+  // -- Registered 5 August 2026 -----------------------------------------------
+  // All four joined the Electoral Commission register after the 1 July snapshot
+  // the rest of this file was built from, which is the only reason they were
+  // missing. Inclusion follows the rule stated on /party-inclusion: registration,
+  // not polling. Contested claims are attributed to whoever makes them; where a
+  // party has published nothing, this says so rather than filling the gap.
+
+  'alliance': {
+    slug:          'alliance',
+    name:          'Alliance',
+    fullName:      'Alliance Party of Aotearoa New Zealand',
+    founded:       1991,
+    color:         '#821918',
+    textColor:     '#ffffff',
+    leader:        'Victor Billot',
+    leaderTitle:   'Leader',
+    status:        'extra-parliamentary',
+    seats:         0, electorateSeats: 0, listSeats: 0,
+    founded_note:  'Formed in 1991 and a governing partner from 1999 to 2002, the Alliance left Parliament in 2002 and was re-registered by the Electoral Commission on 5 August 2026 to contest this election.',
+    website:       'https://allianceparty.nz/',
+    parliamentUrl: 'https://allianceparty.nz/',
+    tagline:       'A country that works for working people.',
+    overview:      'The Alliance describes itself as a democratic socialist party and is contesting the 2026 election after more than two decades outside Parliament. It campaigns on public ownership, free healthcare and education, secure housing and full employment, and says it accepts no corporate donations. It holds no seats in the current Parliament.',
+    history:       'The Alliance formed in 1991 from a grouping of left parties, held as many as 13 seats, and was a coalition partner in the Labour-led government from 1999 until the party split in 2002. It lost parliamentary representation that year. Members ratified a constitution and policy platform at a Christchurch conference ahead of re-registration in August 2026, with Victor Billot as leader.',
+    ideology:      ['Democratic socialism', 'Left-wing'],
+    coreValues: [
+      'Return key infrastructure to public ownership',
+      'Make healthcare and education free at the point of use',
+      'Guarantee secure, well-paid work',
+      'Treat affordable housing and power as public responsibilities',
+      'Fund it through what the party calls tax justice',
+      'Accept no corporate donations',
+    ],
+    keyPolicyAreas: ['economy', 'health', 'housing'],
+  },
+
+  'free-palestine': {
+    slug:          'free-palestine',
+    name:          'Free Palestine',
+    fullName:      'Free Palestine',
+    founded:       2026,
+    color:         '#0F4225',
+    textColor:     '#ffffff',
+    // No leader is published anywhere we can source. The Electoral Commission
+    // register names the party secretary, so that is what is shown rather than
+    // inventing a leader for the sake of a filled field.
+    leader:        'John Edmundson',
+    leaderTitle:   'Party secretary',
+    status:        'extra-parliamentary',
+    seats:         0, electorateSeats: 0, listSeats: 0,
+    founded_note:  'Registered by the Electoral Commission on 5 August 2026. The party campaigns under the longer name "Palestine Free from the River to the Sea Party"; "Free Palestine" is the name on the register, and therefore the name on the ballot paper.',
+    website:       'https://palfree.nz/',
+    parliamentUrl: 'https://palfree.nz/',
+    tagline:       'Justice, international law and equal rights for all citizens.',
+    overview:      'Free Palestine is a single-issue party formed to put Palestine on the New Zealand parliamentary agenda. It says it exists to press the Government to meet its obligations under international law, to support the prosecution of war crimes, and to build a movement open to supporters from different political traditions. It holds no seats in the current Parliament.',
+    history:       'The party was formed by Palestine solidarity campaigners and registered with the Electoral Commission on 5 August 2026 to contest the general election. It has not previously contested a New Zealand election.',
+    ideology:      ['Palestinian solidarity', 'Single-issue'],
+    coreValues: [
+      'Contest elections as an independent party rather than through an existing one',
+      'Press the Government to uphold international law and UN resolutions on Palestine',
+      'Support the prosecution of war crimes and genocide',
+      'Centre what the party calls the Nakba, the 1948 displacement of Palestinians, as the root of the conflict',
+      'Argue for a single democratic state with equal rights for all citizens rather than a two-state settlement',
+      'Build links with movements resisting injustice internationally',
+    ],
+    keyPolicyAreas: ['foreign-policy'],
+  },
+
+  'nz-loyal': {
+    slug:          'nz-loyal',
+    name:          'NZ Loyal',
+    fullName:      'New Zealand Loyal',
+    founded:       2023,
+    color:         '#B38600',
+    textColor:     '#ffffff',
+    leader:        'Kelvyn Alp',
+    leaderTitle:   'Leader',
+    coLeader:      'John Alcock',
+    coLeaderTitle: 'Deputy Leader',
+    status:        'extra-parliamentary',
+    seats:         0, electorateSeats: 0, listSeats: 0,
+    founded_note:  'Founded in 2023 by broadcaster Liz Gunn, deregistered in 2024, and re-registered by the Electoral Commission on 5 August 2026 under new leadership.',
+    website:       'https://nzloyal.com/',
+    parliamentUrl: 'https://nzloyal.com/',
+    tagline:       'Policy over personality.',
+    overview:      'New Zealand Loyal contested the 2023 election under founder Liz Gunn, won no seats, and was deregistered in 2024. It was re-registered in August 2026 under leader Kelvyn Alp, with John Alcock as deputy, and has been allocated public broadcasting funding for the campaign. Its founding and current leadership groups give different accounts of how the deregistration happened; this page records that the dispute exists rather than settling it. It holds no seats in the current Parliament.',
+    history:       'The party was founded in 2023 by Liz Gunn and won about 1.2 per cent of the party vote at that year\'s general election. The Electoral Commission recorded it as deregistered at the party\'s own request in July 2024; a new board later said that step had been taken unilaterally. Kelvyn Alp, founder of Counterspin Media, became leader in November 2024, and the party was re-registered on 5 August 2026.',
+    ideology:      ['Right-wing populism', 'Anti-establishment'],
+    coreValues: [
+      'Campaign on policy rather than personality',
+      'Reduce what the party describes as foreign influence over New Zealand law',
+      'Withdraw from international agreements the party sees as ceding sovereignty',
+      'Expand direct democracy, including binding referendums',
+      'Increase scrutiny of state institutions, including the police',
+      'Restore what the party calls constitutional protections for individual freedoms',
+    ],
+    keyPolicyAreas: ['democracy-government'],
+  },
+
+  'te-tai-tokerau-party': {
+    slug:          'te-tai-tokerau-party',
+    name:          'Te Tai Tokerau',
+    fullName:      'Te Tai Tokerau Party',
+    founded:       2026,
+    color:         '#734930',
+    textColor:     '#ffffff',
+    leader:        'Mariameno Kapa-Kingi',
+    leaderTitle:   'Leader',
+    status:        'extra-parliamentary',
+    seats:         0, electorateSeats: 0, listSeats: 0,
+    founded_note:  'Announced on 11 May 2026 by Te Tai Tokerau MP Mariameno Kapa-Kingi and registered by the Electoral Commission on 5 August 2026. Its seat count reads zero because every seat figure on this site is the 2023 result, and Kapa-Kingi was elected for Te Pati Maori.',
+    website:       'https://tetaitokerauparty.org.nz/',
+    parliamentUrl: 'https://tetaitokerauparty.org.nz/',
+    tagline:       'Mo nga tamariki, mokopuna te take.',
+    overview:      'Te Tai Tokerau Party was founded in 2026 by Mariameno Kapa-Kingi, who won Te Tai Tokerau for Te Pati Maori in 2023 and left that party to stand under a new banner. It campaigns on tino rangatiratanga, local decision-making and mana mokopuna, and says membership is open to anyone eligible to vote, regardless of whakapapa or where they live.',
+    history:       'Kapa-Kingi was expelled from Te Pati Maori in 2025; the High Court later ruled the suspension and expulsion unlawful and she was reinstated in March 2026. She announced her departure and the new party on 11 May 2026, and the Electoral Commission registered it on 5 August 2026.',
+    ideology:      ['Tino rangatiratanga', 'Maori self-determination'],
+    coreValues: [
+      'Tika - doing what is right',
+      'Pono - acting with integrity',
+      'Aroha - acting with compassion',
+      'Manaaki - caring for people',
+      'Kotahitanga - acting together',
+      'Transparency in how the party operates',
+    ],
+    keyPolicyAreas: ['treaty-maori-affairs'],
+  },
+
 }
 
 // Ordered list for directory page — exclude 'independent'
@@ -557,4 +686,5 @@ export const PARTY_DIRECTORY_ORDER: PartySlug[] = [
 // PARTY_DIRECTORY_ORDER, so they don't flood the comparison grid.
 export const PROFILED_MINOR_PARTIES: PartySlug[] = [
   'womens-rights', 'animal-justice', 'alcp', 'conservative', 'nz-outdoors', 'vision-nz',
+  'alliance', 'free-palestine', 'nz-loyal', 'te-tai-tokerau-party',
 ]

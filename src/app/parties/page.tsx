@@ -19,13 +19,18 @@ export const metadata: Metadata = {
 
 // Registered with the Electoral Commission to contest the 2026 party vote, but holding no
 // seats in the current (54th) Parliament. Listed EQUALLY and alphabetically — Arapono ranks
-// or endorses none. Party names from the EC register (as at 1 July 2026); official websites
+// or endorses none. Party names from the EC register (re-checked 23 August 2026, when
+// four parties registered on 5 August were added); official websites
 // and policy-focus areas taken from each party's own site.
 const REGISTERED_NON_PARLIAMENTARY: { name: string; site: string; focus: string[]; profile?: string }[] = [
+  { name: 'Alliance Party of Aotearoa New Zealand', site: 'https://allianceparty.nz/', focus: ['Economy', 'Health', 'Housing'], profile: '/parties/alliance' },
   { name: 'Animal Justice Party Aotearoa New Zealand', site: 'https://animaljustice.org.nz/', focus: ['Animal welfare', 'Environment', 'Climate'], profile: '/parties/animal-justice' },
   { name: 'Aotearoa Legalise Cannabis Party', site: 'https://alcp.org.nz/', focus: ['Cannabis law reform', 'Health', 'Justice'], profile: '/parties/alcp' },
   { name: 'Conservative Party NZ', site: 'https://www.conservatives.nz/', focus: ['Economy', 'Housing', 'Law & order'], profile: '/parties/conservative' },
+  { name: 'Free Palestine', site: 'https://palfree.nz/', focus: ['Foreign policy'], profile: '/parties/free-palestine' },
+  { name: 'New Zealand Loyal', site: 'https://nzloyal.com/', focus: ['Democracy & government'], profile: '/parties/nz-loyal' },
   { name: 'NZ Outdoors & Freedom Party', site: 'http://outdoorsparty.co.nz/', focus: ['Environment', 'Outdoors & freedom'], profile: '/parties/nz-outdoors' },
+  { name: 'Te Tai Tokerau Party', site: 'https://tetaitokerauparty.org.nz/', focus: ['Treaty & Māori affairs'], profile: '/parties/te-tai-tokerau-party' },
   { name: 'The Opportunity Party (TOP)', site: 'https://www.opportunity.org.nz/', focus: ['Economy', 'Climate', 'Housing'], profile: '/parties/top' },
   { name: 'Vision New Zealand', site: 'https://www.vision.org.nz/', focus: ['Economy', 'Māori affairs', 'Social values'], profile: '/parties/vision-nz' },
   { name: 'Women’s Rights Party', site: 'https://womensrightsparty.nz/', focus: ['Women’s rights', 'Education', 'Health'], profile: '/parties/womens-rights' },
@@ -35,7 +40,8 @@ const EC_REGISTER_URL = 'https://elections.nz/democracy-in-nz/political-parties-
 // Non-parliamentary parties that already have a full profile — shown as the
 // same tile as the parties in Parliament, not as neutral list rows.
 const PROFILED_NON_PARL: (keyof typeof PARTY_PROFILES)[] = [
-  'animal-justice', 'alcp', 'conservative', 'nz-outdoors', 'top', 'vision-nz', 'womens-rights',
+  'alliance', 'animal-justice', 'alcp', 'conservative', 'free-palestine', 'nz-loyal',
+  'nz-outdoors', 'te-tai-tokerau-party', 'top', 'vision-nz', 'womens-rights',
 ]
 
 export default function PartiesPage() {
@@ -215,7 +221,7 @@ function OtherRegisteredParties() {
   return (
     <div>
       <p style={{ fontSize: 14, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, margin: '0 0 18px', maxWidth: 720 }}>
-        About ten parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament. They’re listed <b style={{ color: INK }}>equally and alphabetically</b>. Arapono doesn’t rank or endorse any party.
+        Eleven parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament (register checked 23 August 2026). They’re listed <b style={{ color: INK }}>equally and alphabetically</b>. Arapono doesn’t rank or endorse any party.
       </p>
 
       {/* Ones we've fully profiled — same tile as the parties in Parliament,

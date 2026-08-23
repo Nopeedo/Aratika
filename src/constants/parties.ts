@@ -11,6 +11,12 @@ export const PARTY_NAMES: Record<PartySlug, { short: string; full: string }> = {
   tpm:      { short: 'Te Pāti Māori', full: 'Te Pāti Māori' },
   top:      { short: 'TOP', full: 'The Opportunity Party' },
   'womens-rights': { short: 'Women’s Rights', full: 'The New Zealand Women’s Rights Party' },
+  // Names exactly as they sit on the Electoral Commission register, because
+  // that is what appears on the ballot paper.
+  'alliance': { short: 'Alliance', full: 'Alliance Party of Aotearoa New Zealand' },
+  'free-palestine': { short: 'Free Palestine', full: 'Free Palestine' },
+  'nz-loyal': { short: 'NZ Loyal', full: 'New Zealand Loyal' },
+  'te-tai-tokerau-party': { short: 'Te Tai Tokerau', full: 'Te Tai Tokerau Party' },
   'animal-justice': { short: 'Animal Justice', full: 'Animal Justice Party Aotearoa New Zealand' },
   'alcp': { short: 'ALCP', full: 'Aotearoa Legalise Cannabis Party' },
   'conservative': { short: 'Conservative', full: 'Conservative Party NZ' },
@@ -33,6 +39,10 @@ export const PARTY_COLORS: Record<PartySlug, { bg: string; text: string; light: 
   tpm:         { bg: '#B11226', text: '#ffffff', light: '#f8e6e8' },
   top:         { bg: '#00E5CC', text: '#06302c', light: '#e5fdfc' },
   'womens-rights': { bg: '#6B3FA0', text: '#ffffff', light: '#efe7f6' },
+  'alliance': { bg: '#821918', text: '#ffffff', light: '#f5e8e8' },
+  'free-palestine': { bg: '#0F4225', text: '#ffffff', light: '#e7efea' },
+  'nz-loyal': { bg: '#B38600', text: '#ffffff', light: '#fbf3dd' },
+  'te-tai-tokerau-party': { bg: '#734930', text: '#ffffff', light: '#f1ebe6' },
   'animal-justice': { bg: '#159A7B', text: '#ffffff', light: '#e7f5f0' },
   'alcp': { bg: '#3E9B35', text: '#ffffff', light: '#ecf6ea' },
   'conservative': { bg: '#1FA39A', text: '#ffffff', light: '#e7f6f4' },
@@ -53,6 +63,15 @@ export const CURRENT_SEATS: Record<PartySlug, number> = {
   tpm:          6,
   top:          0,
   'womens-rights': 0,
+  // 2023 General Election result, the basis every seat count on this site uses.
+  // All four registered in 2026 and so contested no seats in 2023. Te Tai
+  // Tokerau Party's founder sits in this Parliament, but she was elected for
+  // Te Pāti Māori — crediting the seat here would misstate the 2023 result and
+  // double-count it against them.
+  'alliance': 0,
+  'free-palestine': 0,
+  'nz-loyal': 0,
+  'te-tai-tokerau-party': 0,
   'animal-justice': 0,
   'alcp': 0,
   'conservative': 0,
@@ -77,6 +96,10 @@ export const PARTY_STATUS: Record<PartySlug, 'governing' | 'opposition' | 'suppo
   tpm:         'opposition',
   top:         'none',
   'womens-rights': 'none',
+  'alliance': 'none',
+  'free-palestine': 'none',
+  'nz-loyal': 'none',
+  'te-tai-tokerau-party': 'none',
   'animal-justice': 'none',
   'alcp': 'none',
   'conservative': 'none',
@@ -109,7 +132,8 @@ export const PARLIAMENTARY_PARTIES: PartySlug[] = [
 ]
 
 export const NON_PARLIAMENTARY_CONTESTING: PartySlug[] = [
-  'alcp', 'animal-justice', 'conservative', 'nz-outdoors', 'top', 'vision-nz', 'womens-rights',
+  'alcp', 'alliance', 'animal-justice', 'conservative', 'free-palestine', 'nz-loyal',
+  'nz-outdoors', 'te-tai-tokerau-party', 'top', 'vision-nz', 'womens-rights',
 ]
 
 // Every registered party contesting 2026 (excludes 'independent').

@@ -14,6 +14,12 @@ export type PartySlug =
   | 'conservative'
   | 'nz-outdoors'
   | 'vision-nz'
+  // Registered by the Electoral Commission on 5 August 2026, after the
+  // 1 July snapshot the rest of this list was built from.
+  | 'alliance'
+  | 'free-palestine'
+  | 'nz-loyal'
+  | 'te-tai-tokerau-party'
   | 'independent'
 
 export interface Party {
