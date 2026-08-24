@@ -74,6 +74,32 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(34px, 5vh, 48px)' }}>
 
+          {/* ── HOW YOUR VOTE WORKS — first, because everything below assumes it ──
+              Two votes, what each one does, and why the party vote is the one
+              that decides the shape of Parliament. It sat second-to-last, after
+              the polls, the seat projection and the electorate map — all of
+              which are unreadable to someone who does not already know this.
+              A reader who knows how MMP works can scroll past a primer; one who
+              doesn't can't reconstruct it from a hemicycle. */}
+          {/* ── GET READY — how your vote works ─────────────────────────────── */}
+          <section id="your-vote" style={{ scrollMarginTop: 80 }}>
+            <ZoneHead eyebrow="Get ready to vote" title="How your vote works"
+              sub="You get two votes under MMP. Here’s what each one does." />
+            <TwoVotes />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 14, marginTop: 14 }}>
+              {STEPS.map((s) => (
+                <div key={s.title} className="party-card" style={{ background: s.tint, border: `2px solid ${s.ink}`, borderRadius: 16, padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  <s.icon style={{ width: 24, height: 24, color: s.ink }} />
+                  <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{s.title}</div>
+                  <div style={{ flex: 1, fontSize: 13, color: '#3f372f', fontFamily: MANROPE, lineHeight: 1.55 }}>{s.body}</div>
+                  {s.href && s.cta && (
+                    <a href={s.href} target="_blank" rel="noopener noreferrer" style={{ ...cta, color: s.ink }}>{s.cta} <ArrowUpRight style={ic} /></a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* ── WHEN — the only section where being wrong costs someone a vote ── */}
           <KeyDates today={today} />
 
@@ -157,25 +183,6 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                   <BattlegroundsMap embedded />
                 </div>
               </div>
-            </div>
-          </section>
-
-          {/* ── GET READY — how your vote works ─────────────────────────────── */}
-          <section id="your-vote" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Get ready to vote" title="How your vote works"
-              sub="You get two votes under MMP. Here’s what each one does." />
-            <TwoVotes />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 14, marginTop: 14 }}>
-              {STEPS.map((s) => (
-                <div key={s.title} className="party-card" style={{ background: s.tint, border: `2px solid ${s.ink}`, borderRadius: 16, padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <s.icon style={{ width: 24, height: 24, color: s.ink }} />
-                  <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{s.title}</div>
-                  <div style={{ flex: 1, fontSize: 13, color: '#3f372f', fontFamily: MANROPE, lineHeight: 1.55 }}>{s.body}</div>
-                  {s.href && s.cta && (
-                    <a href={s.href} target="_blank" rel="noopener noreferrer" style={{ ...cta, color: s.ink }}>{s.cta} <ArrowUpRight style={ic} /></a>
-                  )}
-                </div>
-              ))}
             </div>
           </section>
 

@@ -33,12 +33,15 @@ const TARGET = new Date('2026-11-07T00:00:00+13:00').getTime()
 // Same palette family as the hub tiles / policy chips — deep 700-level inks.
 // Must track the sections that actually exist in UpcomingView — a chip pointing
 // at a removed anchor silently does nothing when tapped.
+// Order follows the page. #parliament was here until that section was folded
+// into the three-tab #seats chart — the comment above says a chip pointing at a
+// removed anchor silently does nothing, and then one did, for two commits.
 const JUMP: { label: string; href: string; tint: string; ink: string }[] = [
-  { label: 'The parties', href: '#parties',     tint: '#f5f3ff', ink: '#6d28d9' },
-  { label: 'Your seat',   href: '#your-seat',   tint: '#fef1f2', ink: '#be123c' },
   { label: 'Your vote',   href: '#your-vote',   tint: '#ecfeff', ink: '#0e7490' },
+  { label: 'The parties', href: '#parties',     tint: '#f5f3ff', ink: '#6d28d9' },
+  { label: 'The seats',   href: '#seats',       tint: '#eff4ff', ink: '#1d4ed8' },
+  { label: 'Your seat',   href: '#your-seat',   tint: '#fef1f2', ink: '#be123c' },
   { label: 'Watch',       href: '#debates',     tint: '#fffbeb', ink: '#b45309' },
-  { label: 'Parliament',  href: '#parliament',  tint: '#eff4ff', ink: '#1d4ed8' },
 ]
 
 export function CommandHero() {
