@@ -21,12 +21,21 @@ import { BackLink } from '@/components/ui/back-link'
 import { useEffect, useState } from 'react'
 import { CalendarDays } from 'lucide-react'
 import { ELECTION_SECTIONS, HERO_JUMP_ID } from '@/constants/election-sections'
+import { ELECTORAL_SOURCE, longDate, milestone } from '@/constants/electoral-calendar'
 import { JADE, JADE_DARK, MANROPE } from '@/constants/theme'
 
 // Shared with the homepage flip counter (days-flip-countdown.tsx) so the two
 // counters read as the same object.
 const ESPRESSO = '#2A1206', WARM = '#5b3d2a', SUB = '#6b6157'
 const CARD_TOP = '#ffffff', CARD_BOT = '#f4f1ec', CARD_LINE = '#e6e2da'
+
+// Dates for the subline, resolved once from the calendar file rather than
+// written into the sentence. `??` gives a stable fallback if an id is ever
+// renamed — the phrase drops out rather than rendering "undefined" to a reader
+// who came here for a deadline.
+const ENROLMENT_CLOSES = milestone('enrolment-closes-2026')?.date ?? ''
+const ADVANCE_START = milestone('advance-voting-2026')?.date ?? ''
+const ADVANCE_END = milestone('advance-voting-2026')?.endDate ?? ''
 
 // Election day: Saturday 7 November 2026, local NZ (NZDT, UTC+13 in November).
 const TARGET = new Date('2026-11-07T00:00:00+13:00').getTime()
@@ -97,13 +106,19 @@ export function CommandHero() {
           ))}
         </div>
         <p style={{ textAlign: 'center', fontSize: 12, color: SUB, fontFamily: MANROPE, margin: '4px 0 clamp(20px, 3.4vh, 30px)' }}>
-          {/* This used to say the date and advance-voting period would be
-              "confirmed closer to the day". They have been: the Electoral
-              Commission published the full timetable, and the line stayed up
-              telling readers the opposite. The dates below come from that
-              timetable (see src/constants/electoral-calendar.json). */}
-          Enrolment closes <b>25 October</b>. New for 2026: you can’t enrol once advance voting starts.
-          Advance voting runs <b>26 October</b> to <b>6 November</b>. Dates from the Electoral Commission.
+          {/* Read from electoral-calendar.json, which is transcribed from the
+              Commission's timetable and also drives the push reminders.
+              The comment here used to SAY the dates came from that file while
+              all four were typed into the sentence — including a 6 November the
+              file did not contain at all. A line that ends "Dates from the
+              Electoral Commission" has to be true of the code, not just of the
+              author's intention; now the same value cannot differ between the
+              hero, the key-dates strip and a notification. */}
+          Enrolment closes <b>{longDate(ENROLMENT_CLOSES)}</b>. New for 2026: you can’t enrol once advance voting starts.
+          {ADVANCE_START && ADVANCE_END && (
+            <> Advance voting runs <b>{longDate(ADVANCE_START)}</b> to <b>{longDate(ADVANCE_END)}</b>.</>
+          )}{' '}
+          Dates from the {ELECTORAL_SOURCE.name.split('—')[0].trim()}.
         </p>
 
         {/* Jump nav — coloured chips, same language as the policy chips.

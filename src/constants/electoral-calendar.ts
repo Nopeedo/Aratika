@@ -39,6 +39,14 @@ export interface ElectoralMilestone {
   /** Set where the deadline is not end-of-day. */
   timeNote?: string
   /**
+   * Last day, for milestones that are a period rather than a moment. Only
+   * advance voting has one, and the Commission does not print it: see
+   * `endDateNote` on that entry for how it is derived and from which page.
+   */
+  endDate?: string
+  /** Why `endDate` says what it says, when the Commission doesn't state it. */
+  endDateNote?: string
+  /**
    * Whether this is worth interrupting someone for. Administrative milestones
    * (dissolution, nominations closing) are real but are not something a voter
    * has to act on, so they sit in the calendar without notifying.
@@ -62,6 +70,22 @@ export const ELECTORAL_CALENDAR: ElectoralMilestone[] = calendar.milestones
 /** Milestones still ahead of `today` (ISO date), soonest first. */
 export function upcomingMilestones(today: string): ElectoralMilestone[] {
   return ELECTORAL_CALENDAR.filter((m) => m.date >= today).sort((a, b) => a.date.localeCompare(b.date))
+}
+
+/** "25 October" — the form the Commission uses in prose, so a date read off the
+ *  page matches the one in the timetable. Year omitted: everything in this
+ *  calendar is the 2026 cycle and the page says so around it. */
+const LONG_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December']
+export function longDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00Z`)
+  return isNaN(d.getTime()) ? iso : `${d.getUTCDate()} ${LONG_MONTHS[d.getUTCMonth()]}`
+}
+
+/** Look up one milestone by id. Returns undefined rather than throwing, so a
+ *  renamed id degrades to a missing phrase instead of a blank page. */
+export function milestone(id: string): ElectoralMilestone | undefined {
+  return ELECTORAL_CALENDAR.find((m) => m.id === id)
 }
 
 /** Whole days from `today` to `date`, both ISO dates. Negative once past. */

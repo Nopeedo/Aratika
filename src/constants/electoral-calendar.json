@@ -3,7 +3,7 @@
     "name": "Electoral Commission — 2026 General Election timetable",
     "url": "https://elections.nz/assets/2026-Media-Kit-/2026-General-Election-media-kit.pdf",
     "page": "2026 General Election Media Kit, p6 (timetable) and p7 (what's new this election)",
-    "retrieved": "2026-08-19"
+    "retrieved": "2026-08-25"
   },
   "electionDay": "2026-11-07",
   "milestones": [
@@ -83,7 +83,9 @@
       "notify": true,
       "remindDaysBefore": [
         3
-      ]
+      ],
+      "endDate": "2026-11-06",
+      "endDateNote": "Derived, not listed. The Commission’s timetable gives advance voting a START date only; its 6 November row is \"Regulated period ends. All election advertising must end\", which is a different thing. The end date follows from p7: \"An advance voting period of 12 days is set in the law.\" Twelve days from 26 October ends 6 November, the day before election day. Recorded here so the derivation is auditable rather than assumed — the same figure was previously typed into two components with no basis given."
     },
     {
       "id": "election-day-2026",
