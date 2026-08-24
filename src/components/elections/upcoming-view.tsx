@@ -78,22 +78,30 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(34px, 5vh, 48px)' }}>
 
-          {/* ── HOW YOUR VOTE WORKS — first, because everything below assumes it ──
-              Two votes, what each one does, and why the party vote is the one
-              that decides the shape of Parliament. It sat second-to-last, after
-              the polls, the seat projection and the electorate map — all of
-              which are unreadable to someone who does not already know this.
-              A reader who knows how MMP works can scroll past a primer; one who
-              doesn't can't reconstruct it from a hemicycle. */}
-          {/* ── GET READY — how your vote works ─────────────────────────────── */}
+          {/* ── WHEN — first, because it is the only section with a deadline ────
+              Everything else on this page can be read the day before the
+              election and still be useful. This one cannot: enrolment closes
+              25 October, thirteen days early, and a reader who arrives on
+              26 October has already lost the choice no matter how well they
+              understand MMP. Knowledge keeps; a closed roll doesn't.
+
+              It also now carries the enrolment link and the "you must be
+              enrolled" line, so it is the whole of what someone has to DO —
+              which belongs above what they need to know. */}
+          <KeyDates today={today} />
+
+          {/* ── HOW YOUR VOTE WORKS — the primer everything below assumes ───────
+              Two votes, what each one does, and why the party vote decides the
+              shape of Parliament. It used to sit second-to-last, under the
+              polls, the seat projection and the electorate map, all of which
+              are unreadable to someone who does not already know this. Second
+              is right: a reader who knows MMP scrolls past it in a second, and
+              one who doesn't cannot reconstruct it from a hemicycle. */}
           <section id="your-vote" style={{ scrollMarginTop: 80 }}>
             <ZoneHead eyebrow="Get ready to vote" title="How your vote works"
               sub="You get two votes under MMP. Here’s what each one does." />
             <TwoVotes />
           </section>
-
-          {/* ── WHEN — the only section where being wrong costs someone a vote ── */}
-          <KeyDates today={today} />
 
           {/* ── PARTIES CONTESTING — the fill tiles carry the standings now ──── */}
           <section id="parties" style={{ scrollMarginTop: 80 }}>
