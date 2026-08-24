@@ -193,8 +193,17 @@ export default async function HubPage() {
         </section>
 
         {/* ═══ The tiles — every other feature, below the command centre ═══ */}
+        <style>{`
+          .hub-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(158px, 100%), 1fr)); gap: 10px; margin-top: 12px; align-items: stretch; }
+          @media (min-width: 700px) { .hub-tiles { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; } }
+          /* auto-fill keeps empty tracks so tiles stay the same width row to
+             row — right for the seven-tile grid, which would otherwise have a
+             last row of three stretched wider than the four above it. The
+             two-tile For-you pair has no second row to match, so it fills. */
+          @media (min-width: 700px) { .hub-tiles-fill { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); } }
+        `}</style>
         <SectionLabel>For you</SectionLabel>
-        <Grid tiles={forYou} />
+        <Grid tiles={forYou} fill />
 
         <SectionLabel>The election</SectionLabel>
         <Grid tiles={election} />
@@ -216,24 +225,60 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-function Grid({ tiles }: { tiles: Tile[] }) {
-  // Flex-fill so each row stretches to the full width — tiles spread evenly with
-  // no empty gap on the right, and the last row fills too.
+function Grid({ tiles, fill = false }: { tiles: Tile[]; fill?: boolean }) {
+  /**
+   * Compact tiles, two to a row on a phone.
+   *
+   * These nine tiles ran 1315px — 1.6 screens of pure navigation below the
+   * command centre, every tile alone on its own row at full width. The old
+   * `flex: 1 1 240px` was the cause: two 240px tiles plus the gap need 492px
+   * and a 375px phone leaves 343, so the row could never hold two and each
+   * tile stretched to fill it instead. It looked deliberate and wasn't.
+   *
+   * The other half of the height was the tile itself — the icon sat on its own
+   * line above the title, and every tile carried a line of description. On
+   * /hub, which exists FOR people who have been here before, "Compare parties
+   * / Every party, side by side on the issues" is onboarding copy a returning
+   * visitor has already read. So the icon moved inline with the title, and the
+   * second line now shows the live number where there is one and falls back to
+   * the description only where the title needs explaining. The full marketing
+   * version of each is still one tap away on the homepage.
+   *
+   * The track is 158px, checked against the 343px a 375px phone actually
+   * leaves: two plus the 10px gap need 326. Above 700px it widens to 220 so
+   * desktop gets five or six across rather than a row of thin slivers.
+   *
+   * Titles are 13.5px because at 14 the longest one — "Get ready to vote" —
+   * cleared its box by 0.1px. Measured as painted text, not the element box.
+   */
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 12 }}>
+    <div className={fill ? 'hub-tiles hub-tiles-fill' : 'hub-tiles'}>
       {tiles.map((t) => (
         <Link key={t.href} href={t.href} className="party-card" style={{
-          flex: '1 1 240px', minWidth: 0,
-          display: 'block', textDecoration: 'none', borderRadius: 16, padding: '16px 16px 15px',
+          display: 'flex', flexDirection: 'column', gap: 3, minWidth: 0,
+          textDecoration: 'none', borderRadius: 14, padding: '11px 12px',
           background: t.tint, border: `2px solid ${t.ink}`, color: INK,
         }}>
-          <t.Icon style={{ width: 24, height: 24, color: t.ink, marginBottom: 12 }} />
-          <div style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE }}>{t.title}</div>
-          <div style={{ fontSize: 13, color: BODY, lineHeight: 1.45, marginTop: 3, fontFamily: MANROPE }}>{t.desc}</div>
-          {t.stat && (
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, marginTop: 11, fontSize: 12.5, fontWeight: 800, color: t.ink, fontFamily: MANROPE }}>
-              {t.stat} <ArrowRight style={{ width: 13, height: 13 }} />
-            </div>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 7, minWidth: 0 }}>
+            <t.Icon style={{ width: 16, height: 16, color: t.ink, flexShrink: 0 }} />
+            <span style={{ fontSize: 13.5, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.25, minWidth: 0 }}>
+              {t.title}
+            </span>
+          </span>
+          {/* The live number beats the description: it is the only part of this
+              block that changes between visits. */}
+          {t.stat ? (
+            /* No trailing arrow. On a full-width card it marked the one
+               tappable line; on a tile the whole card is the target, and with
+               "5 open for submissions" wrapping to two lines it left an arrow
+               floating beside them. */
+            <span style={{ fontSize: 12, fontWeight: 800, color: t.ink, fontFamily: MANROPE, lineHeight: 1.3 }}>
+              {t.stat}
+            </span>
+          ) : (
+            <span style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontSize: 12, color: BODY, lineHeight: 1.35, fontFamily: MANROPE }}>
+              {t.desc}
+            </span>
           )}
         </Link>
       ))}
