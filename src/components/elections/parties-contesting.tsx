@@ -27,12 +27,35 @@ import { MANROPE, INK, SECONDARY, TERTIARY, BORDER } from '@/constants/theme'
 
 const WARM = '#5b3d2a', LINE = '#e9e4db'
 
-const TILE_H = 172
-/** Top band kept clear for the party name, its full name (which wraps to two
- *  lines on the longer ones) and the seats chip. The gauge is confined below it:
- *  measured against the whole tile, National and Labour at ~30% filled to within
- *  24px of the top and their surface line cut straight across the party name. */
-const HEADER_H = 74
+/**
+ * Two tiles to a row, and a tile short enough that seventeen of them are not
+ * four screens of scrolling.
+ *
+ * The grid ASKED for two columns already and never got them: at
+ * minmax(min(100%, 210px), 1fr) a second column needs 210 + 210 + the 12px gap
+ * = 432px, and the grid is 338px wide on a 375px phone. So auto-fill dropped to
+ * one column and each tile stretched to the full 338px — 17 tiles x 172px, in a
+ * layout that reads as deliberate. The track is 158px now, checked against the
+ * 338 actually measured: two plus the gap need 328.
+ *
+ * The tile lost 24px of height, and the header gave up 8 of them so the gauge
+ * only gives up 16. The gauge is the point of this component — every party on
+ * one scale with the 5% line at a common height — so shrinking it is the last
+ * resort, not the first.
+ */
+const TILE_H = 164
+/** Top band kept clear for the party name, the full name where it is shown, and
+ *  the seats chip. The gauge is confined below it: measured against the whole
+ *  tile, National and Labour at ~30% filled to within 24px of the top and their
+ *  surface line cut straight across the party name.
+ *
+ *  Sized for the WORST case, not today's data: a two-line party name. "Te Pāti
+ *  Māori" and "Outdoors & Freedom" both wrap at a 163px track, and a fixed band
+ *  measured against the one-line names would let their stats sit 14px inside
+ *  the gauge. Neither collides at present only because both sit near the bottom
+ *  of the scale — which is a fact about this month's polling, not about the
+ *  layout. 76 covers a wrapped name at any share. */
+const HEADER_H = 76
 const GAUGE_H = TILE_H - HEADER_H
 /** Fill scale: this share fills the gauge. Set above the leading party so the
  *  biggest tile reads as nearly-full rather than clipped, while keeping every
@@ -64,17 +87,23 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
       {[
-        { label: 'In Parliament', parties: PARLIAMENTARY_PARTIES },
-        { label: 'Also registered to contest', parties: NON_PARLIAMENTARY_CONTESTING },
+        // The full name is shown where the short one isn't the name people
+        // know. "National", "Labour" and "Green" identify themselves; "ALCP",
+        // "TOP" and "Vision NZ" don't, and at a 163px track the big parties'
+        // full names truncated to "New Zealand…" — the same meaningless string
+        // on three different tiles. The extra identification goes to the group
+        // with less name recognition, which is the right way round.
+        { label: 'In Parliament', parties: PARLIAMENTARY_PARTIES, showFullName: false },
+        { label: 'Also registered to contest', parties: NON_PARLIAMENTARY_CONTESTING, showFullName: true },
       ].map((grp) => (
         <div key={grp.label}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 11 }}>
             <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: WARM, fontFamily: MANROPE }}>{grp.label}</span>
             <span style={{ flex: 1, height: 1, background: LINE }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 210px), 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 158px), 1fr))', gap: 12 }}>
             {grp.parties.map((slug) => (
-              <Tile key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} />
+              <Tile key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} showFullName={grp.showFullName} />
             ))}
           </div>
         </div>
@@ -83,7 +112,7 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
   )
 }
 
-function Tile({ slug, pct }: { slug: PartySlug; pct: number | null }) {
+function Tile({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null; showFullName: boolean }) {
   const colour = PARTY_COLORS[slug].bg
   const names = PARTY_NAMES[slug]
   const seats = CURRENT_SEATS[slug]
@@ -146,15 +175,26 @@ function Tile({ slug, pct }: { slug: PartySlug; pct: number | null }) {
         </>
       )}
 
-      <span style={{ position: 'relative', zIndex: 1, height: '100%', padding: '13px 14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      {/* Everything lives in the top band; the lower part of the tile is gauge
+          and nothing else. The stats used to sit at the BOTTOM, which is where
+          the fill rises from — so for any party whose share put the surface
+          line at that height (roughly 5-14% on this scale: Green, NZ First,
+          ACT, TOP) a 3px rule was drawn straight through the caption, and then
+          through the number when the caption was moved above it. Reordering
+          could never fix that. Text and gauge had to stop sharing space. */}
+      <span style={{ position: 'relative', zIndex: 1, padding: '13px 14px', display: 'flex', flexDirection: 'column', gap: 5 }}>
         {/* Seats chip laid out beside the names rather than positioned over
             them — same fix as the /parties tile. The old absolute chip plus a
             paddingRight on the short name left the full name, which has no such
             padding, running under the chip on the longer party names. */}
         <span style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
           <span style={{ display: 'block', minWidth: 0 }}>
-            <span style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15, display: 'block' }}>{names.short}</span>
-            <span style={{ display: 'block', fontSize: 10.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}>{names.full}</span>
+            <span style={{ fontSize: 14.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15, display: 'block' }}>{names.short}</span>
+            {/* Clamped: at a 163px track "Aotearoa Legalise Cannabis Party"
+                runs to three lines and pushes the header into the gauge. */}
+            {showFullName && (
+              <span style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontSize: 10.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}>{names.full}</span>
+            )}
           </span>
           {seats > 0 && (
             <span style={{
@@ -165,13 +205,13 @@ function Tile({ slug, pct }: { slug: PartySlug; pct: number | null }) {
         </span>
 
         {polled ? (
-          <span style={{ display: 'block' }}>
-            <span style={{ fontSize: 30, fontWeight: 800, color: INK, fontFamily: MANROPE, letterSpacing: '-.02em', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
-              {pct.toFixed(1)}<span style={{ fontSize: 15 }}>%</span>
+          <span style={{ display: 'flex', alignItems: 'baseline', gap: 6, minWidth: 0 }}>
+            <span style={{ fontSize: 24, fontWeight: 800, color: INK, fontFamily: MANROPE, letterSpacing: '-.02em', lineHeight: 1, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
+              {pct.toFixed(1)}<span style={{ fontSize: 13 }}>%</span>
             </span>
-            <span style={{ display: 'block', fontSize: 10, fontWeight: 700, color: belowThreshold ? INK : SECONDARY, fontFamily: MANROPE, marginTop: 3 }}>
+            <span style={{ minWidth: 0, fontSize: 9.5, fontWeight: 700, color: belowThreshold ? INK : SECONDARY, fontFamily: MANROPE, lineHeight: 1.25 }}>
               {belowThreshold
-                ? (seats > 0 ? 'below 5%, in via electorates' : 'below the 5% threshold')
+                ? (seats > 0 ? 'in via electorates' : 'below 5%')
                 : 'poll of polls'}
             </span>
           </span>
