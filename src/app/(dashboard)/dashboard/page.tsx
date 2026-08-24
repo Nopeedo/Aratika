@@ -6,14 +6,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { Crown, Map, ArrowRight, PenLine, Sparkles, CheckCircle2, Highlighter, Bookmark, Newspaper } from 'lucide-react'
+import { Crown, Map, ArrowRight, PenLine, Sparkles, CheckCircle2, Highlighter, Bookmark, Newspaper, Bell } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { ManageBillingButton } from '@/components/billing/billing-buttons'
 import { CommandCentre, type TrackedItem } from '@/components/bookmarks/command-centre'
 import type { TileUpdate } from '@/components/bookmarks/tile-focus'
-import { NotifyToggle } from '@/components/notifications/notify-toggle'
-import { EmailToggle } from '@/components/notifications/email-toggle'
-import { InstallButton } from '@/components/notifications/install-button'
 import { DashboardElection } from '@/components/dashboard/election-module'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { VideoSection } from '@/components/news/video-section'
@@ -43,11 +40,7 @@ export default async function DashboardPage() {
 
   const name = (user.user_metadata?.name as string) || user.email?.split('@')[0] || 'there'
 
-  // Seeded server-side so the toggle renders in its true state rather than
-  // flashing the wrong one. No row yet means never touched, and the newsletter
-  // is opt-out — so absent reads as subscribed, matching what the sender does.
-  const { data: prefs } = await supabase.from('notification_prefs').select('email_digest_enabled').eq('user_id', user.id).maybeSingle()
-  const emailDigestEnabled = prefs?.email_digest_enabled ?? true
+  // The notification_prefs read moved to /settings with the toggle it seeded.
 
   const { data: sub } = await supabase.from('subscriptions').select('status').eq('user_id', user.id).maybeSingle()
   // Paid tier off → treat everyone as premium so all features are free.
@@ -220,14 +213,15 @@ export default async function DashboardPage() {
           <CommandCentre initial={enriched} updates={tileUpdates} />
 
 
-          {/* Directly under the tracked items, because that is what they notify
-              about — "get told when these move" only means something next to the
-              list of these. Both controls need a signed-in user, so the
-              dashboard is the only page they belong on. */}
-          <div style={{ marginTop: 20, display: 'grid', gap: 12 }}>
-            <NotifyToggle />
-            <EmailToggle initialEnabled={emailDigestEnabled} />
-            <InstallButton />
+          {/* The alert toggles used to sit here, on the grounds that "get told
+              when these move" means most beside the list of these. True, but they
+              are decisions someone makes once and never revisits, and they were
+              costing a screen of height on the page a returning visitor opens to
+              see what changed. They live on /settings now, one tap away. */}
+          <div style={{ marginTop: 14 }}>
+            <Link href="/settings" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
+              <Bell style={{ width: 14, height: 14 }} /> Notification settings <ArrowRight style={{ width: 13, height: 13 }} />
+            </Link>
           </div>
         </div>
 

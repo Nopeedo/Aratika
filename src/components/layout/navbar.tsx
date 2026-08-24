@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu, X, ChevronDown, Map, User, LogOut, Crown, ListChecks, Home as HomeIcon } from 'lucide-react'
+import { Menu, X, ChevronDown, Map, User, LogOut, Crown, ListChecks, Home as HomeIcon, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { Button } from '@/components/ui/button'
 import { visibleNav, type NavItem } from '@/constants/nav-links'
@@ -421,10 +421,18 @@ function UserMenu({ isPremium }: { isPremium: boolean }) {
             <Map className="size-4 text-muted" />
             My Dashboard
           </Link>
-          {/* "Account Settings" pointed at /account, which was never built — every
-              signed-in user who opened this menu had a 404 waiting. Removed rather
-              than redirected: sending it to /dashboard would duplicate the item
-              directly above. Restore this when a real settings page exists. */}
+          {/* Restored. This pointed at /account, which was never built, so every
+              signed-in user who opened this menu had a 404 waiting; it was pulled
+              with a note to bring it back once a real settings page existed.
+              /settings is that page. */}
+          <Link
+            href="/settings"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm text-ink hover:bg-gray-50 transition-colors"
+          >
+            <Settings className="size-4 text-muted" />
+            Settings
+          </Link>
           <button
             className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
             onClick={handleSignOut}
