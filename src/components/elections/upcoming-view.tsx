@@ -29,6 +29,7 @@ import {
 } from '@/constants/polls-data'
 import { getPolls } from '@/lib/polls/live'
 import { CommandHero } from './command-hero'
+import { SectionRail } from './section-rail'
 import { KeyDates } from './key-dates'
 import { PollSnapshot } from './poll-snapshot'
 import { SeatChamber } from './seat-chamber'
@@ -70,6 +71,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
     // sits in the same world as the homepage and hub instead of on flat white.
     <div style={WOVEN_PAGE}>
       <CommandHero />
+      <SectionRail />
 
       <div style={{ maxWidth: 1000, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(34px, 5vh, 48px)' }}>
