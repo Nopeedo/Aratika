@@ -334,11 +334,16 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
               <span style={{ fontSize: 11, fontWeight: 800, color: ks.ink, background: ks.tint, borderRadius: 999, padding: '1px 7px', fontFamily: MANROPE, flexShrink: 0 }}>{group.length}</span>
               <span aria-hidden style={{ flex: 1, height: 1, background: BORDER }} />
             </div>
-            {/* 154px, not 168. Two tiles plus the 8px gap have to fit the 339px
-                a 375px phone leaves after page padding: at 168 that needs 344 and
-                silently fell back to ONE column, losing the biggest saving here
-                while looking like it had worked. Wider screens simply fit more. */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(154px, 100%), 1fr))', gap: 8 }}>
+            {/* 132px, measured INSIDE this card rather than against the page.
+                Two tiles plus the 8px gap have to fit what the command-centre
+                card actually leaves, which is a lot less than the viewport: at
+                360px it is 292px, at 375px only 307. The first attempt at 154
+                needed 316 and was checked on a standalone harness whose padding
+                did not match this card — so it read as two columns there and
+                stayed ONE COLUMN in production at every phone width below 390.
+                A layout measured outside its real container is not measured.
+                132 + 132 + 8 = 272 against 292, so 360 and up hold two. */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(132px, 100%), 1fr))', gap: 8 }}>
               {group.map((b) => {
                 // No sublabel in the dense tile. "NZ First list MP" is useful but
                 // it doubles the row height, and the name plus the party colour

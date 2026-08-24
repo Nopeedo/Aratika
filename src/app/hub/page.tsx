@@ -194,7 +194,7 @@ export default async function HubPage() {
 
         {/* ═══ The tiles — every other feature, below the command centre ═══ */}
         <style>{`
-          .hub-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(158px, 100%), 1fr)); gap: 10px; margin-top: 12px; align-items: stretch; }
+          .hub-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(136px, 100%), 1fr)); gap: 8px; margin-top: 12px; align-items: stretch; }
           @media (min-width: 700px) { .hub-tiles { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; } }
           /* auto-fill keeps empty tracks so tiles stay the same width row to
              row — right for the seven-tile grid, which would otherwise have a
@@ -244,9 +244,12 @@ function Grid({ tiles, fill = false }: { tiles: Tile[]; fill?: boolean }) {
    * the description only where the title needs explaining. The full marketing
    * version of each is still one tap away on the homepage.
    *
-   * The track is 158px, checked against the 343px a 375px phone actually
-   * leaves: two plus the 10px gap need 326. Above 700px it widens to 220 so
-   * desktop gets five or six across rather than a row of thin slivers.
+   * The track is sized against the narrowest common phone rather than a
+   * convenient one. 158px cleared a 375px iPhone by 17px but a 360px Android —
+   * the most common width there is — by only 2, and a 320px screen not at all.
+   * 136 + 136 + the 8px gap = 280 against the 288 a 320px screen leaves, so
+   * two columns hold all the way down. Above 700px it widens to 220 so desktop
+   * gets five or six across rather than a row of thin slivers.
    *
    * Titles are 13.5px because at 14 the longest one — "Get ready to vote" —
    * cleared its box by 0.1px. Measured as painted text, not the element box.

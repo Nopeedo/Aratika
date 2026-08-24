@@ -33,10 +33,16 @@ const WARM = '#5b3d2a', LINE = '#e9e4db'
  *
  * The grid ASKED for two columns already and never got them: at
  * minmax(min(100%, 210px), 1fr) a second column needs 210 + 210 + the 12px gap
- * = 432px, and the grid is 338px wide on a 375px phone. So auto-fill dropped to
- * one column and each tile stretched to the full 338px — 17 tiles x 172px, in a
- * layout that reads as deliberate. The track is 158px now, checked against the
- * 338 actually measured: two plus the gap need 328.
+ * = 432px, so auto-fill dropped to one column and each tile stretched to the
+ * full width — 17 tiles x 172px, in a layout that reads as deliberate.
+ *
+ * The track is sized against the NARROWEST common phone, not a convenient one.
+ * A first attempt at 158px was checked at 375 (iPhone) and shipped: at 360,
+ * which is what most Android phones report and by far the most common width in
+ * the world, the grid is 324px and two 158s plus the gap need 328. Four pixels,
+ * and every one of those phones got a single column. Measuring one width and
+ * generalising is how this bug keeps coming back. 146 + 146 + the 10px gap =
+ * 302 against 324, so there is 22px of room rather than a rounding error.
  *
  * The tile lost 24px of height, and the header gave up 8 of them so the gauge
  * only gives up 16. The gauge is the point of this component — every party on
@@ -101,7 +107,7 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
             <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: WARM, fontFamily: MANROPE }}>{grp.label}</span>
             <span style={{ flex: 1, height: 1, background: LINE }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 158px), 1fr))', gap: 12 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 146px), 1fr))', gap: 10 }}>
             {grp.parties.map((slug) => (
               <Tile key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} showFullName={grp.showFullName} />
             ))}

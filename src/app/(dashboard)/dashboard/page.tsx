@@ -170,7 +170,7 @@ export default async function DashboardPage() {
   return (
     <div style={{ ...WOVEN_PAGE, minHeight: 'calc(100vh - 64px)' }}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '40px 36px 32px' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '40px clamp(16px, 4vw, 36px) 32px' }}>
           <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>
             Kia ora, {name}
           </h1>
@@ -180,7 +180,11 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '32px 36px 64px' }}>
+      {/* Horizontal padding matches /hub. A fixed 36px each side spends 72px of
+          a 360px phone on margins — 40px more than /hub's clamp — and the
+          tracked-item grid inside it is sized against whatever is left, so the
+          padding was directly deciding whether it got one column or two. */}
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '32px clamp(16px, 4vw, 36px) 64px' }}>
 
         {/* Premium status / upsell — only when the premium tier has shipped */}
         {isEnabled('premium') && (isPremium ? (
