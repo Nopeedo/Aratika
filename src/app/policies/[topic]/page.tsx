@@ -54,18 +54,25 @@ export default async function PolicyTopicPage(
           {/* No "All policy topics" link any more. /policies redirects here, so
               it pointed at the page you were already on. The chip row below is
               the topic navigation, and it is always in reach. */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div className="topic-head" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <div className={t.color} style={{ width: 56, height: 56, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               {Icon && <Icon className={`size-7 ${t.textColor}`} />}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Policy Topic</div>
-              <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.1 }}>{t.label}</h1>
+              {/* Scales down on narrow screens. At a fixed 36px, “Democracy &
+                  Government” needed 214px of a 150px column and ran under the
+                  Track button. */}
+              <h1 style={{ fontSize: 'clamp(26px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.15 }}>{t.label}</h1>
             </div>
-            <BookmarkButton entity={{
-              kind: 'policy', refId: topic, label: t.label,
-              sublabel: 'Policy topic', href: `/policies/${topic}`, accent: JADE,
-            }} />
+            {/* Wrapped so a media query can drop it to its own line below 560px
+                — see .topic-head in globals.css. */}
+            <div className="topic-head-track">
+              <BookmarkButton entity={{
+                kind: 'policy', refId: topic, label: t.label,
+                sublabel: 'Policy topic', href: `/policies/${topic}`, accent: JADE,
+              }} />
+            </div>
           </div>
         </div>
       </div>

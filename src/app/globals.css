@@ -491,3 +491,13 @@ a, button, [role='button'], summary {
 @media (prefers-reduced-motion: reduce) {
   .party-swap { animation: none; }
 }
+
+/* Policy topic header.
+   Icon + title + Track sat on one row at every width. On a 375px phone that
+   left the title a 150px column: "Economy" needed 157px and ran under the Track
+   button, and "Democracy & Government" needed 214px and broke to three lines.
+   Below 560px the button drops to its own line and the title gets the row. */
+@media (max-width: 560px) {
+  .topic-head { flex-wrap: wrap; }
+  .topic-head-track { flex-basis: 100%; }
+}
