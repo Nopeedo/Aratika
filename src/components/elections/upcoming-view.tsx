@@ -21,10 +21,9 @@ import Link from 'next/link'
 import { ArrowRight, ArrowUpRight, UserPlus, Clock, Info, MapPin } from 'lucide-react'
 import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
-import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
 import {
-  pollOfPolls, pollOfPollsOthers, seatProjection, RECENT_POLLS, POLL_PARTIES, PREFERRED_PM,
+  pollOfPolls, pollOfPollsOthers, seatProjection, POLL_PARTIES, PREFERRED_PM,
   TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, POLLS_AS_AT, POLLS_SOURCE,
   PROJECTION_SEATS,
 } from '@/constants/polls-data'
@@ -32,12 +31,11 @@ import { getPolls } from '@/lib/polls/live'
 import { CommandHero } from './command-hero'
 import { KeyDates } from './key-dates'
 import { PollSnapshot } from './poll-snapshot'
-import { CoalitionExplorer } from './coalition-explorer'
+import { SeatChamber } from './seat-chamber'
 import { TwoVotes } from './two-votes'
 import { PartiesContesting } from './parties-contesting'
 import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
-import { SeatHemicycle } from './seat-hemicycle'
 import { VideoSection } from '@/components/news/video-section'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -107,9 +105,22 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             />
           </section>
 
-          {/* ── WHO COULD GOVERN — the interactive coalition builder ─────────── */}
-          <section id="coalitions" style={{ scrollMarginTop: 80 }}>
-            <CoalitionExplorer seats={projection} total={PROJECTION_SEATS} asAt={POLLS_AS_AT} />
+          {/* ── THE SEATS — one chamber, three ways to read it ───────────────── */}
+          {/* Was two sections ~1600px apart, both drawing the same hemicycle:
+              the 2023 Parliament here, the coalition builder there. The reader's
+              questions run in sequence — what is there, what would the polls
+              make it, what could govern — so they are tabs on one chart now,
+              and comparing them is a tap instead of a scroll. */}
+          <section id="seats" style={{ scrollMarginTop: 80 }}>
+            <SeatChamber
+              elected={base.results!}
+              electedTotal={base.totalSeats!}
+              electedYear={base.year}
+              electedSlug={base.slug}
+              projection={projection}
+              projectionTotal={PROJECTION_SEATS}
+              asAt={POLLS_AS_AT}
+            />
           </section>
 
           {/* The "Face them off" tool sat here — pick an issue, read two parties'
@@ -184,36 +195,9 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             </section>
           )}
 
-          {/* ── THE CURRENT PARLIAMENT — the 2023 baseline ───────────────────── */}
-          <section id="parliament" style={{ scrollMarginTop: 80 }}>
-            {/* One header, not two: the panel used to carry its own title under a
-                banner that described the poll-of-polls, which no longer sits in
-                this zone. */}
-            <ZoneHead eyebrow="Your baseline" title="The Parliament you’re voting to change"
-              sub={`The current make-up, from the ${base.year} General Election. This is the starting point 2026 changes.`}
-              link={{ href: `/elections/${base.slug}`, label: `Full ${base.year} results` }} />
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
-                <div style={{ padding: 18, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 18, alignItems: 'center' }}>
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <SeatHemicycle results={base.results!} total={base.totalSeats!} />
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
-                    {base.results!.map((r) => (
-                      <div key={r.party} style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: MANROPE }}>
-                        <span style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[r.party].bg }} />
-                        <span style={{ fontSize: 13, color: INK, flex: 1 }}>{PARTY_NAMES[r.party].short}</span>
-                        <span style={{ fontSize: 13, fontWeight: 800, color: INK }}>{r.seats}</span>
-                      </div>
-                    ))}
-                    {/* The zone header already links to the full results — one is enough. */}
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </section>
+          {/* The 2023 hemicycle used to live here, at the bottom of the page,
+              1600px below the coalition builder that drew the same chart from
+              poll estimates. Both are now tabs on #seats, above. */}
 
           {/* Election-night scaffold */}
           <div style={{ display: 'flex', gap: 10, padding: '16px 18px', background: SURFACE, border: `1px dashed ${TERTIARY}`, borderRadius: 14 }}>
