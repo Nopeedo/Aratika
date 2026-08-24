@@ -96,6 +96,15 @@ export default async function PolicyTopicPage(
             rather than by anything sourced. */}
         <TopicSwitcher current={topic} />
 
+        {/* Everything below the chips fades in on a topic change. `key` is the
+            topic, so React remounts this subtree and the animation replays;
+            without it the content swaps in one frame and, now that the page no
+            longer scrolls to the top, there is nothing at all to tell a reader
+            it changed. 140ms — long enough to read as a transition, short
+            enough that it never becomes the thing you are waiting for.
+            Honoured by prefers-reduced-motion in globals.css. */}
+        <div key={topic} className="topic-swap" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+
         {/* Detailed party-by-party comparison */}
         {positions.length > 0 ? (
           <PolicyComparison positions={positions} topicLabel={t.label} topic={topic} />
@@ -112,6 +121,8 @@ export default async function PolicyTopicPage(
 
         {/* What's been legislated this term (bills → record, beside the comparison) */}
         <BillsForTopic topic={topic as PolicyTopic} label={t.label} />
+
+        </div>
 
         {/* Source */}
         <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 16, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>

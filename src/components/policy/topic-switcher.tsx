@@ -11,7 +11,24 @@
  * the two pages feel like separate places rather than two views of one dataset.
  *
  * Plain links, same reasoning as PartySwitcher: each topic keeps its own URL, so
- * a page stays shareable and indexable.
+ * a page stays shareable and indexable. They are also what tracked topics and
+ * notification deep-links point at, so they are not decoration.
+ *
+ * scroll={false} is what makes this feel instant, and it is worth recording why,
+ * because the obvious diagnosis was wrong. Switching topic was reported as
+ * "loading" — but the route is statically prerendered and prefetched, and the
+ * swap measures 34-71ms on production. Nothing loads. What happened was the
+ * scroll position resetting to the top on every navigation: tap a chip from
+ * halfway down the page and you are thrown back to the header, which reads as a
+ * reload whether or not anything was fetched. Staying put keeps the chip row
+ * under the reader's thumb while the content beneath it changes, which is the
+ * behaviour the party page gets for free by never navigating at all.
+ *
+ * The alternative considered was the party page's approach — hold every topic
+ * in client state and switch with useState. That would have shipped all 116
+ * approved positions (99KB trimmed, ~28KB gzipped) to every reader including
+ * one who opens a single topic, to remove a delay that was already 34ms, and it
+ * would have left the URL saying "economy" while the page showed housing.
  */
 
 import Link from 'next/link'
@@ -40,6 +57,7 @@ export function TopicSwitcher({ current }: { current: string }) {
           <Link
             key={key}
             href={`/policies/${key}`}
+            scroll={false}
             aria-current={active ? 'page' : undefined}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,

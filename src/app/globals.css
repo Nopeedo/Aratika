@@ -501,3 +501,21 @@ a, button, [role='button'], summary {
   .topic-head { flex-wrap: wrap; }
   .topic-head-track { flex-basis: 100%; }
 }
+
+/* ── Policy topic swap ──────────────────────────────────────────────────────
+   The content below the topic chips on /policies/[topic], faded in on change.
+   The chips navigate with scroll={false}, so the page no longer jumps to the
+   top when you switch — which is what used to signal that anything had
+   happened. This is the replacement signal, and it is deliberately slight:
+   the swap itself measures under 70ms, so anything longer would be adding a
+   wait rather than describing one. */
+.topic-swap {
+  animation: topic-swap-in 140ms ease-out;
+}
+@keyframes topic-swap-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .topic-swap { animation: none; }
+}
