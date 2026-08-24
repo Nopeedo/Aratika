@@ -55,3 +55,25 @@ export function byPriority<T extends Ageable>(a: T, b: T): number {
 
 /** How many an inline panel shows before sending the reader to the full page. */
 export const PANEL_LIMIT = 10
+
+/**
+ * Categories that ask the reader to DO something, or to know something by a
+ * date. These are the ones worth putting above the command centre.
+ *
+ * Deliberately narrower than isUrgent(). That function answers a different
+ * question — "may this ever expire?" — and returns true for anything that is not
+ * news or video, which sweeps in policy positions. A party publishing a position
+ * is an update, not a deadline: measured on the live queue, 6 of the 7
+ * currently-urgent unread items were positions, and surfacing those at the top
+ * of the dashboard would make the band the very thing it must not become, an
+ * inbox that is never empty.
+ *
+ * The four kept here are the four described as urgent: movement on legislation,
+ * a submission window, a new challenger in a seat, and the electoral calendar.
+ */
+const ATTENTION = new Set(['bill_submission', 'bill_status', 'candidate', 'election'])
+
+/** Does this belong above the command centre rather than on a tile? */
+export function needsAttention(category: string): boolean {
+  return ATTENTION.has(category)
+}

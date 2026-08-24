@@ -10,6 +10,8 @@ import { Crown, Map, ArrowRight, PenLine, Sparkles, CheckCircle2, Highlighter, B
 import { createClient } from '@/lib/supabase/server'
 import { ManageBillingButton } from '@/components/billing/billing-buttons'
 import { CommandCentre, type TrackedItem } from '@/components/bookmarks/command-centre'
+import { AttentionBand, type AttentionItem } from '@/components/bookmarks/attention-band'
+import { needsAttention } from '@/lib/notifications/rules'
 import type { TileUpdate } from '@/components/bookmarks/tile-focus'
 import { DashboardElection } from '@/components/dashboard/election-module'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
@@ -75,18 +77,40 @@ export default async function DashboardPage() {
   // bookmark matched a story after the fact.
   const { data: taggedRaw } = await supabase
     .from('notification_queue')
-    .select('id, category, title, url, created_at, entity_kind, entity_ref')
+    .select('id, category, title, body, url, created_at, entity_kind, entity_ref')
     .is('read_at', null)
     .not('entity_kind', 'is', null)
     .order('created_at', { ascending: false })
     .limit(200)
+
+  // Split once, exclusively. A notification appears in the band OR on a tile,
+  // never both — the same item counted twice would make the tile numbers lie,
+  // and clearing it in one place would leave it sitting in the other.
+  const attention: AttentionItem[] = []
   const tileUpdates: Record<string, TileUpdate[]> = {}
   for (const r of taggedRaw ?? []) {
+    if (needsAttention(r.category)) {
+      attention.push({
+        id: r.id, category: r.category, title: r.title, body: r.body,
+        url: r.url, created_at: r.created_at,
+        // The tracked thing's own name, so a row reads "New candidate ·
+        // Whanganui" rather than making someone infer the seat from the title.
+        entityLabel: bookmarks.find((b) => b.kind === r.entity_kind && b.ref_id === r.entity_ref)?.label,
+      })
+      continue
+    }
     const key = `${r.entity_kind}:${r.entity_ref}`
     ;(tileUpdates[key] ||= []).push({
       id: r.id, category: r.category, title: r.title, url: r.url, created_at: r.created_at,
     })
   }
+  // Deadlines first, then newest. An open submission window outranks a bill that
+  // moved last week even if the bill news arrived more recently.
+  const ORDER = ['bill_submission', 'election', 'bill_status', 'candidate']
+  attention.sort((a, b) => {
+    const d = ORDER.indexOf(a.category) - ORDER.indexOf(b.category)
+    return d !== 0 ? d : b.created_at.localeCompare(a.created_at)
+  })
 
   // Enrich tracked MP/party cards with display details (photo, party, leader) — server-side
   // so we don't ship the full MP/party dataset to the client.
@@ -203,6 +227,13 @@ export default async function DashboardPage() {
         <div style={{ marginBottom: 32 }}>
           <DashboardElection parties={electionParties} electorates={electionElectorates} />
         </div>
+
+        {/* Above the command centre on purpose. Everything on this page is about
+            what you follow, so ordering by that says nothing; this orders by what
+            you may have to act on. Renders nothing when nothing qualifies, which
+            is the normal state — 270 of 277 unread notifications are news or
+            video. */}
+        <AttentionBand items={attention} />
 
         {/* Command centre — the centrepiece */}
         <div style={{ marginBottom: 32 }}>

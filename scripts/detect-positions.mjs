@@ -124,7 +124,12 @@ for (const it of current) {
       // Includes reviewed_at so a genuine later revision notifies again rather
       // than being swallowed as a duplicate of the first publication.
       dedup: dedupKey('position', it.id, it.reviewed_at, userId),
-      title: updated ? `${partyName} updated their ${topicLabel} policy` : `${partyName} on ${topicLabel}`,
+      // A verified absence is not a position, and "Labour on Foreign Policy"
+      // implies they said something. Six of these went out reading that way
+      // before this branch existed.
+      title: it.data?.noPosition
+        ? `${partyName} has no published position on ${topicLabel}`
+        : updated ? `${partyName} updated their ${topicLabel} policy` : `${partyName} on ${topicLabel}`,
       body: stance.length > 140 ? `${stance.slice(0, 137)}…` : stance,
       url: `/policies/${topic}/${party}`,
     })
