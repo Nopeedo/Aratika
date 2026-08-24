@@ -7,9 +7,9 @@
  * dashboard. Empty state nudges the user toward the things worth tracking.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink, Swords } from 'lucide-react'
+import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink, Swords, ChevronDown, ChevronUp, Pencil, Check } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { BILLS_54, type Bill54 } from '@/constants/bills-54'
 import { PARTY_COLORS } from '@/constants/parties'
@@ -34,6 +34,17 @@ function fmtDate(iso?: string | null) {
 // drives the "new since your last visit" badge.
 export type TrackedItem = Bookmark & { photo?: string; party?: string; role?: string; leader?: string; lastActivity?: number }
 const initials = (s: string) => s.split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase()
+
+/** How many tiles a group shows before it collapses.
+ *
+ *  This is the part that makes the section scale. Denser rows only slow the
+ *  growth down — track sixty things and a twice-as-dense list is still three
+ *  screens. With a cap, six groups can never exceed twenty-four tiles no matter
+ *  how much someone follows, so the dashboard stops growing with use.
+ *
+ *  Four is two rows of the two-column grid, so every group has the same visual
+ *  weight regardless of how much sits behind it. */
+const GROUP_CAP = 4
 
 const GROUPS: { kind: Bookmark['kind']; label: string; icon: React.ElementType }[] = [
   { kind: 'mp', label: 'Tracked MPs', icon: Users },
@@ -127,16 +138,16 @@ function TileFace({ b, sub, edge }: { b: TrackedItem; sub?: string | null; edge:
   return (
     <>
       {b.kind === 'mp' ? (
-        <Avatar name={b.label} party={b.party as PartySlug | undefined} src={b.photo} size="md" />
+        <Avatar name={b.label} party={b.party as PartySlug | undefined} src={b.photo} size="xs" />
       ) : b.kind === 'party' ? (
         // Initials in ink on white, ringed in the party colour, rather than
         // white on the colour itself: solid fills forced the text to flip
         // between near-black on ACT's yellow and white on National's blue, and
         // several palettes are too light to carry white at all.
-        <span style={{ width: 40, height: 40, borderRadius: '50%', flexShrink: 0, background: '#fff', border: `2px solid ${edge}`, color: INK, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, fontFamily: MANROPE }}>{initials(b.label)}</span>
+        <span style={{ width: 24, height: 24, borderRadius: '50%', flexShrink: 0, background: '#fff', border: `2px solid ${edge}`, color: INK, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9.5, fontWeight: 800, fontFamily: MANROPE }}>{initials(b.label)}</span>
       ) : null}
       <span style={{ minWidth: 0 }}>
-        <span style={{ display: 'block', fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{b.label}</span>
+        <span style={{ display: 'block', fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{b.label}</span>
         {sub && <span style={{ display: 'block', fontSize: 12, color: TERTIARY, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{sub}</span>}
       </span>
     </>
@@ -151,6 +162,10 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
   // Local so marking read clears the badge immediately rather than on reload.
   const [updates, setUpdates] = useState(initialUpdates)
   const [focused, setFocused] = useState<string | null>(null)
+  // Which groups have been expanded past the cap, and whether the remove
+  // buttons are showing.
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
+  const [editing, setEditing] = useState(false)
 
   // Routine coverage older than three days stops contributing to the count. It
   // is not deleted or marked read — it stays in full on the tracked item's own
@@ -181,24 +196,13 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
   const [today, setToday] = useState<string | null>(null)
   useEffect(() => { setToday(new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })) }, [])
 
-  // "New since your last visit": compare each item's newest activity against the
-  // timestamp we stored last time. Read the OLD value, light up the badges, then
-  // stamp now — so the badge clears on the next visit. Runs once (a ref guards
-  // against React 18 StrictMode's double-effect, which would otherwise stamp now
-  // and wipe the badges immediately). First-ever visit falls back to 3 days.
-  const [seenSince, setSeenSince] = useState<number | null>(null)
-  const stamped = useRef(false)
-  useEffect(() => {
-    if (stamped.current) return
-    stamped.current = true
-    const KEY = 'cc_last_seen_v1'
-    let raw: string | null = null
-    try { raw = localStorage.getItem(KEY) } catch { /* private mode */ }
-    const since = raw ? Number(raw) : Date.now() - 3 * 86_400_000
-    setSeenSince(Number.isFinite(since) ? since : 0)
-    try { localStorage.setItem(KEY, String(Date.now())) } catch { /* private mode */ }
-  }, [])
-  const isUpdated = (b: TrackedItem) => seenSince != null && !!b.lastActivity && b.lastActivity > seenSince
+  // The "new since your last visit" machinery was removed here. It stamped a
+  // localStorage timestamp on every dashboard load to light up a per-tile
+  // badge — and nothing had rendered that badge since the unread COUNTS
+  // replaced it, so the whole thing was dead: a read, a write and a state
+  // update per visit, feeding a value no JSX referenced. A count of what is
+  // genuinely unread is a better answer to the same question anyway, because
+  // it survives opening the page and forgetting about it.
 
   // Match a tracked bill to the dataset by slug, falling back to its title.
   // Bill bookmarks are saved from pages backed by different datasets, so slugs
@@ -264,6 +268,25 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+      {/* Edit rather than a permanent X on every tile. Untracking is rare and
+          deliberate; a count is what someone came to read, and at two tiles per
+          row there is only space for one of them. */}
+      {items.length > 0 && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: -6 }}>
+          <button
+            onClick={() => setEditing((v) => !v)}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 5, cursor: 'pointer',
+              background: editing ? INK : 'none', border: editing ? 'none' : `1px solid ${BORDER}`,
+              borderRadius: 999, padding: '4px 11px',
+              fontSize: 11.5, fontWeight: 800, color: editing ? '#fff' : SECONDARY, fontFamily: MANROPE,
+            }}
+          >
+            {editing ? <><Check style={{ width: 12, height: 12 }} /> Done</> : <><Pencil style={{ width: 12, height: 12 }} /> Edit</>}
+          </button>
+        </div>
+      )}
+
       {/* The point of tracking a bill is to know when you can act on it. Select
           committee is that moment, and it passes on a deadline — so lead with it
           rather than letting someone discover it after the window shut. */}
@@ -283,9 +306,20 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
       )}
 
       {GROUPS.map(({ kind, label, icon: Icon }) => {
-        const group = items.filter((b) => b.kind === kind)
-        if (group.length === 0) return null
+        const all = items.filter((b) => b.kind === kind)
+        if (all.length === 0) return null
         const ks = KIND_STYLE[kind]
+        // Anything with something new comes first. At a cap, what gets hidden
+        // must be the quiet items — never one asking for attention. A bill open
+        // for submissions outranks everything, because it has a deadline.
+        const sorted = [...all].sort((a, b) => {
+          const ao = openBill(a) ? 1 : 0, bo = openBill(b) ? 1 : 0
+          if (ao !== bo) return bo - ao
+          return tileCount(b) - tileCount(a)
+        })
+        const isOpen = expanded[kind]
+        const group = isOpen ? sorted : sorted.slice(0, GROUP_CAP)
+        const hidden = all.length - group.length
         return (
           <div key={kind}>
             {/* A label, not an object. This was a pill in the group's tint with
@@ -300,9 +334,16 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
               <span style={{ fontSize: 11, fontWeight: 800, color: ks.ink, background: ks.tint, borderRadius: 999, padding: '1px 7px', fontFamily: MANROPE, flexShrink: 0 }}>{group.length}</span>
               <span aria-hidden style={{ flex: 1, height: 1, background: BORDER }} />
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(240px, 100%), 1fr))', gap: 10 }}>
+            {/* 154px, not 168. Two tiles plus the 8px gap have to fit the 339px
+                a 375px phone leaves after page padding: at 168 that needs 344 and
+                silently fell back to ONE column, losing the biggest saving here
+                while looking like it had worked. Wider screens simply fit more. */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(154px, 100%), 1fr))', gap: 8 }}>
               {group.map((b) => {
-                const sub = b.role || b.sublabel
+                // No sublabel in the dense tile. "NZ First list MP" is useful but
+                // it doubles the row height, and the name plus the party colour
+                // already identify the thing. The full detail is one tap away.
+                const sub = undefined
                 const open = openBill(b)
                 const { wash, edge } = tileColours(b)
                 return (
@@ -312,26 +353,29 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
                   // border it was saying the same thing twice.
                   // A bill open for submissions keeps its blue over the top,
                   // because that state matters more than the tile's identity.
-                  <div key={b.id} className="party-card" style={{ position: 'relative', border: `3px solid ${open ? '#bfd4fe' : edge}`, borderRadius: 14, background: open ? '#eef4ff' : wash, overflow: 'hidden', boxShadow: CARD_SHADOW }}>
+                  // A bill open for submissions takes the full row. It carries a
+                  // deadline and a band of text underneath, and neither fits a
+                  // half-width tile — the one item worth more space gets it.
+                  <div key={b.id} className="party-card" style={{ position: 'relative', border: `2px solid ${open ? '#bfd4fe' : edge}`, borderRadius: 12, background: open ? '#eef4ff' : wash, overflow: 'hidden', boxShadow: CARD_SHADOW, gridColumn: open ? '1 / -1' : undefined }}>
                     {/* The count sits inside the tile row below, not pinned over
                         the border. Clicking anywhere on a tile with updates
                         opens the focused view rather than expanding in place:
                         an inline expand pushes every tile beneath it down, which
                         is the reflow that made the old inbox feel like it kept
                         growing the page. */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '6px 7px' }}>
                     {/* Whole tile opens the focused view when there is something
                         to show; otherwise it stays a plain link to the item. */}
                     {tileCount(b) > 0 ? (
                       <button
                         onClick={() => setFocused(`${b.kind}:${b.ref_id}`)}
                         aria-label={`${tileCount(b)} update${tileCount(b) === 1 ? '' : 's'} on ${b.label}`}
-                        style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 11, background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}
+                        style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', padding: 0, cursor: 'pointer', textAlign: 'left' }}
                       >
                         <TileFace b={b} sub={sub} edge={edge} />
                       </button>
                     ) : (
-                    <Link href={hrefFor(b)} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 11, textDecoration: 'none' }}>
+                    <Link href={hrefFor(b)} style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
                       <TileFace b={b} sub={sub} edge={edge} />
                     </Link>
                     )}
@@ -340,20 +384,27 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
                         National or ACT tile reads as a party mark rather than a
                         number. Ink is the same espresso every heading uses, so
                         the badge belongs to the site and to nobody's party. */}
-                    {tileCount(b) > 0 && (
+                    {/* The count and the remove button share one slot rather than
+                        both being permanently present. At two tiles per row a
+                        26px avatar, a badge AND an X left about 78px for the
+                        name, which truncated "Chlöe Swarbrick" to nothing
+                        useful. Removing is rare and deliberate; a count is what
+                        you came to read. */}
+                    {editing ? (
+                      <button
+                        onClick={() => remove(b)}
+                        aria-label={`Stop tracking ${b.label}`}
+                        style={{ flexShrink: 0, width: 24, height: 24, borderRadius: 7, border: `1px solid ${BORDER}`, background: '#fff', color: '#b42318', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      >
+                        <X style={{ width: 13, height: 13 }} />
+                      </button>
+                    ) : tileCount(b) > 0 ? (
                       <span aria-hidden style={{
                         flexShrink: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                        minWidth: 20, height: 20, padding: '0 6px', borderRadius: 999,
-                        background: INK, color: '#fff', fontSize: 11.5, fontWeight: 800, fontFamily: MANROPE, lineHeight: 1,
+                        minWidth: 18, height: 18, padding: '0 5px', borderRadius: 999,
+                        background: INK, color: '#fff', fontSize: 10.5, fontWeight: 800, fontFamily: MANROPE, lineHeight: 1,
                       }}>{tileCount(b)}</span>
-                    )}
-                    <button
-                      onClick={() => remove(b)}
-                      aria-label={`Stop tracking ${b.label}`}
-                      style={{ flexShrink: 0, width: 28, height: 28, borderRadius: 8, border: `1px solid ${BORDER}`, background: '#fff', color: TERTIARY, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    >
-                      <X style={{ width: 14, height: 14 }} />
-                    </button>
+                    ) : null}
                     </div>
 
                     {open && (
@@ -374,6 +425,31 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
                 )
               })}
             </div>
+
+            {hidden > 0 && (
+              <button
+                onClick={() => setExpanded((e) => ({ ...e, [kind]: true }))}
+                style={{
+                  marginTop: 7, display: 'inline-flex', alignItems: 'center', gap: 4, cursor: 'pointer',
+                  background: 'none', border: 'none', padding: 0,
+                  fontSize: 11.5, fontWeight: 800, color: TERTIARY, fontFamily: MANROPE,
+                }}
+              >
+                <ChevronDown style={{ width: 12, height: 12 }} /> {hidden} more
+              </button>
+            )}
+            {isOpen && all.length > GROUP_CAP && (
+              <button
+                onClick={() => setExpanded((e) => ({ ...e, [kind]: false }))}
+                style={{
+                  marginTop: 7, display: 'inline-flex', alignItems: 'center', gap: 4, cursor: 'pointer',
+                  background: 'none', border: 'none', padding: 0,
+                  fontSize: 11.5, fontWeight: 800, color: TERTIARY, fontFamily: MANROPE,
+                }}
+              >
+                <ChevronUp style={{ width: 12, height: 12 }} /> Show fewer
+              </button>
+            )}
           </div>
         )
       })}
