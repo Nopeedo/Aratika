@@ -18,7 +18,7 @@
  */
 
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, UserPlus, Clock, Info, MapPin } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Info, MapPin } from 'lucide-react'
 import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
@@ -46,10 +46,12 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } 
 
 // Practical steps that sit alongside the "how your vote works" explainer.
 // tint/ink follow the homepage policy-chip language (deep 700-level borders).
-const STEPS = [
-  { icon: UserPlus, title: 'Enrol or check your details', body: 'You must be enrolled to vote. Enrol or update your address anytime at vote.nz.', href: 'https://vote.nz', cta: 'Enrol at vote.nz', tint: '#ecfdf3', ink: '#15803d' },
-  { icon: Clock, title: 'Vote early or on the day', body: 'Advance voting runs 26 October to 6 November, then election day is Saturday 7 November. Enrolment closes the day before advance voting starts.', href: null, cta: null, tint: '#ecfeff', ink: '#0e7490' },
-]
+/* The two "Enrol or check your details" / "Vote early or on the day" cards
+   that sat here are gone. They restated the KeyDates strip a few hundred pixels
+   below: one duplicated its "Check you're enrolled" link, the other spelled out
+   in prose the same four dates the strip already shows as tiles — and did it
+   with the dates HARDCODED, while the strip reads them from the Electoral
+   Commission file. Two copies of a deadline, one sourced and one typed. */
 
 export async function UpcomingView({ e }: { e: ElectionData }) {
   const base = BASELINE_ELECTION
@@ -88,18 +90,6 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             <ZoneHead eyebrow="Get ready to vote" title="How your vote works"
               sub="You get two votes under MMP. Here’s what each one does." />
             <TwoVotes />
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 14, marginTop: 14 }}>
-              {STEPS.map((s) => (
-                <div key={s.title} className="party-card" style={{ background: s.tint, border: `2px solid ${s.ink}`, borderRadius: 16, padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                  <s.icon style={{ width: 24, height: 24, color: s.ink }} />
-                  <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{s.title}</div>
-                  <div style={{ flex: 1, fontSize: 13, color: '#3f372f', fontFamily: MANROPE, lineHeight: 1.55 }}>{s.body}</div>
-                  {s.href && s.cta && (
-                    <a href={s.href} target="_blank" rel="noopener noreferrer" style={{ ...cta, color: s.ink }}>{s.cta} <ArrowUpRight style={ic} /></a>
-                  )}
-                </div>
-              ))}
-            </div>
           </section>
 
           {/* ── WHEN — the only section where being wrong costs someone a vote ── */}

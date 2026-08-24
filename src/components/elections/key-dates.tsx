@@ -15,6 +15,12 @@
  * Deliberately not a countdown: a countdown to the next milestone hides the
  * others, and the sequence is the point — enrolment closes BEFORE advance
  * voting opens, which is the bit that surprises people.
+ *
+ * This is now the only place on the Election Centre that carries the timetable
+ * or an enrolment link. Two cards in the section above said the same things in
+ * prose, with the dates typed in rather than read from the calendar file, so
+ * the page could have shown one date in the strip and a different one four
+ * paragraphs earlier. One source, one strip, one link.
  */
 
 import { ArrowUpRight } from 'lucide-react'
@@ -53,9 +59,17 @@ export function KeyDates({ today }: { today: string }) {
           <h2 style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px' }}>
             Dates that decide whether you can vote
           </h2>
+          {/* Carries what the two "get ready to vote" cards further up the page
+              used to say. They are gone: one duplicated the enrol link below,
+              the other spelled out these same four dates in prose — hardcoded,
+              beside a strip that reads them from the Commission's file. The one
+              thing worth keeping from them was the plainest sentence, that you
+              have to be enrolled at all, which is the premise the whole strip
+              rests on and was nowhere in it. */}
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
-            New for 2026: enrolment closes <b style={{ color: INK }}>before</b> advance voting opens. Unlike 2023
-            you cannot enrol on election day.
+            You must be enrolled to vote, and 2026 changed when. Enrolment closes{' '}
+            <b style={{ color: INK }}>before</b> advance voting opens — unlike 2023, you cannot enrol
+            once advance voting starts or on election day.
           </p>
         </div>
 
@@ -94,7 +108,7 @@ export function KeyDates({ today }: { today: string }) {
             color: '#fff', background: JADE, borderRadius: 999, padding: '7px 14px',
             fontFamily: MANROPE, textDecoration: 'none',
           }}>
-            Check you&rsquo;re enrolled <ArrowUpRight style={{ width: 13, height: 13 }} />
+            Enrol or check your details <ArrowUpRight style={{ width: 13, height: 13 }} />
           </a>
           <span style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.45 }}>
             Timetable from the {ELECTORAL_SOURCE.name}
