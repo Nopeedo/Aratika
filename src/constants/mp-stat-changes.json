@@ -1,6 +1,14 @@
 {
-  "generated": "2026-08-23",
+  "generated": "2026-08-24",
   "changes": [
+    {
+      "mp": "erica-stanford",
+      "field": "govBills",
+      "label": "Government bills in charge",
+      "from": 6,
+      "to": 7,
+      "date": "2026-08-24"
+    },
     {
       "mp": "kieran-mcanulty",
       "field": "writtenQuestions",
