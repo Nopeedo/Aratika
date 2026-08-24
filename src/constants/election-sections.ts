@@ -23,6 +23,11 @@ export interface ElectionSection {
 }
 
 export const ELECTION_SECTIONS: ElectionSection[] = [
+  // Green, not the strip's own red: #your-seat is already rose (#be123c) and at
+  // 11px the two reds are ~20 degrees of hue apart, which is not a difference
+  // you can read in a dot. Green sits ~50 degrees off the cyan next to it, and
+  // matches the enrol button this section owns.
+  { id: 'key-dates', label: 'Key dates', tint: '#ecfdf3', ink: '#15803d' },
   { id: 'your-vote', label: 'Your vote', tint: '#ecfeff', ink: '#0e7490' },
   { id: 'parties', label: 'The parties', tint: '#f5f3ff', ink: '#6d28d9' },
   { id: 'seats', label: 'The seats', tint: '#eff4ff', ink: '#1d4ed8' },
