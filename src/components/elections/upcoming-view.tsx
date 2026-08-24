@@ -28,13 +28,11 @@ import {
   TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, POLLS_AS_AT, POLLS_SOURCE,
   PROJECTION_SEATS,
 } from '@/constants/polls-data'
-import { getAllApprovedPositions } from '@/lib/positions/live'
 import { getPolls } from '@/lib/polls/live'
 import { CommandHero } from './command-hero'
 import { KeyDates } from './key-dates'
 import { PollSnapshot } from './poll-snapshot'
 import { CoalitionExplorer } from './coalition-explorer'
-import { PolicyFaceoff } from './policy-faceoff'
 import { TwoVotes } from './two-votes'
 import { PartiesContesting } from './parties-contesting'
 import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
@@ -62,9 +60,10 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const hasRealDebates = debates.some((v) => v.debate)
   const polls = await getPolls()
   const pop = pollOfPolls(polls)
-  // The three tools below were built for this page and never rendered on it.
   const projection = seatProjection(polls)
-  const positions = await getAllApprovedPositions()
+  // No getAllApprovedPositions() here any more. The face-off was its only
+  // consumer, so with that gone the call was fetching every approved position
+  // in the database on every render of this page and using none of them.
   // NZ local date — the calendar's deadlines are NZ deadlines.
   const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })
 
@@ -113,12 +112,12 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             <CoalitionExplorer seats={projection} total={PROJECTION_SEATS} asAt={POLLS_AS_AT} />
           </section>
 
-          {/* ── WHERE DO YOU SIT — react to stances, no sign-in ──────────────── */}
-          {positions.length > 0 && (
-            <section id="faceoff" style={{ scrollMarginTop: 80 }}>
-              <PolicyFaceoff positions={positions} />
-            </section>
-          )}
+          {/* The "Face them off" tool sat here — pick an issue, read two parties'
+              stances on a flip card, tap the one you agree with. Pulled out
+              because this page had grown to 17.6 screens on a phone and the
+              face-off was 2.1 of them. The component is still in the tree at
+              components/elections/policy-faceoff.tsx, unmounted, if it comes
+              back. Nothing linked to its #faceoff anchor. */}
 
           {/* ── YOUR ELECTORATE — the closest races, then the marginality map ── */}
           <section id="your-seat" style={{ scrollMarginTop: 80 }}>

@@ -1,7 +1,12 @@
 'use client'
 
 /**
- * PolicyFaceoff — the Election Centre "decide" tool. Instead of linking people
+ * PolicyFaceoff — NOT CURRENTLY MOUNTED. It rendered on /elections/2026 until
+ * that page was trimmed for length; kept here because the removal was "for
+ * now", not a decision that the idea is wrong. To restore it, put the section
+ * back in components/elections/upcoming-view.tsx (see the comment where it was).
+ *
+ * The Election Centre "decide" tool. Instead of linking people
  * away to the compare grid, it lets an undecided voter *react*: pick an issue,
  * read two parties' stances side by side, and tap the one that speaks to them.
  * Each tap builds a personal "leaning" bar and rolls to the next issue — no
