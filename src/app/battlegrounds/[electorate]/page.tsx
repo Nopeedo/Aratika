@@ -93,9 +93,30 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   // match the /mps profile slug convention).
   const resolvedSlug = info.mpSlug ?? (info.mpName ? mpSlugFromName(info.mpName) : undefined)
   const mp = resolvedSlug ? MP_PROFILES[resolvedSlug] : undefined
-  // The incumbent's party colour — used as a strip on every section specific to them,
-  // so it's visually obvious at a glance whose seat this currently is.
-  const incumbentColor = info.party ? PARTY_COLORS[info.party].bg : TERTIARY
+  /**
+   * Who holds this seat NOW, and who won it in 2023, are two different facts and
+   * this page was showing the second as the first.
+   *
+   * info.party is the party that WON the seat in 2023 — correct as history, and
+   * what the majority and marginality tier are calculated from. It is not who
+   * sits there today. Two of the seventy-one electorate MPs have changed
+   * affiliation this term: Mariameno Kapa-Kingi (Te Tai Tokerau) and Tākuta
+   * Ferris (Te Tai Tonga) both sit as independents, per parliament.nz via
+   * mps-generated.ts. The page called both of them "Te Pāti Māori · Defending"
+   * while listing a Te Pāti Māori CHALLENGER in the same roster — so it had the
+   * incumbent defending for the party standing against them.
+   *
+   * The site already held the right answer: /mps/mariameno-kapa-kingi says
+   * Independent. Only this page disagreed, because it read the seat's record
+   * instead of the member's.
+   */
+  const sittingParty = mp?.party ?? info.party ?? null
+  const wonForParty = info.party ?? null
+  const switchedParty = !!wonForParty && !!sittingParty && sittingParty !== wonForParty
+
+  // The sitting member's colour — this strip marks whose seat it is now, so it
+  // follows the member, not the 2023 result. Independents get their own grey.
+  const incumbentColor = sittingParty ? PARTY_COLORS[sittingParty].bg : TERTIARY
 
   // Real legislative activity this term, sourced from Parliament's official bills data
   // (same feed already used on the full MP profile page) — what they've actually done,
@@ -113,7 +134,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
       <div>
         {info.majority != null && (
           <div style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, marginBottom: 10 }}>
-            Won {info.name} by a majority of <b style={{ color: INK }}>{info.majority.toLocaleString('en-NZ')}</b> in 2023, making it a <b style={{ color: tier.color }}>{tier.label.toLowerCase()}</b> seat.
+            Won {info.name} by a majority of <b style={{ color: INK }}>{info.majority.toLocaleString('en-NZ')}</b> in 2023, making it {/^[aeiou]/i.test(tier.label) ? 'an' : 'a'} <b style={{ color: tier.color }}>{tier.label.toLowerCase()}</b> seat.
           </div>
         )}
         {mp?.bio && <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>{mp.bio}</p>}
@@ -306,12 +327,17 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
     {
       key: 'defender',
       color: incumbentColor,
-      light: info.party ? PARTY_COLORS[info.party].light : undefined,
+      light: sittingParty ? PARTY_COLORS[sittingParty].light : undefined,
       avatarName: mp?.name ?? info.mpName ?? '?',
-      avatarParty: info.party ?? undefined,
+      avatarParty: sittingParty ?? undefined,
       avatarPhoto: mp?.photo,
       title: mp?.name ?? info.mpName ?? 'Result pending',
-      subtitle: `${info.party ? PARTY_NAMES[info.party].full : 'Unverified'} · Defending`,
+      subtitle: `${sittingParty ? PARTY_NAMES[sittingParty].full : 'Unverified'} · Defending`,
+      // Stated, not silently corrected. The 2023 party is why this seat has the
+      // margin it has, so dropping it would leave the marginality unexplained.
+      note: switchedParty && wonForParty
+        ? `Won this seat for ${PARTY_NAMES[wonForParty].full} in 2023, now sitting as ${PARTY_NAMES[sittingParty!].full.toLowerCase() === 'independent' ? 'an independent' : PARTY_NAMES[sittingParty!].full}.`
+        : undefined,
       badge: 'Incumbent',
       pollPct: defenderPollPct,
       body: defenderBody,
@@ -483,8 +509,8 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
         majority={info.majority}
         incumbentColor={incumbentColor}
         incumbentName={mp?.name ?? info.mpName ?? 'the incumbent'}
-        incumbentSub={info.party ? PARTY_NAMES[info.party].short : 'Unverified'}
-        incumbentParty={info.party ?? undefined}
+        incumbentSub={sittingParty ? PARTY_NAMES[sittingParty].short : 'Unverified'}
+        incumbentParty={sittingParty ?? undefined}
         incumbentPhoto={mp?.photo}
         challengerLabel={leadChallenger ? (leadChallenger.party === 'independent' ? 'an independent' : PARTY_NAMES[leadChallenger.party].short) : 'a challenger'}
         challengerColor={challengerColor}

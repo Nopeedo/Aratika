@@ -11,7 +11,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import type { PartySlug } from '@/types'
-import { BORDER, INK, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export interface RosterItem {
   key: string
@@ -26,6 +26,13 @@ export interface RosterItem {
   title: string
   subtitle: string
   badge?: string
+  /**
+   * A qualifying fact about the row that belongs beside the subtitle rather
+   * than inside the dossier — currently only used where a sitting MP has
+   * changed party since the election, which makes "Defending" true of a
+   * different party than the majority beneath it was won for.
+   */
+  note?: string
   /** Illustrative-only poll standing (0-100) — see Candidate2026.pollPct. Omit unless mock/sourced. */
   pollPct?: number
   body: React.ReactNode
@@ -102,6 +109,9 @@ export function RosterAccordion({ items, defaultOpenKey }: { items: RosterItem[]
                   )}
                 </div>
                 <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, marginTop: 1 }}>{item.subtitle}</div>
+                {item.note && (
+                  <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 3, lineHeight: 1.4 }}>{item.note}</div>
+                )}
                 {item.pollPct != null && (
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, maxWidth: 220 }}>
                     <div style={{ flex: 1, height: 5, background: '#e9e7e2', borderRadius: 3, overflow: 'hidden' }}>
