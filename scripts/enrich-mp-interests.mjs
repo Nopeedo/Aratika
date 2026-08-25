@@ -20,8 +20,11 @@ const GEN = join(__dirname, '..', 'src', 'constants', 'mps-generated.ts')
 const OUT = join(__dirname, '..', 'src', 'constants', 'mps-interests.ts')
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
 
-const REGISTER_URL = 'https://www3.parliament.nz/media/11939/register-of-pecuniary-and-other-specified-interests-of-members-of-parliament-summary-of-annual-returns-as-at-31-january-2025.pdf'
-const AS_OF = '31 January 2025'
+// The 2026 register: presented to the House May 2026, published as media/12156.
+// sourceUrl stays the CANONICAL parliament.nz address — that is what the
+// profile cites — even when the bytes have to come from elsewhere (see --pdf).
+const REGISTER_URL = 'https://www3.parliament.nz/media/12156/register-of-pecuniary-and-other-specified-interests-of-members-of-parliament-summary-of-annual-returns-as-at-31-january-2026.pdf'
+const AS_OF = '31 January 2026'
 const SOURCE_LABEL = 'Register of Pecuniary Interests (parliament.nz)'
 
 const PARTYMAP = {
@@ -33,25 +36,53 @@ const PARTYMAP = {
 // {surname-lower + party} -> slug  (surname = last token of the MP's name)
 const src = readFileSync(GEN, 'utf8')
 const bySurnameParty = new Map()
-const norm = (s) => s.toLowerCase().replace(/['’`´′ʻ]/g, '').trim()  // drop apostrophes (O'Connor vs O’Connor)
+const bySurnamePartySeat = new Map()
+const ambiguous = new Set()
+// Drop apostrophes (O'Connor vs O’Connor) AND accents (Ōhāriu however it was
+// composed), so keys compare by letters alone.
+const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/['’`´′ʻ]/g, '').trim()
 // Robust: find each slug, then the first name/party after it (handles nested braces).
 const slugRe = /slug:\s*'([^']+)'/g
 let sm
+/**
+ * Three-part key, because surname+party is not unique. Labour has TWO
+ * O'Connors, and the old map hand-pinned 'oconnor::labour' to damien-oconnor —
+ * so both register sections resolved to Damien, the second overwrote the
+ * first, and Damien's profile published GREG's declared interests (the Ōhāriu
+ * section on the List MP's card). A hand map was how the ambiguity was
+ * noticed, and also how it became a mislabelling.
+ *
+ * The register's own header carries the disambiguator: "O'Connor (Labour,
+ * Ōhāriu)" vs "O'Connor (Labour, List)". So the primary key is
+ * surname::party::electorate (list MPs keyed as 'list'), with surname::party
+ * kept only where it maps to a single MP.
+ *
+ * The name capture also handles the \' escape in "O\'Connor" — the old
+ * regex stopped at the backslash and indexed the surname as "o\", which is
+ * why neither O'Connor could match anything honestly.
+ */
 while ((sm = slugRe.exec(src))) {
   const win = src.slice(sm.index, sm.index + 800)
-  const nm = win.match(/\bname:\s*'([^']+)'/)
+  const nm = win.match(/\bname:\s*'((?:\\.|[^'\\])*)'/)
   const pm = win.match(/\bparty:\s*'([^']+)'/)
+  const em = win.match(/\belectorate:\s*'((?:\\.|[^'\\])*)'/)
+  const rm = win.match(/\brole:\s*'([^']+)'/)
   if (!nm || !pm) continue
-  const surname = norm(nm[1].split(/\s+/).pop())
-  bySurnameParty.set(`${surname}::${pm[1]}`, sm[1])
+  const surname = norm(nm[1].replace(/\\'/g, "'").split(/\s+/).pop())
+  const seat = rm && rm[1] === 'list' ? 'list' : norm((em ? em[1] : '') || 'list')
+  bySurnamePartySeat.set(`${surname}::${pm[1]}::${seat}`, sm[1])
+  const key = `${surname}::${pm[1]}`
+  const prev = bySurnameParty.get(key)
+  if (prev && prev !== sm[1]) ambiguous.add(key)
+  else bySurnameParty.set(key, sm[1])
 }
+for (const key of ambiguous) bySurnameParty.delete(key)
 // Curated MPs outside mps-generated.ts, and TPM MPs mis-tagged 'independent' in our data.
 bySurnameParty.set('luxon::national', 'christopher-luxon')
 bySurnameParty.set('collins::national', 'judith-collins')
 bySurnameParty.set('ferris::tpm', 'takuta-ferris')
 bySurnameParty.set('kapa-kingi::tpm', 'mariameno-kapa-kingi')
-bySurnameParty.set('oconnor::labour', 'damien-oconnor')
-console.log(`Indexed ${bySurnameParty.size} MPs`)
+console.log(`Indexed ${bySurnamePartySeat.size} MP seats (${ambiguous.size} surname::party key(s) ambiguous, resolved by electorate)`)
 
 // Download + extract the register text.
 const tmp = join(__dirname, '..', '.tmp-register.pdf')
@@ -68,13 +99,14 @@ const partyAlt = Object.keys(PARTYMAP).map((p) => p.replace(/[.*+?^${}()|[\]\\]/
 const headerRe = new RegExp(`([A-Za-zĀ-ūā-ū'’.-]+) \\((${partyAlt}),\\s*([^)]+)\\)`, 'g')
 const heads = []
 let h
-while ((h = headerRe.exec(text))) heads.push({ surname: h[1], party: PARTYMAP[h[2]], idx: h.index, end: headerRe.lastIndex })
+while ((h = headerRe.exec(text))) heads.push({ surname: h[1], party: PARTYMAP[h[2]], electorate: h[3].trim(), idx: h.index, end: headerRe.lastIndex })
 
 const result = {}
 let ok = 0
 for (let i = 0; i < heads.length; i++) {
-  const { surname, party, end } = heads[i]
-  const slug = bySurnameParty.get(`${norm(surname)}::${party}`)
+  const { surname, party, electorate, end } = heads[i]
+  const slug = bySurnamePartySeat.get(`${norm(surname)}::${party}::${norm(electorate)}`)
+    ?? bySurnameParty.get(`${norm(surname)}::${party}`)
   if (!slug) { console.warn(`  unmatched: ${surname} (${party})`); continue }
   const blockEnd = i + 1 < heads.length ? heads[i + 1].idx : Math.min(end + 4000, text.length)
   let block = text.slice(end, blockEnd).replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim()
