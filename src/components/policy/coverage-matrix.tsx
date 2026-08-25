@@ -47,7 +47,13 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
       <p className="scroll-x-hint" style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 8px' }}>
         Swipe across to see all {topics.length} topics — the party column stays put.
       </p>
-      <div className="scroll-x" style={{ overflowX: 'auto', border: `1px solid ${BORDER}`, borderRadius: 14 }}>
+      {/* Opaque white ground. The table's cells are transparent over the page's
+          warm texture while the sticky party column is solid white — at rest
+          that boundary lines up with a column edge and reads as design, but
+          scrolled it lands mid-column and reads as a bright stripe someone
+          forgot to clean up. One opaque ground removes the boundary instead of
+          trying to keep two backgrounds in step. */}
+      <div className="scroll-x" style={{ overflowX: 'auto', border: `1px solid ${BORDER}`, borderRadius: 14, background: '#fff' }}>
         <table className="coverage-matrix" style={{ borderCollapse: 'collapse', width: '100%', minWidth: 640, fontFamily: MANROPE }}>
           <thead>
             <tr>
@@ -165,6 +171,9 @@ const MATRIX_CSS = `
   .coverage-matrix th:first-child,
   .coverage-matrix td:first-child { padding-left: 10px; padding-right: 8px; }
   .coverage-party-name { font-size: 12px; }
-  .coverage-band { white-space: normal; max-width: 62vw; left: 10px; }
+  /* 168px, not 62vw: sized so the line breaks after "without", which keeps
+     the label's widest line inside the sticky party column instead of jutting
+     into the tick columns. */
+  .coverage-band { white-space: normal; max-width: 168px; left: 10px; }
 }
 `
