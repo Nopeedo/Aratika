@@ -343,7 +343,15 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
                 stayed ONE COLUMN in production at every phone width below 390.
                 A layout measured outside its real container is not measured.
                 132 + 132 + 8 = 272 against 292, so 360 and up hold two. */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(132px, 100%), 1fr))', gap: 8 }}>
+            <style>{`
+              .cc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(132px, 100%), 1fr)); gap: 8px; }
+              /* 132px is sized for what this card leaves on a phone. On a
+                 1080px dashboard it would lay out seven columns of thin tiles —
+                 the density that makes a long tracked list readable on a phone
+                 reads as squashed with room to spare. */
+              @media (min-width: 700px) { .cc-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; } }
+            `}</style>
+            <div className="cc-grid">
               {group.map((b) => {
                 // No sublabel in the dense tile. "NZ First list MP" is useful but
                 // it doubles the row height, and the name plus the party colour

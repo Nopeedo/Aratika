@@ -49,28 +49,26 @@ const WARM = '#5b3d2a', LINE = '#e9e4db'
  * one scale with the 5% line at a common height — so shrinking it is the last
  * resort, not the first.
  */
-const TILE_H = 164
-/** Top band kept clear for the party name, the full name where it is shown, and
- *  the seats chip. The gauge is confined below it: measured against the whole
- *  tile, National and Labour at ~30% filled to within 24px of the top and their
- *  surface line cut straight across the party name.
+/**
+ * Tile geometry lives in CSS variables so the phone and the desktop can be
+ * sized independently, and the gauge is a PERCENTAGE of whatever height is left
+ * below the header rather than a pixel count.
  *
- *  Sized for the WORST case, not today's data: a two-line party name. "Te Pāti
- *  Māori" and "Outdoors & Freedom" both wrap at a 163px track, and a fixed band
- *  measured against the one-line names would let their stats sit 14px inside
- *  the gauge. Neither collides at present only because both sit near the bottom
- *  of the scale — which is a fact about this month's polling, not about the
- *  layout. 76 covers a wrapped name at any share. */
-const HEADER_H = 76
-const GAUGE_H = TILE_H - HEADER_H
-/** Fill scale: this share fills the gauge. Set above the leading party so the
- *  biggest tile reads as nearly-full rather than clipped, while keeping every
- *  tile on ONE scale — the exact number is always printed alongside. */
+ * The px version could only ever describe one tile size: fillPx() closed over a
+ * single GAUGE_H, so making the desktop tile taller silently mis-drew every
+ * level on it. Expressed as a share of the gauge zone, one formula is correct
+ * at both breakpoints and there is nothing to keep in step.
+ *
+ * The scale is unchanged: FULL_AT fills the zone, the 5% line sits at the same
+ * fraction of it on every tile, and the exact number is always printed.
+ */
 const FULL_AT = 35
 const THRESHOLD = 5
 
-const fillPx = (pct: number) => Math.max(2, Math.round((Math.min(pct, FULL_AT) / FULL_AT) * GAUGE_H))
-const threshPx = Math.round((THRESHOLD / FULL_AT) * GAUGE_H)
+/** Share of the gauge zone a party's poll number fills, 0-100. */
+const fillPct = (pct: number) => Math.max(1.5, (Math.min(pct, FULL_AT) / FULL_AT) * 100)
+/** Where the 5% line sits in that zone — identical on every tile. */
+const THRESH_PCT = (THRESHOLD / FULL_AT) * 100
 
 /** Fade a party's own colour to a tint. The gauge is drawn in the party's colour
  *  at low alpha over paper, so one helper covers every party without needing a
@@ -92,6 +90,45 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+      {/*
+        Two sizes, one layout. The phone numbers below 700px are the ones that
+        made seventeen tiles readable on a 360px screen; above it everything
+        returns to the dimensions it had before that work, because a 146px track
+        on a 1280px screen produced five thin columns where there had been four
+        comfortable ones, and the tiles read as squashed rather than dense.
+
+        What does NOT change at the breakpoint is the arrangement: the stats sit
+        in the header band at both sizes. That was not a mobile compromise — it
+        fixed the fill's surface line being drawn through the caption for any
+        party around 5-14%, which was as wrong on a desktop as on a phone.
+      */}
+      <style>{`
+        .pc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 146px), 1fr)); gap: 10px; }
+        .pc-tile { --pc-header: 76px; height: 164px; border-radius: 13px; }
+        .pc-name { font-size: 14.5px; }
+        .pc-full { font-size: 10.5px; }
+        .pc-pct  { font-size: 24px; }
+        .pc-sym  { font-size: 13px; }
+        .pc-cap  { font-size: 9.5px; }
+        .pc-chip { font-size: 10px; padding: 2px 7px; }
+        /* Hidden only where the short name IS the name people know, and only on
+           a phone: at 146px "New Zealand National Party" clamped to "New
+           Zealand…", the same meaningless string on three tiles. There is room
+           for it at 210px, so the desktop keeps it. */
+        .pc-full-compact { display: none; }
+
+        @media (min-width: 700px) {
+          .pc-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 12px; }
+          .pc-tile { --pc-header: 92px; height: 186px; border-radius: 15px; }
+          .pc-name { font-size: 15px; }
+          .pc-full { font-size: 10.5px; }
+          .pc-pct  { font-size: 30px; }
+          .pc-sym  { font-size: 15px; }
+          .pc-cap  { font-size: 10px; }
+          .pc-chip { font-size: 10.5px; padding: 3px 9px; }
+          .pc-full-compact { display: -webkit-box; }
+        }
+      `}</style>
       {[
         // The full name is shown where the short one isn't the name people
         // know. "National", "Labour" and "Green" identify themselves; "ALCP",
@@ -107,7 +144,7 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
             <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: WARM, fontFamily: MANROPE }}>{grp.label}</span>
             <span style={{ flex: 1, height: 1, background: LINE }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 146px), 1fr))', gap: 10 }}>
+          <div className="pc-grid">
             {grp.parties.map((slug) => (
               <Tile key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} showFullName={grp.showFullName} />
             ))}
@@ -124,7 +161,6 @@ function Tile({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null
   const seats = CURRENT_SEATS[slug]
   const reading = MINOR_PARTY_READINGS[slug]
   const polled = pct !== null
-  const h = polled ? fillPx(pct) : 0
   const belowThreshold = polled && pct < THRESHOLD
 
   // The tile used to be a solid slab of party colour. Thirteen of those stacked
@@ -137,8 +173,8 @@ function Tile({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null
   const tint = (a: number) => hexToRgba(colour, a)
 
   return (
-    <Link href={`/parties/${slug}`} className="party-card" style={{
-      position: 'relative', display: 'block', height: TILE_H, borderRadius: 15, overflow: 'hidden',
+    <Link href={`/parties/${slug}`} className="party-card pc-tile" style={{
+      position: 'relative', display: 'block', overflow: 'hidden',
       textDecoration: 'none', background: '#fff', border: `1px solid ${BORDER}`,
       boxShadow: '0 2px 6px rgba(42,18,6,.06)',
     }}>
@@ -149,10 +185,13 @@ function Tile({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null
       {/* The gauge — party colour, but as a tint over paper rather than a slab,
           capped by a solid line at the surface so the level stays crisp. */}
       {polled && (
-        <>
-          <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: h, background: tint(0.16) }} />
-          <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, bottom: h, height: 3, background: colour }} />
-        </>
+        // The zone the gauge may use: everything below the header band. Fills
+        // are a percentage of THIS, so the same number draws correctly on a
+        // 164px tile and a 186px one.
+        <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, top: 'var(--pc-header)', bottom: 0 }}>
+          <span style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: `${fillPct(pct)}%`, background: tint(0.16) }} />
+          <span style={{ position: 'absolute', left: 0, right: 0, bottom: `${fillPct(pct)}%`, height: 3, background: colour, transform: 'translateY(50%)' }} />
+        </span>
       )}
 
       {/* Unpolled: a faint hatch, so the tile reads as "no measurement" rather
@@ -169,16 +208,16 @@ function Tile({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null
           identical on all thirteen tiles, and colouring it per party implied it
           was something about that party. */}
       {polled && (
-        <>
-          <span aria-hidden style={{
-            position: 'absolute', left: 0, right: 0, bottom: threshPx,
+        <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, top: 'var(--pc-header)', bottom: 0 }}>
+          <span style={{
+            position: 'absolute', left: 0, right: 0, bottom: `${THRESH_PCT}%`,
             borderTop: `1.5px dashed ${hexToRgba(INK, 0.28)}`,
           }} />
-          <span aria-hidden style={{
-            position: 'absolute', right: 7, bottom: threshPx + 3, fontSize: 9, fontWeight: 800,
+          <span style={{
+            position: 'absolute', right: 7, bottom: `calc(${THRESH_PCT}% + 3px)`, fontSize: 9, fontWeight: 800,
             letterSpacing: '.03em', fontFamily: MANROPE, color: TERTIARY,
           }}>5%</span>
-        </>
+        </span>
       )}
 
       {/* Everything lives in the top band; the lower part of the tile is gauge
@@ -195,27 +234,32 @@ function Tile({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null
             padding, running under the chip on the longer party names. */}
         <span style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
           <span style={{ display: 'block', minWidth: 0 }}>
-            <span style={{ fontSize: 14.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15, display: 'block' }}>{names.short}</span>
+            <span className="pc-name" style={{ fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15, display: 'block' }}>{names.short}</span>
             {/* Clamped: at a 163px track "Aotearoa Legalise Cannabis Party"
                 runs to three lines and pushes the header into the gauge. */}
-            {showFullName && (
-              <span style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontSize: 10.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}>{names.full}</span>
-            )}
+            {/* Always rendered now; the phone hides it for the parties whose
+                short name is the name people know. Rendering it conditionally
+                meant the desktop could not have it back without a second prop
+                threaded through for a difference that is purely presentational. */}
+            <span
+              className={`pc-full${showFullName ? '' : ' pc-full-compact'}`}
+              style={{ display: showFullName ? '-webkit-box' : undefined, WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', color: TERTIARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}
+            >{names.full}</span>
           </span>
           {seats > 0 && (
             <span style={{
-              flexShrink: 0, whiteSpace: 'nowrap', fontSize: 10, fontWeight: 800, color: INK,
+              flexShrink: 0, whiteSpace: 'nowrap', fontWeight: 800, color: INK,
               background: tint(0.14), border: `1px solid ${tint(0.3)}`, borderRadius: 99, padding: '2px 7px', fontFamily: MANROPE,
-            }}>{seats} {seats === 1 ? 'seat' : 'seats'}</span>
+            }} className="pc-chip">{seats} {seats === 1 ? 'seat' : 'seats'}</span>
           )}
         </span>
 
         {polled ? (
           <span style={{ display: 'flex', alignItems: 'baseline', gap: 6, minWidth: 0 }}>
-            <span style={{ fontSize: 24, fontWeight: 800, color: INK, fontFamily: MANROPE, letterSpacing: '-.02em', lineHeight: 1, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
-              {pct.toFixed(1)}<span style={{ fontSize: 13 }}>%</span>
+            <span className="pc-pct" style={{ fontWeight: 800, color: INK, fontFamily: MANROPE, letterSpacing: '-.02em', lineHeight: 1, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
+              {pct.toFixed(1)}<span className="pc-sym">%</span>
             </span>
-            <span style={{ minWidth: 0, fontSize: 9.5, fontWeight: 700, color: belowThreshold ? INK : SECONDARY, fontFamily: MANROPE, lineHeight: 1.25 }}>
+            <span className="pc-cap" style={{ minWidth: 0, fontWeight: 700, color: belowThreshold ? INK : SECONDARY, fontFamily: MANROPE, lineHeight: 1.25 }}>
               {belowThreshold
                 ? (seats > 0 ? 'in via electorates' : 'below 5%')
                 : 'poll of polls'}

@@ -30,12 +30,37 @@ export function BattlegroundsList({ all, tiers }: { all: BattlegroundEntry[]; ti
         })}
       </div>
 
-      {/* Two to a row on a phone. The track was minmax(min(300px, 100%), 1fr):
-          two 300s plus the 14px gap need 614px and the grid gets 324 on a 360px
-          screen, so every one of the 72 cards took a full row at 144px and the
-          list ran 10,380px — 79% of a 13,188px page. 150px, checked against the
-          324 measured: two plus the 10px gap need 310. */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))', gap: 10 }}>
+      {/*
+        Two sizes, one card. On a phone the track was minmax(min(300px, 100%),
+        1fr): two 300s plus the 14px gap need 614px and the grid gets 324 on a
+        360px screen, so every one of the 72 cards took a full row at 144px and
+        the list ran 10,380px — 79% of a 13,188px page.
+
+        Above 700px it goes back to what it was. 150px tracks on a 1280px screen
+        gave six thin columns where there had been three roomy ones, which is
+        dense on a phone and squashed on a desktop. The wide card gets its
+        larger name, the party spelled out beside the MP, and the "Battle" cue
+        back; the phone keeps the compact one.
+      */}
+      <style>{`
+        .bg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr)); gap: 10px; }
+        .bg-card { border-radius: 13px; padding: 11px 12px; gap: 5px; }
+        .bg-name { font-size: 14px; }
+        .bg-mp   { font-size: 11.5px; }
+        .bg-tier { font-size: 9.5px; padding: 2px 7px; }
+        .bg-marg { font-size: 11px; }
+        .bg-wide { display: none; }
+        @media (min-width: 700px) {
+          .bg-grid { grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 14px; }
+          .bg-card { border-radius: 16px; padding: 16px 18px; gap: 8px; }
+          .bg-name { font-size: 16px; }
+          .bg-mp   { font-size: 13px; }
+          .bg-tier { font-size: 10.5px; padding: 3px 9px; }
+          .bg-marg { font-size: 12.5px; }
+          .bg-wide { display: inline; }
+        }
+      `}</style>
+      <div className="bg-grid">
         {shown.map((b) => {
           // Washed in the sitting MP's party colour with a border to match, the
           // same treatment as the party tiles and the MP directory. Seats with
@@ -53,8 +78,8 @@ export function BattlegroundsList({ all, tiers }: { all: BattlegroundEntry[]; ti
           const col = sitting ? PARTY_COLORS[sitting] : null
           return (
           <Link key={b.slug} href={`/battlegrounds/${b.slug}`} style={{ textDecoration: 'none' }}>
-            <div className="policy-card" style={{ background: col ? col.light : '#fff', border: `2px solid ${col ? col.bg : BORDER}`, borderRadius: 13, padding: '11px 12px', height: '100%', display: 'flex', flexDirection: 'column', gap: 5 }}>
-              <span style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.2 }}>{b.info.name}</span>
+            <div className="policy-card bg-card" style={{ background: col ? col.light : '#fff', border: `2px solid ${col ? col.bg : BORDER}`, height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <span className="bg-name" style={{ fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.2 }}>{b.info.name}</span>
 
               {/* MP and party on one line. The name truncates rather than wraps:
                   at this width a second line costs every card in the row. */}
@@ -71,15 +96,22 @@ export function BattlegroundsList({ all, tiers }: { all: BattlegroundEntry[]; ti
                     style={{ width: 8, height: 8, borderRadius: '50%', background: PARTY_COLORS[sitting].bg, flexShrink: 0 }}
                   />
                 )}
-                <span style={{ fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{b.info.mpName}</span>
+                <span className="bg-mp" style={{ color: SECONDARY, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {b.info.mpName}
+                  {/* Spelled out where there is room for it. On a phone the dot
+                      carries the party (with an aria-label, so it is not colour
+                      alone); at 300px the name fits and reads better. */}
+                  {sitting && <span className="bg-wide"> · {PARTY_NAMES[sitting].short}</span>}
+                </span>
               </span>
 
               {/* Tier and margin share the last line. The tier badge keeps its
                   white ring: it is what the page is sorted by, and without it a
                   red badge on a red card inside a red border disappears. */}
               <span style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 'auto', paddingTop: 4, flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 9.5, fontWeight: 800, color: '#fff', background: b.tier.color, borderRadius: 999, padding: '2px 7px', fontFamily: MANROPE, whiteSpace: 'nowrap', boxShadow: '0 0 0 2px rgba(255,255,255,.95)' }}>{b.tier.label}</span>
-                <span style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
+                <span className="bg-tier" style={{ fontWeight: 800, color: '#fff', background: b.tier.color, borderRadius: 999, fontFamily: MANROPE, whiteSpace: 'nowrap', boxShadow: '0 0 0 2px rgba(255,255,255,.95)' }}>{b.tier.label}</span>
+                <span className="bg-marg" style={{ color: TERTIARY, fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
+                  <span className="bg-wide">2023 majority </span>
                   {b.info.majority != null ? <b style={{ color: INK }}>{b.info.majority.toLocaleString('en-NZ')}</b> : 'pending'}
                 </span>
                 {/* Down here rather than beside the MP's name, where it was
