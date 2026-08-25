@@ -14,12 +14,31 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { getAnthropic, COMPANION_MODEL } from '@/lib/companion/anthropic'
 import { retrieve, formatContext, KNOWLEDGE, type KnowledgeItem } from '@/lib/companion/knowledge'
 import { buildSystemPrompt } from '@/lib/companion/prompt'
+import { isEnabled } from '@/constants/features'
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
 
 const FREE_DAILY = 15
 const PREMIUM_DAILY = 100
+
+/**
+ * Site-wide ceiling on questions per day. The per-user limits above bound one
+ * person; they do not bound the bill. 15/day times ten thousand accounts is
+ * 150,000 questions a day — on current token sizes (~2,500 in, ~400 out) that
+ * is roughly USD 2,000 a day, and nothing stopped it.
+ *
+ * Set COMPANION_DAILY_MAX from a budget you are willing to lose in a day:
+ * questions ≈ budget / 0.014 at current sizes and Sonnet pricing. The default
+ * of 1,500 is about USD 20 — enough that no ordinary day is affected, small
+ * enough that a scripted abuser or a viral hour cannot run up a bill that
+ * matters before you notice.
+ *
+ * A blunt count, deliberately: an exact-token ceiling needs accounting the
+ * failure paths cannot be trusted to do, and a rough limit that always holds is
+ * worth more than a precise one that leaks.
+ */
+const GLOBAL_DAILY_MAX = Math.max(0, Number(process.env.COMPANION_DAILY_MAX ?? 1500))
 const ACTIVE = ['active', 'trialing']
 
 function nzDay(): string {
@@ -29,6 +48,20 @@ function nzDay(): string {
 interface ChatMsg { role: 'user' | 'assistant'; content: string }
 
 export async function POST(req: Request) {
+  /**
+   * The companion is Phase 3 and LAUNCH_PHASE is 1, so CompanionWidget renders
+   * null — but the UI being hidden never hid this. GATED_ROUTES redirects gated
+   * PAGE prefixes; it does not cover /api, so POST /api/ask answered 401 on
+   * production rather than 404, and any signed-in account could call it
+   * directly and spend real money on a feature that has not launched.
+   *
+   * 404, not 403: a route that is off should look absent, and the same check
+   * turns it on again the moment the phase flips. No separate switch to forget.
+   */
+  if (!isEnabled('companion')) {
+    return NextResponse.json({ error: 'not_found' }, { status: 404 })
+  }
+
   // ── auth ──
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -65,6 +98,28 @@ export async function POST(req: Request) {
       error: 'limit', remaining: 0,
       message: `You've reached today's limit of ${limit} questions — it resets tomorrow.${isPremium ? '' : ' Premium members get more.'}`,
     }, { status: 429 })
+  }
+
+  // ── site-wide ceiling ──
+  // After the per-user check and before anything is sent to the model, so a day
+  // that has hit the ceiling costs nothing. Failing OPEN on an error is
+  // deliberate: a transient database hiccup should not take the feature down,
+  // and the per-user limit still applies underneath.
+  if (GLOBAL_DAILY_MAX > 0) {
+    try {
+      const { data: total } = await admin.rpc('companion_day_total', { p_day: day })
+      if (typeof total === 'number' && total >= GLOBAL_DAILY_MAX) {
+        console.warn(`[ask] site-wide daily ceiling reached: ${total}/${GLOBAL_DAILY_MAX}`)
+        return NextResponse.json({
+          error: 'busy', remaining: 0,
+          // Not phrased as the reader's fault — they have not hit their own
+          // limit, the site has hit ours.
+          message: 'Ask Arapono has answered as many questions as it can today. It resets tomorrow.',
+        }, { status: 429 })
+      }
+    } catch (e) {
+      console.error('[ask] daily-total check failed, allowing through', e)
+    }
   }
 
   // ── grounding ──
