@@ -41,10 +41,26 @@ const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-
 // map to nothing are staged with party=null (kept visible in /editor, logged,
 // and skipped by the read-side until a slug mapping is added here).
 const PARTY_MAP = [
-  // "New Conservative" is a DIFFERENT party from Conservative Party NZ — it must
-  // not substring-match 'conservative'. Mapping it to null keeps the candidate
-  // staged (visible in /editor with their real label) without mislabelling.
-  ['new conservative', null],
+  // Wikipedia labels the Conservative Party's candidates "New Conservative".
+  // This used to map to null, on the reasoning that it is a different party and
+  // must not substring-match 'conservative'. The caution was right and the
+  // conclusion was wrong, and it cost six real candidates their place on the
+  // site: the read side drops anyone without a slug, so all six rendered
+  // nowhere while sitting approved in the database.
+  //
+  // They are Conservative Party NZ:
+  //  - the party's own release announcing one of them is attributed "Press
+  //    Release: Conservative Party" and opens "The New Zealand Conservative
+  //    Party is pleased to announce Doug Lyell as its candidate for the
+  //    Northland electorate", quoting "Party Leader Helen Houghton" — herself
+  //    one of the six;
+  //  - the Electoral Commission's register lists "Conservative Party NZ",
+  //    registered 6 October 2011, and has no entry for "New Conservative".
+  //
+  // Kept as an EXPLICIT entry ahead of the plain 'conservative' rule rather
+  // than deleted, so the mapping is a decision with a reason attached and not
+  // an accident of substring order.
+  ['new conservative', 'conservative'],
   // Registered 5 August 2026. Order matters: 'te tai tokerau' must be tested
   // BEFORE the te-pati-maori entries, because the party its founder left is
   // matched on 'maori party' and a Te Tai Tokerau row would otherwise be
