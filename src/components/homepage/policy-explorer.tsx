@@ -11,6 +11,7 @@
  */
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import {
   ChevronDown, ChevronLeft, ArrowRight, X, ExternalLink, Quote,
   Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
@@ -511,7 +512,7 @@ function readableOnWhite(hex: string): string {
  *  cards and the party tiles, kept here rather than reintroducing it. */
 /** The detail behind a merged proposal.
  *
- *  Deliberately quieter than ExpandableSection below: a plain text toggle with
+ *  Deliberately quiet: a plain text toggle with
  *  no fill, sized under the proposal it belongs to rather than across the whole
  *  panel. That section is a destination — this is a footnote on one line, and a
  *  second full-width coloured bar competing with "Full Breakdown" would read as
@@ -552,41 +553,6 @@ function SeeMore({ details, accent }: { details: string[]; accent: string }) {
   )
 }
 
-function ExpandableSection({ icon: Icon, title, accent, defaultOpen, children }: {
-  icon: React.ElementType
-  title: string
-  accent: string
-  defaultOpen?: boolean
-  children: React.ReactNode
-}) {
-  const [open, setOpen] = useState(!!defaultOpen)
-  const fg = isLightHex(accent) ? INK : '#fff'
-  return (
-    <div style={{ marginTop: 12 }}>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%',
-          background: accent, color: fg, borderRadius: 999, border: 'none',
-          padding: '12px 18px', cursor: 'pointer', fontFamily: MANROPE, textAlign: 'left',
-        }}
-      >
-        <span style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-          <Icon style={{ width: 17, height: 17, color: fg, flexShrink: 0 }} />
-          <span style={{ fontSize: 16, fontWeight: 800, color: fg, fontFamily: MANROPE }}>{title}</span>
-        </span>
-        <ChevronDown style={{ width: 16, height: 16, color: fg, flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
-      </button>
-      <div style={{ display: 'grid', gridTemplateRows: open ? '1fr' : '0fr', transition: 'grid-template-rows .3s ease' }}>
-        <div style={{ overflow: 'hidden' }}>
-          <div style={{ paddingTop: 14, paddingLeft: 4, paddingRight: 4 }}>{children}</div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 /** The chosen party's stance on the open topic. Sits directly in the panel —
  *  no nested card of its own, since the panel already carries the party's
  *  colour on its border and names the party in its heading. */
@@ -616,7 +582,6 @@ function FocusedCard({ slug, pos, topicLabel }: {
   // claim in plain language — but quotes are the one thing on this panel with
   // zero synthesis in the loop. Merge quote in only if it isn't already one
   // of the excerpts, so nothing repeats.
-  const quotes = pos ? [...pos.excerpts, ...(pos.quote && !pos.excerpts.includes(pos.quote) ? [pos.quote] : [])] : []
 
   if (!pos) {
     return (
@@ -683,14 +648,32 @@ function FocusedCard({ slug, pos, topicLabel }: {
           never said it, so it doesn't belong on a panel that's meant to be
           their claim and nothing else. */}
 
-      {quotes.length > 0 && (
-        <ExpandableSection icon={Quote} title="Full Breakdown" accent={c} defaultOpen>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {quotes.map((q, i) => (
-              <blockquote key={i} style={{ margin: 0, paddingLeft: 11, borderLeft: `3px solid ${c}`, fontSize: 15, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, fontStyle: 'italic' }}>“{q}”</blockquote>
-            ))}
-          </div>
-        </ExpandableSection>
+      {/* "Full Breakdown" NAVIGATES now, to /policies/[topic]/[party] — this
+          party's page on this topic, which is what the words promise. It used
+          to be an accordion of quotes: a button named for the whole breakdown
+          that opened a slice of it, on a panel that already runs long. The
+          quotes are not lost — the destination page carries them, with the
+          proposals, the impact read and the source, and it exists for every
+          contesting party on every topic.
+
+          Shown whenever a position exists rather than only when quotes do:
+          the page is worth visiting either way, and the old condition hid the
+          button on exactly the positions where the panel showed the least. */}
+      {pos && (
+        <Link
+          href={`/policies/${pos.topic}/${slug}`}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            marginTop: 12, background: c, color: isLightHex(c) ? INK : '#fff',
+            borderRadius: 999, padding: '12px 18px', textDecoration: 'none', fontFamily: MANROPE,
+          }}
+        >
+          <span style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+            <Quote style={{ width: 17, height: 17, flexShrink: 0 }} />
+            <span style={{ fontSize: 16, fontWeight: 800 }}>Full Breakdown</span>
+          </span>
+          <ArrowRight style={{ width: 16, height: 16, flexShrink: 0 }} />
+        </Link>
       )}
 
       {/* Source link sits last — it's the footnote for everything above it. */}
