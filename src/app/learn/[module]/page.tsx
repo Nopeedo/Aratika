@@ -1,6 +1,10 @@
 /**
  * /learn/[module] — a single interactive learning module.
  * Server shell (header, metadata, static params) wrapping the client experience.
+ *
+ * Gutters and heading follow the site's clamp() scale, as on /learn. Both pages
+ * were written with a fixed 36px gutter and a fixed heading size, which on a
+ * 360px phone spent a fifth of the width on margins.
  */
 
 import type { Metadata } from 'next'
@@ -36,19 +40,19 @@ export default async function LearnModulePage(
     <div style={WOVEN_PAGE}>
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 880, margin: '0 auto', padding: '24px 36px 34px' }}>
+        <div style={{ maxWidth: 880, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) clamp(24px, 4vh, 34px)' }}>
           <Link href="/learn" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 20 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All modules
           </Link>
           <div style={{ marginBottom: 8 }}>
             <SectionDivider type="official" label="Interactive Lesson" />
           </div>
-          <h1 style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.1 }}>{m.title}</h1>
-          <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>{m.subtitle}</p>
+          <h1 style={{ fontSize: 'clamp(24px, 6.5vw, 34px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.1 }}>{m.title}</h1>
+          <p style={{ fontSize: 'clamp(14px, 3.8vw, 16px)', fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>{m.subtitle}</p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 880, margin: '0 auto', padding: '30px 36px 64px' }}>
+      <div style={{ maxWidth: 880, margin: '0 auto', padding: 'clamp(22px, 3.5vh, 30px) clamp(18px, 5vw, 36px) 64px' }}>
         <ModuleExperience module={m} />
 
         <div style={{ borderTop: `1px solid ${BORDER}`, marginTop: 36, paddingTop: 16, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
