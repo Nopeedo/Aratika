@@ -12,9 +12,10 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { getModule, LEARN_MODULE_IDS } from '@/constants/learn-data'
+import { learnTheme } from '@/constants/learn-theme'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { ModuleExperience } from '@/components/learn/module-experience'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export function generateStaticParams() {
   return LEARN_MODULE_IDS.map((module) => ({ module }))
@@ -35,6 +36,7 @@ export default async function LearnModulePage(
   const { module } = await params
   const m = getModule(module)
   if (!m || m.status !== 'live') notFound()
+  const theme = learnTheme(module)
 
   return (
     <div style={WOVEN_PAGE}>
@@ -47,8 +49,17 @@ export default async function LearnModulePage(
           <div style={{ marginBottom: 8 }}>
             <SectionDivider type="official" label="Interactive Lesson" />
           </div>
-          <h1 style={{ fontSize: 'clamp(24px, 6.5vw, 34px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.1 }}>{m.title}</h1>
-          <p style={{ fontSize: 'clamp(14px, 3.8vw, 16px)', fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>{m.subtitle}</p>
+          {/* The module's own colour follows from the hub card that was tapped:
+              an accent bar beside the heading, the same ink the card wore. Kept
+              to an accent rather than a filled band — this page is a lesson,
+              and a page of reading on a tinted ground tires faster than white. */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 13 }}>
+            <span aria-hidden style={{ alignSelf: 'stretch', width: 5, borderRadius: 99, background: theme.ink, flexShrink: 0 }} />
+            <div>
+              <h1 style={{ fontSize: 'clamp(24px, 6.5vw, 34px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.1 }}>{m.title}</h1>
+              <p style={{ fontSize: 'clamp(14px, 3.8vw, 16px)', fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>{m.subtitle}</p>
+            </div>
+          </div>
         </div>
       </div>
 

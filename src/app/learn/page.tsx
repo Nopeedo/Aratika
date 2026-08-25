@@ -20,6 +20,7 @@ import {
   ClipboardCheck, Handshake, Megaphone, Scale,
 } from 'lucide-react'
 import { LEARN_MODULES } from '@/constants/learn-data'
+import { learnTheme } from '@/constants/learn-theme'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { LearnProgressBanner } from '@/components/learn/learn-progress-banner'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
@@ -82,15 +83,22 @@ export default function LearnHubPage() {
           {LEARN_MODULES.map((m) => {
             const Icon = ICONS[m.icon] || Vote
             const live = m.status === 'live'
+            /* Each module carries its own tint and deep ink, the same language
+               as the hub tiles and topic chips — ten identical jade cards read
+               as one long list, ten coloured ones read as ten subjects. The
+               coming-soon branch stays grey: colour is for what can be tapped. */
+            const theme = learnTheme(m.id)
             const card = (
               <div className={live ? 'policy-card' : ''} style={{
-                background: live ? '#fff' : SURFACE, border: `1px solid ${BORDER}`, borderRadius: 16,
+                background: live ? theme.tint : SURFACE, border: `2px solid ${live ? theme.ink : BORDER}`, borderRadius: 16,
                 padding: '15px 15px 13px', height: '100%', display: 'flex', flexDirection: 'column', gap: 9,
                 boxShadow: live ? '0 2px 4px rgba(12,14,18,.03)' : 'none', opacity: live ? 1 : 0.75,
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 11, background: live ? '#ecfdf5' : '#eceae5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Icon style={{ width: 19, height: 19, color: live ? JADE : TERTIARY }} />
+                  {/* White box on the tinted card, so the icon keeps its
+                      contrast on every hue rather than tint-on-tint. */}
+                  <div style={{ width: 38, height: 38, borderRadius: 11, background: live ? '#fff' : '#eceae5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: live ? `1px solid ${BORDER}` : 'none' }}>
+                    <Icon style={{ width: 19, height: 19, color: live ? theme.ink : TERTIARY }} />
                   </div>
                   {!live && (
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10.5, fontWeight: 800, color: TERTIARY, fontFamily: MANROPE, textTransform: 'uppercase', letterSpacing: '.06em' }}>
@@ -103,7 +111,7 @@ export default function LearnHubPage() {
                   <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.45, marginTop: 3 }}>{m.subtitle}</div>
                 </div>
                 {live && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 800, color: JADE, fontFamily: MANROPE, paddingTop: 8, borderTop: `1px solid ${BORDER}` }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 800, color: theme.ink, fontFamily: MANROPE, paddingTop: 8, borderTop: `1px solid ${BORDER}` }}>
                     Start learning <ArrowRight style={{ width: 13, height: 13 }} />
                   </div>
                 )}
