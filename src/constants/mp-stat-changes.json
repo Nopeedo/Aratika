@@ -1,6 +1,14 @@
 {
-  "generated": "2026-08-24",
+  "generated": "2026-08-25",
   "changes": [
+    {
+      "mp": "simon-watts",
+      "field": "govBills",
+      "label": "Government bills in charge",
+      "from": 14,
+      "to": 15,
+      "date": "2026-08-25"
+    },
     {
       "mp": "erica-stanford",
       "field": "govBills",
