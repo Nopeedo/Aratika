@@ -69,10 +69,14 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
             {minors.length > 0 && (
               <>
                 <tr>
-                  <th colSpan={topics.length + 1} scope="colgroup" style={{ ...tdBase, textAlign: 'left', background: SURFACE, fontSize: 11.5, fontWeight: 800, color: SECONDARY, letterSpacing: .2, position: 'sticky', left: 0 }}>
-                    {/* The cell spans the full table, so pinned at left:0 on a
-                        phone its label ran off the visible edge mid-word. The
-                        inner span wraps to the viewport instead. */}
+                  {/* sticky on the TH was a no-op: the cell spans the whole
+                      table, so its left edge is always at 0 and the text inside
+                      slid away with the horizontal scroll. The SPAN is the
+                      sticky thing now — an inline-block sticks to the
+                      scrollport's edge inside the full-width cell, so the label
+                      holds still while the columns move under it, exactly like
+                      the party names below it. */}
+                  <th colSpan={topics.length + 1} scope="colgroup" style={{ ...tdBase, textAlign: 'left', background: SURFACE, fontSize: 11.5, fontWeight: 800, color: SECONDARY, letterSpacing: .2 }}>
                     <span className="coverage-band">Also contesting, without seats in Parliament</span>
                   </th>
                 </tr>
@@ -154,13 +158,13 @@ const MATRIX_CSS = `
 .coverage-matrix th,
 .coverage-matrix td { padding: 10px 12px; }
 .coverage-party-name { font-size: 13px; }
-.coverage-band { white-space: nowrap; }
+.coverage-band { white-space: nowrap; display: inline-block; position: sticky; left: 12px; }
 @media (max-width: 760px) {
   .coverage-matrix th,
   .coverage-matrix td { padding: 9px 6px; }
   .coverage-matrix th:first-child,
   .coverage-matrix td:first-child { padding-left: 10px; padding-right: 8px; }
   .coverage-party-name { font-size: 12px; }
-  .coverage-band { white-space: normal; display: inline-block; max-width: 62vw; }
+  .coverage-band { white-space: normal; max-width: 62vw; left: 10px; }
 }
 `
