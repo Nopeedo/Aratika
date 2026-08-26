@@ -74,7 +74,12 @@ export function ResultsView({ e }: { e: ElectionData }) {
                   <td style={{ padding: '10px 14px', borderBottom: `1px solid ${BORDER}` }}>
                     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                       <span style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[r.party].bg }} />
-                      <span style={{ fontSize: 13.5, fontWeight: 700, color: INK }}>{PARTY_NAMES[r.party].full}</span>
+                      {/* nowrap: this table already scrolls sideways, and a
+                          wrapping name column crushed "New Zealand National
+                          Party" into a 66px stack of five lines at 360px. In a
+                          scrollable data table the name holds one line and the
+                          scroller carries the width. */}
+                      <span style={{ fontSize: 13.5, fontWeight: 700, color: INK, whiteSpace: 'nowrap' }}>{PARTY_NAMES[r.party].full}</span>
                     </span>
                   </td>
                   <td style={{ textAlign: 'right', fontSize: 13, color: '#33373f', padding: '10px 14px', borderBottom: `1px solid ${BORDER}` }}>{fmt(r.partyVotes)}</td>

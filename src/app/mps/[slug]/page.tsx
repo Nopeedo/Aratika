@@ -261,12 +261,16 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
                   {policies.map((p) => (
                     <Link key={p.topic} href={`/policies/${p.topic}`} style={{ textDecoration: 'none' }}>
-                      <div className="party-card" style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', border: `1px solid ${BORDER}`, borderRadius: 12 }}>
+                      {/* stack-row/stack-tail: at phone widths the nowrap label
+                          was taking ~170px of a ~280px card and the description
+                          wrapped one word per line beside it. The label now
+                          drops to its own line below 520px. */}
+                      <div className="party-card stack-row" style={{ padding: '12px 14px', border: `1px solid ${BORDER}`, borderRadius: 12 }}>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{p.label}</div>
                           <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.45, marginTop: 1 }}>{p.reason}</div>
                         </div>
-                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 800, color: JADE, fontFamily: MANROPE, whiteSpace: 'nowrap' }}>Where parties stand <ArrowRight style={{ width: 13, height: 13 }} /></span>
+                        <span className="stack-tail" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 800, color: JADE, fontFamily: MANROPE, whiteSpace: 'nowrap' }}>Where parties stand <ArrowRight style={{ width: 13, height: 13 }} /></span>
                       </div>
                     </Link>
                   ))}
