@@ -20,16 +20,16 @@ export default function GlossaryPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '48px 36px 40px' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Glossary" /></div>
-          <h1 style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Political glossary</h1>
+          <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Political glossary</h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
             The jargon, in plain language. Every term you’ll bump into around Parliament and elections, explained plainly.
           </p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '34px 36px 64px' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '34px clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(300px, 100%), 1fr))', gap: 14 }}>
           {sorted.map((t) => (
             <div key={t.term} style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px' }}>

@@ -58,7 +58,7 @@ export default async function TrackedItemPage(
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div className="ap-col" style={{ maxWidth: 820, margin: '0 auto', padding: '22px 36px 26px' }}>
+        <div className="ap-col" style={{ maxWidth: 820, margin: '0 auto', padding: '22px clamp(18px, 5vw, 36px) 26px' }}>
           <Link href="/dashboard" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none', marginBottom: 14 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> Dashboard
           </Link>
@@ -75,7 +75,7 @@ export default async function TrackedItemPage(
         </div>
       </div>
 
-      <div className="ap-col" style={{ maxWidth: 820, margin: '0 auto', padding: '22px 36px 56px' }}>
+      <div className="ap-col" style={{ maxWidth: 820, margin: '0 auto', padding: '22px clamp(18px, 5vw, 36px) 56px' }}>
         <TrackedHistory items={items} />
       </div>
     </div>

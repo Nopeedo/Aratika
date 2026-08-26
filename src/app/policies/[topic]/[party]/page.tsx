@@ -43,7 +43,7 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ height: 6, background: p.color }} />
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 36px 32px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 32px' }}>
           <Link href={`/policies/${topic}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All parties on {t.label}
           </Link>
@@ -54,7 +54,7 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
         </div>
       </div>
 
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '28px 36px 64px', display: 'flex', flexDirection: 'column', gap: 26 }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 26 }}>
         {pos ? (
           <PositionReader position={pos} accent={p.color} topicLabel={t.label} />
         ) : (

@@ -26,9 +26,9 @@ export default function AboutPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 880, margin: '0 auto', padding: '48px 36px 40px' }}>
+        <div style={{ maxWidth: 880, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="About" /></div>
-          <h1 style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 12px', lineHeight: 1.05 }}>
+          <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 12px', lineHeight: 1.05 }}>
             New Zealand politics, made clear.
           </h1>
           <p style={{ fontSize: 18, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.6, margin: 0 }}>
@@ -38,7 +38,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 880, margin: '0 auto', padding: '36px 36px 64px', display: 'flex', flexDirection: 'column', gap: 36 }}>
+      <div style={{ maxWidth: 880, margin: '0 auto', padding: '36px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 36 }}>
 
         {/* Mission */}
         <section>

@@ -38,11 +38,11 @@ export default function SubscriptionPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 980, margin: '0 auto', padding: '48px 36px 40px', textAlign: 'center' }}>
+        <div style={{ maxWidth: 980, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px', textAlign: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
             <SectionDivider type="official" label="Arapono Premium" />
           </div>
-          <h1 style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>
+          <h1 style={{ fontSize: 'clamp(25px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>
             Do more with Arapono
           </h1>
           <p style={{ fontSize: 17, color: SECONDARY, fontFamily: MANROPE, maxWidth: 560, margin: '0 auto', lineHeight: 1.6 }}>
@@ -52,7 +52,7 @@ export default function SubscriptionPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 880, margin: '0 auto', padding: '36px 36px 64px' }}>
+      <div style={{ maxWidth: 880, margin: '0 auto', padding: '36px clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 18 }}>
           {/* Free */}
           <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 20, padding: '26px 24px' }}>

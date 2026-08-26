@@ -121,7 +121,7 @@ export default async function BillDetailPage(
 
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 36px 36px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 36px' }}>
           <Link href="/bills" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 22 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All bills
           </Link>
@@ -143,7 +143,7 @@ export default async function BillDetailPage(
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, flexWrap: 'wrap' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, lineHeight: 1.15, margin: '0 0 8px' }}>
+              <h1 style={{ fontSize: 'clamp(24px, 7vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, lineHeight: 1.15, margin: '0 0 8px' }}>
                 {bill.title}
               </h1>
               <p style={{ fontSize: 13, color: TERTIARY, fontFamily: MANROPE, margin: 0 }}>
@@ -163,7 +163,7 @@ export default async function BillDetailPage(
         </div>
       </div>
 
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '28px 36px 64px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 20 }}>
 
         {/* Summary */}
         <Card>
@@ -275,7 +275,7 @@ export default async function BillDetailPage(
 
       {/* Source attribution */}
       <div style={{ borderTop: `1px solid ${BORDER}`, background: SURFACE }}>
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '20px 36px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px)', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <SectionDivider type="official" label="Source" />
           <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
             {/* Two vintages, stated separately. The stage and dates refresh

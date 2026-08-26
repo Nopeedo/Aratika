@@ -38,7 +38,7 @@ export default async function ElectionYearPage({ params }: { params: Promise<{ y
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px 36px 34px' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 34px' }}>
           <Link href="/elections" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All elections
           </Link>
@@ -50,7 +50,7 @@ export default async function ElectionYearPage({ params }: { params: Promise<{ y
               color: '#065f46', background: '#ecfdf5', border: '1px solid #a7f3d0',
             }}>Final result</span>
           </div>
-          <h1 style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.05 }}>
+          <h1 style={{ fontSize: 'clamp(25px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.05 }}>
             {e.year} General Election
           </h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
@@ -59,7 +59,7 @@ export default async function ElectionYearPage({ params }: { params: Promise<{ y
         </div>
       </div>
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '30px 36px 64px' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '30px clamp(18px, 5vw, 36px) 64px' }}>
         <ResultsView e={e} />
       </div>
     </div>

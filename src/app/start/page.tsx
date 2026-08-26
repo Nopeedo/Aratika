@@ -18,7 +18,7 @@ export default function StartPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 820, margin: '0 auto', padding: '56px 36px 56px' }}>
+        <div style={{ maxWidth: 820, margin: '0 auto', padding: '56px clamp(18px, 5vw, 36px) 56px' }}>
           <CompassQuiz />
         </div>
       </div>

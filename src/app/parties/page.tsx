@@ -57,12 +57,12 @@ export default function PartiesPage() {
 
       {/* ── Page header ──────────────────────────────────────────────── */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 36px 48px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '52px clamp(18px, 5vw, 36px) 48px' }}>
           <div style={{ marginBottom: 8 }}>
             <SectionDivider type="official" label="Official Parliament Data" />
           </div>
           <h1 style={{
-            fontSize:      40,
+            fontSize: 'clamp(26px, 7vw, 40px)',
             fontWeight:    800,
             letterSpacing: '-.02em',
             color:         INK,
@@ -147,7 +147,7 @@ export default function PartiesPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '52px 36px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '52px clamp(18px, 5vw, 36px)' }}>
 
         {/* No PartySwitcher here, though it is still the top layer of every
             /parties/[slug] page. There it earns its place: that page has no

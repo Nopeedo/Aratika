@@ -20,15 +20,15 @@ export function LegalPage({
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 820, margin: '0 auto', padding: '44px 36px 34px' }}>
+        <div style={{ maxWidth: 820, margin: '0 auto', padding: '44px clamp(18px, 5vw, 36px) 34px' }}>
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Legal" /></div>
-          <h1 style={{ fontSize: 36, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.1 }}>{title}</h1>
+          <h1 style={{ fontSize: 'clamp(24px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.1 }}>{title}</h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>{subtitle}</p>
           <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '12px 0 0' }}>Last updated: {updated}</p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 820, margin: '0 auto', padding: '26px 36px 64px' }}>
+      <div style={{ maxWidth: 820, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'flex', gap: 10, padding: '13px 16px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 12, marginBottom: 28 }}>
           <AlertTriangle style={{ width: 16, height: 16, color: '#b45309', flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 12.5, color: '#92400e', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>

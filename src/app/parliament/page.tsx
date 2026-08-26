@@ -51,9 +51,9 @@ export default function ParliamentPage() {
     <div style={WOVEN_PAGE}>
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}`, background: '#fff' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px 36px 8px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 8px' }}>
           <div style={{ marginBottom: 8 }}><SectionDivider type="official" label="Current Parliament" /></div>
-          <h1 style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>The 54th Parliament</h1>
+          <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>The 54th Parliament</h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.6, margin: 0 }}>
             Who holds power, who opposes it, and how it’s arranged — the make-up of New Zealand’s House of Representatives since the 2023 election.
           </p>
@@ -63,7 +63,7 @@ export default function ParliamentPage() {
       {/* Seat distribution snapshot (reused) */}
       <ParliamentSnapshot />
 
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '8px 36px 64px', display: 'flex', flexDirection: 'column', gap: 34 }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '8px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 34 }}>
 
         {/* How the government formed */}
         <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: '16px 18px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14 }}>

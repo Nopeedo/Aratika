@@ -56,7 +56,7 @@ export default async function DeepDivePage({ params }: { params: Params }) {
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ height: 6, background: p.color }} />
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px 36px 28px' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 28px' }}>
           {/* Back to the party's position on this topic — the page this came
               from — not to the topic index. */}
           <Link
@@ -74,7 +74,7 @@ export default async function DeepDivePage({ params }: { params: Params }) {
         </div>
       </div>
 
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '28px 36px 64px' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px' }}>
         {/* The page header above already carries the title as the <h1>. */}
         <PolicyDeepDive dive={d} accent={p.color} partyName={p.name} showTitle={false} />
 

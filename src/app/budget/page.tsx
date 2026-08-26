@@ -47,7 +47,7 @@ export default function BudgetPage() {
     <div style={WOVEN_PAGE}>
       {/* ── Header ────────────────────────────────────────────── */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '40px 36px 30px' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
           <div style={{ marginBottom: 12 }}>
             <SectionDivider type="official" label="Official: The Treasury" />
           </div>
@@ -61,7 +61,7 @@ export default function BudgetPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '26px 36px 72px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px) 72px' }}>
         {/* ── "What this is" credibility callout ──────────────── */}
         <div style={{ display: 'flex', gap: 12, padding: '16px 18px', background: '#f8fafc', border: `1px solid ${BORDER}`, borderRadius: 14, marginBottom: 30 }}>
           <Info style={{ width: 19, height: 19, color: JADE, flexShrink: 0, marginTop: 2 }} />

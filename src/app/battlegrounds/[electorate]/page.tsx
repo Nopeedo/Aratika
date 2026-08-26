@@ -534,7 +534,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
         }} />}
       />
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '28px 36px 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
 
         {/* In the news — real coverage naming this seat or its MP, from the same feed as /news */}
         <section style={sectionCard}>

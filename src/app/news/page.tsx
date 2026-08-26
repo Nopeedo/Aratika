@@ -34,7 +34,7 @@ export default async function NewsPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 920, margin: '0 auto', padding: '40px 36px 30px' }}>
+        <div style={{ maxWidth: 920, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
           <div style={{ marginBottom: 12 }}><SectionDivider type="official" label="Live from credible NZ sources" /></div>
           <h1 style={{ fontSize: 'clamp(30px, 4.5vw, 44px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.08 }}>
             The Latest
@@ -45,7 +45,7 @@ export default async function NewsPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 920, margin: '0 auto', padding: '26px 36px 64px' }}>
+      <div style={{ maxWidth: 920, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px) 64px' }}>
         {items.length > 0 ? (
           <NewsFeed items={items} videos={videos} interviews={interviews} />
         ) : (

@@ -18,7 +18,7 @@ export async function PolicyCoverage({ maxWidth = 1100 }: { maxWidth?: number })
 
   return (
     <section style={{ background: SURFACE, borderTop: `1px solid ${BORDER}` }}>
-      <div style={{ maxWidth, margin: '0 auto', padding: '32px 36px' }}>
+      <div style={{ maxWidth, margin: '0 auto', padding: '32px clamp(18px, 5vw, 36px)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12, marginBottom: 12 }}>
           <div>
             <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Coverage at a glance</h2>

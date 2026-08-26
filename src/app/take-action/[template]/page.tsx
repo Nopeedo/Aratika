@@ -81,19 +81,19 @@ export default async function TakeActionTemplatePage(
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 32px' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 32px' }}>
           <Link href="/take-action" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All templates
           </Link>
           <div style={{ marginBottom: 8 }}><SectionDivider type="official" label="Take Action · Premium" /></div>
-          <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.1 }}>{t.label}</h1>
+          <h1 style={{ fontSize: 'clamp(24px, 7vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.1 }}>{t.label}</h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
             {t.blurb}{ctx.recipientName ? ` · To: ${ctx.recipientName}` : ''}
           </p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '28px 36px 64px' }}>
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px' }}>
         <PremiumGate
           featureName={t.label}
           preview={<LetterPreview text={sample} />}

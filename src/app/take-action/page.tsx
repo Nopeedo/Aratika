@@ -33,7 +33,7 @@ export default function TakeActionHub() {
     <div style={WOVEN_PAGE}>
       {/* Hero */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '46px 36px 40px' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '46px clamp(18px, 5vw, 36px) 40px' }}>
           <div style={{ marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
             <SectionDivider type="official" label="Take Action" />
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 800, color: JADE, background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
@@ -45,7 +45,7 @@ export default function TakeActionHub() {
               <PenLine style={{ width: 27, height: 27, color: JADE }} />
             </div>
             <div>
-              <h1 style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.05 }}>
+              <h1 style={{ fontSize: 'clamp(25px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.05 }}>
                 Make your voice heard
               </h1>
               <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.6, margin: 0 }}>
@@ -58,7 +58,7 @@ export default function TakeActionHub() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '34px 36px 64px' }}>
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '34px clamp(18px, 5vw, 36px) 64px' }}>
         {/* Templates */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(330px, 100%), 1fr))', gap: 16 }}>
           {LETTER_TEMPLATE_ORDER.map((id) => {

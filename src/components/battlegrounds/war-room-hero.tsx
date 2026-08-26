@@ -82,7 +82,7 @@ export function WarRoomHero({
 
   return (
     <div>
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '20px 36px 28px' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 28px' }}>
         <BackLink fallbackHref="/battlegrounds" label="All battlegrounds"
           style={{ fontSize: 13, fontWeight: 600, color: WARM, fontFamily: MANROPE, marginBottom: 18 }} />
 
@@ -92,7 +92,7 @@ export function WarRoomHero({
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: tierColor }} />
               <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: tierColor, fontFamily: MANROPE }}>{tierLabel} battleground</span>
             </div>
-            <h1 style={{ fontSize: 34, fontWeight: 800, letterSpacing: '-.02em', color: ESPRESSO, fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.05 }}>{electorateName}</h1>
+            <h1 style={{ fontSize: 'clamp(24px, 7vw, 34px)', fontWeight: 800, letterSpacing: '-.02em', color: ESPRESSO, fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.05 }}>{electorateName}</h1>
             <p style={{ fontSize: 14, color: SUB, fontFamily: MANROPE, margin: 0 }}>{regionLine}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>

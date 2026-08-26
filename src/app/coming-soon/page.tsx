@@ -6,14 +6,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Sparkles, ArrowRight, Vote, Map, Scale } from 'lucide-react'
-import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = { title: 'Coming soon', robots: { index: false, follow: false } }
 
 export default function ComingSoonPage() {
   return (
-    <div style={{ background: '#fff', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ maxWidth: 560, padding: '48px 36px', textAlign: 'center' }}>
+    <div style={{ ...WOVEN_PAGE, minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ maxWidth: 560, padding: '48px clamp(18px, 5vw, 36px)', textAlign: 'center' }}>
         <div style={{ width: 56, height: 56, borderRadius: 16, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
           <Sparkles style={{ width: 28, height: 28, color: JADE }} />
         </div>

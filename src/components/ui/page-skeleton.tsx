@@ -17,7 +17,7 @@ import { WOVEN_PAGE, BORDER } from '@/constants/theme'
 export function PageSkeleton({ lines = 3, cards = 2 }: { lines?: number; cards?: number }) {
   return (
     <div style={WOVEN_PAGE}>
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 36px 80px' }}>
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 80px' }}>
         <Bar w="34%" h={16} />
         <div style={{ height: 14 }} />
         <Bar w="62%" h={38} />

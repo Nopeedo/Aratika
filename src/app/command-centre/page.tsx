@@ -21,7 +21,7 @@ import { PARTY_DIRECTORY_ORDER, PARTY_PROFILES } from '@/constants/parties-data'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { CommandCentreTryIt } from '@/components/command-centre/try-it'
 import type { BookmarkEntity } from '@/hooks/use-bookmarks'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Your Command Centre: track what matters',
@@ -77,7 +77,7 @@ export default async function CommandCentrePage() {
   ]
 
   return (
-    <div style={{ background: '#fff' }}>
+    <div style={WOVEN_PAGE}>
       {/* Someone with an account who lands here almost always wanted their own
           command centre, not the page explaining what one is. They arrive from
           the footer link, the homepage CTA, the explore carousel and anywhere

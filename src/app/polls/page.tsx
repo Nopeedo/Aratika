@@ -19,16 +19,16 @@ export default function PollsPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 820, margin: '0 auto', padding: '48px 36px 40px' }}>
+        <div style={{ maxWidth: 820, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Public Polls" /></div>
-          <h1 style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Have your say</h1>
+          <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Have your say</h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
             Quick community polls on the issues in front of Parliament — a way to see how Arapono readers are feeling.
           </p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 820, margin: '0 auto', padding: '34px 36px 64px', display: 'flex', flexDirection: 'column', gap: 22 }}>
+      <div style={{ maxWidth: 820, margin: '0 auto', padding: '34px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 22 }}>
         {/* Coming soon */}
         <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, padding: '30px 26px', textAlign: 'center', background: '#fff' }}>
           <div style={{ width: 52, height: 52, borderRadius: 14, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' }}>

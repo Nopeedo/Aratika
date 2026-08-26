@@ -157,7 +157,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
       {/* ═══════════════ Header band ═══════════════ */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ height: 5, background: party.color }} />
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 36px' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 36px' }}>
           <BackLink fallbackHref="/mps" label="All MPs" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 24 }} />
 
           <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
@@ -200,7 +200,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
       </div>
 
       {/* ═══════════════ Body ═══════════════ */}
-      <div className="detail-two-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '28px 36px 64px' }}>
+      <div className="detail-two-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px' }}>
 
         {/* ── Main column ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -516,7 +516,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
           from a notification, the reader wants to see which items are new — so
           anything published since their last visit is flagged. */}
       <div style={{ borderTop: `1px solid ${BORDER}` }}>
-        <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '26px 36px 32px' }}>
+        <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px) 32px' }}>
           <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px' }}>
             Latest coverage
           </h2>
@@ -529,7 +529,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
 
       {/* ═══════════════ Source attribution ═══════════════ */}
       <div style={{ borderTop: `1px solid ${BORDER}`, background: SURFACE }}>
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '20px 36px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px)', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <SectionDivider type="official" label="Sources" />
           <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
             Details sourced from{' '}

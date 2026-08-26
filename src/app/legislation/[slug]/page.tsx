@@ -33,7 +33,7 @@ export default async function LegislationReaderPage({ params }: { params: Promis
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 820, margin: '0 auto', padding: '28px 36px 48px' }}>
+        <div style={{ maxWidth: 820, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 48px' }}>
           <BackLink fallbackHref="/legislation" label="Back" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 24 }} />
           <BillReader bill={bill} stances={stances} />
         </div>

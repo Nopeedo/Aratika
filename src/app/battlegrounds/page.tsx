@@ -25,7 +25,7 @@ export default function BattlegroundsHub() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '46px 36px 38px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '46px clamp(18px, 5vw, 36px) 38px' }}>
           <div style={{ marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
             <SectionDivider type="official" label="Election Battlegrounds" />
             <Link href="/elections/2026" style={{ fontSize: 12, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE }}>2026 election →</Link>

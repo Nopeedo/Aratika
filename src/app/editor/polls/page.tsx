@@ -20,7 +20,7 @@ export default async function EditorPollsPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 860, margin: '0 auto', padding: '44px 36px 36px' }}>
+        <div style={{ maxWidth: 860, margin: '0 auto', padding: '44px clamp(18px, 5vw, 36px) 36px' }}>
           <Link href="/editor" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginBottom: 14 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> Editorial review
           </Link>
@@ -32,7 +32,7 @@ export default async function EditorPollsPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: '28px 36px 64px' }}>
+      <div style={{ maxWidth: 860, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px' }}>
         {!user ? (
           <Gate title="Sign in required" body="Entering polls is for the Arapono editorial team.">
             <Link href="/login" style={btn}>Log in</Link>

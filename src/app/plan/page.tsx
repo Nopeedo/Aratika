@@ -17,7 +17,7 @@ export default function PlanPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 820, margin: '0 auto', padding: '52px 36px 56px' }}>
+        <div style={{ maxWidth: 820, margin: '0 auto', padding: '52px clamp(18px, 5vw, 36px) 56px' }}>
           <PlanView />
         </div>
       </div>

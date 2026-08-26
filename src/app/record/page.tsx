@@ -41,7 +41,7 @@ export default async function RecordHubPage() {
     <div style={WOVEN_PAGE}>
       {/* Header */}
       <div style={{ background: '#0c0e12', color: '#fff' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '38px 36px 30px' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '38px clamp(18px, 5vw, 36px) 30px' }}>
           <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: '#36e08a', fontFamily: MANROPE, marginBottom: 10 }}>
             Accountability data · Private
           </div>
@@ -54,7 +54,7 @@ export default async function RecordHubPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '28px 36px 72px' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 72px' }}>
         {/* Caveat */}
         <div style={{ display: 'flex', gap: 12, padding: '14px 16px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 14, marginBottom: 28 }}>
           <ShieldAlert style={{ width: 18, height: 18, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />

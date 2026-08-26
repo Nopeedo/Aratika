@@ -60,7 +60,7 @@ export async function PartyCoverage({ slug, name, colour }: { slug: string; name
 
   return (
     <div style={{ borderTop: `1px solid ${BORDER}` }}>
-      <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '30px 36px 36px' }}>
+      <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '30px clamp(18px, 5vw, 36px) 36px' }}>
 
         <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>
           Latest coverage

@@ -48,11 +48,11 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
 
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px 36px 40px' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
           <div style={{ marginBottom: 8 }}>
             <SectionDivider type="official" label="Official Parliament Data" />
           </div>
-          <h1 style={{ fontSize: 40, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, marginBottom: 10 }}>
+          <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, marginBottom: 10 }}>
             Bills Tracker
           </h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
@@ -62,7 +62,7 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
         </div>
       </div>
 
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '32px 36px 64px' }}>
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '32px clamp(18px, 5vw, 36px) 64px' }}>
 
         {/* Orientation first: what a bill is and what the stages mean, before any
             of the bills themselves. */}

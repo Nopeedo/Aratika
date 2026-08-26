@@ -171,7 +171,7 @@ export default async function DashboardPage() {
     <div style={{ ...WOVEN_PAGE, minHeight: 'calc(100vh - 64px)' }}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '40px clamp(16px, 4vw, 36px) 32px' }}>
-          <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>
+          <h1 style={{ fontSize: 'clamp(24px, 7vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>
             Kia ora, {name}
           </h1>
           <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>

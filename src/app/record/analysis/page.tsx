@@ -28,7 +28,7 @@ export default async function PolicyAnalysisPage() {
     <div style={WOVEN_PAGE}>
       {/* Header */}
       <div style={{ background: '#0c0e12', color: '#fff' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '38px 36px 30px' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '38px clamp(18px, 5vw, 36px) 30px' }}>
           <Link href="/record" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,.6)', fontFamily: MANROPE, textDecoration: 'none', marginBottom: 14 }}>
             ← All accountability data
           </Link>
@@ -44,7 +44,7 @@ export default async function PolicyAnalysisPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '28px 36px 72px' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 72px' }}>
         {/* Caveat */}
         <div style={{ display: 'flex', gap: 12, padding: '15px 17px', background: '#fff9e6', border: '1px solid #fde68a', borderRadius: 14, marginBottom: 30 }}>
           <ShieldAlert style={{ width: 18, height: 18, color: '#b45309', flexShrink: 0, marginTop: 1 }} />

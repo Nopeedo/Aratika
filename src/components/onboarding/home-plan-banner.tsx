@@ -31,7 +31,7 @@ export function HomePlanBanner() {
 
   return (
     <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '28px 36px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px)' }}>
         <div className="party-card" style={{ background: 'linear-gradient(150deg,#0f9152,#0c0e12)', borderRadius: 20, padding: '24px 26px', display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
           <div style={{ flex: 1, minWidth: 260 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>

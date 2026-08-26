@@ -30,7 +30,7 @@ export function PartyGrid() {
 
   return (
     <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px 36px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '56px clamp(18px, 5vw, 36px)' }}>
 
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12, marginBottom: 26 }}>

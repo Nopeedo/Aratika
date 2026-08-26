@@ -19,7 +19,7 @@ export default async function EditorPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 860, margin: '0 auto', padding: '44px 36px 36px' }}>
+        <div style={{ maxWidth: 860, margin: '0 auto', padding: '44px clamp(18px, 5vw, 36px) 36px' }}>
           <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>Editorial review</h1>
           <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
             Items the daily pipeline pulled from official sources, awaiting an editor’s check. Nothing here is on the public
@@ -33,7 +33,7 @@ export default async function EditorPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: '28px 36px 64px' }}>
+      <div style={{ maxWidth: 860, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px' }}>
         {!user ? (
           <Gate title="Sign in required" body="The editorial review queue is for the Arapono editorial team.">
             <Link href="/login" style={btn}>Log in</Link>

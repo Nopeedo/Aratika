@@ -29,11 +29,11 @@ export default async function MapPage({
 
       {/* Header band */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px 36px 32px' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 32px' }}>
           <div style={{ marginBottom: 10 }}>
             <SectionDivider type="official" label="Official Parliament & Electoral Data" />
           </div>
-          <h1 style={{ fontSize: 38, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>
+          <h1 style={{ fontSize: 'clamp(25px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>
             Find your MP
           </h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 600, lineHeight: 1.6, margin: 0 }}>

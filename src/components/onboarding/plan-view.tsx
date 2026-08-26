@@ -52,7 +52,7 @@ export function PlanView() {
   return (
     <div style={{ maxWidth: 760, margin: '0 auto' }}>
       {/* header + progress */}
-      <h1 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Your plan</h1>
+      <h1 style={{ fontSize: 'clamp(24px, 7vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Your plan</h1>
       <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 20px', lineHeight: 1.55 }}>
         Built from your answers. Steps tick off as you go — pick up wherever you left off.
       </p>

@@ -59,7 +59,7 @@ export default async function NationalRecordPage() {
 
       {/* Header */}
       <div style={{ background: '#0c0e12', color: '#fff' }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '40px 36px 34px' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 34px' }}>
           <Link href="/record" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,.6)', fontFamily: MANROPE, textDecoration: 'none', marginBottom: 14 }}>
             ← All accountability data
           </Link>
@@ -75,7 +75,7 @@ export default async function NationalRecordPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '28px 36px 72px' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 72px' }}>
 
         {/* Credibility caveat */}
         <div style={{ display: 'flex', gap: 12, padding: '15px 17px', background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 14, marginBottom: 30 }}>

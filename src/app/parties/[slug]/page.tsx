@@ -160,7 +160,7 @@ export default async function PartyProfilePage(
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ height: 6, background: party.color }} />
 
-        <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '24px 36px 36px' }}>
+        <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 36px' }}>
 
           <BackLink fallbackHref="/parties" label="All parties" style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
@@ -179,7 +179,7 @@ export default async function PartyProfilePage(
             {/* Left: identity */}
             <div style={{ flex: 1, minWidth: 280 }}>
               <h1 style={{
-                fontSize: 40, fontWeight: 800, letterSpacing: '-.02em', color: INK,
+                fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK,
                 fontFamily: MANROPE, lineHeight: 1.05, margin: '0 0 4px',
               }}>
                 {party.name}
@@ -283,7 +283,7 @@ export default async function PartyProfilePage(
       </div>
 
       {/* ═══════════════ Body ═══════════════ */}
-      <div className="detail-two-col ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '36px 36px 64px' }}>
+      <div className="detail-two-col ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '36px clamp(18px, 5vw, 36px) 64px' }}>
 
         {/* ── Main column ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -397,7 +397,7 @@ export default async function PartyProfilePage(
 
       {/* ═══════════════ Source attribution ═══════════════ */}
       <div style={{ borderTop: `1px solid ${BORDER}`, background: SURFACE }}>
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '20px 36px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px)', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
           <SectionDivider type="official" label="Sources" />
           <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
             Seat counts from the 2023 General Election (Electoral Commission). Party background from{' '}
