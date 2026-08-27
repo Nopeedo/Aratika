@@ -15,8 +15,11 @@ export const SITE = {
   // out until there's something on them.
   socials: [
     { label: 'Instagram', url: 'https://www.instagram.com/arapononz/' },
+    // The canonical profile URL, resolved from a facebook.com/share/ short
+    // link before adding — share links redirect and can rotate, so the footer
+    // carries the address they point AT, verified live 28 Aug 2026.
+    { label: 'Facebook', url: 'https://www.facebook.com/people/Arapono-Arapono/pfbid0239fo87kAKYeU8SkAQExLZGjSwTfEgVeADcfPr5BDjAm6M1zNAgXkAprLLvKoRFwbl/' },
     // { label: 'TikTok', url: 'https://www.tiktok.com/@…' },
-    // { label: 'Facebook', url: 'https://www.facebook.com/…' },
     // { label: 'YouTube', url: 'https://www.youtube.com/@…' },
   ] as { label: string; url: string }[],
 
