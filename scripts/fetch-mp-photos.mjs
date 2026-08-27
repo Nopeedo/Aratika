@@ -17,7 +17,7 @@ import { dirname, join } from 'node:path'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const root = join(here, '..')
-const UA = 'AratikaCivicSite/1.0 (https://aratika.vercel.app; contact@aratika.nz) MP-portrait-gap-fill'
+const UA = 'AraponoCivicSite/1.0 (https://arapono.org.nz) MP-portrait-gap-fill'
 const API = 'https://en.wikipedia.org/w/api.php'
 const FREE = /(cc[ -]?by|cc0|public domain|no restrictions|attribution)/i
 const NONFREE = /(fair use|non-free|all rights reserved|copyright)/i
