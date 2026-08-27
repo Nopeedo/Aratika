@@ -231,6 +231,13 @@ export function Navbar() {
                 <Button variant="outline" asChild>
                   <Link href="/dashboard">My Dashboard</Link>
                 </Button>
+                {/* The desktop avatar menu has carried Settings since the page
+                    was built; this drawer never did, so on a phone — the one
+                    place notification setup actually lives — Settings was
+                    unreachable except by typing the URL. */}
+                <Button variant="outline" asChild>
+                  <Link href="/settings">Settings</Link>
+                </Button>
               </>
             ) : (
               <>
