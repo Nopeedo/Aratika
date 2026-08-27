@@ -72,13 +72,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         {/* ── The choice: guided help, or explore ── */}
         <CinematicHero />
 
-        {/* Alerts prompt. Inline rather than a modal on purpose: the browser
-            fires `beforeinstallprompt` once, early in page load, so the listener
-            has to be mounted with the page — open it on demand and there is no
-            deferred prompt left to fire. It hides itself when there is nothing
-            to offer, and remembers a dismissal. */}
-        <AlertsBanner />
-
         {/* Anchor for the hero's "I'll look around myself" jump. Kept as a
             zero-height marker (NOT a wrapper) so it doesn't become the sticky
             tile row's containing block — the tiles must stay a direct child of
@@ -109,6 +102,19 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
         {/* ── Why you can trust it (slim) ── */}
         <CredibilityStrip />
+
+        {/* Alerts / install prompt — down here, after the content has made its
+            case, not under the hero where it used to sit. Asking someone to
+            install on their first screen is asking before the site has shown
+            them anything; by the credibility strip they have scrolled the
+            tiles, the policy grid and the map, which is exactly the reader an
+            install is worth something to. Moving it is safe for the Android
+            install path: `beforeinstallprompt` needs its LISTENER mounted with
+            the page, and a component mounts on initial render wherever it sits
+            in the DOM — position was never the constraint. It still hides
+            itself when there is nothing to offer and remembers a dismissal,
+            and it stays reachable any time from Settings → Notifications. */}
+        <AlertsBanner />
 
         {/* ── Everything else, in one carousel of links ── */}
         <ExploreCarousel />
