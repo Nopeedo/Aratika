@@ -36,16 +36,17 @@ const VAPID = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
 // which it does on a phone — the rounded ends leave a crescent of dead space and
 // the content drifts right. Below 640 it becomes a plain rounded card that fills
 // the width instead.
+/* One pill, and nothing else. The old layout was a pale card — copy line,
+   button, dismiss — with its own border, and on the party-tinted homepage the
+   card edges read as stray white boxes. The pill IS the action now: tapping it
+   installs / enables, the × lives inside it, and there is no surrounding
+   chrome to outline. */
 const BANNER_CSS = `
-.ab-col { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.ab-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .ab-pill {
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end;
-  border-radius: 999px; padding: 5px 8px 5px 14px;
-}
-@media (max-width: 640px) {
-  .ab-col { align-items: stretch; }
-  .ab-pill { border-radius: 16px; padding: 12px; justify-content: flex-end; }
-  .ab-copy { width: 100%; }
+  display: inline-flex; align-items: center; border-radius: 999px;
+  background: ${JADE}; color: #fff;
+  box-shadow: 0 2px 10px rgba(12, 60, 33, .28);
 }
 `
 
@@ -128,64 +129,59 @@ export function AlertsBanner() {
 
   if (mode === 'hidden') return null
 
-  const copy =
-    mode === 'notify' ? 'Get told when something you follow moves.'
-    : mode === 'ios' ? 'Add Arapono to your Home Screen to get alerts.'
-    : 'Install Arapono. It opens like an app.'
+  /**
+   * The pill's one line of text, by state. There is no separate explainer copy
+   * any more — "Install Arapono" on a tappable pill says everything the old
+   * two-part card said, and the states that used to need a sentence (denied,
+   * auth) put it in the pill instead.
+   */
+  const label =
+    result === 'done' ? 'Alerts are on'
+    : result === 'auth' ? 'Sign in to turn alerts on'
+    : result === 'denied' ? 'Alerts are blocked in your browser settings'
+    : result === 'error' ? 'That didn’t work — try again'
+    : busy ? 'Just a sec…'
+    : mode === 'notify' ? 'Turn on alerts'
+    : mode === 'ios' ? 'Add Arapono to your Home Screen'
+    : 'Install Arapono'
+
+  const Icon = result === 'done' ? Check : mode === 'notify' ? Bell : Download
+  const action = result === 'auth' ? null : mode === 'notify' ? turnOn : install
 
   return (
-    <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px)' }}>
+    <div style={{ maxWidth: 760, margin: '26px auto', padding: '0 clamp(18px, 5vw, 36px)' }}>
       <style dangerouslySetInnerHTML={{ __html: BANNER_CSS }} />
       <div className="ab-col">
-        <div
-          className="ab-pill"
-          style={{
-            background: '#ecfdf5', border: `1px solid ${JADE}2e`,
-            boxShadow: '0 1px 3px rgba(12,14,18,.06)', fontFamily: MANROPE,
-          }}
-        >
-          {result === 'done' ? (
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 800, color: JADE, padding: '5px 6px' }}>
-              <Check style={{ width: 14, height: 14 }} /> Alerts are on
-            </span>
+        <div className="ab-pill" style={{ fontFamily: MANROPE }}>
+          {result === 'auth' ? (
+            <Link href="/login" style={pillFace}>
+              <Bell style={ic} /> {label}
+            </Link>
           ) : (
-            <>
-              <span className="ab-copy" style={{ fontSize: 12.5, color: INK, fontWeight: 600 }}>
-                {result === 'auth' ? 'Sign in to turn these on.'
-                  : result === 'denied' ? 'Your browser is blocking alerts. Allow them in site settings.'
-                  : result === 'error' ? 'That didn’t work. Try again?'
-                  : copy}
-              </span>
-
-              {result === 'auth' ? (
-                <Link href="/login" style={pill(true)}>Sign in</Link>
-              ) : mode === 'notify' ? (
-                <button onClick={turnOn} disabled={busy} style={pill(true)}>
-                  <Bell style={ic} /> {busy ? 'Just a sec…' : 'Turn on alerts'}
-                </button>
-              ) : (
-                <button onClick={install} style={pill(true)}>
-                  <Download style={ic} /> {mode === 'ios' ? 'How' : 'Install'}
-                </button>
-              )}
-
-              {/* Where both are possible, install is the lesser offer — a plain
-                  link, so it never competes with the one that does the work. */}
-              {mode === 'notify' && deferred && result === null && (
-                <button onClick={install} style={{ background: 'none', border: 'none', cursor: 'pointer', color: SUB, fontSize: 12, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'underline', padding: '0 2px' }}>
-                  or install
-                </button>
-              )}
-
-              <button onClick={dismiss} aria-label="Dismiss" style={{ background: 'none', border: 'none', cursor: 'pointer', color: SUB, display: 'flex', padding: 3 }}>
-                <X style={{ width: 14, height: 14 }} />
-              </button>
-            </>
+            <button onClick={action ?? undefined} disabled={busy || result === 'denied'} style={{ ...pillFace, cursor: busy || result === 'denied' ? 'default' : 'pointer' }}>
+              <Icon style={ic} /> {label}
+            </button>
+          )}
+          {result !== 'done' && (
+            <button onClick={dismiss} aria-label="Dismiss" style={{
+              background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,.75)',
+              display: 'flex', padding: '10px 12px 10px 4px',
+            }}>
+              <X style={{ width: 14, height: 14 }} />
+            </button>
           )}
         </div>
 
+        {/* Where both offers apply, install stays the lesser one — a bare text
+            link under the pill, no box of its own. */}
+        {mode === 'notify' && deferred && result === null && (
+          <button onClick={install} style={{ background: 'none', border: 'none', cursor: 'pointer', color: SUB, fontSize: 12, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'underline', padding: 0 }}>
+            or install the app
+          </button>
+        )}
+
         {steps && mode === 'ios' && (
-          <div style={{ maxWidth: 330, padding: '10px 12px', borderRadius: 12, background: '#fff', border: `1px solid ${JADE}22`, boxShadow: '0 6px 18px rgba(12,14,18,.10)', fontFamily: MANROPE }}>
+          <div style={{ maxWidth: 330, padding: '10px 12px', borderRadius: 12, background: '#fff', boxShadow: '0 6px 18px rgba(12,14,18,.14)', fontFamily: MANROPE }}>
             <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: INK, lineHeight: 1.7 }}>
               {needsSafari && <li>Open <b>arapono.org.nz in Safari</b>. This browser can’t install it.</li>}
               <li>Tap <b>Share</b> <Share style={{ width: 12, height: 12, verticalAlign: '-1px' }} /> in Safari.</li>
@@ -200,12 +196,12 @@ export function AlertsBanner() {
   )
 }
 
-const ic: React.CSSProperties = { width: 14, height: 14 }
-function pill(primary: boolean): React.CSSProperties {
-  return {
-    display: 'inline-flex', alignItems: 'center', gap: 7, padding: '5px 12px', borderRadius: 999,
-    border: primary ? 'none' : `1px solid ${JADE}2e`, background: primary ? JADE : '#fff',
-    color: primary ? '#fff' : INK, fontSize: 12.5, fontWeight: 800, cursor: 'pointer',
-    fontFamily: MANROPE, whiteSpace: 'nowrap', textDecoration: 'none',
-  }
+/** The face of the pill — the tappable part carrying icon + words. */
+const pillFace: React.CSSProperties = {
+  display: 'inline-flex', alignItems: 'center', gap: 8,
+  background: 'none', border: 'none', color: '#fff',
+  fontSize: 13.5, fontWeight: 800, fontFamily: MANROPE,
+  padding: '11px 6px 11px 18px', textDecoration: 'none', whiteSpace: 'nowrap',
 }
+
+const ic: React.CSSProperties = { width: 15, height: 15 }

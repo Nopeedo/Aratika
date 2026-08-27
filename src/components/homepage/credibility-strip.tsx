@@ -29,7 +29,11 @@ function StatTile({ value, label, sublabel }: { value: string; label: string; su
 
 export function CredibilityStrip() {
   return (
-    <section style={{ background: 'transparent', borderBottom: `1px solid ${BORDER}` }}>
+    // No borderBottom: the explore section below opens with a borderTop, so
+    // this strip's own bottom rule made TWO full-width hairlines a few pixels
+    // apart — and once the alerts pill moved between the sections it floated
+    // inside a pair of stray white lines. One divider between sections.
+    <section style={{ background: 'transparent' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px)', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(116px, 100%), 1fr))', gap: 12, flex: 1, minWidth: 0, maxWidth: 560 }}>
           {STATS.map((s) => (
