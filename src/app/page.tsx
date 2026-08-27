@@ -14,7 +14,6 @@
  */
 
 import type { Metadata } from 'next'
-import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
@@ -27,21 +26,42 @@ import { CompassCta } from '@/components/compass/compass-cta'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 import { AlertsBanner } from '@/components/notifications/alerts-banner'
-import { MarkSeen } from '@/components/homepage/mark-seen'
+import { createClient } from '@/lib/supabase/server'
 
-// The navbar logo and the hub both link to /?full=1, so crawlers (which carry no
-// `arapono_seen` cookie and therefore see identical content at both URLs) would
-// otherwise treat it as a second homepage competing with the one in the sitemap.
+// The navbar logo and the hub both link to /?full=1, which serves the same
+// content as / to anyone signed out (crawlers included) — canonical stops it
+// competing with the homepage in the sitemap.
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<{ full?: string }> }) {
-  // Returning visitors (a cookie set on their first visit) go straight to the
-  // election hub instead of this marketing landing page. `?full=1` — used by the
-  // hub's "view the full homepage" link — always shows the landing.
+  /**
+   * SIGNED-IN visitors go straight to /hub; everyone else gets the landing.
+   *
+   * This used to key on an arapono_seen cookie set on first view, which sent
+   * every repeat visitor to the hub whether or not they had an account — so an
+   * anonymous reader's second visit opened on "Your Command Centre" with
+   * nothing in it, a returning-user page for someone the site does not know.
+   * The hub is built around an account's tracked items; the landing is built
+   * to explain the site. Which one a person should get is a fact about their
+   * ACCOUNT, not their browser history.
+   *
+   * getSession, not getUser: this is a routing decision, not an auth boundary.
+   * getSession reads the local cookie with no network round trip, which
+   * matters on the page campaign traffic lands on; the worst a forged cookie
+   * earns is a redirect to a page that then renders empty. Every real auth
+   * check stays getUser.
+   *
+   * `?full=1` — used by the hub's "view the full homepage" link — still always
+   * shows the landing.
+   */
   const { full } = await searchParams
-  if (!full && (await cookies()).get('arapono_seen')?.value === '1') redirect('/hub')
+  if (!full) {
+    const supabase = await createClient()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (session) redirect('/hub')
+  }
 
   return (
     <PartyCycleProvider>
@@ -49,9 +69,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           current party's accent colour; sections are transparent so it shows
           through. */}
       <HomeBackground>
-        {/* First visit → set the cookie so next time they land on /hub. */}
-        <MarkSeen />
-
         {/* ── The choice: guided help, or explore ── */}
         <CinematicHero />
 
