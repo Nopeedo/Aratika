@@ -76,13 +76,20 @@ let enqueued = 0
 let closingSoon = 0
 for (const bm of bms || []) {
   let bill = openBySlug.get(bm.ref_id) || openByTitle.get(normTitle(bm.label))
+  let viaDefiningMap = false
   if (!bill) {
     // An editorial topic can span several bills — prefer one that is actually
     // open, since that is the one the reader can act on.
     const mapped = DEFINING_MAP[bm.ref_id]
-    if (Array.isArray(mapped)) bill = mapped.map((s) => openBySlug.get(s)).find(Boolean)
+    if (Array.isArray(mapped)) { bill = mapped.map((s) => openBySlug.get(s)).find(Boolean); viaDefiningMap = !!bill }
   }
   if (!bill) continue
+
+  // Anchored to the named bill's card where the tracked page covers several
+  // bills — the notice names ONE of them, and landing at the umbrella page's
+  // top left the reader to find it. Same fix as detect-bill-changes.mjs; the
+  // anchors live on the defining page's covered-bills cards.
+  const targetUrl = viaDefiningMap && bm.href ? `${bm.href}#bill-${bill.slug}` : (bm.href || '/bills')
 
   await enqueue({
     userId: bm.user_id,
@@ -92,7 +99,7 @@ for (const bm of bms || []) {
     entity: { kind: bm.kind, ref: bm.ref_id },
     title: 'You can have your say',
     body: `${bill.title} is open for public submissions until ${fmtDate(bill.submissionsClose)}. You don’t need to be an expert.`,
-    url: bm.href || '/bills',
+    url: targetUrl,
   })
   enqueued++
 
@@ -122,7 +129,7 @@ for (const bm of bms || []) {
       entity: { kind: bm.kind, ref: bm.ref_id },
       title: daysLeft <= 0 ? 'Last day to have your say' : `Submissions close ${when}`,
       body: `${bill.title} closes for public submissions ${when} (${fmtDate(bill.submissionsClose)}). After that the committee stops accepting them.`,
-      url: bm.href || '/bills',
+      url: targetUrl,
     })
     closingSoon++
   }

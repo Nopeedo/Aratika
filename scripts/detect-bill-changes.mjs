@@ -81,9 +81,10 @@ if (changes.length > 0) {
   for (const bm of bms || []) {
     // Resolve this bookmark to a changed bill: slug → normalised title → defining map.
     let change = changedBySlug.get(bm.ref_id) || changedByTitle.get(normTitle(bm.label))
+    let viaDefiningMap = false
     if (!change) {
       const mapped = DEFINING_MAP[bm.ref_id]
-      if (Array.isArray(mapped)) change = mapped.map((s) => changedBySlug.get(s)).find(Boolean)
+      if (Array.isArray(mapped)) { change = mapped.map((s) => changedBySlug.get(s)).find(Boolean); viaDefiningMap = !!change }
     }
     if (!change) continue
 
@@ -97,7 +98,14 @@ if (changes.length > 0) {
       entity: { kind: bm.kind, ref: bm.ref_id },
       title: c.title,
       body: c.body(change.title),
-      url: bm.href || '/bills',
+      // The tracked page, ANCHORED to the bill that moved. A defining page
+      // like "Replacing the RMA" covers several separately-titled bills; the
+      // notification names one of them, so landing at the page top handed the
+      // reader a headline about the umbrella and a scroll to find their bill.
+      // The register slugs still have no pages of their own (checked again:
+      // /bills/<register-slug> is a 404), so the anchor is the most precise
+      // link that exists.
+      url: viaDefiningMap && bm.href ? `${bm.href}#bill-${change.slug}` : (bm.href || '/bills'),
     })
     enqueued++
   }

@@ -143,8 +143,13 @@ export function DefiningBillDetail({ bill }: { bill: DefiningBill }) {
                 const stillOpen = !!(b.submissionsCalled && b.submissionsClose && b.submissionsClose >= TODAY_NZ)
                 const closed = !!(b.submissionsCalled && closes && !stillOpen)
                 const open = stillOpen
+                // Anchored so a notification about ONE of these bills can land
+                // on its card rather than the top of the umbrella page —
+                // "Natural Environment Bill advanced" used to drop the reader
+                // at the RMA explainer's headline and leave them to find the
+                // bill themselves. The detectors link #bill-<register-slug>.
                 return (
-                  <div key={b.slug} style={{ background: CARD, border: `1px solid ${open ? '#bfd4fe' : LINE}`, borderRadius: 12, padding: '12px 14px' }}>
+                  <div key={b.slug} id={`bill-${b.slug}`} style={{ background: CARD, border: `1px solid ${open ? '#bfd4fe' : LINE}`, borderRadius: 12, padding: '12px 14px', scrollMarginTop: 84 }}>
                     <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.35 }}>{b.title}</div>
                     <div style={{ fontSize: 12.5, color: MUTED, fontFamily: MANROPE, marginTop: 3 }}>{b.status}</div>
                     {/* The one thing on this page a reader can act on, so it is
