@@ -71,11 +71,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "mike-davidson": {
-    "count": 168,
+    "count": 185,
     "byMinister": [
       {
         "minister": "Minister of Internal Affairs",
-        "count": 109
+        "count": 121
       },
       {
         "minister": "Minister for ACC",
@@ -83,7 +83,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Local Government",
-        "count": 19
+        "count": 24
       },
       {
         "minister": "Minister for the South Island",
@@ -104,34 +104,34 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Regional Development",
-        "date": "2026-08-12",
-        "question": "Does the Minister expect councils total co-investment into Regional Infrastructure Fund projects will reduce once a proposed rates cap is implemented; if not, why not?",
+        "minister": "Minister of Local Government",
+        "date": "2026-08-28",
+        "question": "What advice, briefings, documents or correspondence has the Minister, or any member of his office, received on the establishment of a Department for Local Government or similar, if any, and given the Select Committee report ‘Five Reports of the Ombudsman’ on 20 Aug 2026 does he intend to seek any advice on the establishment of such a department?",
         "reply": null
       },
       {
-        "minister": "Minister for Regional Development",
-        "date": "2026-08-12",
-        "question": "Will the Minister bid for increased central government funding for the Regional Infrastructure Fund (RIF) should the implementation of a rates cap reduce the amount councils co-invest into RIF projects?",
+        "minister": "Minister of Local Government",
+        "date": "2026-08-28",
+        "question": "What advice, reports, briefings, documents or correspondence has the Minister or any member of his office had, if any, on the estimated costs of amalgamation to councils of the headstart proposals submitted by councils and what is the range in total costs estimated to be for those councils that gave estimates?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Local Government",
+        "date": "2026-08-28",
+        "question": "What advice, reports, briefings, documents or correspondence has the Minister or any member of his office had, if any, on a government contribution towards the costs of council amalgamations and what advice is the Minister seeking or expecting on the matter?",
         "reply": null
       },
       {
         "minister": "Minister of Local Government",
         "date": "2026-08-12",
         "question": "Did the Independent Reference Group that helped develop a rates cap policy recommend exactly what the Minister proposed in his 1 December 2025 press release?",
-        "reply": null
+        "reply": "No."
       },
       {
-        "minister": "Minister for the South Island",
-        "date": "2026-07-30",
-        "question": "Has the Minister received a formal request/s from Christchurch City Council (CCC) and/or the Mayor of Christchurch in 2026 to meet with the governing body of CCC and/or CCC, and if so, when did he receive the request/s and has he formally met with the governing body of CCC and/or CCC in response to the request/s, and if not, why not?",
-        "reply": "In 2026, I received two invitations from Christchurch City Council and/or the Mayor of Christchurch. The first was on 12 March 2026, when I was copied into letter regarding a request for a meeting with Hon Nicola Willis and Hon Paul Goldsmith. The second was on 13 July 2026, when all Canterbury MPs and Canterbury candidates were invited to attend a breakfast hosted by the Council. Due to prior diary commitments, I was unable to attend."
-      },
-      {
-        "minister": "Minister for the South Island",
-        "date": "2026-07-30",
-        "question": "Since receiving the letter titled \"2026 02 20 Minister for the South Island - Mayoral Joint Priorities\" on 2 March 2026 and directing his \"office to review the information and gather relevant context and input from the appropriate portfolios, to inform my advocacy role\", what of the priority projects and policy areas mentioned in the letter will the Minister be advocating for?",
-        "reply": "I advocate for projects that demonstrate clear community benefits, are well developed, and align with the Government's priorities for economic growth, infrastructure, resilience and regional development."
+        "minister": "Minister for Regional Development",
+        "date": "2026-08-12",
+        "question": "Does the Minister expect councils total co-investment into Regional Infrastructure Fund projects will reduce once a proposed rates cap is implemented; if not, why not?",
+        "reply": "The Regional Infrastructure Fund (RIF) is a Budget 2024 initiative appropriated until June 2027 and is approaching full allocation. Terms of co-investment funding for current approved RIF projects have already been established. Details of the Government's proposed new legislation to limit local government rates increases are currently being finalised, with the full regulatory model expected to be in place by 1 July 2029."
       }
     ]
   },
@@ -293,23 +293,23 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "ginny-andersen": {
-    "count": 5213,
+    "count": 5231,
     "byMinister": [
       {
         "minister": "Minister of Police",
-        "count": 2474
+        "count": 2476
       },
       {
         "minister": "Associate Minister of Police",
-        "count": 490
+        "count": 492
       },
       {
         "minister": "Minister of Education",
-        "count": 388
+        "count": 390
       },
       {
         "minister": "Minister for Treaty of Waitangi Negotiations",
-        "count": 330
+        "count": 332
       },
       {
         "minister": "Minister for the Prevention of Family and Sexual Violence",
@@ -320,16 +320,16 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 197
       },
       {
+        "minister": "Associate Minister of Education",
+        "count": 148
+      },
+      {
         "minister": "Minister of Justice",
         "count": 147
       },
       {
         "minister": "Minister for Energy",
         "count": 147
-      },
-      {
-        "minister": "Associate Minister of Education",
-        "count": 138
       },
       {
         "minister": "Associate Minister of Justice",
@@ -455,38 +455,38 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister of Police",
-        "date": "2026-08-20",
-        "question": "What is the number of constabulary staff at New Zealand Police (actual strength (not including vacancies) as of August 2026?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Education",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Associate Minister of Justice",
         "date": "2026-08-19",
         "question": "Is the readiness of the firearms reforms being tracked, if so, what metric is being used?",
-        "reply": null
+        "reply": "The readiness of the firearms reforms is an operational matter. I am advised that progress towards implementation of the firearms reforms is tracked through regular programme status reporting to the Firearms Regulator Programme Steering Group."
       },
       {
-        "minister": "Minister of Police",
+        "minister": "Associate Minister of Education",
         "date": "2026-08-18",
         "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Treaty of Waitangi Negotiations",
-        "date": "2026-08-11",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I refer the Member to attachment 1. I have received three further documents, but I believe it would prejudice the orderly and effective conduct of government decision making processes to release the titles at this time."
-      },
-      {
-        "minister": "Associate Minister of Police",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "As Associate Minister of Police and Minister of Customs I took one paper to Cabinet on 3 August. The paper and title will be proactively released in due course."
+        "reply": "I refer the Member to the list below of briefings I received from Education agencies for the week beginning 10 August 2026: • Attendance Q&A Information Pack • Proactive Release of Official Information Act Responses Some titles have been withheld as they are sensitive in nature and are not in the public interest to release at this time. This answer does not cover members of my office who receive a large amount of material every week. Asking them to collate that material would require substantial…"
       }
     ]
   },
   "camilla-belich": {
-    "count": 13914,
+    "count": 13935,
     "byMinister": [
       {
         "minister": "Minister for Workplace Relations and Safety",
@@ -506,19 +506,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Justice",
-        "count": 288
-      },
-      {
-        "minister": "Minister of Health",
-        "count": 222
+        "count": 304
       },
       {
         "minister": "Minister for the Public Service and Digitising Government",
-        "count": 218
+        "count": 220
+      },
+      {
+        "minister": "Minister of Health",
+        "count": 219
       },
       {
         "minister": "Associate Minister of Health",
-        "count": 215
+        "count": 213
       },
       {
         "minister": "Minister of Local Government",
@@ -537,7 +537,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 199
       },
       {
-        "minister": "Minister for Social Investment",
+        "minister": "Minister for Pacific Peoples",
         "count": 197
       },
       {
@@ -546,19 +546,23 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Finance",
-        "count": 196
-      },
-      {
-        "minister": "Minister of Housing",
-        "count": 196
-      },
-      {
-        "minister": "Minister of Education",
         "count": 195
       },
       {
-        "minister": "Minister for Pacific Peoples",
+        "minister": "Minister of Housing",
+        "count": 195
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 195
+      },
+      {
+        "minister": "Minister of Education",
         "count": 194
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 193
       },
       {
         "minister": "Minister for Women",
@@ -573,10 +577,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 193
       },
       {
-        "minister": "Minister of Internal Affairs",
-        "count": 192
-      },
-      {
         "minister": "Minister for Arts, Culture and Heritage",
         "count": 190
       },
@@ -585,11 +585,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 189
       },
       {
+        "minister": "Minister of Customs",
+        "count": 189
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 189
+      },
+      {
         "minister": "Minister of Agriculture",
         "count": 188
       },
       {
-        "minister": "Minister of Defence",
+        "minister": "Minister of Foreign Affairs",
         "count": 188
       },
       {
@@ -601,32 +609,20 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 187
       },
       {
-        "minister": "Minister of Customs",
-        "count": 187
-      },
-      {
-        "minister": "Minister for Children",
-        "count": 186
-      },
-      {
         "minister": "Minister for Infrastructure",
-        "count": 186
+        "count": 187
       },
       {
         "minister": "Minister for Media and Communications",
         "count": 186
       },
       {
-        "minister": "Minister of Foreign Affairs",
+        "minister": "Minister for Children",
         "count": 185
       },
       {
         "minister": "Minister for Sport and Recreation",
         "count": 185
-      },
-      {
-        "minister": "Minister for Economic Growth",
-        "count": 184
       },
       {
         "minister": "Minister for Whānau Ora",
@@ -635,6 +631,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Minister for Trade and Investment",
         "count": 184
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 183
       },
       {
         "minister": "Minister of Climate Change",
@@ -670,11 +670,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Ethnic Communities",
-        "count": 167
+        "count": 165
       },
       {
         "minister": "Attorney-General",
-        "count": 161
+        "count": 162
       },
       {
         "minister": "Minister for Youth",
@@ -686,7 +686,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Courts",
-        "count": 147
+        "count": 148
       },
       {
         "minister": "Minister for Veterans",
@@ -709,6 +709,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 117
       },
       {
+        "minister": "Associate Minister of Justice",
+        "count": 114
+      },
+      {
         "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
         "count": 114
       },
@@ -723,10 +727,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Minister for Tourism and Hospitality",
         "count": 111
-      },
-      {
-        "minister": "Associate Minister of Justice",
-        "count": 110
       },
       {
         "minister": "Associate Minister of Education",
@@ -911,39 +911,39 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Associate Minister of Justice",
-        "date": "2026-08-20",
-        "question": "Has the Minister sought or received any advice from the Cabinet Office, Ministerial Services, the Chief Archivist, or any other agency regarding her obligations in respect of official information or public records held in private email accounts; if so, when, from whom, and what was the substance of that advice?",
+        "minister": "Minister of Justice",
+        "date": "2026-08-27",
+        "question": "How many individuals, if any, have been unenrolled from the 2026 electoral roll, broken down by reasons and by each electorate/roll?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-08-27",
+        "question": "Does the Minister stand by his decision to not take on the advice from the panel in charge of assessing the candidates for the role of Human Rights Commission chief commissioner who did not recommend appointing Dr Stephen Rainbow to the position?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-08-24",
+        "question": "What communications, if any, took place between the Minister of Justice's office and any ACT Party MP regarding the concerns that led to the investigation into Dr Stephen Rainbow's conduct, or regarding the scope or timing of that investigation?",
         "reply": null
       },
       {
         "minister": "Associate Minister of Justice",
         "date": "2026-08-20",
-        "question": "Has the Minister, or any staff member in her office, provided a private email address to any company, lobbyist, or other third party for the purpose of correspondence relating to her ministerial responsibilities since 27 November 2023; if so, on which dates?",
-        "reply": null
+        "question": "Has the Minister sought or received any advice from the Cabinet Office, Ministerial Services, the Chief Archivist, or any other agency regarding her obligations in respect of official information or public records held in private email accounts; if so, when, from whom, and what was the substance of that advice?",
+        "reply": "Yes. On 9 April 2025 my office received a communication from the Cabinet Office reminding all Ministers that, as far as possible, personal email accounts and phone numbers should not be used to conduct ministerial business. On 9 June 2026 my office received communications from Ministerial Services making clear the Department of Internal Affairs' position on the use of personal emails in a ministerial capacity."
       },
       {
         "minister": "Associate Minister of Justice",
         "date": "2026-08-20",
         "question": "Has the Minister, or any staff member in her office, provided a private email address to any company, lobbyist, or other third party for the purpose of correspondence relating to her ministerial responsibilities since 27 November 2023; if so, to whom?",
-        "reply": null
-      },
-      {
-        "minister": "Associate Minister of Justice",
-        "date": "2026-08-11",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I received the following advice: • 6 August 2026 – Briefing: Pre-election Baseline Update Submission for Vote Justice • 7 August 2026 – Weekly Report: Weekly Report (Justice, Associate Justice and Courts) I have received eleven further documents, but I believe it would prejudice the orderly and effective conduct of government decision making processes to release the titles at this time."
-      },
-      {
-        "minister": "Minister for the Public Service and Digitising Government",
-        "date": "2026-08-11",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I refer the Member to reply number 12511 (2026)."
+        "reply": "No."
       }
     ]
   },
   "glen-bennett": {
-    "count": 437,
+    "count": 439,
     "byMinister": [
       {
         "minister": "Minister for Economic Development",
@@ -951,7 +951,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Tourism and Hospitality",
-        "count": 210
+        "count": 212
       },
       {
         "minister": "Minister for Economic Growth",
@@ -961,42 +961,42 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
         "date": "2026-08-18",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister for Tourism and Hospitality",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Tourism and Hospitality",
         "date": "2026-08-11",
         "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": null
+        "reply": "In my capacity as Minister for Tourism and Hospitality, I regularly request and receive advice on a range of topics. In the interest of transparency, a list of reports received by my office from the Ministry of Business, Innovation and Employment is regularly published on the MBIE website. The lists of titles published are available here: https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/tourism-and-hospital…"
       },
       {
         "minister": "Minister for Tourism and Hospitality",
         "date": "2026-08-10",
         "question": "Why was the fee payable to the Michelin Guide not disclosed publicly at the time of the announcement?",
         "reply": "Tourism New Zealand advises that the fee was not publicly disclosed because it was considered commercially sensitive information under Tourism New Zealand's contractual arrangements with Michelin."
-      },
-      {
-        "minister": "Minister for Tourism and Hospitality",
-        "date": "2026-08-10",
-        "question": "What is the estimated additional annual visitor spend in the downside scenario of the Project M business case pertaining to the Michelin Guide?",
-        "reply": "Tourism New Zealand's analysis estimated the number of additional annual international visitor spend in the downside scenario of the Project M business case to be $46.3 million."
       }
     ]
   },
   "rachel-boyack": {
-    "count": 1319,
+    "count": 1323,
     "byMinister": [
       {
         "minister": "Minister for Arts, Culture and Heritage",
-        "count": 406
+        "count": 408
       },
       {
         "minister": "Minister for ACC",
@@ -1012,7 +1012,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Oceans and Fisheries",
-        "count": 140
+        "count": 142
       },
       {
         "minister": "Minister of Education",
@@ -1061,59 +1061,59 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Tourism and Hospitality",
-        "date": "2026-08-20",
-        "question": "Does the government plan to increase the current funding held by the Major Events Fund; if so, by how much?",
+        "minister": "Minister for Oceans and Fisheries",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
-        "minister": "Minister for Tourism and Hospitality",
-        "date": "2026-08-20",
-        "question": "Does the government plan to increase the current funding held by the Major Events Fund; if so, when?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Tourism and Hospitality",
-        "date": "2026-08-20",
-        "question": "How much, if any, of the funding available through the Major Events Fund has been appropriated; and how much has not?",
+        "minister": "Minister for Oceans and Fisheries",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Minister for Arts, Culture and Heritage",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "date": "2026-08-18",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
         "reply": "None."
       },
       {
         "minister": "Minister for Arts, Culture and Heritage",
-        "date": "2026-08-10",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-18",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
         "reply": "I refer the Member to reply number 59549 (2024)."
       }
     ]
   },
   "rachel-brooking": {
-    "count": 9106,
+    "count": 9116,
     "byMinister": [
       {
         "minister": "Minister responsible for RMA Reform",
-        "count": 963
+        "count": 965
       },
       {
         "minister": "Minister for the Environment",
-        "count": 778
+        "count": 780
       },
       {
         "minister": "Minister for Food Safety",
-        "count": 588
+        "count": 590
       },
       {
         "minister": "Associate Minister for the Environment",
-        "count": 507
+        "count": 509
       },
       {
         "minister": "Minister for Space",
-        "count": 505
+        "count": 507
       },
       {
         "minister": "Associate Minister of Finance",
@@ -1499,33 +1499,33 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister for Space",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Space",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for the Environment",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Space",
         "date": "2026-08-18",
         "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
+        "reply": "The titles of advice, reports, briefings and/or aide memoires I received from MBIE the week beginning 10 August will be released on the MBIE website in the coming weeks here: https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/space/ The titles and dates of briefings received from the Civil Aviation Authority will be proactively released here: https://aviation.govt.nz/about-us/corporate-publications/ministeria…"
       },
       {
-        "minister": "Associate Minister for the Environment",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Associate Minister for the Environment",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": null
-      },
-      {
-        "minister": "Associate Minister for the Environment",
-        "date": "2026-08-10",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "In my capacity as the Associate Minister for the Environment, I received the following advice, reports, briefings, aides-mémoire and other documents in the week beginning 3 August 2026: Ministry for Cities, Environment, Regions and Transport: 6/08/2026: Final Environment Weekly Report week ending 7 August 2026"
-      },
-      {
-        "minister": "Minister for Food Safety",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "On 3 August 2026, the paper titled Targeted improvements to the Dietary Supplements Regulations 1985 was considered by Cabinet."
+        "minister": "Minister of Health",
+        "date": "2026-08-11",
+        "question": "Can the Minister confirm that Te Kaunihera Tapuhi o Aotearoa/ Nursing Council of New Zealand's report Educating the nurse of the future: a review of nursing education in Aotearoa New Zealand will be released in full and, if so, by what date?\"",
+        "reply": "I am advised that the draft report \"Educating the nurse of the future: a review of nursing education in Aotearoa New Zealand\" is still under consideration by the Nursing Council of New Zealand's Board."
       }
     ]
   },
@@ -1655,11 +1655,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "georgie-dansey": {
-    "count": 68,
+    "count": 70,
     "byMinister": [
       {
         "minister": "Minister for Regulation",
-        "count": 57
+        "count": 59
       },
       {
         "minister": "Minister for Social Development and Employment",
@@ -1671,6 +1671,18 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       }
     ],
     "recent": [
+      {
+        "minister": "Minister for Regulation",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Regulation",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
       {
         "minister": "Minister for Regulation",
         "date": "2026-08-18",
@@ -1688,27 +1700,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "date": "2026-08-07",
         "question": "How many people received hardship assistance payments for emergency housing in Hamilton City during the June 2026 quarter; and how many received hardship assistance payments for emergency housing during the June 2023 quarter?",
         "reply": "I am advised that the Ministry of Social Development publishes this information on their website. I refer the Member to the following links: • Emergency Housing Grants - TLA - June 2026: https://msd.govt.nz/documents/about-msd-and-our-work/publications-resources/statistics/housing/datafiles/2026/emergency-housing-grants-tla-jun-2026.xlsx • Emergency Housing Grants - TLA - June 2023: https://msd.govt.nz/documents/about-msd-and-our-work/publications-resources/statistics/housing/datafiles/2023/eh-t…"
-      },
-      {
-        "minister": "Minister for Social Development and Employment",
-        "date": "2026-08-07",
-        "question": "How many Jobseeker Support recipients are there currently in Hamilton City; and how many were there in November 2023?",
-        "reply": "I refer the Member to reply number 35452 (2026)"
-      },
-      {
-        "minister": "Minister for Social Development and Employment",
-        "date": "2026-08-07",
-        "question": "How many people received hardship assistance payments in Hamilton City during the June 2026 quarter; and how many received hardship assistance payments during the December 2023 quarter?",
-        "reply": "I refer the member to the attached table, which provides the number of grants and clients who received a hardship grant in Hamilton City during the quarters December 2023 and June 2026."
       }
     ]
   },
   "marama-davidson": {
-    "count": 267,
+    "count": 270,
     "byMinister": [
       {
         "minister": "Minister of Conservation",
-        "count": 69
+        "count": 72
       },
       {
         "minister": "Minister for the Prevention of Family and Sexual Violence",
@@ -1869,43 +1869,43 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
+        "minister": "Minister of Conservation",
+        "date": "2026-08-25",
+        "question": "Is the Department of Conservation considering including regional populations in tranche 2 of the HPAI (highly pathogenic avian influenza) vaccine roll-out?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Conservation",
+        "date": "2026-08-25",
+        "question": "Is the Department of Conservation considering including Kaikoura Blue Penguins in tranche 2 of the HPAI (highly pathogenic avian influenza) vaccine roll-out?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Conservation",
+        "date": "2026-08-25",
+        "question": "What advice, if any, has the Department of Conservation produced on tranche 2 of the HPAI (highly pathogenic avian influenza) vaccine roll-out; listed by title and date?",
+        "reply": null
+      },
+      {
         "minister": "Minister for Resources",
         "date": "2026-08-14",
         "question": "How much gold, if any, is mined from Pounamu Management Areas?",
-        "reply": null
+        "reply": "Declarations in the Annual Summary Reports of relevant permits holders report that 26,154.31 troy ounces (ozt) of gold was recovered from Pounamu Management Zones in the 2024 calendar year (the most recent data set available)."
       },
       {
         "minister": "Minister for Resources",
         "date": "2026-08-14",
         "question": "What type of gold mining, if any, occurs in Pounamu Management Areas?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Justice",
-        "date": "2026-07-22",
-        "question": "What advice, if any, has he received on consent law; listed by title and date?",
-        "reply": "I refer to the advice listed in Table 1."
-      },
-      {
-        "minister": "Minister of Justice",
-        "date": "2026-07-22",
-        "question": "What advice, if any, has he requested on consent law; listed by title and date?",
-        "reply": "My office does not keep records of advice I have requested. I refer the Member instead to my response to WPQ 33067 (2026)."
-      },
-      {
-        "minister": "Minister for the Prevention of Family and Sexual Violence",
-        "date": "2026-07-22",
-        "question": "What advice, if any, has she received on consent law; listed by title and date?",
-        "reply": "On 17 February 2025, I received advice from officials (ref 119421) ahead of a scheduled meeting with the founder of the Consent Law Reform Campaign, Layba Zubair. The aide-mémoire included general information about the campaign. In October 2025, I also received a copy of the open letter from Layba Zubair to the Minister of Justice about consent law reform. I have not received any other specific advice about consent law reform."
+        "reply": "There are currently 157 mining permits with gold as a target mineral over Pounamu Management Areas. This figure is inclusive of six gold fossicking areas, and one special purpose mining permit for tourism activity."
       }
     ]
   },
   "reuben-davidson": {
-    "count": 1326,
+    "count": 1355,
     "byMinister": [
       {
         "minister": "Minister for Media and Communications",
-        "count": 325
+        "count": 327
       },
       {
         "minister": "Minister for Digitising Government",
@@ -1921,15 +1921,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Economic Growth",
-        "count": 43
+        "count": 45
       },
       {
         "minister": "Minister for Science, Innovation and Technology",
-        "count": 40
+        "count": 42
       },
       {
         "minister": "Prime Minister",
         "count": 30
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 29
       },
       {
         "minister": "Minister of Transport",
@@ -1954,10 +1958,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Minister for Food Safety",
         "count": 9
-      },
-      {
-        "minister": "Minister of Education",
-        "count": 6
       },
       {
         "minister": "Minister of Commerce and Consumer Affairs",
@@ -2028,30 +2028,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Minister for Economic Development",
-        "count": 1
-      },
-      {
-        "minister": "Minister of Customs",
-        "count": 1
-      },
-      {
-        "minister": "Associate Minister of Transport",
-        "count": 1
-      },
-      {
-        "minister": "Minister for Space",
-        "count": 1
-      },
-      {
-        "minister": "Minister for Racing",
-        "count": 1
-      },
-      {
-        "minister": "Minister for Whānau Ora",
-        "count": 1
-      },
-      {
         "minister": "Minister for Ethnic Communities",
         "count": 1
       },
@@ -2073,6 +2049,30 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Māori Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Economic Development",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Space",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Whānau Ora",
         "count": 1
       },
       {
@@ -2208,11 +2208,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Minister responsible for the NZSIS",
+        "minister": "Minister for State Owned Enterprises",
         "count": 1
       },
       {
-        "minister": "Minister for State Owned Enterprises",
+        "minister": "Minister responsible for the NZSIS",
         "count": 1
       },
       {
@@ -2270,47 +2270,47 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Economic Growth",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "minister": "Minister of Education",
+        "date": "2026-08-25",
+        "question": "Was the video shown at the announcement of the Online Safety (Minimum Age and Child Safety Risk Assessment) Bill on 24 August 2026 filmed at a school, if so, on what date was the school first contacted to request filming permission?",
         "reply": null
       },
       {
-        "minister": "Minister for Economic Growth",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "minister": "Minister of Education",
+        "date": "2026-08-25",
+        "question": "Was the video shown at the announcement of the Online Safety (Minimum Age and Child Safety Risk Assessment) Bill on 24 August 2026 filmed at a school, if so, on who contacted the school to request filming permission?",
         "reply": null
       },
       {
-        "minister": "Minister for Science, Innovation and Technology",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "minister": "Minister of Education",
+        "date": "2026-08-25",
+        "question": "Was the video shown at the announcement of the Online Safety (Minimum Age and Child Safety Risk Assessment) Bill on 24 August 2026 produced, edited, written or shot by any staff member employed or contracted by a third party, if so, who?",
         "reply": null
       },
       {
         "minister": "Minister for Media and Communications",
-        "date": "2026-08-11",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-18",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
         "reply": "I refer the Member to reply number 47370 (2024)."
       },
       {
-        "minister": "Minister for Economic Growth",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
+        "minister": "Minister for Media and Communications",
+        "date": "2026-08-18",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "reply": "In my capacity as Minister for Media and Communications, none."
       }
     ]
   },
   "barbara-edmonds": {
-    "count": 7068,
+    "count": 7076,
     "byMinister": [
       {
         "minister": "Associate Minister of Finance",
-        "count": 1215
+        "count": 1221
       },
       {
         "minister": "Minister of Finance",
-        "count": 1113
+        "count": 1115
       },
       {
         "minister": "Minister for Infrastructure",
@@ -2764,33 +2764,33 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister of Finance",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister of Finance",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Associate Minister of Finance",
         "date": "2026-08-18",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Finance",
-        "date": "2026-08-10",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "The Treasury publishes a monthly list of titles and dates of advice to Ministers, by the middle of the month after the advice is provided. I refer the member to that list, which can be found here: https://www.treasury.govt.nz/publications/budgets/titles-advice-ministers. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpayer funds and therefore not in the public interest."
-      },
-      {
-        "minister": "Minister of Finance",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
         "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
+      },
+      {
+        "minister": "Associate Minister of Finance",
+        "date": "2026-08-18",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "reply": "My office receives a significant volume of information. To answer this question will require significant staff resources and I do not believe it is in the public interest to do so. If the member wishes to be more specific about the information he/she is seeking, I will endeavour to provide a response."
       }
     ]
   },
@@ -2957,7 +2957,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "shanan-halbert": {
-    "count": 1480,
+    "count": 1484,
     "byMinister": [
       {
         "minister": "Minister for Auckland",
@@ -2969,7 +2969,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Tertiary Education",
-        "count": 107
+        "count": 109
       },
       {
         "minister": "Minister for Universities",
@@ -2981,7 +2981,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Whānau Ora",
-        "count": 59
+        "count": 61
       },
       {
         "minister": "Minister of Transport",
@@ -3052,11 +3052,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 5
       },
       {
-        "minister": "Minister of Statistics",
+        "minister": "Minister for Energy",
         "count": 5
       },
       {
-        "minister": "Minister for Energy",
+        "minister": "Minister of Statistics",
         "count": 5
       },
       {
@@ -3096,6 +3096,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
+        "minister": "Minister for Courts",
+        "count": 1
+      },
+      {
         "minister": "Minister for Regulation",
         "count": 1
       },
@@ -3104,15 +3108,23 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Minister for Courts",
-        "count": 1
-      },
-      {
         "minister": "Minister for Resources",
         "count": 1
       },
       {
         "minister": "Minister of Forestry",
+        "count": 1
+      },
+      {
+        "minister": "Minister of Climate Change",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Youth",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Women",
         "count": 1
       },
       {
@@ -3141,18 +3153,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Immigration",
-        "count": 1
-      },
-      {
-        "minister": "Minister of Climate Change",
-        "count": 1
-      },
-      {
-        "minister": "Minister for Youth",
-        "count": 1
-      },
-      {
-        "minister": "Minister for Women",
         "count": 1
       },
       {
@@ -3192,11 +3192,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Minister for Building and Construction",
+        "minister": "Minister for Child Poverty Reduction",
         "count": 1
       },
       {
-        "minister": "Minister for Child Poverty Reduction",
+        "minister": "Minister for Building and Construction",
         "count": 1
       },
       {
@@ -3224,18 +3224,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Minister for Workplace Relations and Safety",
-        "count": 1
-      },
-      {
-        "minister": "Minister for Arts, Culture and Heritage",
-        "count": 1
-      },
-      {
-        "minister": "Minister for Media and Communications",
-        "count": 1
-      },
-      {
         "minister": "Minister responsible for RMA Reform",
         "count": 1
       },
@@ -3245,6 +3233,18 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Hunting and Fishing",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Arts, Culture and Heritage",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Media and Communications",
         "count": 1
       },
       {
@@ -3259,38 +3259,38 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister for Whānau Ora",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister for Whānau Ora",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Minister for Tertiary Education",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister for Whānau Ora",
-        "date": "2026-08-05",
-        "question": "What was the longest period between a whānau being accepted into Whānau Ora and being allocated a navigator, for the period 1 July 2025 to 30 June 2026?",
-        "reply": "I am advised that Te Puni Kokiri does not collect this information."
+        "date": "2026-08-11",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "reply": "I frequently request and receive advice on a range of kaupapa. Te Puni Kōkiri publishes monthly lists of advice that I receive from officials as Minister for Whānau Ora on its website at the following link: https://www.tpk.govt.nz/en/mo-te-puni-kokiri/our-people/ministers/list-of-advice-received-by-the-minister-for-whanau-ora."
       },
       {
-        "minister": "Minister for Whānau Ora",
-        "date": "2026-08-05",
-        "question": "What was the average period between a whānau being accepted into Whānau Ora and being allocated a navigator, for the period 1 July 2025 to 30 June 2026?",
-        "reply": "I am advised that Te Puni Kokiri does not collect this information."
+        "minister": "Minister for Tertiary Education",
+        "date": "2026-08-11",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "reply": "I refer the Member to my response to written parliamentary question 35657 (2026)."
       }
     ]
   },
   "francisco-hernandez": {
-    "count": 28513,
+    "count": 28515,
     "byMinister": [
       {
         "minister": "Minister for Regulation",
@@ -3334,7 +3334,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Social Development and Employment",
-        "count": 418
+        "count": 420
       },
       {
         "minister": "Minister of Finance",
@@ -3771,55 +3771,55 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2026-08-25",
+        "question": "When, if at all, was the last time that support payments to help people move house, if any, were increased, if at all, and if so by how much?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Social Development and Employment",
+        "date": "2026-08-24",
+        "question": "Will the Minister consider increasing support payment rates, if any, to help people who need to move house and are faced with increased housing costs, and if not, why not?",
+        "reply": null
+      },
+      {
         "minister": "Minister for Tertiary Education",
         "date": "2026-08-20",
         "question": "Will the Minister rule out any changes to the interest-free student loans scheme?",
         "reply": null
       },
       {
-        "minister": "Minister of Finance",
-        "date": "2026-08-20",
-        "question": "What advice, if any, has the Minister requested regarding any changes to interest on student loans, since 27 November 2023 - listed by title, date and topics covered?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Finance",
-        "date": "2026-08-20",
-        "question": "What advice, if any, has the Minister received regarding any changes to interest on student loans, since 27 November 2023 - listed by title, date and topics covered?",
-        "reply": null
-      },
-      {
         "minister": "Minister of Statistics",
-        "date": "2026-08-17",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": "I regularly take papers to Cabinet across a range of topics. In the interest of transparency, I proactively release papers considered by Cabinet on the Stats NZ website: https://www.stats.govt.nz/corporate/cabinet-papers/."
+        "date": "2026-08-19",
+        "question": "What automated approvals, if any, are currently operating either with or without human oversight within the Minister’s departments, agencies, crown entities and any other bodies that the Minister is responsible for, if any?",
+        "reply": "None. I am advised that Stats NZ uses some automated business process such as recruitment, leave management, and security risk management that automate routing, notification, tracking and record keeping functions but that approval decisions are made by authorised staff."
       },
       {
-        "minister": "Minister of Statistics",
+        "minister": "Minister of Customs",
         "date": "2026-08-17",
         "question": "What advice, reports, briefings, aide memoires, or any other documents has the Minister or any member of their Office received, if any, during the week beginning 10 August 2026, by title and date?",
-        "reply": "I regularly request and receive advice on a range of topics. In the interest of transparency, a list of titles of papers that I have received from Stats NZ are published on its website: https://www.stats.govt.nz/about-us/what-we-do/advice-for-the-minister-of-statistics/."
+        "reply": "The titles of advice I receive as Minister of Customs are considered for proactive release on a monthly basis and can be found at: https://www.customs.govt.nz/about-us/information-releases/reports-to-the-minister-of-customs/. Some titles may be excluded from proactive release on the basis that it is not in the public interest to release them at this time. Titles in this category will be reviewed on a regular basis and may be subsequently published on the above website."
       }
     ]
   },
   "chris-hipkins": {
-    "count": 2930,
+    "count": 2938,
     "byMinister": [
       {
         "minister": "Prime Minister",
-        "count": 1531
+        "count": 1533
       },
       {
         "minister": "Minister responsible for Ministerial Services",
-        "count": 503
+        "count": 505
       },
       {
         "minister": "Deputy Prime Minister",
-        "count": 335
+        "count": 337
       },
       {
         "minister": "Minister for National Security and Intelligence",
-        "count": 331
+        "count": 333
       },
       {
         "minister": "Minister for Resources",
@@ -3889,42 +3889,42 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Prime Minister",
-        "date": "2026-08-18",
-        "question": "Further to his answer to written question 35184 (2026): what were the pickup, drop off locations, and times of each of these pickups and drop offs for all uses of crown cars or crown vehicles by him on 25 September 2025, if any?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Prime Minister",
-        "date": "2026-08-18",
-        "question": "Further to his answer to written question 35186 (2026): what was the name and location of the National Party event on 16 October 2025?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Deputy Prime Minister",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Prime Minister",
-        "date": "2026-08-18",
-        "question": "On what dates, if any, did he use Air Force assets to travel in order to attend a National Party event?",
-        "reply": null
+        "date": "2026-08-11",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "reply": "As Prime Minister, I regularly request and receive advice from officials in the Department of the Prime Minister and Cabinet (DPMC) on a range of matters. In accordance with Speaker’s Ruling 210/6, I consider that the time and resources, and hence the expense, required to answer this question within the timeframe allowed for written parliamentary questions is not in the public interest. I am advised, however, that DPMC publishes a monthly list of titles of advice provided to me, by the middle of…"
       },
       {
-        "minister": "Prime Minister",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "In my capacity as Prime Minister, I have not presented papers to Cabinet within the specified timeframe."
-      },
-      {
-        "minister": "Minister for National Security and Intelligence",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "In my capacity as Minister for National Security and Intelligence I have not presented papers to Cabinet within the specified timeframe."
+        "minister": "Minister responsible for Ministerial Services",
+        "date": "2026-08-11",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "reply": "As Minister Responsible for Ministerial Services, I have received the following: • Briefing: Pre-Election Baseline Update 2026 for Vote Internal Affairs – Ministerial Services Appropriations"
       }
     ]
   },
   "willie-jackson": {
-    "count": 1154,
+    "count": 1158,
     "byMinister": [
       {
         "minister": "Minister for Māori Development",
-        "count": 414
+        "count": 416
       },
       {
         "minister": "Minister for Media and Communications",
@@ -3940,7 +3940,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Māori Crown Relations: Te Arawhiti",
-        "count": 59
+        "count": 61
       },
       {
         "minister": "Minister of Health",
@@ -4005,34 +4005,34 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "minister": "Minister for Māori Development",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Minister for Māori Crown Relations: Te Arawhiti",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Māori Crown Relations: Te Arawhiti",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Minister for Māori Development",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Māori Development",
-        "date": "2026-08-03",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
-        "reply": "I frequently request and receive advice on a range of kaupapa. Te Puni Kōkiri publishes monthly lists of advice that I receive from officials as Minister for Māori Development on its website at the following link: https://www.tpk.govt.nz/en/mo-te-puni-kokiri/our-people/ministers/list-of-advice-received-by-the-minister-for-maori-development."
+        "date": "2026-08-11",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "reply": "I frequently request and receive advice on a range of kaupapa. Te Puni Kōkiri publishes monthly lists of advice that I receive from officials as Minister for Māori Development on its website at the following link: https://www.tpk.govt.nz/en/mo-te-puni-kokiri/corporate-documents/proactively-released-information/list-of-advice-received-by-the-minister-for-maori-development."
       },
       {
         "minister": "Minister for Māori Crown Relations: Te Arawhiti",
-        "date": "2026-08-03",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
-        "reply": "None."
+        "date": "2026-08-11",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "reply": "I frequently request and receive advice on a range of kaupapa. Te Puni Kōkiri publishes monthly lists of advice that I receive from officials as Minister for Māori Crown Relations on its website at the following link: https://www.tpk.govt.nz/en/mo-te-puni-kokiri/our-people/ministers/list-of-advice-received-by-the-minister-for-maori-."
       }
     ]
   },
@@ -4068,14 +4068,14 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Minister for Social Development and Employment",
         "date": "2025-05-23",
-        "question": "What advice, reports, briefings, memos, aide memoire, papers or any other communications, if any, has she received regarding her proposal that parents, rather than the welfare system, will be responsible for supporting unemployed 18- and 19-year-olds who cannot support themselves under the planned benefit changes announced in Budget 2025, by title and date?",
-        "reply": "In my capacity as Minister for Social Development and Employment, I regularly request and receive advice on a range of topics. In the interest of transparency, a list of reports received by my office from the Ministry of Social Development is regularly published on the Ministry of Social Development website. The lists of titles published since September 2018 are available here: www.msd.govt.nz/about-msd-and-our-work/publications-resources/information-releases/reports-to-minister/index.html. Pape…"
+        "question": "What is the current number of rangatahi aged 18 and 19 who are unemployed and reliant on Jobseeker Support or Emergency Benefits that identify as Māori?",
+        "reply": "I refer the member to the attached table, which contains the number of 18-19 year olds with no income declared in receipt of Jobseeker Support of Emergency Benefit. The table also contains information on how many of that cohort are Māori This is also response to written questions 27119 (2025) and 27124 (2025)."
       },
       {
         "minister": "Minister for Social Development and Employment",
         "date": "2025-05-23",
-        "question": "What is the current number of rangatahi aged 18 and 19 who are unemployed and reliant on Jobseeker Support or Emergency Benefits that identify as Māori?",
-        "reply": "I refer the member to the attached table, which contains the number of 18-19 year olds with no income declared in receipt of Jobseeker Support of Emergency Benefit. The table also contains information on how many of that cohort are Māori This is also response to written questions 27119 (2025) and 27124 (2025)."
+        "question": "What advice, reports, briefings, memos, aide memoire, papers or any other communications, if any, has she received regarding her proposal that parents, rather than the welfare system, will be responsible for supporting unemployed 18- and 19-year-olds who cannot support themselves under the planned benefit changes announced in Budget 2025, by title and date?",
+        "reply": "In my capacity as Minister for Social Development and Employment, I regularly request and receive advice on a range of topics. In the interest of transparency, a list of reports received by my office from the Ministry of Social Development is regularly published on the Ministry of Social Development website. The lists of titles published since September 2018 are available here: www.msd.govt.nz/about-msd-and-our-work/publications-resources/information-releases/reports-to-minister/index.html. Pape…"
       },
       {
         "minister": "Minister for Social Development and Employment",
@@ -4086,19 +4086,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "ingrid-leary": {
-    "count": 2478,
+    "count": 2518,
     "byMinister": [
       {
         "minister": "Minister for Mental Health",
-        "count": 1083
+        "count": 1085
       },
       {
         "minister": "Minister for Seniors",
-        "count": 364
+        "count": 384
       },
       {
         "minister": "Minister of Health",
-        "count": 259
+        "count": 277
       },
       {
         "minister": "Associate Minister of Health",
@@ -4325,6 +4325,18 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 4
       },
       {
+        "minister": "Minister for Energy",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Local Government",
+        "count": 4
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "count": 4
+      },
+      {
         "minister": "Minister for Economic Development",
         "count": 4
       },
@@ -4345,27 +4357,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 4
       },
       {
-        "minister": "Minister of Agriculture",
-        "count": 4
-      },
-      {
-        "minister": "Minister for Energy",
-        "count": 4
-      },
-      {
-        "minister": "Minister of Local Government",
-        "count": 4
-      },
-      {
         "minister": "Minister of Customs",
         "count": 4
       },
       {
-        "minister": "Associate Minister of Defence",
+        "minister": "Minister for Biosecurity",
         "count": 4
       },
       {
-        "minister": "Minister for Biosecurity",
+        "minister": "Associate Minister of Defence",
         "count": 4
       },
       {
@@ -4441,18 +4441,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 4
       },
       {
-        "minister": "Minister for National Security and Intelligence",
-        "count": 4
-      },
-      {
-        "minister": "Minister responsible for the NZSIS",
-        "count": 4
-      },
-      {
-        "minister": "Minister for Treaty of Waitangi Negotiations",
-        "count": 4
-      },
-      {
         "minister": "Minister for Small Business and Manufacturing",
         "count": 4
       },
@@ -4466,6 +4454,18 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for State Owned Enterprises",
+        "count": 4
+      },
+      {
+        "minister": "Minister for National Security and Intelligence",
+        "count": 4
+      },
+      {
+        "minister": "Minister responsible for the NZSIS",
+        "count": 4
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
         "count": 4
       },
       {
@@ -4492,50 +4492,50 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister for Seniors",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "date": "2026-08-27",
+        "question": "What consideration, if any, was given to retaining an indicator of the proportion of income people aged 65 and over-spend on housing costs in the revised Better Later Life indicator framework?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Seniors",
+        "date": "2026-08-26",
+        "question": "Why has the revised Better Later Life indicator framework adopted the percentage of people aged 65 and over who are satisfied with the housing options available to them as its key indicator under \"creating diverse housing choices and options\", rather than retaining a direct measure of housing affordability?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Seniors",
+        "date": "2026-08-26",
+        "question": "Why will low income after housing costs no longer be reported as a key indicator under the revised Better Later Life indicator framework from 2027?",
         "reply": null
       },
       {
         "minister": "Minister for Mental Health",
         "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Seniors",
-        "date": "2026-08-18",
         "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
+        "reply": "Titles of all advice that I have received have been, or will be, proactively released on the Ministry of Health and Health New Zealand websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2019-2025 https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2026 https://www.tewhatuora.govt.nz/publications I encourage the Member to use the filters and select “Ministerial Advice” at the third link."
       },
       {
-        "minister": "Minister for Seniors",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "As Minister for Seniors, none."
-      },
-      {
-        "minister": "Minister of Justice",
-        "date": "2026-08-10",
-        "question": "Is he concerned, given the finding on Lake Alice Hospital by the United Nations Committee Against Torture, that New Zealand had breached the Convention for failing to properly investigate under Article 12 of the Convention, that NZ will again be in breach of the UN Committee Against Torture for failing to properly investigate Wakari Hospital Ward 10A?",
-        "reply": "The Ombudsman carried out an inspection of Wakari Hospital Ward 10A in its role as the National Preventive Mechanism under the Crimes of Torture Act 1989 and the Optional Protocol to the Convention against Torture and Other Cruel, Inhuman or Degrading Treatment or Punishment. It is appropriate for the responsible agency to respond to concerns raised by the National Preventive Mechanism in the first instance. I understand that the Ministry of Health has responded swiftly to the Ombudsman’s concer…"
+        "minister": "Minister for the Public Service and Digitising Government",
+        "date": "2026-08-13",
+        "question": "Why are public officials, within organisations such as the Ministry of Health effectively investigating their own organisation regarding Wakari Hospital Ward 10A, rather than the independent NZ Police?",
+        "reply": "I am advised that the Public Service Commissioner does not have a role in overseeing the investigative decisions of the NZ Police. The Ministry of Health has accepted the Ombudsman's recommendation to conduct an independent inquiry. The scope of this inquiry includes whether referral is necessary to the Health and Disability Commissioner if potential breaches of the Code of Health and Disability Services Consumers’ Rights have been identified, or to the NZ Police if there is suspected criminal c…"
       }
     ]
   },
   "jo-luxton": {
-    "count": 3861,
+    "count": 3875,
     "byMinister": [
       {
         "minister": "Associate Minister of Agriculture",
-        "count": 1160
+        "count": 1166
       },
       {
         "minister": "Minister of Agriculture",
-        "count": 743
+        "count": 745
       },
       {
         "minister": "Minister for Biosecurity",
-        "count": 702
+        "count": 704
       },
       {
         "minister": "Minister for Rural Communities",
@@ -4543,11 +4543,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Hunting and Fishing",
-        "count": 348
+        "count": 350
       },
       {
         "minister": "Minister of Customs",
-        "count": 53
+        "count": 55
       },
       {
         "minister": "Minister of Transport",
@@ -4684,34 +4684,34 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
+        "minister": "Minister of Customs",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Agriculture",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
         "minister": "Minister of Agriculture",
         "date": "2026-08-18",
         "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
+        "reply": "I refer the member to the attached table. Two titles have been withheld under Speaker’s Ruling 199/6. Please note I also receive a portfolio Weekly Update."
       },
       {
-        "minister": "Minister for Biosecurity",
+        "minister": "Minister of Agriculture",
         "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Customs",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Biosecurity",
-        "date": "2026-08-10",
-        "question": "What process and timeframe applies for adding a pest to ONZPR once new evidence is received, given a “regulated pest” is defined solely by reference to ONZPR listing in the IHS for Fresh Blueberries for Human Consumption?",
-        "reply": "The Official New Zealand Pest Register (ONZPR) is updated with regulated pests on the publication of a new standard. The Ministry for Primary Industries also operates an emerging risk system that considers new evidence about a pest and whether it should be regulated. The timeframes for updating the ONZPR depends on the level of urgency indicated by the new evidence."
-      },
-      {
-        "minister": "Minister for Biosecurity",
-        "date": "2026-08-10",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I refer the member to the attached table. In addition to this list, my office also occasionally receives information relating to potential meeting requests and visits. If a meeting or visit proceeds, the title of the advice provided for that event has been included in the list. Please note, I also receive a portfolio Weekly Update."
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "reply": "None."
       }
     ]
   },
@@ -4875,11 +4875,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Minister of Housing",
+        "minister": "Minister for Disability Issues",
         "count": 1
       },
       {
-        "minister": "Minister for Disability Issues",
+        "minister": "Minister of Housing",
         "count": 1
       },
       {
@@ -4977,15 +4977,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "kieran-mcanulty": {
-    "count": 4347,
+    "count": 4419,
     "byMinister": [
       {
         "minister": "Minister of Housing",
-        "count": 1773
+        "count": 1841
       },
       {
         "minister": "Associate Minister of Housing",
-        "count": 889
+        "count": 891
       },
       {
         "minister": "Minister of Local Government",
@@ -5001,7 +5001,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Infrastructure",
-        "count": 203
+        "count": 205
       },
       {
         "minister": "Minister of Transport",
@@ -5130,43 +5130,43 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Associate Minister of Housing",
-        "date": "2026-08-21",
-        "question": "How many Kāinga Ora tenants, if any, who gave 21-days notice to end their state house tenancy in 2023 were rehoused in a state house within a year of their voluntarily ending their earlier tenancy?",
+        "minister": "Minister of Housing",
+        "date": "2026-08-28",
+        "question": "How many social housing projects have been paused, deferred, placed on hold or had their delivery date pushed beyond FY27 rather than formally cancelled since 19 June 2025, if any, and what is the address, region, number of homes and revised status of each?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Housing",
+        "date": "2026-08-28",
+        "question": "How many of the 212 cancelled projects were located in Canterbury, where the register records that 33 of 48 assessed projects and 446 of 531 proposed homes were determined not to proceed, and what assessment, if any, was made of the effect of those decisions on the social housing register in Canterbury?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Housing",
+        "date": "2026-08-28",
+        "question": "How many of the 212 cancelled projects were located in Northland, where the register records that 40 of 46 assessed projects and 450 of 495 proposed homes were determined not to proceed, and what assessment, if any, was made of the effect of those decisions on the social housing register in Northland?",
         "reply": null
       },
       {
         "minister": "Associate Minister of Housing",
-        "date": "2026-08-21",
-        "question": "How many Kāinga Ora tenants, if any, gave 21-days notice to end their state house tenancy in each territorial local authority in each month in calendar years 2023, 2024, 2025 and so far in 2026?",
-        "reply": null
+        "date": "2026-08-14",
+        "question": "How many people, if any, on the Housing Register selected Rotorua as a preferred housing location and how many, if any, of those people gave an address outside of Rotorua on their application or gave no address?",
+        "reply": "I refer the Member to reply number 36299 (2026)"
       },
       {
         "minister": "Associate Minister of Housing",
-        "date": "2026-08-21",
-        "question": "How many Kāinga Ora tenants, if any, who gave 21-days notice to end their state house tenancy in 2025 were rehoused in a state house within a year of their voluntarily ending their earlier tenancy?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Infrastructure",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "Progressing the Third City and Regional Deal - 3 August"
-      },
-      {
-        "minister": "Associate Minister of Housing",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "None."
+        "date": "2026-08-14",
+        "question": "On how many occasions, if any, since 1 July 2024 has Kāinga Ora notified any real estate agent that state houses they were selling had been contaminated by methamphetamine?",
+        "reply": "Kāinga Ora — Homes and Communities advises me that it does not collect information on notifications to real estate agents about methamphetamine contamination of properties."
       }
     ]
   },
   "tracey-mclellan": {
-    "count": 2120,
+    "count": 2122,
     "byMinister": [
       {
         "minister": "Minister of Corrections",
-        "count": 1586
+        "count": 1588
       },
       {
         "minister": "Minister of Health",
@@ -5224,46 +5224,46 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister of Corrections",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Corrections",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Corrections",
         "date": "2026-08-18",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister of Corrections",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
+        "date": "2026-08-10",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "reply": "I refer the member to the list of briefings and aides-mémoire below, received between 3 August 2026 and 9 August 2026. I am advised that the title of one briefing has been withheld in accordance with Speakers’ Ruling 199/6. • B5040 Aide Memoire: Justice Sector Ministers Meeting August 2026 – received on 3 August 2026 • B5106 2026 Pre-election Baseline Update – received on 4 August 2026 • B5115 Aide Memoire: Attendance at sod turning Christchurch Men’s Prison Redevelopment August 2026 – received …"
       },
       {
         "minister": "Minister of Corrections",
-        "date": "2026-08-17",
-        "question": "What work, if any, has Corrections undertaken since 1 January 2026 to identify, fund, procure, or otherwise establish replacement supported-accommodation and reintegration services for women leaving prison in the Waikato following the conclusion of the grant funding for Reclaim Another Woman on 30 June 2026?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Corrections",
-        "date": "2026-08-03",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
-        "reply": "I refer the member to the list of briefings and aides-mémoire below, received between 27 July 2026 and 2 August 2026: • B5102 Aide Memoire Auckland South Corrections Facility PPP Quarterly Performance Update (April to June 2026) – received on 28 July 2026 • B5105 Ministerial Certification of Contingent Liabilities and Contingent Assets as at 30 June 2026 – received on 30 July 2026. I also receive regular updates from my officials on a range of matters, including via regular meetings and my weekl…"
-      },
-      {
-        "minister": "Minister of Corrections",
-        "date": "2026-08-03",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "date": "2026-08-10",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
         "reply": "None."
       }
     ]
   },
   "ricardo-menendez-march": {
-    "count": 1311,
+    "count": 1321,
     "byMinister": [
       {
         "minister": "Minister for Social Development and Employment",
-        "count": 527
+        "count": 528
       },
       {
         "minister": "Minister of Immigration",
-        "count": 397
+        "count": 406
       },
       {
         "minister": "Associate Minister of Immigration",
@@ -5444,21 +5444,21 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Social Development and Employment",
-        "date": "2026-08-20",
-        "question": "What is the backlog, if any, for superannuation applications as of 19/08/2026, and how does this compare to the backlog in the previous 5 years?",
+        "minister": "Minister of Immigration",
+        "date": "2026-08-28",
+        "question": "What are the accreditation periods, if any, available under the new graduated accreditation system announced for the Recognised Seasonal Employer (RSE) Scheme; listed by accreditation level?",
         "reply": null
       },
       {
-        "minister": "Minister for Social Development and Employment",
-        "date": "2026-08-20",
-        "question": "How many Confirming Your Circumstances suspensions have occurred in the past 12 months, broken down by month, reason for suspension, and type of benefit or supplementary assistance?",
+        "minister": "Minister of Immigration",
+        "date": "2026-08-26",
+        "question": "What costs, if any, will accredited Recognised Seasonal Employer (RSE) employers be permitted to recover from workers under the changes announced to the Recognised Seasonal Employer (RSE) Scheme; listed by cost type?",
         "reply": null
       },
       {
-        "minister": "Minister for Social Development and Employment",
-        "date": "2026-08-20",
-        "question": "How many, if any, suspensions occurred as a result of the Confirming Your Circumstances process where a beneficiary provided the information requested in the past 12 months?",
+        "minister": "Minister of Immigration",
+        "date": "2026-08-26",
+        "question": "What measures, if any, will be used to assess performance under the changes announced to the Recognised Seasonal Employer (RSE) Scheme?",
         "reply": null
       },
       {
@@ -5681,11 +5681,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "damien-oconnor": {
-    "count": 1562,
+    "count": 1574,
     "byMinister": [
       {
         "minister": "Minister for Land Information",
-        "count": 401
+        "count": 403
       },
       {
         "minister": "Minister for Trade",
@@ -5697,23 +5697,23 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Trade and Investment",
-        "count": 175
+        "count": 177
       },
       {
         "minister": "Minister of State for Trade and Investment",
-        "count": 150
+        "count": 152
       },
       {
         "minister": "Associate Minister for Regional Development",
-        "count": 139
+        "count": 141
       },
       {
         "minister": "Minister for Regional Development",
-        "count": 138
+        "count": 140
       },
       {
         "minister": "Minister of Defence",
-        "count": 104
+        "count": 106
       },
       {
         "minister": "Minister of Transport",
@@ -5748,15 +5748,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister for Pacific Peoples",
-        "count": 6
-      },
-      {
         "minister": "Minister for Arts, Culture and Heritage",
         "count": 6
       },
       {
         "minister": "Minister for Media and Communications",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
         "count": 6
       },
       {
@@ -5774,47 +5774,47 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Land Information",
-        "date": "2026-08-20",
-        "question": "Further to the reply to written question 32026 (2026), what was the total number of consents granted and the total gross investment value approved in each financial year from 2015/16 to 2020/21, and on what basis was the statement made on 13 July 2026 that 230 is the highest number of consents granted in one year?",
+        "minister": "Minister of Defence",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
-        "minister": "Minister of Justice",
-        "date": "2026-08-19",
-        "question": "What advice, if any, has the Minister or his office received from agencies or officials within this portfolio since 13 August 2026 regarding the deferral, reprioritisation, or cancellation of meetings, work programmes, or decisions as a result of the ministerial changes of 13 August 2026; and what were the date and title of each piece of any such advice?",
+        "minister": "Minister of Defence",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
-      },
-      {
-        "minister": "Minister for Veterans",
-        "date": "2026-08-19",
-        "question": "What international travel or international engagements in this portfolio, if any, were scheduled or under active consideration as at 13 August 2026; and which of those, if any, will the Minister no longer undertake following the ministerial changes of 13 August 2026, and why?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Land Information",
-        "date": "2026-08-11",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I refer the Member to my response to WPQ 35661 (2026)."
       },
       {
         "minister": "Minister of State for Trade and Investment",
-        "date": "2026-08-11",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I am advised that the Ministry of Foreign Affairs and Trade publishes a monthly list of titles of advice to Ministers, by the end of the month after the advice is provided. I refer the member to that list, which can be found here: https://www.mfat.govt.nz/en/about-us/ministerial-briefings"
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Land Information",
+        "date": "2026-08-18",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "reply": "I did not take any papers to Cabinet during the week beginning 10 August 2026."
+      },
+      {
+        "minister": "Minister of State for Trade and Investment",
+        "date": "2026-08-18",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "reply": "In my capacity as the Minister of State for Trade and Investment, I did not take any papers to Cabinet during the week beginning 10 August 2026."
       }
     ]
   },
   "greg-oconnor": {
-    "count": 786,
+    "count": 790,
     "byMinister": [
       {
         "minister": "Minister for Courts",
-        "count": 429
+        "count": 431
       },
       {
         "minister": "Minister for Veterans",
-        "count": 333
+        "count": 335
       },
       {
         "minister": "Associate Minister of Defence",
@@ -5843,34 +5843,34 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
+        "minister": "Minister for Courts",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
         "minister": "Minister for Veterans",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Veterans",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Minister for Courts",
         "date": "2026-08-18",
         "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
+        "reply": "I have received the following advice: • 14 August 2026 – Aide memoire: Court User Survey 2026 • 14 August 2026 – Report: Court User Survey 2026 • 14 August 2026 – Weekly Report: Weekly Report (Justice, Associate Justice and Courts)"
       },
       {
         "minister": "Minister for Courts",
         "date": "2026-08-18",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Courts",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
         "reply": "None."
-      },
-      {
-        "minister": "Minister for Courts",
-        "date": "2026-08-10",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I have received the following advice: • 6 August 2026 – Briefing: Pre-election Baseline Update Submission for Vote Courts • 7 August 2026 – Weekly Report: Weekly Report (Justice, Associate Justice and Courts) I have received one further document, but I believe it would prejudice the orderly and effective conduct of government decision making processes to release the title at this time."
       }
     ]
   },
@@ -6024,51 +6024,51 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "lan-pham": {
-    "count": 1782,
+    "count": 1811,
     "byMinister": [
       {
         "minister": "Minister responsible for RMA Reform",
-        "count": 336
+        "count": 338
       },
       {
         "minister": "Minister for the Environment",
-        "count": 301
+        "count": 309
       },
       {
         "minister": "Minister of Local Government",
-        "count": 180
+        "count": 184
       },
       {
         "minister": "Minister for Biosecurity",
-        "count": 175
+        "count": 177
       },
       {
         "minister": "Associate Minister for the Environment",
-        "count": 105
+        "count": 106
       },
       {
         "minister": "Minister for Land Information",
-        "count": 95
+        "count": 97
       },
       {
         "minister": "Minister of Conservation",
-        "count": 83
+        "count": 85
       },
       {
         "minister": "Minister of Agriculture",
-        "count": 61
+        "count": 60
       },
       {
         "minister": "Minister for Infrastructure",
-        "count": 46
+        "count": 48
       },
       {
         "minister": "Minister for Regional Development",
-        "count": 42
+        "count": 41
       },
       {
         "minister": "Associate Minister of Agriculture",
-        "count": 39
+        "count": 40
       },
       {
         "minister": "Minister for Resources",
@@ -6076,23 +6076,23 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Education",
-        "count": 32
+        "count": 33
       },
       {
         "minister": "Minister of Climate Change",
         "count": 28
       },
       {
-        "minister": "Minister for Oceans and Fisheries",
-        "count": 25
+        "minister": "Minister for the South Island",
+        "count": 26
       },
       {
         "minister": "Prime Minister",
-        "count": 23
+        "count": 25
       },
       {
-        "minister": "Minister for the South Island",
-        "count": 22
+        "minister": "Minister for Oceans and Fisheries",
+        "count": 25
       },
       {
         "minister": "Minister of Statistics",
@@ -6181,91 +6181,91 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister of Education",
-        "date": "2026-08-21",
-        "question": "What schools around New Zealand, if any, have experienced exceedances of the nitrate drinking water limit in their water supplies in the last five years?",
+        "minister": "Minister of Conservation",
+        "date": "2026-08-28",
+        "question": "Further to Reply 36371, how many mining access arrangements or concessions for mining on conservation land have been processed by the Department of Conservation and either approved or decline under delegated authority, and how does this compare to the previous 5 years?",
         "reply": null
       },
       {
-        "minister": "Minister of Education",
-        "date": "2026-08-21",
-        "question": "What schools around New Zealand, if any, have had to change or upgrade their drinking water supplies as a result of exceeding the nitrate drinking water limit in their drinking water supplies?",
+        "minister": "Minister for the Environment",
+        "date": "2026-08-28",
+        "question": "Following Reply 36523 (2026), does the Minister consider the statements of James Meager MP regarding media coverage of nitrate contamination in the Laghmor School drinking water supply were \"balanced and evidence-based\"?",
         "reply": null
       },
       {
-        "minister": "Minister responsible for RMA Reform",
-        "date": "2026-08-21",
-        "question": "What role does the Minister for the Environment, Hon Nicola Grigg, have in decisions on RM Reform and National Direction?",
+        "minister": "Minister of Local Government",
+        "date": "2026-08-28",
+        "question": "Following reply 37170 (2026), was the letter regarding the \"LGNZ response to use of climate change assumptions letter to councils\" discussed at the subsequent meeting with Local Government New Zealand?",
         "reply": null
       },
       {
-        "minister": "Minister for Land Information",
-        "date": "2026-08-10",
-        "question": "What advice, reports, briefings, aide memoires, or any other documents has the Minister or any member of their office received, if any, during the week beginning 03/08/2026, by title and date?",
-        "reply": "Members of my office will communicate with Land Information New Zealand (LINZ) on a number of issues, some of which are not collated or registered in a way that could be included in a single answer. LINZ also supports me in other ways which are captured but would be imprudent to collate. Examples of this would include support responding to Ministerial correspondence (withheld to support the privacy of writers), written parliamentary questions (publicly available on the parliamentary website) and…"
+        "minister": "Minister of Climate Change",
+        "date": "2026-08-19",
+        "question": "What were the \"Recommended actions\" from the Ministry for the Environment numbered 1, 2, 3, and 4 in the briefing dated 19/05/2026 titled 26-BRF-00956 \"The use of climate projections in the first generation of the New Zealand Flood Map\"?",
+        "reply": "Consistent with its redaction in releases under section 9(2)(f)(iv) of the OIA, I do not consider this information to be in the public interest to release."
       },
       {
-        "minister": "Minister for Biosecurity",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 03/08/2026, by title and date?",
-        "reply": "On 3 August 2026, the paper titled Biosecurity Act Amendment Bill: further policy approvals was considered by Cabinet."
+        "minister": "Minister of Climate Change",
+        "date": "2026-08-19",
+        "question": "Has the Minister met with any representatives from Local Government New Zealand, such as Mayor Rehette Stoltz (the President), since the receipt of their letter dated 16 July 2026 \"LGNZ response to use of climate change assumptions letter to councils\"?",
+        "reply": "I have met with Local Government New Zealand since that date, in my capacity as Local Government Minister."
       }
     ]
   },
   "willow-jean-prime": {
-    "count": 4636,
+    "count": 4666,
     "byMinister": [
       {
         "minister": "Minister for Children",
-        "count": 1535
+        "count": 1543
       },
       {
         "minister": "Minister of Education",
-        "count": 1070
+        "count": 1072
       },
       {
         "minister": "Associate Minister of Education",
-        "count": 634
+        "count": 635
       },
       {
         "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
-        "count": 528
+        "count": 530
       },
       {
         "minister": "Minister for Social Development and Employment",
-        "count": 378
+        "count": 386
       },
       {
         "minister": "Minister for Youth",
-        "count": 212
+        "count": 213
+      },
+      {
+        "minister": "Associate Minister for Social Development and Employment",
+        "count": 46
       },
       {
         "minister": "Associate Minister of Health",
         "count": 46
       },
       {
-        "minister": "Associate Minister for Social Development and Employment",
-        "count": 44
-      },
-      {
         "minister": "Prime Minister",
         "count": 36
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 18
+      },
+      {
+        "minister": "Minister of Justice",
+        "count": 15
       },
       {
         "minister": "Minister for Vocational Education",
         "count": 14
       },
       {
-        "minister": "Minister of Justice",
-        "count": 14
-      },
-      {
         "minister": "Minister of Corrections",
         "count": 14
-      },
-      {
-        "minister": "Minister of Police",
-        "count": 13
       },
       {
         "minister": "Minister of Health",
@@ -6354,47 +6354,47 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Associate Minister for Social Development and Employment",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Associate Minister for Social Development and Employment",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "minister": "Minister of Police",
+        "date": "2026-08-25",
+        "question": "What, if anything, have Police done to address theft in the Kaeo area?",
         "reply": null
       },
       {
         "minister": "Minister for Social Development and Employment",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "date": "2026-08-25",
+        "question": "Are recipients of the accommodation supplement having their supplement cancelled solely because they are not named on the tenancy agreement; if so, why?",
         "reply": null
       },
       {
-        "minister": "Minister for Children",
-        "date": "2026-08-10",
-        "question": "Has the Chief Executive of Oranga Tamariki seen any CCTV footage from Korowai Manaaki showing young people lined up on two sides and a young person walking through the two lines while he was hit; if so, when did she view this?",
-        "reply": "I am advised that the Chief Executive of Oranga Tamariki has not viewed the footage referred to by the Member."
+        "minister": "Minister of Justice",
+        "date": "2026-08-25",
+        "question": "How many, if any, convictions were made for burglary in the Kaeo area, broken down by month since 1 August 2025?",
+        "reply": null
+      },
+      {
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
+        "date": "2026-08-18",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "reply": "None."
       },
       {
         "minister": "Minister for Social Development and Employment",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
+        "date": "2026-08-17",
+        "question": "What analysis, if any, has the Ministry undertaken at a regional level of the increase in sanctions in between the quarters ending March 2024 and March 2026; if any, what regions in particular?",
+        "reply": "The Ministry of Social Development (the Ministry) has informed me they have not undertaken any regional analysis during this specific period. However, the Ministry’s evaluation of the Traffic Light System (TLS) examined changes in obligation failures rates and sanction rates before and after TLS implementation, at the service-centre level from September 2023 through to August 2025. While the analysis focused on obligation failures, sanction rates were closely correlated and followed similar patt…"
       }
     ]
   },
   "priyanca-radhakrishnan": {
-    "count": 2300,
+    "count": 2308,
     "byMinister": [
       {
         "minister": "Minister for Disability Issues",
-        "count": 606
+        "count": 608
       },
       {
         "minister": "Minister of Conservation",
-        "count": 592
+        "count": 594
       },
       {
         "minister": "Minister responsible for the GCSB",
@@ -6410,11 +6410,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for ACC",
-        "count": 61
+        "count": 63
       },
       {
         "minister": "Associate Minister for ACC",
-        "count": 44
+        "count": 46
       },
       {
         "minister": "Minister of Housing",
@@ -6500,20 +6500,20 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister of Conservation",
-        "date": "2026-08-20",
-        "question": "What biosecurity protocols, if any, is the Department of Conservation implementing to reduce human‑assisted spread of H5 bird flu in conservation areas?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for ACC",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Minister of Conservation",
-        "date": "2026-08-20",
-        "question": "What measures, if any, is the Department of Conservation taking to protect threatened species that may be at risk from H5 bird flu?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Conservation",
-        "date": "2026-08-20",
-        "question": "What criteria, if any, does the Department of Conservation use to determine whether access restrictions or area closures are necessary during an H5 bird flu outbreak?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
@@ -6531,19 +6531,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "dan-rosewarne": {
-    "count": 179,
+    "count": 185,
     "byMinister": [
       {
         "minister": "Minister for Rural Communities",
-        "count": 57
+        "count": 59
       },
       {
         "minister": "Minister for Small Business and Manufacturing",
-        "count": 48
+        "count": 50
       },
       {
         "minister": "Minister for the South Island",
-        "count": 38
+        "count": 40
       },
       {
         "minister": "Minister of Transport",
@@ -6588,43 +6588,43 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Small Business and Manufacturing",
-        "date": "2026-08-20",
-        "question": "What assessment, if any, has the Minister made of the impact on small businesses of referral arrangements between insurers and preferred repair provider networks, including the level of transparency provided to customers regarding such arrangements?",
+        "minister": "Minister for Rural Communities",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
-      },
-      {
-        "minister": "Minister for Small Business and Manufacturing",
-        "date": "2026-08-20",
-        "question": "What correspondence, briefings, reports, or advice, if any, has the Minister received since 7 April 2026 regarding the impact of insurer repair-provider arrangements on small independent automotive glass repair businesses?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Small Business and Manufacturing",
-        "date": "2026-08-20",
-        "question": "What reports, if any, has the Minister received that independent windscreen repair businesses are being required by insurers or their agents to reduce and resubmit invoices before payment is approved, and what assessment, if any, has he made of those reports?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Small Business and Manufacturing",
-        "date": "2026-08-11",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I regularly request and receive advice on a range of topics. In the interest of transparency, a list of briefings and reports received by my office from the Ministry of Business, Innovation and Employment (MBIE) is regularly published on MBIE's website (https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/small-business-and-manufacturing)."
       },
       {
         "minister": "Minister for Rural Communities",
-        "date": "2026-08-03",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
-        "reply": "As Minister for Rural Communities, I refer the Member to the attached table. Please note I also receive a portfolio Weekly Update."
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for the South Island",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": "I regularly request and receive advice on a range of topics. In the interest of transparency, a list of briefings and reports received by my office from the Ministry of Business, Innovation and Employment (MBIE) is regularly published on MBIE's website (https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/small-business-and-manufacturing)."
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": "I regularly take papers to Cabinet across a range of topics. In the interest of transparency, I proactively release papers considered by Cabinet on the Ministry of Business, Innovation and Employment website (https://www.mbie.govt.nz/document-library)."
       }
     ]
   },
   "deborah-russell": {
-    "count": 3795,
+    "count": 3799,
     "byMinister": [
       {
         "minister": "Minister of Revenue",
-        "count": 2877
+        "count": 2879
       },
       {
         "minister": "Minister for Tertiary Education and Skills",
@@ -6636,7 +6636,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Climate Change",
-        "count": 165
+        "count": 167
       },
       {
         "minister": "Minister for Universities",
@@ -6677,39 +6677,39 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
+        "minister": "Minister of Climate Change",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
         "minister": "Minister of Revenue",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister of Climate Change",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister of Revenue",
         "date": "2026-08-18",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": null
+        "reply": "None."
       },
       {
         "minister": "Minister of Climate Change",
-        "date": "2026-08-10",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-18",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
         "reply": "The titles of papers I received in my capacity as the Minister of Climate Change from the Ministry of Foreign Affairs and Trade are considered for proactive release each month and are published on the Ministry of Foreign Affairs and Trade’s website at: https://www.mfat.govt.nz/en/about-us/ministerial-briefings. The titles of papers I received in my capacity as the Minister of Climate Change from the Ministry for Cities, Environment, Regions and Transport, which was established on 1 July 2026, wi…"
-      },
-      {
-        "minister": "Minister of Revenue",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "None."
       }
     ]
   },
   "jenny-salesa": {
-    "count": 987,
+    "count": 989,
     "byMinister": [
       {
         "minister": "Minister of Customs",
@@ -6717,7 +6717,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Ethnic Communities",
-        "count": 356
+        "count": 358
       },
       {
         "minister": "Minister of Health",
@@ -6743,38 +6743,38 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister for Ethnic Communities",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Ethnic Communities",
         "date": "2026-08-18",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister for Ethnic Communities",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
+        "date": "2026-08-10",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
+        "reply": "None."
       },
       {
         "minister": "Minister for Ethnic Communities",
         "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Ethnic Communities",
-        "date": "2026-08-03",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 27 July 2026, listed by agency, title and date received?",
-        "reply": "I refer the Member to the attached file for a list of advice that I and my Office have received in the week beginning 27 July 2026."
-      },
-      {
-        "minister": "Minister for Ethnic Communities",
-        "date": "2026-08-03",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 27 July 2026, by title and date?",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
         "reply": "None."
       }
     ]
   },
   "carmel-sepuloni": {
-    "count": 2551,
+    "count": 2564,
     "byMinister": [
       {
         "minister": "Minister for Social Development and Employment",
@@ -6782,11 +6782,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Pacific Peoples",
-        "count": 430
+        "count": 439
       },
       {
         "minister": "Minister for Women",
-        "count": 429
+        "count": 431
       },
       {
         "minister": "Associate Minister for Social Development and Employment",
@@ -6798,7 +6798,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Auckland",
-        "count": 170
+        "count": 172
       },
       {
         "minister": "Associate Minister of Education",
@@ -6879,43 +6879,43 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Auckland",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "minister": "Minister for Pacific Peoples",
+        "date": "2026-08-26",
+        "question": "What funding has been provided to PikPok for the delivery of Game On Initiative cohorts, broken down by financial year?",
         "reply": null
-      },
-      {
-        "minister": "Minister for Women",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Auckland",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Women",
-        "date": "2026-08-11",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "My Office and I receive a range of advice and documents relating to the Women portfolio. I refer the member to the below list of items received during the week beginning Monday 3 August 2026. Three titles have been withheld under Speaker’s Ruling 199/6: • Household Labour Force Survey (HLFS) Results June 2026 Quarter (5 August 2026)"
       },
       {
         "minister": "Minister for Pacific Peoples",
-        "date": "2026-08-11",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I refer the Member to the attachment."
+        "date": "2026-08-26",
+        "question": "How many pacific youth have commenced the Game On Initiative as delivered by Tupu Toa since July 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "date": "2026-08-26",
+        "question": "What performance measures or outcomes are used to assess the effectiveness of Game On Initiative cohorts delivered by Cause Collective, PikPok, and TupuToa, and what are the latest available results against those measures?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Auckland",
+        "date": "2026-08-18",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Minister for Pacific Peoples",
+        "date": "2026-08-18",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "reply": "During the week beginning 10 August 2026, I received the Weekly Report for the period ending 14 August 2026 from the Ministry for Pacific Peoples. I have received other documents, but I believe it would prejudice the orderly and effective conduct of government decision making processes to release their titles at this time."
       }
     ]
   },
   "lemauga-lydia-sosene": {
-    "count": 1865,
+    "count": 1869,
     "byMinister": [
       {
         "minister": "Minister of Internal Affairs",
-        "count": 783
+        "count": 785
       },
       {
         "minister": "Minister responsible for Ministerial Services",
@@ -6923,7 +6923,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Statistics",
-        "count": 139
+        "count": 141
       },
       {
         "minister": "Prime Minister",
@@ -6986,6 +6986,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
+        "minister": "Minister of Transport",
+        "count": 6
+      },
+      {
         "minister": "Minister of Health",
         "count": 6
       },
@@ -6994,15 +6998,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister of Transport",
-        "count": 6
-      },
-      {
         "minister": "Minister of Housing",
-        "count": 6
-      },
-      {
-        "minister": "Minister for Women",
         "count": 6
       },
       {
@@ -7018,7 +7014,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister for Youth",
+        "minister": "Minister for Women",
         "count": 6
       },
       {
@@ -7026,15 +7022,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
+        "minister": "Minister for Youth",
+        "count": 6
+      },
+      {
         "minister": "Minister of Revenue",
         "count": 6
       },
       {
-        "minister": "Minister of Justice",
+        "minister": "Minister of Forestry",
         "count": 6
       },
       {
-        "minister": "Minister of Forestry",
+        "minister": "Minister of Justice",
         "count": 6
       },
       {
@@ -7050,35 +7050,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister responsible for RMA Reform",
-        "count": 6
-      },
-      {
-        "minister": "Minister for Small Business and Manufacturing",
-        "count": 6
-      },
-      {
-        "minister": "Minister for Trade and Investment",
-        "count": 6
-      },
-      {
-        "minister": "Associate Minister of Housing",
-        "count": 6
-      },
-      {
-        "minister": "Minister of Commerce and Consumer Affairs",
-        "count": 6
-      },
-      {
-        "minister": "Minister for Treaty of Waitangi Negotiations",
-        "count": 6
-      },
-      {
-        "minister": "Minister for Hunting and Fishing",
-        "count": 6
-      },
-      {
-        "minister": "Minister for Mental Health",
+        "minister": "Minister of Climate Change",
         "count": 6
       },
       {
@@ -7086,15 +7058,43 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister of Climate Change",
+        "minister": "Minister for Mental Health",
         "count": 6
       },
       {
-        "minister": "Minister of Local Government",
+        "minister": "Associate Minister of Housing",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Trade and Investment",
+        "count": 6
+      },
+      {
+        "minister": "Minister responsible for RMA Reform",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Small Business and Manufacturing",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Hunting and Fishing",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Treaty of Waitangi Negotiations",
         "count": 6
       },
       {
         "minister": "Minister for Child Poverty Reduction",
+        "count": 6
+      },
+      {
+        "minister": "Minister of Local Government",
         "count": 6
       },
       {
@@ -7106,11 +7106,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister for Disability Issues",
+        "minister": "Minister for Land Information",
         "count": 6
       },
       {
-        "minister": "Minister for Land Information",
+        "minister": "Minister for Disability Issues",
         "count": 6
       },
       {
@@ -7118,7 +7118,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister for Tourism and Hospitality",
+        "minister": "Minister for Economic Growth",
         "count": 6
       },
       {
@@ -7126,15 +7126,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister for Economic Growth",
-        "count": 6
-      },
-      {
-        "minister": "Minister for Social Investment",
-        "count": 6
-      },
-      {
-        "minister": "Minister for the South Island",
+        "minister": "Minister for Tourism and Hospitality",
         "count": 6
       },
       {
@@ -7142,7 +7134,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister for National Security and Intelligence",
+        "minister": "Minister for Emergency Management and Recovery",
         "count": 6
       },
       {
@@ -7150,7 +7142,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister for Emergency Management and Recovery",
+        "minister": "Minister for National Security and Intelligence",
+        "count": 6
+      },
+      {
+        "minister": "Minister for the South Island",
+        "count": 6
+      },
+      {
+        "minister": "Minister for Social Investment",
         "count": 6
       },
       {
@@ -7158,11 +7158,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 6
       },
       {
-        "minister": "Minister responsible for the GCSB",
+        "minister": "Minister responsible for the NZSIS",
         "count": 6
       },
       {
-        "minister": "Minister responsible for the NZSIS",
+        "minister": "Minister responsible for the GCSB",
         "count": 6
       },
       {
@@ -7210,11 +7210,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 5
       },
       {
-        "minister": "Minister for Biosecurity",
+        "minister": "Minister for Children",
         "count": 5
       },
       {
-        "minister": "Minister for Children",
+        "minister": "Minister for Biosecurity",
         "count": 5
       },
       {
@@ -7250,15 +7250,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 5
       },
       {
+        "minister": "Minister for Regional Development",
+        "count": 5
+      },
+      {
         "minister": "Minister for Building and Construction",
         "count": 5
       },
       {
         "minister": "Minister for Food Safety",
-        "count": 5
-      },
-      {
-        "minister": "Minister for Regional Development",
         "count": 5
       },
       {
@@ -7274,15 +7274,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Minister for Science, Innovation and Technology",
-        "count": 1
-      },
-      {
-        "minister": "Associate Minister for National Security and Intelligence",
-        "count": 1
-      },
-      {
-        "minister": "Associate Minister of Transport",
+        "minister": "Associate Minister for ACC",
         "count": 1
       },
       {
@@ -7290,7 +7282,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Associate Minister for ACC",
+        "minister": "Associate Minister of Transport",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Science, Innovation and Technology",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister for National Security and Intelligence",
         "count": 1
       },
       {
@@ -7317,6 +7317,24 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister of Statistics",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": "I regularly take papers to Cabinet across a range of topics. In the interest of transparency, I proactively release papers considered by Cabinet on the Stats NZ website: https://www.stats.govt.nz/corporate/cabinet-papers/."
+      },
+      {
+        "minister": "Minister of Statistics",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": "I regularly request and receive advice on a range of topics. In the interest of transparency, a list of titles of papers that I have received from Stats NZ are published on its website: https://www.stats.govt.nz/about-us/what-we-do/advice-for-the-minister-of-statistics/."
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Statistics",
         "date": "2026-08-18",
         "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
         "reply": "I regularly request and receive advice on a range of topics. In the interest of transparency, a list of titles of papers that I have received from Stats NZ are published on its website: https://www.stats.govt.nz/about-us/what-we-do/advice-for-the-minister-of-statistics/."
@@ -7325,30 +7343,12 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "minister": "Minister of Internal Affairs",
         "date": "2026-08-18",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Internal Affairs",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Statistics",
-        "date": "2026-08-17",
-        "question": "What was the total cost of the Minister's flights, if any, over 11 – 12 August 2026, broken down by flight?",
-        "reply": "I am advised that the Department of Internal Affairs (the Department) has not yet processed or paid any invoice for flights taken by Ministers on 11 and 12 August 2026. As a result, the total cost of my airfares is not yet available. These costs will be publicly released through the regular publication of Ministers’ Travel Expenses which are published on a quarterly basis on the Department’s website"
-      },
-      {
-        "minister": "Minister for ACC",
-        "date": "2026-08-17",
-        "question": "What was the total cost of the Minister's flights, if any, over 11 – 12 August 2026, broken down by flight?",
-        "reply": "I am advised that the Department of Internal Affairs (the Department) has not yet processed or paid any invoice for flights taken by Ministers on 11 and 12 August 2026. As a result, the total cost of my airfares is not yet available. These costs will be publicly released through the regular publication of Ministers’ Travel Expenses which are published on a quarterly basis on the Department’s website"
+        "reply": "I did not take any papers to Cabinet the week beginning 10 August 2026."
       }
     ]
   },
   "chle-swarbrick": {
-    "count": 1328,
+    "count": 1336,
     "byMinister": [
       {
         "minister": "Minister of Climate Change",
@@ -7411,6 +7411,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 17
       },
       {
+        "minister": "Minister for State Owned Enterprises",
+        "count": 16
+      },
+      {
         "minister": "Minister for Trade and Investment",
         "count": 14
       },
@@ -7421,10 +7425,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Minister for Regional Development",
         "count": 11
-      },
-      {
-        "minister": "Minister for State Owned Enterprises",
-        "count": 9
       },
       {
         "minister": "Minister for Racing",
@@ -7515,6 +7515,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 4
       },
       {
+        "minister": "Minister for Rail",
+        "count": 3
+      },
+      {
         "minister": "Minister of Customs",
         "count": 3
       },
@@ -7539,10 +7543,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 2
       },
       {
-        "minister": "Minister for Rail",
-        "count": 2
-      },
-      {
         "minister": "Minister of Forestry",
         "count": 2
       },
@@ -7551,11 +7551,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 2
       },
       {
-        "minister": "Minister for Biosecurity",
+        "minister": "Associate Minister for Energy",
         "count": 2
       },
       {
-        "minister": "Associate Minister for Energy",
+        "minister": "Minister for Biosecurity",
         "count": 2
       },
       {
@@ -7579,11 +7579,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 2
       },
       {
-        "minister": "Associate Minister for Regional Development",
+        "minister": "Minister for the Public Service",
         "count": 2
       },
       {
-        "minister": "Minister for the Public Service",
+        "minister": "Associate Minister for Regional Development",
         "count": 2
       },
       {
@@ -7635,6 +7635,14 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
+        "minister": "Minister of Defence",
+        "count": 1
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 1
+      },
+      {
         "minister": "Minister for Land Information",
         "count": 1
       },
@@ -7648,14 +7656,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Youth",
-        "count": 1
-      },
-      {
-        "minister": "Minister of Defence",
-        "count": 1
-      },
-      {
-        "minister": "Associate Minister of Transport",
         "count": 1
       },
       {
@@ -7773,6 +7773,24 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
+        "minister": "Minister for Rail",
+        "date": "2026-08-25",
+        "question": "What meetings, if any, listed by participants, date, and subjects discussed, has the Minister had on the subject of Kiwirail?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "date": "2026-08-25",
+        "question": "What meetings, if any, has the Minister attended since June 1st 2026 regarding state-owned enterprises?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for State Owned Enterprises",
+        "date": "2026-08-25",
+        "question": "What meetings, if any, listed by participants, date, and subjects discussed, has the Minister had on the subject of NZ Post?",
+        "reply": null
+      },
+      {
         "minister": "Minister of Finance",
         "date": "2026-08-07",
         "question": "How many NZUs, if any, are forecast to be sold at auction in financial year 2025/26?",
@@ -7783,33 +7801,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "date": "2026-08-07",
         "question": "In relation to the answer given to Written Question 25163 and the questions also answered by this answer, does this indicate that staff from the Prime Minister's Office have not held meetings with the range of organisations listed, other than when they were with the Prime Minister?",
         "reply": "I refer the member to my reply to 35481."
-      },
-      {
-        "minister": "Prime Minister",
-        "date": "2026-08-07",
-        "question": "In relation to the answer given to Written Parliamentary Question 25163, does the Prime Minister's Office keep records of meetings that staff from the Prime Minister's Office attend without the Prime Minister?",
-        "reply": "I do not believe it is in the public interest to have more than twenty staff go through their calendars to find meetings with 29 organisations over a 30 month period. This answers question 35480."
-      },
-      {
-        "minister": "Minister of Conservation",
-        "date": "2026-06-25",
-        "question": "What conservation land, if any, on Waiheke Island is included in the \"bits and bobs\" he referred to in Environment Select Committee on 18 June?",
-        "reply": "The Government has always been firm that our iconic landscapes and the places that make New Zealand special will never be put at risk. But I was not clear enough about how the Conservation Amendment Bill (the Bill) would do that, so on 25 June I announced that the Government supports the removal of the land exchanges and disposals provisions from the Bill. This has since been communicated with the Environment Select Committee considering the Bill."
-      },
-      {
-        "minister": "Minister of Conservation",
-        "date": "2026-06-25",
-        "question": "What conservation land, if any, on Aotea / Great Barrier Island is included in the \"bits and bobs\" he referred to in Environment Select Committee on 18 June?",
-        "reply": "The Government has always been firm that our iconic landscapes and the places that make New Zealand special will never be put at risk. But I was not clear enough about how the Conservation Amendment Bill (the Bill) would do that, so on 25 June I announced that the Government supports the removal of the land exchanges and disposals provisions from the Bill. This has since been communicated with the Environment Select Committee considering the Bill."
       }
     ]
   },
   "cushla-tangaere-manuel": {
-    "count": 1142,
+    "count": 1148,
     "byMinister": [
       {
         "minister": "Minister of Forestry",
-        "count": 407
+        "count": 409
       },
       {
         "minister": "Minister for Tourism and Hospitality",
@@ -7817,11 +7817,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Sport and Recreation",
-        "count": 153
+        "count": 155
       },
       {
         "minister": "Minister for Emergency Management and Recovery",
-        "count": 150
+        "count": 152
       },
       {
         "minister": "Associate Minister for Sport and Recreation",
@@ -7847,38 +7847,38 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister of Forestry",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister of Forestry",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Minister for Sport and Recreation",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Minister of Forestry",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
+        "date": "2026-08-18",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
         "reply": "None."
       },
       {
         "minister": "Minister of Forestry",
-        "date": "2026-08-10",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I refer the Member to the attached table. Please note I also receive a portfolio Weekly Update."
+        "date": "2026-08-18",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "reply": "I refer the Member to the attached table. One title has been withheld under Speaker’s Ruling 199/6. Please note I also receive a portfolio Weekly Update."
       }
     ]
   },
   "jan-tinetti": {
-    "count": 3386,
+    "count": 3401,
     "byMinister": [
       {
         "minister": "Minister of Education",
@@ -7886,11 +7886,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Associate Minister of Education",
-        "count": 874
+        "count": 883
       },
       {
         "minister": "Minister for Workplace Relations and Safety",
-        "count": 501
+        "count": 503
       },
       {
         "minister": "Minister for Women",
@@ -7898,11 +7898,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Social Investment",
-        "count": 196
+        "count": 198
       },
       {
         "minister": "Minister for Child Poverty Reduction",
-        "count": 164
+        "count": 166
       },
       {
         "minister": "Minister of Internal Affairs",
@@ -7959,79 +7959,79 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Child Poverty Reduction",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "minister": "Associate Minister of Education",
+        "date": "2026-08-24",
+        "question": "How many, if any, new Early Childhood Education centres opened during the week of August 10th 2026?",
         "reply": null
-      },
-      {
-        "minister": "Minister for Social Investment",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Social Investment",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Social Investment",
-        "date": "2026-08-11",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "I am advised that the Social Investment Agency publishes a monthly list of titles of advice to Ministers, by the middle of the month after the advice is provided. I refer the member to that list, which can be found here: https://www.sia.govt.nz/about/official-information-act-oia-requests. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpayer funds and therefore not in the public interest."
       },
       {
         "minister": "Minister for Child Poverty Reduction",
-        "date": "2026-08-10",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "In my capacity as Minister for Social Development and Employment, I regularly request and receive advice on a range of topics. In the interest of transparency, a list of reports received by my office from the Ministry of Social Development is regularly published on the Ministry of Social Development website. The lists of titles published since September 2018 are available here: www.msd.govt.nz/about-msd-and-our-work/publications-resources/information-releases/reports-to-minister/index.html."
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Education",
+        "date": "2026-08-24",
+        "question": "How many, if any, Early Childhood Education centres got their licenses suspended by the Ministry of Education during the week of August 10th 2026?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Minister for Workplace Relations and Safety",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": "As the Minister for Workplace Relations and Safety, the titles of advice I received from the Ministry of Business, Innovation and Employment (MBIE) and WorkSafe are considered for proactive release on a regular basis. These titles can be found on the MBIE website at https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/workplace-relations-and-safety or on the WorkSafe website at https://www.worksafe.govt.nz/abou…"
       }
     ]
   },
   "teanau-tuiono": {
-    "count": 5118,
+    "count": 5184,
     "byMinister": [
       {
         "minister": "Minister of Foreign Affairs",
-        "count": 435
+        "count": 440
       },
       {
         "minister": "Minister for Oceans and Fisheries",
-        "count": 423
+        "count": 427
       },
       {
         "minister": "Minister of Defence",
-        "count": 296
+        "count": 308
       },
       {
         "minister": "Minister for Workplace Relations and Safety",
-        "count": 287
+        "count": 290
       },
       {
         "minister": "Minister for Space",
-        "count": 248
+        "count": 251
       },
       {
         "minister": "Minister for Pacific Peoples",
-        "count": 203
+        "count": 206
       },
       {
         "minister": "Minister for National Security and Intelligence",
-        "count": 176
+        "count": 181
       },
       {
         "minister": "Prime Minister",
-        "count": 155
+        "count": 160
       },
       {
         "minister": "Minister for Veterans",
-        "count": 141
+        "count": 144
       },
       {
         "minister": "Associate Minister of Foreign Affairs",
-        "count": 130
+        "count": 133
       },
       {
         "minister": "Minister responsible for the NZSIS",
@@ -8047,27 +8047,27 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Deputy Prime Minister",
-        "count": 85
+        "count": 88
+      },
+      {
+        "minister": "Minister of Immigration",
+        "count": 70
+      },
+      {
+        "minister": "Minister responsible for the GCSB and NZSIS",
+        "count": 70
       },
       {
         "minister": "Minister of Education",
         "count": 70
       },
       {
-        "minister": "Minister of Conservation",
+        "minister": "Associate Minister for National Security and Intelligence",
         "count": 69
       },
       {
-        "minister": "Minister of Immigration",
-        "count": 68
-      },
-      {
-        "minister": "Minister responsible for the GCSB and NZSIS",
-        "count": 65
-      },
-      {
-        "minister": "Associate Minister for National Security and Intelligence",
-        "count": 65
+        "minister": "Minister of Conservation",
+        "count": 69
       },
       {
         "minister": "Associate Minister of Health",
@@ -8130,23 +8130,23 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 33
       },
       {
+        "minister": "Minister of Police",
+        "count": 29
+      },
+      {
         "minister": "Minister of Statistics",
         "count": 29
+      },
+      {
+        "minister": "Minister of Customs",
+        "count": 28
       },
       {
         "minister": "Minister of Internal Affairs",
         "count": 28
       },
       {
-        "minister": "Minister of Police",
-        "count": 27
-      },
-      {
         "minister": "Minister for Economic Growth",
-        "count": 26
-      },
-      {
-        "minister": "Minister of Customs",
         "count": 26
       },
       {
@@ -8158,11 +8158,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 25
       },
       {
-        "minister": "Minister for Ethnic Communities",
+        "minister": "Associate Minister of Justice",
         "count": 24
       },
       {
-        "minister": "Associate Minister of Justice",
+        "minister": "Minister for Ethnic Communities",
         "count": 24
       },
       {
@@ -8178,19 +8178,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 24
       },
       {
-        "minister": "Minister of Forestry",
-        "count": 22
-      },
-      {
         "minister": "Minister for Whānau Ora",
         "count": 22
       },
       {
-        "minister": "Minister for Children",
+        "minister": "Minister of Forestry",
         "count": 22
       },
       {
         "minister": "Minister of Transport",
+        "count": 22
+      },
+      {
+        "minister": "Minister for Children",
         "count": 22
       },
       {
@@ -8286,11 +8286,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 17
       },
       {
-        "minister": "Minister of Corrections",
+        "minister": "Minister for Youth",
         "count": 16
       },
       {
-        "minister": "Minister for Youth",
+        "minister": "Minister of Corrections",
         "count": 16
       },
       {
@@ -8306,15 +8306,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 16
       },
       {
-        "minister": "Associate Minister of Housing",
-        "count": 15
-      },
-      {
         "minister": "Minister for ACC",
         "count": 15
       },
       {
-        "minister": "Minister for Food Safety",
+        "minister": "Associate Minister of Housing",
         "count": 15
       },
       {
@@ -8322,11 +8318,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 15
       },
       {
+        "minister": "Minister for Food Safety",
+        "count": 15
+      },
+      {
         "minister": "Minister for Rural Communities",
         "count": 15
       },
       {
-        "minister": "Minister for Racing",
+        "minister": "Minister of Revenue",
         "count": 15
       },
       {
@@ -8334,7 +8334,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 15
       },
       {
-        "minister": "Minister of Revenue",
+        "minister": "Minister for Racing",
         "count": 15
       },
       {
@@ -8346,11 +8346,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 15
       },
       {
-        "minister": "Minister of Commerce and Consumer Affairs",
+        "minister": "Minister for Hunting and Fishing",
         "count": 15
       },
       {
-        "minister": "Minister for Hunting and Fishing",
+        "minister": "Minister of Commerce and Consumer Affairs",
         "count": 15
       },
       {
@@ -8414,6 +8414,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 9
       },
       {
+        "minister": "Minister for Science, Innovation and Technology",
+        "count": 3
+      },
+      {
         "minister": "Minister for the Public Service and Digitising Government",
         "count": 3
       },
@@ -8434,57 +8438,53 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Minister for Science, Innovation and Technology",
-        "count": 1
-      },
-      {
         "minister": "Deputy Leader of the House",
         "count": 1
       }
     ],
     "recent": [
       {
-        "minister": "Minister of Defence",
-        "date": "2026-08-18",
-        "question": "Is the Minister satisfied that obligations in s45(2)(a) of the Defence Act 1990 to have regard to the need to achieve and maintain fair relativity with levels of remuneration received elsewhere been met and if so why and if not why not?",
+        "minister": "Minister of Foreign Affairs",
+        "date": "2026-08-28",
+        "question": "Does the Minister and/or their office, or any Department for which they are responsible, have any contracts with Palantir and if so what?",
         "reply": null
       },
       {
-        "minister": "Minister of Defence",
-        "date": "2026-08-18",
-        "question": "Is the Minister aware that the majority of uniformed and civilian personnel will receive a renumeration adjustment of 2.2% as a part of REM26 that is below inflation, and if so, what actions if any is he taking to address this?",
+        "minister": "Prime Minister",
+        "date": "2026-08-28",
+        "question": "What correspondence, if any, including letters, emails, text messages, WhatsApp, signal, or any other form of electronic communication, has the Minister or any member of their office sent or received about Palantir by date and title?",
         "reply": null
       },
       {
-        "minister": "Minister of Defence",
-        "date": "2026-08-18",
-        "question": "What advice, reports, assessments, aide-mémoires, briefings, or other documents, if any, has the Minister or any member of their office received since 1 January 2026 regarding whether the 2026 NZDF remuneration package would improve or maintain fair relativity with remuneration received elsewhere under section 45(2)(a) of the Defence Act 1990 by date and title?",
+        "minister": "Minister of Customs",
+        "date": "2026-08-28",
+        "question": "Does the Minister and/or their office, or any Department for which they are responsible, have any contracts with Palantir and if so what?",
         "reply": null
       },
       {
-        "minister": "Minister for National Security and Intelligence",
+        "minister": "Minister of Foreign Affairs",
         "date": "2026-08-17",
-        "question": "What events or meetings, if any, did the Minister decline to attend during the week beginning 10 August 2026, including location, event description, and attendees?",
-        "reply": "I refer the member to my reply to written question 10834 (2025)."
+        "question": "What advice, reports, briefings, aide memoires, or any other documents has the Minister or any member of their Office requested, if any, during the week beginning 10 August 2026, by title and date?",
+        "reply": "The Ministry of Foreign Affairs and Trade publishes a monthly list of titles of advice to Ministers, by the end of the month after the advice is provided. Refer to that list, which can be found here: https://www.mfat.govt.nz/en/about-us/ministerial-briefings"
       },
       {
         "minister": "Minister for Pacific Peoples",
-        "date": "2026-08-12",
-        "question": "What events or meetings, if any, did the Minister decline to attend during the week beginning 3 August 2026, including location, event description, and attendees?",
-        "reply": "I refer the Member to my reply WPQ 16400 (2026)."
+        "date": "2026-08-17",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
+        "reply": "In my capacity as Minister for Pacific Peoples, I took 1 paper to Cabinet on Monday 10 August 2026. This was titled 'Centre for Pacific Languages Board: Reappointment'."
       }
     ]
   },
   "phil-twyford": {
-    "count": 2516,
+    "count": 2522,
     "byMinister": [
       {
         "minister": "Minister of Immigration",
-        "count": 1503
+        "count": 1505
       },
       {
         "minister": "Associate Minister of Immigration",
-        "count": 718
+        "count": 722
       },
       {
         "minister": "Minister of Health",
@@ -8554,46 +8554,46 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister of Immigration",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Immigration",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": "None."
+      },
+      {
+        "minister": "Associate Minister of Immigration",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister of Immigration",
         "date": "2026-08-18",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": null
+        "reply": "None."
       },
       {
         "minister": "Associate Minister of Immigration",
         "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Immigration",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "None"
-      },
-      {
-        "minister": "Associate Minister of Immigration",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
         "reply": "None"
       }
     ]
   },
   "tangi-utikere": {
-    "count": 7207,
+    "count": 7266,
     "byMinister": [
       {
         "minister": "Minister of Transport",
-        "count": 3661
+        "count": 3663
       },
       {
         "minister": "Minister for Racing",
-        "count": 749
+        "count": 751
       },
       {
         "minister": "Minister for Oceans and Fisheries",
@@ -8601,19 +8601,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Local Government",
-        "count": 561
-      },
-      {
-        "minister": "Associate Minister of Transport",
-        "count": 422
+        "count": 563
       },
       {
         "minister": "Minister for Rail",
-        "count": 390
+        "count": 436
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "count": 424
       },
       {
         "minister": "Minister for State Owned Enterprises",
-        "count": 154
+        "count": 156
       },
       {
         "minister": "Minister for Workplace Relations and Safety",
@@ -8637,7 +8637,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Finance",
-        "count": 31
+        "count": 32
       },
       {
         "minister": "Minister of Education",
@@ -8661,7 +8661,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister responsible for RMA Reform",
-        "count": 12
+        "count": 13
       },
       {
         "minister": "Minister for Regional Development",
@@ -8712,6 +8712,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 2
       },
       {
+        "minister": "Minister for Land Information",
+        "count": 1
+      },
+      {
         "minister": "Minister of Commerce and Consumer Affairs",
         "count": 1
       },
@@ -8734,47 +8738,47 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister of Transport",
-        "date": "2026-08-21",
-        "question": "What legal or practical limitations, if any, apply to a landowner's ability to develop, subdivide, mortgage, insure, or sell a property that is wholly or partly subject to a notice of requirement or designation for which no construction funding is allocated?",
+        "minister": "Minister for Rail",
+        "date": "2026-08-28",
+        "question": "Further to the reply to written question 37232 (2026), how many Ferry Holdings Ltd contracts have been varied since 1 April 2025, and what is the total value of those variations; if he does not hold this information, will he request it from Ferry Holdings Ltd, and if not, why not?",
         "reply": null
-      },
-      {
-        "minister": "Minister of Transport",
-        "date": "2026-08-21",
-        "question": "Further to reply 33496 (2026), for each project listed in the attachment to that reply, has the NZ Transport Agency resold, or entered into any leaseback arrangement with, the original vendor for any acquired property, and if so, on what terms and at what value compared to the original purchase price, broken down by project?",
-        "reply": null
-      },
-      {
-        "minister": "Minister of Transport",
-        "date": "2026-08-21",
-        "question": "Further to reply 33496 (2026), for each project listed in the attachment to that reply, how many acquired properties are not currently required for construction, what was their combined purchase price, and what is their most recent government or rating valuation, broken down by project?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Racing",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "None."
       },
       {
         "minister": "Minister for Rail",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "Refer to the response to WPQ 6251 (2025)."
+        "date": "2026-08-28",
+        "question": "Further to the reply to written question 37235 (2026), have the terms of reference been amended since 11 May 2026; if so, on what date, by whom, and for what reason?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Rail",
+        "date": "2026-08-28",
+        "question": "Further to the reply to written question 37236 (2026), how was Esby & Co selected, was the engagement openly advertised on the Government Electronic Tenders Service or made through an existing panel, and if neither, which exemption from open advertising was relied on?",
+        "reply": null
+      },
+      {
+        "minister": "Minister of Local Government",
+        "date": "2026-08-18",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "reply": "As the Minister of Local Government, I received the following advice, reports, briefings, aide memoires, or any other documents from the Ministry of Cities, Environment, Regions and Transport during the week beginning 10 August 2026 • 10/08/2026 - Head Start proposals received • 10/08/2026 - Updated OCL QAs and Queenstown Chamber Notes • 10/08/2026 – Title withheld • 10/08/2026 - 28 – Chatham Islands Shared Redress: [title withheld] • 11/08/2026- Final decision on additional information disclosu…"
+      },
+      {
+        "minister": "Associate Minister of Transport",
+        "date": "2026-08-18",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "reply": "The titles and dates of Transport briefings received from the Ministry of Cities, Environment, Regions and Transport are or will soon be proactively released here: https://www.transport.govt.nz/about-us/our-corporate-publications/proactive-releases/results. MBIE: Fuel Response Weekly Report - 11 August 2026 MNZ: Aide Memoire for Chair/CE meeting with Minister Meager - 12 August 2026"
       }
     ]
   },
   "ayesha-verrall": {
-    "count": 22675,
+    "count": 22683,
     "byMinister": [
       {
         "minister": "Minister of Health",
-        "count": 9173
+        "count": 9175
       },
       {
         "minister": "Associate Minister of Health",
-        "count": 3103
+        "count": 3109
       },
       {
         "minister": "Minister for the Public Service",
@@ -9121,11 +9125,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 77
       },
       {
-        "minister": "Associate Minister of Defence",
+        "minister": "Associate Minister of Police",
         "count": 77
       },
       {
-        "minister": "Associate Minister of Police",
+        "minister": "Associate Minister of Defence",
         "count": 77
       },
       {
@@ -9208,38 +9212,38 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Associate Minister of Health",
-        "date": "2026-08-20",
-        "question": "What discussion, if any, has the minister or her office had with the Ministry of Health regarding its advice about vaping myths and health impacts?",
-        "reply": null
-      },
-      {
-        "minister": "Associate Minister of Health",
-        "date": "2026-08-20",
-        "question": "What discussion, if any, has the minister or her office had with Te Whatu Ora Health NZ regarding its advice about vaping myths and health impacts?",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister of Health",
-        "date": "2026-08-18",
-        "question": "How is the Radiation Oncology Project, Northland currently tracking against its approved budget - is the project within budget, forecast to overspend, or underspent, if overspending is forecast, by how much and what are the reasons, if any?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Associate Minister of Health",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "None."
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
       },
       {
         "minister": "Associate Minister of Health",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "As Associate Minister of Health, None."
+        "date": "2026-08-18",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "reply": "Titles of all advice that I have received have been, or will be, proactively released on the Ministry of Health and Health New Zealand websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2019-2025 https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2026 https://www.tewhatuora.govt.nz/publications I encourage the Member to use the filters and select “Ministerial Advice” at the third link."
+      },
+      {
+        "minister": "Associate Minister of Health",
+        "date": "2026-08-11",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "reply": "Titles of all advice that I have received have been, or will be, proactively released on the Ministry of Health and Pharmac websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2019-2025 https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2026 https://pharmac.govt.nz/news-and-resources/official-information-act/list-of-ministerial-briefings"
       }
     ]
   },
   "celia-wade-brown": {
-    "count": 214,
+    "count": 216,
     "byMinister": [
       {
         "minister": "Minister of Conservation",
@@ -9251,7 +9255,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Tourism and Hospitality",
-        "count": 24
+        "count": 26
       },
       {
         "minister": "Minister of Justice",
@@ -9313,6 +9317,18 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-08-26",
+        "question": "Has the Minister received any updates on the forecasts for the International Visitor Levy from MBIE since she answered Question 30383?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-08-25",
+        "question": "When does the Minister expect the International Visitor Levy Annual Performance Report for 2024/25 will be published?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Tourism and Hospitality",
         "date": "2026-07-03",
         "question": "Does the Minister accept MBIE's estimate of future revenue from the International Visitor Levy remaining flat for the three years 2026/27, 2027/28 and 2028/29 rather than increasing for the following years?",
         "reply": "I am advised that MBIE will be publicly releasing International Visitor Conservation and Tourism Levy forecasts in the coming weeks that have updated figures."
@@ -9328,18 +9344,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "date": "2026-07-02",
         "question": "What communication, if any, has the Minister had with her colleague, the Minister of Local Government, about the Tourism strategy system roles, especially leading \"Marketing to New Zealanders to travel and attend events within New Zealand is undertaken by both local government (RTOs) and tourism businesses\"?",
         "reply": "As Minister of Tourism and Hospitality, I regularly engage with my ministerial colleagues, including the Minister of Local Government, on a range of matters where there are overlaps between portfolios. This remains the case in relation to the Tourism Policy Statement and respective system roles."
-      },
-      {
-        "minister": "Minister of Justice",
-        "date": "2026-06-23",
-        "question": "Is the Minister aware that Easy Read enrolment information is not yet available on the Vote.NZ website although there are less than eighteen weeks until enrolment closes?",
-        "reply": "The Electoral Commission is an independent Crown entity and as such, I do not receive reporting on detailed operational matters. The Commission’s quarterly accountability reports contain some information of this nature, but no information relating to the particular matter stated. I am advised that the Electoral Commission is conducting a phased public information campaign which started with the Māori Electoral Option from 31 March to 6 August, followed by an enrolment update campaign from 17 Aug…"
-      },
-      {
-        "minister": "Minister of Justice",
-        "date": "2026-06-23",
-        "question": "Has the Minister received any updates from the Electoral Commission on when the vote.nz website will be completely ready with all enrolment and voting information?",
-        "reply": "The Electoral Commission is an independent Crown entity and as such, I do not receive reporting on detailed operational matters. The Commission’s quarterly accountability reports contain some information of this nature, but no information relating to the particular matter stated. I am advised that the Electoral Commission is conducting a phased public information campaign which started with the Māori Electoral Option from 31 March to 6 August, followed by an enrolment update campaign from 17 Aug…"
       }
     ]
   },
@@ -9405,27 +9409,27 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ]
   },
   "vanushi-walters": {
-    "count": 797,
+    "count": 886,
     "byMinister": [
       {
         "minister": "Minister of Foreign Affairs",
-        "count": 418
+        "count": 501
       },
       {
         "minister": "Attorney-General",
-        "count": 131
+        "count": 133
       },
       {
         "minister": "Prime Minister",
         "count": 109
       },
       {
-        "minister": "Associate Minister of Foreign Affairs",
-        "count": 39
+        "minister": "Minister responsible for the GCSB and NZSIS",
+        "count": 41
       },
       {
-        "minister": "Minister responsible for the GCSB and NZSIS",
-        "count": 39
+        "minister": "Associate Minister of Foreign Affairs",
+        "count": 41
       },
       {
         "minister": "Minister of Justice",
@@ -9436,11 +9440,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 10
       },
       {
-        "minister": "Minister responsible for the NZSIS",
+        "minister": "Minister responsible for the GCSB",
         "count": 5
       },
       {
-        "minister": "Minister responsible for the GCSB",
+        "minister": "Minister responsible for the NZSIS",
         "count": 5
       },
       {
@@ -9482,34 +9486,34 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Prime Minister",
-        "date": "2026-08-19",
-        "question": "Further to the reply to question 35324 (2026), was he made aware of the existence or contents of the email of 30 July 2026 from the Cabinet Office; if so, on what date and by what means?",
-        "reply": null
-      },
-      {
-        "minister": "Prime Minister",
-        "date": "2026-08-19",
-        "question": "Further to the reply to question 35324 (2026), what other recipients, by job title, were included in the \"to\", \"cc\", or \"bcc\" fields of the email of 30 July 2026 from the Cabinet Office?",
-        "reply": null
-      },
-      {
-        "minister": "Attorney-General",
-        "date": "2026-08-19",
-        "question": "Regarding the Crown Law document \"Request for change of legal status, 31 July 2026\" listed in the reply to WQ 34561 (2026), to what person, entity, office, or proceeding does the requested change of legal status relate?",
+        "minister": "Minister of Foreign Affairs",
+        "date": "2026-08-24",
+        "question": "Further to reply 35396 (2026), at what time on 30 July 2026 did the senior MFAT secondees in DPMC and MFAT discuss this matter, and was that discussion oral or in writing?",
         "reply": null
       },
       {
         "minister": "Minister of Foreign Affairs",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is no good reason not to publish all or part of the material, or to delay the release beyond 30 business days. The application of additional resources to answer this and similar questions now is not a good use of taxpayer funds and ther…"
+        "date": "2026-08-24",
+        "question": "Further to reply 35423 (2026), if voting instructions do not constitute advice to him, what category of decision does he consider New Zealand's voting position at the United Nations General Assembly to be, and who is accountable to Parliament for it?",
+        "reply": null
       },
       {
         "minister": "Minister of Foreign Affairs",
-        "date": "2026-08-10",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "The Ministry of Foreign Affairs and Trade publishes a monthly list of titles of advice to Ministers, by the end of the month after the advice is provided. Refer to thast list, which can be found here: https://www.mfat.govt.nz/en/about-us/ministerial-briefings"
+        "date": "2026-08-24",
+        "question": "Further to reply 35436 (2026), what specific process concerns emerged during the debate that were not matters of public record before 24 July 2026, given that both the nomination for a second term and the Secretary-General succession timeline were publicly known?",
+        "reply": null
+      },
+      {
+        "minister": "Associate Minister of Foreign Affairs",
+        "date": "2026-08-18",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "reply": "The titles of advice I have received as Associate Minister of Foreign Affairs are proactively released each month on the Ministry of Foreign Affairs and Trade website at the following link: https://www.mfat.govt.nz/en/about-us/ministerial-briefings"
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "date": "2026-08-12",
+        "question": "Was the topic of regional security and the Ocean of Peace Alliance discussed in bilateral meetings the Minister or his officials had with counterparts from Fiji during the recent Pacific Islands Forum Foreign Ministers Meeting or associated Forum Officials Committee meeting, and if so, what was the outcome?",
+        "reply": "A range of topics were discussed with counterparts from Fiji, including the Ocean of Peace Alliance."
       }
     ]
   },
@@ -9930,40 +9934,40 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "minister": "Minister of Justice",
         "date": "2026-08-11",
         "question": "Does the Electoral Commission currently visit people's homes to ensure they are enrolled to vote; if so what are the circumstances in which they do so?",
-        "reply": null
+        "reply": "I am advised that the Electoral Commission does not visit people's homes."
       },
       {
         "minister": "Minister of Justice",
         "date": "2026-08-11",
         "question": "Does the Electoral Commission visit the homes of people who have not responded to and enquiry under s 89D of the Electoral Act 1993 where they do not have other contact details?",
-        "reply": null
+        "reply": "I refer the Member to reply 35729 (2026)."
       },
       {
         "minister": "Minister of Justice",
         "date": "2026-08-11",
         "question": "Where a person cannot be contacted at the address at which they are enrolled under s 89G(1) of the Electoral Act 1993 and the Electoral Commission has no other contact information for them, what enquiries are made under s 89G(2)(a) of the Electoral Act?",
-        "reply": null
+        "reply": "I am advised that where a person cannot be contacted at the address at which they are enrolled, the Electoral Commission first checks the source document to make sure the information was processed correctly. If contact information is available on the person’s record, the person is sent a text message, email, or both. If no response is received, this is done again 14 days later before the person is moved to the dormant roll. If there is no contact information for the person, no further enquiry is…"
+      },
+      {
+        "minister": "Minister of Justice",
+        "date": "2026-08-11",
+        "question": "How does the Electoral Commission meet its obligation to make an inquiry into the particulars on the roll for every person registered as an elector of a district under s 89D of the Electoral Act 1993 in respect of persons who are resident at an address where postal services are not available (including because the NZ Post register of postal addresses has not been updated for the new address)?",
+        "reply": "For the purposes of section 89D of the Electoral Act 1993 the particulars on the roll for a person are defined as “the particulars contained in the application to register” (section 89D(7)(b) of the Electoral Act). I am advised the Electoral Commission writes to electors by post and the correspondence is sent to the address provided by the elector when they enrolled. If they provide a postal address, the mail will be sent to that address. It is up to the elector to provide the Electoral Commissi…"
       },
       {
         "minister": "Minister of Justice",
         "date": "2026-08-06",
         "question": "Does the Electoral Commission audit situations where letters are returned \"gone no address\" to ensure that there are no situations where the elector in fact still resides at the address, or that instances where this occurs are not a systemic problem with the Commission or New Zealand Post?",
         "reply": "I refer the Member to WPQ 35246 (2026)."
-      },
-      {
-        "minister": "Minister of Justice",
-        "date": "2026-08-06",
-        "question": "If a person is placed on the dormant roll, is the elector informed \"you are not currently enrolled\"; if so is this accurate and is the elector able to cast a party vote at the next election?",
-        "reply": "I am advised that the Electoral Commission (the Commission) only moves a person from the main roll of an electoral district to the dormant roll for that district in accordance with the requirements of section 89G of the Electoral Act 1993, where the whereabouts of the elector is not known and they are unable to be reached by post. Where a possibly dormant elector has provided the Commission with their email and/or mobile number, the Commission will try to contact them through those mediums. The …"
       }
     ]
   },
   "helen-white": {
-    "count": 792,
+    "count": 796,
     "byMinister": [
       {
         "minister": "Minister for the Community and Voluntary Sector",
-        "count": 359
+        "count": 361
       },
       {
         "minister": "Minister for Small Business and Manufacturing",
@@ -9971,7 +9975,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for the Prevention of Family and Sexual Violence",
-        "count": 147
+        "count": 149
       },
       {
         "minister": "Associate Minister of Justice",
@@ -10013,46 +10017,46 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister for the Prevention of Family and Sexual Violence",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
         "reply": null
       },
       {
         "minister": "Minister for the Community and Voluntary Sector",
-        "date": "2026-08-18",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 10 August 2026, listed by agency, title and date received?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for the Community and Voluntary Sector",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister for the Prevention of Family and Sexual Violence",
-        "date": "2026-08-18",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 10 August 2026, by title and date?",
-        "reply": null
+        "date": "2026-08-11",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "reply": "The Centre for Family Violence and Sexual Violence Prevention publishes a list of advice provided to me online. This is updated monthly and available at https://preventfvsv.govt.nz/resources/briefings-to-the-minister."
       },
       {
         "minister": "Minister for the Prevention of Family and Sexual Violence",
         "date": "2026-08-10",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
         "reply": "None."
-      },
-      {
-        "minister": "Minister for the Community and Voluntary Sector",
-        "date": "2026-08-10",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
-        "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
       }
     ]
   },
   "arena-williams": {
-    "count": 3244,
+    "count": 3249,
     "byMinister": [
       {
         "minister": "Minister of Commerce and Consumer Affairs",
-        "count": 1492
+        "count": 1494
       },
       {
         "minister": "Minister for Building and Construction",
-        "count": 702
+        "count": 700
       },
       {
         "minister": "Minister for State Owned Enterprises",
@@ -10060,7 +10064,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Youth",
-        "count": 174
+        "count": 175
       },
       {
         "minister": "Minister for Rail",
@@ -10123,6 +10127,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 5
       },
       {
+        "minister": "Minister for Tertiary Education",
+        "count": 4
+      },
+      {
         "minister": "Acting Minister for State Owned Enterprises (New Zealand Post)",
         "count": 4
       },
@@ -10165,43 +10173,43 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
+        "minister": "Minister for Youth",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": null
+      },
+      {
         "minister": "Minister for Building and Construction",
-        "date": "2026-08-20",
-        "question": "Did he read Damien Grant's analysis of the Building (Overseas Building Products, Standards, and Certification Schemes) Amendment Bill, including his assertion that \"no one outside the construction sector noticed, but this legislation is one of Luxon’s failing administration’s greatest legislative successes\"?",
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Building and Construction",
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
         "reply": null
       },
       {
         "minister": "Minister of Commerce and Consumer Affairs",
-        "date": "2026-08-20",
-        "question": "Does he agree with the Hamilton mum, quoted in the Waikato Times on 20 July 2026, that, regarding changes to toy safety standards, the Gov­ern­ment appeared to be pri­or­it­ising rel­at­ively mod­est sav­ings for busi­nesses over par­ents’ con­fid­ence in the products their chil­dren played with every day?",
-        "reply": null
+        "date": "2026-08-24",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 17 August 2026, listed by agency, title and date received?",
+        "reply": "I regularly request and receive advice on a range of topics. In the interest of transparency, a list of briefings and reports received by my office from the Ministry of Business, Innovation and Employment (MBIE) is regularly published on MBIE's website (https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information/lists-of-ministerial-documents-by-portfolio/commerce-and-consumer-affairs)."
       },
       {
         "minister": "Minister of Commerce and Consumer Affairs",
-        "date": "2026-08-20",
-        "question": "Is the Minister concerned that Kmart is reported to have sold 67,000 contaminated asbestos sand products in New Zealand?",
-        "reply": null
-      },
-      {
-        "minister": "Minister for Building and Construction",
-        "date": "2026-08-14",
-        "question": "What new policy initiatives, if any, is the Minister considering for building and construction firms to address rising cost challenges?",
-        "reply": "I intend to continue advancing the government's ambitious agenda, which includes restoring the economy to a stable footing and supporting the construction industry. That will ultimately benefit the whole industry by increasing opportunities, reducing compliance costs and making it easier to grow."
-      },
-      {
-        "minister": "Minister for Building and Construction",
-        "date": "2026-08-14",
-        "question": "Will any of the Government's building and construction policy work be paused or delayed as a result of the appointment of a new Minister in August 2026; if yes, what policy work?",
-        "reply": "I have not instructed or intend to instruct any work to be paused or delayed."
+        "date": "2026-08-24",
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 17 August 2026, by title and date?",
+        "reply": "I regularly take papers to Cabinet across a range of topics. In the interest of transparency, I proactively release papers considered by Cabinet on the Ministry of Business, Innovation and Employment website (https://www.mbie.govt.nz/document-library)."
       }
     ]
   },
   "scott-willis": {
-    "count": 526,
+    "count": 528,
     "byMinister": [
       {
         "minister": "Minister for Energy",
-        "count": 237
+        "count": 239
       },
       {
         "minister": "Minister of Science, Innovation and Technology",
@@ -10335,46 +10343,46 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister for Energy",
+        "date": "2026-08-28",
+        "question": "What powers, if any, will the Minister draw on to ensure that the gentailers do not pass on the costs of the Liquefied Natural Gas import terminal to consumers?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Energy",
+        "date": "2026-08-28",
+        "question": "Will the Minister still compel the gentailers to pay for Liquefied Natural Gas infrastructure even if they decline to participate in a fair funding model?",
+        "reply": null
+      },
+      {
+        "minister": "Minister for Energy",
         "date": "2026-08-20",
         "question": "Did NZ Cucumbers express specific support for the proposed LNG terminal to the Minister, if so, on what date?",
         "reply": null
       },
       {
-        "minister": "Minister for Energy",
-        "date": "2026-08-19",
-        "question": "Did the NZ Bakers Association express specific support for the proposed LNG terminal to the Minister, if so, on what date?",
-        "reply": null
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-08-12",
+        "question": "What, if anything, has the $10 million appropriation for the Events Boost Fund been allocated to, to date, and how much unallocated funding remains in the appropriation?",
+        "reply": "The Events Boost Fund is a one-off, contestable fund of $10 million established to support the hosting and promotion of events across New Zealand in 2026. The fund closed for applications on 30 September 2025 and received 198 applications. The Government invested $7,745,000 from the Events Boost Fund across 38 events and marketing campaigns. All investments are published on MBIE's website at https://www.mbie.govt.nz/immigration-and-tourism/tourism/tourism-funding/events-boost-fund. The unallocat…"
       },
       {
-        "minister": "Minister for Energy",
-        "date": "2026-08-19",
-        "question": "Did NZ Starch express specific support for the proposed LNG terminal to the Minister, if so, on what date?",
-        "reply": null
-      },
-      {
-        "minister": "Associate Minister of Health",
-        "date": "2026-07-30",
-        "question": "Is the Minister committed to fully implementing the updated Dementia Mate Wareware Action Plan 2026-2031, if so, what steps is the Minister taking to achieve this plan, and if not - why not?",
-        "reply": "I acknowledge the importance of the Dementia Mate Wareware Action Plan 2026-2031, which was developed by the dementia sector with input and support from a wide range of stakeholders. I am advised that actions outlined in the plan will be supported through existing programmes of work and ongoing system initiatives, including the seven service trials funded through Budget 2022. These trials are currently being evaluated, and the findings will help inform future service planning and investment deci…"
-      },
-      {
-        "minister": "Associate Minister of Health",
-        "date": "2026-07-30",
-        "question": "What stakeholders, if any, has the Minister met with to discuss the Dementia Mate Wareware Action Plan 2026-2031?",
-        "reply": "On 24 September 2025, I attended and spoke at the Alzheimer’s New Zealand Summit, where the refreshed Dementia Mate Wareware Action Plan was launched. Through this event, I engaged with stakeholders from across the dementia sector, including people with lived experience of dementia, whānau, service providers, community organisations, researchers, clinicians, and sector representatives. Additional meetings are captured in my Ministerial diary which is proactively released at the following link: h…"
+        "minister": "Minister for Tourism and Hospitality",
+        "date": "2026-08-12",
+        "question": "What is the total remaining appropriation in the Events Attraction Package broken down by forecast year?",
+        "reply": "The $40 million Events Attraction Package is intended to support showstopper events that attract large audiences and international visitors, such as major sports, music and cultural events. The one-off Events Attraction Package is expected to be completed by mid-2027. MBIE is continuing to negotiate events and opportunities under the Events Attraction Package. As these negotiations are ongoing and subject to commercial considerations, and then final confirmation by contract, I am unable to provi…"
       }
     ]
   },
   "megan-woods": {
-    "count": 2848,
+    "count": 2864,
     "byMinister": [
       {
         "minister": "Minister for Energy",
-        "count": 856
+        "count": 858
       },
       {
         "minister": "Minister for Resources",
-        "count": 611
+        "count": 613
       },
       {
         "minister": "Minister of Climate Change",
@@ -10382,7 +10390,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Associate Minister for Energy",
-        "count": 408
+        "count": 410
       },
       {
         "minister": "Associate Minister of Climate Change",
@@ -10423,6 +10431,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Minister for Regional Development",
         "count": 12
+      },
+      {
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "count": 10
       },
       {
         "minister": "Minister responsible for RMA Reform",
@@ -10479,43 +10491,43 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister of Housing",
-        "date": "2026-08-20",
-        "question": "What is the net change in the number of Kāinga Ora homes in Christchurch resulting from sales, transfers, and new builds since 1 December 2023, listed by address and categorised by sales, transfers and new builds?",
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "date": "2026-08-27",
+        "question": "Has the Minister received a recommendation from the chief executive of MBIE on a provisional safeguard duty in respect of aluminium extrusions; if so, on what date was it received?",
         "reply": null
       },
       {
-        "minister": "Minister of Housing",
-        "date": "2026-08-19",
-        "question": "What is the number of Kāinga Ora homes in Christchurch that are currently under construction, the number in the approved pipeline but not yet commenced, and the number completed since 1 January 2024, broken down by month?",
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "date": "2026-08-27",
+        "question": "How many calendar days elapsed between the receipt of the aluminium-extrusions safeguard application and the initiation of the associated safeguard investigation, if any?",
         "reply": null
       },
       {
-        "minister": "Minister of Housing",
-        "date": "2026-08-19",
-        "question": "How many Kainga Ora planned projects in Christchurch have been cancelled since November 2023 broken down by address?",
+        "minister": "Minister of Commerce and Consumer Affairs",
+        "date": "2026-08-27",
+        "question": "What further information, if any, has the Minister requested in relation to a possible provisional safeguard duty for aluminium extrusions, and on what dates was it requested?",
         "reply": null
       },
       {
-        "minister": "Associate Minister for Energy",
+        "minister": "Minister for Resources",
+        "date": "2026-08-11",
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
+        "reply": "A list of the briefings I have received from MBIE is proactively available on the MBIE website. You can access this information at https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information."
+      },
+      {
+        "minister": "Minister for Energy",
         "date": "2026-08-10",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 3 August 2026, by title and date?",
         "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
-      },
-      {
-        "minister": "Associate Minister for Energy",
-        "date": "2026-08-10",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 3 August 2026, listed by agency, title and date received?",
-        "reply": "A list of the briefings I have received from MBIE is proactively available on the MBIE website. You can access this information at https://www.mbie.govt.nz/about/open-government-and-official-information/release-of-information."
       }
     ]
   },
   "lawrence-xu-nan": {
-    "count": 1708,
+    "count": 1717,
     "byMinister": [
       {
         "minister": "Minister of Education",
-        "count": 787
+        "count": 796
       },
       {
         "minister": "Associate Minister of Education",
@@ -10705,20 +10717,20 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     "recent": [
       {
         "minister": "Minister of Education",
-        "date": "2026-08-20",
-        "question": "What reports, briefings, emails, memos, aides-memoire, notes or written advice, if any, has the Minister received regarding the appointments process for appointments to the Teaching Council; listed by date, title, and agency received?",
+        "date": "2026-08-28",
+        "question": "In response to Reply 37123 (2026), what scope of live reporting data were the 687 trial accounts technically capable of accessing, and was that access limited to particular schools or potentially available across all schools within the reporting function prior to 21 July 2026?",
         "reply": null
       },
       {
         "minister": "Minister of Education",
-        "date": "2026-08-20",
-        "question": "What was the appointments process, if any, for each new appointment to the Teaching Council?",
+        "date": "2026-08-28",
+        "question": "In response to Reply 35156 (2026), were trial accounts included in any access control testing used before the Authority to Operate was issued on 20 March 2026?",
         "reply": null
       },
       {
         "minister": "Minister of Education",
-        "date": "2026-08-19",
-        "question": "In response to Reply 33833 (2026) and Reply 33836 (2026), how many, if any, trial accounts were capable of accessing live information within the SMART (Student Monitoring, Assessment and Reporting Tool) prior to the system update on 21 July 2026?",
+        "date": "2026-08-28",
+        "question": "In response to Reply 35156 (2026), was the effective access of trial accounts to live production data tested prior to the Authority to Operate being issued on 20 March 2026?",
         "reply": null
       },
       {
