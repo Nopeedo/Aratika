@@ -44,7 +44,11 @@ export function Footer() {
               <div className="flex items-center justify-center size-8 rounded-lg bg-brand-jade select-none">
                 <LogoMark size={20} reversed />
               </div>
-              <span className="font-semibold text-white text-lg">{SITE.name}</span>
+              {/* Same Ara·pono split as the navbar, tuned for the dark
+                  footer: jade reads muddy on near-black, so pono takes the
+                  mark's lighter jade instead. Literal text on purpose — see
+                  the navbar note. */}
+              <span className="font-semibold text-white text-lg">Ara<span style={{ color: '#4CC38A' }}>pono</span></span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
               {SITE.tagline}

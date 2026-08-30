@@ -38,7 +38,11 @@ export default async function DashboardPage() {
   } catch {
     // Malformed/stale auth cookie — treat as logged out rather than erroring.
   }
-  if (!user) redirect('/login')
+  // Not just /login: carry WHERE the reader was going and WHY they were sent
+  // here. A signed-out tap on "My Dashboard" used to land on a bare "Welcome
+  // back" form with no acknowledgement — which a brand-new visitor read as the
+  // button not working, and reported exactly that way.
+  if (!user) redirect('/login?next=/dashboard&from=dashboard')
 
   const name = (user.user_metadata?.name as string) || user.email?.split('@')[0] || 'there'
 
