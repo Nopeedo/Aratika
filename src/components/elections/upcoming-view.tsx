@@ -34,6 +34,7 @@ import { KeyDates } from './key-dates'
 import { PollSnapshot } from './poll-snapshot'
 import { SeatChamber } from './seat-chamber'
 import { TwoVotes } from './two-votes'
+import { CompassCta } from '@/components/compass/compass-cta'
 import { PartiesContesting } from './parties-contesting'
 import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
 import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
@@ -101,6 +102,12 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             <ZoneHead eyebrow="Get ready to vote" title="How your vote works"
               sub="You get two votes under MMP. Here’s what each one does." />
             <TwoVotes />
+            {/* The personal compass, here as well as on the homepage — it left
+                the nav, and "which vote do I cast" is the question this section
+                exists to answer, so its answer-machine belongs at the end of
+                it. Same card as the homepage, deliberately: one object, seen
+                twice, reads as the same tool rather than two features. */}
+            <CompassCta />
           </section>
 
           {/* ── PARTIES CONTESTING — the fill tiles carry the standings now ──── */}

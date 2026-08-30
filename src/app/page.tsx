@@ -82,6 +82,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <PartyTilesSection />
 
         {/* ═══ CORE 2 — explore by issue ═══ */}
+        {/* The compass, promoted. It sat below the policy grid; with "Your
+            Vote" gone from the nav this card is the compass's front door, so
+            it comes straight after the party tiles. */}
+        <CompassCta />
+
         <PolicyHubGrid />
 
         {/* "Summary of Party Stance" disabled on the front page — component
@@ -95,7 +100,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             reader for twelve answers, which is a fair thing to ask only once
             they have seen what the site does with them. Its results now link
             to our own sourced positions for all seven parties. */}
-        <CompassCta />
 
         {/* ═══ CORE 3 — your electorate ═══ */}
         <HomeMap />

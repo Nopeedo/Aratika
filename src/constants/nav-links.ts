@@ -1,8 +1,8 @@
 import { isEnabled } from '@/constants/features'
 
 // ─── Primary navigation — election-first pillars ──────────────────────────────
-// The nav is deliberately lean: a voter should see the whole journey — decide
-// (Your Vote), compare (Compare/Parties), locate (Your Electorate), hold to
+// The nav is deliberately lean: a voter should see the whole journey — compare
+// (Parties/Policies), locate (Your Electorate), hold to
 // account (The Record), stay current (Latest), and understand (Learn).
 // Grouped pillars open a dropdown of their sub-pages. Everything else (MPs
 // directory, policies-by-topic, glossary, take-action, dashboard) lives in the
@@ -29,7 +29,12 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Election Centre', href: '/elections/2026', description: 'Polls, seat projection, your electorate and live results on the night', feature: 'elections', highlight: true },
-  { label: 'Your Vote', href: '/start', description: 'Find what matters to you, then build your plan', feature: 'onboarding' },
+  // "Your Vote" (/start, the personal compass) left the nav by request — the
+  // pillar was one label among seven, and the compass now rides the two pages
+  // everyone actually lands on instead: the homepage card moved above the
+  // policy grid, and the Election Centre carries the same card in its "how
+  // your vote works" section. The page itself is untouched and stays linked
+  // from the footer ("Find what matters to you").
   { label: 'Parties', href: '/parties', description: 'Every party, their leaders and policies', feature: 'parties' },
   // The policy hub reached the main nav late. It was linked only from the
   // footer and a few in-page cards, which is also where topic TRACKING lives —
