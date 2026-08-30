@@ -10,7 +10,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Compass, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { useReducedMotion } from 'framer-motion'
 import { MANROPE } from '@/constants/theme'
 
@@ -41,23 +41,19 @@ export function CompassCta() {
         <div className="party-card" style={{ position: 'relative', overflow: 'hidden', borderRadius: 24, backgroundColor: bg, transition: 'background-color 1.3s ease-in-out' }}>
           {/* fixed dark wash for depth + bottom legibility, regardless of the cycling colour */}
           <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'linear-gradient(150deg, rgba(0,0,0,.04), rgba(0,0,0,.5))' }} />
+          {/* Slimmed by request: no icon medallion, no eyebrow, no meta row —
+              a headline, one line, one button. The colour-cycling ground was
+              always the card's identity; everything else was furniture. */}
           <div style={{ position: 'relative', zIndex: 1, padding: 'clamp(28px, 6vw, 52px)', textAlign: 'center' }}>
-            <div style={{ width: 60, height: 60, borderRadius: 17, background: 'rgba(255,255,255,.16)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
-              <Compass style={{ width: 30, height: 30, color: '#fff' }} />
-            </div>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,.74)', fontFamily: MANROPE, marginBottom: 12 }}>Personal compass</div>
             <h2 style={{ fontSize: 'clamp(26px, 5vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: '#fff', fontFamily: MANROPE, lineHeight: 1.1, margin: '0 0 14px' }}>
               Find where you stand
             </h2>
             <p style={{ fontSize: 'clamp(15px, 2.2vw, 17px)', fontWeight: 500, color: 'rgba(255,255,255,.85)', fontFamily: MANROPE, lineHeight: 1.6, maxWidth: 560, margin: '0 auto 24px' }}>
-              12 quick questions about the issues. You’ll see where you line up with each party, and where to go next.
+              Take 12 quick questions to see which party you align with.
             </p>
             <Link href="/start" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 26px', borderRadius: 13, background: '#fff', color: '#1a1208', fontSize: 15.5, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
-              <Compass style={{ width: 17, height: 17 }} /> Take the compass <ArrowRight style={{ width: 17, height: 17 }} />
+              Take the survey <ArrowRight style={{ width: 17, height: 17 }} />
             </Link>
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '6px 18px', marginTop: 18, fontSize: 12.5, fontWeight: 600, color: 'rgba(255,255,255,.62)', fontFamily: MANROPE }}>
-              <span>~3 minutes</span><span>·</span><span>No account needed</span><span>·</span><span>Non-partisan &amp; sourced</span>
-            </div>
           </div>
         </div>
       </div>

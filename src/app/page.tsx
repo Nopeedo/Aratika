@@ -82,11 +82,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <PartyTilesSection />
 
         {/* ═══ CORE 2 — explore by issue ═══ */}
-        {/* The compass, promoted. It sat below the policy grid; with "Your
-            Vote" gone from the nav this card is the compass's front door, so
-            it comes straight after the party tiles. */}
-        <CompassCta />
-
         <PolicyHubGrid />
 
         {/* "Summary of Party Stance" disabled on the front page — component
@@ -122,6 +117,14 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
         {/* ── Everything else, in one carousel of links ── */}
         <ExploreCarousel />
+
+        {/* The compass closes the page. It has moved twice by request — mid,
+            top, now last — and last is a defensible home, not a burial: the
+            reader who reaches the bottom has seen the parties, the policies
+            and the map, and "find where you stand" is the natural next step
+            for exactly that person. It still rides the Election Centre's
+            how-your-vote-works section for everyone else. */}
+        <CompassCta />
 
       </HomeBackground>
     </PartyCycleProvider>
