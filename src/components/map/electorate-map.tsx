@@ -84,10 +84,18 @@ export default function ElectorateMap({ data, selectedKey, onSelect, colorOf, sc
       scrollWheelZoom={scrollZoom}
       attributionControl
     >
+      {/* Esri's light-gray canvas, not CARTO. CARTO began enforcing API keys
+          on its once-open basemaps in late August 2026 and keyless tiles now
+          arrive stamped "API KEY REQUIRED" across the map — nothing on our
+          side changed. Esri's canvas endpoint is publicly served, keyless,
+          and close in tone to the carto light the polygons were tuned over.
+          Its scheme is {z}/{y}/{x} (y before x), no {s} or {r}. A Mapbox
+          token env exists but holds a placeholder; if a real basemap account
+          is ever set up, this is the one line to swap. */}
       <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        detectRetina
+        url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+        attribution='Basemap &copy; <a href="https://www.esri.com/">Esri</a> &middot; Boundaries: Stats NZ'
+        maxNativeZoom={16}
       />
       {/* Re-key on selection so styles recompute */}
       <GeoJSON
