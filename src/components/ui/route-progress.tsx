@@ -31,16 +31,24 @@ export function RouteProgress() {
   const [active, setActive] = useState(false)
   const [width, setWidth] = useState(0)
   const timers = useRef<ReturnType<typeof setTimeout>[]>([])
+  // The last location the bar completed at, so popstate can tell a real
+  // navigation from a hash-only history step (see below).
+  const lastLoc = useRef('')
 
   const clearTimers = () => { timers.current.forEach(clearTimeout); timers.current = [] }
 
   // Finish on arrival. The pathname (or query) changing is the one reliable
-  // signal that the navigation actually completed.
+  // signal that the navigation actually completed. The finish is brisk on
+  // purpose: the slow creep exists to describe WAITING, and once the page is
+  // here every extra millisecond of orange is the bar lying in the other
+  // direction — "loading" over a loaded page was reported as disorientating.
   useEffect(() => {
+    lastLoc.current = window.location.pathname + window.location.search
     clearTimers()
     setWidth(100)
-    const t = setTimeout(() => { setActive(false); setWidth(0) }, 220)
-    timers.current.push(t)
+    const t1 = setTimeout(() => setActive(false), 160)
+    const t2 = setTimeout(() => setWidth(0), 480)
+    timers.current.push(t1, t2)
     return clearTimers
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname, searchParams])
@@ -76,14 +84,42 @@ export function RouteProgress() {
       // worse than no bar — it says "done" while the reader is still waiting.
       const steps: [number, number][] = [[120, 35], [320, 58], [700, 74], [1200, 84], [2000, 90]]
       for (const [delay, w] of steps) timers.current.push(setTimeout(() => setWidth(w), delay))
+      /**
+       * Give-up timer. The finish signal is the pathname changing — and some
+       * real navigations never change it: a redirect that lands where the
+       * reader already is, or anything the router resolves to the same URL.
+       * The page is fine in those, but the bar sat at 90% indefinitely, which
+       * is exactly the "orange line still there after it loaded" report. Ten
+       * seconds is beyond any real TTFB on this site (worst measured 2.3s),
+       * so by then the wait the bar describes is over either way.
+       */
+      timers.current.push(setTimeout(() => {
+        setWidth(100)
+        timers.current.push(setTimeout(() => setActive(false), 160))
+        timers.current.push(setTimeout(() => setWidth(0), 480))
+      }, 10000))
+    }
+
+    /**
+     * popstate fires for EVERY history step, including hash-only ones — and
+     * the site mints plenty of those now (the election centre's jump chips,
+     * the notification anchors). Backing out of a #seats jump fired popstate,
+     * the bar started, and nothing could ever finish it because the pathname
+     * never changes on a hash move. By the time popstate runs the URL has
+     * already updated, so comparing against the last completed location tells
+     * a real back/forward from a hash step exactly.
+     */
+    function onPop() {
+      if (window.location.pathname + window.location.search === lastLoc.current) return
+      start()
     }
 
     document.addEventListener('click', onClick, true)
     // Back/forward also change the page and deserve the same feedback.
-    window.addEventListener('popstate', start)
+    window.addEventListener('popstate', onPop)
     return () => {
       document.removeEventListener('click', onClick, true)
-      window.removeEventListener('popstate', start)
+      window.removeEventListener('popstate', onPop)
       clearTimers()
     }
   }, [])
@@ -100,7 +136,9 @@ export function RouteProgress() {
       <div style={{
         height: '100%', width: `${width}%`, background: CLAY,
         boxShadow: `0 0 8px ${CLAY}`,
-        transition: 'width .3s cubic-bezier(.4,0,.2,1)',
+        // Snap to done, creep while waiting: the finishing sprint to 100 runs
+        // faster than the mid-flight steps so arrival reads as arrival.
+        transition: width === 100 ? 'width .15s ease-out' : 'width .3s cubic-bezier(.4,0,.2,1)',
       }} />
     </div>
   )
