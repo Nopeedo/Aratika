@@ -125,8 +125,14 @@ const PARTIES = [
   { slug: 'green',    name: 'Green',          sources: { default: 'https://www.greens.org.nz/policy', manifesto: 'https://assets.nationbuilder.com/beachheroes/pages/17789/attachments/original/1688864858/Final-online-PDF-pages.pdf' } },
   // /policies is a section index with no prose, so a topic drafted from it
   // finds nothing. Each section has its own page; list them as they are needed.
-  { slug: 'act',      name: 'ACT',            sources: { default: 'https://www.act.org.nz/policies', economy: 'https://www.act.org.nz/economy', 'democracy-government': 'https://www.act.org.nz/policies/democracy', environment: 'https://www.act.org.nz/policies/hunting', 'crime-justice': 'https://www.act.org.nz/policies/law-and-order' } },
-  { slug: 'nzfirst',  name: 'NZ First',       sources: { default: 'https://www.nzfirst.nz/2023_policies', manifesto: 'https://www.nzfirst.nz/2023_policies' } },
+  { slug: 'act',      name: 'ACT',            sources: { default: 'https://www.act.org.nz/policies', economy: 'https://www.act.org.nz/policies/economy', 'democracy-government': 'https://www.act.org.nz/policies/democracy', environment: 'https://www.act.org.nz/policies/hunting', 'crime-justice': 'https://www.act.org.nz/policies/law-and-order' } },
+  // default is /policy — their CURRENT page, titled "Our Policy", ©2026, with
+  // no mention of 2023. It had been /2023_policies, which is titled "2023
+  // Election Policies" and opens "New Zealand First 2023 Policies": every one of
+  // their eleven approved positions was drafted from 2023 campaign material and
+  // shown as current. `manifesto` stays on the 2023 page, which is what that key
+  // is for.
+  { slug: 'nzfirst',  name: 'NZ First',       sources: { default: 'https://www.nzfirst.nz/policy', manifesto: 'https://www.nzfirst.nz/2023_policies' } },
   { slug: 'tpm',      name: 'Te Pāti Māori',  sources: { default: 'https://www.maoriparty.org.nz/policy' } },
   // TOP keeps one page per policy (opportunity.org.nz, formerly top.org.nz) — point each topic at its dedicated page.
   { slug: 'top',      name: 'The Opportunities Party', sources: {
