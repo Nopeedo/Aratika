@@ -37,7 +37,7 @@ export function PolicyComparison({ positions, topicLabel, topic }: { positions: 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
         <div style={{ minWidth: 0 }}>
           <h2 style={{ fontSize: 'clamp(17px, 4.5vw, 20px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.25 }}>Where each party stands on {topicLabel}</h2>
-          <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Current stated policy, from each party’s own site. 2023 manifesto positions are being sourced.</p>
+          <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Where each party stands going into the <b style={{ color: INK }}>2026 election</b>, summarised from their own current policy pages. Every position is dated and carries the page it came from.</p>
         </div>
         <div style={{ display: 'inline-flex', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 3, flexShrink: 0 }}>
           {[{ k: false, label: 'Plain' }, { k: true, label: 'Detailed' }].map((o) => (
