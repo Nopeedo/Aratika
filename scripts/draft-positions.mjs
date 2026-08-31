@@ -438,7 +438,22 @@ async function main() {
   }
   const list = partyArg ? PARTIES.filter((p) => p.slug === partyArg) : PARTIES
   console.log(`Drafting ${topicArg} positions for ${list.length} parties (model ${MODEL})…\n`)
-  for (const p of list) { await draftOne(p, topicArg) }
+  // One party's failure must not end the run. A model error — a rate limit, an
+  // exhausted credit balance, a transient 500 — used to throw out of main() and
+  // kill the whole topic, so parties later in the list were silently never
+  // drafted and the run looked like it had simply finished. Each is isolated and
+  // counted, and the tally at the end says how many actually failed.
+  let failed = 0
+  for (const p of list) {
+    try { await draftOne(p, topicArg) }
+    catch (e) {
+      failed++
+      const msg = String(e?.message || e).replace(/\s+/g, ' ').slice(0, 160)
+      console.error(`✗ ${p.slug}/${topicArg}: ${msg}`)
+    }
+  }
+  if (failed > 0) console.error(`
+${failed} of ${list.length} part(ies) failed on ${topicArg} — see above.`)
   console.log(`\nDone. Review at /editor, then they appear on /policies/${topicArg}.`)
 }
 
