@@ -122,7 +122,26 @@ const PARTIES = [
     climate:   'https://www.labour.org.nz/solarsaver',
     education: 'https://www.labour.org.nz/apprenticeshipboost',
   } },
-  { slug: 'green',    name: 'Green',          sources: { default: 'https://www.greens.org.nz/policy', manifesto: 'https://assets.nationbuilder.com/beachheroes/pages/17789/attachments/original/1688864858/Final-online-PDF-pages.pdf' } },
+  // The Greens publish a dedicated page per policy area — 56 of them — and
+  // /policy is only the index that links to them. Drafting every topic from the
+  // index meant summarising a page of headings, which is why their positions
+  // drifted the moment that index was reorganised. Each topic now points at the
+  // policy itself.
+  { slug: 'green',    name: 'Green',          sources: {
+    default:        'https://www.greens.org.nz/policy',
+    manifesto:      'https://assets.nationbuilder.com/beachheroes/pages/17789/attachments/original/1688864858/Final-online-PDF-pages.pdf',
+    economy:        'https://www.greens.org.nz/government_in_the_economy_policy',
+    housing:        'https://www.greens.org.nz/housing_policy',
+    health:         'https://www.greens.org.nz/health_policy',
+    education:      'https://www.greens.org.nz/education_policy',
+    climate:        'https://www.greens.org.nz/climate_change_policy',
+    environment:    'https://www.greens.org.nz/biodiversity_environmental_regeneration_policy',
+    'crime-justice':'https://www.greens.org.nz/justice_policy',
+    'treaty-maori-affairs': 'https://www.greens.org.nz/te_tiriti_policy',
+    immigration:    'https://www.greens.org.nz/immigration_policy',
+    'foreign-policy':'https://www.greens.org.nz/global_affairs_policy',
+    'democracy-government': 'https://www.greens.org.nz/governance_policy',
+  } },
   // /policies is a section index with no prose, so a topic drafted from it
   // finds nothing. Each section has its own page; list them as they are needed.
   { slug: 'act',      name: 'ACT',            sources: { default: 'https://www.act.org.nz/policies', economy: 'https://www.act.org.nz/policies/economy', 'democracy-government': 'https://www.act.org.nz/policies/democracy', environment: 'https://www.act.org.nz/policies/hunting', 'crime-justice': 'https://www.act.org.nz/policies/law-and-order' } },
@@ -364,7 +383,13 @@ async function draftOne(party, topic) {
     // Preserve the editor-approved text; only ADD the deeper breakdown; back to pending for a quick re-review.
     const ed = existing.data || {}
     const mergedData = { ...ed, keyProposals, whoAffected, excerpts, asOf: ed.asOf || today, sourceHash: fingerprint }
-    const { error } = await supabase.from('content_items').update({ data: mergedData, status: 'pending', change_kind: 'updated', updated_at: today }).eq('id', existing.id)
+    // source_url moves with the excerpts. It used to be left alone, so
+    // re-pointing a party at a better page — the Greens' housing_policy instead
+    // of their /policy index — rewrote the quotes from the new page while the
+    // citation still named the old one. The excerpts were then attributed to a
+    // page that does not contain them, which is a worse failure than the stale
+    // summary it was fixing.
+    const { error } = await supabase.from('content_items').update({ data: mergedData, source_url: url, status: 'pending', change_kind: 'updated', updated_at: today }).eq('id', existing.id)
     if (error) { console.warn(`✗ ${party.slug}: update failed (${error.message})`); return }
     console.log(`✓ ${party.slug}/${topic}: breakdown added (kept your approved text) → pending re-approve`)
     return
