@@ -5,10 +5,13 @@
  * and hands them to the client explorer. Placed directly under the compass.
  */
 
+import Link from 'next/link'
+import { Scale, ArrowRight } from 'lucide-react'
 import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { PolicyExplorer } from '@/components/homepage/policy-explorer'
 import { PolicyHubHeading } from '@/components/homepage/policy-hub-heading'
+import { BORDER, CARD_SHADOW, INK, MANROPE } from '@/constants/theme'
 
 export async function PolicyHubGrid() {
   const positions = await getAllApprovedPositions()
@@ -28,6 +31,27 @@ export async function PolicyHubGrid() {
         </div>
 
         <PolicyExplorer topicKeys={POLICY_TOPIC_ORDER} positions={positions} />
+
+        {/* One way out of the section, for the reader who has finished picking
+            through parties one at a time and wants them side by side.
+            /policies redirects to the first topic, so this lands on a real
+            comparison rather than a menu. */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
+          <Link
+            href="/policies"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '13px 22px', borderRadius: 12, background: '#fff',
+              border: `1px solid ${BORDER}`, color: INK, textDecoration: 'none',
+              fontSize: 15, fontWeight: 800, fontFamily: MANROPE,
+              boxShadow: CARD_SHADOW,
+            }}
+          >
+            <Scale style={{ width: 17, height: 17 }} />
+            Compare every party, issue by issue
+            <ArrowRight style={{ width: 16, height: 16 }} />
+          </Link>
+        </div>
       </div>
     </section>
   )

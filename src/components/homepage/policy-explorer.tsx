@@ -520,6 +520,55 @@ function readableOnWhite(hex: string): string {
  *
  *  Connected to its proposal by the rule down the left of the opened detail, so
  *  it's clear the points belong to the line above and not to the panel. */
+/**
+ * MoreDetail — the party's own cited words, expanded in place.
+ *
+ * Same grid-rows transition as SeeMore above, deliberately: two expanders on
+ * one panel behaving differently reads as two different mechanisms.
+ */
+function MoreDetail({ excerpts, accent }: { excerpts: string[]; accent: string }) {
+  const [open, setOpen] = useState(false)
+  const tone = readableOnWhite(accent)
+  return (
+    <div style={{ marginTop: 14 }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6, background: 'none', border: 'none',
+          padding: 0, cursor: 'pointer', fontFamily: MANROPE, fontSize: 15.5, fontWeight: 800, color: tone,
+        }}
+      >
+        {open ? 'Less detail' : 'More detail'}
+        <ChevronDown style={{ width: 15, height: 15, flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
+      </button>
+      {/* Rendered conditionally, NOT the grid-template-rows 0fr/1fr transition
+          SeeMore uses a few lines above. That trick animates height only where
+          `1fr` has a definite size to resolve against; inside this focused card
+          it resolved to 0px, so the panel reported aria-expanded="true" while
+          staying visually shut with 258px of content clipped behind
+          overflow:hidden. It read as working in a text probe, because
+          innerText still sees clipped text — it was only measuring the
+          computed rows that showed it. */}
+      {open && (
+        <div>
+          <div style={{ margin: '12px 0 0', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>
+              In their own words
+            </div>
+            {excerpts.map((q, i) => (
+              <blockquote key={i} style={{
+                margin: 0, paddingLeft: 14, borderLeft: `3px solid ${accent}`,
+                fontSize: 16, color: INK, fontFamily: MANROPE, lineHeight: 1.5, fontStyle: 'italic',
+              }}>&ldquo;{q}&rdquo;</blockquote>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function SeeMore({ details, accent }: { details: string[]; accent: string }) {
   const [open, setOpen] = useState(false)
   const tone = readableOnWhite(accent)
@@ -648,31 +697,38 @@ function FocusedCard({ slug, pos, topicLabel }: {
           never said it, so it doesn't belong on a panel that's meant to be
           their claim and nothing else. */}
 
-      {/* "Full Breakdown" NAVIGATES now, to /policies/[topic]/[party] — this
-          party's page on this topic, which is what the words promise. It used
-          to be an accordion of quotes: a button named for the whole breakdown
-          that opened a slice of it, on a panel that already runs long. The
-          quotes are not lost — the destination page carries them, with the
-          proposals, the impact read and the source, and it exists for every
-          contesting party on every topic.
+      {/* "More detail" expands HERE. It navigated to /policies/[topic]/[party]
+          for a while, which fixed the honesty problem the accordion had — a
+          button named for the whole breakdown that opened a slice of it — but
+          created a worse one: it threw a reader off the page they were
+          comparing on, with no way back, onto a page carrying much of what they
+          had just read.
 
-          Shown whenever a position exists rather than only when quotes do:
-          the page is worth visiting either way, and the old condition hid the
-          button on exactly the positions where the panel showed the least. */}
+          The name is what makes inline honest. "More detail" promises a bit
+          more, and a bit more is what it gives: the party's own cited words,
+          which is the one substantial thing this panel does not already show.
+          The full page is still one tap away underneath, for anyone who wants
+          the proposals, the impact read and the source in one place.
+
+          Excerpts, not our summary: they are transcribed from the party's
+          document rather than written by us, so expanding adds the party's
+          voice rather than more of ours. 106 of 113 positions carry them. */}
+      {pos && pos.excerpts.length > 0 && (
+        <MoreDetail excerpts={pos.excerpts} accent={c} />
+      )}
+
+      {/* The full page, demoted to a quiet link. Still reachable, no longer the
+          only way to see more. */}
       {pos && (
         <Link
           href={`/policies/${pos.topic}/${slug}`}
           style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            marginTop: 12, background: c, color: isLightHex(c) ? INK : '#fff',
-            borderRadius: 999, padding: '12px 18px', textDecoration: 'none', fontFamily: MANROPE,
+            display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 14,
+            fontSize: 14, fontWeight: 700, color: readableOnWhite(c),
+            textDecoration: 'none', fontFamily: MANROPE,
           }}
         >
-          <span style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-            <Quote style={{ width: 17, height: 17, flexShrink: 0 }} />
-            <span style={{ fontSize: 16, fontWeight: 800 }}>Full Breakdown</span>
-          </span>
-          <ArrowRight style={{ width: 16, height: 16, flexShrink: 0 }} />
+          Full page on {topicLabel.toLowerCase()} <ArrowRight style={{ width: 14, height: 14 }} />
         </Link>
       )}
 
