@@ -53,7 +53,7 @@ const IF_CHANGED = args.includes('--if-changed')
 // sourceFingerprint, and the first attempt at that dropped the .slice(0, 32),
 // which made every row read as drifted.
 const DRY_RUN = args.includes('--dry-run')
-const TALLY = { drifted: [], unchanged: [], baseline: [], newDraft: [] }
+const TALLY = { drifted: [], unchanged: [], baseline: [], newDraft: [], repointed: [] }
 const topicArg = (args.find((a) => a.startsWith('--topic=')) || '').split('=')[1] || 'economy'
 const partyArg = (args.find((a) => a.startsWith('--party=')) || '').split('=')[1] || null
 // Record a VERIFIED "no stated position" (after checking the party's policy index):
@@ -428,7 +428,7 @@ async function draftOne(party, topic) {
   }
 
   // Don't clobber an editor-approved row unless --force (which AUGMENTS — see below).
-  const { data: existing } = await supabase.from('content_items').select('id, status, summary, data').eq('type', 'position').eq('source_id', sourceId).maybeSingle()
+  const { data: existing } = await supabase.from('content_items').select('id, status, summary, data, source_url').eq('type', 'position').eq('source_id', sourceId).maybeSingle()
   if (existing?.status === 'approved' && !FORCE && !IF_CHANGED) { console.log(`⏭  ${party.slug}/${topic} already approved — skipping (use --force to add the deeper breakdown)`); return }
 
   let text = FROM_CACHE ? readCache(party.slug, topic) : null
@@ -441,6 +441,28 @@ async function draftOne(party, topic) {
   // review queue would otherwise be re-drafted on every run, spending a model
   // call to produce the same text an editor has not looked at yet.
   if (IF_CHANGED && existing) {
+    // A repoint is not a drift, and must not be treated as one.
+    //
+    // The comparison below is "has THIS page changed since we read it". That
+    // only means anything if the page we are fetching is the page the row was
+    // drafted from. Where the config has since been pointed somewhere else —
+    // National's foreign policy was summarised from
+    // /policies/foreign-affairs-defence-and-veterans and the config now routes
+    // that topic to the /plan default — we were hashing page A and comparing it
+    // to a fresh fetch of page B. That can never match, so the row reported
+    // SOURCE CHANGED on every run, spent a model call reading a page that does
+    // not discuss the topic, got {found:false}, wrote nothing, and left the old
+    // fingerprint in place to do it all again next time. Twenty-one rows were
+    // doing this: a standing bill for no information.
+    //
+    // Moving a row to a new source is a real decision (it rewrites the citation
+    // under the quotes), so it is surfaced rather than done silently. --replace
+    // is the flag that does it.
+    if (existing.source_url && url && existing.source_url !== url) {
+      TALLY.repointed.push(`${party.slug}/${topic}`)
+      console.log(`  ↪ ${party.slug}/${topic}: NOT drift — drafted from ${existing.source_url}, config now says ${url}. Re-run that one with --replace to move it.`)
+      return
+    }
     const prior = existing.data?.sourceHash
     // No fingerprint means the row predates this check. Record one and leave the
     // approved summary alone: re-drafting every old row on the first run would
@@ -603,6 +625,7 @@ ${failed} of ${list.length} part(ies) failed on ${topicArg} — see above.`)
     console.log(`   unchanged:        ${TALLY.unchanged.length}`)
     console.log(`   no baseline yet:  ${TALLY.baseline.length}`)
     console.log(`   DRIFTED:          ${TALLY.drifted.length}${TALLY.drifted.length ? '  (' + TALLY.drifted.join(', ') + ')' : ''}`)
+    console.log(`   repointed (need --replace, not drift): ${TALLY.repointed.length}${TALLY.repointed.length ? '  (' + TALLY.repointed.join(', ') + ')' : ''}`)
     console.log(`   would draft new:  ${TALLY.newDraft.length}${TALLY.newDraft.length ? '  (' + TALLY.newDraft.join(', ') + ')' : ''}`)
     console.log(`   model calls a real run would make: ${TALLY.drifted.length + TALLY.newDraft.length}`)
     return
