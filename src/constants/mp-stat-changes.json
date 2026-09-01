@@ -1,6 +1,22 @@
 {
-  "generated": "2026-08-31",
+  "generated": "2026-09-01",
   "changes": [
+    {
+      "mp": "cameron-brewer",
+      "field": "govBills",
+      "label": "Government bills in charge",
+      "from": 8,
+      "to": 9,
+      "date": "2026-09-01"
+    },
+    {
+      "mp": "nicole-mckee",
+      "field": "govBills",
+      "label": "Government bills in charge",
+      "from": 16,
+      "to": 17,
+      "date": "2026-09-01"
+    },
     {
       "mp": "kieran-mcanulty",
       "field": "writtenQuestions",
