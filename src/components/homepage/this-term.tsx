@@ -6,7 +6,7 @@
  * Sits between the party tiles and the issues: the tiles say who is standing,
  * the issues say what they claim, and this says where things actually stand
  * before any of it changes. Reads the shared party selection, so tapping a tile
- * above lights that party's seats without needing a second control.
+ * lights that party's seats without needing a second control.
  *
  * ── The framing, deliberately ──
  *
@@ -128,45 +128,61 @@ export function ThisTerm() {
   const held = selected ? countElectorates(selected) : 0
   const hidden = selected ? countElectorates(selected, layer === 'general' ? 'maori' : 'general') : 0
   const data = layers[layer]
+  const maxSeats = Math.max(...PARLIAMENTARY_PARTIES.map((p) => CURRENT_SEATS[p] ?? 0))
 
   return (
     <section style={{ background: 'transparent' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto', padding: '8px clamp(18px, 5vw, 36px) 56px' }}>
-        <div style={{ marginBottom: 6, fontSize: 12.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>
-          This term
-        </div>
-        <h2 style={{ fontSize: 'clamp(24px,3.6vw,31px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>
-          Where things stand now
-        </h2>
-        <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', maxWidth: 620, lineHeight: 1.55 }}>
-          The 54th Parliament, as the 2023 election left it. Tap a party above to see the electorates they won.
-        </p>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 22, alignItems: 'start' }}>
-          {/* Seats first. This is the number that decides who governs, and the
-              one the map cannot show honestly on its own. */}
+        {/* Two columns of comparable weight, tops aligned.
+            The heading used to span the full width above the grid, which left a
+            wide empty band beside the intro and made the section read as pushed
+            to the left with a map floating off the right edge. The words and the
+            numbers now share one column, against the map in the other. */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(330px, 100%), 1fr))', gap: 'clamp(24px, 4vw, 44px)', alignItems: 'start' }}>
           <div>
-            <div style={{ ...colLabel, marginBottom: 10 }}>Seats in the House</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+            <div style={{ marginBottom: 6, fontSize: 12.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>
+              This term
+            </div>
+            <h2 style={{ fontSize: 'clamp(24px,3.6vw,31px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>
+              Where things stand now
+            </h2>
+            <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px', lineHeight: 1.55 }}>
+              The 54th Parliament, as the 2023 election left it. Tap any party tile to see the electorates they won.
+            </p>
+
+            {/* Bars, not a bare list of numbers. Seat share is what decides who
+                governs, and it is the one comparison the map cannot make. */}
+            <div style={{ ...colLabel, marginBottom: 12 }}>Seats in the House</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {PARLIAMENTARY_PARTIES.map((p) => {
+                const seats = CURRENT_SEATS[p] ?? 0
                 const on = !selected || selected === p
                 return (
-                  <div key={p} style={{ display: 'flex', alignItems: 'center', gap: 10, opacity: on ? 1 : 0.4, transition: 'opacity .2s ease' }}>
-                    <span style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[p].bg, flexShrink: 0, boxShadow: '0 0 0 1.5px rgba(255,255,255,.9)' }} />
-                    <span style={{ flex: 1, fontSize: 14, fontWeight: selected === p ? 800 : 700, color: INK, fontFamily: MANROPE }}>{PARTY_NAMES[p].short}</span>
-                    <span style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{CURRENT_SEATS[p] ?? 0}</span>
+                  <div key={p} style={{ opacity: on ? 1 : 0.35, transition: 'opacity .2s ease' }}>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
+                      <span style={{ flex: 1, fontSize: 14, fontWeight: selected === p ? 800 : 700, color: INK, fontFamily: MANROPE }}>{PARTY_NAMES[p].short}</span>
+                      <span style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{seats}</span>
+                    </div>
+                    <div style={{ height: 8, borderRadius: 999, background: 'rgba(12,14,18,.07)', overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${(seats / maxSeats) * 100}%`, background: PARTY_COLORS[p].bg, borderRadius: 999, transition: 'width .3s ease' }} />
+                    </div>
                   </div>
                 )
               })}
             </div>
-            <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${BORDER}`, fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55 }}>
+            <div style={{ marginTop: 16, paddingTop: 13, borderTop: `1px solid ${BORDER}`, fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55 }}>
               <b style={{ color: INK }}>{governing.map((p) => PARTY_NAMES[p].short).join(', ')}</b> form the government
               with <b style={{ color: INK }}>{govtSeats}</b> of {TOTAL_SEATS} seats.
+            </div>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 18 }}>
+              <Link href="/parliament" style={cta}>The full make-up of Parliament <ArrowRight style={{ width: 14, height: 14 }} /></Link>
+              <Link href="/record" style={{ ...cta, color: SECONDARY }}>What this Parliament has passed <ArrowRight style={{ width: 14, height: 14 }} /></Link>
             </div>
           </div>
 
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginBottom: 10, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginBottom: 12, flexWrap: 'wrap', minHeight: 26 }}>
               <div style={colLabel}>Electorates won in 2023</div>
               <div style={{ display: 'flex', gap: 4 }}>
                 {(['general', 'maori'] as Layer[]).map((k) => (
@@ -188,11 +204,17 @@ export function ThisTerm() {
               </div>
             </div>
 
-            {/* A definite height, not minHeight. ElectorateMap's own container is
-                height:100%, which resolves against nothing on an auto-height
-                parent: the map mounted, drew all its polygons and basemap tiles,
-                and painted a blank white box because it measured 0px tall. */}
-            <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden', background: '#fff', height: 'clamp(300px, 40vw, 380px)' }}>
+            {/* isolation, and a definite height.
+                - Leaflet puts its panes at z-index 400 and its zoom control at
+                  800. The map container makes no stacking context of its own, so
+                  those competed in the page's root context and painted straight
+                  over the fixed party-tile bar (z-index 45) on scroll. Isolating
+                  the wrapper caps the whole map at this element's own level.
+                - height, not minHeight: ElectorateMap's container is height:100%,
+                  which resolves against nothing on an auto-height parent. The map
+                  mounted, drew every polygon and basemap tile, and painted a
+                  blank white box because it measured 0px tall. */}
+            <div style={{ isolation: 'isolate', position: 'relative', zIndex: 0, border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden', background: '#fff', height: 'clamp(300px, 34vw, 420px)' }}>
               {failed ? (
                 <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, textAlign: 'center', fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>
                   The boundary data didn&rsquo;t load. The seat counts beside this are unaffected.
@@ -207,9 +229,9 @@ export function ThisTerm() {
               )}
             </div>
 
-            <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+            <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
               <Info style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0, marginTop: 2 }} />
-              <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+              <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
                 {selected && held === 0 ? (
                   <>
                     <b style={{ color: INK }}>{PARTY_NAMES[selected].short} holds no electorate seats.</b> All{' '}
@@ -241,11 +263,6 @@ export function ThisTerm() {
               </p>
             </div>
           </div>
-        </div>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 20 }}>
-          <Link href="/parliament" style={cta}>The full make-up of Parliament <ArrowRight style={{ width: 14, height: 14 }} /></Link>
-          <Link href="/record" style={{ ...cta, color: SECONDARY }}>What this Parliament has passed <ArrowRight style={{ width: 14, height: 14 }} /></Link>
         </div>
       </div>
     </section>
