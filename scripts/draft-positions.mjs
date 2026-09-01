@@ -45,6 +45,15 @@ const REPLACE = args.includes('--replace')
 // indefinitely. Cheap because the comparison is a hash of the fetched text —
 // a model call happens only when the page really moved.
 const IF_CHANGED = args.includes('--if-changed')
+// Report what --if-changed WOULD do, without a model call or a write. The point
+// is to price a run before committing to it: the cost is one call per page that
+// actually moved, not one per position, and there is no way to know which pages
+// moved without fetching them. Deliberately part of this script rather than a
+// separate reporter — a reporter would have to reimplement fetchSource and
+// sourceFingerprint, and the first attempt at that dropped the .slice(0, 32),
+// which made every row read as drifted.
+const DRY_RUN = args.includes('--dry-run')
+const TALLY = { drifted: [], unchanged: [], baseline: [], newDraft: [] }
 const topicArg = (args.find((a) => a.startsWith('--topic=')) || '').split('=')[1] || 'economy'
 const partyArg = (args.find((a) => a.startsWith('--party=')) || '').split('=')[1] || null
 // Record a VERIFIED "no stated position" (after checking the party's policy index):
@@ -437,13 +446,17 @@ async function draftOne(party, topic) {
     // approved summary alone: re-drafting every old row on the first run would
     // be a bill for no information, since we cannot tell whether it changed.
     if (!prior) {
+      if (DRY_RUN) { TALLY.baseline.push(`${party.slug}/${topic}`); console.log(`  ⋯ ${party.slug}/${topic}: no baseline yet — a real run would record one, no model call`); return }
       await supabase.from('content_items').update({ data: { ...existing.data, sourceHash: fingerprint } }).eq('id', existing.id)
       console.log(`  ⋯ ${party.slug}/${topic}: baseline fingerprint recorded, no re-draft`)
       return
     }
-    if (prior === fingerprint) { console.log(`⏭  ${party.slug}/${topic}: source unchanged`); return }
-    console.log(`  ⚠ ${party.slug}/${topic}: SOURCE CHANGED — re-drafting for review`)
+    if (prior === fingerprint) { TALLY.unchanged.push(`${party.slug}/${topic}`); console.log(`⏭  ${party.slug}/${topic}: source unchanged`); return }
+    TALLY.drifted.push(`${party.slug}/${topic}`)
+    console.log(`  ⚠ ${party.slug}/${topic}: SOURCE CHANGED — ${DRY_RUN ? 'a real run would re-draft this' : 're-drafting for review'}`)
+    if (DRY_RUN) return
   }
+  if (DRY_RUN) { console.log(`  · ${party.slug}/${topic}: would draft (no existing row)`); TALLY.newDraft.push(`${party.slug}/${topic}`); return }
 
   const cap = /\.pdf($|\?)/i.test(url) ? 120000 : 40000
   let raw = await callModel(systemPrompt(topic), `Party: ${party.name}\nTopic: ${TOPICS[topic].label}\n\nOFFICIAL TEXT (may be truncated — find the ${TOPICS[topic].label} section):\n${text.slice(0, cap)}\n\nReturn ONLY the JSON.`)
@@ -584,6 +597,16 @@ async function main() {
   }
   if (failed > 0) console.error(`
 ${failed} of ${list.length} part(ies) failed on ${topicArg} — see above.`)
+  if (DRY_RUN) {
+    console.log(`
+── ${topicArg} — dry run, nothing written ──`)
+    console.log(`   unchanged:        ${TALLY.unchanged.length}`)
+    console.log(`   no baseline yet:  ${TALLY.baseline.length}`)
+    console.log(`   DRIFTED:          ${TALLY.drifted.length}${TALLY.drifted.length ? '  (' + TALLY.drifted.join(', ') + ')' : ''}`)
+    console.log(`   would draft new:  ${TALLY.newDraft.length}${TALLY.newDraft.length ? '  (' + TALLY.newDraft.join(', ') + ')' : ''}`)
+    console.log(`   model calls a real run would make: ${TALLY.drifted.length + TALLY.newDraft.length}`)
+    return
+  }
   console.log(`\nDone. Review at /editor, then they appear on /policies/${topicArg}.`)
 }
 
