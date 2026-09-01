@@ -21,7 +21,8 @@ import { HomeBackground } from '@/components/homepage/home-background'
 import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
 // import { PartyStanceSection } from '@/components/homepage/party-tiles-section' // hidden — see below
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
-import { HomeMap } from '@/components/homepage/home-map'
+import { ThisTerm } from '@/components/homepage/this-term'
+import { FindMyMpButton } from '@/components/homepage/find-my-mp-button'
 import { CompassCta } from '@/components/compass/compass-cta'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
@@ -96,8 +97,20 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             they have seen what the site does with them. Its results now link
             to our own sourced positions for all seven parties. */}
 
-        {/* ═══ CORE 3 — your electorate ═══ */}
-        <HomeMap />
+        {/* ═══ CORE 3 — what is already settled ═══
+            The tiles say who is standing, the issues say what they claim, and
+            this says where things actually stand before any of it changes. It
+            reads the same party selection the tiles set, so tapping a party up
+            there lights their electorates down here. */}
+        <ThisTerm />
+
+        {/* "Find your MP" demoted to a single button.
+            It was CORE 3 — a full section with a live map — but it is a SEARCH,
+            not a comparison: you already know your address, and the answer is
+            one lookup rather than something to read. It was taking a screen of
+            the homepage to ask a question most readers answer once. The full
+            map is untouched at /map; this is the door to it. */}
+        <FindMyMpButton />
 
         {/* ── Why you can trust it (slim) ── */}
         <CredibilityStrip />

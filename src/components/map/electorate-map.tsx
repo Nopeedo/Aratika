@@ -11,9 +11,10 @@
  * Per-electorate party/MP metadata: electorates-data.ts.
  */
 
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet'
 import type { Feature, FeatureCollection, Geometry } from 'geojson'
 import type { Layer, PathOptions, LeafletMouseEvent } from 'leaflet'
+import { useEffect } from 'react'
 import 'leaflet/dist/leaflet.css'
 
 import { PARTY_COLORS } from '@/constants/parties'
@@ -27,11 +28,40 @@ interface ElectorateMapProps {
   colorOf?:    (name: string) => string | null
   /** Zoom on scroll wheel. Off for inline embeds so the wheel scrolls the page, not the map. */
   scrollZoom?: boolean
+  /**
+   * Fit the view to New Zealand instead of the fixed centre/zoom.
+   *
+   * The default view is tuned for the full-height /map page. Dropped into a
+   * short, wide box (the homepage embed) it clips Northland and most of
+   * Auckland, which is where a large share of the seats are. Opt-in so the
+   * existing callers keep the view they were designed around.
+   */
+  fitToData?: boolean
+}
+
+/**
+ * Mainland bounds, hardcoded rather than measured from the layer.
+ *
+ * getBounds() on the boundary data returns lng -177.36 to 178.84, because the
+ * Chatham Islands (part of Rongotai) sit east of the antimeridian. Leaflet
+ * reads that as spanning almost the whole globe and fitBounds zooms out to a
+ * world view centred off West Africa. The Chathams are off-screen at the
+ * default /map zoom too, so nothing is lost by framing the mainland.
+ */
+const NZ_BOUNDS: [[number, number], [number, number]] = [[-47.9, 166.0], [-33.7, 179.2]]
+
+/** Frames New Zealand in whatever box the map has been given. */
+function FitBounds() {
+  const map = useMap()
+  useEffect(() => {
+    map.fitBounds(NZ_BOUNDS, { padding: [8, 8] })
+  }, [map])
+  return null
 }
 
 const NEUTRAL_FILL = '#d8d5cf'   // electorate with no verified holder yet
 
-export default function ElectorateMap({ data, selectedKey, onSelect, colorOf, scrollZoom = true }: ElectorateMapProps) {
+export default function ElectorateMap({ data, selectedKey, onSelect, colorOf, scrollZoom = true, fitToData = false }: ElectorateMapProps) {
 
   // Style each electorate polygon by holding party (or custom colorOf) + selection state
   function styleFeature(feature?: Feature<Geometry>): PathOptions {
@@ -78,7 +108,11 @@ export default function ElectorateMap({ data, selectedKey, onSelect, colorOf, sc
     <MapContainer
       center={[-41.0, 173.0]}
       zoom={5}
-      minZoom={5}
+      minZoom={fitToData ? 3 : 5}
+      // Whole-number zoom steps make fitBounds round DOWN to the next level,
+      // which left New Zealand at roughly two-thirds the size of its box.
+      // Only relaxed where we are fitting; the /map page keeps its integer steps.
+      zoomSnap={fitToData ? 0 : 1}
       maxZoom={12}
       style={{ height: '100%', width: '100%', background: '#eaf2f7' }}
       scrollWheelZoom={scrollZoom}
@@ -104,6 +138,7 @@ export default function ElectorateMap({ data, selectedKey, onSelect, colorOf, sc
         style={styleFeature as (f?: Feature) => PathOptions}
         onEachFeature={onEachFeature}
       />
+      {fitToData && <FitBounds />}
     </MapContainer>
   )
 }
