@@ -171,10 +171,31 @@ export async function getInterviewVideos(limit = 12): Promise<VideoItem[]> {
   return out
 }
 
-/** Videos naming a specific battleground electorate — see getNewsForElectorate. */
+/**
+ * Videos naming a specific battleground electorate — see getNewsForElectorate,
+ * which had the same defect and carries the write-up. This pulled the newest 200
+ * and filtered them in memory, so 118 of 221 electorate-tagged clips were
+ * unreachable and eight seats showed an empty state they had not earned.
+ *
+ * MAX_AGE_DAYS still applies, as it does on the party and MP feeds: a stale clip
+ * is a different problem from an unreachable one, and this is not the fix for it.
+ */
 export async function getVideosForElectorate(electorateName: string, limit = 3): Promise<VideoItem[]> {
-  const all = await getVideos(200)
-  return all.filter((v) => v.electorates.includes(electorateName)).slice(0, limit)
+  const supabase = publicClient()
+  const { data } = await supabase
+    .from('content_items')
+    .select('id, title, data, created_at')
+    .eq('type', 'video')
+    .eq('status', 'approved')
+    .filter('data->electorates', 'cs', JSON.stringify([electorateName]))
+    .order('created_at', { ascending: false })
+    .limit(limit * 5)
+  const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 86_400_000).toISOString().slice(0, 10)
+  return (data ?? [])
+    .map(toVideoItem)
+    .filter((v) => !v.pubDate || v.pubDate.slice(0, 10) >= cutoff)
+    .sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+    .slice(0, limit)
 }
 
 /**

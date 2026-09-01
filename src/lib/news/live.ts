@@ -85,14 +85,42 @@ export async function getNews(limit = 150): Promise<NewsItem[]> {
 }
 
 /**
- * News naming a specific battleground electorate (by seat name or sitting MP —
- * see ELECTORATE_TERMS in scripts/ingest-news.mjs). Only covers the closest
- * 2023 races for now; most electorates will simply return an empty list, which
- * is the honest state, not a bug.
+ * News naming a specific battleground electorate (by seat name, sitting MP, or
+ * an announced challenger — see buildElectorateTerms in scripts/electorate-terms.mjs).
+ *
+ * Filtered in the QUERY, for the reason written up on getNewsForParty below.
+ * This function used to pull the newest 300 rows and filter them in memory, and
+ * it was the last place doing so after the party and MP feeds were fixed. At
+ * roughly 60 items a day that window is under a week, so a seat that had not
+ * been in the news in the last few days rendered "no coverage naming this seat
+ * or its MP yet" while its articles sat in the table: 276 of 392
+ * electorate-tagged articles were unreachable, and twelve seats — Auckland
+ * Central, Tāmaki, Mt Albert and Te Tai Tokerau among them — showed an empty
+ * state they had not earned.
+ *
+ * The electionRelevant filter that getNews applies is deliberately not carried
+ * over. It was never a decision for this feed, only an inherited side effect of
+ * reusing getNews, and neither the party nor the MP feed applies it. An article
+ * tagged to a seat is tagged because it named that seat, its MP or a candidate
+ * standing there, which is what the battlegrounds page exists to show.
+ *
+ * An empty list is still the normal case for most electorates. It just has to
+ * mean "nothing was written", not "nothing was written this week".
  */
 export async function getNewsForElectorate(electorateName: string, limit = 6): Promise<NewsItem[]> {
-  const all = await getNews(300)
-  return all.filter((i) => i.electorates.includes(electorateName)).slice(0, limit)
+  const supabase = publicClient()
+  const { data } = await supabase
+    .from('content_items')
+    .select('id, title, summary, data, created_at')
+    .eq('type', 'news')
+    .eq('status', 'approved')
+    .filter('data->electorates', 'cs', JSON.stringify([electorateName]))
+    .order('created_at', { ascending: false })
+    .limit(limit * 4)
+  return (data ?? [])
+    .map(toItem)
+    .sort((a, b) => (b.pubDate ?? '').localeCompare(a.pubDate ?? ''))
+    .slice(0, limit)
 }
 
 /**
