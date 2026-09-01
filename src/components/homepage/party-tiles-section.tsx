@@ -10,6 +10,7 @@ import { PARTY_PROFILES } from '@/constants/parties-data'
 import { PARTY_COLORS } from '@/constants/parties'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { MP_PROFILES } from '@/constants/mps-data'
+import { trackerBills } from '@/lib/bills/member-party'
 import { PartyTiles, PartyStanceSummary, type TileParty, type TilePosition } from '@/components/homepage/party-tiles'
 import type { PartySlug, PolicyTopic } from '@/types'
 
@@ -45,6 +46,7 @@ function mpSlugForName(name: string): string | null {
 // assembly logic — they just render different pieces of UI from the same data.
 async function buildTileParties(): Promise<TileParty[]> {
   const all = await getAllApprovedPositions()
+  const BILLS = trackerBills()
 
   return TILE_ORDER.map((slug) => {
     const prof = PARTY_PROFILES[slug]
@@ -87,6 +89,10 @@ async function buildTileParties(): Promise<TileParty[]> {
       coLeaderPhoto: coLeaderSlug ? MP_PROFILES[coLeaderSlug].photo : undefined,
       coLeaderHref: coLeaderSlug ? `/mps/${coLeaderSlug}` : null,
       role: prof.status === 'governing' ? 'In government' : 'In opposition',
+      governing: prof.status === 'governing',
+      // Counted here on the server, from the same BILLS_54 the tracker filters,
+      // so the figure on the tile matches the list it links to.
+      bills: BILLS[slug] ?? { total: 0, government: 0, members: 0, other: 0, passed: 0 },
       seats: prof.seats,
       electorateSeats: prof.electorateSeats,
       listSeats: prof.listSeats,

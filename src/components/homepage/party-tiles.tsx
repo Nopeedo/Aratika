@@ -10,6 +10,7 @@
  * server-side (see party-tiles-section.tsx) so heavy datasets stay off the client.
  */
 
+import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Armchair } from 'lucide-react'
@@ -35,6 +36,10 @@ export interface TileParty {
   coLeaderPhoto?: string
   coLeaderHref?: string | null
   role: string
+  governing: boolean
+  /** Bills before the House this term, counted from the same dataset /bills
+   *  filters — see lib/bills/member-party.ts. */
+  bills: { total: number; government: number; members: number; other: number; passed: number }
   seats: number
   electorateSeats: number
   listSeats: number
@@ -242,7 +247,111 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
         </section>
       )}
 
+      {/* What they have put before the House, and the way into the tracker
+          filtered to them. */}
+      {cur && (
+        <section style={{ background: 'transparent' }}>
+          <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 32px' }}>
+            <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+              <BillsRow p={cur} />
+            </div>
+          </div>
+        </section>
+      )}
+
     </>
+  )
+}
+
+/**
+ * BillsRow — this party's bills before the House, and a link into the tracker
+ * filtered to them.
+ *
+ * ⚠ The reason this is not just a number.
+ *
+ * Counted raw, the totals are National 203, ACT 39, NZ First 12, Labour 14,
+ * Green 4, Te Pāti Māori 0. Put a bare "203" against a bare "0" on a tile and
+ * the page has said the Greens and Te Pāti Māori do nothing — which is not what
+ * the data means. Only ministers introduce government bills, so an opposition
+ * party cannot have any; their route is the members' ballot, which is drawn at
+ * random. The 0 is a role, not a record.
+ *
+ * So government and members' bills are always shown apart, never summed into a
+ * headline figure, and the sentence under them says whose programme each is.
+ * The same reasoning is written up in lib/parties/legislative-record.ts, which
+ * frames the equivalent card on the party pages.
+ */
+function BillsRow({ p }: { p: TileParty }) {
+  const b = p.bills
+  const accent = seatColor(p.color)
+  const none = b.total === 0
+
+  return (
+    <div>
+      <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: SUB, fontFamily: MANROPE, marginBottom: 10 }}>
+        Bills before the House
+      </div>
+
+      {none ? (
+        <p style={{ fontSize: 15, fontWeight: 600, color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.5 }}>
+          No bills of {p.name}&rsquo;s before the House this term.
+        </p>
+      ) : (
+        <>
+          {/* These three are categories of the same total, so they add up to the
+              count the tracker shows on arrival. "Now law" cuts across all three
+              and is stated in words below rather than sitting among them as if
+              it were a fourth category. */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 26, marginBottom: 10 }}>
+            {p.governing && (
+              <Stat n={b.government} label="Government bills" sub="led by their ministers" accent={accent} />
+            )}
+            <Stat n={b.members} label={<>Members&rsquo; bills</>} sub="by their backbench MPs" accent={accent} />
+            {b.other > 0 && (
+              <Stat n={b.other} label="Local &amp; private" sub="narrow, one-off bills" accent={accent} />
+            )}
+          </div>
+          <p style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>
+            {b.passed === 0
+              ? 'None have passed into law yet.'
+              : `${b.passed} of the ${b.total} ${b.passed === 1 ? 'is' : 'are'} now law.`}
+          </p>
+        </>
+      )}
+
+      {/* The point of the whole block. Without this, "National 203" against
+          "Te Pāti Māori 0" reads as a scoreboard. */}
+      <p style={{ fontSize: 13.5, color: SUB, fontFamily: MANROPE, margin: '0 0 12px', lineHeight: 1.55, maxWidth: 620 }}>
+        {p.governing ? (
+          <>
+            Government bills are the coalition&rsquo;s programme, counted here by the party of the minister in charge
+            rather than belonging to that party alone.
+          </>
+        ) : (
+          <>
+            Only ministers introduce government bills, so a party in opposition has none. Their MPs enter the
+            members&rsquo; ballot instead, which is drawn at random.
+          </>
+        )}
+      </p>
+
+      <Link
+        href={none ? '/bills' : `/bills?party=${p.slug}`}
+        style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}
+      >
+        {none ? 'Browse all bills' : `See ${p.name}’s ${b.total} bills`} &rarr;
+      </Link>
+    </div>
+  )
+}
+
+function Stat({ n, label, sub, accent }: { n: number; label: React.ReactNode; sub: string; accent: string }) {
+  return (
+    <div>
+      <div style={{ fontSize: 34, fontWeight: 800, lineHeight: 1, color: accent, fontFamily: MANROPE }}>{n}</div>
+      <div style={{ fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginTop: 5 }}>{label}</div>
+      <div style={{ fontSize: 12.5, color: SUB, fontFamily: MANROPE, marginTop: 1 }}>{sub}</div>
+    </div>
   )
 }
 

@@ -39,3 +39,41 @@ export function trackerBillCounts(): Record<string, number> {
 export function partiesWithTrackerBills(): Set<string> {
   return new Set(Object.keys(trackerBillCounts()))
 }
+
+export interface TrackerBills {
+  total: number
+  /** Led by a minister of this party. The coalition's programme, not the party's alone. */
+  government: number
+  /** Introduced by a non-minister MP of this party. The one figure that compares
+   *  fairly across parties, because any MP can enter the ballot. */
+  members: number
+  /** Local and private bills — a handful, and not a measure of anything. */
+  other: number
+  /** …of the total, how many are now law. */
+  passed: number
+}
+
+/**
+ * Per-party bill breakdown, from BILLS_54 — the SAME dataset /bills filters.
+ *
+ * Deliberately not built on legislativeRecordFor(), which counts a different
+ * universe (mps-bill-activity plus the ballot of proposed members' bills, most
+ * of which are never introduced). Anything shown next to a link into the tracker
+ * has to be counted the way the tracker counts, or the number on the homepage
+ * disagrees with the list the reader lands on.
+ */
+export function trackerBills(): Record<string, TrackerBills> {
+  const map = memberPartyMap()
+  const out: Record<string, TrackerBills> = {}
+  for (const b of BILLS_54) {
+    const p = b.member ? map[normMemberName(b.member)] : undefined
+    if (!p) continue
+    const row = (out[p] ??= { total: 0, government: 0, members: 0, other: 0, passed: 0 })
+    row.total++
+    if (b.type === 'Government') row.government++
+    else if (b.type === "Member's") row.members++
+    else row.other++
+    if (b.status === 'Royal Assent') row.passed++
+  }
+  return out
+}
