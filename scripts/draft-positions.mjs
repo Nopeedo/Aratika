@@ -35,6 +35,9 @@ dotenv.config({ path: '.env.local' })
 
 const args = process.argv.slice(2)
 const FORCE = args.includes('--force')
+// Rewrite the approved stance/summary too, not just the breakdown. Use when a
+// party has been repointed at a different page — see the merge block below.
+const REPLACE = args.includes('--replace')
 // Re-check approved positions against their source and re-draft only the ones
 // whose source page has actually changed. Without this the drafter only ever
 // FILLS GAPS: once a position is approved it is skipped forever, so a party
@@ -380,18 +383,37 @@ async function draftOne(party, topic) {
   if (droppedExcerpts > 0) console.warn(`  ⚠ ${party.slug}/${topic}: dropped ${droppedExcerpts} non-verbatim excerpt(s)`)
 
   if (existing) {
-    // Preserve the editor-approved text; only ADD the deeper breakdown; back to pending for a quick re-review.
+    // Two modes, because "the source changed" and "we improved the source" are
+    // different situations.
+    //
+    // MERGE (default): keep the editor-approved stance and summary, add the
+    // deeper breakdown. Right when a party edits a page we were already reading
+    // — an editor's wording still describes it, and silently overwriting their
+    // work would be rude and lossy.
+    //
+    // REPLACE (--replace): rewrite the summary text as well. Right when the
+    // source has been REPOINTED — the Greens' every topic was summarised from
+    // their /policy index, a page of headings, so the approved stance describes
+    // a page we are no longer reading. Merging there keeps a sentence written
+    // about the wrong document and attaches fresh quotes to it.
     const ed = existing.data || {}
-    const mergedData = { ...ed, keyProposals, whoAffected, excerpts, asOf: ed.asOf || today, sourceHash: fingerprint }
+    const rewritten = REPLACE ? {
+      stance: String(parsed.stance || '').trim(),
+      summaryBasic: String(parsed.summary_basic || '').trim(),
+      quote,
+    } : {}
+    const mergedData = { ...ed, ...rewritten, keyProposals, whoAffected, excerpts, asOf: today, sourceHash: fingerprint }
     // source_url moves with the excerpts. It used to be left alone, so
     // re-pointing a party at a better page — the Greens' housing_policy instead
     // of their /policy index — rewrote the quotes from the new page while the
     // citation still named the old one. The excerpts were then attributed to a
     // page that does not contain them, which is a worse failure than the stale
     // summary it was fixing.
-    const { error } = await supabase.from('content_items').update({ data: mergedData, source_url: url, status: 'pending', change_kind: 'updated', updated_at: today }).eq('id', existing.id)
+    const { error } = await supabase.from('content_items').update({ data: mergedData, ...(REPLACE ? { summary: String(parsed.summary || '').trim() } : {}), source_url: url, status: 'pending', change_kind: 'updated', updated_at: today }).eq('id', existing.id)
     if (error) { console.warn(`✗ ${party.slug}: update failed (${error.message})`); return }
-    console.log(`✓ ${party.slug}/${topic}: breakdown added (kept your approved text) → pending re-approve`)
+    console.log(REPLACE
+      ? `✓ ${party.slug}/${topic}: REWRITTEN from ${url} → pending review`
+      : `✓ ${party.slug}/${topic}: breakdown added (kept your approved text) → pending re-approve`)
     return
   }
 
