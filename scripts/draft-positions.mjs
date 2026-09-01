@@ -150,7 +150,17 @@ const PARTIES = [
   // policy itself.
   { slug: 'green',    name: 'Green',          sources: {
     default:        'https://www.greens.org.nz/policy',
+    // The 2023 manifesto PDF, used only when drafting PERIOD=2023 rows.
     manifesto:      'https://assets.nationbuilder.com/beachheroes/pages/17789/attachments/original/1688864858/Final-online-PDF-pages.pdf',
+    // Manifesto 2026 — 23,612 words of current policy, with a PDF edition and a
+    // separate Māori Manifesto. Swept all fourteen reachable party sites: this
+    // and the Women's Rights Party's policy file are the ONLY policy documents
+    // any party publishes this cycle. Everyone else has replaced the manifesto
+    // with topic pages, so it is the single best deep-dive source available.
+    // Not wired to a topic — the per-topic policy pages above are more precise
+    // for a position summary — it is here so the deep dives have a canonical
+    // document to cite rather than one being hunted for again.
+    manifesto2026:  'https://www.greens.org.nz/manifesto_2026',
     economy:        'https://www.greens.org.nz/government_in_the_economy_policy',
     housing:        'https://www.greens.org.nz/housing_policy',
     health:         'https://www.greens.org.nz/health_policy',
