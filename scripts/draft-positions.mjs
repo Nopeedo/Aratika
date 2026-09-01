@@ -172,7 +172,22 @@ const PARTIES = [
   // will honestly return {found:false} — recorded as a gap, never invented.
   { slug: 'alcp',           name: 'Aotearoa Legalise Cannabis Party', sources: { default: 'https://alcp.org.nz/policy/' } },
   { slug: 'animal-justice', name: 'Animal Justice Party Aotearoa NZ',  sources: { default: 'https://animaljustice.org.nz/policy/our-policies/' } },
-  { slug: 'conservative',   name: 'Conservative Party NZ',             sources: { default: 'https://www.conservatives.nz/' } },
+  // conservatives.nz redirects to conservatives.org.nz, which is where the
+  // policy pages actually live — the old default was the homepage, 1,780 chars
+  // of navigation, which is why five topics were being summarised from nothing.
+  // Housing, education, foreign policy and Treaty are deliberately absent: they
+  // publish no page on those, so those topics fall back to the index and the
+  // drafter will record nothing rather than invent one.
+  { slug: 'conservative',   name: 'Conservative Party NZ',             sources: {
+    default:        'https://www.conservatives.org.nz/policies/overview',
+    health:         'https://www.conservatives.org.nz/policies/health',
+    economy:        'https://www.conservatives.org.nz/policies/economy-1',
+    environment:    'https://www.conservatives.org.nz/policies/environment',
+    climate:        'https://www.conservatives.org.nz/policies/climate',
+    immigration:    'https://www.conservatives.org.nz/policies/immigration',
+    'crime-justice':'https://www.conservatives.org.nz/policies/policing',
+    'democracy-government': 'https://www.conservatives.org.nz/policies/bureaucracy',
+  } },
   { slug: 'nz-outdoors',    name: 'NZ Outdoors & Freedom Party',       sources: { default: 'http://outdoorsparty.co.nz/policy/' } },
   { slug: 'vision-nz',      name: 'Vision New Zealand',                sources: { default: 'https://www.vision.org.nz/' } },
   // Registered 5 August 2026. Without these the pipeline cannot draft or even
@@ -180,7 +195,23 @@ const PARTIES = [
   // on the site and no route to policy coverage at all.
   { slug: 'alliance',     name: 'Alliance',       sources: { default: 'https://allianceparty.nz/what-we-stand-for/' } },
   { slug: 'free-palestine', name: 'Free Palestine', sources: { default: 'https://palfree.nz/' } },
-  { slug: 'nz-loyal',     name: 'NZ Loyal',       sources: { default: 'https://nzloyal.com/policy/' } },
+  // /policy is a 1,215-character index — the drafter rejected it as "source text
+  // too thin" on every run, which is why one position exists for a party that
+  // publishes fifteen policy pages. Climate and democracy-government are left
+  // unmapped: they publish nothing on either, so those fall back to the index
+  // and record nothing rather than being stretched out of an adjacent page.
+  { slug: 'nz-loyal',     name: 'NZ Loyal',       sources: {
+    default:        'https://nzloyal.com/policy/',
+    economy:        'https://nzloyal.com/economics',
+    housing:        'https://nzloyal.com/housing',
+    health:         'https://nzloyal.com/health',
+    education:      'https://nzloyal.com/education',
+    environment:    'https://nzloyal.com/environment',
+    'crime-justice':'https://nzloyal.com/justice',
+    'treaty-maori-affairs': 'https://nzloyal.com/treaty-of-waitangi',
+    immigration:    'https://nzloyal.com/immigration',
+    'foreign-policy':'https://nzloyal.com/foreign-affairs',
+  } },
   { slug: 'te-tai-tokerau-party', name: 'Te Tai Tokerau Party', sources: { default: 'https://tetaitokerauparty.org.nz/' } },
   { slug: 'womens-rights',  name: 'The New Zealand Women’s Rights Party', sources: { default: 'https://womensrightsparty.nz/policy/' } },
 ]
