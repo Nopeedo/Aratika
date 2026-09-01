@@ -118,12 +118,23 @@ const PARTIES = [
   // election policy index and carries the actual announcements. Topic-specific
   // pages are listed where Labour has published one — they campaign on a narrow
   // set, so several topics genuinely have no published policy yet.
+  // Labour publishes a page per ANNOUNCEMENT, not per topic — fifteen of them,
+  // and /our-policies is the index carrying a one-line summary of each.
+  //
+  // So the rule here is the opposite of the Greens'. Point a topic at one
+  // announcement ONLY where that announcement is the whole of what Labour has
+  // said on it. Health has five policies (Medicard, prescriptions, maternity
+  // scans, cervical screening, family doctor loans) and economy has four
+  // (capital gains tax, Future Fund, fiscal strategy, small business); pointing
+  // those at a single page would make one policy stand for the topic, which is
+  // exactly the fault we found on National's immigration position pointing at
+  // "Parent Visa Boost". They read the index instead, which covers all of them.
   { slug: 'labour',   name: 'Labour',         sources: {
     default:   'https://www.labour.org.nz/our-policies/',
-    economy:   'https://www.labour.org.nz/capitalgainstax',
-    health:    'https://www.labour.org.nz/medicard',
+    // One announcement each — the page IS the policy.
     climate:   'https://www.labour.org.nz/solarsaver',
     education: 'https://www.labour.org.nz/apprenticeshipboost',
+    'treaty-maori-affairs': 'https://www.labour.org.nz/maori-trades-training',
   } },
   // The Greens publish a dedicated page per policy area — 56 of them — and
   // /policy is only the index that links to them. Drafting every topic from the
