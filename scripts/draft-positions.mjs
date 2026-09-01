@@ -103,16 +103,23 @@ const PARTIES = [
   // was thin and why Housing once picked up a commercial building-consent release.
   // Point each topic at the actual policy page. NB: National has no dedicated
   // Treaty/Māori Affairs policy page — that gap is real, not a capture failure.
+  // Every source here except crime-justice used to point into /policies/*, which
+  // is National's 2023 CAMPAIGN structure — those pages survive only under
+  // /policy-2023, titled "National's plan to get our country back on track".
+  // national.org.nz/policies now 404s entirely. The default was /policy-2023
+  // itself, so any unmapped topic was drafted from a 2023 campaign index and
+  // displayed as current policy.
+  //
+  // Their current site publishes six root-level pages and no more. Housing,
+  // immigration, environment, climate, foreign policy and Treaty all 404 —
+  // National has published nothing current on any of them, so those fall back to
+  // /plan and the drafter records a position only if the plan actually covers it.
   { slug: 'national', name: 'National', sources: {
-    default:          'https://www.national.org.nz/policy-2023',
-    economy:          'https://www.national.org.nz/policies/fiscal-plan',
-    housing:          'https://www.national.org.nz/policies/housing-growth',
-    education:        'https://www.national.org.nz/policies/teaching-the-basics-brilliantly',
-    health:           'https://www.national.org.nz/policies/better-health-outcomes',
+    default:          'https://www.national.org.nz/plan',
+    economy:          'https://www.national.org.nz/economy',
+    health:           'https://www.national.org.nz/healthcare',
+    education:        'https://www.national.org.nz/education',
     'crime-justice':  'https://www.national.org.nz/lawandorder',
-    environment:      'https://www.national.org.nz/policies/blueprint-for-a-better-environment',
-    immigration:      'https://www.national.org.nz/policies/parent-visa-boost',
-    'foreign-policy': 'https://www.national.org.nz/policies/foreign-affairs-defence-and-veterans',
   } },
   // /policy is a landing page that mostly links out; /our-policies is the 2026
   // election policy index and carries the actual announcements. Topic-specific
