@@ -158,7 +158,31 @@ const PARTIES = [
   } },
   // /policies is a section index with no prose, so a topic drafted from it
   // finds nothing. Each section has its own page; list them as they are needed.
-  { slug: 'act',      name: 'ACT',            sources: { default: 'https://www.act.org.nz/policies', economy: 'https://www.act.org.nz/policies/economy', 'democracy-government': 'https://www.act.org.nz/policies/democracy', environment: 'https://www.act.org.nz/policies/hunting', 'crime-justice': 'https://www.act.org.nz/policies/law-and-order' } },
+  // /policies is a section index — 613 characters of links, no prose — so any
+  // topic falling back to it is drafted from nothing. ACT publishes eight
+  // sections and all eight are now mapped where they match a topic.
+  //
+  // Climate, immigration, foreign policy and Treaty are absent on purpose: ACT
+  // publishes no section on any of them, so those fall back to the index and the
+  // drafter records nothing rather than stretching an adjacent page. "Backing
+  // Rural New Zealand" is left unmapped for the same reason — it is a real ACT
+  // section but it is not one of our topics, and forcing it into environment or
+  // economy would be us choosing their framing for them.
+  { slug: 'act',      name: 'ACT',            sources: {
+    default:        'https://www.act.org.nz/policies',
+    economy:        'https://www.act.org.nz/policies/economy',
+    health:         'https://www.act.org.nz/policies/health',
+    housing:        'https://www.act.org.nz/policies/infrastructure',
+    education:      'https://www.act.org.nz/policies/education',
+    environment:    'https://www.act.org.nz/policies/hunting',
+    'crime-justice':'https://www.act.org.nz/policies/law-and-order',
+    'democracy-government': 'https://www.act.org.nz/policies/democracy',
+    // Two topics, one page, on purpose. ACT has no Treaty section; they state
+    // that position inside "Equal Rights & Democracy" — "Your rights should not
+    // depend on your ancestry... one person, one vote and one law for all".
+    // Checked the page says it before pointing at it, rather than assuming.
+    'treaty-maori-affairs': 'https://www.act.org.nz/policies/democracy',
+  } },
   // default is /policy — their CURRENT page, titled "Our Policy", ©2026, with
   // no mention of 2023. It had been /2023_policies, which is titled "2023
   // Election Policies" and opens "New Zealand First 2023 Policies": every one of
