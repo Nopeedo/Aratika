@@ -31,6 +31,39 @@ function toPoll(r: Row): Poll | null {
   }
 }
 
+/**
+ * Identity of a polling company, for "one poll per company".
+ *
+ * The old key was `pollster.trim().toLowerCase()`, which treats "RNZ-Reid
+ * Research" and "RNZ–Reid Research" as two different companies — an ASCII
+ * hyphen against an en dash, indistinguishable on screen. Both had been entered
+ * at /editor/polls for the same 21 August poll, and the same happened to
+ * Taxpayers' Union–Curia on 4 August. Each survived the dedupe, so the table
+ * listed eight polls from six companies and the poll-of-polls averaged RNZ and
+ * Curia twice. It was visible as a repeated row, but the damage was in the
+ * average, where nothing looked wrong at all.
+ *
+ * So the key folds every dash variant to a hyphen, curly apostrophes to
+ * straight, and runs of whitespace to one space. Anything that reads as the
+ * same company name now counts as the same company, whichever characters an
+ * editor's keyboard produced.
+ */
+function pollsterKey(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[‐-―−]/g, '-')   // ‐ ‑ ‒ – — ― and the minus sign
+    .replace(/[‘’ʼ]/g, "'")    // ' ' ʼ
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+/** Tie-break for two entries of the same poll: prefer the typographic dash, so
+ *  the name rendered is stable rather than dependent on row order. */
+function preferDisplay(candidate: string, current: string): boolean {
+  const dashed = (s: string) => /[–—]/.test(s)
+  return dashed(candidate) && !dashed(current)
+}
+
 /** Approved polls, newest first, ONE per pollster (their most recent). Keeps the
  *  poll-of-polls methodologically sound as polls accumulate — a prolific pollster
  *  is never double-counted, matching the bundled "latest per company" snapshot.
@@ -49,9 +82,13 @@ export async function getPolls(): Promise<Poll[]> {
   // Keep only each pollster's most recent poll.
   const latestByPollster = new Map<string, Poll>()
   for (const p of polls) {
-    const key = p.pollster.trim().toLowerCase()
+    const key = pollsterKey(p.pollster)
     const prev = latestByPollster.get(key)
-    if (!prev || (p.date ?? '') > (prev.date ?? '')) latestByPollster.set(key, p)
+    // Strictly newer wins, so an equal-dated pair is decided by the tie-break
+    // below rather than by whatever order the rows came back in.
+    if (!prev) { latestByPollster.set(key, p); continue }
+    const a = p.date ?? '', b = prev.date ?? ''
+    if (a > b || (a === b && preferDisplay(p.pollster, prev.pollster))) latestByPollster.set(key, p)
   }
   return [...latestByPollster.values()].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
 }
