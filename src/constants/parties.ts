@@ -124,8 +124,10 @@ export const PARTY_ORDER: PartySlug[] = [
 // every party able to contest the party vote gets equal structural presence, and
 // smaller parties are never erased by poll thresholds. Poll-derived figures are
 // labelled as such and never inferred for a party polls don't measure.
-// The parliamentary group is ordered by current seats (a fact); the rest are
-// alphabetical (neutral — not ranked by size or poll standing).
+// The parliamentary group is ordered by current seats (a fact). The contesting
+// group is stored alphabetically, which is the order the ones pollsters do not
+// break out are displayed in; where a party has a published poll reading, the
+// election hub orders by that (see orderForDisplay in parties-contesting.tsx).
 
 export const PARLIAMENTARY_PARTIES: PartySlug[] = [
   'national', 'labour', 'green', 'act', 'nzfirst', 'tpm',

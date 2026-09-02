@@ -25,7 +25,7 @@ const PRINCIPLES = [
   {
     icon: ListChecks,
     title: 'Equal in structure, neutral in order',
-    body: 'Every contesting party gets the same sections and the same treatment. We group parties by whether they currently hold seats, which is a plain fact rather than a ranking, and order the rest alphabetically instead of by size or polling. Where a party hasn’t published a position on a topic, we say so honestly rather than leaving them out.',
+    body: 'Every contesting party gets the same sections and the same treatment. We group parties by whether they currently hold seats, which is a plain fact rather than a ranking. Parties in Parliament are listed by the seats they hold. The rest are listed by the most recent published poll reading for each — never by our own judgement of who matters. Parties that pollsters do not report separately have no figure to order by, so they are listed alphabetically at the end of their group; that means unmeasured, not unsupported. Where a party hasn’t published a position on a topic, we say so honestly rather than leaving them out.',
   },
   {
     icon: BarChart3,

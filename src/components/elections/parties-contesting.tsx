@@ -4,9 +4,24 @@
  * filling. The 5% threshold is drawn across every tile at the same height, so
  * you can see at a glance who clears it, who's close to it, and who doesn't.
  *
- * Replaces a flat row of party pills. Same fairness rule as before: grouped by
- * whether they hold seats now, explicitly NOT ranked by support, and every
- * registered party appears — see /party-inclusion.
+ * Replaces a flat row of party pills. Every registered party appears, grouped by
+ * whether they hold seats now — see /party-inclusion.
+ *
+ * ORDER. The parliamentary group stays in seat order — a fact about the House
+ * that exists. The contesting group is ordered by the most recent published
+ * figure for each party.
+ * This section used to be alphabetical on the reasoning that any ordering by
+ * support is a ranking, which left TOP on 6.1% below ALCP and Alliance — an
+ * ordering that is neutral in construction but misleading to read, since the
+ * reader takes position on a page as meaning something.
+ *
+ * The six parties pollsters do not break out separately have no reading to
+ * order by, so they keep the alphabetical order among themselves and sit last,
+ * with the group's note saying that means unmeasured rather than zero. Ordering
+ * them by their occasional footnote figures would rank them on numbers the
+ * fill bars deliberately refuse to draw. The wording on /party-inclusion was
+ * changed with this — it promised alphabetical order, and a promise the site
+ * does not keep is worse than either ordering.
  *
  * The honesty problem this has to solve: only seven of the thirteen contesting
  * parties are polled individually. The rest are bundled into pollsters' "Others"
@@ -85,6 +100,36 @@ function fmtDate(iso: string): string {
   return isNaN(d.getTime()) ? iso : d.toLocaleDateString('en-NZ', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
 }
 
+/**
+ * Orders the contesting group by the most recent published figure for each
+ * party: the poll-of-polls share where a party is polled individually, and
+ * otherwise the last itemised reading a pollster published for it.
+ *
+ * NOT used for the parliamentary group, which stays in seat order. Seats held
+ * is a fact about the Parliament that exists; poll share is a projection about
+ * the one that might. Sorting that group by polling put Labour above National
+ * on a page describing the current House, which is a different claim than the
+ * one the group heading makes.
+ *
+ * Parties pollsters never break out have no figure to order by, so they keep
+ * their incoming alphabetical order and sit last. A missing reading is not a
+ * zero — it means "folded into Others" — and sorting them to the bottom by an
+ * implied nil would state something the data does not. Ties fall back to
+ * alphabetical so the order is stable rather than dependent on sort internals.
+ *
+ * Returns a new array: NON_PARLIAMENTARY_CONTESTING is a shared constant that
+ * /party-inclusion and CONTESTING_PARTIES also read, and sorting in place would
+ * quietly reorder those too.
+ */
+function orderByMeasure(slugs: PartySlug[], pctBySlug: Map<PartySlug, number>): PartySlug[] {
+  const measure = (s: PartySlug): number | null =>
+    pctBySlug.get(s) ?? MINOR_PARTY_READINGS[s]?.pct ?? null
+  const measured = slugs.filter((s) => measure(s) !== null)
+  const unmeasured = slugs.filter((s) => measure(s) === null)
+  measured.sort((a, b) => (measure(b)! - measure(a)!) || PARTY_NAMES[a].short.localeCompare(PARTY_NAMES[b].short))
+  return [...measured, ...unmeasured]
+}
+
 export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number }[] }) {
   const pctBySlug = new Map(pop.map((p) => [p.slug, p.pct]))
 
@@ -136,8 +181,8 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
         // full names truncated to "New Zealand…" — the same meaningless string
         // on three different tiles. The extra identification goes to the group
         // with less name recognition, which is the right way round.
-        { label: 'In Parliament', parties: PARLIAMENTARY_PARTIES, showFullName: false },
-        { label: 'Also registered to contest', parties: NON_PARLIAMENTARY_CONTESTING, showFullName: true },
+        { label: 'In Parliament', parties: PARLIAMENTARY_PARTIES, showFullName: false, byMeasure: false },
+        { label: 'Also registered to contest', parties: NON_PARLIAMENTARY_CONTESTING, showFullName: true, byMeasure: true },
       ].map((grp) => (
         <div key={grp.label}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 11 }}>
@@ -145,7 +190,7 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
             <span style={{ flex: 1, height: 1, background: LINE }} />
           </div>
           <div className="pc-grid">
-            {grp.parties.map((slug) => (
+            {(grp.byMeasure ? orderByMeasure(grp.parties, pctBySlug) : grp.parties).map((slug) => (
               <Tile key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} showFullName={grp.showFullName} />
             ))}
           </div>
