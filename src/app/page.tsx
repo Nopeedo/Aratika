@@ -18,7 +18,7 @@ import { redirect } from 'next/navigation'
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
 import { HomeBackground } from '@/components/homepage/home-background'
-import { PartyTilesSection } from '@/components/homepage/party-tiles-section'
+import { PartyTilesSection, PartyNewsSection } from '@/components/homepage/party-tiles-section'
 // import { PartyStanceSection } from '@/components/homepage/party-tiles-section' // hidden — see below
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { ThisTerm } from '@/components/homepage/this-term'
@@ -103,6 +103,14 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             reads the same party selection the tiles set, so tapping a party up
             there lights their electorates down here. */}
         <ThisTerm />
+
+        {/* ── In the news — follows the tile selection ──
+            Its own section rather than a row inside the tile panel: the panel
+            was getting long, and coverage is a different kind of thing from the
+            party's own facts. Sits here, after what is settled, because a
+            headline is worth more once the reader knows the seats and the
+            bills it is talking about. */}
+        <PartyNewsSection />
 
         {/* "Find your MP" demoted to a single button.
             It was CORE 3 — a full section with a live map — but it is a SEARCH,

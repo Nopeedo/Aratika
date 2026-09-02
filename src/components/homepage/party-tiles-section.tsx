@@ -5,6 +5,7 @@
  * the server; passes a lean array to the client tile UI.
  */
 
+import { cache } from 'react'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { PARTY_COLORS } from '@/constants/parties'
@@ -13,7 +14,7 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { trackerBills } from '@/lib/bills/member-party'
 import { getNewsForParty } from '@/lib/news/live'
 import { getVideosForParty } from '@/lib/news/videos'
-import { PartyTiles, PartyStanceSummary, type TileParty, type TilePosition } from '@/components/homepage/party-tiles'
+import { PartyTiles, PartyStanceSummary, PartyNewsSummary, type TileParty, type TilePosition } from '@/components/homepage/party-tiles'
 import type { PartySlug, PolicyTopic } from '@/types'
 
 // The six parties in Parliament, in current-seat order (TOP is extra-parliamentary).
@@ -43,10 +44,15 @@ function mpSlugForName(name: string): string | null {
   return entry ? entry[0] : null
 }
 
-// Shared by PartyTilesSection and PartyStanceSection so both server components
-// build the identical parties array from one place, instead of duplicating this
-// assembly logic — they just render different pieces of UI from the same data.
-async function buildTileParties(): Promise<TileParty[]> {
+// Shared by the section components so each builds the identical parties array
+// from one place, instead of duplicating this assembly logic — they just render
+// different pieces of UI from the same data.
+//
+// cache() dedupes it per request. Three sections on the homepage call this, and
+// it now costs the positions query plus twelve coverage queries; without this
+// that whole cost multiplied by the number of sections rendering, for data that
+// is identical every time.
+const buildTileParties = cache(async function buildTileParties(): Promise<TileParty[]> {
   const all = await getAllApprovedPositions()
   const BILLS = trackerBills()
 
@@ -128,11 +134,19 @@ async function buildTileParties(): Promise<TileParty[]> {
       topicsTotal: ACTIVE_TOPICS.length,
     }
   })
-}
+})
 
 export async function PartyTilesSection() {
   const parties = await buildTileParties()
   return <PartyTiles parties={parties} />
+}
+
+/** News and video naming the selected party, as its own homepage section,
+ *  placed between "This term" and the find-your-MP button. Follows the tile
+ *  selection through the shared party cycle. */
+export async function PartyNewsSection() {
+  const parties = await buildTileParties()
+  return <PartyNewsSummary parties={parties} />
 }
 
 /** Renders just the "Summary of Party Stance" card, using the same party data —

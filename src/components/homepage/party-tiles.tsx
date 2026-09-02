@@ -263,17 +263,6 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
         </section>
       )}
 
-      {/* Recent coverage naming this party. */}
-      {cur && (
-        <section style={{ background: 'transparent' }}>
-          <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 32px' }}>
-            <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
-              <CoverageRow p={cur} />
-            </div>
-          </div>
-        </section>
-      )}
-
     </>
   )
 }
@@ -286,72 +275,91 @@ function fmtDate(iso: string | null): string {
 }
 
 /**
- * CoverageRow — news and video naming this party, from the same ingest that
- * feeds /news and the battleground pages. Nothing is written or curated for the
- * homepage: it is a filtered view of the real feed, so every headline links out
- * to the outlet that published it and none of it is ours.
+ * PartyNewsSummary — news and video naming the selected party, as its own
+ * homepage section.
+ *
+ * Reads the same party-cycle selection the tiles set, so it changes with the
+ * tile without needing a control of its own. It lives between "This term" and
+ * the find-your-MP button rather than inside the tile panel, which is why it
+ * carries the party's name in its heading: inside the panel the surrounding
+ * card said whose coverage it was, and standing on its own it has to say so.
+ *
+ * Nothing here is written or curated for the homepage. It is a filtered view of
+ * the same ingest that feeds /news and the battleground pages, and every row
+ * links out to the outlet that published it.
  *
  * A party's own releases and its own channel output are tagged to it by the
- * ingest, so they appear here alongside media coverage. That is why each row
- * names its outlet: a Beehive release and an RNZ piece are both legitimate, and
+ * ingest, so they appear alongside media coverage. That is why each row names
+ * its outlet: a Beehive release and an RNZ piece are both legitimate here, and
  * a reader is entitled to see which is which before they click.
  *
  * The empty state is honest rather than hidden. A quiet week for a minor party
- * is the normal case, and saying so beats an absent section that implies we
- * looked and found nothing worth showing.
+ * is the normal case, and saying so beats the section disappearing, which would
+ * imply we looked and found nothing worth showing.
  */
-function CoverageRow({ p }: { p: TileParty }) {
+export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
+  const { panelSlug, fading, fadeMs } = usePartyCycle()
+  const p = parties.find((x) => x.slug === panelSlug) || null
+  if (!p) return null
+
   const nothing = p.news.length === 0 && p.videos.length === 0
+  const items = [
+    ...p.videos.map((v) => ({ kind: 'video' as const, v })),
+    ...p.news.map((n) => ({ kind: 'news' as const, n })),
+  ]
 
   return (
-    <div>
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 10 }}>
-        <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: SUB, fontFamily: MANROPE }}>
-          In the news
-        </div>
-        <Link href="/news" style={{ fontSize: 13.5, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>
-          All coverage &rarr;
-        </Link>
-      </div>
+    <section style={{ background: 'transparent' }}>
+      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 56px' }}>
+        <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+          <div style={{ marginBottom: 6, fontSize: 12.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: MUTE, fontFamily: MANROPE }}>
+            In the news
+          </div>
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap', marginBottom: 18 }}>
+            {/* Names the party. In the tile panel the surrounding card said whose
+                coverage this was; standing on its own between two other sections
+                it has to say so itself. */}
+            <h2 style={{ fontSize: 'clamp(24px,3.6vw,31px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>
+              What&rsquo;s being reported on <span style={{ color: seatColor(p.color) }}>{p.name}</span>
+            </h2>
+            <Link href="/news" style={{ fontSize: 14, fontWeight: 800, color: seatColor(p.color), textDecoration: 'none', fontFamily: MANROPE }}>
+              All coverage &rarr;
+            </Link>
+          </div>
 
-      {nothing ? (
-        <p style={{ fontSize: 13.5, color: SUB, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-          Nothing naming {p.name} in the outlets we track right now. This fills in on its own as they report.
-        </p>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {p.videos.map((v) => (
-            <a
-              key={v.id}
-              href={`https://www.youtube.com/watch?v=${v.videoId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={rowStyle}
-            >
-              <span style={{ position: 'relative', width: 58, height: 42, borderRadius: 8, flexShrink: 0, overflow: 'hidden', background: '#000', display: 'block' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={v.thumbnail} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                <PlayCircle style={{ position: 'absolute', inset: 0, margin: 'auto', width: 18, height: 18, color: '#fff' }} />
-              </span>
-              <Meta source={v.source} date={v.pubDate} title={v.title} />
-            </a>
-          ))}
-          {p.news.map((n) => (
-            <a key={n.id} href={n.link} target="_blank" rel="noopener noreferrer" style={rowStyle}>
-              <span style={{
-                width: 32, height: 32, borderRadius: 8, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: n.kind === 'government' ? '#fff7e6' : '#eef4ff',
-              }}>
-                {n.kind === 'government'
-                  ? <Landmark style={{ width: 15, height: 15, color: '#b4810b' }} />
-                  : <Newspaper style={{ width: 15, height: 15, color: '#5b7cc4' }} />}
-              </span>
-              <Meta source={n.outlet} date={n.pubDate} title={n.title} />
-            </a>
-          ))}
+          {nothing ? (
+            <p style={{ fontSize: 15, color: SUB, fontFamily: MANROPE, margin: 0, lineHeight: 1.6, maxWidth: 620 }}>
+              Nothing naming {p.name} in the outlets we track right now. This fills in on its own as they report.
+            </p>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 12 }}>
+              {items.map((it) => it.kind === 'video' ? (
+                <a key={it.v.id} href={`https://www.youtube.com/watch?v=${it.v.videoId}`} target="_blank" rel="noopener noreferrer" style={rowStyle}>
+                  <span style={{ position: 'relative', width: 58, height: 42, borderRadius: 8, flexShrink: 0, overflow: 'hidden', background: '#000', display: 'block' }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={it.v.thumbnail} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <PlayCircle style={{ position: 'absolute', inset: 0, margin: 'auto', width: 18, height: 18, color: '#fff' }} />
+                  </span>
+                  <Meta source={it.v.source} date={it.v.pubDate} title={it.v.title} />
+                </a>
+              ) : (
+                <a key={it.n.id} href={it.n.link} target="_blank" rel="noopener noreferrer" style={rowStyle}>
+                  <span style={{
+                    width: 32, height: 32, borderRadius: 8, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: it.n.kind === 'government' ? '#fff7e6' : '#eef4ff',
+                  }}>
+                    {it.n.kind === 'government'
+                      ? <Landmark style={{ width: 15, height: 15, color: '#b4810b' }} />
+                      : <Newspaper style={{ width: 15, height: 15, color: '#5b7cc4' }} />}
+                  </span>
+                  <Meta source={it.n.outlet} date={it.n.pubDate} title={it.n.title} />
+                </a>
+              ))}
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    </section>
   )
 }
 
