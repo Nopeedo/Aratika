@@ -143,13 +143,9 @@ export function DefiningBillDetail({ bill }: { bill: DefiningBill }) {
                 const stillOpen = !!(b.submissionsCalled && b.submissionsClose && b.submissionsClose >= TODAY_NZ)
                 const closed = !!(b.submissionsCalled && closes && !stillOpen)
                 const open = stillOpen
-                // Anchored so a notification about ONE of these bills can land
-                // on its card rather than the top of the umbrella page —
-                // "Natural Environment Bill advanced" used to drop the reader
-                // at the RMA explainer's headline and leave them to find the
-                // bill themselves. The detectors link #bill-<register-slug>.
-                return (
-                  <div key={b.slug} id={`bill-${b.slug}`} style={{ background: CARD, border: `1px solid ${open ? '#bfd4fe' : LINE}`, borderRadius: 12, padding: '12px 14px', scrollMarginTop: 84 }}>
+                const cardStyle = { background: CARD, border: `1px solid ${open ? '#bfd4fe' : LINE}`, borderRadius: 12, padding: '12px 14px', scrollMarginTop: 84 }
+                const inner = (
+                  <>
                     <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.35 }}>{b.title}</div>
                     <div style={{ fontSize: 12.5, color: MUTED, fontFamily: MANROPE, marginTop: 3 }}>{b.status}</div>
                     {/* The one thing on this page a reader can act on, so it is
@@ -165,11 +161,31 @@ export function DefiningBillDetail({ bill }: { bill: DefiningBill }) {
                       </div>
                     )}
                     {b.officialUrl && (
-                      <a href={b.officialUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: ACCENT_DK, fontFamily: MANROPE, textDecoration: 'none', marginTop: 7 }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: ACCENT_DK, fontFamily: MANROPE, marginTop: 7 }}>
                         Read it on parliament.nz <ExternalLink style={{ width: 12, height: 12 }} />
-                      </a>
+                      </span>
                     )}
-                  </div>
+                  </>
+                )
+                // The whole card is the link, not just the line at the bottom.
+                // The title is what a reader reaches for — it is the biggest
+                // thing on the card and it names the thing they want — and
+                // tapping it did nothing, so the card read as a dead end that
+                // happened to have a link under it. One anchor around the whole
+                // card rather than a second one on the title: nested links are
+                // invalid, and two targets to the same bill in a card this
+                // small only compete with each other.
+                // Anchored so a notification about ONE of these bills can land
+                // on its card rather than the top of the umbrella page —
+                // "Natural Environment Bill advanced" used to drop the reader
+                // at the RMA explainer's headline and leave them to find the
+                // bill themselves. The detectors link #bill-<register-slug>.
+                return b.officialUrl ? (
+                  <a key={b.slug} id={`bill-${b.slug}`} href={b.officialUrl} target="_blank" rel="noopener noreferrer" className="party-card" style={{ ...cardStyle, display: 'block', textDecoration: 'none' }}>
+                    {inner}
+                  </a>
+                ) : (
+                  <div key={b.slug} id={`bill-${b.slug}`} style={cardStyle}>{inner}</div>
                 )
               })}
             </div>
