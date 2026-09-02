@@ -6,6 +6,8 @@
  */
 
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
+import { BackToParty } from '@/components/policy/back-to-party'
 import { notFound } from 'next/navigation'
 import { Info } from 'lucide-react'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
@@ -51,6 +53,11 @@ export default async function PolicyTopicPage(
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) clamp(18px, 5vw, 36px)' }}>
+          {/* Only renders when ?from= names a party — i.e. the reader came
+              here from that party's own policy section and may want to go
+              back. Suspense keeps this page static. */}
+          <div style={{ marginBottom: 14 }}><Suspense fallback={null}><BackToParty /></Suspense></div>
+
           {/* No "All policy topics" link any more. /policies redirects here, so
               it pointed at the page you were already on. The chip row below is
               the topic navigation, and it is always in reach. */}

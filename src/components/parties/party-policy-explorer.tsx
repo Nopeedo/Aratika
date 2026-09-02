@@ -90,10 +90,12 @@ export function PartyPolicyExplorer({ partySlug, partyName, accent, positions, d
         )}
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 18, paddingTop: 14, borderTop: `1px solid ${BORDER}` }}>
-          <Link href={`/policies/${topic}/${partySlug}`} style={cta}>
+          {/* ?from= carries which party page this was opened from, so the hub
+              can offer the way back. See BackToParty. */}
+          <Link href={`/policies/${topic}/${partySlug}?from=${partySlug}`} style={cta}>
             {hasDive ? 'Full breakdown' : 'Full page'} <ArrowRight style={{ width: 14, height: 14 }} />
           </Link>
-          <Link href={`/policies/${topic}`} style={{ ...cta, color: SECONDARY }}>
+          <Link href={`/policies/${topic}?from=${partySlug}`} style={{ ...cta, color: SECONDARY }}>
             <FileText style={{ width: 14, height: 14 }} /> Every party on {meta.label.toLowerCase()}
           </Link>
         </div>

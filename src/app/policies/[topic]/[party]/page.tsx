@@ -5,6 +5,8 @@
  */
 
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
+import { BackToParty } from '@/components/policy/back-to-party'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, Info } from 'lucide-react'
@@ -44,9 +46,15 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ height: 6, background: p.color }} />
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 32px' }}>
-          <Link href={`/policies/${topic}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> All parties on {t.label}
-          </Link>
+          {/* Two ways back, on one row: to every party on this topic, or to the
+              party page this was opened from. The second only appears when
+              ?from= names a party — see BackToParty. */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '6px 18px', marginBottom: 18 }}>
+            <Link href={`/policies/${topic}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE }}>
+              <ArrowLeft style={{ width: 14, height: 14 }} /> All parties on {t.label}
+            </Link>
+            <Suspense fallback={null}><BackToParty /></Suspense>
+          </div>
           <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 6 }}>{t.label} · Party position</div>
           <h1 style={{ fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.1 }}>
             {p.name} on {t.label}

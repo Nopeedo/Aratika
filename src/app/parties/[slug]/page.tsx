@@ -25,6 +25,7 @@ import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { PartyLegislativeRecord } from '@/components/parties/legislative-record'
 import { PartyPolicyExplorer } from '@/components/parties/party-policy-explorer'
+import { PARTY_POLICY_ANCHOR } from '@/components/policy/back-to-party'
 import { PartySwitcher } from '@/components/parties/party-switcher'
 import { isLightHex } from '@/components/homepage/battleground-card'
 import { getAllApprovedPositions } from '@/lib/positions/live'
@@ -87,9 +88,9 @@ function mpSlugForName(name: string): string | null {
 
 /** Outlined in the party's own colour. A neutral 1px hairline on a textured
  *  background reads as no edge at all — the cards dissolved into the weave. */
-function Card({ children, accent, style, className }: { children: React.ReactNode; accent?: string; style?: React.CSSProperties; className?: string }) {
+function Card({ children, accent, style, className, id }: { children: React.ReactNode; accent?: string; style?: React.CSSProperties; className?: string; id?: string }) {
   return (
-    <div className={className} style={{
+    <div id={id} className={className} style={{
       background: '#ffffff', border: `2px solid ${accent ? tint(accent, 0.45) : BORDER}`, borderRadius: 18,
       padding: '22px 24px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)', ...style,
     }}>
@@ -325,7 +326,10 @@ export default async function PartyProfilePage(
               "key policy areas" and sent you to a grid of every party — out of
               the party you came to read. This answers the question you actually
               asked, on every topic, without a navigation. */}
-          <Card accent={party.color} className="ap-stand">
+          {/* Anchor for the return trip from the policy hub — see BackToParty.
+              scrollMarginTop clears the sticky navbar, so landing here shows the
+              heading rather than putting it behind the bar. */}
+          <Card accent={party.color} className="ap-stand" id={PARTY_POLICY_ANCHOR} style={{ scrollMarginTop: 84 }}>
             <SectionHeading icon={Star} title="Where they stand" accent={party.color} />
             <PartyPolicyExplorer
               partySlug={slug}
