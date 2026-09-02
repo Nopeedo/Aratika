@@ -319,7 +319,10 @@ export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
             {/* Names the party. In the tile panel the surrounding card said whose
                 coverage this was; standing on its own between two other sections
                 it has to say so itself. */}
-            <h2 style={{ fontSize: 'clamp(24px,3.6vw,31px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>
+            {/* Two lines reserved. "…on Te Pāti Māori" wraps on a phone where
+                "…on ACT" does not, which changed the page height every time the
+                cycle turned. */}
+            <h2 style={{ fontSize: 'clamp(24px,3.6vw,31px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.2, minHeight: '2.4em' }}>
               What&rsquo;s being reported on <span style={{ color: seatColor(p.color) }}>{p.name}</span>
             </h2>
             <Link href="/news" style={{ fontSize: 14, fontWeight: 800, color: seatColor(p.color), textDecoration: 'none', fontFamily: MANROPE }}>
@@ -366,13 +369,33 @@ export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
 function Meta({ source, date, title }: { source: string; date: string | null; title: string }) {
   return (
     <span style={{ flex: 1, minWidth: 0 }}>
-      <span style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 2 }}>
-        <span style={{ fontSize: 11.5, fontWeight: 700, color: SUB, fontFamily: MANROPE }}>{source}</span>
-        {date && <span style={{ fontSize: 11.5, color: MUTE, fontFamily: MANROPE }}>· {fmtDate(date)}</span>}
+      {/* One line, always. Outlet names run from "Stuff" to
+          "NZ Herald — Herald NOW / Ryan Bridge"; the long ones wrapped on a
+          phone, making that card taller and the page length change every time
+          the tile cycle turned. The date must stay visible, so the outlet is
+          what gives way. */}
+      <span style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 2, minWidth: 0 }}>
+        <span style={{ fontSize: 11.5, fontWeight: 700, color: SUB, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>{source}</span>
+        {date && <span style={{ fontSize: 11.5, color: MUTE, fontFamily: MANROPE, whiteSpace: 'nowrap', flexShrink: 0 }}>· {fmtDate(date)}</span>}
       </span>
-      <span style={{ display: 'block', fontSize: 14, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.4 }}>{title}</span>
+      {/* Clamped to two lines. A headline that wrapped to three made its card
+          taller, the grid row taller, and the whole page below shift as the
+          tile cycle turned. Two lines is enough to identify a story, and the
+          full headline is on the other side of the link. */}
+      <span style={{
+        display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+        fontSize: 14, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.4, minHeight: '2.8em',
+      }}>{title}</span>
     </span>
   )
+}
+
+/** Reserved two lines, and capped at two. The minHeight alone still let a
+ *  narrower viewport push a label onto a third line and move the page; the cap
+ *  means the block is the same height at any width. Nothing truncates at 375px
+ *  or above — below that, clipped text beats a page that jumps. */
+const clamp2: React.CSSProperties = {
+  display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
 }
 
 const rowStyle: React.CSSProperties = {
@@ -409,32 +432,40 @@ function BillsRow({ p }: { p: TileParty }) {
         Bills before the House
       </div>
 
-      {none ? (
-        <p style={{ fontSize: 15, fontWeight: 600, color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.5 }}>
-          No bills of {p.name}&rsquo;s before the House this term.
-        </p>
-      ) : (
-        <>
-          {/* These three are categories of the same total, so they add up to the
-              count the tracker shows on arrival. "Now law" cuts across all three
-              and is stated in words below rather than sitting among them as if
-              it were a fourth category. */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 26, marginBottom: 10 }}>
-            {p.governing && (
-              <Stat n={b.government} label="Government bills" sub="led by their ministers" accent={accent} />
-            )}
-            <Stat n={b.members} label={<>Members&rsquo; bills</>} sub="by their backbench MPs" accent={accent} />
-            {b.other > 0 && (
-              <Stat n={b.other} label="Local &amp; private" sub="narrow, one-off bills" accent={accent} />
-            )}
-          </div>
-          <p style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>
-            {b.passed === 0
-              ? 'None have passed into law yet.'
-              : `${b.passed} of the ${b.total} ${b.passed === 1 ? 'is' : 'are'} now law.`}
-          </p>
-        </>
-      )}
+      {/* Same shape for every party, including one with nothing to show.
+          A party with no bills used to render a single sentence where the others
+          rendered a stat row and a line under it — 87px shorter on a desktop and
+          169px on a phone. The tile cycle turns every few seconds, so that
+          difference moved the whole page under the reader, and the map further
+          down would not sit still while it was being used. Te Pāti Māori now
+          reads "0 Members' bills", which is the same fact stated the same way as
+          everyone else's.
+
+          The categories add up to the count the tracker shows on arrival. "Now
+          law" cuts across all of them and is stated in words below rather than
+          sitting among them as if it were a fourth category. */}
+      {/* Three fixed columns, padded with blanks, rather than a wrapping flex row.
+          A governing party has three categories and an opposition party one or
+          two; on a phone that flex row wrapped to a different number of lines
+          per party, which was the last 105px of page shift left after the empty
+          state was squared away. A grid of three keeps one row for everyone, and
+          the blanks are trailing so the real figures stay left-aligned. */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16, marginBottom: 10 }}>
+        {[
+          ...(p.governing ? [<Stat key="gov" n={b.government} label="Government bills" sub="by their ministers" accent={accent} />] : []),
+          <Stat key="mem" n={b.members} label={<>Members&rsquo; bills</>} sub="by their MPs" accent={accent} />,
+          ...(b.other > 0 ? [<Stat key="oth" n={b.other} label="Local &amp; private" sub="one-off bills" accent={accent} />] : []),
+        ].concat([<span key="p1" />, <span key="p2" />]).slice(0, 3)}
+      </div>
+      {/* Kept to one line at every width — the longer wording wrapped on a phone
+          and put the shift straight back. */}
+      <p style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>
+        {none
+          ? 'None before the House this term.'
+          : b.passed === 0
+            ? 'None have passed into law yet.'
+            : `${b.passed} of the ${b.total} ${b.passed === 1 ? 'is' : 'are'} now law.`}
+      </p>
 
       {/* The point of the whole block. Without this, "National 203" against
           "Te Pāti Māori 0" reads as a scoreboard. */}
@@ -462,12 +493,22 @@ function BillsRow({ p }: { p: TileParty }) {
   )
 }
 
+/** Every tile the same height, whatever its label says.
+ *  At 375px "Government bills / by their ministers" wrapped one line further
+ *  than "Members' bills / by their MPs", so a governing party's bills block was
+ *  20px taller and the page still moved as the cycle turned. Two lines are
+ *  reserved for each, which is what the longest of them needs. */
 function Stat({ n, label, sub, accent }: { n: number; label: React.ReactNode; sub: string; accent: string }) {
   return (
-    <div>
+    // The reservation is on the tile, not on each line. Putting a two-line
+    // minHeight on the label opened a visible gap between it and the sublabel
+    // wherever the label only needed one line, which was every desktop width.
+    // Reserving the whole tile puts the slack under the last line instead,
+    // where nobody sees it.
+    <div style={{ minHeight: 112 }}>
       <div style={{ fontSize: 34, fontWeight: 800, lineHeight: 1, color: accent, fontFamily: MANROPE }}>{n}</div>
-      <div style={{ fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginTop: 5 }}>{label}</div>
-      <div style={{ fontSize: 12.5, color: SUB, fontFamily: MANROPE, marginTop: 1 }}>{sub}</div>
+      <div style={{ ...clamp2, fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginTop: 5, lineHeight: 1.25 }}>{label}</div>
+      <div style={{ ...clamp2, fontSize: 12.5, color: SUB, fontFamily: MANROPE, marginTop: 1, lineHeight: 1.3 }}>{sub}</div>
     </div>
   )
 }
@@ -543,7 +584,12 @@ function PanelHeader({ p }: { p: TileParty }) {
           )}
         </span>
         <span style={{ textAlign: 'left' }}>
-          <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>
+          {/* Two lines reserved. "Marama Davidson & Chlöe Swarbrick" wraps on a
+              phone where "Christopher Luxon" does not, so the card grew by 17px
+              whenever the cycle reached a co-led party and pushed the page
+              down. Reserving the taller case costs one blank line on the others
+              and keeps the card a fixed height at every width. */}
+          <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25, minHeight: '2.5em' }}>
             {p.leaderHref ? <Link href={p.leaderHref} style={{ color: INK, textDecoration: 'none' }}>{p.leader}</Link> : p.leader}
             {p.coLeader && (
               <>
