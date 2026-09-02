@@ -11,6 +11,8 @@ import { PARTY_COLORS } from '@/constants/parties'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { trackerBills } from '@/lib/bills/member-party'
+import { getNewsForParty } from '@/lib/news/live'
+import { getVideosForParty } from '@/lib/news/videos'
 import { PartyTiles, PartyStanceSummary, type TileParty, type TilePosition } from '@/components/homepage/party-tiles'
 import type { PartySlug, PolicyTopic } from '@/types'
 
@@ -47,6 +49,27 @@ function mpSlugForName(name: string): string | null {
 async function buildTileParties(): Promise<TileParty[]> {
   const all = await getAllApprovedPositions()
   const BILLS = trackerBills()
+
+  // Coverage for all six, fetched here rather than in the tile.
+  //
+  // The tile panel is a client component and the selection changes instantly,
+  // so the feed for every party has to be on the page before the first tap.
+  // Each call filters on data->parties in the query — the pattern that replaced
+  // "fetch the newest N and filter in memory", which hid everything about a
+  // party that had not been in the news that week (see getNewsForParty).
+  //
+  // Trimmed to the fields the tile draws. NewsItem and VideoItem carry tag
+  // arrays, snippets and portrait fallbacks that nothing here reads, and all of
+  // it would otherwise be serialised into the page for six parties at once.
+  const coverage = Object.fromEntries(
+    await Promise.all(TILE_ORDER.map(async (slug) => {
+      const [news, videos] = await Promise.all([getNewsForParty(slug, 3), getVideosForParty(slug, 2)])
+      return [slug, {
+        news: news.map((n) => ({ id: n.id, title: n.title, outlet: n.outlet, kind: n.kind, link: n.link, pubDate: n.pubDate })),
+        videos: videos.map((v) => ({ id: v.id, title: v.title, videoId: v.videoId, source: v.source, thumbnail: v.thumbnail, pubDate: v.pubDate })),
+      }] as const
+    })),
+  )
 
   return TILE_ORDER.map((slug) => {
     const prof = PARTY_PROFILES[slug]
@@ -93,6 +116,8 @@ async function buildTileParties(): Promise<TileParty[]> {
       // Counted here on the server, from the same BILLS_54 the tracker filters,
       // so the figure on the tile matches the list it links to.
       bills: BILLS[slug] ?? { total: 0, government: 0, members: 0, other: 0, passed: 0 },
+      news: coverage[slug]?.news ?? [],
+      videos: coverage[slug]?.videos ?? [],
       seats: prof.seats,
       electorateSeats: prof.electorateSeats,
       listSeats: prof.listSeats,

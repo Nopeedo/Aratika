@@ -13,7 +13,7 @@
 import * as React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Armchair } from 'lucide-react'
+import { Armchair, Landmark, Newspaper, PlayCircle } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import type { PartySlug } from '@/types'
@@ -40,6 +40,10 @@ export interface TileParty {
   /** Bills before the House this term, counted from the same dataset /bills
    *  filters — see lib/bills/member-party.ts. */
   bills: { total: number; government: number; members: number; other: number; passed: number }
+  /** Recent coverage naming this party, from the same ingest as /news. Fetched
+   *  server-side for all six — see party-tiles-section.tsx. */
+  news: { id: string; title: string; outlet: string; kind: string; link: string; pubDate: string | null }[]
+  videos: { id: string; title: string; videoId: string; source: string; thumbnail: string; pubDate: string | null }[]
   seats: number
   electorateSeats: number
   listSeats: number
@@ -259,8 +263,113 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
         </section>
       )}
 
+      {/* Recent coverage naming this party. */}
+      {cur && (
+        <section style={{ background: 'transparent' }}>
+          <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 32px' }}>
+            <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+              <CoverageRow p={cur} />
+            </div>
+          </div>
+        </section>
+      )}
+
     </>
   )
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+function fmtDate(iso: string | null): string {
+  if (!iso) return ''
+  const d = new Date(iso)
+  return isNaN(d.getTime()) ? '' : `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`
+}
+
+/**
+ * CoverageRow — news and video naming this party, from the same ingest that
+ * feeds /news and the battleground pages. Nothing is written or curated for the
+ * homepage: it is a filtered view of the real feed, so every headline links out
+ * to the outlet that published it and none of it is ours.
+ *
+ * A party's own releases and its own channel output are tagged to it by the
+ * ingest, so they appear here alongside media coverage. That is why each row
+ * names its outlet: a Beehive release and an RNZ piece are both legitimate, and
+ * a reader is entitled to see which is which before they click.
+ *
+ * The empty state is honest rather than hidden. A quiet week for a minor party
+ * is the normal case, and saying so beats an absent section that implies we
+ * looked and found nothing worth showing.
+ */
+function CoverageRow({ p }: { p: TileParty }) {
+  const nothing = p.news.length === 0 && p.videos.length === 0
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 10 }}>
+        <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: SUB, fontFamily: MANROPE }}>
+          In the news
+        </div>
+        <Link href="/news" style={{ fontSize: 13.5, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}>
+          All coverage &rarr;
+        </Link>
+      </div>
+
+      {nothing ? (
+        <p style={{ fontSize: 13.5, color: SUB, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+          Nothing naming {p.name} in the outlets we track right now. This fills in on its own as they report.
+        </p>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {p.videos.map((v) => (
+            <a
+              key={v.id}
+              href={`https://www.youtube.com/watch?v=${v.videoId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={rowStyle}
+            >
+              <span style={{ position: 'relative', width: 58, height: 42, borderRadius: 8, flexShrink: 0, overflow: 'hidden', background: '#000', display: 'block' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={v.thumbnail} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <PlayCircle style={{ position: 'absolute', inset: 0, margin: 'auto', width: 18, height: 18, color: '#fff' }} />
+              </span>
+              <Meta source={v.source} date={v.pubDate} title={v.title} />
+            </a>
+          ))}
+          {p.news.map((n) => (
+            <a key={n.id} href={n.link} target="_blank" rel="noopener noreferrer" style={rowStyle}>
+              <span style={{
+                width: 32, height: 32, borderRadius: 8, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: n.kind === 'government' ? '#fff7e6' : '#eef4ff',
+              }}>
+                {n.kind === 'government'
+                  ? <Landmark style={{ width: 15, height: 15, color: '#b4810b' }} />
+                  : <Newspaper style={{ width: 15, height: 15, color: '#5b7cc4' }} />}
+              </span>
+              <Meta source={n.outlet} date={n.pubDate} title={n.title} />
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function Meta({ source, date, title }: { source: string; date: string | null; title: string }) {
+  return (
+    <span style={{ flex: 1, minWidth: 0 }}>
+      <span style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 2 }}>
+        <span style={{ fontSize: 11.5, fontWeight: 700, color: SUB, fontFamily: MANROPE }}>{source}</span>
+        {date && <span style={{ fontSize: 11.5, color: MUTE, fontFamily: MANROPE }}>· {fmtDate(date)}</span>}
+      </span>
+      <span style={{ display: 'block', fontSize: 14, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.4 }}>{title}</span>
+    </span>
+  )
+}
+
+const rowStyle: React.CSSProperties = {
+  display: 'flex', gap: 12, alignItems: 'center', textDecoration: 'none',
+  border: `1px solid ${LINE}`, borderRadius: 12, padding: '10px 12px', background: '#fff',
 }
 
 /**
