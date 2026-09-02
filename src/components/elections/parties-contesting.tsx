@@ -110,6 +110,14 @@ function orderByMeasure(slugs: PartySlug[], pctBySlug: Map<PartySlug, number>): 
   return [...measured, ...unmeasured]
 }
 
+/** True when we have any published number for this party — a poll-of-polls
+ *  share, or the last figure a pollster itemised in a footnote. False means no
+ *  one has reported them separately, which is a fact about polling coverage and
+ *  not about the party. */
+function hasAnyFigure(slug: PartySlug, pctBySlug: Map<PartySlug, number>): boolean {
+  return pctBySlug.has(slug) || MINOR_PARTY_READINGS[slug] !== undefined
+}
+
 export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number }[] }) {
   const pctBySlug = new Map(pop.map((p) => [p.slug, p.pct]))
 
@@ -160,6 +168,15 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
         .pc-val { font-size: 15px; font-weight: 800; display: block; text-align: right;
           font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
         .pc-cap { font-size: 10.5px; font-weight: 700; line-height: 1.3; display: block; text-align: right; }
+        .pc-chip {
+          display: inline-flex; flex-direction: column; gap: 1px; text-decoration: none;
+          padding: 7px 11px; border-radius: 8px; border: 1px solid ;
+          border-left-width: 3px; line-height: 1.25; transition: background-color .12s ease;
+        }
+        .pc-chip:focus-visible { outline: 2px solid #2A1206; outline-offset: 1px; }
+        .pc-chip > span:first-child { font-size: 13.5px; }
+        .pc-chip-full { font-size: 10.5px; font-weight: 500; }
+        @media (max-width: 560px) { .pc-chip-full { display: none; } }
         .pc-inline { position: absolute; left: 10px; right: 6px; top: 0; bottom: 0; display: flex;
           align-items: center; font-size: 11px; font-weight: 600; white-space: nowrap;
           overflow: hidden; text-overflow: ellipsis; }
@@ -189,9 +206,17 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
             <span style={{ flex: 1, height: 1, background: LINE }} />
           </div>
           <div className="pc-rows">
-            {(grp.byMeasure ? orderByMeasure(grp.parties, pctBySlug) : grp.parties).map((slug) => (
-              <Row key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} showFullName={grp.showFullName} />
-            ))}
+            {/* Parties with a figure of any kind get a row. The ones with none
+                are pulled out below, because six consecutive rows each reading
+                "Not reported separately, counted in pollsters' Others" said the
+                same sentence six times and made the group look like filler. The
+                sentence is true and worth saying — once, as the heading over
+                the parties it applies to. */}
+            {(grp.byMeasure ? orderByMeasure(grp.parties, pctBySlug) : grp.parties)
+              .filter((slug) => !grp.byMeasure || hasAnyFigure(slug, pctBySlug))
+              .map((slug) => (
+                <Row key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} showFullName={grp.showFullName} />
+              ))}
           </div>
           {/* The threshold explained once per group, instead of a "5%" label
               repeated on all seventeen tiles. */}
@@ -199,6 +224,35 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
             <span aria-hidden style={{ width: 22, flexShrink: 0, borderTop: `1.5px dashed ${hexToRgba(INK, 0.32)}` }} />
             <span>5% — the party vote needed to enter Parliament without winning an electorate</span>
           </div>
+
+          {/* The parties no pollster reports on its own. Said once, over all of
+              them, and they keep their colour and their link — they are on the
+              ballot on the same terms as everyone above, and the only thing
+              they are missing is a number somebody else chose not to publish. */}
+          {grp.byMeasure && (() => {
+            const unreported = grp.parties.filter((slug) => !hasAnyFigure(slug, pctBySlug))
+            if (unreported.length === 0) return null
+            return (
+              <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid ${LINE}` }}>
+                <div style={{ fontSize: 11.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 10, lineHeight: 1.5 }}>
+                  Pollsters don&rsquo;t report these {unreported.length} separately — they&rsquo;re inside the &ldquo;Others&rdquo; figure
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {unreported.map((slug) => (
+                    <Link
+                      key={slug}
+                      href={`/parties/${slug}`}
+                      className="pc-chip"
+                      style={{ borderLeft: `3px solid ${PARTY_COLORS[slug].bg}`, background: hexToRgba(PARTY_COLORS[slug].bg, 0.07) }}
+                    >
+                      <span style={{ fontWeight: 800, color: INK, fontFamily: MANROPE }}>{PARTY_NAMES[slug].short}</span>
+                      <span className="pc-chip-full" style={{ color: TERTIARY, fontFamily: MANROPE }}>{PARTY_NAMES[slug].full}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )
+          })()}
         </div>
       ))}
     </div>
@@ -249,11 +303,14 @@ function Row({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null;
       <span className="pc-track" style={{ background: tint(0.1) }}>
         {polled && <span className="pc-fill" style={{ width: `${fillPct(pct)}%`, background: colour }} />}
         <span aria-hidden className="pc-tick" style={{ left: `${THRESH_PCT}%`, borderLeft: `1.5px dashed ${hexToRgba(INK, 0.32)}` }} />
-        {!polled && (
+        {/* No bar, because an irregular footnote figure is not measured to the
+            standard the bars are drawn to — see the note at the top of this
+            file. The figure and who published it, without the "Last measured"
+            prefix that repeated down the group. Parties with no figure at all
+            are not rows; they are listed once under the group. */}
+        {!polled && reading && (
           <span className="pc-inline" style={{ color: SECONDARY, fontFamily: MANROPE }}>
-            {reading
-              ? <>Last measured <b style={{ color: INK, margin: '0 3px' }}>{reading.pct}%</b> · {reading.pollster}, {fmtDate(reading.date)}</>
-              : <>Not reported separately, counted in pollsters&rsquo; &ldquo;Others&rdquo;</>}
+            <b style={{ color: INK, marginRight: 4 }}>{reading.pct}%</b> {reading.pollster}, {fmtDate(reading.date)}
           </span>
         )}
       </span>
