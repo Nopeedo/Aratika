@@ -351,7 +351,8 @@ function systemPrompt(topic) {
 
 ABSOLUTE RULES:
 - GROUNDED: use ONLY the provided text. Do not use outside knowledge. Do not invent policies, numbers, or promises. If the text does not contain a clear position on ${t.label}, return {"found": false}.
-- NEUTRAL: describe what the party says it will do. Never say whether it is good or bad; no opinion, endorsement, prediction, or loaded language.
+- NEUTRAL: describe what the party says. Never say whether it is good or bad; no opinion, endorsement, prediction, or loaded language.
+- KEEP THEIR TENSE: a party in government often writes up what it HAS delivered rather than what it will do. Report it the way they wrote it. Never convert "Delivered income tax relief" into "Deliver income tax relief" — that puts a promise in their mouth they did not make. Say which of the two it is in "framing".
 - PLAIN: assume the reader knows nothing about politics. The basic summary uses NO jargon. NZ English. Be concrete.
 - VERBATIM QUOTES: "excerpts" and "quote" must be copied CHARACTER-FOR-CHARACTER from the provided text — never paraphrase, compress, stitch sentences, or change words inside them. If you cannot find a suitable exact quote, use an empty string / fewer excerpts. A paraphrase inside quotation marks is a serious error. (Any excerpt or quote that is not an exact substring of the provided text is discarded automatically.)
 
@@ -361,7 +362,8 @@ Return ONLY a JSON object (no markdown) of this exact shape:
   "stance": "<=12 word headline of their position on ${t.label}",
   "summary_basic": "50-90 words, no jargon, what this party says it will do on ${t.label}",
   "summary": "100-160 words, fuller but still plain",
-  "key_proposals": ["3-6 concrete things the party says it will do, each a short plain phrase, grounded in the text"],
+  "key_proposals": ["3-6 concrete things the party says it will do, OR says it has already done — whichever the text actually states. Each a short plain phrase, grounded in the text, in the same tense the party used"],
+  "framing": "exactly one of: pledge (key_proposals are things the party says it WILL do) or record (things it says it HAS done). A governing party writing up its delivery is a record. If mixed, pick whichever covers most of them",
   "who_affected": [{"group": "an everyday group this touches, e.g. renters / small businesses / superannuitants", "detail": "ONE neutral, plain sentence on how it touches them in practice — what it does, not whether it's good or bad"}],
   "excerpts": ["1-3 SHORT verbatim quotes (<=240 chars each) copied exactly from the provided text"],
   "quote": "<=240 char verbatim quote from the provided text that captures their position, or empty string if none fits"
@@ -489,6 +491,11 @@ async function draftOne(party, topic) {
 
   const today = new Date().toISOString().slice(0, 10)
   const keyProposals = Array.isArray(parsed.key_proposals) ? parsed.key_proposals.map((s) => String(s).trim()).filter(Boolean).slice(0, 8) : []
+  // Whether those bullets are promises or a record of delivery. Anything the
+  // model does not explicitly call a record is treated as a pledge: that is
+  // correct for every party out of government, and labelling a promise as an
+  // achievement is the worse of the two errors to make by default.
+  const framing = parsed.framing === 'record' ? 'record' : 'pledge'
   const whoAffected = Array.isArray(parsed.who_affected)
     ? parsed.who_affected.filter((x) => x && (x.group || x.detail)).map((x) => ({ group: String(x.group || '').trim(), detail: String(x.detail || '').trim() })).slice(0, 6)
     : []
@@ -520,7 +527,7 @@ async function draftOne(party, topic) {
       summaryBasic: String(parsed.summary_basic || '').trim(),
       quote,
     } : {}
-    const mergedData = { ...ed, ...rewritten, keyProposals, whoAffected, excerpts, asOf: today, sourceHash: fingerprint }
+    const mergedData = { ...ed, ...rewritten, keyProposals, framing, whoAffected, excerpts, asOf: today, sourceHash: fingerprint }
     // source_url moves with the excerpts. It used to be left alone, so
     // re-pointing a party at a better page — the Greens' housing_policy instead
     // of their /policy index — rewrote the quotes from the new page while the
@@ -547,7 +554,7 @@ async function draftOne(party, topic) {
       stance: String(parsed.stance || '').trim(),
       quote,
       summaryBasic: String(parsed.summary_basic || '').trim(),
-      keyProposals, whoAffected, excerpts,
+      keyProposals, framing, whoAffected, excerpts,
       source_label: PERIOD === '2023' ? `${party.name} — 2023 manifesto` : `${party.name} — official policy page`,
       asOf: today,
       // What the source said when this was written. --if-changed compares
@@ -577,7 +584,7 @@ async function noPositionOne(party, topic) {
       party: party.slug, partyName: party.name, topic, topicLabel: label,
       period: '2026', periodLabel: 'Current policy',
       stance: `No specific stated policy on ${label}`,
-      quote: '', summaryBasic: note, keyProposals: [], whoAffected: [], excerpts: [],
+      quote: '', summaryBasic: note, keyProposals: [], framing: 'pledge', whoAffected: [], excerpts: [],
       noPosition: true, source_label: `${party.name} — official policy index`,
       asOf: new Date().toISOString().slice(0, 10),
     },

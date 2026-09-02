@@ -37,9 +37,21 @@ export function PositionReader({ position, accent, topicLabel }: { position: Par
         <p style={{ fontSize: 15, color: '#23262c', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>{body}</p>
       </div>
 
-      {/* Key proposals */}
+      {/* Key proposals.
+
+          The heading follows the bullets, not the party. A governing party's
+          page is often a record of delivery rather than a set of promises:
+          every bullet on National's economy and law-and-order positions is past
+          tense ("Delivered income tax relief", "Passed laws", "Restored Three
+          Strikes"). Under a fixed "what they'll do" heading those read as
+          pledges AND as things already done, which flatters whoever holds
+          office and claims something the party never said.
+
+          The bullets themselves are left alone. They are accurate summaries of
+          what National published; rewriting them into pledge form would invent
+          a promise. See `framing` in lib/positions/live.ts. */}
       {position.keyProposals.length > 0 && (
-        <Section icon={ListChecks} title="What they say they'll do">
+        <Section icon={ListChecks} title={position.framing === 'record' ? "What they say they've done" : "What they say they'll do"}>
           <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 9 }}>
             {position.keyProposals.map((k, i) => (
               <li key={i} style={{ display: 'flex', gap: 10, fontSize: 14, color: '#23262c', fontFamily: MANROPE, lineHeight: 1.5 }}>

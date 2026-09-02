@@ -613,8 +613,10 @@ function FocusedCard({ slug, pos, topicLabel }: {
   const party = PARTY_PROFILES[slug]
   const c = party.color
   const body = pos?.summaryBasic || pos?.summary
-  // The same editor-written keyProposals the full breakdown page lists under
-  // "What they say they'll do" — short, already one action per line. Preferred
+  // The same editor-written keyProposals the full breakdown page lists (under
+  // "what they'll do" or "what they've done", depending on the position's
+  // framing) — short, already one action per line. This panel puts no heading
+  // over them at all, so it makes no tense claim either way. Preferred
   // over slicing the summary prose into sentences, which produced longer, more
   // meandering bullets. Falls back to that split only where a position has no
   // keyProposals captured yet, so the panel is never left empty.

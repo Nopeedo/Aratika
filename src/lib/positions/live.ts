@@ -20,6 +20,22 @@ export interface PartyPosition {
   summaryBasic: string | null   // plain
   quote: string | null
   keyProposals: string[]
+  /**
+   * Whether keyProposals are things the party says it WILL do, or things it says
+   * it HAS done.
+   *
+   * A governing party's policy page is often an account of delivery rather than
+   * a set of promises. National's economy and law-and-order pages are written
+   * that way, and every bullet drafted from them is past tense — "Delivered
+   * income tax relief", "Passed laws", "Restored Three Strikes". Rendering those
+   * under a heading that reads "What they say they'll do" turns a record into a
+   * pledge, which flatters whoever is in government and is not what the party
+   * actually claimed.
+   *
+   * Defaults to 'pledge', which is right for every opposition party and for a
+   * governing party writing about what it intends next.
+   */
+  framing: 'pledge' | 'record'
   whoAffected: WhoAffected[]
   excerpts: string[]
   noPosition: boolean      // true = verified "no stated policy on this topic"
@@ -48,6 +64,11 @@ function toPosition(r: Row): PartyPosition | null {
     summaryBasic: typeof d.summaryBasic === 'string' ? d.summaryBasic : null,
     quote: typeof d.quote === 'string' && d.quote ? d.quote : null,
     keyProposals: Array.isArray(d.keyProposals) ? (d.keyProposals as unknown[]).map(String) : [],
+    // Anything not explicitly marked as a record is a pledge. A row drafted
+    // before this field existed has no value, and pledge is the safe default:
+    // it is correct for every party not in government, and mislabelling a
+    // promise as an achievement would be the worse error of the two.
+    framing: d.framing === 'record' ? 'record' : 'pledge',
     whoAffected: Array.isArray(d.whoAffected)
       ? (d.whoAffected as Record<string, unknown>[]).map((x) => ({ group: String(x.group ?? ''), detail: String(x.detail ?? '') })).filter((x) => x.group || x.detail)
       : [],
