@@ -1,11 +1,21 @@
 /**
- * PartiesContesting — every registered party contesting the party vote, shown as
- * a tile that FILLS to that party's current poll-of-polls share, like a glass
- * filling. The 5% threshold is drawn across every tile at the same height, so
- * you can see at a glance who clears it, who's close to it, and who doesn't.
+ * PartiesContesting — every registered party contesting the party vote, one to a
+ * row, all on a shared bar axis with the 5% threshold drawn once down the group.
  *
- * Replaces a flat row of party pills. Every registered party appears, grouped by
- * whether they hold seats now — see /party-inclusion.
+ * This was a grid of tiles, each filling like a glass to that party's share.
+ * The trouble was that each tile filled its OWN box from its own floor, so
+ * 30.5% and 29.7% looked alike, 2.0% and 0.4% both read as "nearly empty", and
+ * the printed number was doing all the work the picture was meant to do. Six
+ * parties in a four-column grid also left two orphaned on a second row, and a
+ * 29.7% fill left seven-tenths of its card blank — seventeen parties over three
+ * screens. Rows share a baseline, so the comparison IS the layout, and the
+ * threshold is one line instead of seventeen.
+ *
+ * The whole row is the link to that party's page. That was the tiles' main job
+ * and it had to survive the change.
+ *
+ * Every registered party appears, grouped by whether they hold seats now — see
+ * /party-inclusion.
  *
  * ORDER. The parliamentary group stays in seat order — a fact about the House
  * that exists. The contesting group is ordered by the most recent published
@@ -23,15 +33,15 @@
  * changed with this — it promised alphabetical order, and a promise the site
  * does not keep is worse than either ordering.
  *
- * The honesty problem this has to solve: only seven of the thirteen contesting
- * parties are polled individually. The rest are bundled into pollsters' "Others"
- * and only occasionally itemised in a footnote. Filling those tiles to their
- * footnote number would be doubly misleading — 0.3% renders as ~1px (visually
- * identical to zero, the exact impression the fairness rule exists to avoid),
- * and it implies the figure was measured to the same standard as a headline
- * party-vote number when it's an irregular sub-sample inside the margin of
- * error. So those tiles carry no fill and instead state the last published
- * reading with its pollster and date, or say plainly that there isn't one.
+ * The honesty problem this has to solve: only seven of the parties are polled
+ * individually. The rest are bundled into pollsters' "Others" and only
+ * occasionally itemised in a footnote. Drawing those footnote numbers as bars
+ * would be doubly misleading — 0.3% renders as a sliver visually identical to
+ * zero, the exact impression the fairness rule exists to avoid, and it implies
+ * the figure was measured to the same standard as a headline party-vote number
+ * when it is an irregular sub-sample inside the margin of error. So those rows
+ * carry no bar and state the last published reading with its pollster and date
+ * inside the track, or say plainly that there isn't one.
  */
 
 import Link from 'next/link'
@@ -43,39 +53,9 @@ import { MANROPE, INK, SECONDARY, TERTIARY, BORDER } from '@/constants/theme'
 const WARM = '#5b3d2a', LINE = '#e9e4db'
 
 /**
- * Two tiles to a row, and a tile short enough that seventeen of them are not
- * four screens of scrolling.
- *
- * The grid ASKED for two columns already and never got them: at
- * minmax(min(100%, 210px), 1fr) a second column needs 210 + 210 + the 12px gap
- * = 432px, so auto-fill dropped to one column and each tile stretched to the
- * full width — 17 tiles x 172px, in a layout that reads as deliberate.
- *
- * The track is sized against the NARROWEST common phone, not a convenient one.
- * A first attempt at 158px was checked at 375 (iPhone) and shipped: at 360,
- * which is what most Android phones report and by far the most common width in
- * the world, the grid is 324px and two 158s plus the gap need 328. Four pixels,
- * and every one of those phones got a single column. Measuring one width and
- * generalising is how this bug keeps coming back. 146 + 146 + the 10px gap =
- * 302 against 324, so there is 22px of room rather than a rounding error.
- *
- * The tile lost 24px of height, and the header gave up 8 of them so the gauge
- * only gives up 16. The gauge is the point of this component — every party on
- * one scale with the 5% line at a common height — so shrinking it is the last
- * resort, not the first.
- */
-/**
- * Tile geometry lives in CSS variables so the phone and the desktop can be
- * sized independently, and the gauge is a PERCENTAGE of whatever height is left
- * below the header rather than a pixel count.
- *
- * The px version could only ever describe one tile size: fillPx() closed over a
- * single GAUGE_H, so making the desktop tile taller silently mis-drew every
- * level on it. Expressed as a share of the gauge zone, one formula is correct
- * at both breakpoints and there is nothing to keep in step.
- *
- * The scale is unchanged: FULL_AT fills the zone, the 5% line sits at the same
- * fraction of it on every tile, and the exact number is always printed.
+ * The bar scale. FULL_AT is the width a bar reaches at 100%, THRESHOLD is where
+ * the 5% mark sits inside every track — identical on every row, which is what
+ * lets the marks join into one line down the group.
  */
 const FULL_AT = 35
 const THRESHOLD = 5
@@ -136,51 +116,70 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
       {/*
-        Two sizes, one layout. The phone numbers below 700px are the ones that
-        made seventeen tiles readable on a 360px screen; above it everything
-        returns to the dimensions it had before that work, because a 146px track
-        on a 1280px screen produced five thin columns where there had been four
-        comfortable ones, and the tiles read as squashed rather than dense.
-
-        What does NOT change at the breakpoint is the arrangement: the stats sit
-        in the header band at both sizes. That was not a mobile compromise — it
-        fixed the fill's surface line being drawn through the caption for any
-        party around 5-14%, which was as wrong on a desktop as on a phone.
+        Two sizes, one layout: the name and value columns narrow on a phone so
+        the bar keeps as much of the width as possible, and the full party name
+        drops out. The arrangement itself does not change at the breakpoint —
+        rows are rows at every width, which is most of why this replaced a grid
+        that had to be re-reasoned at each one.
       */}
       <style>{`
-        .pc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 146px), 1fr)); gap: 10px; }
-        .pc-tile { --pc-header: 76px; height: 164px; border-radius: 13px; }
-        .pc-name { font-size: 14.5px; }
-        .pc-full { font-size: 10.5px; }
-        .pc-pct  { font-size: 24px; }
-        .pc-sym  { font-size: 13px; }
-        .pc-cap  { font-size: 9.5px; }
-        .pc-chip { font-size: 10px; padding: 2px 7px; }
-        /* Hidden only where the short name IS the name people know, and only on
-           a phone: at 146px "New Zealand National Party" clamped to "New
-           Zealand…", the same meaningless string on three tiles. There is room
-           for it at 210px, so the desktop keeps it. */
-        .pc-full-compact { display: none; }
+        /* One row per party, on one shared axis.
+           The tiles this replaces each filled their own box from their own
+           floor, so 30.5% and 29.7% looked alike and 2.0% and 0.4% both read as
+           "nearly empty" — the number was doing all the work the picture was
+           meant to do. Rows share a baseline, so the comparison IS the layout.
 
-        @media (min-width: 700px) {
-          .pc-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 12px; }
-          .pc-tile { --pc-header: 92px; height: 186px; border-radius: 15px; }
-          .pc-name { font-size: 15px; }
-          .pc-full { font-size: 10.5px; }
-          .pc-pct  { font-size: 30px; }
-          .pc-sym  { font-size: 15px; }
-          .pc-cap  { font-size: 10px; }
-          .pc-chip { font-size: 10.5px; padding: 3px 9px; }
-          .pc-full-compact { display: -webkit-box; }
+           Fixed name and value columns, identical on every row, are what make
+           the tracks align; the 5% mark then sits at the same offset inside
+           every track, and each mark overhangs the row gap so the segments meet
+           and read as one line down the group. */
+        .pc-rows { --pc-name: 152px; --pc-val: 66px; display: flex; flex-direction: column; }
+        .pc-row {
+          display: grid; grid-template-columns: var(--pc-name) 1fr var(--pc-val);
+          align-items: center; gap: 12px; padding: 6px 8px; margin: 0 -8px;
+          border-radius: 9px; text-decoration: none; position: relative;
+          transition: background-color .12s ease;
+        }
+        .pc-row:hover { background: rgba(42,18,6,.04); }
+        .pc-row:focus-visible { outline: 2px solid #2A1206; outline-offset: 1px; }
+        /* One line on a desktop. "Outdoors & Freedom" wrapped at 116px and that
+           single row stood 60px against everyone else's 43, breaking the rhythm
+           the shared axis depends on. Measured rather than guessed: the longest
+           current name needs 141px, so the column is 152 — a first attempt at
+           138 was three pixels short and clipped it to "Outdoors &…", which is
+           the same off-by-a-few mistake the old tile grid kept making. */
+        .pc-nm { font-size: 14px; font-weight: 800; line-height: 1.2; display: -webkit-box;
+          -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+        .pc-fl {
+          display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+          font-size: 10.5px; font-weight: 500; line-height: 1.3; margin-top: 1px;
+        }
+        .pc-track { position: relative; height: 26px; border-radius: 5px; }
+        .pc-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 5px; }
+        .pc-tick { position: absolute; top: -9px; bottom: -9px; width: 0; }
+        .pc-val { font-size: 15px; font-weight: 800; display: block; text-align: right;
+          font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+        .pc-cap { font-size: 10.5px; font-weight: 700; line-height: 1.3; display: block; text-align: right; }
+        .pc-inline { position: absolute; left: 10px; right: 6px; top: 0; bottom: 0; display: flex;
+          align-items: center; font-size: 11px; font-weight: 600; white-space: nowrap;
+          overflow: hidden; text-overflow: ellipsis; }
+
+        @media (max-width: 560px) {
+          /* No room for 152px here, and clipping a party's name is worse than
+             a taller row — so the name gets two reserved lines on a phone, the
+             same two for every party, and the rhythm holds at a taller pitch. */
+          .pc-rows { --pc-name: 108px; --pc-val: 54px; }
+          .pc-nm { -webkit-line-clamp: 2; min-height: 2.4em; }
+          .pc-row { gap: 9px; padding: 6px 6px; margin: 0 -6px; }
+          .pc-val { font-size: 14px; }
+          .pc-fl { display: none; }
+          .pc-inline { font-size: 10px; left: 8px; }
         }
       `}</style>
       {[
         // The full name is shown where the short one isn't the name people
         // know. "National", "Labour" and "Green" identify themselves; "ALCP",
-        // "TOP" and "Vision NZ" don't, and at a 163px track the big parties'
-        // full names truncated to "New Zealand…" — the same meaningless string
-        // on three different tiles. The extra identification goes to the group
-        // with less name recognition, which is the right way round.
+        // "Vision NZ" and "TOP" don't.
         { label: 'In Parliament', parties: PARLIAMENTARY_PARTIES, showFullName: false, byMeasure: false },
         { label: 'Also registered to contest', parties: NON_PARLIAMENTARY_CONTESTING, showFullName: true, byMeasure: true },
       ].map((grp) => (
@@ -189,10 +188,16 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
             <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: WARM, fontFamily: MANROPE }}>{grp.label}</span>
             <span style={{ flex: 1, height: 1, background: LINE }} />
           </div>
-          <div className="pc-grid">
+          <div className="pc-rows">
             {(grp.byMeasure ? orderByMeasure(grp.parties, pctBySlug) : grp.parties).map((slug) => (
-              <Tile key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} showFullName={grp.showFullName} />
+              <Row key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} showFullName={grp.showFullName} />
             ))}
+          </div>
+          {/* The threshold explained once per group, instead of a "5%" label
+              repeated on all seventeen tiles. */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, fontSize: 11, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE }}>
+            <span aria-hidden style={{ width: 22, flexShrink: 0, borderTop: `1.5px dashed ${hexToRgba(INK, 0.32)}` }} />
+            <span>5% — the party vote needed to enter Parliament without winning an electorate</span>
           </div>
         </div>
       ))}
@@ -200,126 +205,65 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
   )
 }
 
-function Tile({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null; showFullName: boolean }) {
+/**
+ * One party, one row, on the axis its whole group shares.
+ *
+ * The ROW is the link, not just the name. The tiles this replaces were each a
+ * Link, and a reader tapping a party to read about them is the main thing this
+ * section is for — so the whole row is the target, and it takes a hover and a
+ * focus ring like any other control.
+ *
+ * Everything the tile carried is still here: seats, the exact figure, the
+ * caption separating "poll of polls" from a party that is in via electorates,
+ * the last itemised reading for a party pollsters only footnote, and the plain
+ * statement for one they do not report at all. What has gone is the empty space.
+ */
+function Row({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null; showFullName: boolean }) {
   const colour = PARTY_COLORS[slug].bg
   const names = PARTY_NAMES[slug]
   const seats = CURRENT_SEATS[slug]
   const reading = MINOR_PARTY_READINGS[slug]
   const polled = pct !== null
   const belowThreshold = polled && pct < THRESHOLD
-
-  // The tile used to be a solid slab of party colour. Thirteen of those stacked
-  // read as a patchwork quilt and buried the warm paper ground the rest of the
-  // site is built on — and with five parties sharing a near-identical green,
-  // large fills stopped identifying anyone. So the card is paper now and the
-  // party colour is used only where it carries meaning: the gauge, which is
-  // proportional to the actual poll number, and a full-height edge so an
-  // unpolled party is still identifiable at a glance.
   const tint = (a: number) => hexToRgba(colour, a)
 
   return (
-    <Link href={`/parties/${slug}`} className="party-card pc-tile" style={{
-      position: 'relative', display: 'block', overflow: 'hidden',
-      textDecoration: 'none', background: '#fff', border: `1px solid ${BORDER}`,
-      boxShadow: '0 2px 6px rgba(42,18,6,.06)',
-    }}>
-      {/* Identity, independent of the gauge: a party that isn't polled has no
-          fill at all, and without this its tile would be anonymous. */}
-      <span aria-hidden style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, background: colour }} />
-
-      {/* The gauge — party colour, but as a tint over paper rather than a slab,
-          capped by a solid line at the surface so the level stays crisp. */}
-      {polled && (
-        // The zone the gauge may use: everything below the header band. Fills
-        // are a percentage of THIS, so the same number draws correctly on a
-        // 164px tile and a 186px one.
-        <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, top: 'var(--pc-header)', bottom: 0 }}>
-          <span style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: `${fillPct(pct)}%`, background: tint(0.16) }} />
-          <span style={{ position: 'absolute', left: 0, right: 0, bottom: `${fillPct(pct)}%`, height: 3, background: colour, transform: 'translateY(50%)' }} />
+    <Link href={`/parties/${slug}`} className="pc-row" aria-label={`${names.full} — open party page`}>
+      {/* Name and its metadata together. Seats and the in-via-electorates note
+          used to sit under the figure on the right, where "via electorates"
+          wrapped to two lines and made Te Pāti Māori's row taller than every
+          other one. They are facts about the party, so they belong beside it. */}
+      <span style={{ minWidth: 0 }}>
+        <span className="pc-nm" style={{ color: INK, fontFamily: MANROPE }}>{names.short}</span>
+        <span className="pc-fl" style={{ color: TERTIARY, fontFamily: MANROPE }}>
+          {seats > 0
+            ? `${seats} seats${belowThreshold ? ', via electorates' : ''}`
+            : showFullName ? names.full : ''}
         </span>
-      )}
+      </span>
 
-      {/* Unpolled: a faint hatch, so the tile reads as "no measurement" rather
-          than as an empty glass. */}
-      {!polled && (
-        <span aria-hidden style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: `repeating-linear-gradient(135deg, ${tint(0.09)} 0 6px, transparent 6px 12px)`,
-        }} />
-      )}
-
-      {/* 5% threshold — same height on every tile. Drawn in the site's own ink
-          rather than the party's colour: it is a fact about the electoral system,
-          identical on all thirteen tiles, and colouring it per party implied it
-          was something about that party. */}
-      {polled && (
-        <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, top: 'var(--pc-header)', bottom: 0 }}>
-          <span style={{
-            position: 'absolute', left: 0, right: 0, bottom: `${THRESH_PCT}%`,
-            borderTop: `1.5px dashed ${hexToRgba(INK, 0.28)}`,
-          }} />
-          <span style={{
-            position: 'absolute', right: 7, bottom: `calc(${THRESH_PCT}% + 3px)`, fontSize: 9, fontWeight: 800,
-            letterSpacing: '.03em', fontFamily: MANROPE, color: TERTIARY,
-          }}>5%</span>
-        </span>
-      )}
-
-      {/* Everything lives in the top band; the lower part of the tile is gauge
-          and nothing else. The stats used to sit at the BOTTOM, which is where
-          the fill rises from — so for any party whose share put the surface
-          line at that height (roughly 5-14% on this scale: Green, NZ First,
-          ACT, TOP) a 3px rule was drawn straight through the caption, and then
-          through the number when the caption was moved above it. Reordering
-          could never fix that. Text and gauge had to stop sharing space. */}
-      <span style={{ position: 'relative', zIndex: 1, padding: '13px 14px', display: 'flex', flexDirection: 'column', gap: 5 }}>
-        {/* Seats chip laid out beside the names rather than positioned over
-            them — same fix as the /parties tile. The old absolute chip plus a
-            paddingRight on the short name left the full name, which has no such
-            padding, running under the chip on the longer party names. */}
-        <span style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
-          <span style={{ display: 'block', minWidth: 0 }}>
-            <span className="pc-name" style={{ fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15, display: 'block' }}>{names.short}</span>
-            {/* Clamped: at a 163px track "Aotearoa Legalise Cannabis Party"
-                runs to three lines and pushes the header into the gauge. */}
-            {/* Always rendered now; the phone hides it for the parties whose
-                short name is the name people know. Rendering it conditionally
-                meant the desktop could not have it back without a second prop
-                threaded through for a difference that is purely presentational. */}
-            <span
-              className={`pc-full${showFullName ? '' : ' pc-full-compact'}`}
-              style={{ display: showFullName ? '-webkit-box' : undefined, WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', color: TERTIARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.3 }}
-            >{names.full}</span>
-          </span>
-          {seats > 0 && (
-            <span style={{
-              flexShrink: 0, whiteSpace: 'nowrap', fontWeight: 800, color: INK,
-              background: tint(0.14), border: `1px solid ${tint(0.3)}`, borderRadius: 99, padding: '2px 7px', fontFamily: MANROPE,
-            }} className="pc-chip">{seats} {seats === 1 ? 'seat' : 'seats'}</span>
-          )}
-        </span>
-
-        {polled ? (
-          <span style={{ display: 'flex', alignItems: 'baseline', gap: 6, minWidth: 0 }}>
-            <span className="pc-pct" style={{ fontWeight: 800, color: INK, fontFamily: MANROPE, letterSpacing: '-.02em', lineHeight: 1, fontVariantNumeric: 'tabular-nums', flexShrink: 0 }}>
-              {pct.toFixed(1)}<span className="pc-sym">%</span>
-            </span>
-            <span className="pc-cap" style={{ minWidth: 0, fontWeight: 700, color: belowThreshold ? INK : SECONDARY, fontFamily: MANROPE, lineHeight: 1.25 }}>
-              {belowThreshold
-                ? (seats > 0 ? 'in via electorates' : 'below 5%')
-                : 'poll of polls'}
-            </span>
-          </span>
-        ) : reading ? (
-          <span style={{ display: 'block', fontSize: 11, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.45 }}>
-            Last measured <b style={{ color: INK, fontSize: 13 }}>{reading.pct}%</b><br />
-            {reading.pollster}, {fmtDate(reading.date)}
-          </span>
-        ) : (
-          <span style={{ display: 'block', fontSize: 11, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.45 }}>
-            Not broken out in published polls, and counted in pollsters&rsquo; &ldquo;Others&rdquo;
+      {/* The track is tinted in the party's colour whether or not there is a bar
+          to draw. An unpolled party still has to be identifiable, and an empty
+          grey row would read as a party on nothing rather than a party pollsters
+          don't separate out. */}
+      <span className="pc-track" style={{ background: tint(0.1) }}>
+        {polled && <span className="pc-fill" style={{ width: `${fillPct(pct)}%`, background: colour }} />}
+        <span aria-hidden className="pc-tick" style={{ left: `${THRESH_PCT}%`, borderLeft: `1.5px dashed ${hexToRgba(INK, 0.32)}` }} />
+        {!polled && (
+          <span className="pc-inline" style={{ color: SECONDARY, fontFamily: MANROPE }}>
+            {reading
+              ? <>Last measured <b style={{ color: INK, margin: '0 3px' }}>{reading.pct}%</b> · {reading.pollster}, {fmtDate(reading.date)}</>
+              : <>Not reported separately, counted in pollsters&rsquo; &ldquo;Others&rdquo;</>}
           </span>
         )}
+      </span>
+
+      {/* Just the figure. One line for every party, so every row is the same
+          height and the bars keep a steady rhythm down the group. */}
+      <span>
+        {polled
+          ? <span className="pc-val" style={{ color: INK, fontFamily: MANROPE }}>{pct.toFixed(1)}%</span>
+          : <span className="pc-val" style={{ color: TERTIARY, fontFamily: MANROPE, fontWeight: 700 }}>&mdash;</span>}
       </span>
     </Link>
   )
