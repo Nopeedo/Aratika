@@ -34,13 +34,22 @@ export function CredibilityStrip() {
     // apart — and once the alerts pill moved between the sections it floated
     // inside a pair of stray white lines. One divider between sections.
     <section style={{ background: 'transparent' }}>
-      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px)', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(116px, 100%), 1fr))', gap: 12, flex: 1, minWidth: 0, maxWidth: 560 }}>
+      {/* Stacked, not side by side.
+          The tiles and the badges used to be two halves of one space-between
+          row, the tiles capped at 560px and flexing. On a desktop the badges
+          take about 700px on a single line, which left the tiles under 500 —
+          just short of four 116px columns plus their gaps. So auto-fit dropped
+          to three, "123 MPs" wrapped onto a row of its own, and the badges
+          floated at the vertical middle of a two-row grid beside it.
+          Narrow widths were never affected, which is why it looked right on a
+          phone and wrong on a laptop. */}
+      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px)', display: 'flex', flexDirection: 'column', gap: 18 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 12 }}>
           {STATS.map((s) => (
             <StatTile key={s.label} {...s} />
           ))}
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 18px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 18px', alignItems: 'center' }}>
           {['NZ Parliament', 'Electoral Commission', 'Stats NZ', 'Non-partisan & independent'].map((label) => (
             <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 500, color: TERTIARY, fontFamily: MANROPE }}>
               <ShieldCheck style={{ width: 13, height: 13, color: JADE, flexShrink: 0 }} />
