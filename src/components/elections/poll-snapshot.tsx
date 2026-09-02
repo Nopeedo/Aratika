@@ -19,9 +19,8 @@ export interface PollRow { pollster: string; fieldwork: string; parties: Partial
 export interface PreferredPMData { asOf: string; pollster: string; candidates: { name: string; party: PartySlug; pct: number }[] }
 
 export function PollSnapshot({
-  pop, othersPct, pollCount, asAt, pollParties, polls, preferredPM, turnout, enrolment, enrolmentUrl, pollsSource,
+  othersPct, pollCount, asAt, pollParties, polls, preferredPM, turnout, enrolment, enrolmentUrl, pollsSource,
 }: {
-  pop: PollOfPollsEntry[]
   othersPct: number | null
   pollCount: number
   asAt: string
@@ -34,7 +33,6 @@ export function PollSnapshot({
   pollsSource: string
 }) {
   const [open, setOpen] = React.useState(false)
-  const maxPct = Math.max(...pop.map((p) => p.pct), 5)
 
   return (
     <div style={{ border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', overflow: 'hidden' }}>
@@ -42,35 +40,32 @@ export function PollSnapshot({
       <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '15px 18px 4px' }}>
         <TrendingUp style={{ width: 16, height: 16, color: JADE }} />
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Poll of polls</div>
-          <div style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>Average party vote across {pollCount} polls · as at {asAt}</div>
+          <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Where these numbers come from</div>
+          <div style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>
+            Poll of polls · average party vote across {pollCount} polls · as at {asAt}
+            {othersPct != null && <> · Others {othersPct}%</>}
+          </div>
         </div>
       </div>
 
-      {/* Compact bars */}
-      <div style={{ padding: '10px 18px 16px', display: 'flex', flexDirection: 'column', gap: 7 }}>
-        {pop.map((p) => (
-          <div key={p.slug} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ width: 72, fontSize: 12, fontWeight: 700, color: INK, fontFamily: MANROPE, flexShrink: 0 }}>{PARTY_NAMES[p.slug].short}</span>
-            <div style={{ flex: 1, position: 'relative', height: 16, background: SURFACE, borderRadius: 4, overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${(p.pct / maxPct) * 100}%`, background: PARTY_COLORS[p.slug].bg, borderRadius: 4 }} />
-              <div title="5% threshold" style={{ position: 'absolute', left: `${(5 / maxPct) * 100}%`, top: -2, bottom: -2, width: 2, background: 'rgba(12,14,18,.3)' }} />
-            </div>
-            <span style={{ width: 42, textAlign: 'right', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, flexShrink: 0 }}>{p.pct}%</span>
-          </div>
-        ))}
-        {othersPct != null && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ width: 72, fontSize: 12, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, flexShrink: 0 }}>Others</span>
-            <div style={{ flex: 1, position: 'relative', height: 16, background: SURFACE, borderRadius: 4, overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${(othersPct / maxPct) * 100}%`, background: '#9aa0aa', borderRadius: 4 }} />
-              <div title="5% threshold" style={{ position: 'absolute', left: `${(5 / maxPct) * 100}%`, top: -2, bottom: -2, width: 2, background: 'rgba(12,14,18,.3)' }} />
-            </div>
-            <span style={{ width: 42, textAlign: 'right', fontSize: 12.5, fontWeight: 800, color: SECONDARY, fontFamily: MANROPE, flexShrink: 0 }}>{othersPct}%</span>
-          </div>
-        )}
-        <div style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.6 }}>
-          The line marks the <b>5%</b> a party needs (or one electorate) to enter Parliament. <b>Others</b> is the smaller
+      {/*
+        The per-party bars are gone from here.
+        They were drawn twice on this page: once as this card's compact list and
+        again, immediately above, as the shared-axis rows in PartiesContesting —
+        same parties, same colours, same order, same 5% marker. The rows carry
+        more (seats, sources, all seventeen contesting parties, a link into each
+        party page), so they are the ones that stay.
+
+        What this card keeps is everything that existed nowhere else: how many
+        polls the average is drawn from and when, the Others figure, the note
+        about what Others means and what a poll is not, and the detail behind
+        the expander — the individual polls, preferred PM, turnout and
+        enrolment. Deleting the card outright would have taken all of that with
+        it to remove one duplicated chart.
+      */}
+      <div style={{ padding: '4px 18px 16px' }}>
+        <div style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6 }}>
+          A party needs <b>5%</b> of the party vote, or one electorate, to enter Parliament. <b>Others</b> is the smaller
           registered parties pollsters group together and don’t report individually. <Link href="/party-inclusion" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>See every contesting party</Link>. Arapono reports polls. It doesn’t predict the result.
         </div>
       </div>

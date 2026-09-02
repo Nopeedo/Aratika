@@ -124,7 +124,6 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               carries its own heading, so there is no ZoneHead here. */}
           <section id="polling" style={{ scrollMarginTop: 80 }}>
             <PollSnapshot
-              pop={pop}
               othersPct={pollOfPollsOthers(polls)}
               pollCount={polls.length}
               asAt={POLLS_AS_AT}
