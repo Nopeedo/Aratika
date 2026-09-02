@@ -10,10 +10,12 @@
  */
 
 import { BILLS_54, type Bill54 } from '@/constants/bills-54'
+import { normBillTitle } from './slug'
 
-/** Normalise a bill title for matching — strip everything but a–z0–9 (matches the
- *  /bills tracker's reader-slug map). */
-export const normBillTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
+/** Re-exported so the callers that resolve a link and normalise a title still
+ *  get both from here. The definition moved to ./slug, which nothing heavy
+ *  imports — this module pulls in the whole register. */
+export { normBillTitle }
 
 const BILL54_BY_TITLE = new Map(BILLS_54.map((b) => [normBillTitle(b.title), b]))
 

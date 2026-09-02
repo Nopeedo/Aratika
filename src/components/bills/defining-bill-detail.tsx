@@ -12,6 +12,7 @@ import { DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bil
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { BILLS_54 } from '@/constants/bills-54'
 import DEFINING_BILL_MAP from '@/constants/defining-bill-map.json'
+import { normBillTitle } from '@/lib/bills/slug'
 import type { PolicyTopic } from '@/types'
 import { INK, MANROPE } from '@/constants/theme'
 
@@ -44,17 +45,22 @@ function fmtDate(iso?: string | null) {
  *  page never showed it, so a reader who tracked the topic had no way to reach
  *  the legislation itself or see how far along any of it was.
  *
- *  Linking out to Parliament rather than to /bills/<slug>: only the ten curated
- *  bills in bills-data have pages here. These live in the 270-bill snapshot,
- *  which the tracker renders but which has no individual routes — an internal
- *  link would 404. */
+ *  Where each card goes: our own plain-language breakdown at /legislation/<slug>
+ *  when one is published, and Parliament's page when it is not. Not /bills/<slug>
+ *  in either case — only the ten curated bills in bills-data have a page on that
+ *  route, and these live in the 270-bill register, so an internal link there
+ *  would 404.
+ *
+ *  Matched on normalised title, the same join /bills and /mps/[slug] use: the
+ *  register and our breakdowns slug the same bill differently (the Planning Bill
+ *  is 0235 in one and 235 in the other), so the slug cannot be the key. */
 function coveredBills(slug: string) {
   const mapped = (DEFINING_BILL_MAP as Record<string, string[] | string>)[slug]
   if (!Array.isArray(mapped)) return []
   return mapped.map((s) => BILLS_54.find((b) => b.slug === s)).filter((b): b is (typeof BILLS_54)[number] => !!b)
 }
 
-export function DefiningBillDetail({ bill }: { bill: DefiningBill }) {
+export function DefiningBillDetail({ bill, readerSlugs = {} }: { bill: DefiningBill; readerSlugs?: Record<string, string> }) {
   const st = STATUS[bill.statusKind]
   const StatusIcon = st.icon
   const topic = bill.topic ? POLICY_TOPICS[bill.topic as PolicyTopic] : null
@@ -143,6 +149,11 @@ export function DefiningBillDetail({ bill }: { bill: DefiningBill }) {
                 const stillOpen = !!(b.submissionsCalled && b.submissionsClose && b.submissionsClose >= TODAY_NZ)
                 const closed = !!(b.submissionsCalled && closes && !stillOpen)
                 const open = stillOpen
+                // Our own page for this bill, when there is one. It carries the
+                // plain-language summary, the policy breakdown and the full text
+                // — and links on to Parliament from there — so it is the better
+                // first stop than dropping a reader straight into the register.
+                const readerSlug = readerSlugs[normBillTitle(b.title)]
                 const cardStyle = { background: CARD, border: `1px solid ${open ? '#bfd4fe' : LINE}`, borderRadius: 12, padding: '12px 14px', scrollMarginTop: 84 }
                 const inner = (
                   <>
@@ -160,33 +171,37 @@ export function DefiningBillDetail({ bill }: { bill: DefiningBill }) {
                         Submissions closed {closes}
                       </div>
                     )}
-                    {b.officialUrl && (
+                    {(readerSlug || b.officialUrl) && (
                       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: ACCENT_DK, fontFamily: MANROPE, marginTop: 7 }}>
-                        Read it on parliament.nz <ExternalLink style={{ width: 12, height: 12 }} />
+                        {readerSlug
+                          ? <>Read our plain-language breakdown <ArrowRight style={{ width: 12, height: 12 }} /></>
+                          : <>Read it on parliament.nz <ExternalLink style={{ width: 12, height: 12 }} /></>}
                       </span>
                     )}
                   </>
                 )
-                // The whole card is the link, not just the line at the bottom.
-                // The title is what a reader reaches for — it is the biggest
-                // thing on the card and it names the thing they want — and
-                // tapping it did nothing, so the card read as a dead end that
-                // happened to have a link under it. One anchor around the whole
-                // card rather than a second one on the title: nested links are
-                // invalid, and two targets to the same bill in a card this
-                // small only compete with each other.
-                // Anchored so a notification about ONE of these bills can land
-                // on its card rather than the top of the umbrella page —
-                // "Natural Environment Bill advanced" used to drop the reader
-                // at the RMA explainer's headline and leave them to find the
-                // bill themselves. The detectors link #bill-<register-slug>.
-                return b.officialUrl ? (
-                  <a key={b.slug} id={`bill-${b.slug}`} href={b.officialUrl} target="_blank" rel="noopener noreferrer" className="party-card" style={{ ...cardStyle, display: 'block', textDecoration: 'none' }}>
+                // The whole card is the link, not just the line at the bottom:
+                // the title is the biggest thing on it and names what the reader
+                // wants, so that is what gets tapped, and tapping it did nothing.
+                // One anchor around everything rather than a second on the title
+                // — nested links are invalid, and two targets to the same bill in
+                // a card this small only compete with each other.
+                //
+                // The id stays on whichever element that is: a notification about
+                // ONE of these bills lands on its card rather than the top of the
+                // umbrella page, and the detectors link #bill-<register-slug>.
+                const linkStyle = { ...cardStyle, display: 'block', textDecoration: 'none' }
+                if (readerSlug) return (
+                  <Link key={b.slug} id={`bill-${b.slug}`} href={`/legislation/${readerSlug}`} className="party-card" style={linkStyle}>
+                    {inner}
+                  </Link>
+                )
+                if (b.officialUrl) return (
+                  <a key={b.slug} id={`bill-${b.slug}`} href={b.officialUrl} target="_blank" rel="noopener noreferrer" className="party-card" style={linkStyle}>
                     {inner}
                   </a>
-                ) : (
-                  <div key={b.slug} id={`bill-${b.slug}`} style={cardStyle}>{inner}</div>
                 )
+                return <div key={b.slug} id={`bill-${b.slug}`} style={cardStyle}>{inner}</div>
               })}
             </div>
           </div>

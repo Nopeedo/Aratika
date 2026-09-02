@@ -17,6 +17,7 @@ import { BILLS_54, BILLS_54_META } from '@/constants/bills-54'
 import type { BillStatus } from '@/types'
 import { DEFINING_BILLS, getDefiningBill } from '@/constants/defining-bills'
 import { DefiningBillDetail } from '@/components/bills/defining-bill-detail'
+import { getBillReaderSlugs } from '@/lib/bills/live'
 import { StageTracker } from '@/components/bills/stage-tracker'
 import { BillStatusBadge } from '@/components/ui/badge'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
@@ -96,8 +97,13 @@ export default async function BillDetailPage(
   const { slug } = await params
 
   // Curated "bills that defined this term" get their own breakdown view.
+  //
+  // It is handed the published-breakdown map so the real bills it lists can send
+  // a reader to our own plain-language page first, and only out to Parliament
+  // when we have nothing of our own. Resolved at build, like everything else on
+  // this page — a breakdown approved later shows up on tomorrow's rebuild.
   const defining = getDefiningBill(slug)
-  if (defining) return <DefiningBillDetail bill={defining} />
+  if (defining) return <DefiningBillDetail bill={defining} readerSlugs={await getBillReaderSlugs()} />
 
   const bill = getBill(slug)
   if (!bill) notFound()

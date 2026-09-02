@@ -5,7 +5,8 @@
  */
 
 import { createClient } from '@/lib/supabase/server'
-import { billSlugFromLink } from './slug'
+import { publicClient } from '@/lib/supabase/public'
+import { billSlugFromLink, normBillTitle } from './slug'
 
 export interface PolicyLink {
   topic: string
@@ -85,6 +86,42 @@ export async function getApprovedBills(): Promise<LiveBill[]> {
   return (data as Row[] | null ?? [])
     .map(toLiveBill)
     .filter((b): b is LiveBill => !!b && !!b.summary && b.policyLinks.length >= 0)
+}
+
+/** Normalised bill title -> our reader slug, for every published breakdown.
+ *
+ *  The question three pages keep asking is only ever "do we have our own page
+ *  for this bill?", and each was answering it by fetching the full approved list
+ *  and building the same map inline. This is that map, once.
+ *
+ *  Cookie-free (supabase/public) rather than the session client, so a page that
+ *  is statically generated can ask at build time without opting itself into
+ *  dynamic rendering — /bills/[slug] is prerendered and must stay that way. The
+ *  rows are status='approved', which is what every visitor sees, so there is no
+ *  session to respect.
+ *
+ *  Returns {} rather than throwing when Supabase is unconfigured or unreachable.
+ *  Every caller falls back to linking out to Parliament — a worse link, never a
+ *  broken page — and a build with no keys (the design-only setup in
+ *  docs/DESIGN-HANDOFF.md) has to keep producing a site.
+ */
+export async function getBillReaderSlugs(): Promise<Record<string, string>> {
+  try {
+    const { data } = await publicClient()
+      .from('content_items')
+      .select('title, data')
+      .eq('type', 'legislation')
+      .eq('status', 'approved')
+      .limit(300)
+    const map: Record<string, string> = {}
+    for (const r of (data as { title: string; data: { link?: string } | null }[] | null) ?? []) {
+      const slug = billSlugFromLink(r.data?.link)
+      if (slug) map[normBillTitle(r.title)] = slug
+    }
+    return map
+  } catch {
+    return {}
+  }
 }
 
 export async function getApprovedBillBySlug(slug: string): Promise<LiveBill | null> {

@@ -82,12 +82,27 @@ export function BillReader({ bill, stances = {} }: { bill: LiveBill; stances?: R
       {/* embedded full text with highlighted policy sections */}
       <BillFullText fullText={bill.fullText} policyLinks={bill.policyLinks} docType={bill.docType} contentItemId={bill.id} billSlug={bill.slug} billTitle={bill.title} />
 
-      {/* official source link */}
-      {bill.link && (
-        <a href={bill.link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
+      {/* Official sources. Two different pages, easily confused: legislation.govt.nz
+          holds the TEXT, bills.parliament.nz tracks its PROGRESS through the House
+          and is where submissions are lodged.
+
+          The Parliament link used to appear only inside "Have your say", and only
+          while submissions were open — so on a bill whose window had shut, which is
+          most of them, a reader had no way from our page back to the register at
+          all. Anything that sends people here (the defining-bill cards, the tracker,
+          an MP's bill list) is promising them our version AND the official one. */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+        {bill.link && (
+          <a href={bill.link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
           <ExternalLink style={{ width: 14, height: 14, color: TERTIARY }} /> View the official {bill.docType} on legislation.govt.nz
         </a>
-      )}
+        )}
+        {bill.officialUrl && (
+          <a href={bill.officialUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
+            <ExternalLink style={{ width: 14, height: 14, color: TERTIARY }} /> Follow its progress on bills.parliament.nz
+          </a>
+        )}
+      </div>
 
       {/* transparency footer */}
       <p style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6, marginTop: 24, paddingTop: 16, borderTop: `1px solid ${BORDER}` }}>
