@@ -5,8 +5,8 @@ export const BILLS_54_TOPIC_COUNTS: Record<string, { passed: number; active: num
     "active": 11
   },
   "housing": {
-    "passed": 7,
-    "active": 8
+    "passed": 8,
+    "active": 7
   },
   "health": {
     "passed": 12,
@@ -17,8 +17,8 @@ export const BILLS_54_TOPIC_COUNTS: Record<string, { passed: number; active: num
     "active": 1
   },
   "climate": {
-    "passed": 30,
-    "active": 8
+    "passed": 31,
+    "active": 7
   },
   "crime-justice": {
     "passed": 16,

@@ -1,6 +1,14 @@
 {
-  "generated": "2026-09-01",
+  "generated": "2026-09-02",
   "changes": [
+    {
+      "mp": "shane-reti",
+      "field": "passedBills",
+      "label": "Members’ bills passed into law",
+      "from": 0,
+      "to": 1,
+      "date": "2026-09-02"
+    },
     {
       "mp": "cameron-brewer",
       "field": "govBills",
