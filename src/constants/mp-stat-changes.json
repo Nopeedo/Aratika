@@ -1,6 +1,14 @@
 {
-  "generated": "2026-09-02",
+  "generated": "2026-09-03",
   "changes": [
+    {
+      "mp": "nicola-willis",
+      "field": "govBills",
+      "label": "Government bills in charge",
+      "from": 21,
+      "to": 22,
+      "date": "2026-09-03"
+    },
     {
       "mp": "shane-reti",
       "field": "passedBills",
