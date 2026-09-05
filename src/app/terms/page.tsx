@@ -11,7 +11,7 @@ export default function TermsPage() {
     <LegalPage
       title="Terms of Use"
       subtitle="The ground rules for using Arapono."
-      updated="June 2026"
+      updated="September 2026"
     >
       <h2>1. About Arapono</h2>
       <p>
@@ -51,13 +51,12 @@ export default function TermsPage() {
       <h2>6. Accounts</h2>
       <p>You’re responsible for keeping your login secure and for activity under your account. Tell us promptly if you suspect unauthorised use.</p>
 
-      <h2>7. Premium subscriptions</h2>
-      <ul>
-        <li>Premium is a recurring subscription billed through <strong>Stripe</strong>.</li>
-        <li>You can <strong>cancel anytime</strong> from your dashboard; access continues until the end of the paid period.</li>
-        <li>Prices may change with reasonable notice; changes won’t affect the period you’ve already paid for.</li>
-        <li>Your rights under the <strong>Consumer Guarantees Act 1993</strong> are not affected by these terms.</li>
-      </ul>
+      <h2>7. Arapono is free</h2>
+      <p>
+        There is no paid tier, no subscription and nothing to buy. Every part of the site is available to everyone, and
+        we never ask for card details. If that ever changes we’ll say so here first, and your rights under the{' '}
+        <strong>Consumer Guarantees Act 1993</strong> would not be affected by these terms.
+      </p>
 
       <h2>8. Intellectual property &amp; sources</h2>
       <p>
