@@ -151,11 +151,32 @@ export async function sendPushToUser(userId, payload) {
   return { sent, devices: subs.length }
 }
 
+/**
+ * A recipient reference that is safe to print.
+ *
+ * These scripts run as GitHub Actions on a PUBLIC repository, so anything they
+ * print is world-readable — for as long as the run log is retained, by anyone,
+ * without an account. A subscriber's address has no business in there.
+ *
+ * Enough survives to recognise a repeated failure against the same recipient
+ * while debugging; not enough to contact them or to identify them from the log
+ * alone. Where a caller has the user id it should log that instead, which is
+ * fully traceable in the database and meaningless to a passer-by.
+ */
+export function maskEmail(addr) {
+  const s = String(addr ?? '')
+  const at = s.indexOf('@')
+  if (at < 1) return '(address withheld)'
+  const domain = s.slice(at + 1)
+  const dot = domain.indexOf('.')
+  return `${s[0]}***@${dot > 0 ? domain[0] + '***' + domain.slice(dot) : '***'}`
+}
+
 // ── Send: email ───────────────────────────────────────────────────────────────
 export async function emailUser(to, subject, text, html) {
   const m = mailer()
   if (!m) return false
-  if (DRY) { console.log(`  [DRY email] ${to} — "${subject}"`); return true }
+  if (DRY) { console.log(`  [DRY email] ${maskEmail(to)} — "${subject}"`); return true }
   await m.sendMail({ from: `"Arapono" <${process.env.ZOHO_SMTP_USER}>`, to, subject, text, html })
   return true
 }

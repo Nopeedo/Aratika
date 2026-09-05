@@ -143,10 +143,18 @@ const { data: usersPage, error: e2 } = await sb.auth.admin.listUsers({ perPage: 
 if (e2) { console.error(e2.message); process.exit(1) }
 const emailOf = new Map((usersPage?.users || []).map((u) => [u.id, u.email]))
 
+/** First segment of a user id — enough to follow one recipient through a run. */
+const short = (id) => String(id ?? '').slice(0, 8)
+
 const jobs = due.map((p) => ({ ...p, email: emailOf.get(p.userId) })).filter((p) => p.email)
 // The link is logged because it is the part that was silently wrong: the send
 // reported success while pointing every reader at the tracker index.
-for (const j of jobs) console.log(`  → ${j.email}: "${j.bill.title.slice(0, 60)}" closes ${j.bill.submissionsClose} · link ${j.href || '/bills (no href on bookmark)'}`)
+// Logged by user id, never by address. This runs as a GitHub Action on a
+// PUBLIC repository, so every line here is readable by anyone: printing a
+// subscriber's email beside the bill they follow published a named person's
+// political interest, daily, to the open internet. The id is traceable in the
+// database and inert outside it.
+for (const j of jobs) console.log(`  → user ${short(j.userId)}: "${j.bill.title.slice(0, 60)}" closes ${j.bill.submissionsClose} · link ${j.href || '/bills (no href on bookmark)'}`)
 
 if (DRY) { console.log('\n(dry run — nothing sent, state unchanged)'); process.exit(0) }
 
@@ -214,8 +222,8 @@ for (const j of jobs) {
   if (claimErr) {
     // 23505 = unique_violation. Anything else is a real fault, and sending
     // without a durable record is how people get emailed twice, so don't.
-    if (claimErr.code === '23505') { skipped++; console.log(`· already claimed, skipping ${j.email}`) }
-    else console.error(`✗ ${j.email} — could not claim (${claimErr.message}); not sending`)
+    if (claimErr.code === '23505') { skipped++; console.log(`· already claimed, skipping user ${short(j.userId)}`) }
+    else console.error(`✗ user ${short(j.userId)} — could not claim (${claimErr.message}); not sending`)
     continue
   }
 
@@ -223,12 +231,12 @@ for (const j of jobs) {
   try {
     await transporter.sendMail({ from: `"Arapono" <${SMTP_USER}>`, to: j.email, subject, text, html })
     sent++
-    console.log(`✓ sent to ${j.email}`)
+    console.log(`✓ sent to user ${short(j.userId)}`)
   } catch (err) {
     // Release the claim so a later run retries. Better a possible duplicate
     // after a genuine SMTP failure than an alert silently never sent.
     const { error: relErr } = await sb.from('email_alerts').delete().eq('user_id', j.userId).eq('dedup_key', dedup)
-    console.error(`✗ ${j.email} — ${err.message}${relErr ? ` (claim NOT released: ${relErr.message})` : ' (claim released, will retry)'}`)
+    console.error(`✗ user ${short(j.userId)} — ${err.message}${relErr ? ` (claim NOT released: ${relErr.message})` : ' (claim released, will retry)'}`)
   }
 }
 
