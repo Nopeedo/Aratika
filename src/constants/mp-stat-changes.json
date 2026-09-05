@@ -1,6 +1,342 @@
 {
-  "generated": "2026-09-04",
+  "generated": "2026-09-05",
   "changes": [
+    {
+      "mp": "kieran-mcanulty",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 4419,
+      "to": 4448,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "deborah-russell",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 3799,
+      "to": 3803,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "tracey-mclellan",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2122,
+      "to": 2124,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "camilla-belich",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 13935,
+      "to": 13958,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "barbara-edmonds",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 7076,
+      "to": 7084,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "willow-jean-prime",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 4666,
+      "to": 4705,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "francisco-hernandez",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 28515,
+      "to": 28907,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "teanau-tuiono",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 5184,
+      "to": 5220,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "huhana-lyndon",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 345,
+      "to": 348,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "carmel-sepuloni",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2564,
+      "to": 2717,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "willie-jackson",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1158,
+      "to": 1162,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "arena-williams",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 3249,
+      "to": 3255,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "reuben-davidson",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1355,
+      "to": 1361,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "mike-davidson",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 185,
+      "to": 210,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "rachel-brooking",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 9116,
+      "to": 9155,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "vanushi-walters",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 886,
+      "to": 1001,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "jo-luxton",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 3875,
+      "to": 3889,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "ayesha-verrall",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 22683,
+      "to": 22691,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "ingrid-leary",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2518,
+      "to": 2522,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "jan-tinetti",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 3401,
+      "to": 3416,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "ginny-andersen",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 5231,
+      "to": 5256,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "jenny-salesa",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 989,
+      "to": 991,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "chle-swarbrick",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1336,
+      "to": 1348,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "glen-bennett",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 439,
+      "to": 441,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "lawrence-xu-nan",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1717,
+      "to": 1719,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "takuta-ferris",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 12,
+      "to": 26,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "scott-willis",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 528,
+      "to": 551,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "cushla-tangaere-manuel",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1148,
+      "to": 1154,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "rachel-boyack",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1323,
+      "to": 1327,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "phil-twyford",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2522,
+      "to": 2528,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "georgie-dansey",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 70,
+      "to": 105,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "shanan-halbert",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1484,
+      "to": 1488,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "chris-hipkins",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2938,
+      "to": 2946,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "damien-oconnor",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1574,
+      "to": 1586,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "greg-oconnor",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 790,
+      "to": 794,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "lan-pham",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1811,
+      "to": 1858,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "priyanca-radhakrishnan",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2308,
+      "to": 2316,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "dan-rosewarne",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 185,
+      "to": 191,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "lemauga-lydia-sosene",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1869,
+      "to": 1890,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "tangi-utikere",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 7266,
+      "to": 7373,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "helen-white",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 796,
+      "to": 800,
+      "date": "2026-09-05"
+    },
+    {
+      "mp": "megan-woods",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2864,
+      "to": 2870,
+      "date": "2026-09-05"
+    },
     {
       "mp": "nicola-willis",
       "field": "govBills",
