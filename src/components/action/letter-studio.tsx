@@ -14,7 +14,7 @@ import {
 import {
   LETTER_TEMPLATES, type LetterTemplateId, type LetterContext, type LetterInput,
 } from '@/constants/letter-templates'
-import { assembleLetter, deriveParliamentaryEmail, mailtoHref } from '@/lib/letter/build'
+import { assembleLetter, deriveParliamentaryEmail, mailtoHref, composeTargets, COMPOSE_URL_LIMIT } from '@/lib/letter/build'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const SERIF = 'Georgia, "Times New Roman", serif'
@@ -57,6 +57,7 @@ export function LetterStudio({ templateId, ctx: ctx0 }: { templateId: LetterTemp
   const [stance, setStance] = useState<'support' | 'oppose' | 'neither'>('support')
   const [appear, setAppear] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [addrCopied, setAddrCopied] = useState(false)
 
   const ctx: LetterContext = { ...ctx0, recipientName, recipientRole }
   const input: LetterInput = { senderName, senderLocation, senderEmail, subject, body, stance, appear }
@@ -67,6 +68,15 @@ export function LetterStudio({ templateId, ctx: ctx0 }: { templateId: LetterTemp
     ((template.recipientKind === 'mp' || template.recipientKind === 'minister') && recipientName
       ? deriveParliamentaryEmail(recipientName)
       : '')
+
+  /** Past this the compose URL gets truncated by the browser or the provider,
+   *  and a letter arriving with its ending silently missing is worse than one
+   *  that was never prefilled. See COMPOSE_URL_LIMIT. */
+  const tooLong = letter.length > COMPOSE_URL_LIMIT
+
+  const copyAddress = async () => {
+    try { await navigator.clipboard.writeText(emailSuggestion); setAddrCopied(true); setTimeout(() => setAddrCopied(false), 1800) } catch { /* ignore */ }
+  }
 
   const copy = async () => {
     try { await navigator.clipboard.writeText(letter); setCopied(true); setTimeout(() => setCopied(false), 1800) } catch { /* ignore */ }
@@ -171,8 +181,58 @@ export function LetterStudio({ templateId, ctx: ctx0 }: { templateId: LetterTemp
             <button onClick={copy} style={btn(true)}>{copied ? <Check style={ic} /> : <Copy style={ic} />}{copied ? 'Copied!' : 'Copy'}</button>
             <button onClick={download} style={btn(false)}><Download style={ic} />Download</button>
             <button onClick={print} style={btn(false)}><Printer style={ic} />Print / PDF</button>
-            <a href={mailtoHref(emailSuggestion, subject, letter)} style={{ ...btn(false), textDecoration: 'none' }}><Mail style={ic} />Open in email</a>
           </div>
+
+          {/* ── Send it ──────────────────────────────────────────────────
+              "Open in email" was a single mailto, which is the one option that
+              can fail silently: it needs a mail client registered with the
+              operating system, so anyone reading their mail at gmail.com in a
+              browser clicked it and nothing happened. No error, nothing to
+              retry — which is what made this step confusing.
+
+              Gmail and Outlook both take a compose URL and work in a browser
+              with no local client at all. mailto stays for people who do have
+              one. The address is at the top with its own copy button, because
+              the reliable path for everyone else is "copy it and paste it into
+              whatever you use", and that was buried in a paragraph below. */}
+          {emailSuggestion && (
+            <div style={{ padding: '13px 15px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 12, fontFamily: MANROPE }}>
+              <div style={{ fontSize: 12.5, fontWeight: 800, color: INK, marginBottom: 8 }}>Send it</div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 10 }}>
+                <code style={{ fontSize: 13, fontWeight: 700, color: INK, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 8, padding: '6px 10px', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace' }}>
+                  {emailSuggestion}
+                </code>
+                <button
+                  onClick={copyAddress}
+                  style={{ ...btn(false), padding: '6px 11px', fontSize: 12.5 }}
+                >
+                  {addrCopied ? <Check style={ic} /> : <Copy style={ic} />}{addrCopied ? 'Copied' : 'Copy address'}
+                </button>
+              </div>
+
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {composeTargets(emailSuggestion, subject, letter).map((t) => (
+                  <a
+                    key={t.id}
+                    href={t.href}
+                    target={t.id === 'mailto' ? undefined : '_blank'}
+                    rel={t.id === 'mailto' ? undefined : 'noopener noreferrer'}
+                    onClick={() => { if (tooLong) copy() }}
+                    style={{ ...btn(false), textDecoration: 'none', fontSize: 12.5, padding: '7px 12px' }}
+                  >
+                    <Mail style={ic} />{t.label}
+                  </a>
+                ))}
+              </div>
+
+              <p style={{ fontSize: 12, color: SECONDARY, lineHeight: 1.55, margin: '10px 0 0' }}>
+                {tooLong
+                  ? 'Your letter is long enough that some email services would cut it short in the link, so opening one of these copies the full text to your clipboard — paste it into the message.'
+                  : 'These open a new message with your letter already in it.'}
+              </p>
+            </div>
+          )}
 
           {/* How to send it */}
           <div style={{ padding: '13px 15px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 12, fontFamily: MANROPE }}>
@@ -190,8 +250,14 @@ export function LetterStudio({ templateId, ctx: ctx0 }: { templateId: LetterTemp
               </p>
             ) : (
               <p style={{ fontSize: 12.5, color: SECONDARY, lineHeight: 1.55, margin: 0 }}>
-                {emailSuggestion && <>Suggested email (Parliament’s standard format): <b style={{ color: INK }}>{emailSuggestion}</b>. </>}
-                Always verify the address on their official page
+                {/* The address itself now sits in "Send it" above, with a copy
+                    button. Repeating it here just said the same string twice.
+                    What stays is the part a reader genuinely needs: that we
+                    BUILT that address from Parliament's naming convention
+                    rather than reading it off an official page, because
+                    Parliament does not publish MPs' email addresses at all. */}
+                {emailSuggestion && <>That address follows Parliament’s standard naming format — Parliament doesn’t publish MPs’ email addresses, so we build it rather than quote one. </>}
+                Worth checking against their official page before you send
                 {ctx0.recipientUrl && <> · <a href={ctx0.recipientUrl} target="_blank" rel="noopener noreferrer" style={link}>view contact details <ExternalLink style={icSm} /></a></>}.
               </p>
             )}

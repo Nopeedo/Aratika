@@ -109,3 +109,44 @@ export function mailtoHref(to: string, subject: string, body: string): string {
   const qs = params.toString().replace(/\+/g, '%20')
   return `mailto:${to || ''}${qs ? `?${qs}` : ''}`
 }
+
+/**
+ * Where "open in email" can actually send someone.
+ *
+ * mailto: alone was the whole answer, and it is the one that fails silently:
+ * it needs a mail client registered with the operating system. Anyone reading
+ * their mail at mail.google.com in a browser — which is most people — clicks it
+ * and nothing happens at all. No error, no new window, nothing to retry.
+ *
+ * The two webmail services people actually use both take a compose URL, so they
+ * work in a browser with no local client at all. mailto stays for anyone who
+ * does have Mail or Outlook installed, but it is no longer the only door.
+ */
+export interface ComposeTarget { id: 'gmail' | 'outlook' | 'mailto'; label: string; href: string }
+
+export function composeTargets(to: string, subject: string, body: string): ComposeTarget[] {
+  const e = encodeURIComponent
+  return [
+    {
+      id: 'gmail',
+      label: 'Gmail',
+      href: `https://mail.google.com/mail/?view=cm&fs=1&to=${e(to)}&su=${e(subject)}&body=${e(body)}`,
+    },
+    {
+      id: 'outlook',
+      label: 'Outlook',
+      href: `https://outlook.live.com/mail/0/deeplink/compose?to=${e(to)}&subject=${e(subject)}&body=${e(body)}`,
+    },
+    { id: 'mailto', label: 'Mail app', href: mailtoHref(to, subject, body) },
+  ]
+}
+
+/**
+ * Very long letters go in the clipboard instead of the URL.
+ *
+ * Browsers and webmail providers both cap URL length, and they cap it by
+ * truncating rather than refusing — so a long letter arrives in the compose
+ * window with its ending quietly missing, which is worse than not prefilling at
+ * all. Past this length the caller copies the text and opens an empty compose.
+ */
+export const COMPOSE_URL_LIMIT = 1800
