@@ -14,6 +14,7 @@ import {
 } from '@/constants/letter-templates'
 import { assembleLetter } from '@/lib/letter/build'
 import { MP_PROFILES } from '@/constants/mps-data'
+import { MP_CONTACTS } from '@/constants/mps-contacts'
 import { PARTY_NAMES } from '@/constants/parties'
 import { getBill } from '@/constants/bills-data'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -58,7 +59,21 @@ export default async function TakeActionTemplatePage(
   let ctx: LetterContext = {}
   if (sp.to && MP_PROFILES[sp.to]) {
     const mp = MP_PROFILES[sp.to]
-    ctx = { recipientName: mp.name, recipientRole: mpRole(sp.to), recipientEmail: mp.email, recipientUrl: mp.parliamentUrl }
+    // The address Parliament publishes on that MP's own page, captured by
+    // scripts/build-mp-contacts.mjs. Falls back to mp.email, which no profile
+    // actually carries, and then in the studio to a name-pattern guess.
+    //
+    // That guess is why this lookup exists: measured against the real
+    // addresses it was wrong for ten of 120 MPs. Ginny Andersen's is under
+    // Virginia; five members have an "MP" suffix; "van de Molen" and
+    // "van Velden" do not split the way a first-word/last-word rule assumes.
+    // Each of those letters would have bounced without the sender knowing.
+    ctx = {
+      recipientName: mp.name,
+      recipientRole: mpRole(sp.to),
+      recipientEmail: MP_CONTACTS[sp.to]?.email || mp.email,
+      recipientUrl: mp.parliamentUrl,
+    }
   }
   if (sp.bill) {
     const bill = getBill(sp.bill)

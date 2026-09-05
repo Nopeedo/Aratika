@@ -256,7 +256,14 @@ export function LetterStudio({ templateId, ctx: ctx0 }: { templateId: LetterTemp
                     BUILT that address from Parliament's naming convention
                     rather than reading it off an official page, because
                     Parliament does not publish MPs' email addresses at all. */}
-                {emailSuggestion && <>That address follows Parliament’s standard naming format — Parliament doesn’t publish MPs’ email addresses, so we build it rather than quote one. </>}
+                {/* Two different claims, and the reader is entitled to know
+                    which one they are looking at. A quoted address came off
+                    that MP's own page on Parliament's site; a derived one is a
+                    guess from their name, which measured against the real
+                    addresses is wrong for about one MP in twelve. */}
+                {emailSuggestion && (ctx0.recipientEmail
+                  ? <>That address is the one Parliament publishes on their page. </>
+                  : <>We don’t have a published address for them, so that one is built from Parliament’s usual naming format and may not be right. </>)}
                 Worth checking against their official page before you send
                 {ctx0.recipientUrl && <> · <a href={ctx0.recipientUrl} target="_blank" rel="noopener noreferrer" style={link}>view contact details <ExternalLink style={icSm} /></a></>}.
               </p>
