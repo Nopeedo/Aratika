@@ -73,6 +73,25 @@ function MapSkeleton() {
   )
 }
 
+/**
+ * A party colour dark enough to set text in on the paper ground.
+ *
+ * Party colours are chosen to identify a party on a map, not to be read as
+ * type. ACT's yellow is the case that forces this: at 30px on cream it is
+ * barely there. Anything already dark passes through untouched, so National's
+ * blue and Labour's red are unchanged.
+ */
+function readable(hex: string): string {
+  const m = hex.replace('#', '')
+  const full = m.length === 3 ? m.split('').map((c) => c + c).join('') : m
+  const n = parseInt(full, 16)
+  const [r, g, b] = [(n >> 16) & 255, (n >> 8) & 255, n & 255]
+  const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+  if (lum < 0.6) return hex
+  const d = (v: number) => Math.round(v * 0.55).toString(16).padStart(2, '0')
+  return `#${d(r)}${d(g)}${d(b)}`
+}
+
 /** Electorates a party holds, from the same dataset the map colours from, so
  *  the sentence and the picture can never disagree. */
 function countElectorates(slug: PartySlug, type?: Layer): number {
@@ -512,27 +531,42 @@ function SeatPanel({
 }) {
   const { info, slug, mp, nowParty } = seat
   const wonBy = info.party
-  const accent = wonBy ? PARTY_COLORS[wonBy].bg : TERTIARY
+  // Darkened where the party's own colour is too light to read as 30px text on
+  // paper — ACT's #F5C518 sets Epsom's majority in bright yellow otherwise.
+  // Same treatment the election-hub seat numbers get.
+  const accent = wonBy ? readable(PARTY_COLORS[wonBy].bg) : TERTIARY
 
-  const inner = (
+  /** The MP block. Same content at both sizes; only the scale changes. */
+  const person = (big: boolean) => (
     <>
-      <Avatar name={info.mpName ?? info.name} party={wonBy ?? undefined} src={mp?.photo} size="sm" face />
+      <Avatar name={info.mpName ?? info.name} party={wonBy ?? undefined} src={mp?.photo} size={big ? 'xl' : 'sm'} face />
       <span style={{ minWidth: 0, flex: 1 }}>
-        <span className="mp-row-name" style={{ display: 'block', fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span
+          className={`mp-row-name${big ? ' seat-name' : ''}`}
+          style={{ display: 'block', fontSize: big ? undefined : 15, fontWeight: 800, color: INK, fontFamily: MANROPE, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+        >
           {info.mpName}
         </span>
-        <span style={{ display: 'block', fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>
+        <span className={big ? 'seat-meta' : undefined} style={{ display: 'block', fontSize: big ? undefined : 12.5, color: SECONDARY, fontFamily: MANROPE }}>
           {wonBy ? PARTY_NAMES[wonBy].short : 'Party not yet verified'}
           {nowParty && <span style={{ color: TERTIARY }}> &middot; now {PARTY_NAMES[nowParty]?.short ?? 'independent'}</span>}
+          {big && <> &middot; MP for {info.name}</>}
         </span>
       </span>
-      {slug && mp && <ArrowRight className="mp-row-arrow" style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0 }} />}
+      {!big && slug && mp && <ArrowRight className="mp-row-arrow" style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0 }} />}
     </>
   )
-  const rowStyle: React.CSSProperties = {
+
+  const compactRow: React.CSSProperties = {
     display: 'flex', alignItems: 'center', gap: 10, padding: '9px 8px', margin: '0 -8px',
     borderRadius: 8, textDecoration: 'none',
   }
+
+  const unverified = (
+    <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+      We haven&rsquo;t verified who holds {info.name} against the official results yet, so we&rsquo;re not naming one.
+    </p>
+  )
 
   return (
     <div>
@@ -540,7 +574,7 @@ function SeatPanel({
         <div style={colLabel}>
           {info.name}
           <span style={{ fontWeight: 700, color: TERTIARY, letterSpacing: 0, textTransform: 'none' }}>
-            {' '}&middot; {info.type === 'maori' ? 'Māori electorate' : 'General electorate'}
+            {' '}&middot; {info.type === 'maori' ? 'M\u0101ori electorate' : 'General electorate'}
           </span>
         </div>
         {/* A way out that isn't "tap the exact shape again", which on a phone
@@ -553,27 +587,57 @@ function SeatPanel({
         </button>
       </div>
 
-      {info.mpName ? (
-        slug && mp
-          ? <Link href={`/mps/${slug}`} className="mp-row" style={rowStyle}>{inner}</Link>
-          : <div style={rowStyle}>{inner}</div>
-      ) : (
-        <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-          We haven&rsquo;t verified who holds {info.name} against the official results yet, so we&rsquo;re not
-          naming one.
-        </p>
-      )}
+      {/* ── Desktop: the column is 532px wide beside a 418px map, and the
+             compact panel left 121px of it empty. Portrait at full size, name
+             at display size, majority as a figure. ── */}
+      <div className="seat-lg">
+        {info.mpName ? (
+          <>
+            <div className="seat-body">{person(true)}</div>
+            {typeof info.majority === 'number' && (
+              <div className="seat-stat">
+                <span className="seat-stat-n" style={{ color: accent, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>
+                  {info.majority.toLocaleString('en-NZ')}
+                </span>
+                <span className="seat-stat-l" style={{ color: SECONDARY, fontFamily: MANROPE }}>
+                  vote majority in 2023
+                </span>
+              </div>
+            )}
+            <div className="seat-links">
+              {slug && mp && (
+                <Link href={`/mps/${slug}`} className="seat-link" style={{ color: INK, fontFamily: MANROPE }}>
+                  {info.mpName.split(' ')[0]}&rsquo;s profile <ArrowRight style={{ width: 14, height: 14 }} />
+                </Link>
+              )}
+              <Link href={`/battlegrounds/${normalizeElectorateKey(info.name)}`} className="seat-link" style={{ color: INK, fontFamily: MANROPE }}>
+                The {info.name} race in 2026 <ArrowRight style={{ width: 14, height: 14 }} />
+              </Link>
+            </div>
+          </>
+        ) : unverified}
+      </div>
 
-      {typeof info.majority === 'number' && (
-        <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '10px 0 0', lineHeight: 1.5 }}>
-          Won by <b style={{ color: accent }}>{info.majority.toLocaleString('en-NZ')}</b> votes in 2023.
-        </p>
-      )}
+      {/* ── Phone: unchanged. The restraint that reads as cramped on a desktop
+             is correct where the column is the whole screen. ── */}
+      <div className="seat-sm">
+        {info.mpName ? (
+          slug && mp
+            ? <Link href={`/mps/${slug}`} className="mp-row" style={compactRow}>{person(false)}</Link>
+            : <div style={compactRow}>{person(false)}</div>
+        ) : unverified}
 
-      <div style={{ marginTop: 12 }}>
-        <Link href={`/battlegrounds/${normalizeElectorateKey(info.name)}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none' }}>
-          The {info.name} race in 2026 <ArrowRight style={{ width: 14, height: 14 }} />
-        </Link>
+        {info.mpName && typeof info.majority === 'number' && (
+          <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '10px 0 0', lineHeight: 1.5 }}>
+            Won by <b style={{ color: accent }}>{info.majority.toLocaleString('en-NZ')}</b> votes in 2023.
+          </p>
+        )}
+
+        <div style={{ marginTop: 12 }}>
+          <Link href={`/battlegrounds/${normalizeElectorateKey(info.name)}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none' }}>
+            The {info.name} race in 2026 <ArrowRight style={{ width: 14, height: 14 }} />
+          </Link>
+        </div>
       </div>
     </div>
   )

@@ -251,6 +251,45 @@ body {
 .mp-row:hover .mp-row-arrow { transform: translateX(2px); }
 .mp-row-name, .mp-row-arrow { transition: color .15s, transform .15s; }
 
+/* ─── Tapped-seat panel (homepage map) ───────────────────────────────────
+   The panel opens in a 532px-wide column beside a 418px-tall map, and in its
+   compact form used 153px of it — a 32px face and two short lines, with 121px
+   of the column left empty under it. On a phone that restraint is right; on a
+   desktop it was just unused room next to the thing it describes.
+
+   So the same markup grows at 760px: a large portrait, the name at display
+   size, and the majority as a figure rather than a sentence, laid out across
+   the width instead of stacked down the left edge. Below the breakpoint every
+   rule here is inert and the compact layout stands. */
+.seat-lg { display: none; }
+.seat-sm { display: block; }
+
+@media (min-width: 760px) {
+  .seat-lg { display: block; }
+  .seat-sm { display: none; }
+
+  .seat-body { display: flex; gap: 18px; align-items: flex-start; }
+  .seat-name { font-size: 24px; line-height: 1.15; letter-spacing: -.01em; }
+  .seat-meta { font-size: 14px; margin-top: 3px; }
+
+  /* The majority, given the width to be read as a number. It was a sentence
+     ("Won by 19,782 votes in 2023") competing with the MP's name for the same
+     line of attention; as a figure with a label under it, the two stop
+     fighting and the empty column is doing work. */
+  .seat-stat { display: flex; align-items: baseline; gap: 9px; margin-top: 16px; }
+  .seat-stat-n { font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
+  .seat-stat-l { font-size: 12.5px; font-weight: 600; }
+
+  .seat-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .seat-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 14px; border-radius: 10px; border: 1px solid #e6e2da;
+    background: #fff; font-size: 13.5px; font-weight: 800; text-decoration: none;
+    transition: border-color .15s, background-color .15s;
+  }
+  .seat-link:hover { background: #faf8f4; border-color: #d8d2c6; }
+}
+
 /* ─── Tier gate ──────────────────────────────────────────────────────────── */
 .tier-locked {
   filter: blur(4px);
