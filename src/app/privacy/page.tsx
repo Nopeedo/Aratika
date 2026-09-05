@@ -73,9 +73,8 @@ export default function PrivacyPage() {
         </li>
         <li>
           <strong>Alerts about bills you follow.</strong> If a bill you track opens for public submissions, we email you
-          once to say so, with the closing date. <strong>Turning off the weekly email does not currently stop these</strong>
-          — they’re a separate alert, and we’re fixing that so one switch covers both. Until then, tell us at{' '}
-          <a href="mailto:hello@arapono.nz">hello@arapono.nz</a> and we’ll stop them for you.
+          once to say so, with the closing date and a link to have your say. Turning the email switch off stops these
+          too — it’s one switch for everything we send you, and the unsubscribe link in any of our emails does the same.
         </li>
         <li><strong>Account emails</strong> — confirming your address, or resetting your password.</li>
       </ul>

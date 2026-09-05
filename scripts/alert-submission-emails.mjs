@@ -146,7 +146,29 @@ const emailOf = new Map((usersPage?.users || []).map((u) => [u.id, u.email]))
 /** First segment of a user id — enough to follow one recipient through a run. */
 const short = (id) => String(id ?? '').slice(0, 8)
 
-const jobs = due.map((p) => ({ ...p, email: emailOf.get(p.userId) })).filter((p) => p.email)
+/**
+ * Honour the one email switch the settings page offers.
+ *
+ * These alerts used to ignore notification_prefs entirely. Someone who turned
+ * the weekly email off in Settings — or used the one-click unsubscribe at the
+ * bottom of one of our own emails — kept receiving these, because they were
+ * selected from tracked bills and account addresses and nothing else. There is
+ * one switch in the UI, so a person who turns it off has said no to email from
+ * us, and this was not listening.
+ *
+ * Same rule the newsletter uses: absent or true means send, and only an
+ * explicit false opts out — so an account that has never touched the setting
+ * still gets alerts for bills it deliberately chose to follow.
+ */
+const { data: prefsRows, error: e4 } = await sb.from('notification_prefs').select('user_id, email_digest_enabled')
+if (e4) { console.error(`notification_prefs unreadable: ${e4.message}; not sending`); process.exit(1) }
+const optedOut = new Set((prefsRows || []).filter((r) => r.email_digest_enabled === false).map((r) => r.user_id))
+
+const withEmail = due.map((p) => ({ ...p, email: emailOf.get(p.userId) })).filter((p) => p.email)
+const jobs = withEmail.filter((p) => !optedOut.has(p.userId))
+const suppressed = withEmail.length - jobs.length
+if (suppressed > 0) console.log(`${suppressed} alert(s) suppressed — recipient has email turned off`)
+if (jobs.length === 0) { console.log('Nothing to send after preferences.'); process.exit(0) }
 // The link is logged because it is the part that was silently wrong: the send
 // reported success while pointing every reader at the tracker index.
 // Logged by user id, never by address. This runs as a GitHub Action on a
