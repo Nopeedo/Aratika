@@ -17,21 +17,24 @@
       "remindDaysBefore": [
         7,
         1
-      ]
+      ],
+      "actionable": true
     },
     {
       "id": "nominations-open-2026",
       "date": "2026-09-07",
       "label": "Candidate nominations open",
       "detail": "Candidates can formally put their names forward from today.",
-      "notify": false
+      "notify": false,
+      "actionable": false
     },
     {
       "id": "dissolution-2026",
       "date": "2026-10-01",
       "label": "Dissolution of Parliament",
       "detail": "Parliament is dissolved. Sitting MPs stop being MPs and become candidates.",
-      "notify": false
+      "notify": false,
+      "actionable": false
     },
     {
       "id": "writ-day-2026",
@@ -42,7 +45,8 @@
       "remindDaysBefore": [
         7,
         1
-      ]
+      ],
+      "actionable": false
     },
     {
       "id": "nominations-close-2026",
@@ -50,7 +54,8 @@
       "timeNote": "noon",
       "label": "Nominations close for candidates",
       "detail": "The final list of candidates for every electorate is set from here.",
-      "notify": false
+      "notify": false,
+      "actionable": false
     },
     {
       "id": "overseas-voting-2026",
@@ -60,7 +65,8 @@
       "notify": true,
       "remindDaysBefore": [
         3
-      ]
+      ],
+      "actionable": true
     },
     {
       "id": "enrolment-closes-2026",
@@ -73,7 +79,8 @@
         7,
         3,
         1
-      ]
+      ],
+      "actionable": true
     },
     {
       "id": "advance-voting-2026",
@@ -85,7 +92,8 @@
         3
       ],
       "endDate": "2026-11-06",
-      "endDateNote": "Derived, not listed. The Commission’s timetable gives advance voting a START date only; its 6 November row is \"Regulated period ends. All election advertising must end\", which is a different thing. The end date follows from p7: \"An advance voting period of 12 days is set in the law.\" Twelve days from 26 October ends 6 November, the day before election day. Recorded here so the derivation is auditable rather than assumed — the same figure was previously typed into two components with no basis given."
+      "endDateNote": "Derived, not listed. The Commission’s timetable gives advance voting a START date only; its 6 November row is \"Regulated period ends. All election advertising must end\", which is a different thing. The end date follows from p7: \"An advance voting period of 12 days is set in the law.\" Twelve days from 26 October ends 6 November, the day before election day. Recorded here so the derivation is auditable rather than assumed — the same figure was previously typed into two components with no basis given.",
+      "actionable": true
     },
     {
       "id": "election-day-2026",
@@ -98,7 +106,8 @@
         30,
         7,
         1
-      ]
+      ],
+      "actionable": true
     },
     {
       "id": "official-results-2026",
@@ -108,7 +117,8 @@
       "notify": true,
       "remindDaysBefore": [
         1
-      ]
+      ],
+      "actionable": false
     }
   ]
 }

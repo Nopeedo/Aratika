@@ -38,6 +38,17 @@ dotenv.config({ path: join(root, '.env.local') })
 
 const calendar = JSON.parse(readFileSync(join(root, 'src/constants/electoral-calendar.json'), 'utf8'))
 
+/**
+ * How many days out an ACTIONABLE milestone starts going out immediately.
+ *
+ * Three, because that is the shortest notice that still leaves a working day
+ * to act on the enrolment deadline. It only bites where the calendar also has
+ * a reminder scheduled at that lead time, so it changes enrolment (14/7/3/1)
+ * and advance voting (3); election day's reminders are 30/7/1, and one day is
+ * enough there because you can still vote on the day itself.
+ */
+const ACTIONABLE_URGENT_DAYS = 3
+
 // --today lets the schedule be tested without waiting for October. It only ever
 // changes which milestones are considered due; it cannot change what is sent.
 const todayArg = process.argv.find((a) => a.startsWith('--today='))
@@ -99,11 +110,30 @@ if (users.length === 0) console.log('  (nobody has push enabled — nothing to e
 
 let enqueued = 0
 for (const { m, away } of due) {
-  // The day itself is urgent; a lead-time warning is not, and waking someone at
-  // 3am to say "14 days until enrolment closes" would train them to turn all of
-  // this off. Same-day and last-day notices go immediate, the rest ride the
-  // 7am digest.
-  const urgency = away <= 1 ? 'immediate' : 'digest'
+  // Urgency follows whether the reader has to DO something, not just how close
+  // the date is.
+  //
+  // The old rule was "one day out or less". That is right for a date you only
+  // need to know about, and wrong for the one date on this calendar where being
+  // told late means the chance is gone: enrolment closes on 25 October 2026,
+  // thirteen days before the election, and unlike 2023 there is no enrolling
+  // once advance voting starts. Anyone who left it late last time will assume
+  // they can again. A notice the evening before is no use to someone who has to
+  // find ID or update an address — and it arrived in the 7am roll-up alongside
+  // a dozen headlines until the final day.
+  //
+  // So the milestones flagged `actionable` in the calendar — the roll-type
+  // deadline, overseas voting opening, enrolment closing, advance voting
+  // opening and election day — go immediate from three days out. Everything
+  // procedural stays on the digest at EVERY lead time, including the last day:
+  // writ day, dissolution, the nomination dates (which concern candidates, not
+  // voters) and the declaration of results are things to know, not things to
+  // do. Urgency spent on those is what teaches people to turn the channel off,
+  // and the notice that then gets missed is the enrolment one.
+  //
+  // This deliberately drops three notices from immediate to digest that used to
+  // qualify only by being a day away.
+  const urgency = m.actionable && away <= ACTIONABLE_URGENT_DAYS ? 'immediate' : 'digest'
 
   const when =
     away === 0 ? (m.timeNote ? `Today — ${m.timeNote}.` : 'Today.')

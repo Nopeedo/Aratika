@@ -52,6 +52,19 @@ export interface ElectoralMilestone {
    * has to act on, so they sit in the calendar without notifying.
    */
   notify: boolean
+  /**
+   * Whether a VOTER has something to do about this, where being told late means
+   * the chance is gone — enrolling, switching roll type, casting a vote.
+   *
+   * Separate from `notify` because the two questions are different: writ day is
+   * worth telling people about and impossible to act on, while enrolment
+   * closing is the one date on this calendar where a late notice costs someone
+   * their vote. detect-electoral-dates.mjs sends actionable milestones
+   * immediately from three days out and leaves the rest on the daily digest, so
+   * the interrupting channel is reserved for the dates that can still be
+   * salvaged when it fires.
+   */
+  actionable: boolean
   /** Days before the date to warn, in addition to the day itself. */
   remindDaysBefore?: number[]
 }
