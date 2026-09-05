@@ -353,7 +353,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Carmel_Sepuloni"
   },
   "david-seymour": {
-    "bio": "David Breen Seymour is a New Zealand politician who has served as the 21st deputy prime minister of New Zealand since 2025 and as the 1st minister for regulation since 2023. A member of the ACT Party, he has served as its leader and Member of Parliament (MP) for Epsom since 2014. Typically classified as a right-libertarian involved with right-wing populism, Seymour is associated with liberal views on freedom of choice and economic policy, and conversely with majoritarian and reactionary views on New Zealand civic nationalism and Māori politics.",
+    "bio": "David Breen Seymour is a New Zealand politician who has served as the 21st deputy prime minister of New Zealand since 2025 and as the 1st minister for regulation since 2023. A member of the ACT Party, he has served as its leader and as the member of parliament for Epsom since 2014. Typically classified as a right-libertarian populist, Seymour has liberal views on freedom of choice and economic policy, and conversely majoritarian and reactionary views on New Zealand civic nationalism and indigenous rights.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/David_Seymour"
   },
   "penny-simmonds": {
@@ -377,7 +377,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Erica_Stanford"
   },
   "todd-stephenson": {
-    "bio": "Todd Michael Stephenson is a New Zealand lawyer and politician. He was elected as to the New Zealand House of Representatives as a list MP for ACT New Zealand at the 2023 New Zealand general election.",
+    "bio": "Todd Michael Stephenson is a New Zealand lawyer and politician. He was elected to the New Zealand House of Representatives as a list MP for ACT New Zealand at the 2023 New Zealand general election.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Todd_Stephenson"
   },
   "chle-swarbrick": {
