@@ -40,7 +40,7 @@ import dynamic from 'next/dynamic'
 import type { FeatureCollection } from 'geojson'
 import { ArrowRight, Info, MapPin } from 'lucide-react'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
-import { ELECTORATES, getElectorate } from '@/constants/electorates-data'
+import { ELECTORATES, getElectorate, normalizeElectorateKey, type ElectorateInfo } from '@/constants/electorates-data'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_COLORS, PARTY_NAMES, CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS, PARLIAMENTARY_PARTIES } from '@/constants/parties'
 import { Avatar } from '@/components/ui/avatar'
@@ -93,6 +93,19 @@ export function ThisTerm() {
   const [layers, setLayers] = React.useState<Partial<Record<Layer, FeatureCollection>>>({})
   const [layer, setLayer] = React.useState<Layer>('general')
   const [failed, setFailed] = React.useState(false)
+  /**
+   * The electorate the reader has tapped ON THE MAP, by name.
+   *
+   * The map was drawn but not answerable: every shape was a shape. Tapping one
+   * now fills the slot beside it with whoever holds that seat, which is the
+   * question a person actually has when they put a finger on a map — not "which
+   * party is this colour" but "who is my MP".
+   *
+   * It takes over the same slot the party's MP list uses rather than opening
+   * anything, so the section stays one screen and the reader never loses their
+   * place. Tapping the same seat again clears it and the party list returns.
+   */
+  const [pinned, setPinned] = React.useState<string | null>(null)
 
   React.useEffect(() => {
     let cancelled = false
@@ -117,6 +130,35 @@ export function ThisTerm() {
     if (!selected) return
     setLayer(countElectorates(selected, 'maori') > countElectorates(selected, 'general') ? 'maori' : 'general')
   }, [selected])
+
+  /**
+   * Let go of a pinned seat when the map stops showing it.
+   *
+   * The two layers are alternative divisions of the same ground, so a general
+   * electorate simply is not drawn on the Māori layer. Without this, switching
+   * layers — including the automatic switch above when a party is tapped — left
+   * a seat panel open describing a shape no longer on screen, and the map's own
+   * highlight pointing at nothing.
+   */
+  React.useEffect(() => {
+    setPinned((cur) => (cur && getElectorate(cur)?.type !== layer ? null : cur))
+  }, [layer])
+
+  /** The seat the reader tapped, if it resolves to one we hold data for. */
+  const pinnedSeat = React.useMemo(() => {
+    if (!pinned) return null
+    const info = getElectorate(pinned)
+    if (!info) return null
+    const slug = info.mpSlug ?? (info.mpName ? toSlug(info.mpName) : null)
+    const mp = slug ? MP_PROFILES[slug] : undefined
+    return {
+      info,
+      slug,
+      mp,
+      // Won by info.party in 2023; mp.party is where that MP sits today.
+      nowParty: mp && info.party && mp.party !== info.party ? mp.party : null,
+    }
+  }, [pinned])
 
   const governing = PARLIAMENTARY_PARTIES.filter((p) => PARTY_STATUS[p] === 'governing')
   const govtSeats = governing.reduce((n, p) => n + (CURRENT_SEATS[p] ?? 0), 0)
@@ -208,8 +250,8 @@ export function ThisTerm() {
                 old line said only "as the 2023 election left it", which the list
                 would have quietly contradicted. */}
             <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px', lineHeight: 1.55 }}>
-              The 54th Parliament: the seats won in 2023, and the MPs holding them now. Tap any party tile to see
-              which electorates are theirs.
+              The 54th Parliament: the seats won in 2023, and the MPs holding them now. Tap a party tile to see which
+              electorates are theirs, or tap any seat on the map to see who holds it.
             </p>
 
             {/* The one seat fact the tiles DON'T already give you: who adds up
@@ -233,7 +275,12 @@ export function ThisTerm() {
                 coloured polygon has a name and a face attached to it.
                 Any link added back here must be live in the current phase. */}
             <div style={{ marginTop: 20, paddingTop: 18, borderTop: `1px solid ${BORDER}` }}>
-              {!selected ? (
+              {pinnedSeat ? (
+                // A tapped seat wins the slot. The reader pointed at something
+                // specific, and answering the party question instead would be
+                // answering a question they did not ask.
+                <SeatPanel seat={pinnedSeat} onClear={() => setPinned(null)} />
+              ) : !selected ? (
                 // Nothing selected yet — the tiles auto-cycle until the reader
                 // taps one, so this is the resting state, and it says what the
                 // tap will do rather than sitting empty.
@@ -241,7 +288,7 @@ export function ThisTerm() {
                   <MapPin style={{ width: 15, height: 15, color: TERTIARY, flexShrink: 0, marginTop: 2 }} />
                   <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
                     Tap a party tile and the electorates they won light up on the map, with the MPs who hold them
-                    listed here.
+                    listed here. Or tap a seat on the map to see who holds that one.
                   </p>
                 </div>
               ) : held === 0 ? (
@@ -366,7 +413,17 @@ export function ThisTerm() {
                 // key on the layer so Leaflet rebuilds rather than merging the
                 // two boundary sets. scrollZoom off: an inline embed should not
                 // trap the page scroll.
-                <ElectorateMap key={layer} data={data} selectedKey={null} onSelect={() => {}} colorOf={colorOf} scrollZoom={false} fitToData />
+                <ElectorateMap
+                  key={layer}
+                  data={data}
+                  selectedKey={pinned ? normalizeElectorateKey(pinned) : null}
+                  // Tapping the seat already open closes it, so the map is a
+                  // toggle rather than a one-way trip into a state with no exit.
+                  onSelect={(name) => setPinned((cur) => (cur === name ? null : name))}
+                  colorOf={colorOf}
+                  scrollZoom={false}
+                  fitToData
+                />
               ) : (
                 <MapSkeleton />
               )}
@@ -429,6 +486,96 @@ function SeeAll({ slug, count }: { slug: PartySlug; count: number }) {
       See all {count} {PARTY_NAMES[slug].short} MPs
       <ArrowRight style={{ width: 14, height: 14 }} />
     </Link>
+  )
+}
+
+/**
+ * SeatPanel — one tapped electorate, and who holds it.
+ *
+ * The map could be coloured and read but not asked. This answers the question a
+ * person actually has with a finger on a map: not "which party is this colour"
+ * but "who is my MP". It takes the same slot as the party MP list, so tapping a
+ * shape never opens a page or scrolls the reader away from the thing they
+ * tapped.
+ *
+ * Every field is drawn from electorates-data.ts, whose rule is that a seat
+ * holder is never guessed. So there are three honest states here, not one: a
+ * verified MP with a profile, a verified MP without one yet (named, not linked,
+ * rather than dropped), and a seat whose holder is still being checked (said
+ * plainly instead of rendering a blank card).
+ */
+function SeatPanel({
+  seat, onClear,
+}: {
+  seat: { info: ElectorateInfo; slug: string | null; mp: { photo?: string } | undefined; nowParty: PartySlug | null }
+  onClear: () => void
+}) {
+  const { info, slug, mp, nowParty } = seat
+  const wonBy = info.party
+  const accent = wonBy ? PARTY_COLORS[wonBy].bg : TERTIARY
+
+  const inner = (
+    <>
+      <Avatar name={info.mpName ?? info.name} party={wonBy ?? undefined} src={mp?.photo} size="sm" face />
+      <span style={{ minWidth: 0, flex: 1 }}>
+        <span className="mp-row-name" style={{ display: 'block', fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {info.mpName}
+        </span>
+        <span style={{ display: 'block', fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>
+          {wonBy ? PARTY_NAMES[wonBy].short : 'Party not yet verified'}
+          {nowParty && <span style={{ color: TERTIARY }}> &middot; now {PARTY_NAMES[nowParty]?.short ?? 'independent'}</span>}
+        </span>
+      </span>
+      {slug && mp && <ArrowRight className="mp-row-arrow" style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0 }} />}
+    </>
+  )
+  const rowStyle: React.CSSProperties = {
+    display: 'flex', alignItems: 'center', gap: 10, padding: '9px 8px', margin: '0 -8px',
+    borderRadius: 8, textDecoration: 'none',
+  }
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, marginBottom: 10 }}>
+        <div style={colLabel}>
+          {info.name}
+          <span style={{ fontWeight: 700, color: TERTIARY, letterSpacing: 0, textTransform: 'none' }}>
+            {' '}&middot; {info.type === 'maori' ? 'Māori electorate' : 'General electorate'}
+          </span>
+        </div>
+        {/* A way out that isn't "tap the exact shape again", which on a phone
+            is a small target and easy to miss. */}
+        <button
+          onClick={onClear}
+          style={{ border: 'none', background: 'transparent', padding: 0, cursor: 'pointer', fontSize: 12.5, fontWeight: 700, color: TERTIARY, fontFamily: MANROPE }}
+        >
+          Clear
+        </button>
+      </div>
+
+      {info.mpName ? (
+        slug && mp
+          ? <Link href={`/mps/${slug}`} className="mp-row" style={rowStyle}>{inner}</Link>
+          : <div style={rowStyle}>{inner}</div>
+      ) : (
+        <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+          We haven&rsquo;t verified who holds {info.name} against the official results yet, so we&rsquo;re not
+          naming one.
+        </p>
+      )}
+
+      {typeof info.majority === 'number' && (
+        <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '10px 0 0', lineHeight: 1.5 }}>
+          Won by <b style={{ color: accent }}>{info.majority.toLocaleString('en-NZ')}</b> votes in 2023.
+        </p>
+      )}
+
+      <div style={{ marginTop: 12 }}>
+        <Link href={`/battlegrounds/${normalizeElectorateKey(info.name)}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none' }}>
+          The {info.name} race in 2026 <ArrowRight style={{ width: 14, height: 14 }} />
+        </Link>
+      </div>
+    </div>
   )
 }
 
