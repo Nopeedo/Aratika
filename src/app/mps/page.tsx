@@ -17,7 +17,11 @@ export const metadata: Metadata = {
     'Search by name, or filter by party and electorate.',
 }
 
-export default function MPsDirectoryPage() {
+export default async function MPsDirectoryPage({ searchParams }: { searchParams: Promise<{ party?: string }> }) {
+  // /mps?party=<slug> — the homepage's "See all N X MPs" link lands on that
+  // caucus already filtered. Same deep-link shape as /bills?party=.
+  const { party: initialParty } = await searchParams
+
   return (
     <div style={WOVEN_PAGE}>
 
@@ -39,7 +43,7 @@ export default function MPsDirectoryPage() {
 
       {/* Directory */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '32px clamp(18px, 5vw, 36px) 64px' }}>
-        <MPsDirectory />
+        <MPsDirectory initialParty={initialParty} />
       </div>
     </div>
   )

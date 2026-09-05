@@ -24,9 +24,18 @@ const ALL_MPS = Object.values(MP_PROFILES).sort((a, b) => {
 
 const PARTY_CHIPS: (PartySlug | 'all')[] = ['all', ...PARTY_DIRECTORY_ORDER, 'independent']
 
-export function MPsDirectory() {
+/**
+ * `initialParty` pre-selects a party chip so /mps?party=<slug> lands on that
+ * caucus rather than on all 123 MPs — the homepage's "See all N X MPs" link and
+ * the same deep-link shape /bills?party= already uses. It seeds state and then
+ * stays out of the way: the chips remain fully interactive, so a reader who
+ * arrives filtered can widen the list without going back.
+ */
+export function MPsDirectory({ initialParty }: { initialParty?: string } = {}) {
   const [query, setQuery]   = React.useState('')
-  const [party, setParty]   = React.useState<PartySlug | 'all'>('all')
+  const [party, setParty]   = React.useState<PartySlug | 'all'>(
+    initialParty && PARTY_CHIPS.includes(initialParty as PartySlug) ? (initialParty as PartySlug) : 'all',
+  )
   const [role, setRole]     = React.useState<'all' | 'electorate' | 'list'>('all')
 
   const filtered = ALL_MPS.filter((mp) => {

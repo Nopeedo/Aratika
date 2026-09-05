@@ -241,6 +241,16 @@ body {
   transform:     translateY(-2px) !important;
 }
 
+/* ─── Compact list row (homepage electorate-MP list) ─────────────────────
+   A list row, not a card: .party-card's lift + green border rewrites the
+   hairline separating the rows and makes a flat list pop out of the page.
+   The affordance here is the name colouring and the chevron sliding. */
+.mp-row { transition: background-color .15s, color .15s; }
+.mp-row:hover { background: rgba(31,138,76,.05); }
+.mp-row:hover .mp-row-name { color: #176B3B; }
+.mp-row:hover .mp-row-arrow { transform: translateX(2px); }
+.mp-row-name, .mp-row-arrow { transition: color .15s, transform .15s; }
+
 /* ─── Tier gate ──────────────────────────────────────────────────────────── */
 .tier-locked {
   filter: blur(4px);

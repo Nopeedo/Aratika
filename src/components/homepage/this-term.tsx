@@ -38,10 +38,13 @@ import * as React from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import type { FeatureCollection } from 'geojson'
-import { ArrowRight, Info } from 'lucide-react'
+import { ArrowRight, Info, MapPin } from 'lucide-react'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import { ELECTORATES, getElectorate } from '@/constants/electorates-data'
+import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_COLORS, PARTY_NAMES, CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS, PARLIAMENTARY_PARTIES } from '@/constants/parties'
+import { Avatar } from '@/components/ui/avatar'
+import { toSlug } from '@/lib/utils/format'
 import type { PartySlug } from '@/types'
 import { BORDER, INK, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
@@ -128,7 +131,59 @@ export function ThisTerm() {
   const held = selected ? countElectorates(selected) : 0
   const hidden = selected ? countElectorates(selected, layer === 'general' ? 'maori' : 'general') : 0
   const data = layers[layer]
-  const maxSeats = Math.max(...PARLIAMENTARY_PARTIES.map((p) => CURRENT_SEATS[p] ?? 0))
+
+  // The faces behind the shapes. Built from the SAME dataset the map colours
+  // from, never from the MP roster, so the list can only ever name someone the
+  // map has actually shaded — the count in the caveat and the rows in the list
+  // are two readings of one row set.
+  //
+  // The MP's profile slug is resolved exactly the way the map panel and the
+  // battlegrounds list resolve it: an explicit mpSlug when the row carries one,
+  // otherwise derived from the name. A row whose MP has no profile yet still
+  // renders — it just doesn't link, rather than sending the reader to a 404.
+  //
+  // Sorted by the layer currently on screen first, so the five shown are five
+  // the reader can actually see; the general/Māori toggle re-orders the list
+  // with the map instead of leaving it pointing at seats that aren't drawn.
+  const electorateMPs = React.useMemo(() => {
+    if (!selected) return []
+    return Object.values(ELECTORATES)
+      .filter((e) => e.party === selected && e.mpName)
+      .map((e) => {
+        const slug = e.mpSlug ?? toSlug(e.mpName!)
+        const mp = MP_PROFILES[slug]
+        // The seat was won by `selected` in 2023; `mp.party` is where that MP
+        // sits today. When they disagree the MP has left the party since the
+        // election, and the row says so rather than filing them under a party
+        // they have resigned from.
+        return { electorate: e.name, type: e.type, name: e.mpName!, mp, slug, nowParty: mp && mp.party !== selected ? mp.party : null }
+      })
+      .sort((a, b) => (a.type === layer ? 0 : 1) - (b.type === layer ? 0 : 1) || a.electorate.localeCompare(b.electorate))
+  }, [selected, layer])
+
+  // Five, then a door. Enough to show the list is real and to recognise a face,
+  // short enough that the section stays one screen — the whole point of cutting
+  // the seat bars that used to sit here.
+  const SHOWN = 5
+  const shownMPs = electorateMPs.slice(0, SHOWN)
+
+  // The "see all" count comes from the MP roster, NOT from CURRENT_SEATS, because
+  // the roster is what /mps actually renders — a link promising 6 that opens on 4
+  // is a broken link even though it returns 200.
+  //
+  // The two can differ, and legitimately: CURRENT_SEATS and electorates-data.ts
+  // record the seats as WON IN 2023, while the roster records who sits for which
+  // party TODAY. Te Pāti Māori won six electorates; two of those MPs (Tākuta
+  // Ferris, Mariameno Kapa-Kingi) now sit as independents, so the roster has four.
+  // Both numbers are true about different questions, and the row-level "now
+  // independent" note below is what makes the arithmetic legible instead of
+  // looking like a bug.
+  const rosterCount = React.useMemo(() => {
+    const n: Partial<Record<PartySlug, number>> = {}
+    for (const mp of Object.values(MP_PROFILES)) n[mp.party] = (n[mp.party] ?? 0) + 1
+    return n
+  }, [])
+  const partyMPs = selected ? rosterCount[selected] ?? 0 : 0
 
   return (
     <section style={{ background: 'transparent' }}>
@@ -146,38 +201,126 @@ export function ThisTerm() {
             <h2 style={{ fontSize: 'clamp(24px,3.6vw,31px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>
               Where things stand now
             </h2>
+            {/* Two tenses on purpose. The map is 2023 — the boundaries and the
+                wins that formed this Parliament — but the MP list beside it
+                names the CURRENT holder of each seat, because electorates-data.ts
+                tracks by-elections (Tāmaki Makaurau changed hands in 2025). The
+                old line said only "as the 2023 election left it", which the list
+                would have quietly contradicted. */}
             <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px', lineHeight: 1.55 }}>
-              The 54th Parliament, as the 2023 election left it. Tap any party tile to see the electorates they won.
+              The 54th Parliament: the seats won in 2023, and the MPs holding them now. Tap any party tile to see
+              which electorates are theirs.
             </p>
 
-            {/* Bars, not a bare list of numbers. Seat share is what decides who
-                governs, and it is the one comparison the map cannot make. */}
-            <div style={{ ...colLabel, marginBottom: 12 }}>Seats in the House</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {PARLIAMENTARY_PARTIES.map((p) => {
-                const seats = CURRENT_SEATS[p] ?? 0
-                const on = !selected || selected === p
-                return (
-                  <div key={p} style={{ opacity: on ? 1 : 0.35, transition: 'opacity .2s ease' }}>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
-                      <span style={{ flex: 1, fontSize: 14, fontWeight: selected === p ? 800 : 700, color: INK, fontFamily: MANROPE }}>{PARTY_NAMES[p].short}</span>
-                      <span style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{seats}</span>
-                    </div>
-                    <div style={{ height: 8, borderRadius: 999, background: 'rgba(12,14,18,.07)', overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${(seats / maxSeats) * 100}%`, background: PARTY_COLORS[p].bg, borderRadius: 999, transition: 'width .3s ease' }} />
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-            <div style={{ marginTop: 16, paddingTop: 13, borderTop: `1px solid ${BORDER}`, fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55 }}>
+            {/* The one seat fact the tiles DON'T already give you: who adds up
+                to a majority. The per-party bar chart that used to sit here was
+                a second telling of the big seat number in the party panel
+                above, so it went; the coalition arithmetic is the part the
+                tiles cannot show, because it is about parties together. */}
+            <div style={{ fontSize: 14.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55 }}>
               <b style={{ color: INK }}>{governing.map((p) => PARTY_NAMES[p].short).join(', ')}</b> form the government
               with <b style={{ color: INK }}>{govtSeats}</b> of {TOTAL_SEATS} seats.
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 18 }}>
-              <Link href="/parliament" style={cta}>The full make-up of Parliament <ArrowRight style={{ width: 14, height: 14 }} /></Link>
-              <Link href="/record" style={{ ...cta, color: SECONDARY }}>What this Parliament has passed <ArrowRight style={{ width: 14, height: 14 }} /></Link>
+            {/* Who the shapes on the map actually are.
+                This slot used to hold a per-party seat bar chart and two CTAs.
+                The bars were a second telling of the seat number the party
+                panel already gives you, and both CTAs were dead ends for a
+                signed-out reader — /parliament is gated to Phase 2
+                (constants/features.ts) so proxy.ts bounced it to /coming-soon,
+                and /record is the private, login-gated accountability hub. What
+                replaces them is the one thing the map cannot say on its own: a
+                coloured polygon has a name and a face attached to it.
+                Any link added back here must be live in the current phase. */}
+            <div style={{ marginTop: 20, paddingTop: 18, borderTop: `1px solid ${BORDER}` }}>
+              {!selected ? (
+                // Nothing selected yet — the tiles auto-cycle until the reader
+                // taps one, so this is the resting state, and it says what the
+                // tap will do rather than sitting empty.
+                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <MapPin style={{ width: 15, height: 15, color: TERTIARY, flexShrink: 0, marginTop: 2 }} />
+                  <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
+                    Tap a party tile and the electorates they won light up on the map, with the MPs who hold them
+                    listed here.
+                  </p>
+                </div>
+              ) : held === 0 ? (
+                // A party can hold real seats and win no electorate at all —
+                // NZ First's whole caucus came in on the party vote. Saying so
+                // here, in the place a reader is looking for names, is the
+                // difference between "we have no data" and "this is MMP".
+                //
+                // Keyed off `held` (electorates won) rather than off the length
+                // of the list: electorates-data.ts can carry a verified win whose
+                // MP name is still pending, and "None." would then be a claim
+                // about MMP that the data does not support. That case falls
+                // through to the branch below instead.
+                <>
+                  <div style={{ ...colLabel, marginBottom: 8 }}>{PARTY_NAMES[selected].short} electorates won</div>
+                  <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px', lineHeight: 1.55 }}>
+                    <b style={{ color: INK }}>None.</b> All {partyMPs} of {PARTY_NAMES[selected].short}&rsquo;s MPs came
+                    in on the party vote rather than by winning a seat, which under MMP is an ordinary way to be in
+                    Parliament, not a smaller one.
+                  </p>
+                  <SeeAll slug={selected} count={partyMPs} />
+                </>
+              ) : (
+                <>
+                  <div style={{ ...colLabel, marginBottom: 10 }}>
+                    {PARTY_NAMES[selected].short} electorates won
+                    {electorateMPs.length > SHOWN && (
+                      <span style={{ fontWeight: 700, color: TERTIARY, letterSpacing: 0, textTransform: 'none' }}>
+                        {' '}&middot; {SHOWN} of {electorateMPs.length}
+                      </span>
+                    )}
+                  </div>
+                  {shownMPs.length === 0 && (
+                    // held > 0 but no names yet — the file's own "never guess a
+                    // seat holder" rule. Say that, don't render a blank list.
+                    <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px', lineHeight: 1.55 }}>
+                      The MPs holding {PARTY_NAMES[selected].short}&rsquo;s {held === 1 ? 'seat' : `${held} seats`} are
+                      still being verified against the official results.
+                    </p>
+                  )}
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {shownMPs.map((row, i) => {
+                      const inner = (
+                        <>
+                          <Avatar name={row.name} party={selected} src={row.mp?.photo} size="sm" face />
+                          <span style={{ minWidth: 0, flex: 1 }}>
+                            <span className="mp-row-name" style={{ display: 'block', fontSize: 14, fontWeight: 700, color: INK, fontFamily: MANROPE, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {row.name}
+                            </span>
+                            <span style={{ display: 'block', fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {row.electorate}{row.type === 'maori' ? ' · Māori electorate' : ''}
+                              {row.nowParty && (
+                                <span style={{ color: TERTIARY }}>
+                                  {' '}&middot; now {PARTY_NAMES[row.nowParty]?.short ?? 'independent'}
+                                </span>
+                              )}
+                            </span>
+                          </span>
+                          {row.mp && <ArrowRight className="mp-row-arrow" style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0 }} />}
+                        </>
+                      )
+                      const style: React.CSSProperties = {
+                        display: 'flex', alignItems: 'center', gap: 10, padding: '9px 8px', margin: '0 -8px',
+                        borderRadius: 8,
+                        borderTop: i === 0 ? 'none' : `1px solid ${BORDER}`, textDecoration: 'none',
+                      }
+                      // The whole row is the link where there is a profile to
+                      // link to; where there isn't, the row still shows the MP
+                      // and the seat rather than being dropped from the list.
+                      return row.mp
+                        ? <Link key={row.electorate} href={`/mps/${row.slug}`} className="mp-row" style={style}>{inner}</Link>
+                        : <div key={row.electorate} style={style}>{inner}</div>
+                    })}
+                  </div>
+                  <div style={{ marginTop: 12 }}>
+                    <SeeAll slug={selected} count={partyMPs} />
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -233,10 +376,14 @@ export function ThisTerm() {
               <Info style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0, marginTop: 2 }} />
               <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
                 {selected && held === 0 ? (
+                  // Deliberately short: the reason a party can hold seats and no
+                  // electorate is stated in full in the MP list beside this, and
+                  // saying it twice on one screen reads as a hedge. This sentence
+                  // is about the picture only — why nothing is shaded.
                   <>
-                    <b style={{ color: INK }}>{PARTY_NAMES[selected].short} holds no electorate seats.</b> All{' '}
-                    {CURRENT_SEATS[selected] ?? 0} of their MPs come from the party vote, so this map shows none of
-                    their support. That is how MMP works, not a gap in the data.
+                    Nothing is shaded because <b style={{ color: INK }}>{PARTY_NAMES[selected].short} won no
+                    electorates</b> in 2023. Their {CURRENT_SEATS[selected] ?? 0} seats came from the party vote,
+                    which no map can show.
                   </>
                 ) : selected && held === (CURRENT_SEATS[selected] ?? 0) ? (
                   // Rare, and worth its own sentence: Te Pāti Māori's six seats
@@ -269,12 +416,23 @@ export function ThisTerm() {
   )
 }
 
+/** The door out of the five. Goes to the MP directory pre-filtered to this
+ *  party (/mps?party=<slug>) rather than to /parties/<slug>, which carries the
+ *  party's values and policy but deliberately no caucus list. Both `mps` and
+ *  `parties` are Phase 1 features, so neither is a gated route. */
+function SeeAll({ slug, count }: { slug: PartySlug; count: number }) {
+  return (
+    <Link
+      href={`/mps?party=${slug}`}
+      style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none' }}
+    >
+      See all {count} {PARTY_NAMES[slug].short} MPs
+      <ArrowRight style={{ width: 14, height: 14 }} />
+    </Link>
+  )
+}
+
 const colLabel: React.CSSProperties = {
   fontSize: 11.5, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase',
   color: TERTIARY, fontFamily: MANROPE,
-}
-
-const cta: React.CSSProperties = {
-  display: 'inline-flex', alignItems: 'center', gap: 6,
-  fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, textDecoration: 'none',
 }
