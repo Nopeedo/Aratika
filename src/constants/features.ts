@@ -30,8 +30,21 @@ export const FEATURE_PHASE: Record<string, Phase> = {
   bills: 1, legislation: 1,
   // "Latest" — live election news feed — published in Phase 1.
   news: 1,
+  // Take Action — the drafting tools — published in Phase 1.
+  //
+  // It was sitting in Phase 2 while the things that link INTO it shipped in
+  // Phase 1, so those links dead-ended at /coming-soon: the "Write to your MP"
+  // button on every MP profile, and the "have your say" links on bill pages
+  // pointing at /take-action/submission while a select committee was actually
+  // taking submissions. Writing to your MP is the most basic civic act the site
+  // can support, and it was the one thing a reader could not do.
+  //
+  // Nothing had to be built for this. The studio, the four templates and the
+  // letter assembly were finished; PREMIUM_ENABLED is false so the gate inside
+  // the studio already opened for everyone. Only the phase number was wrong.
+  'take-action': 1,
   // Phase 2 — Accountability
-  parliament: 2, 'take-action': 2, premium: 2,
+  parliament: 2, premium: 2,
   // Phase 3 — Engage & scale
   companion: 3, polls: 3,
 }

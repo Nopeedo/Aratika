@@ -1,5 +1,5 @@
 /**
- * /take-action — the letter & submission studio hub (Premium).
+ * /take-action — the letter & submission studio hub.
  * Four guided tools: write to an MP, make a submission, write to a Minister,
  * request information under the OIA. You write the words; we give the structure.
  */
@@ -10,6 +10,7 @@ import {
   ArrowRight, PenLine, Mail, FileText, Briefcase, FileSearch, Sparkles, ShieldCheck,
 } from 'lucide-react'
 import { LETTER_TEMPLATES, LETTER_TEMPLATE_ORDER } from '@/constants/letter-templates'
+import { PREMIUM_ENABLED } from '@/constants/features'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -17,7 +18,8 @@ export const metadata: Metadata = {
   title: 'Take Action: write to an MP or make a submission',
   description:
     'Draft letters to MPs and Ministers, make select committee submissions, and file Official Information ' +
-    'Act requests, with guided templates and official-channel links. An Arapono Premium feature.',
+    'Act requests, with guided templates and official-channel links.' +
+    (PREMIUM_ENABLED ? ' An Arapono Premium feature.' : ' Free to use.'),
 }
 
 const ICONS: Record<string, React.ElementType> = { Mail, FileText, Briefcase, FileSearch }
@@ -36,9 +38,16 @@ export default function TakeActionHub() {
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '46px clamp(18px, 5vw, 36px) 40px' }}>
           <div style={{ marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
             <SectionDivider type="official" label="Take Action" />
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 800, color: JADE, background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
-              <Sparkles style={{ width: 12, height: 12 }} /> Premium
-            </span>
+            {/* The kill switch in features.ts says that while PREMIUM_ENABLED is
+                false everything is free and every Premium prompt is hidden. This
+                badge was missed by that sweep, so a free tool was telling people
+                it was paid. Conditional rather than deleted, so it comes back on
+                its own if the paywall ever does. */}
+            {PREMIUM_ENABLED && (
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 800, color: JADE, background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>
+                <Sparkles style={{ width: 12, height: 12 }} /> Premium
+              </span>
+            )}
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
             <div style={{ width: 54, height: 54, borderRadius: 15, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>

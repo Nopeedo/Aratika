@@ -2,7 +2,7 @@
  * /take-action/[template] — a single drafting tool.
  * Server shell: resolves recipient/bill context from the query (?to=mp-slug,
  * ?bill=bill-slug), builds a sample for the gated preview, and renders the
- * Premium-gated studio.
+ * studio (free while PREMIUM_ENABLED is off).
  */
 
 import type { Metadata } from 'next'
@@ -17,6 +17,7 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_NAMES } from '@/constants/parties'
 import { getBill } from '@/constants/bills-data'
 import { SectionDivider } from '@/components/ui/section-divider'
+import { PREMIUM_ENABLED } from '@/constants/features'
 import { PremiumGate } from '@/components/action/premium-gate'
 import { LetterStudio, LetterPreview } from '@/components/action/letter-studio'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
@@ -85,7 +86,7 @@ export default async function TakeActionTemplatePage(
           <Link href="/take-action" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All templates
           </Link>
-          <div style={{ marginBottom: 8 }}><SectionDivider type="official" label="Take Action · Premium" /></div>
+          <div style={{ marginBottom: 8 }}><SectionDivider type="official" label={PREMIUM_ENABLED ? 'Take Action · Premium' : 'Take Action'} /></div>
           <h1 style={{ fontSize: 'clamp(24px, 7vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.1 }}>{t.label}</h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
             {t.blurb}{ctx.recipientName ? ` · To: ${ctx.recipientName}` : ''}
