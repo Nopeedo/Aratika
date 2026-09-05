@@ -20,7 +20,7 @@ export interface MPContact {
 
 export const MP_CONTACTS_META = {
   asOf: '2026-09-05',
-  count: 121,
+  count: 122,
   sourceLabel: 'New Zealand Parliament — members of Parliament',
   sourceUrl: 'https://www.parliament.nz/en/mps-and-electorates/members-of-parliament/',
 }
@@ -147,4 +147,5 @@ export const MP_CONTACTS: Record<string, MPContact> = {
   "david-wilson": { email: "David.WilsonMP@parliament.govt.nz", phone: "+64 4 817 9999", sourceUrl: "https://www3.parliament.nz/en/mps-and-electorates/members-of-parliament/wilson-david" },
   "megan-woods": { email: "Megan.Woods@parliament.govt.nz", phone: "+64 4 817 9999", sourceUrl: "https://www3.parliament.nz/en/mps-and-electorates/members-of-parliament/woods-megan" },
   "lawrence-xu-nan": { email: "Lawrence.Xu-Nan@parliament.govt.nz", phone: "+64 4 817 9999", sourceUrl: "https://www3.parliament.nz/en/mps-and-electorates/members-of-parliament/xu-nan-lawrence" },
+  "christopher-luxon": { email: "Christopher.Luxon@parliament.govt.nz", phone: "+64 4 817 9999", sourceUrl: "https://www3.parliament.nz/en/mps-and-electorates/members-of-parliament/luxon-christopher" },
 }

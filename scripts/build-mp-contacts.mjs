@@ -66,8 +66,28 @@ function derived(fullName) {
   return `${parts[0]}.${parts[parts.length - 1]}@parliament.govt.nz`
 }
 
-// MPs and their Parliament URLs come straight from the generated roster.
+/**
+ * Read BOTH roster files, not just the generated one.
+ *
+ * MP_PROFILES is built from GENERATED_MPS plus a hand-written CURATED block in
+ * mps-data.ts, and Christopher Luxon and Judith Collins live only in the
+ * curated half. Reading mps-generated.ts alone silently produced 121 of 123
+ * contacts — with the Prime Minister among the two missing — and nothing about
+ * the output said so, because 121 rows looks like a complete file.
+ *
+ * The curated entries put slug and name on one line and parliamentUrl on
+ * another, so they need their own pattern; the match below is deliberately
+ * loose about what sits between them.
+ */
 const src = readFileSync('src/constants/mps-generated.ts', 'utf8')
+  + '\n' + readFileSync('src/constants/mps-data.ts', 'utf8')
+    .replace(
+      // Bounded to one object by forbidding another `slug:` inside the gaps,
+      // rather than by a character count. Luxon's rich profile puts 18 lines
+      // between his name and his parliamentUrl, so a length-capped window found
+      // Judith Collins and silently skipped the Prime Minister.
+      /slug:\s*'([^']+)',(?:(?!slug:)[\s\S])*?name:\s*'([^']+)',(?:(?!slug:)[\s\S])*?parliamentUrl:\s*'([^']+)'/g,
+      (_m, slug, name, url) => `{ slug: '${slug}', name: '${name}', parliamentUrl: '${url}' }`)
 /**
  * Deduped by slug, because the roster is not.
  *
