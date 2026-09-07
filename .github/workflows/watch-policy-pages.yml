@@ -1,0 +1,87 @@
+name: Watch party policy pages
+
+# Every policy page every party publishes, hashed daily.
+#
+# This replaces "Detect new party policy pages", which was topic-first: it
+# iterated 11 topics and hunted for a page for each, so anything outside a
+# hardcoded keyword list was invisible. 65% of known party links matched no
+# keyword. The Greens' Affordable Kai policy matched none of them, and neither
+# did their long-standing food policy.
+#
+# THE FAILURE THIS WORKFLOW FILE ITSELF CAUSED, recorded so it is not repeated:
+# the old workflow had no `permissions:` block. GITHUB_TOKEN therefore had no
+# write scope, the "Commit the page baseline" step failed on push with exit 128,
+# and the job was RED on every scheduled run for twelve consecutive days
+# (27 Aug - 7 Sep 2026). The crawl step succeeded every time; only the commit
+# failed. So the baseline froze at 24 August while the crawl kept diffing against
+# it, and because the script's only output was stdout, a red badge was the sole
+# notification channel there was — stuck on, and carrying no information.
+# Every workflow here that pushes declares contents: write. This one now does.
+permissions:
+  contents: write
+
+on:
+  schedule:
+    - cron: '0 5 * * *'    # 5pm NZST daily, an hour before refresh-positions
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+
+      # Exit 2 means "policy pages changed", which is information, not a fault.
+      # It deliberately does NOT fail the run: during a campaign parties publish
+      # constantly, and a job that goes red every time one does is back to being
+      # a badge nobody reads. Findings go to the step summary, and the actual
+      # response is automatic — refresh-positions runs an hour later, sees the
+      # fingerprint move, and drafts into /editor where a human reviews it.
+      # Red is reserved for the job actually breaking.
+      - name: Crawl and hash every party policy page
+        id: watch
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set +e
+          node scripts/watch-policy-pages.mjs | tee /tmp/watch.log
+          code=${PIPESTATUS[0]}
+          set -e
+          {
+            echo '## Policy page watch'
+            echo ''
+            echo '```'
+            tail -60 /tmp/watch.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then
+            echo "watcher failed with exit $code"
+            exit "$code"
+          fi
+
+      # Two files, both needed. policy-watch.json is the hash registry that makes
+      # "changed" mean anything; discovered-policy-sources.json is what
+      # draft-positions.mjs reads to widen a topic beyond its one configured URL.
+      # Losing either is recoverable — the next run re-derives them — but losing
+      # them silently every day is what just happened for twelve days, so the
+      # push is verified rather than assumed.
+      - name: Commit the watch state
+        if: ${{ !cancelled() }}
+        run: |
+          if [ -n "$(git status --porcelain scripts/.state/policy-watch.json scripts/.state/discovered-policy-sources.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add scripts/.state/policy-watch.json scripts/.state/discovered-policy-sources.json
+            git commit -m "Update policy page watch state"
+            git pull --rebase origin main
+            git push
+            echo "Watch state pushed."
+          else
+            echo "No change to the watch state."
+          fi

@@ -345,6 +345,64 @@ async function fetchSource(url) {
   return /\.pdf($|\?)/i.test(url) ? fetchPdfText(url) : fetchText(url)
 }
 
+/**
+ * Policy pages watch-policy-pages.mjs has found for a party on a topic.
+ *
+ * The config below holds AT MOST ONE url per party/topic, chosen by hand. That
+ * was the whole bug: a party announcing a new policy on a new page changed
+ * nothing this script fetches, so the position kept summarising the old page
+ * indefinitely. The Greens' Affordable Kai announcement is exactly that shape.
+ *
+ * The watcher crawls every page a party publishes and records which ones are
+ * policy statements and on what topic, so this file no longer has to guess in
+ * advance where a policy will live. Missing file is not an error — it just means
+ * the watcher has not run yet, and everything falls back to the old behaviour.
+ */
+const DISCOVERED = (() => {
+  try {
+    const p = join(fileURLToPath(import.meta.url), '..', '.state', 'discovered-policy-sources.json')
+    return JSON.parse(readFileSync(p, 'utf8'))
+  } catch { return {} }
+})()
+
+/**
+ * Every source URL for a party/topic: the hand-configured one first, then any
+ * page the watcher found, deduped.
+ *
+ * The configured URL stays first and stays the citation — it is the one an
+ * editor chose — while the discovered pages widen what the model actually
+ * reads. A party with four separate cost-of-living policies gets summarised
+ * from all four instead of from whichever one happened to be in the config.
+ */
+function sourceUrlsFor(slug, topic, primary) {
+  const found = (DISCOVERED[slug]?.[topic] || []).map((x) => x.url)
+  return [...new Set([primary, ...found].filter(Boolean))]
+}
+
+/**
+ * Fetch every source and concatenate, labelled by URL.
+ *
+ * Labelling matters twice: the model can attribute a quote to the right page,
+ * and the fingerprint of the whole moves when ANY constituent page changes or
+ * when a new page joins the set. That second property is what makes a new
+ * policy announcement visible to --if-changed without any new machinery — the
+ * drift check already in this file starts catching new pages for free.
+ */
+async function fetchAllSources(urls) {
+  const parts = []
+  for (const u of urls) {
+    try {
+      const t = await fetchSource(u)
+      if (t && t.length >= 200) parts.push(`### SOURCE: ${u}\n${t}`)
+    } catch (e) {
+      // One dead page among several must not lose the others. Reported, because
+      // a source that has quietly 404ed for weeks is worth seeing.
+      console.warn(`    ✗ source fetch failed: ${u} (${e.message})`)
+    }
+  }
+  return parts.join('\n\n')
+}
+
 function systemPrompt(topic) {
   const t = TOPICS[topic]
   return `You are a strictly NON-PARTISAN analyst for Aratika, a New Zealand civic-information site. You are given text scraped from a political party's OWN official website. Your job is to summarise THAT party's stated position on ${t.label} (${t.desc}) for everyday New Zealanders.
@@ -433,9 +491,14 @@ async function draftOne(party, topic) {
   const { data: existing } = await supabase.from('content_items').select('id, status, summary, data, source_url').eq('type', 'position').eq('source_id', sourceId).maybeSingle()
   if (existing?.status === 'approved' && !FORCE && !IF_CHANGED) { console.log(`⏭  ${party.slug}/${topic} already approved — skipping (use --force to add the deeper breakdown)`); return }
 
+  // The 2023 backfill reads a single archived manifesto, so it must not pull in
+  // pages the watcher found on the party's site today — those are 2026 policy.
+  const urls = PERIOD === '2023' ? [url] : sourceUrlsFor(party.slug, topic, url)
+  if (urls.length > 1) console.log(`  + ${party.slug}/${topic}: ${urls.length} sources (1 configured, ${urls.length - 1} discovered)`)
+
   let text = FROM_CACHE ? readCache(party.slug, topic) : null
   if (text) { console.log(`  📄 ${party.slug}/${topic}: using browser-captured cache`) }
-  else { try { text = await fetchSource(url) } catch (e) { console.warn(`✗ ${party.slug}: fetch failed (${e.message})`); return } }
+  else { try { text = await fetchAllSources(urls) } catch (e) { console.warn(`✗ ${party.slug}: fetch failed (${e.message})`); return } }
   if (!text || text.length < 400) { console.warn(`✗ ${party.slug}: source text too thin (${text?.length || 0} chars) — needs a better URL`); return }
 
   const fingerprint = sourceFingerprint(text)
@@ -460,9 +523,27 @@ async function draftOne(party, topic) {
     // Moving a row to a new source is a real decision (it rewrites the citation
     // under the quotes), so it is surfaced rather than done silently. --replace
     // is the flag that does it.
-    if (existing.source_url && url && existing.source_url !== url) {
+    //
+    // NARROWED once the watcher landed. The test used to be `source_url !== url`
+    // — the single configured URL — and that was too strict the moment a topic
+    // could have several sources. It was already too strict before: for topics
+    // with no explicit mapping, `url` is recomputed by discoverTopicUrl on every
+    // run while source_url stayed frozen at draft time, so any disagreement
+    // parked the row here permanently. Nothing would ever edit the config to
+    // match a runtime-discovered URL, so the condition sustained itself: 35 of
+    // ~107 rows were in that state, including labour/economy, labour/health,
+    // tpm/economy and nzfirst/economy — four of the most-read cost-of-living
+    // positions on the site, none of which had been drift-checked since.
+    //
+    // The real question is not "is this the same single URL" but "are we still
+    // reading the page this row was drafted from". If the stored source is still
+    // among the pages we fetch, this is not a repoint and the fingerprint
+    // comparison below is meaningful. Only a source we no longer read at all is
+    // a genuine repoint, and that stays a human decision because it rewrites the
+    // citation under the quotes.
+    if (existing.source_url && urls.length && !urls.includes(existing.source_url)) {
       TALLY.repointed.push(`${party.slug}/${topic}`)
-      console.log(`  ↪ ${party.slug}/${topic}: NOT drift — drafted from ${existing.source_url}, config now says ${url}. Re-run that one with --replace to move it.`)
+      console.log(`  ↪ ${party.slug}/${topic}: NOT drift — drafted from ${existing.source_url}, no longer among the ${urls.length} source(s) read. Re-run with --replace to move it.`)
       return
     }
     const prior = existing.data?.sourceHash

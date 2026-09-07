@@ -17,6 +17,7 @@ import { createClient } from '@supabase/supabase-js'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { readFileSync } from 'node:fs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 
@@ -55,6 +56,40 @@ for (const c of CHECKS) {
   const mark = stale ? '✗' : '✓'
   console.log(`  ${mark} ${c.label.padEnd(12)} newest ${fmtAge(ageMs).padStart(7)} ago   (limit ${c.maxHours}h — ${c.note})`)
   if (stale) failures.push(`${c.label}: newest item is ${fmtAge(ageMs)} old (limit ${c.maxHours}h)`)
+}
+
+// ── Policy watch heartbeat ───────────────────────────────────────────────────
+// The checks above all ask "did new rows arrive". Positions are not like that:
+// they change only when a PARTY changes something, so a quiet week is normal and
+// a row-age limit would either false-alarm constantly or never fire at all.
+//
+// What can be measured is whether the thing that WATCHES for party changes is
+// still running. It wasn't: watch-policy-pages' predecessor failed on every
+// scheduled run for twelve days (a missing permissions block, not a crawl
+// fault), and nothing here noticed, because positions were absent from this
+// file entirely. Meanwhile parties published — 20 new policy pages accumulated
+// undetected, including the Greens' Affordable Kai policy.
+//
+// The stamp is written by the watcher into the file it commits, so a stale
+// checkout carries a stale date and this fails honestly. 48 hours allows one
+// missed daily run before alarming.
+{
+  const MAX_HOURS = 48
+  let meta = null
+  try {
+    const p = join(dirname(fileURLToPath(import.meta.url)), '.state', 'discovered-policy-sources.json')
+    meta = JSON.parse(readFileSync(p, 'utf8'))._meta
+  } catch { /* handled below */ }
+
+  if (!meta?.lastRun) {
+    console.log('  ✗ Policy watch  NO HEARTBEAT — watch-policy-pages.mjs has never written state')
+    failures.push('Policy watch: no heartbeat file (has watch-policy-pages ever run?)')
+  } else {
+    const ageMs = now - new Date(`${meta.lastRun}T00:00:00Z`).getTime()
+    const stale = ageMs > MAX_HOURS * 36e5
+    console.log(`  ${stale ? '✗' : '✓'} Policy watch  last ran ${fmtAge(ageMs).padStart(7)} ago   (limit ${MAX_HOURS}h — ${meta.policyPages} pages, ${meta.parties} parties)`)
+    if (stale) failures.push(`Policy watch: last ran ${fmtAge(ageMs)} ago (limit ${MAX_HOURS}h) — party policy changes are going undetected`)
+  }
 }
 
 if (failures.length) {
