@@ -55,7 +55,26 @@ const IF_CHANGED = args.includes('--if-changed')
 const DRY_RUN = args.includes('--dry-run')
 const TALLY = { drifted: [], unchanged: [], baseline: [], newDraft: [], repointed: [] }
 const topicArg = (args.find((a) => a.startsWith('--topic=')) || '').split('=')[1] || 'economy'
+// --party accepts one slug or a comma-separated cohort:
+//   --party=green            one party
+//   --party=national,labour  a cohort, for staging a catch-up in batches
 const partyArg = (args.find((a) => a.startsWith('--party=')) || '').split('=')[1] || null
+const PARTY_SET = partyArg ? partyArg.split(',').map((x) => x.trim()).filter(Boolean) : null
+/**
+ * Most positions this invocation may WRITE before it stops.
+ *
+ * Widening a topic from one configured source to several moves almost every
+ * fingerprint at once, so the first run after the watcher lands would re-draft
+ * essentially the whole site into /editor in one night. A review queue nobody
+ * can reach the bottom of is the same as no review queue.
+ *
+ * The cap counts writes, not parties considered: skips and unchanged rows are
+ * free and do not consume it. Whatever is left over is reported and picked up by
+ * the next run, so the daily cron drains the backlog at a reviewable pace
+ * instead of arriving as a wall.
+ */
+const MAX_DRAFTS = Number((args.find((a) => a.startsWith('--max-drafts=')) || '').split('=')[1] || 0) || Infinity
+let WROTE = 0
 // Record a VERIFIED "no stated position" (after checking the party's policy index):
 //   node scripts/draft-positions.mjs --no-position --party=tpm --topic=foreign-policy --source=<url> [--note="..."]
 const NO_POSITION = args.includes('--no-position')
@@ -617,6 +636,7 @@ async function draftOne(party, topic) {
     // summary it was fixing.
     const { error } = await supabase.from('content_items').update({ data: mergedData, ...(REPLACE ? { summary: String(parsed.summary || '').trim() } : {}), source_url: url, status: 'pending', change_kind: 'updated', updated_at: today }).eq('id', existing.id)
     if (error) { console.warn(`✗ ${party.slug}: update failed (${error.message})`); return }
+    WROTE++
     console.log(REPLACE
       ? `✓ ${party.slug}/${topic}: REWRITTEN from ${url} → pending review`
       : `✓ ${party.slug}/${topic}: breakdown added (kept your approved text) → pending re-approve`)
@@ -648,6 +668,7 @@ async function draftOne(party, topic) {
   }
   const { error } = await supabase.from('content_items').insert(row)
   if (error) { console.warn(`✗ ${party.slug}: insert failed (${error.message})`); return }
+  WROTE++
   console.log(`✓ ${party.slug}/${topic}: "${row.data.stance}"`)
 }
 
@@ -689,7 +710,13 @@ async function main() {
     console.log('\nReview at /editor — approve only after confirming the topic is genuinely absent from their policy.')
     return
   }
-  const list = partyArg ? PARTIES.filter((p) => p.slug === partyArg) : PARTIES
+  const list = PARTY_SET ? PARTIES.filter((p) => PARTY_SET.includes(p.slug)) : PARTIES
+  if (PARTY_SET) {
+    const unknown = PARTY_SET.filter((x) => !PARTIES.some((p) => p.slug === x))
+    // A typo'd slug silently drafting nothing is the same shape as this whole
+    // bug report: a run that reports success having done nothing.
+    if (unknown.length) { console.error(`Unknown party slug(s): ${unknown.join(', ')}`); process.exit(1) }
+  }
   console.log(`Drafting ${topicArg} positions for ${list.length} parties (model ${MODEL})…\n`)
   // One party's failure must not end the run. A model error — a rate limit, an
   // exhausted credit balance, a transient 500 — used to throw out of main() and
@@ -697,7 +724,9 @@ async function main() {
   // drafted and the run looked like it had simply finished. Each is isolated and
   // counted, and the tally at the end says how many actually failed.
   let failed = 0
+  let deferred = 0
   for (const p of list) {
+    if (WROTE >= MAX_DRAFTS) { deferred++; continue }
     try { await draftOne(p, topicArg) }
     catch (e) {
       failed++
@@ -717,6 +746,13 @@ ${failed} of ${list.length} part(ies) failed on ${topicArg} — see above.`)
     console.log(`   would draft new:  ${TALLY.newDraft.length}${TALLY.newDraft.length ? '  (' + TALLY.newDraft.join(', ') + ')' : ''}`)
     console.log(`   model calls a real run would make: ${TALLY.drifted.length + TALLY.newDraft.length}`)
     return
+  }
+  // A cap that stops quietly is indistinguishable from a run with nothing left
+  // to do — the same shape as the bug this whole change exists to fix. Say what
+  // was left, and say that it is coming back.
+  if (deferred) {
+    console.log(`\n⏸  ${deferred} part${deferred === 1 ? 'y' : 'ies'} deferred on ${topicArg}: hit --max-drafts=${MAX_DRAFTS} after ${WROTE} write(s).`)
+    console.log('   Not skipped — the next run picks them up, since their fingerprints are still unmatched.')
   }
   console.log(`\nDone. Review at /editor, then they appear on /policies/${topicArg}.`)
 }

@@ -28,6 +28,12 @@ on:
       force_topic:
         description: 'Re-draft one topic ignoring fingerprints (leave blank for the normal daily run)'
         required: false
+      parties:
+        description: 'Comma-separated party slugs, e.g. national,labour,green (blank = all)'
+        required: false
+      max_drafts:
+        description: 'Max positions written per topic this run (blank = daily default of 3)'
+        required: false
 
 jobs:
   draft:
@@ -62,8 +68,37 @@ jobs:
             node scripts/draft-positions.mjs --topic="${{ github.event.inputs.force_topic }}" --force
             exit 0
           fi
+          # STAGING THE CATCH-UP.
+          #
+          # watch-policy-pages widened every topic from one configured source to
+          # several, which moves nearly every fingerprint at once. Uncapped, the
+          # first run after that lands would push essentially the whole site into
+          # /editor in a single night, and a review queue nobody can reach the
+          # bottom of is the same as no review queue.
+          #
+          # The cap counts WRITES per topic, so skips and unchanged rows are
+          # free. Nothing is skipped, only deferred: a deferred row still has an
+          # unmatched fingerprint, so tomorrow's run picks it up. Once the
+          # backlog drains the cap stops binding, because real changes are a
+          # handful a day.
+          MAX="${{ github.event.inputs.max_drafts }}"
+          [ -z "$MAX" ] && MAX=3
+          ARGS="--if-changed --max-drafts=$MAX"
+          if [ -n "${{ github.event.inputs.parties }}" ]; then
+            ARGS="$ARGS --party=${{ github.event.inputs.parties }}"
+          fi
+          echo "Args: $ARGS"
+
+          # `|| echo "(nothing new)"` used to swallow every failure here, so a
+          # topic that died on a rate limit or an unknown slug reported nothing
+          # new and left the run green. Count them and fail at the end instead.
+          fails=0
           for t in $TOPICS; do
             echo "--- $t ---"
-            node scripts/draft-positions.mjs --topic="$t" --if-changed || echo "(topic $t: nothing new)"
+            node scripts/draft-positions.mjs --topic="$t" $ARGS || { echo "::warning::topic $t failed"; fails=$((fails+1)); }
           done
+          if [ "$fails" -gt 0 ]; then
+            echo "::error::$fails topic(s) failed — see the log above."
+            exit 1
+          fi
           echo "Done. Review anything new at /editor."
