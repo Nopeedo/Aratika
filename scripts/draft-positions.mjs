@@ -836,7 +836,15 @@ ${failed} of ${list.length} part(ies) failed on ${topicArg} — see above.`)
   // to do — the same shape as the bug this whole change exists to fix. Say what
   // was left, and say that it is coming back.
   if (deferred) {
-    console.log(`\n⏸  ${deferred} part${deferred === 1 ? 'y' : 'ies'} deferred on ${topicArg}: hit --max-drafts=${MAX_DRAFTS} after ${WROTE} write(s).`)
+    // Which guard actually stopped it. The two have different remedies — raise
+    // the cap, or go clear /editor — so naming the wrong one sends you to fix
+    // the wrong thing. This said "--max-drafts" unconditionally and reported
+    // "hit --max-drafts=3 after 1 write(s)", which is self-evidently not what
+    // happened.
+    const why = WROTE >= MAX_DRAFTS
+      ? `--max-drafts=${MAX_DRAFTS}`
+      : `--max-pending=${MAX_PENDING} (${PENDING_NOW} were already queued)`
+    console.log(`\n⏸  ${deferred} part${deferred === 1 ? 'y' : 'ies'} deferred on ${topicArg}: hit ${why} after ${WROTE} write(s).`)
     console.log('   Not skipped — the next run picks them up, since their fingerprints are still unmatched.')
   }
   console.log(`\nDone. Review at /editor, then they appear on /policies/${topicArg}.`)
