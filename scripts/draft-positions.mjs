@@ -75,6 +75,28 @@ const PARTY_SET = partyArg ? partyArg.split(',').map((x) => x.trim()).filter(Boo
  */
 const MAX_DRAFTS = Number((args.find((a) => a.startsWith('--max-drafts=')) || '').split('=')[1] || 0) || Infinity
 let WROTE = 0
+/**
+ * Most positions allowed to sit UNREVIEWED site-wide before drafting pauses.
+ *
+ * --max-drafts bounds one run. This bounds the blast radius, which is a
+ * different quantity and the one that actually matters, because a re-drafted
+ * row goes to status='pending' and the site renders only 'approved'
+ * (src/lib/positions/live.ts). A pending position is not a stale position — it
+ * is an ABSENT one, and /policies/[topic] does not omit it quietly:
+ * policy-comparison.tsx prints "No position on economy recorded yet for
+ * National, Labour, Green, ACT, NZ First, Te Pati Maori".
+ *
+ * That is what a cohort catch-up did on 8 Sep 2026 — eight positions, six of
+ * them the parliamentary parties' economy pages, replaced by a false statement
+ * about all six. --max-drafts=3 would not have prevented it: three per topic
+ * across eleven topics is still thirty-three positions dark in one night.
+ *
+ * So the count is of the QUEUE, not of this run. Drafting pauses while the
+ * editor is behind and resumes as they clear it, which keeps the amount of the
+ * site that is missing bounded by review capacity rather than by crawl rate.
+ */
+const MAX_PENDING = Number((args.find((a) => a.startsWith('--max-pending=')) || '').split('=')[1] || 0) || Infinity
+let PENDING_NOW = 0
 // Record a VERIFIED "no stated position" (after checking the party's policy index):
 //   node scripts/draft-positions.mjs --no-position --party=tpm --topic=foreign-policy --source=<url> [--note="..."]
 const NO_POSITION = args.includes('--no-position')
@@ -723,10 +745,28 @@ async function main() {
   // kill the whole topic, so parties later in the list were silently never
   // drafted and the run looked like it had simply finished. Each is isolated and
   // counted, and the tally at the end says how many actually failed.
+  // How much of the site is already missing before this run adds to it.
+  if (MAX_PENDING !== Infinity && !DRY_RUN) {
+    const { count, error } = await supabase
+      .from('content_items').select('*', { count: 'exact', head: true })
+      .eq('type', 'position').eq('status', 'pending')
+    // A bare .select() silently caps at 1000 rows in PostgREST, which is why
+    // this counts with head+exact rather than reading rows and taking .length.
+    if (error) { console.error(`Could not count the review queue: ${error.message}. Refusing to draft blind.`); process.exit(1) }
+    PENDING_NOW = count || 0
+    if (PENDING_NOW >= MAX_PENDING) {
+      console.log(`
+⏸  ${PENDING_NOW} position(s) already awaiting review (--max-pending=${MAX_PENDING}). Not drafting ${topicArg}.`)
+      console.log('   Clear some of /editor and the next run continues. Nothing is lost: unmatched fingerprints bring these back.')
+      return
+    }
+  }
+
   let failed = 0
   let deferred = 0
   for (const p of list) {
     if (WROTE >= MAX_DRAFTS) { deferred++; continue }
+    if (PENDING_NOW + WROTE >= MAX_PENDING) { deferred++; continue }
     try { await draftOne(p, topicArg) }
     catch (e) {
       failed++

@@ -81,9 +81,18 @@ jobs:
           # unmatched fingerprint, so tomorrow's run picks it up. Once the
           # backlog drains the cap stops binding, because real changes are a
           # handful a day.
+          # --max-drafts bounds one run; --max-pending bounds how much of the
+          # SITE is missing, which is the number that actually matters. A
+          # re-drafted row goes to status='pending' and the site renders only
+          # 'approved', so a pending position is an absent one — and
+          # policy-comparison.tsx says so out loud: "No position on economy
+          # recorded yet for National, Labour, Green, ACT, NZ First, Te Pāti
+          # Māori". Three per topic across eleven topics would still be
+          # thirty-three positions dark in a night, so the queue depth is the
+          # real limit. Drafting pauses while the editor is behind.
           MAX="${{ github.event.inputs.max_drafts }}"
           [ -z "$MAX" ] && MAX=3
-          ARGS="--if-changed --max-drafts=$MAX"
+          ARGS="--if-changed --max-drafts=$MAX --max-pending=6"
           if [ -n "${{ github.event.inputs.parties }}" ]; then
             ARGS="$ARGS --party=${{ github.event.inputs.parties }}"
           fi
