@@ -434,14 +434,35 @@ async function fetchAllSources(urls) {
   for (const u of urls) {
     try {
       const t = await fetchSource(u)
-      if (t && t.length >= 200) parts.push(`### SOURCE: ${u}\n${t}`)
+      if (t && t.length >= 200) parts.push({ url: u, text: t })
     } catch (e) {
       // One dead page among several must not lose the others. Reported, because
       // a source that has quietly 404ed for weeks is worth seeing.
       console.warn(`    ✗ source fetch failed: ${u} (${e.message})`)
     }
   }
-  return parts.join('\n\n')
+  return { text: parts.map((p) => `### SOURCE: ${p.url}\n${p.text}`).join('\n\n'), parts }
+}
+
+/**
+ * Which fetched page a verbatim excerpt actually came from.
+ *
+ * With one source this question did not exist — the citation was the source.
+ * With several it is the whole ballgame, and getting it wrong is worse than a
+ * stale summary: the Greens' economy position cited
+ * /government_in_the_economy_policy while quoting "Create KiwiMart, a publicly
+ * owned supermarket chain" off the affordable-food page. The quote was
+ * genuine and verbatim; the citation under it was wrong, so a reader clicking
+ * through to check would not find it and would reasonably conclude we made it
+ * up. That is the exact failure the source_url comment below was written about,
+ * reintroduced by widening the source set.
+ *
+ * Returns null when no fetched page contains it, which the caller treats the
+ * same way it treats a non-verbatim excerpt: discard.
+ */
+function excerptSource(parts, excerpt) {
+  const hit = parts.find((p) => isVerbatim(p.text, excerpt))
+  return hit ? hit.url : null
 }
 
 function systemPrompt(topic) {
@@ -538,8 +559,18 @@ async function draftOne(party, topic) {
   if (urls.length > 1) console.log(`  + ${party.slug}/${topic}: ${urls.length} sources (1 configured, ${urls.length - 1} discovered)`)
 
   let text = FROM_CACHE ? readCache(party.slug, topic) : null
+  // Per-source texts, kept so each excerpt can be attributed to the page it was
+  // actually taken from. The cache path has only one blob and no URL breakdown,
+  // so it falls back to the primary url — same behaviour as before multi-source.
+  let sourceParts = [{ url, text: text || '' }]
   if (text) { console.log(`  📄 ${party.slug}/${topic}: using browser-captured cache`) }
-  else { try { text = await fetchAllSources(urls) } catch (e) { console.warn(`✗ ${party.slug}: fetch failed (${e.message})`); return } }
+  else {
+    try {
+      const fetched = await fetchAllSources(urls)
+      text = fetched.text
+      sourceParts = fetched.parts
+    } catch (e) { console.warn(`✗ ${party.slug}: fetch failed (${e.message})`); return }
+  }
   if (!text || text.length < 400) { console.warn(`✗ ${party.slug}: source text too thin (${text?.length || 0} chars) — needs a better URL`); return }
 
   const fingerprint = sourceFingerprint(text)
@@ -623,7 +654,21 @@ async function draftOne(party, topic) {
     : []
   // Verbatim guardrail: keep only excerpts/quote that actually appear in the source.
   const rawExcerpts = Array.isArray(parsed.excerpts) ? parsed.excerpts.map((s) => String(s).trim()).filter(Boolean) : []
-  const excerpts = rawExcerpts.filter((s) => isVerbatim(text, s)).slice(0, 3)
+  // Attribute before truncating: an excerpt now has to be verbatim in ONE named
+  // page, not merely somewhere in the concatenation of several. That is a
+  // strictly stronger check — a quote stitched across two sources passes
+  // isVerbatim(text) and fails here, correctly.
+  const attributed = rawExcerpts
+    .map((s) => ({ text: s, url: excerptSource(sourceParts, s) }))
+    .filter((e) => e.url)
+    .slice(0, 3)
+  const excerpts = attributed.map((e) => e.text)
+  // Parallel array rather than objects: excerpts is typed string[] in four
+  // frontend components (policy-explorer, bill-breakdown, bill-full-text,
+  // position-reader) and changing its shape would break them. Index i of this
+  // is the page excerpts[i] came from, so a citation can be rendered per quote
+  // whenever the frontend is ready for it.
+  const excerptSources = attributed.map((e) => e.url)
   const droppedExcerpts = rawExcerpts.length - excerpts.length
   let quote = String(parsed.quote || '').trim()
   if (quote && !isVerbatim(text, quote)) { quote = ''; console.warn(`  ⚠ ${party.slug}/${topic}: dropped non-verbatim quote`) }
@@ -649,7 +694,7 @@ async function draftOne(party, topic) {
       summaryBasic: String(parsed.summary_basic || '').trim(),
       quote,
     } : {}
-    const mergedData = { ...ed, ...rewritten, keyProposals, framing, whoAffected, excerpts, asOf: today, sourceHash: fingerprint }
+    const mergedData = { ...ed, ...rewritten, keyProposals, framing, whoAffected, excerpts, excerptSources, sourceUrls: urls, asOf: today, sourceHash: fingerprint }
     // source_url moves with the excerpts. It used to be left alone, so
     // re-pointing a party at a better page — the Greens' housing_policy instead
     // of their /policy index — rewrote the quotes from the new page while the
@@ -677,7 +722,7 @@ async function draftOne(party, topic) {
       stance: String(parsed.stance || '').trim(),
       quote,
       summaryBasic: String(parsed.summary_basic || '').trim(),
-      keyProposals, framing, whoAffected, excerpts,
+      keyProposals, framing, whoAffected, excerpts, excerptSources, sourceUrls: urls,
       source_label: PERIOD === '2023' ? `${party.name} — 2023 manifesto` : `${party.name} — official policy page`,
       asOf: today,
       // What the source said when this was written. --if-changed compares
