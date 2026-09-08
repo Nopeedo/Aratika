@@ -231,7 +231,11 @@
     "economy": [
       {
         "url": "https://www.national.org.nz/economy",
-        "title": "National's economic rebuilding plan"
+        "title": "Economic Rebuilding Plan"
+      },
+      {
+        "url": "https://www.national.org.nz/policies/boost-for-graduates",
+        "title": "Back Pocket Boost for Graduates"
       },
       {
         "url": "https://www.national.org.nz/policies/build-the-future",
@@ -242,12 +246,12 @@
         "title": "National Backs South Island Growth"
       },
       {
-        "url": "https://www.national.org.nz/policies/kiwisaver",
-        "title": "Enhancing KiwiSaver for Everyone"
+        "url": "https://www.national.org.nz/policies/international-visitor-levy",
+        "title": "International Visitor Levy Reset"
       },
       {
-        "url": "https://www.national.org.nz/policies/new-trade",
-        "title": "New Zealand's Next Billion Customers"
+        "url": "https://www.national.org.nz/policies/kiwisaver",
+        "title": "Enhancing KiwiSaver for Everyone"
       },
       {
         "url": "https://www.national.org.nz/policies/no-new-taxes",
@@ -269,13 +273,19 @@
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "Backing First Home Buyers"
+        "title": "Wider Access to 5% First Home Deposits"
+      }
+    ],
+    "foreign-policy": [
+      {
+        "url": "https://www.national.org.nz/policies/new-trade",
+        "title": "New Zealand's Next Billion Customers – Trade Policy"
       }
     ],
     "environment": [
       {
         "url": "https://www.national.org.nz/policies/hunting-and-fishing",
-        "title": "Plan for Hunting and Fishing"
+        "title": "Hunting and Fishing Policy"
       }
     ],
     "crime-justice": [
@@ -295,13 +305,13 @@
     "health": [
       {
         "url": "https://www.national.org.nz/healthcare",
-        "title": "National's healthcare delivery policy"
+        "title": "Quality Timely Healthcare Policy"
       }
     ],
     "education": [
       {
         "url": "https://www.national.org.nz/education",
-        "title": "National's teaching the basics brilliantly policy"
+        "title": "Teaching the Basics Brilliantly education policy"
       }
     ]
   },
@@ -790,6 +800,14 @@
       {
         "url": "https://allianceparty.nz/",
         "title": "Alliance Party policy overview including tax and workers' rights"
+      },
+      {
+        "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
+        "title": "Alliance full employment and 35-hour working week workers' rights policy"
+      },
+      {
+        "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
+        "title": "Alliance tax plan: first $20,000 income tax-free funded by wealth tax"
       }
     ]
   },
@@ -797,7 +815,7 @@
     "democracy-government": [
       {
         "url": "https://womensrightsparty.nz/our-priorities/",
-        "title": "Women's Rights Party priorities on sex-based rights"
+        "title": "Women's Rights Party priorities: sex-based rights and women's freedoms"
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/human-rights-act/",
@@ -862,8 +880,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-07",
+    "lastRun": "2026-09-08",
     "parties": 13,
-    "policyPages": 177
+    "policyPages": 181
   }
 }
