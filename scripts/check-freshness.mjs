@@ -74,7 +74,13 @@ for (const c of CHECKS) {
 // checkout carries a stale date and this fails honestly. 48 hours allows one
 // missed daily run before alarming.
 {
-  const MAX_HOURS = 48
+  // 36h, not 48. This is a daily job, so 48 meant a single missed run stayed
+  // invisible for two days — and that is exactly what happened: the watcher
+  // succeeded 8 Sep, failed 9 Sep on its commit step, and this check still read
+  // green at 45.1h. 36 catches one miss while clearing the ~4.5h delay GitHub
+  // applies to the schedule (it fires nearer 09:24 UTC than the 05:00 asked
+  // for), so a normal day is ~24h and a false alarm needs a 12h drift.
+  const MAX_HOURS = 36
   let meta = null
   try {
     const p = join(dirname(fileURLToPath(import.meta.url)), '.state', 'discovered-policy-sources.json')

@@ -20,9 +20,22 @@ name: Watch party policy pages
 permissions:
   contents: write
 
+# Never let two of these overlap. A second run crawling while the first is
+# mid-commit would race on the same two state files, and cancel-in-progress
+# would be wrong here — the first run has already done ~200s of fetching and its
+# state is worth landing.
+concurrency:
+  group: watch-policy-pages
+  cancel-in-progress: false
+
 on:
   schedule:
-    - cron: '0 5 * * *'    # 5pm NZST daily, an hour before refresh-positions
+    # NOTE: GitHub delays scheduled runs under load, and this one has been
+    # landing around 09:24 UTC rather than 05:00 — roughly 4.5 hours late, every
+    # time. It does not matter for a daily crawl, but do not read the timestamps
+    # as evidence of anything and do not tighten the freshness limit below the
+    # drift.
+    - cron: '0 5 * * *'    # 5pm NZST nominal, an hour before refresh-positions
   workflow_dispatch:
 
 jobs:
@@ -71,17 +84,47 @@ jobs:
       # Losing either is recoverable — the next run re-derives them — but losing
       # them silently every day is what just happened for twelve days, so the
       # push is verified rather than assumed.
+      # PUSH FIRST, rebase only if rejected.
+      #
+      # This step failed on 9 Sep 2026 after succeeding on the 8th — the crawl
+      # was fine both times. It ran `git pull --rebase origin main` before every
+      # push, which spent 135 seconds and then failed. Several workflows here
+      # commit back to main daily (refresh-bills, backup, refresh-mps), so an
+      # unconditional rebase is both unnecessary and a chance to hit a conflict
+      # on a one-line minified JSON file that cannot be merged.
+      #
+      # refresh-bills.yml has never failed and does no rebase at all — it just
+      # pushes. So the fast path here is the same, with a retry loop for the
+      # genuine race: another workflow landing a commit between our commit and
+      # our push. Backoff is staggered so two retrying jobs do not lockstep.
       - name: Commit the watch state
         if: ${{ !cancelled() }}
         run: |
-          if [ -n "$(git status --porcelain scripts/.state/policy-watch.json scripts/.state/discovered-policy-sources.json)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add scripts/.state/policy-watch.json scripts/.state/discovered-policy-sources.json
-            git commit -m "Update policy page watch state"
-            git pull --rebase origin main
-            git push
-            echo "Watch state pushed."
-          else
+          FILES="scripts/.state/policy-watch.json scripts/.state/discovered-policy-sources.json"
+          if [ -z "$(git status --porcelain $FILES)" ]; then
             echo "No change to the watch state."
+            exit 0
           fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add $FILES
+          git commit -m "Update policy page watch state"
+
+          for i in 1 2 3 4 5; do
+            if git push; then
+              echo "Watch state pushed (attempt $i)."
+              exit 0
+            fi
+            echo "Push rejected — someone else landed a commit. Rebasing and retrying ($i/5)."
+            # --autostash so an unrelated dirty file can't abort the rebase.
+            # A conflict here is real and should stop the run rather than be
+            # papered over: these files are generated, so the right recovery is
+            # to let the next scheduled run rebuild them from scratch.
+            if ! git pull --rebase --autostash origin main; then
+              echo "::error::rebase conflict on the watch state — next run will rebuild it"
+              exit 1
+            fi
+            sleep $((i * 5))
+          done
+          echo "::error::could not push the watch state after 5 attempts"
+          exit 1
