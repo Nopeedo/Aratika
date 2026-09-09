@@ -1,5 +1,12 @@
 import type { Metadata } from 'next'
 import { LegalPage } from '@/components/legal/legal-page'
+// Read from SITE rather than typing the address in. Three hardcoded copies of
+// hello@arapono.nz survived here after SITE.email had moved to
+// hello@arapono.org.nz — and arapono.nz has no MX record at all, so every one
+// of those links pointed at a mailbox that cannot receive mail. This page is
+// where the Privacy Act access, correction and deletion requests are supposed
+// to arrive, so they were bouncing.
+import { SITE } from '@/constants/site'
 
 /**
  * The privacy policy is written from an audit of what the code ACTUALLY does —
@@ -33,7 +40,7 @@ export default function PrivacyPage() {
         Arapono is an independent, non-partisan platform that helps New Zealanders understand Parliament, MPs, parties,
         policies and elections. We are not affiliated with the Government or any political party. This policy explains
         how we handle personal information under the <strong>Privacy Act 2020</strong>. You can reach us any time at{' '}
-        <a href="mailto:hello@arapono.nz">hello@arapono.nz</a> or through the <a href="/contact">contact page</a>.
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or through the <a href="/contact">contact page</a>.
       </p>
       <p>
         <strong>Arapono is free, and there is nothing to pay for.</strong> We don’t take payments, we don’t have a paid
@@ -131,7 +138,7 @@ export default function PrivacyPage() {
       <p>
         Under the Privacy Act 2020 you can ask to <strong>see</strong> or <strong>correct</strong> the personal
         information we hold about you, and you can ask us to <strong>delete your account and everything attached to
-        it</strong>. Email <a href="mailto:hello@arapono.nz">hello@arapono.nz</a> or use the{' '}
+        it</strong>. Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or use the{' '}
         <a href="/contact">contact page</a> and we’ll do it. There is no self-service delete button yet — until there
         is, we do it by hand on request, which we’ll confirm to you when it’s done.
       </p>
@@ -164,7 +171,7 @@ export default function PrivacyPage() {
       <h2>Changes and contact</h2>
       <p>
         We’ll update this policy as the site changes, and change the date above when we do. Questions, corrections or a
-        request about your information: <a href="mailto:hello@arapono.nz">hello@arapono.nz</a> or the{' '}
+        request about your information: <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or the{' '}
         <a href="/contact">contact page</a>.
       </p>
     </LegalPage>

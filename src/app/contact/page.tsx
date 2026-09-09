@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   description: 'Get in touch with Arapono, or report a correction. Accuracy matters to us.',
 }
 
-const EMAIL = SITE.email // hello@arapono.nz
+const EMAIL = SITE.email
 
 export default function ContactPage() {
   return (

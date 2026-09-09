@@ -10,6 +10,7 @@
 import { useState, useEffect } from 'react'
 import { Check, FileText, ExternalLink, Loader2, Eye, Clock, ChevronDown, ChevronRight } from 'lucide-react'
 import { BillBreakdown, type PolicyLink } from '@/components/bills/bill-breakdown'
+import { SITE } from '@/constants/site'
 import { StageTracker } from '@/components/bills/stage-tracker'
 import { HaveYourSay } from '@/components/bills/have-your-say'
 import { billSlugFromLink } from '@/lib/bills/slug'
@@ -403,7 +404,10 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
   const selectCommittee = typeof item.data?.selectCommittee === 'string' ? item.data.selectCommittee : null
   const isLegislation = item.type === 'legislation'
   const isNews = item.type === 'news'
-  const previewUrl = `arapono.nz/legislation/${billSlugFromLink(link) ?? '…'}`
+  // Host from SITE, not typed in: this said arapono.nz, which is not the site's
+  // domain and has no DNS records at all, so the reviewer was shown a preview
+  // URL that goes nowhere.
+  const previewUrl = `${SITE.url.replace(/^https?:\/\//, '')}/legislation/${billSlugFromLink(link) ?? '…'}`
 
   // News tags, for the reviewer to see who an item will reach before publishing.
   const asArr = (k: string) => (Array.isArray(item.data?.[k]) ? (item.data[k] as string[]) : [])
