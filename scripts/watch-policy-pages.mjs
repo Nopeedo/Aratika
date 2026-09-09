@@ -366,6 +366,7 @@ const toTriage = pending.slice(0, MAX_TRIAGE)
 if (overflow) console.log(`\n${overflow} page(s) over the --max-triage=${MAX_TRIAGE} ceiling — NOT dropped, picked up next run.`)
 
 const drafts = []
+const reclassified = []
 if (toTriage.length && anthropic && !DRY) {
   console.log(`\nTriaging ${toTriage.length} new/changed page(s) in ${Math.ceil(toTriage.length / 20)} call(s)…`)
   for (let i = 0; i < toTriage.length; i += 20) {
@@ -378,9 +379,34 @@ if (toTriage.length && anthropic && !DRY) {
       if (!v) return
       b.entry.triages = (b.entry.triages || 0) + 1
       b.entry.verdict = v.isPolicy ? 'policy' : 'not-policy'
-      b.entry.topic = v.topic
       b.entry.title = v.title
-      if (v.isPolicy) drafts.push({ ...b, topic: v.topic, title: v.title })
+
+      // A PAGE KEEPS THE TOPIC IT WAS FIRST GIVEN.
+      //
+      // Topic is the one field that feeds draft-positions: it decides which
+      // topic's source set a URL joins, so a page moving between topics
+      // re-drafts every position in BOTH the topic it left and the one it
+      // joined. Classification is a model call and is not deterministic, so an
+      // unchanged page re-triaged after a trivial edit can flip and take a
+      // dozen positions with it. That is what happened on 8 Sep 2026:
+      // national.org.nz/policies/new-trade moved economy -> foreign-policy and
+      // a wave of re-drafts followed, none of which reflected a party changing
+      // anything.
+      //
+      // So first classification wins, and a later disagreement is REPORTED
+      // rather than applied — visible if a party genuinely repurposes a page,
+      // silent-free but stable if the model is just wavering. Titles are not
+      // stabilised because nothing downstream reads them.
+      const held = b.entry.topic
+      if (v.isPolicy) {
+        if (held && v.topic && v.topic !== held) {
+          reclassified.push(`${b.slug}: ${b.url} — filed ${held}, re-triage says ${v.topic} (kept ${held})`)
+        }
+        b.entry.topic = held || v.topic
+        drafts.push({ ...b, topic: b.entry.topic, title: v.title })
+      } else {
+        b.entry.topic = null
+      }
     })
   }
 } else if (toTriage.length && DRY) {
@@ -412,6 +438,13 @@ if (changedPolicies.length) {
   console.log(`\nCHANGED POLICY PAGES (${changedPolicies.length}):`)
   for (const d of changedPolicies) console.log(`  · ${d.name} / ${d.topic} — "${d.title}"\n      ${d.url}`)
 }
+if (reclassified.length) {
+  console.log(`
+RE-TRIAGE DISAGREED ON ${reclassified.length} PAGE(S) — original topic kept:`)
+  for (const r of reclassified) console.log(`  ~ ${r}`)
+  console.log('  If a party has genuinely repurposed a page, move it by hand; otherwise this is the model wavering.')
+}
+
 if (!newPolicies.length && !changedPolicies.length && !firstRunParties.length) {
   console.log('\nNo new or changed policy pages.')
 }
