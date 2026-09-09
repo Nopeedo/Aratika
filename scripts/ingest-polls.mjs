@@ -30,13 +30,41 @@ import { dirname, join } from 'node:path'
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 
 const DRY = process.argv.includes('--dry')
+// Repair existing rows instead of only adding new ones. Needed because the
+// insert path skips anything already present, so a column that was being
+// dropped (see the TOP/OPP note on ABBR) stays missing forever once ingested.
+const BACKFILL = process.argv.includes('--backfill')
+
+/**
+ * A pollster name reduced to what actually identifies it.
+ *
+ * "Taxpayers' Union-Curia" and "Taxpayers' Union–Curia" differ by one character
+ * — a hyphen versus an en dash — and Wikipedia uses both. That produced two
+ * source_ids for one poll and two identical rows on the site. Folding dashes,
+ * apostrophes and spacing makes them the same poll, which they are.
+ */
+const pollsterKey = (s) =>
+  String(s).toLowerCase().replace(/[‐-―]/g, '-').replace(/[‘’]/g, "'").replace(/[^a-z0-9]/g, '')
 const SOURCE = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_2026_New_Zealand_general_election'
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
 const RECENCY_DAYS = 45
 
 // Header abbreviation → our party slug. Only these columns are read; anything
 // else (Sample size, Others, Lead) is ignored.
-const ABBR = { nat: 'national', lab: 'labour', grn: 'green', act: 'act', nzf: 'nzfirst', tpm: 'tpm', top: 'top' }
+//
+// 'opp' AND 'top' both map to TOP. Wikipedia relabelled that column from TOP to
+// OPP in early August 2026, and because an unrecognised header was simply not
+// mapped, the value was dropped without a word. The Opportunities Party polled
+// 9.5% with Roy Morgan (27 Jul - 23 Aug), 8.0% with 1 News-Verian and 5.3% with
+// RNZ-Reid over that window, and every one of those reached the site as no
+// figure at all — for a site whose fairness rule is that parties are included
+// by registration rather than polling, silently zeroing a party on 9.5% is the
+// worst version of this bug. Keep both keys: the page may well change back.
+const ABBR = { nat: 'national', lab: 'labour', grn: 'green', act: 'act', nzf: 'nzfirst', tpm: 'tpm', top: 'top', opp: 'top' }
+
+// Header cells that are legitimately not parties. Anything outside this set AND
+// outside ABBR gets reported — see the unmapped-column warning below.
+const NON_PARTY_COLS = /^(date|polling organisation|pollster|sample size|others?|lead|source|client|method|margin|undecided|n\/?a|)$/
 const MON = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 }
 
 // End (last) fieldwork day of a range like "2–9 Jul 2026" / "25 May – 21 Jun 2026" → ISO.
@@ -78,6 +106,22 @@ async function main() {
   const header = rows[0].querySelectorAll('th,td').map((c) => c.text.trim().toLowerCase())
   const colToSlug = new Map()
   header.forEach((h, i) => { if (h in ABBR) colToSlug.set(i, ABBR[h]) })
+
+  // NEVER DROP A COLUMN SILENTLY.
+  //
+  // This is the whole lesson of the TOP/OPP miss: the ingest kept working, kept
+  // producing polls, and just stopped carrying one party. Nothing was wrong
+  // enough to fail, so nothing said anything for a month. Any header that is
+  // neither a known party nor a known non-party column is now called out by
+  // name, so a relabelled or newly added party is visible the first day it
+  // appears rather than whenever someone happens to notice a flat line.
+  const unmapped = header
+    .map((h, i) => ({ h, i }))
+    .filter(({ h, i }) => !colToSlug.has(i) && !NON_PARTY_COLS.test(h.replace(/\[[^\]]*\]/g, '').trim()))
+  if (unmapped.length) {
+    console.warn(`  ⚠ UNMAPPED COLUMN(S) in the Wikipedia table: ${unmapped.map((u) => `"${u.h}"`).join(', ')}`)
+    console.warn('    If any of those is a party, add it to ABBR — otherwise its numbers are being discarded.')
+  }
   const dateIdx = header.findIndex((h) => h.startsWith('date'))
   const pollsterIdx = header.findIndex((h) => h.includes('polling') || h.includes('pollster') || h.includes('organisation'))
   const othersIdx = header.findIndex((h) => h === 'others' || h === 'other')
@@ -118,8 +162,41 @@ async function main() {
   if (!parsed.length) { console.log('No recent polls found within window — nothing to stage.'); return }
 
   const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
-  const { data: existing } = await sb.from('content_items').select('source_id').eq('type', 'poll')
-  const have = new Set((existing || []).map((r) => r.source_id))
+  const { data: existing } = await sb.from('content_items').select('id, source_id, title, data').eq('type', 'poll')
+  // Keyed on the FOLDED pollster name, not the raw source_id, so a dash variant
+  // cannot smuggle a second copy of the same poll past the check.
+  const have = new Set((existing || []).map((r) => `${pollsterKey(r.data?.pollster || r.source_id)}|${r.data?.date || ''}`))
+
+  if (BACKFILL) {
+    let fixed = 0
+    for (const p of parsed) {
+      // EVERY copy, not the first match. Duplicate rows exist for the same poll
+      // (a dash variant in the pollster name produced two source_ids), and the
+      // site picks between them with a tie-break that does not resolve when both
+      // names carry a typographic dash — so which copy is displayed is row
+      // order. Repairing only one leaves a 50/50 chance the visible row is
+      // still missing the figure, which is how RNZ–Reid kept showing no TOP
+      // after the first backfill run.
+      const rows = (existing || []).filter((r) =>
+        pollsterKey(r.data?.pollster || '') === pollsterKey(p.pollster) && r.data?.date === p.date)
+      if (!rows.length) continue
+      for (const row of rows) {
+        const cur = row.data?.parties || {}
+        const missing = Object.entries(p.parties).filter(([slug, v]) => cur[slug] === undefined && v != null)
+        if (!missing.length) continue
+        const merged = { ...cur, ...Object.fromEntries(missing) }
+        const { error } = await sb.from('content_items')
+          .update({ data: { ...row.data, parties: merged } }).eq('id', row.id)
+        if (error) { console.error(`  ✗ ${row.title}: ${error.message}`); continue }
+        fixed++
+        console.log(`  ✓ ${p.date} ${p.pollster}${rows.length > 1 ? ` [copy ${row.id.slice(0, 8)}]` : ''}: added ${missing.map(([k, v]) => `${k}=${v}`).join(', ')}`)
+      }
+    }
+    console.log(fixed
+      ? `\nBackfilled ${fixed} poll(s).`
+      : '\nNothing to backfill — every parsed figure is already stored.')
+    return
+  }
 
   const rowsToInsert = parsed
     .map((p) => ({
@@ -131,7 +208,7 @@ async function main() {
       source_url: SOURCE,
       data: { pollster: p.pollster, fieldwork: p.fieldwork, date: p.date, sourceUrl: SOURCE, parties: p.parties, ...(p.others != null ? { others: p.others } : {}) },
     }))
-    .filter((r) => !have.has(r.source_id))
+    .filter((r) => !have.has(`${pollsterKey(r.data.pollster)}|${r.data.date}`))
 
   if (!rowsToInsert.length) { console.log('All recent polls already present — nothing new.'); return }
   const { error } = await sb.from('content_items').insert(rowsToInsert)

@@ -57,11 +57,25 @@ function pollsterKey(name: string): string {
     .trim()
 }
 
-/** Tie-break for two entries of the same poll: prefer the typographic dash, so
- *  the name rendered is stable rather than dependent on row order. */
-function preferDisplay(candidate: string, current: string): boolean {
+/** Tie-break for two entries of the same poll, in priority order:
+ *
+ *  1. MORE PARTY FIGURES WINS. Completeness beats typography — one copy of a
+ *     duplicate can be missing a party the other has, and showing the thinner
+ *     record means a party silently reads as unpolled. That happened: the
+ *     ingest dropped The Opportunities Party for a month (Wikipedia relabelled
+ *     the column TOP -> OPP), and the two copies of the 21 Aug RNZ–Reid poll
+ *     disagreed about whether TOP existed at all.
+ *  2. Then the typographic dash, so the rendered name is the nicer one.
+ *  3. Then the name itself, so the result is DETERMINISTIC. The previous
+ *     version returned false whenever both names carried a dash, leaving the
+ *     winner to be whatever order the database happened to return.
+ */
+function preferDisplay(candidate: Poll, current: Poll): boolean {
+  const n = (p: Poll) => Object.keys(p.parties).length
+  if (n(candidate) !== n(current)) return n(candidate) > n(current)
   const dashed = (s: string) => /[–—]/.test(s)
-  return dashed(candidate) && !dashed(current)
+  if (dashed(candidate.pollster) !== dashed(current.pollster)) return dashed(candidate.pollster)
+  return candidate.pollster < current.pollster
 }
 
 /** Approved polls, newest first, ONE per pollster (their most recent). Keeps the
@@ -88,7 +102,7 @@ export async function getPolls(): Promise<Poll[]> {
     // below rather than by whatever order the rows came back in.
     if (!prev) { latestByPollster.set(key, p); continue }
     const a = p.date ?? '', b = prev.date ?? ''
-    if (a > b || (a === b && preferDisplay(p.pollster, prev.pollster))) latestByPollster.set(key, p)
+    if (a > b || (a === b && preferDisplay(p, prev))) latestByPollster.set(key, p)
   }
   return [...latestByPollster.values()].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
 }
