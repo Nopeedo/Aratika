@@ -231,7 +231,7 @@
     "economy": [
       {
         "url": "https://www.national.org.nz/economy",
-        "title": "Economic Rebuilding Plan"
+        "title": "National's Economic Rebuilding Plan"
       },
       {
         "url": "https://www.national.org.nz/policies/boost-for-graduates",
@@ -291,7 +291,7 @@
     "crime-justice": [
       {
         "url": "https://www.national.org.nz/lawandorder",
-        "title": "National's law and order policy"
+        "title": "National's Law and Order Policy"
       },
       {
         "url": "https://www.national.org.nz/policies/consent-laws",
@@ -305,18 +305,22 @@
     "health": [
       {
         "url": "https://www.national.org.nz/healthcare",
-        "title": "Quality Timely Healthcare Policy"
+        "title": "National's Quality Timely Healthcare Policy"
       }
     ],
     "education": [
       {
         "url": "https://www.national.org.nz/education",
-        "title": "Teaching the Basics Brilliantly education policy"
+        "title": "National's Teaching the Basics Brilliantly Education Policy"
       }
     ]
   },
   "labour": {
     "economy": [
+      {
+        "url": "https://www.labour.org.nz/ai-for-new-zealand",
+        "title": "Labour's AI in New Zealand's Interests Policy"
+      },
       {
         "url": "https://www.labour.org.nz/capitalgainstax",
         "title": "Capital Gains Tax on Investment Property"
@@ -393,13 +397,13 @@
     "economy": [
       {
         "url": "https://www.act.org.nz/policies/economy",
-        "title": "ACT Economy & Cost of Living Policy"
+        "title": "ACT Economy and Cost of Living Policy"
       }
     ],
     "crime-justice": [
       {
         "url": "https://www.act.org.nz/policies/law-and-order",
-        "title": "ACT Law & Order Policy"
+        "title": "ACT Law and Order Policy"
       }
     ],
     "health": [
@@ -411,23 +415,23 @@
     "democracy-government": [
       {
         "url": "https://www.act.org.nz/policies/democracy",
-        "title": "ACT Equal Rights & Democracy Policy"
+        "title": "ACT Equal Rights and Democracy Policy"
       }
     ],
     "housing": [
       {
         "url": "https://www.act.org.nz/policies/infrastructure",
-        "title": "ACT Housing & Infrastructure Policy"
+        "title": "ACT Housing and Infrastructure Policy"
       }
     ],
     "environment": [
       {
         "url": "https://www.act.org.nz/policies/hunting",
-        "title": "ACT Hunting, Conservation & Firearms Policy"
+        "title": "ACT Hunting, Conservation and Firearms Policy"
       },
       {
         "url": "https://www.act.org.nz/policies/rural",
-        "title": "ACT Backing Rural NZ Policy"
+        "title": "ACT Backing Rural New Zealand Policy"
       }
     ],
     "education": [
@@ -697,7 +701,7 @@
     "crime-justice": [
       {
         "url": "https://alcp.org.nz/",
-        "title": "ALCP Cannabis Legalisation Policy"
+        "title": "ALCP Cannabis Legalisation and Regulation Policy"
       },
       {
         "url": "https://alcp.org.nz/policy",
@@ -798,16 +802,24 @@
   "alliance": {
     "economy": [
       {
-        "url": "https://allianceparty.nz/",
-        "title": "Alliance Party policy overview including tax and workers' rights"
-      },
-      {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Alliance full employment and 35-hour working week workers' rights policy"
+        "title": "Alliance Full Employment and 35-Hour Working Week Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Alliance tax plan: first $20,000 income tax-free funded by wealth tax"
+        "title": "Alliance Tax Plan – $20,000 Income Tax-Free Threshold and Wealth Tax"
+      }
+    ],
+    "health": [
+      {
+        "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
+        "title": "Alliance Free Community Healthcare Policy"
+      }
+    ],
+    "environment": [
+      {
+        "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
+        "title": "Alliance Environment, Climate and Sustainable Economy Policy"
       }
     ]
   },
@@ -880,8 +892,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-08",
+    "lastRun": "2026-09-10",
     "parties": 13,
-    "policyPages": 181
+    "policyPages": 183
   }
 }
