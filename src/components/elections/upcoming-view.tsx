@@ -23,8 +23,8 @@ import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
 import {
-  pollOfPolls, pollOfPollsOthers, seatProjection, POLL_PARTIES, PREFERRED_PM,
-  TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, POLLS_AS_AT, POLLS_SOURCE,
+  pollOfPolls, pollOfPollsOthers, seatProjection, pollsAsAt, POLL_PARTIES, PREFERRED_PM,
+  TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, POLLS_SOURCE,
   PROJECTION_SEATS,
 } from '@/constants/polls-data'
 import { getPolls } from '@/lib/polls/live'
@@ -63,6 +63,10 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const polls = await getPolls()
   const pop = pollOfPolls(polls)
   const projection = seatProjection(polls)
+  // Derived from the polls actually being averaged, not the hand-maintained
+  // POLLS_AS_AT constant — that read "9 July 2026" on 10 September while the
+  // figures beside it were current to 3 September.
+  const asAt = pollsAsAt(polls)
   // No getAllApprovedPositions() here any more. The face-off was its only
   // consumer, so with that gone the call was fetching every approved position
   // in the database on every render of this page and using none of them.
@@ -126,7 +130,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             <PollSnapshot
               othersPct={pollOfPollsOthers(polls)}
               pollCount={polls.length}
-              asAt={POLLS_AS_AT}
+              asAt={asAt}
               pollParties={POLL_PARTIES}
               polls={polls}
               preferredPM={PREFERRED_PM}
@@ -151,7 +155,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               electedSlug={base.slug}
               projection={projection}
               projectionTotal={PROJECTION_SEATS}
-              asAt={POLLS_AS_AT}
+              asAt={asAt}
             />
           </section>
 

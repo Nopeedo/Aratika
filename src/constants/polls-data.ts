@@ -22,6 +22,9 @@ export interface Poll {
 }
 
 // Compiled from the published-polls aggregate (which cites each pollster's release).
+//
+// FALLBACK ONLY — this is the date of the bundled RECENT_POLLS below, used when
+// no live polls have been entered. Do not render it directly: use pollsAsAt().
 export const POLLS_AS_AT   = '9 July 2026'
 export const POLLS_SOURCE  = 'https://en.wikipedia.org/wiki/Opinion_polling_for_the_2026_New_Zealand_general_election'
 
@@ -51,6 +54,30 @@ export function pollOfPollsOthers(polls: Poll[] = RECENT_POLLS): number | null {
   if (!vals.length) return null
   const avg = Math.round((vals.reduce((a, b) => a + b, 0) / vals.length) * 10) / 10
   return avg > 0 ? avg : null
+}
+
+/**
+ * The date the poll figures on screen actually run to — the newest fieldwork
+ * end date among the polls being averaged.
+ *
+ * This used to be POLLS_AS_AT, a hand-maintained constant, and it read
+ * "9 July 2026" on 10 September while the averages were live and current
+ * through 3 September. The numbers were right and the site was telling readers
+ * they were two months older than they were — the failure mode this project
+ * cares about most, because anyone who checked against 9 July polls would find
+ * figures that did not match and reasonably conclude the maths was wrong.
+ *
+ * Derived, so it cannot drift again. Falls back to the bundled constant only
+ * when there are no live polls at all.
+ */
+export function pollsAsAt(polls: Poll[] = RECENT_POLLS): string {
+  const newest = polls.map((p) => p.date).filter(Boolean).sort().pop()
+  if (!newest) return POLLS_AS_AT
+  const d = new Date(`${newest}T00:00:00Z`)
+  if (isNaN(d.getTime())) return POLLS_AS_AT
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December']
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`
 }
 
 /** Poll of polls — simple mean per party across the given polls (over the polls that report it).
