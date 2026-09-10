@@ -1,6 +1,14 @@
 {
-  "generated": "2026-09-09",
+  "generated": "2026-09-10",
   "changes": [
+    {
+      "mp": "simon-watts",
+      "field": "govBills",
+      "label": "Government bills in charge",
+      "from": 15,
+      "to": 16,
+      "date": "2026-09-10"
+    },
     {
       "mp": "kieran-mcanulty",
       "field": "writtenQuestions",

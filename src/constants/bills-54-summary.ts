@@ -2,7 +2,7 @@
 export const BILLS_54_TOPIC_COUNTS: Record<string, { passed: number; active: number }> = {
   "economy": {
     "passed": 41,
-    "active": 10
+    "active": 11
   },
   "housing": {
     "passed": 8,
