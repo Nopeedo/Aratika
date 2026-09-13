@@ -803,11 +803,15 @@
     "economy": [
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Alliance Full Employment and 35-Hour Working Week Policy"
+        "title": "Alliance Full Employment and 35-Hour Week Workers' Rights Policy"
+      },
+      {
+        "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
+        "title": "Alliance National Transport Strategy"
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Alliance Tax Plan – $20,000 Income Tax-Free Threshold and Wealth Tax"
+        "title": "Alliance Tax Plan: $20,000 Income Tax-Free and Wealth Tax"
       }
     ],
     "health": [
@@ -819,7 +823,7 @@
     "environment": [
       {
         "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
-        "title": "Alliance Environment, Climate and Sustainable Economy Policy"
+        "title": "Alliance Environment and Climate Policy"
       }
     ]
   },
@@ -892,8 +896,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-12",
+    "lastRun": "2026-09-13",
     "parties": 13,
-    "policyPages": 183
+    "policyPages": 184
   }
 }
