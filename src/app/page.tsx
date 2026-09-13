@@ -112,14 +112,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             bills it is talking about. */}
         <PartyNewsSection />
 
-        {/* "Find your MP" demoted to a single button.
-            It was CORE 3 — a full section with a live map — but it is a SEARCH,
-            not a comparison: you already know your address, and the answer is
-            one lookup rather than something to read. It was taking a screen of
-            the homepage to ask a question most readers answer once. The full
-            map is untouched at /map; this is the door to it. */}
-        <FindMyMpButton />
-
         {/* ── Why you can trust it (slim) ── */}
         <CredibilityStrip />
 
@@ -139,13 +131,23 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         {/* ── Everything else, in one carousel of links ── */}
         <ExploreCarousel />
 
-        {/* The compass closes the page. It has moved twice by request — mid,
-            top, now last — and last is a defensible home, not a burial: the
-            reader who reaches the bottom has seen the parties, the policies
-            and the map, and "find where you stand" is the natural next step
-            for exactly that person. It still rides the Election Centre's
-            how-your-vote-works section for everyone else. */}
+        {/* The compass. It has moved three times by request — mid, top, last,
+            and now second-to-last — and this is still a defensible home: the
+            reader who gets this far has seen the parties, the policies and the
+            map, and "find where you stand" is the natural next step for exactly
+            that person. It still rides the Election Centre's how-your-vote-works
+            section for everyone else. */}
         <CompassCta />
+
+        {/* "Find your MP" closes the page — a single button, moved here from
+            above the credibility strip by request.
+            It was CORE 3 — a full section with a live map — but it is a SEARCH,
+            not a comparison: you already know your address, and the answer is
+            one lookup rather than something to read. Last is the right place
+            for a lookup: it is the one thing on this page a reader does once
+            and then leaves, so it belongs after everything they might read.
+            The full map is untouched at /map; this is the door to it. */}
+        <FindMyMpButton />
 
       </HomeBackground>
     </PartyCycleProvider>
