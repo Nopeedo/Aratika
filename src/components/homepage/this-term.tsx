@@ -259,18 +259,30 @@ export function ThisTerm() {
             <div style={{ marginBottom: 6, fontSize: 12.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>
               This term
             </div>
+            {/* Not "Where things stand now". The section directly above this
+                one is headed "What does {party} stand for?" — policy — and this
+                one was headed "Where things stand now" — seats. Two "stand"
+                headings in a row, meaning different things, and a reader who
+                had just read about positions was primed to read this as more
+                of the same. This section is about PEOPLE and SEATS, not
+                positions, so the heading says so and does not share a word
+                with the one above it. */}
             <h2 style={{ fontSize: 'clamp(24px,3.6vw,31px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>
-              Where things stand now
+              Who&apos;s in Parliament right now
             </h2>
             {/* Two tenses on purpose. The map is 2023 — the boundaries and the
                 wins that formed this Parliament — but the MP list beside it
                 names the CURRENT holder of each seat, because electorates-data.ts
                 tracks by-elections (Tāmaki Makaurau changed hands in 2025). The
                 old line said only "as the 2023 election left it", which the list
-                would have quietly contradicted. */}
+                would have quietly contradicted.
+
+                "54th Parliament" is gone from the reader-facing line. It is the
+                correct name and it means nothing to the person this page is for;
+                "the current Parliament" is what they would call it. */}
             <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px', lineHeight: 1.55 }}>
-              The 54th Parliament: the seats won in 2023, and the MPs holding them now. Tap a party tile to see which
-              electorates are theirs, or tap any seat on the map to see who holds it.
+              Not what the parties promise — who actually holds the seats today. Each party&apos;s MPs, and the
+              electorates they won in 2023. Tap a party to see theirs, or tap the map to see who holds any seat.
             </p>
 
             {/* The one seat fact the tiles DON'T already give you: who adds up
