@@ -17,10 +17,12 @@ import { BORDER, INK, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/
 
 export function CoverageMatrix({ positions, topics }: { positions: PartyPosition[]; topics: { slug: string; label: string }[] }) {
   const lookup = new Map<string, PartyPosition>()
+  // Current policy only — same rule as PolicyComparison and the party page. A
+  // 2023 manifesto row used to fill an empty cell here, which made the matrix
+  // claim coverage the site could not honestly show as current.
   for (const p of positions) {
-    const key = `${p.party}::${p.topic}`
-    const ex = lookup.get(key)
-    if (!ex || (ex.period !== '2026' && p.period === '2026')) lookup.set(key, p) // prefer current, fall back to 2023
+    if (p.period !== '2026') continue
+    lookup.set(`${p.party}::${p.topic}`, p)
   }
 
   // Only show a minor party once it actually has something captured — an all-dots

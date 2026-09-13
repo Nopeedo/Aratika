@@ -694,7 +694,19 @@ async function draftOne(party, topic) {
       summaryBasic: String(parsed.summary_basic || '').trim(),
       quote,
     } : {}
-    const mergedData = { ...ed, ...rewritten, keyProposals, framing, whoAffected, excerpts, excerptSources, sourceUrls: urls, asOf: today, sourceHash: fingerprint }
+    // `period` is written explicitly, not inherited from the existing row.
+    //
+    // The spread used to carry it over, so a row first drafted from a 2023
+    // manifesto page and later re-drafted from current sources kept
+    // period='2023' — and the party page hides 2023 rows. Eleven National and
+    // NZ First positions were re-drafted from 2026 pages, verified, approved,
+    // and still invisible, because the one field that decides whether a
+    // position is "current" was the one field the rewrite left alone.
+    const mergedData = {
+      ...ed, ...rewritten, keyProposals, framing, whoAffected, excerpts, excerptSources, sourceUrls: urls,
+      period: PERIOD, periodLabel: PERIOD === '2023' ? '2023 manifesto' : 'Current policy',
+      asOf: today, sourceHash: fingerprint,
+    }
     // source_url moves with the excerpts. It used to be left alone, so
     // re-pointing a party at a better page — the Greens' housing_policy instead
     // of their /policy index — rewrote the quotes from the new page while the

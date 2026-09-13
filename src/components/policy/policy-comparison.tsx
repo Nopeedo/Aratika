@@ -27,10 +27,18 @@ const ALSO_CONTESTING = CONTESTING_PARTIES.filter((p) => !PARTY_DIRECTORY_ORDER.
 
 export function PolicyComparison({ positions, topicLabel, topic }: { positions: PartyPosition[]; topicLabel: string; topic: string }) {
   const [detailed, setDetailed] = useState(false)
-  const current = (slug: string) => {
-    const ps = positions.filter((p) => p.party === slug)
-    return ps.find((p) => p.period === '2026') ?? ps[0] // prefer current, fall back to 2023 manifesto
-  }
+  // Current policy ONLY. This used to fall back to the party's 2023 manifesto
+  // row when no 2026 position existed — and rendered it with no label, so a
+  // reader saw "NZ First on housing" and was shown what NZ First said in 2023
+  // as though it were what they say today, two months before an election.
+  //
+  // The party page never did this (see parties/[slug]/page.tsx: "would
+  // misrepresent the party if shown as what they say today"), and this page's
+  // own share image counts only 2026 rows. So the same topic could show NZ
+  // First here, hide them on their party page, and count them out in the
+  // preview — three answers from one dataset. A missing position is reported
+  // honestly below as "no position recorded yet", which is true.
+  const current = (slug: string) => positions.find((p) => p.party === slug && p.period === '2026')
 
   return (
     <div>
