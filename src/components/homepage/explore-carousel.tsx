@@ -65,7 +65,9 @@ export function ExploreCarousel() {
         {/* Header + desktop arrows */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
           <div>
-            <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 6 }}>The rest of the toolkit</div>
+            {/* No eyebrow. "The rest of the toolkit" was removed by request —
+                "Explore more" already says it, and the eyebrow was the only
+                place on the homepage the site called itself a toolkit. */}
             <h2 style={{ fontSize: 'clamp(24px,3.4vw,30px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>Explore more</h2>
             <p style={{ fontSize: 15.5, color: SUB, fontFamily: MANROPE, margin: '6px 0 0' }}>Everything else on the site, in one place.</p>
           </div>
