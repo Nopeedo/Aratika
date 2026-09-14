@@ -348,6 +348,10 @@
       {
         "url": "https://www.labour.org.nz/small-business-first",
         "title": "Small Business First – government contracts and red tape"
+      },
+      {
+        "url": "https://www.labour.org.nz/strengthening-kiwisaver",
+        "title": "Labour KiwiSaver strengthening plan"
       }
     ],
     "health": [
@@ -783,7 +787,7 @@
       },
       {
         "url": "https://www.vision.org.nz/visionpolicies",
-        "title": "Vision New Zealand Family and Economic Policies"
+        "title": "Vision NZ family and social policy commitments"
       }
     ],
     "foreign-policy": [
@@ -803,27 +807,31 @@
     "economy": [
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Alliance Full Employment and 35-Hour Week Workers' Rights Policy"
+        "title": "Alliance full employment 35-hour week and workers rights policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
-        "title": "Alliance National Transport Strategy"
+        "title": "Alliance national transport strategy"
+      },
+      {
+        "url": "https://allianceparty.nz/alliance-plan-to-rebuild-universal-social-security/",
+        "title": "Alliance universal social security and benefit reform policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Alliance Tax Plan: $20,000 Income Tax-Free and Wealth Tax"
+        "title": "Alliance tax plan with $20,000 tax-free threshold and wealth tax"
       }
     ],
     "health": [
       {
         "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
-        "title": "Alliance Free Community Healthcare Policy"
+        "title": "Alliance free GP dental optical and audiology health policy"
       }
     ],
     "environment": [
       {
         "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
-        "title": "Alliance Environment and Climate Policy"
+        "title": "Alliance just transition environmental and sustainable economy policy"
       }
     ]
   },
@@ -896,8 +904,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-13",
+    "lastRun": "2026-09-14",
     "parties": 13,
-    "policyPages": 184
+    "policyPages": 186
   }
 }
