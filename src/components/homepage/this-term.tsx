@@ -281,8 +281,8 @@ export function ThisTerm() {
                 correct name and it means nothing to the person this page is for;
                 "the current Parliament" is what they would call it. */}
             <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px', lineHeight: 1.55 }}>
-              Not what the parties promise — who actually holds the seats today. Each party&apos;s MPs, and the
-              electorates they won in 2023. Tap a party to see theirs, or tap the map to see who holds any seat.
+              These are the MPs sitting in Parliament today. Tap a party to see which seats it won in 2023 or tap
+              the map to see who holds any electorate.
             </p>
 
             {/* The one seat fact the tiles DON'T already give you: who adds up
