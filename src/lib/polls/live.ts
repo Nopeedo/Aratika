@@ -7,7 +7,8 @@
  * seat projection are computed from whatever this returns (see polls-data.ts).
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { unstable_cache } from 'next/cache'
+import { publicClient } from '@/lib/supabase/public'
 import { RECENT_POLLS, type Poll } from '@/constants/polls-data'
 import type { PartySlug } from '@/types'
 
@@ -78,19 +79,41 @@ function preferDisplay(candidate: Poll, current: Poll): boolean {
   return candidate.pollster < current.pollster
 }
 
+/**
+ * Cookie-free and cached, for the same reason positions/live.ts is.
+ *
+ * This used to go through the cookie-bound server client. Reading cookies opts
+ * every route that calls it into dynamic rendering, and this is on the election
+ * centre's critical path — so /elections/2026 was rendered from scratch on every
+ * request, 2.3–2.6 seconds per RSC fetch measured against production. A reader
+ * who clicked through from the homepage while scrolled down sat on the old page
+ * at the old scroll position for that long, then the new page snapped to top.
+ * That is the "page shifts on every click" the site was showing.
+ *
+ * Approved polls are public data: RLS lets anon read them, there is nothing
+ * per-user in them, and a minute of lag is invisible for figures that change
+ * a few times a month. The anon key is the right client and the cache is safe.
+ */
+const readApprovedPolls = unstable_cache(
+  async (): Promise<Row[]> => {
+    const { data } = await publicClient()
+      .from('content_items')
+      .select('data, source_url')
+      .eq('type', 'poll')
+      .eq('status', 'approved')
+      .limit(100)
+    return (data as Row[] | null) ?? []
+  },
+  ['approved-polls'],
+  { revalidate: 60, tags: ['polls'] },
+)
+
 /** Approved polls, newest first, ONE per pollster (their most recent). Keeps the
  *  poll-of-polls methodologically sound as polls accumulate — a prolific pollster
  *  is never double-counted, matching the bundled "latest per company" snapshot.
  *  Falls back to the bundled set if none have been entered. */
 export async function getPolls(): Promise<Poll[]> {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('content_items')
-    .select('data, source_url')
-    .eq('type', 'poll')
-    .eq('status', 'approved')
-    .limit(100)
-  const polls = (data as Row[] | null ?? []).map(toPoll).filter((p): p is Poll => !!p)
+  const polls = (await readApprovedPolls()).map(toPoll).filter((p): p is Poll => !!p)
   if (polls.length === 0) return RECENT_POLLS
 
   // Keep only each pollster's most recent poll.
@@ -105,13 +128,4 @@ export async function getPolls(): Promise<Poll[]> {
     if (a > b || (a === b && preferDisplay(p, prev))) latestByPollster.set(key, p)
   }
   return [...latestByPollster.values()].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
-}
-
-/** "As at" label — the most recent poll's date, formatted, or '' if unknown. */
-export function pollsAsAt(polls: Poll[]): string {
-  const latest = polls.map((p) => p.date).filter(Boolean).sort().pop()
-  if (!latest) return ''
-  const dt = new Date(`${latest}T00:00:00Z`)
-  if (isNaN(dt.getTime())) return latest
-  return dt.toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 }

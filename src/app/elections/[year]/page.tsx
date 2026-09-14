@@ -13,6 +13,20 @@ import { ResultsView } from '@/components/elections/results-view'
 import { UpcomingView } from '@/components/elections/upcoming-view'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
+// Revalidated, not rendered per request.
+//
+// This route had no caching config, and one reader on its path (polls/live.ts)
+// bound to cookies, which opts a route into dynamic rendering. So /elections/2026
+// was rebuilt from scratch on every request: 2.3–2.6s per RSC fetch, measured
+// against production. A reader clicking through from the homepage while
+// scrolled down sat on the OLD page at the old scroll position for that long,
+// then the new page snapped to the top. Every click felt like a jump.
+//
+// Nothing here is per-user. Polls change a few times a month, videos a few
+// times a day; sixty seconds of lag is invisible. The same setting the party
+// page already uses, for the same reason.
+export const revalidate = 60
+
 export function generateStaticParams() {
   return ELECTION_SLUGS.map((year) => ({ year }))
 }
