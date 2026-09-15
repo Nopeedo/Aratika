@@ -1,6 +1,14 @@
 {
-  "generated": "2026-09-14",
+  "generated": "2026-09-15",
   "changes": [
+    {
+      "mp": "paul-goldsmith",
+      "field": "govBills",
+      "label": "Government bills in charge",
+      "from": 42,
+      "to": 45,
+      "date": "2026-09-15"
+    },
     {
       "mp": "kieran-mcanulty",
       "field": "writtenQuestions",
