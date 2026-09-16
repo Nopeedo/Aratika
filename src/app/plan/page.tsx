@@ -1,6 +1,6 @@
 /**
  * /plan — the persistent "Your Plan" page. Reads the saved survey answers
- * (client-side) and shows a tick-as-you-go checklist of how Arapono helps this
+ * (client-side) and shows a tick-as-you-go checklist of how Politika helps this
  * person, so they never have to revisit /start to find their next step.
  */
 
@@ -10,7 +10,7 @@ import { BORDER, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Your plan',
-  description: 'Your personalised, tick-as-you-go plan: the issues you care about, and the parts of Arapono that help you most.',
+  description: 'Your personalised, tick-as-you-go plan: the issues you care about, and the parts of Politika that help you most.',
 }
 
 export default function PlanPage() {

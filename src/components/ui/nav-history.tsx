@@ -15,8 +15,8 @@
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
-export const NAV_PREV_KEY = 'arapono_prev_path'
-const NAV_CUR_KEY = 'arapono_cur_path'
+export const NAV_PREV_KEY = 'politika_prev_path'
+const NAV_CUR_KEY = 'politika_cur_path'
 
 export function NavHistory() {
   const pathname = usePathname()

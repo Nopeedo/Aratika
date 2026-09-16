@@ -15,9 +15,9 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-const LS_KEY = 'aratika_explain_v1'   // 'on' | 'off' — set once the user explicitly toggles
-const PREFS_KEY = 'aratika_prefs_v2'  // onboarding prefs — read only for the smart default
-const EVENT = 'aratika:explain'
+const LS_KEY = 'politika_explain_v1'   // 'on' | 'off' — set once the user explicitly toggles
+const PREFS_KEY = 'politika_prefs_v2'  // onboarding prefs — read only for the smart default
+const EVENT = 'politika:explain'
 
 function computeEnabled(): boolean {
   try {

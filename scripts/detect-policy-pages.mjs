@@ -46,7 +46,7 @@ const DRY = args.includes('--dry-run')
 const GAPS_ONLY = args.includes('--gaps-only')
 const partyArg = (args.find((a) => a.startsWith('--party=')) || '').split('=')[1] || null
 const STATE_PATH = join(here, '.state', 'policy-pages.json')
-const UA = 'Mozilla/5.0 (compatible; AraponoBot/1.0; +https://arapono.org.nz)'
+const UA = 'Mozilla/5.0 (compatible; PolitikaBot/1.0; +https://politika.nz)'
 
 // Read the party list and topic keywords from draft-positions rather than
 // keeping a second copy. A detector that disagrees with the drafter about which

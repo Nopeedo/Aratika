@@ -1,5 +1,5 @@
 /**
- * Per-module colour for Arapono Learn — the same tint-plus-deep-ink language the
+ * Per-module colour for Politika Learn — the same tint-plus-deep-ink language the
  * hub tiles and topic chips use, so Learn looks like a room in the same house
  * rather than a separate product. The pairs are drawn from the palette already
  * on /hub; where a module has an obvious sibling there it borrows that colour

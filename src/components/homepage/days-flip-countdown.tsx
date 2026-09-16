@@ -85,12 +85,12 @@ function SplitFlapDigit({ target, startDelay, animate }: { target: string; start
       <Half d={prev} side="bottom" />
 
       {flipping && (
-        <div key={`t${flip}`} style={{ position: 'absolute', inset: 0, zIndex: 3, transformOrigin: '50% 100%', backfaceVisibility: 'hidden', willChange: 'transform', animation: `aratika-flap-down ${dur / 2}ms cubic-bezier(0.45, 0, 0.85, 0.5) forwards` }}>
+        <div key={`t${flip}`} style={{ position: 'absolute', inset: 0, zIndex: 3, transformOrigin: '50% 100%', backfaceVisibility: 'hidden', willChange: 'transform', animation: `politika-flap-down ${dur / 2}ms cubic-bezier(0.45, 0, 0.85, 0.5) forwards` }}>
           <Half d={prev} side="top" />
         </div>
       )}
       {flipping && (
-        <div key={`b${flip}`} style={{ position: 'absolute', inset: 0, zIndex: 3, transformOrigin: '50% 0%', backfaceVisibility: 'hidden', willChange: 'transform', transform: 'rotateX(90deg)', animation: `aratika-flap-up ${dur / 2}ms cubic-bezier(0.18, 0.7, 0.24, 1) ${dur / 2}ms forwards` }}>
+        <div key={`b${flip}`} style={{ position: 'absolute', inset: 0, zIndex: 3, transformOrigin: '50% 0%', backfaceVisibility: 'hidden', willChange: 'transform', transform: 'rotateX(90deg)', animation: `politika-flap-up ${dur / 2}ms cubic-bezier(0.18, 0.7, 0.24, 1) ${dur / 2}ms forwards` }}>
           <Half d={cur} side="bottom" />
         </div>
       )}
@@ -118,8 +118,8 @@ export function DaysFlipCountdown() {
   return (
     <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 10 }} aria-label={days === null ? 'Days until the 2026 election' : `${days} days until the 2026 election`}>
       <style>{`
-        @keyframes aratika-flap-down { from { transform: rotateX(0deg); } to { transform: rotateX(-90deg); } }
-        @keyframes aratika-flap-up { from { transform: rotateX(90deg); } to { transform: rotateX(0deg); } }
+        @keyframes politika-flap-down { from { transform: rotateX(0deg); } to { transform: rotateX(-90deg); } }
+        @keyframes politika-flap-up { from { transform: rotateX(90deg); } to { transform: rotateX(0deg); } }
       `}</style>
       <div style={{ display: 'flex', gap: 7 }}>
         {digits.map((d, i) => <SplitFlapDigit key={i} target={d} startDelay={i * STAGGER} animate={animate} />)}

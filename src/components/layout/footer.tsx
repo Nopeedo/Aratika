@@ -48,7 +48,7 @@ export function Footer() {
                   footer: jade reads muddy on near-black, so pono takes the
                   mark's lighter jade instead. Literal text on purpose — see
                   the navbar note. */}
-              <span className="font-semibold text-white text-lg">Ara<span style={{ color: '#4CC38A' }}>pono</span></span>
+              <span className="font-semibold text-white text-lg">Poli<span style={{ color: '#4CC38A' }}>tika</span></span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
               {SITE.tagline}
@@ -177,7 +177,7 @@ export function Footer() {
             © {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>
           <p className="text-xs text-slate-600 text-center sm:text-right max-w-md">
-            Arapono is an independent platform. All information is sourced from official NZ government
+            Politika is an independent platform. All information is sourced from official NZ government
             and electoral sources. We are not affiliated with any political party.
           </p>
         </div>

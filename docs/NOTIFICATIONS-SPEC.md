@@ -1,6 +1,6 @@
 # Notifications & Newsletter — Spec
 
-How Arapono decides what to notify, and how urgently. Keep the bell trustworthy:
+How Politika decides what to notify, and how urgently. Keep the bell trustworthy:
 reserve **immediate** for deadlines, live election moments, and rare bill
 milestones; batch everything else into a **daily digest**.
 

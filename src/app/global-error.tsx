@@ -30,7 +30,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
               Try again
             </button>
             <p style={{ marginTop: 18 }}>
-              <a href="/" style={{ color: '#1F8A4C', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>← Back to Arapono</a>
+              <a href="/" style={{ color: '#1F8A4C', fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>← Back to Politika</a>
             </p>
           </div>
         </div>

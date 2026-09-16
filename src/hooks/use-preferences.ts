@@ -44,7 +44,7 @@ const EMPTY: Preferences = {
   completed: false,
 }
 
-const STORAGE_KEY = 'aratika_prefs_v2'
+const STORAGE_KEY = 'politika_prefs_v2'
 
 export function usePreferences() {
   const [prefs, setPrefs] = useState<Preferences>(EMPTY)

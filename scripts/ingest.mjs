@@ -51,7 +51,7 @@ function feeds() {
 
 const rss = new Parser({
   timeout: 20000,
-  headers: { 'User-Agent': 'AratikaBot/1.0 (+https://aratika.nz; non-partisan civic information)' },
+  headers: { 'User-Agent': 'PolitikaBot/1.0 (+https://politika.nz; non-partisan civic information)' },
 })
 
 /**

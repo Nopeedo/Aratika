@@ -12,7 +12,7 @@ import { dirname, join } from 'node:path'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const root = join(here, '..')
-const UA = 'AraponoCivicSite/1.0 (https://arapono.org.nz)'
+const UA = 'PolitikaCivicSite/1.0 (https://politika.nz)'
 const API = 'https://en.wikipedia.org/w/api.php'
 
 const photosFile = join(root, 'src/constants/mp-photos.ts')

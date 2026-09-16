@@ -29,7 +29,7 @@ import { pushSupported, iosNeedsInstall, isSubscribed, subscribeToPush } from '@
 import { INK, JADE, MANROPE } from '@/constants/theme'
 
 const SUB = '#5b6067'
-const DISMISS_KEY = 'arapono.alerts.dismissed'
+const DISMISS_KEY = 'politika.alerts.dismissed'
 const VAPID = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
 
 // A stadium pill works while everything sits on one line. Once the copy wraps —
@@ -131,7 +131,7 @@ export function AlertsBanner() {
 
   /**
    * The pill's one line of text, by state. There is no separate explainer copy
-   * any more — "Install Arapono" on a tappable pill says everything the old
+   * any more — "Install Politika" on a tappable pill says everything the old
    * two-part card said, and the states that used to need a sentence (denied,
    * auth) put it in the pill instead.
    */
@@ -142,8 +142,8 @@ export function AlertsBanner() {
     : result === 'error' ? 'That didn’t work — try again'
     : busy ? 'Just a sec…'
     : mode === 'notify' ? 'Turn on alerts'
-    : mode === 'ios' ? 'Add Arapono to your Home Screen'
-    : 'Install Arapono'
+    : mode === 'ios' ? 'Add Politika to your Home Screen'
+    : 'Install Politika'
 
   const Icon = result === 'done' ? Check : mode === 'notify' ? Bell : Download
   const action = result === 'auth' ? null : mode === 'notify' ? turnOn : install
@@ -183,7 +183,7 @@ export function AlertsBanner() {
         {steps && mode === 'ios' && (
           <div style={{ maxWidth: 330, padding: '10px 12px', borderRadius: 12, background: '#fff', boxShadow: '0 6px 18px rgba(12,14,18,.14)', fontFamily: MANROPE }}>
             <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: INK, lineHeight: 1.7 }}>
-              {needsSafari && <li>Open <b>arapono.org.nz in Safari</b>. This browser can’t install it.</li>}
+              {needsSafari && <li>Open <b>politika.nz in Safari</b>. This browser can’t install it.</li>}
               <li>Tap <b>Share</b> <Share style={{ width: 12, height: 12, verticalAlign: '-1px' }} /> in Safari.</li>
               <li>Tap <b>Add to Home Screen</b> <SquarePlus style={{ width: 12, height: 12, verticalAlign: '-1px' }} />.</li>
               <li>Open it from your Home Screen, then turn alerts on.</li>

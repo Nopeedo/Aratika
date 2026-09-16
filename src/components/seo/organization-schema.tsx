@@ -1,7 +1,7 @@
 /**
  * Organization structured data (schema.org JSON-LD).
  *
- * This is how Google works out that "Arapono" is a distinct organisation and
+ * This is how Google works out that "Politika" is a distinct organisation and
  * that this domain is its home — the thing a brand-name search depends on, and
  * a prerequisite for a knowledge panel. `sameAs` lists our official accounts;
  * Google treats the association as confirmed when those profiles link back

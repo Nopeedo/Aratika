@@ -24,7 +24,7 @@ export interface TierResult {
 // moduleId -> tier -> result
 export type ProgressMap = Record<string, Partial<Record<LearnTier, TierResult>>>
 
-const STORAGE_KEY = 'aratika_learn_v1'
+const STORAGE_KEY = 'politika_learn_v1'
 
 function readLocal(): ProgressMap {
   try {

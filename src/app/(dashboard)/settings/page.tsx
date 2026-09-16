@@ -90,7 +90,7 @@ export default async function SettingsPage() {
           Settings
         </h1>
         <p style={{ fontSize: 14.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 26px', lineHeight: 1.6 }}>
-          Your account, and how Arapono reaches you. What you follow lives on your{' '}
+          Your account, and how Politika reaches you. What you follow lives on your{' '}
           <Link href="/dashboard" style={{ color: JADE, fontWeight: 700 }}>dashboard</Link>.
         </p>
 

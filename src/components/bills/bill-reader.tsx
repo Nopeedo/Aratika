@@ -106,7 +106,7 @@ export function BillReader({ bill, stances = {} }: { bill: LiveBill; stances?: R
 
       {/* transparency footer */}
       <p style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6, marginTop: 24, paddingTop: 16, borderTop: `1px solid ${BORDER}` }}>
-        Bill text sourced from legislation.govt.nz (Parliamentary Counsel Office). Arapono’s summary and breakdown are drafted with AI grounded in that official text and reviewed by an Arapono editor for accuracy and neutrality before publishing. Arapono is non-partisan and takes no position on this {bill.docType}.
+        Bill text sourced from legislation.govt.nz (Parliamentary Counsel Office). Politika’s summary and breakdown are drafted with AI grounded in that official text and reviewed by an Politika editor for accuracy and neutrality before publishing. Politika is non-partisan and takes no position on this {bill.docType}.
       </p>
     </div>
   )

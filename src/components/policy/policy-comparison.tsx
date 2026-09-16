@@ -63,7 +63,7 @@ export function PolicyComparison({ positions, topicLabel, topic }: { positions: 
       <AlsoContesting getPos={current} detailed={detailed} topic={topic} topicLabel={topicLabel} />
 
       <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '14px 0 0', lineHeight: 1.5 }}>
-        Each position is summarised neutrally from the party’s own official policy and checked by an editor before publishing — never paraphrased without the source linked. Arapono is non-partisan.
+        Each position is summarised neutrally from the party’s own official policy and checked by an editor before publishing — never paraphrased without the source linked. Politika is non-partisan.
       </p>
     </div>
   )

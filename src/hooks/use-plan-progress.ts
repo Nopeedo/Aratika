@@ -11,8 +11,8 @@
 
 import { useCallback, useEffect, useState } from 'react'
 
-const STORAGE_KEY = 'aratika_plan_done_v1'
-const EVENT = 'aratika-plan-progress'
+const STORAGE_KEY = 'politika_plan_done_v1'
+const EVENT = 'politika-plan-progress'
 
 function read(): string[] {
   try {

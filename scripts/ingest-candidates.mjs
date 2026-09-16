@@ -7,7 +7,7 @@
  * Zealand general election by electorate" page tracks candidates progressively
  * as parties announce them, with each row traceable to an announcement.
  *
- * Arapono's standard applies: NOTHING ships unreviewed. Parsed candidates are
+ * Politika's standard applies: NOTHING ships unreviewed. Parsed candidates are
  * staged into content_items as type='candidate', status='pending' — an editor
  * approves each in /editor before the battleground page will show it (see
  * src/lib/candidates/live.ts). When the Electoral Commission publishes official

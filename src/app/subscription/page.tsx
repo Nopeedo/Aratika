@@ -1,5 +1,5 @@
 /**
- * /subscription — Arapono Premium pricing page.
+ * /subscription — Politika Premium pricing page.
  * The Upgrade button starts a Stripe Checkout session via /api/stripe/checkout.
  * NOTE: the price shown here is a placeholder — set the real amount on your
  * Stripe Price, and update the display below to match.
@@ -12,7 +12,7 @@ import { UpgradeButton } from '@/components/billing/billing-buttons'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
-  title: 'Arapono Premium',
+  title: 'Politika Premium',
   description: 'Support an independent, non-partisan platform and unlock the Take Action studio, tracking and alerts.',
 }
 
@@ -40,13 +40,13 @@ export default function SubscriptionPage() {
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 980, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px', textAlign: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
-            <SectionDivider type="official" label="Arapono Premium" />
+            <SectionDivider type="official" label="Politika Premium" />
           </div>
           <h1 style={{ fontSize: 'clamp(25px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>
-            Do more with Arapono
+            Do more with Politika
           </h1>
           <p style={{ fontSize: 17, color: SECONDARY, fontFamily: MANROPE, maxWidth: 560, margin: '0 auto', lineHeight: 1.6 }}>
-            The information is always free. Premium adds the tools to act on it — and helps keep Arapono
+            The information is always free. Premium adds the tools to act on it — and helps keep Politika
             independent and non-partisan.
           </p>
         </div>
@@ -91,7 +91,7 @@ export default function SubscriptionPage() {
         </div>
 
         <div style={{ marginTop: 24, display: 'flex', gap: 10, alignItems: 'center', justifyContent: 'center', color: SECONDARY, fontFamily: MANROPE, fontSize: 12.5 }}>
-          <Heart style={{ width: 14, height: 14, color: JADE }} /> Secure payments by Stripe · Your card details never touch Arapono’s servers.
+          <Heart style={{ width: 14, height: 14, color: JADE }} /> Secure payments by Stripe · Your card details never touch Politika’s servers.
         </div>
       </div>
     </div>

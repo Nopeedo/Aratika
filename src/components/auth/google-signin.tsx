@@ -27,7 +27,7 @@
  *   1. Vercel env: NEXT_PUBLIC_GOOGLE_CLIENT_ID = the OAuth *Web* client id
  *      (the same client id Supabase's Google provider uses).
  *   2. Google Cloud → that client's "Authorized JavaScript origins":
- *      https://arapono.org.nz  (and http://localhost:3000 for dev).
+ *      https://politika.nz  (and http://localhost:3000 for dev).
  */
 
 import * as React from 'react'

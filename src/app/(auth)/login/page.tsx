@@ -60,7 +60,7 @@ function LoginInner() {
   }
 
   return (
-    <AuthShell title="Welcome back" subtitle="Log in to your Arapono account.">
+    <AuthShell title="Welcome back" subtitle="Log in to your Politika account.">
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {/* The nudge. Someone sent here from a gated page tapped a real button
             and got a login form — without this line, that reads as the button

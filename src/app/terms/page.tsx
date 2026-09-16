@@ -3,26 +3,26 @@ import { LegalPage } from '@/components/legal/legal-page'
 
 export const metadata: Metadata = {
   title: 'Terms of Use',
-  description: 'The terms for using Arapono, an independent, non-partisan New Zealand political information platform.',
+  description: 'The terms for using Politika, an independent, non-partisan New Zealand political information platform.',
 }
 
 export default function TermsPage() {
   return (
     <LegalPage
       title="Terms of Use"
-      subtitle="The ground rules for using Arapono."
+      subtitle="The ground rules for using Politika."
       updated="September 2026"
     >
-      <h2>1. About Arapono</h2>
+      <h2>1. About Politika</h2>
       <p>
-        Arapono is an <strong>independent, non-partisan</strong> information platform about New Zealand politics. We are
+        Politika is an <strong>independent, non-partisan</strong> information platform about New Zealand politics. We are
         <strong> not affiliated with the Government, Parliament, the Electoral Commission, or any political party</strong>.
         By using the site you agree to these terms.
       </p>
 
       <h2>2. Information, not advice</h2>
       <p>
-        Arapono provides general information for civic understanding. It is <strong>not legal, financial, or electoral
+        Politika provides general information for civic understanding. It is <strong>not legal, financial, or electoral
         advice</strong>, and nothing here tells you how to vote. We draw on official sources and work hard to be accurate,
         but we don’t guarantee the information is complete or error-free — for anything you rely on, check the original
         official source. If you spot a mistake, please tell us via the <a href="/contact">correction page</a>.
@@ -32,7 +32,7 @@ export default function TermsPage() {
       <p>We present parties, MPs and policies even-handedly and do not endorse or oppose any party or candidate. Where we describe positions, we attribute them to their source.</p>
 
       <h2>4. Acceptable use</h2>
-      <p>You agree to use Arapono lawfully and respectfully. You must not:</p>
+      <p>You agree to use Politika lawfully and respectfully. You must not:</p>
       <ul>
         <li>use the platform, or any information on it, to <strong>harass, threaten, or abuse</strong> any MP, candidate, official or other person;</li>
         <li>use the Take Action tools to send abusive, misleading, or unlawful content;</li>
@@ -42,7 +42,7 @@ export default function TermsPage() {
 
       <h2>5. The Take Action studio</h2>
       <p>
-        Our drafting tools help you write letters and submissions in <strong>your own words</strong>. Arapono does not send
+        Our drafting tools help you write letters and submissions in <strong>your own words</strong>. Politika does not send
         anything on your behalf and does not store what you draft — you review it and send it through official channels
         yourself. <strong>You are responsible for the content you send</strong> and for using the correct, current official
         contact details and deadlines.
@@ -51,7 +51,7 @@ export default function TermsPage() {
       <h2>6. Accounts</h2>
       <p>You’re responsible for keeping your login secure and for activity under your account. Tell us promptly if you suspect unauthorised use.</p>
 
-      <h2>7. Arapono is free</h2>
+      <h2>7. Politika is free</h2>
       <p>
         There is no paid tier, no subscription and nothing to buy. Every part of the site is available to everyone, and
         we never ask for card details. If that ever changes we’ll say so here first, and your rights under the{' '}
@@ -60,14 +60,14 @@ export default function TermsPage() {
 
       <h2>8. Intellectual property &amp; sources</h2>
       <p>
-        Arapono’s own content, design and code belong to us. Underlying data comes from official sources — including the
+        Politika’s own content, design and code belong to us. Underlying data comes from official sources — including the
         New Zealand Parliament, the Electoral Commission, and Stats NZ — and remains subject to their respective licences;
         we attribute these where used. MP photographs are used under their stated licences with attribution.
       </p>
 
       <h2>9. Liability</h2>
       <p>
-        To the extent permitted by law, Arapono is provided “as is”, and we’re not liable for loss arising from reliance on
+        To the extent permitted by law, Politika is provided “as is”, and we’re not liable for loss arising from reliance on
         the information or from interruptions to the service. Nothing in these terms limits rights you have under New Zealand
         consumer law that cannot be excluded.
       </p>

@@ -404,9 +404,9 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
   const selectCommittee = typeof item.data?.selectCommittee === 'string' ? item.data.selectCommittee : null
   const isLegislation = item.type === 'legislation'
   const isNews = item.type === 'news'
-  // Host from SITE, not typed in: this said arapono.nz, which is not the site's
-  // domain and has no DNS records at all, so the reviewer was shown a preview
-  // URL that goes nowhere.
+  // Host from SITE, not typed in: this once carried a hardcoded domain that
+  // was not the site's and had no DNS records at all, so the reviewer was shown
+  // a preview URL that went nowhere.
   const previewUrl = `${SITE.url.replace(/^https?:\/\//, '')}/legislation/${billSlugFromLink(link) ?? '…'}`
 
   // News tags, for the reviewer to see who an item will reach before publishing.

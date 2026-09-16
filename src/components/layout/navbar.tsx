@@ -17,9 +17,9 @@ import { LogoMark } from '@/components/brand/logo-mark'
 const NAV = visibleNav()
 const cleanHref = (href: string) => href.split('#')[0]
 
-// ─── Arapono Logo ─────────────────────────────────────────────────────────────
+// ─── Politika Logo ─────────────────────────────────────────────────────────────
 
-function AraponoLogo() {
+function PolitikaLogo() {
   return (
     // Points at /?full=1, NOT / — same reason as the mobile menu's Home link: a
     // returning visitor hitting / is redirected to /hub (see app/page.tsx), so
@@ -32,13 +32,15 @@ function AraponoLogo() {
       <span className="flex items-center justify-center size-8 rounded-lg shadow-md shrink-0" style={{ background: '#1F8A4C' }}>
         <LogoMark size={19} reversed />
       </span>
-      {/* "Ara" in ink, "pono" in jade — the name is ara (path) + pono
-          (true/honest), and the split colour makes the two words legible in
-          the wordmark. Written out rather than sliced from SITE.name: a
-          renamed site should break this visibly, not colour letters at an
-          offset that no longer means anything. */}
+      {/* "Poli" in ink, "tika" in jade — tika (right, just, correct), so the
+          split says what the site is for, the way Ara|pono once did with pono
+          (true). Written out rather than sliced from SITE.name on purpose: a
+          coloured split has to mean something, and a future rename should have
+          to make this decision again rather than colour letters at an offset
+          left over from this name. The footer and the share-image card carry
+          the same split; change all three together. */}
       <span className="font-semibold text-lg text-foreground tracking-tight">
-        Ara<span style={{ color: '#1F8A4C' }}>pono</span>
+        Poli<span style={{ color: '#1F8A4C' }}>tika</span>
       </span>
     </Link>
   )
@@ -81,7 +83,7 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <AraponoLogo />
+          <PolitikaLogo />
 
           {/* Desktop Nav */}
           <nav className="hidden xl:flex items-center gap-1" aria-label="Main navigation">

@@ -1,5 +1,5 @@
 /**
- * newsletter.mjs — build and send the Arapono Weekly.
+ * newsletter.mjs — build and send the Politika Weekly.
  *
  *   node scripts/newsletter.mjs                 → DRY RUN (renders, sends nothing)
  *   node scripts/newsletter.mjs --self you@x.nz → send ONE real email to you (test)
@@ -24,7 +24,7 @@ dotenv.config({ path: join(root, '.env.local') })
 const SELF = (process.argv.find((a) => a.startsWith('--self')) || '').split('=')[1]
   || (process.argv.includes('--self') ? process.argv[process.argv.indexOf('--self') + 1] : null)
 const LIVE = process.argv.includes('--send') || !!SELF
-const SITE = (process.env.NEXT_PUBLIC_APP_URL || 'https://arapono.org.nz').replace(/\/$/, '')
+const SITE = (process.env.NEXT_PUBLIC_APP_URL || 'https://politika.nz').replace(/\/$/, '')
 const lc = (v) => String(v || '').toLowerCase()
 
 const PARTY = {

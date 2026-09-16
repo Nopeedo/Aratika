@@ -98,7 +98,7 @@ export function PositionReader({ position, accent, topicLabel }: { position: Par
         <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
           Summarised neutrally from {position.partyName}’s own official policy{position.asOf ? ` (as at ${position.asOf})` : ''} and checked by an editor. Nothing is paraphrased without the source linked.{' '}
           {position.sourceUrl && <a href={position.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>Read the original ↗</a>}{' '}
-          Arapono is non-partisan. <Link href="/policies" style={{ color: JADE, fontWeight: 700 }}>Compare all parties on {topicLabel} →</Link>
+          Politika is non-partisan. <Link href="/policies" style={{ color: JADE, fontWeight: 700 }}>Compare all parties on {topicLabel} →</Link>
         </p>
       </div>
     </div>
