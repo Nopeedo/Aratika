@@ -1,0 +1,32 @@
+name: Verify SMTP login
+
+# Can we still log in to send mail? Connects and authenticates, sends nothing.
+#
+# The SMTP credentials are secrets, so they cannot be tested from a developer
+# machine, and the scripts that use them only exercise them when there is
+# something to send. A login that stops working is invisible until the next
+# real newsletter or bill alert fails — and the first sign of that is a
+# subscriber asking why it stopped. This makes it a red run and an email.
+#
+# Weekly rather than daily: the credential does not drift on its own, and a
+# failure here needs a human anyway. Run it by hand whenever the mailbox,
+# password or secret changes — that is what workflow_dispatch is for.
+on:
+  schedule:
+    - cron: '0 21 * * 0'   # Monday 9am NZST
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - name: Authenticate to Zoho (no message is sent)
+        env:
+          ZOHO_SMTP_USER: ${{ secrets.ZOHO_SMTP_USER }}
+          ZOHO_SMTP_PASS: ${{ secrets.ZOHO_SMTP_PASS }}
+        run: node scripts/verify-smtp.mjs
