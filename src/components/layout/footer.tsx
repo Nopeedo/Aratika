@@ -48,7 +48,7 @@ export function Footer() {
                   footer: jade reads muddy on near-black, so pono takes the
                   mark's lighter jade instead. Literal text on purpose — see
                   the navbar note. */}
-              <span className="font-semibold text-white text-lg">Ara<span style={{ color: '#4CC38A' }}>pono</span></span>
+              <span className="font-semibold text-white text-lg">Poli<span style={{ color: '#4CC38A' }}>tika</span></span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed">
               {SITE.tagline}

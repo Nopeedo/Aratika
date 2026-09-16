@@ -88,7 +88,11 @@ export async function ogCard({ eyebrow, title, subtitle, stat, accent = JADE }: 
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', fontSize: 30, fontWeight: 800, color: INK }}>Politika</div>
+          {/* Same Poli|tika split as the navbar and footer. Two spans rather
+              than one string because ImageResponse honours inline colour. */}
+          <div style={{ display: 'flex', fontSize: 30, fontWeight: 800, color: INK }}>
+            Poli<span style={{ color: JADE }}>tika</span>
+          </div>
           <div style={{ display: 'flex', fontSize: 22, fontWeight: 700, color: TERTIARY }}>
             politika.nz · non-partisan, sourced
           </div>

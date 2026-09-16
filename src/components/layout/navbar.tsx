@@ -32,18 +32,15 @@ function PolitikaLogo() {
       <span className="flex items-center justify-center size-8 rounded-lg shadow-md shrink-0" style={{ background: '#1F8A4C' }}>
         <LogoMark size={19} reversed />
       </span>
-      {/* Written out rather than sliced from SITE.name, on purpose: the split
-          colour in a wordmark has to mean something, and a rename should force
-          that decision rather than colour letters at an offset left over from
-          the last name.
-
-          The previous wordmark was Ara|pono — ara (path) + pono (true) — with
-          the second word in jade. Politika renders single-tone for now.
-          DECISION PENDING: "Poli|tika" would echo that treatment exactly —
-          tika is a real word (right, just, correct) — but that is a brand call,
-          not a rename side-effect. Change the markup below when it is made. */}
+      {/* "Poli" in ink, "tika" in jade — tika (right, just, correct), so the
+          split says what the site is for, the way Ara|pono once did with pono
+          (true). Written out rather than sliced from SITE.name on purpose: a
+          coloured split has to mean something, and a future rename should have
+          to make this decision again rather than colour letters at an offset
+          left over from this name. The footer and the share-image card carry
+          the same split; change all three together. */}
       <span className="font-semibold text-lg text-foreground tracking-tight">
-        {SITE.name}
+        Poli<span style={{ color: '#1F8A4C' }}>tika</span>
       </span>
     </Link>
   )
