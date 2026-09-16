@@ -322,6 +322,10 @@
         "title": "Labour's AI in New Zealand's Interests Policy"
       },
       {
+        "url": "https://www.labour.org.nz/banning-price-gouging",
+        "title": "Labour's Ban on Price Gouging"
+      },
+      {
         "url": "https://www.labour.org.nz/capitalgainstax",
         "title": "Capital Gains Tax on Investment Property"
       },
@@ -806,32 +810,36 @@
   "alliance": {
     "economy": [
       {
+        "url": "https://allianceparty.nz/alliance-52-weeks-paid-parental-leave-gender-equality/",
+        "title": "Alliance 52 Weeks Paid Parental Leave and Gender Equality"
+      },
+      {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Alliance full employment 35-hour week and workers rights policy"
+        "title": "Alliance Full Employment and 35-Hour Week Workers' Rights Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
-        "title": "Alliance national transport strategy"
+        "title": "Alliance National Transport Strategy"
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-rebuild-universal-social-security/",
-        "title": "Alliance universal social security and benefit reform policy"
+        "title": "Alliance Universal Social Security Plan"
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Alliance tax plan with $20,000 tax-free threshold and wealth tax"
+        "title": "Alliance Tax Plan: First $20,000 Income Tax-Free with Wealth Tax"
       }
     ],
     "health": [
       {
         "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
-        "title": "Alliance free GP dental optical and audiology health policy"
+        "title": "Alliance Free GP Dental Optical and Audiology Health Policy"
       }
     ],
     "environment": [
       {
         "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
-        "title": "Alliance just transition environmental and sustainable economy policy"
+        "title": "Alliance Just Transition Environment and Climate Policy"
       }
     ]
   },
@@ -904,8 +912,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-15",
+    "lastRun": "2026-09-16",
     "parties": 13,
-    "policyPages": 186
+    "policyPages": 188
   }
 }
