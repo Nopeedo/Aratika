@@ -1,11 +1,14 @@
 /**
  * LegalPage — shared chrome for Privacy / Terms / Contact pages.
- * Renders a header, a clear "draft pending legal review" notice, and styles the
- * semantic prose passed as children.
+ * Renders a header and styles the semantic prose passed as children.
+ *
+ * It used to carry a "working draft, have a lawyer review it" banner. Removed
+ * 16 Sep 2026 on the editor's call: the privacy policy was rewritten from an
+ * audit of what the code actually does, and a public page that announces
+ * itself as unreviewed undercuts the thing it is there to reassure people of.
  */
 
 import type { ReactNode } from 'react'
-import { AlertTriangle } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BORDER, INK, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -29,13 +32,6 @@ export function LegalPage({
       </div>
 
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px) 64px' }}>
-        <div style={{ display: 'flex', gap: 10, padding: '13px 16px', background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 12, marginBottom: 28 }}>
-          <AlertTriangle style={{ width: 16, height: 16, color: '#b45309', flexShrink: 0, marginTop: 1 }} />
-          <p style={{ fontSize: 12.5, color: '#92400e', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-            <b>Working draft.</b> This is a plain-language starting point, not legal advice. Have it reviewed by a New Zealand lawyer before relying on it or launching publicly.
-          </p>
-        </div>
-
         <div className="legal-prose">{children}</div>
       </div>
 

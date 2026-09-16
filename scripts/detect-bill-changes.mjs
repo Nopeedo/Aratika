@@ -36,6 +36,13 @@ function loadBills() {
   if (!line) throw new Error('BILLS_54 not found')
   return JSON.parse(line.slice(line.indexOf('[', line.indexOf('='))).replace(/;\s*$/, ''))
 }
+// Committed alongside bills-54.ts by refresh-bills.yml (`git add src/constants`),
+// so the homepage can bundle it. Every other output of this script is a
+// notification — per-user, private, gone once sent. This is the one durable,
+// public record of what moved and when.
+const MOVEMENTS_PATH = join(root, 'src/constants/bill-movements.json')
+const MOVEMENTS_KEEP_DAYS = 120
+
 const bills = loadBills()
 const current = Object.fromEntries(bills.map((b) => [b.slug, b.status]))
 
@@ -54,6 +61,26 @@ const changes = bills
 
 console.log(`Bill status changes since last run: ${changes.length}`)
 for (const c of changes) console.log(`  · ${c.title}: ${c.from} → ${c.to}`)
+
+// ── Durable movement log ─────────────────────────────────────────────────────
+// Appended before notifications are enqueued, so a failure further down (a
+// missing VAPID key, a dead push endpoint) cannot lose the record of what moved.
+// Newest first. Pruned by age rather than count so a busy sitting week is not
+// pushed out by a quiet one.
+if (changes.length && !DRY) {
+  let log = []
+  try { log = JSON.parse(readFileSync(MOVEMENTS_PATH, 'utf8')) } catch { /* first write */ }
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })
+  const cutoff = new Date(Date.now() - MOVEMENTS_KEEP_DAYS * 864e5).toISOString().slice(0, 10)
+  const fresh = changes.map((c) => ({ slug: c.slug, title: c.title, from: c.from, to: c.to, date: today }))
+  // A re-run on the same day must not double-log the same transition.
+  const key = (m) => `${m.slug}|${m.to}|${m.date}`
+  const have = new Set(log.map(key))
+  log = [...fresh.filter((m) => !have.has(key(m))), ...log].filter((m) => m.date >= cutoff)
+  mkdirSync(dirname(MOVEMENTS_PATH), { recursive: true })
+  writeFileSync(MOVEMENTS_PATH, JSON.stringify(log, null, 2) + '\n')
+  console.log(`Movement log: +${fresh.length}, ${log.length} entr${log.length === 1 ? 'y' : 'ies'} within ${MOVEMENTS_KEEP_DAYS} days.`)
+}
 
 function classify(to) {
   if (/royal assent/i.test(to)) return { urgency: 'immediate', kind: 'passed', title: 'Passed into law', body: (t) => `${t} is now an Act.` }

@@ -29,8 +29,8 @@ export const metadata: Metadata = {
     'their type, stage and progress, with plain-language breakdowns.',
 }
 
-export default async function BillsPage({ searchParams }: { searchParams: Promise<{ party?: string }> }) {
-  const { party: initialParty } = await searchParams
+export default async function BillsPage({ searchParams }: { searchParams: Promise<{ party?: string; bill?: string }> }) {
+  const { party: initialParty, bill: initialBill } = await searchParams
   const readable = await getApprovedBills()
   // Map each bill title → its reader slug, so the full tracker can link rows that
   // have a published breakdown through to /legislation/[slug].
@@ -81,7 +81,7 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
           </p>
         </div>
 
-        <BillsTracker54 readerSlugs={readerSlugs} memberParty={memberParty} initialParty={initialParty} />
+        <BillsTracker54 readerSlugs={readerSlugs} memberParty={memberParty} initialParty={initialParty} initialBill={initialBill} />
 
         <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 18 }}>
           Source: {BILLS_54_META.sourceLabel}, 54th Parliament, as at {BILLS_54_META.asOf}.{' '}

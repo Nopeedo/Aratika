@@ -24,6 +24,7 @@ import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { ThisTerm } from '@/components/homepage/this-term'
 import { FindMyMpButton } from '@/components/homepage/find-my-mp-button'
 import { CompassCta } from '@/components/compass/compass-cta'
+import { WhatsMoved } from '@/components/homepage/whats-moved'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 import { AlertsBanner } from '@/components/notifications/alerts-banner'
@@ -111,6 +112,15 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             headline is worth more once the reader knows the seats and the
             bills it is talking about. */}
         <PartyNewsSection />
+
+        {/* ── Latest: what has moved ──
+            New candidates and bill stage changes, each linking to where the
+            change lives. Sits after the news because it is the site's OWN
+            record of movement rather than someone else's reporting of it, and
+            before the credibility strip because "here is what changed this
+            week, with a link to check it" is itself the credibility argument.
+            Renders nothing when both windows are empty. */}
+        <WhatsMoved />
 
         {/* ── Why you can trust it (slim) ── */}
         <CredibilityStrip />

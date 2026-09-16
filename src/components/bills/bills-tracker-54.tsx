@@ -37,8 +37,13 @@ function statusStyle(s: string): { fg: string; bg: string; label: string } {
 }
 
 const PAGE_SIZE = 24
+// Newest first. The deep-link below has to find a bill's PAGE, which only
+// means anything in the order the list is actually shown in — so the list and
+// the deep-link share this one comparator rather than each having its own.
+const byDateDesc = (a: Bill54, b: Bill54) => (b.date || '').localeCompare(a.date || '')
+const DEFAULT_ORDER = [...BILLS_54].sort(byDateDesc)
 
-export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialParty }: { readerSlugs?: Record<string, string>; memberParty?: Record<string, string>; initialParty?: string }) {
+export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialParty, initialBill }: { readerSlugs?: Record<string, string>; memberParty?: Record<string, string>; initialParty?: string; initialBill?: string }) {
   const [q, setQ] = useState('')
   const [cat, setCat] = useState('All')
   const [type, setType] = useState('All')
@@ -59,6 +64,26 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
   useEffect(() => {
     if (initialParty) topRef.current?.scrollIntoView({ block: 'start' })
   }, [initialParty])
+
+  // Deep-linked to ONE bill (?bill=<slug>) — from the homepage "what's moved"
+  // list, or a notification. A plain #anchor cannot do this: the list is
+  // paginated at PAGE_SIZE, so the target is usually not in the DOM. Find its
+  // page in the displayed order, go there, then scroll the card into view once
+  // it has rendered. Runs once; the card carries a highlight so the reader
+  // can tell which of the 24 on the page is the one they came for.
+  const jumped = useRef(false)
+  useEffect(() => {
+    if (!initialBill || jumped.current) return
+    // In the order the list is displayed, not the raw dataset order: the two
+    // differ by a couple of hundred places for most bills, and computing the
+    // page from the wrong one sends the reader to a page the bill is not on.
+    const idx = DEFAULT_ORDER.findIndex((b) => b.slug === initialBill)
+    if (idx < 0) { jumped.current = true; return }
+    const target = Math.floor(idx / PAGE_SIZE) + 1
+    if (page !== target) { setPage(target); return }   // re-runs once that page has rendered
+    const el = document.getElementById(`bill-${initialBill}`)
+    if (el) { el.scrollIntoView({ block: 'center' }); jumped.current = true }
+  }, [initialBill, page])
 
   // Today's date is resolved AFTER mount, never during render: the server and the
   // browser can straddle midnight (and sit in different timezones), and a date
@@ -104,7 +129,7 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
       (party === 'All' || (b.member ? memberParty[normName(b.member)] === party : false)) &&
       (!subsOnly || isOpen(b)) &&
       (!ql || b.title.toLowerCase().includes(ql) || (b.member || '').toLowerCase().includes(ql)),
-    ).sort((a, b) => (b.date || '').localeCompare(a.date || ''))
+    ).sort(byDateDesc)
   }, [q, cat, type, status, party, memberParty, subsOnly, today])
 
   const active = cat !== 'All' || type !== 'All' || status !== 'All' || party !== 'All' || q !== '' || subsOnly
@@ -194,7 +219,7 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
         <>
           <div ref={resultsRef} style={{ scrollMarginTop: 80 }} />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(330px, 100%), 1fr))', gap: 12 }}>
-            {pageItems.map((b) => <BillCard key={b.slug + b.number} b={b} readerSlug={readerSlugs[normTitle(b.title)]} submissionsOpen={isOpen(b)} party={partyOf(b.member)} />)}
+            {pageItems.map((b) => <BillCard key={b.slug + b.number} b={b} readerSlug={readerSlugs[normTitle(b.title)]} submissionsOpen={isOpen(b)} party={partyOf(b.member)} focused={b.slug === initialBill} />)}
           </div>
           {pageCount > 1 && <Pager current={current} pageCount={pageCount} goTo={goTo} />}
         </>
@@ -206,7 +231,7 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
 /** Card is a <div>, not one big <Link>: it now carries several distinct
  *  destinations (our breakdown, the official page, the submission call), and
  *  anchors can't legally nest inside one another. */
-function BillCard({ b, readerSlug, submissionsOpen, party }: { b: Bill54; readerSlug?: string; submissionsOpen?: boolean; party?: string }) {
+function BillCard({ b, readerSlug, submissionsOpen, party, focused }: { b: Bill54; readerSlug?: string; submissionsOpen?: boolean; party?: string; focused?: boolean }) {
   const ts = TYPE_STYLE[b.type] ?? TYPE_STYLE.Private
   const ss = statusStyle(b.status)
   // Washed in the party colour of the member in charge, matching the party
@@ -220,9 +245,12 @@ function BillCard({ b, readerSlug, submissionsOpen, party }: { b: Bill54; reader
     border: `2px solid ${col ? col.bg : submissionsOpen ? '#bfd4fe' : BORDER}`,
     borderRadius: 14, padding: '15px 16px',
     background: col ? col.light : '#fff', display: 'flex', flexDirection: 'column', height: '100%',
+    // The deep-linked card: a jade ring, so it stands out from the other 23 on
+    // the page. Colour only — the border is already spoken for by the party.
+    ...(focused ? { boxShadow: `0 0 0 3px ${JADE}`, scrollMarginTop: 96 } : {}),
   }
   return (
-    <div className="party-card" style={cardStyle}>
+    <div id={`bill-${b.slug}`} className="party-card" style={cardStyle}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 9 }}>
         <span style={{ fontSize: 10.5, fontWeight: 800, color: ts.fg, background: ts.bg, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{b.type}</span>
         <span style={{ fontSize: 10.5, fontWeight: 800, color: ss.fg, background: ss.bg, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{ss.label}</span>
