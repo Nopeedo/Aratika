@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import { LegalPage } from '@/components/legal/legal-page'
-// Read from SITE rather than typing the address in. Three hardcoded copies of
-// hello@arapono.nz survived here after SITE.email had moved to
-// hello@arapono.org.nz — and arapono.nz has no MX record at all, so every one
-// of those links pointed at a mailbox that cannot receive mail. This page is
+// Read from SITE rather than typing the address in. In September 2026 three
+// hardcoded copies of an old address (hello@ on a domain that had no MX record
+// at all) survived here after SITE.email had moved on, so every one of those
+// links pointed at a mailbox that cannot receive mail. This page is
 // where the Privacy Act access, correction and deletion requests are supposed
 // to arrive, so they were bouncing.
 import { SITE } from '@/constants/site'
@@ -25,7 +25,7 @@ import { SITE } from '@/constants/site'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'What Arapono collects, what stays on your device, and who else your browser talks to — under the New Zealand Privacy Act 2020.',
+  description: 'What Politika collects, what stays on your device, and who else your browser talks to — under the New Zealand Privacy Act 2020.',
 }
 
 export default function PrivacyPage() {
@@ -37,17 +37,17 @@ export default function PrivacyPage() {
     >
       <h2>Who we are</h2>
       <p>
-        Arapono is an independent, non-partisan platform that helps New Zealanders understand Parliament, MPs, parties,
+        Politika is an independent, non-partisan platform that helps New Zealanders understand Parliament, MPs, parties,
         policies and elections. We are not affiliated with the Government or any political party. This policy explains
         how we handle personal information under the <strong>Privacy Act 2020</strong>. You can reach us any time at{' '}
         <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or through the <a href="/contact">contact page</a>.
       </p>
       <p>
-        <strong>Arapono is free, and there is nothing to pay for.</strong> We don’t take payments, we don’t have a paid
+        <strong>Politika is free, and there is nothing to pay for.</strong> We don’t take payments, we don’t have a paid
         tier, and we don’t ask for card details anywhere on the site.
       </p>
 
-      <h2>You can use most of Arapono without an account</h2>
+      <h2>You can use most of Politika without an account</h2>
       <p>
         Reading the site — parties, policies, MPs, bills, the map, the news feed — needs no account and no sign-in. If
         you follow things or work through the Learn modules while signed out, that is saved <strong>in your own
@@ -120,7 +120,7 @@ export default function PrivacyPage() {
       </p>
 
       <h2>Who else your browser talks to</h2>
-      <p>We keep this list short on purpose. When you use Arapono, these are the others involved:</p>
+      <p>We keep this list short on purpose. When you use Politika, these are the others involved:</p>
       <ul>
         <li><strong>Supabase</strong> — stores accounts and everything above, and sends account emails.</li>
         <li><strong>Vercel</strong> — hosts the site, and provides the performance measurement described above.</li>

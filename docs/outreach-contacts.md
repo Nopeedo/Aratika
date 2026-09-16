@@ -1,4 +1,4 @@
-# Media outreach contacts — Arapono launch
+# Media outreach contacts — Politika launch
 
 Compiled 27 Aug 2026. "Verified" = harvested from the outlet's own contact
 page or its published listings on that date. Re-verify anything older than a

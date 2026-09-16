@@ -93,7 +93,7 @@ export function HaveYourSay({ stage, selectCommittee, slug, officialUrl, submiss
           {open && draftingEnabled && (
             <Link href={`/take-action/submission${slug ? `?bill=${slug}` : ''}`}
                   style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 14, fontWeight: 800, fontFamily: MANROPE, padding: '10px 16px', borderRadius: 11, background: '#fff', color: INK, border: `1px solid ${BORDER}`, textDecoration: 'none' }}>
-              Draft one with Arapono <ArrowRight style={{ width: 15, height: 15 }} />
+              Draft one with Politika <ArrowRight style={{ width: 15, height: 15 }} />
             </Link>
           )}
           {/* Fallback when there is nothing to submit to (or no URL to send them to). */}

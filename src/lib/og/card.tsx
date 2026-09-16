@@ -2,7 +2,7 @@
  * og/card.tsx — the shared Open Graph card.
  *
  * Every page on the site shared as an identical bare text link: no image at all,
- * and one title ("Arapono — Navigating New Zealand Politics") for the homepage,
+ * and one title ("Politika — Navigating New Zealand Politics") for the homepage,
  * the Housing comparison and the battlegrounds map alike. Nothing gave anyone a
  * reason to tap, and `twitter:card: summary_large_image` was declared with no
  * image to fill it, so it silently degraded to the plain card.
@@ -88,9 +88,9 @@ export async function ogCard({ eyebrow, title, subtitle, stat, accent = JADE }: 
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', fontSize: 30, fontWeight: 800, color: INK }}>Arapono</div>
+          <div style={{ display: 'flex', fontSize: 30, fontWeight: 800, color: INK }}>Politika</div>
           <div style={{ display: 'flex', fontSize: 22, fontWeight: 700, color: TERTIARY }}>
-            arapono.org.nz · non-partisan, sourced
+            politika.nz · non-partisan, sourced
           </div>
         </div>
       </div>

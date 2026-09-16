@@ -12,8 +12,8 @@ Cloning gets the source, but two things are kept out of git on purpose
    `npm`.
 2. **Clone + install dependencies** (rebuilds the gitignored `node_modules`):
    ```bash
-   git clone https://github.com/Nopeedo/Aratika.git
-   cd Aratika
+   git clone https://github.com/Nopeedo/Politika.git
+   cd Politika
    npm install
    ```
 3. **Create `.env.local`** — copy the template and fill in the real values:

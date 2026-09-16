@@ -82,7 +82,7 @@ export function NotifyToggle() {
           {state === 'ios' && (
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, marginTop: 12, padding: '10px 12px', borderRadius: 10, background: '#f4f6f8' }}>
               <Smartphone style={{ width: 16, height: 16, color: SUB, flexShrink: 0, marginTop: 1 }} />
-              <span style={{ fontSize: 13, color: SUB, lineHeight: 1.5 }}>On iPhone or iPad, tap <b>Share → Add to Home Screen</b> first, open Arapono from your Home Screen, then turn notifications on here.</span>
+              <span style={{ fontSize: 13, color: SUB, lineHeight: 1.5 }}>On iPhone or iPad, tap <b>Share → Add to Home Screen</b> first, open Politika from your Home Screen, then turn notifications on here.</span>
             </div>
           )}
           {state === 'denied' && (

@@ -1,5 +1,5 @@
 /**
- * notify.mjs — shared notification engine for the Arapono pipelines.
+ * notify.mjs — shared notification engine for the Politika pipelines.
  *
  * Detection scripts ENQUEUE rows (enqueue); the sender processes them
  * (sendPushToUser / emailUser). Everything degrades cleanly when creds are
@@ -41,7 +41,7 @@ function vapidReady() {
   const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
   const priv = process.env.VAPID_PRIVATE_KEY
   if (!pub || !priv) return false
-  webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:hello@arapono.org.nz', pub, priv)
+  webpush.setVapidDetails(process.env.VAPID_SUBJECT || 'mailto:hello@politika.nz', pub, priv)
   // A subscription is bound to the public key the BROWSER subscribed with. If
   // this environment signs with a different pair, every push is rejected — and
   // since secrets are write-only, there is otherwise no way to tell which pair
@@ -68,6 +68,18 @@ function mailer() {
   return _mail
 }
 export const emailConfigured = () => !!(process.env.ZOHO_SMTP_USER && process.env.ZOHO_SMTP_PASS)
+
+/**
+ * The address readers SEE mail from — separate from the address we log in as.
+ *
+ * These used to be the same variable, which meant the visible sender was the
+ * SMTP login. After the rename that read `"Politika" <tawhiao@arapono.org.nz>`
+ * — new name on the old domain, on a personal login address — which is what a
+ * phishing attempt looks like. hello@politika.nz is an alias on the same Zoho
+ * user, so it can send as this without any change to how it authenticates.
+ * Override with MAIL_FROM; the login stays ZOHO_SMTP_USER.
+ */
+export const MAIL_FROM = `"Politika" <${process.env.MAIL_FROM || 'hello@politika.nz'}>`
 
 // ── Quiet hours (9pm–8am NZ) ──────────────────────────────────────────────────
 export function inQuietHours() {
@@ -177,7 +189,7 @@ export async function emailUser(to, subject, text, html) {
   const m = mailer()
   if (!m) return false
   if (DRY) { console.log(`  [DRY email] ${maskEmail(to)} — "${subject}"`); return true }
-  await m.sendMail({ from: `"Arapono" <${process.env.ZOHO_SMTP_USER}>`, to, subject, text, html })
+  await m.sendMail({ from: MAIL_FROM, to, subject, text, html })
   return true
 }
 

@@ -204,7 +204,7 @@ export default async function BillDetailPage(
             </div>
             <p style={{ fontSize: 13.5, color: '#1e40af', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 14px' }}>
               This bill is open for public submissions{committee ? ` to the ${committee} Committee` : ''}. Anyone can make one
-              and you don&apos;t need to be an expert — it closes <b>{closes}</b>. Draft yours with Arapono, then lodge it
+              and you don&apos;t need to be an expert — it closes <b>{closes}</b>. Draft yours with Politika, then lodge it
               through the official Parliament process.
             </p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -289,7 +289,7 @@ export default async function BillDetailPage(
                 does not. One date covering both was how this page came to claim
                 a May stage in August. */}
             Stage and dates from the official NZ Parliament register, updated {BILLS_54_META.asOf}. Plain-language
-            summary written by Arapono.{' '}
+            summary written by Politika.{' '}
             <a href={officialUrl} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 600 }}>
               View on parliament.nz <ArrowUpRight style={{ width: 11, height: 11, display: 'inline' }} />
             </a>

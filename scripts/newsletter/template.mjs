@@ -1,5 +1,5 @@
 /**
- * template.mjs — renders the Arapono Weekly newsletter as EMAIL-SAFE HTML.
+ * template.mjs — renders the Politika Weekly newsletter as EMAIL-SAFE HTML.
  *
  * Email clients (Outlook especially) strip <style>, background images, flexbox
  * and SVG — so this is table-based with inline styles and a hosted PNG logo. It
@@ -58,7 +58,7 @@ const eyebrow = (t) => `<div style="font-family:Arial,sans-serif;font-size:11.5p
 const h2 = (t) => `<div style="font-family:Arial,sans-serif;font-size:20px;font-weight:800;color:${INK};margin:0 0 12px">${esc(t)}</div>`
 
 export function renderNewsletter({ name, daysToElection, tracked, general, siteUrl, unsubscribeUrl, manageUrl }) {
-  const site = (siteUrl || 'https://arapono.org.nz').replace(/\/$/, '')
+  const site = (siteUrl || 'https://politika.nz').replace(/\/$/, '')
   const logo = `${site}/icon-192.png`
   const days = String(daysToElection).padStart(3, '0').split('')
 
@@ -82,15 +82,15 @@ export function renderNewsletter({ name, daysToElection, tracked, general, siteU
 
   const tiles = PARTY_TILES.map((p) => `<td style="padding:0 3px"><a href="${site}/parties/${p.slug}" title="${p.slug}" style="display:block;width:44px;height:44px;border-radius:9px;background:${p.color}">&nbsp;</a></td>`).join('')
 
-  const html = `<!-- Arapono Weekly -->
+  const html = `<!-- Politika Weekly -->
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:${GROUND};margin:0;padding:0">
   <tr><td align="center" style="padding:28px 12px 48px">
     <table role="presentation" cellpadding="0" cellspacing="0" width="600" style="width:600px;max-width:600px">
 
       <!-- masthead -->
       <tr><td align="center" style="padding:6px 20px 4px">
-        <img src="${logo}" width="30" height="30" alt="Arapono" style="border-radius:8px;display:inline-block;vertical-align:middle">
-        <span style="font-family:Arial,sans-serif;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:${WARM};vertical-align:middle;margin-left:8px">Arapono Weekly</span>
+        <img src="${logo}" width="30" height="30" alt="Politika" style="border-radius:8px;display:inline-block;vertical-align:middle">
+        <span style="font-family:Arial,sans-serif;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:${WARM};vertical-align:middle;margin-left:8px">Politika Weekly</span>
         <div style="font-family:Arial,sans-serif;font-size:34px;font-weight:800;letter-spacing:-.02em;color:${ESPRESSO};line-height:1.05;margin-top:14px">Your week, before <span style="color:${JADE}">the vote</span></div>
       </td></tr>
 
@@ -122,10 +122,10 @@ export function renderNewsletter({ name, daysToElection, tracked, general, siteU
         <!-- footer -->
         <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#0c0e12;border-radius:16px">
           <tr><td style="padding:22px 24px;font-family:Arial,sans-serif;font-size:12px;line-height:1.7;color:rgba(255,255,255,.6)">
-            <img src="${logo}" width="24" height="24" alt="" style="border-radius:6px;vertical-align:middle"><span style="color:#fff;font-weight:800;font-size:14px;margin-left:7px;vertical-align:middle">Arapono</span>
+            <img src="${logo}" width="24" height="24" alt="" style="border-radius:6px;vertical-align:middle"><span style="color:#fff;font-weight:800;font-size:14px;margin-left:7px;vertical-align:middle">Politika</span>
             <div style="margin-top:12px;color:rgba(255,255,255,.82)">Sourced from NZ Parliament · Electoral Commission · Stats NZ · RNZ · Treasury</div>
-            <div style="margin-top:12px">You’re getting this because you have an Arapono account. <a href="${esc(manageUrl || site + '/dashboard')}" style="color:#7fe3aa;text-decoration:none">Manage what you follow</a> · <a href="${esc(unsubscribeUrl)}" style="color:#7fe3aa;text-decoration:none">Unsubscribe</a>.</div>
-            <div style="margin-top:12px;color:rgba(255,255,255,.4)">Arapono is an independent, non-partisan platform. We point to the record and let you decide — we never tell you how to vote.</div>
+            <div style="margin-top:12px">You’re getting this because you have an Politika account. <a href="${esc(manageUrl || site + '/dashboard')}" style="color:#7fe3aa;text-decoration:none">Manage what you follow</a> · <a href="${esc(unsubscribeUrl)}" style="color:#7fe3aa;text-decoration:none">Unsubscribe</a>.</div>
+            <div style="margin-top:12px;color:rgba(255,255,255,.4)">Politika is an independent, non-partisan platform. We point to the record and let you decide — we never tell you how to vote.</div>
           </td></tr>
         </table>
 
@@ -135,7 +135,7 @@ export function renderNewsletter({ name, daysToElection, tracked, general, siteU
 </table>`
 
   const textLines = [
-    `ARAPONO WEEKLY — ${daysToElection} days until the 2026 election`,
+    `POLITIKA WEEKLY — ${daysToElection} days until the 2026 election`,
     name ? `Kia ora ${name},` : 'Kia ora,',
     '',
     'ON WHAT YOU FOLLOW',
@@ -147,7 +147,7 @@ export function renderNewsletter({ name, daysToElection, tracked, general, siteU
     `${daysToElection} days to go — check you're enrolled: ${site}/guide`,
     '',
     `Manage: ${manageUrl || site + '/dashboard'}  ·  Unsubscribe: ${unsubscribeUrl}`,
-    'Arapono is independent and non-partisan.',
+    'Politika is independent and non-partisan.',
   ]
 
   const subject = tracked?.items?.length

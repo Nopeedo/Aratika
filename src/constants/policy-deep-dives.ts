@@ -21,7 +21,7 @@
  *    put it in your own words in a section instead. (This is the failure the
  *    July 2026 position audit found: paraphrases sitting inside quote marks.)
  *
- * 3. SUMMARISE, DON'T REPRODUCE. `mechanics` is Arapono's own description of
+ * 3. SUMMARISE, DON'T REPRODUCE. `mechanics` is Politika's own description of
  *    what the document sets out. We are relying on fair dealing for criticism,
  *    review and reporting — short attributed excerpts plus our own summary, with
  *    a link out. Reproducing the document wholesale would not be that.
@@ -42,7 +42,7 @@ export interface DeepDiveFact {
   note?: string
 }
 
-/** One mechanic of the policy, in Arapono's words. */
+/** One mechanic of the policy, in Politika's words. */
 export interface DeepDiveSection {
   heading: string
   body: string
@@ -75,7 +75,7 @@ export interface PolicyDeepDive {
    *  from the title — a title can be reworded without breaking a live link, and
    *  these are pages we want indexed. Unique across the whole file. */
   slug: string
-  /** Arapono's neutral title for the policy. */
+  /** Politika's neutral title for the policy. */
   title: string
   /** One paragraph, plain language, no advocacy. */
   summary: string

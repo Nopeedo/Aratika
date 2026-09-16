@@ -1,4 +1,4 @@
-# Restore runbook — Arapono
+# Restore runbook — Politika
 
 "We have backups" only counts once a restore has actually been tested. This is
 the procedure. Do the **dry run** (section 3) once so it's proven, then again if

@@ -35,7 +35,7 @@ export default async function EditorPage() {
 
       <div style={{ maxWidth: 860, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px' }}>
         {!user ? (
-          <Gate title="Sign in required" body="The editorial review queue is for the Arapono editorial team.">
+          <Gate title="Sign in required" body="The editorial review queue is for the Politika editorial team.">
             <Link href="/login" style={btn}>Log in</Link>
           </Gate>
         ) : !isEditor ? (

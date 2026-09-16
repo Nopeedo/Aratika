@@ -24,7 +24,7 @@
  * concurrent runs cannot both win, and nothing depends on a later write landing.
  * If the send then throws, the claim is deleted so a future run retries.
  *
- * Sends via the existing hello@arapono.org.nz Zoho mailbox (SMTP, SPF/DKIM
+ * Sends via the existing hello@politika.nz Zoho mailbox (SMTP, SPF/DKIM
  * already verified) — no third-party mail provider. Needs ZOHO_SMTP_USER and
  * ZOHO_SMTP_PASS (a Zoho app-specific password); exits cleanly if absent so
  * the CI step never fails while credentials are pending.
@@ -37,6 +37,7 @@ import dotenv from 'dotenv'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
+import { MAIL_FROM } from './lib/notify.mjs'
 
 dotenv.config({ path: join(dirname(fileURLToPath(import.meta.url)), '..', '.env.local') })
 const DRY = process.argv.includes('--dry-run')
@@ -188,7 +189,7 @@ if (!SMTP_USER || !SMTP_PASS) {
 }
 const transporter = nodemailer.createTransport({ host: 'smtp.zoho.com.au', port: 465, secure: true, auth: { user: SMTP_USER, pass: SMTP_PASS } })
 
-const SITE = 'https://arapono.org.nz'
+const SITE = 'https://politika.nz'
 
 const emailFor = (bill, href) => {
   const closes = fmtDate(bill.submissionsClose)
@@ -197,7 +198,7 @@ const emailFor = (bill, href) => {
   const member = bill.member ? bill.member.split(',').reverse().join(' ').replace(/\b(Rt\s+Hon|Hon|Dr)\b\.?/g, '').replace(/\s+/g, ' ').trim() : null
   const subject = `Have your say: ${bill.title} is open for submissions`
   const text = [
-    `A bill you're tracking on Arapono is now open for public submissions.`,
+    `A bill you're tracking on Politika is now open for public submissions.`,
     ``,
     `${bill.title}`,
     bill.committee ? `Select committee: ${bill.committee}` : null,
@@ -209,14 +210,14 @@ const emailFor = (bill, href) => {
     `Make a submission at Parliament: ${bill.officialUrl}`,
     `Read our plain-language breakdown: ${billUrl}`,
     ``,
-    `You're receiving this because you track this bill on Arapono. To stop, untrack it in your command centre: ${SITE}/dashboard`,
-    `Arapono is free and non-partisan. We take no position on this bill.`,
+    `You're receiving this because you track this bill on Politika. To stop, untrack it in your command centre: ${SITE}/dashboard`,
+    `Politika is free and non-partisan. We take no position on this bill.`,
   ].filter((l) => l !== null).join('\n')
   const html = `
   <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;color:#17231b">
     <p style="font-size:13px;font-weight:700;color:#1F8A4C;letter-spacing:.04em;text-transform:uppercase;margin:24px 0 6px">Have your say</p>
     <h1 style="font-size:20px;line-height:1.3;margin:0 0 14px">${bill.title} is open for public submissions</h1>
-    <p style="font-size:14px;line-height:1.6;margin:0 0 6px">A bill you're tracking on Arapono has reached the stage where the public can weigh in. Anyone can make a submission — you don't need to be an expert.</p>
+    <p style="font-size:14px;line-height:1.6;margin:0 0 6px">A bill you're tracking on Politika has reached the stage where the public can weigh in. Anyone can make a submission — you don't need to be an expert.</p>
     <table style="font-size:14px;line-height:1.7;margin:14px 0;border-left:3px solid #1F8A4C;padding-left:12px" role="presentation"><tbody>
       ${bill.committee ? `<tr><td style="color:#667066;padding-right:10px">Committee</td><td>${bill.committee}</td></tr>` : ''}
       ${member ? `<tr><td style="color:#667066;padding-right:10px">Member in charge</td><td>${member}</td></tr>` : ''}
@@ -224,7 +225,7 @@ const emailFor = (bill, href) => {
     </tbody></table>
     <p style="margin:20px 0"><a href="${bill.officialUrl}" style="background:#1F8A4C;color:#fff;text-decoration:none;font-weight:700;font-size:14px;padding:11px 18px;border-radius:10px;display:inline-block">Make a submission at Parliament</a></p>
     <p style="font-size:13px;margin:0 0 24px"><a href="${billUrl}" style="color:#1F8A4C">Read our plain-language breakdown first →</a></p>
-    <p style="font-size:12px;color:#667066;line-height:1.6;border-top:1px solid #e4ebe2;padding-top:12px">You're receiving this because you track this bill on Arapono. <a href="${SITE}/dashboard" style="color:#667066">Untrack it</a> to stop these alerts. Arapono is free and non-partisan — we take no position on this bill.</p>
+    <p style="font-size:12px;color:#667066;line-height:1.6;border-top:1px solid #e4ebe2;padding-top:12px">You're receiving this because you track this bill on Politika. <a href="${SITE}/dashboard" style="color:#667066">Untrack it</a> to stop these alerts. Politika is free and non-partisan — we take no position on this bill.</p>
   </div>`
   return { subject, text, html }
 }
@@ -251,7 +252,7 @@ for (const j of jobs) {
 
   const { subject, text, html } = emailFor(j.bill, j.href)
   try {
-    await transporter.sendMail({ from: `"Arapono" <${SMTP_USER}>`, to: j.email, subject, text, html })
+    await transporter.sendMail({ from: MAIL_FROM, to: j.email, subject, text, html })
     sent++
     console.log(`✓ sent to user ${short(j.userId)}`)
   } catch (err) {

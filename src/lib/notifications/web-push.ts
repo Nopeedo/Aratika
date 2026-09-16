@@ -18,7 +18,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 
 const PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY
 const PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY
-const SUBJECT = process.env.VAPID_SUBJECT || 'mailto:hello@arapono.org.nz'
+const SUBJECT = process.env.VAPID_SUBJECT || 'mailto:hello@politika.nz'
 
 export function isPushConfigured(): boolean {
   return !!(PUBLIC_KEY && PRIVATE_KEY)

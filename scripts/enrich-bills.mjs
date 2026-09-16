@@ -106,7 +106,7 @@ async function callOnce(system, user) {
 const TOPICS = ['housing', 'health', 'economy', 'education', 'climate', 'environment', 'crime-justice', 'treaty-maori-affairs', 'immigration', 'foreign-policy']
 const PIPELINE = ['introduced', 'first-reading', 'select-committee', 'second-reading', 'committee-of-whole-house', 'third-reading', 'royal-assent']
 
-const SYSTEM = `You are a strictly NON-PARTISAN legislative analyst for Aratika, a New Zealand civic-information site. You are given the official full text of a NZ bill. Produce a factual, neutral breakdown for everyday New Zealanders.
+const SYSTEM = `You are a strictly NON-PARTISAN legislative analyst for Politika, a New Zealand civic-information site. You are given the official full text of a NZ bill. Produce a factual, neutral breakdown for everyday New Zealanders.
 
 ABSOLUTE RULES:
 - NEUTRAL: describe what the bill does. Never say whether it is good or bad, never give an opinion, recommendation, or prediction, never use loaded language.

@@ -1,5 +1,5 @@
 /**
- * LogoMark — the Arapono brand mark: three ascending chevrons, an "ara" (path/way)
+ * LogoMark — the Politika brand mark: three ascending chevrons, an "ara" (path/way)
  * rising forward. Jade by default (on light surfaces); pass `reversed` for the white
  * treatment used on the jade app tile and dark footer. Presentational only.
  *

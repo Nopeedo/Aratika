@@ -47,7 +47,7 @@ export function EmailToggle({ initialEnabled }: { initialEnabled: boolean }) {
           {enabled ? <Mail style={{ width: 20, height: 20, color: JADE }} /> : <MailX style={{ width: 20, height: 20, color: SUB }} />}
         </span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>The Arapono Weekly</div>
+          <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>The Politika Weekly</div>
           <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.5, margin: '3px 0 0' }}>
             One email a week: what moved in Parliament, what’s coming up, and news on the things you follow.
             {' '}Nothing else. We don’t sell or share your address.

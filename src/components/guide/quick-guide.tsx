@@ -21,7 +21,7 @@ const SUB = '#5b6067'
 
 const ENROL_URL = 'https://vote.nz/enrolling/enrol-or-update/'
 const MAX_ISSUES = 4
-const STORAGE_KEY = 'arapono.guide.v1'
+const STORAGE_KEY = 'politika.guide.v1'
 
 type Readiness = 'enrolled' | 'not-yet' | 'unsure'
 type Depth = 'basics' | 'compare'
@@ -231,7 +231,7 @@ function Result({ issues, readiness, depth, onRestart }: { issues: PolicyTopic[]
               {readiness === 'unsure' ? 'Check or enrol at vote.nz' : 'Enrol at vote.nz'} <ArrowRight style={{ width: 15, height: 15 }} />
             </a>
           )}
-          <p style={{ fontSize: 11.5, color: TERTIARY, margin: '10px 0 0' }}>Enrolment is run by the Electoral Commission (vote.nz), not Arapono.</p>
+          <p style={{ fontSize: 11.5, color: TERTIARY, margin: '10px 0 0' }}>Enrolment is run by the Electoral Commission (vote.nz), not Politika.</p>
         </Card>
 
         {/* 3 — local */}

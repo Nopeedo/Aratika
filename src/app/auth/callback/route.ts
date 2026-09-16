@@ -17,7 +17,7 @@ import { createClient } from '@/lib/supabase/server'
  * `next` is attacker-controllable and gets concatenated onto our origin, so it
  * has to be a path on THIS site and nothing else. Two forms look relative but
  * aren't once joined to an origin:
- *   ?next=@evil.com   → https://arapono.org.nz@evil.com   (userinfo trick)
+ *   ?next=@evil.com   → https://politika.nz@evil.com   (userinfo trick)
  *   ?next=//evil.com  → protocol-relative, straight off-site
  * A backslash is included because browsers normalise \ to / in URLs.
  * Anything that isn't a plain single-slash path falls back to the dashboard.

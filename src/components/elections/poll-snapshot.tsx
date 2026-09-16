@@ -66,7 +66,7 @@ export function PollSnapshot({
       <div style={{ padding: '4px 18px 16px' }}>
         <div style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6 }}>
           A party needs <b>5%</b> of the party vote, or one electorate, to enter Parliament. <b>Others</b> is the smaller
-          registered parties pollsters group together and don’t report individually. <Link href="/party-inclusion" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>See every contesting party</Link>. Arapono reports polls. It doesn’t predict the result.
+          registered parties pollsters group together and don’t report individually. <Link href="/party-inclusion" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>See every contesting party</Link>. Politika reports polls. It doesn’t predict the result.
         </div>
       </div>
 

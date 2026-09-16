@@ -93,7 +93,7 @@ export const FOOTER_LINKS: Record<'learn' | 'explore' | 'account' | 'legal', Foo
     { label: 'Your Plan', href: '/plan', feature: 'onboarding' },
     { label: 'How Parliament Works', href: '/learn', feature: 'learn' },
     { label: 'Glossary', href: '/glossary', feature: 'glossary' },
-    { label: 'About Arapono', href: '/about', feature: 'about' },
+    { label: 'About Politika', href: '/about', feature: 'about' },
     { label: 'Our Sources', href: '/about#sources', feature: 'about' },
   ],
   explore: [

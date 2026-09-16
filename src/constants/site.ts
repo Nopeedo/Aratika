@@ -1,12 +1,12 @@
 export const SITE = {
-  name: 'Arapono',
+  name: 'Politika',
   tagline: 'Navigating New Zealand Politics',
   description:
     'Your one-stop resource for clear, credible information on New Zealand\'s parliament, MPs, parties, and policies — all in one place.',
-  url: 'https://arapono.org.nz',
-  email: 'hello@arapono.org.nz',
+  url: 'https://politika.nz',
+  email: 'hello@politika.nz',
   // Official accounts. These feed three things at once: the footer links, the
-  // `sameAs` array in the Organization schema (how Google ties the "Arapono"
+  // `sameAs` array in the Organization schema (how Google ties the "Politika"
   // brand to this domain), and nothing else — so adding a handle here is the
   // only edit needed when a new account goes live.
   //
@@ -14,6 +14,11 @@ export const SITE = {
   // empty profile is a weak signal, so leave TikTok/Facebook/YouTube commented
   // out until there's something on them.
   socials: [
+    // RENAME TODO — these are still the Arapono-era handles. Instagram lets an
+    // account change its username in place, so the profile (and followers)
+    // carry over; only the URL changes. Update the two entries below once the
+    // new handles are secured, and check docs/email-signature.html too. A
+    // guessed handle here would link the whole site to a stranger's account.
     { label: 'Instagram', url: 'https://www.instagram.com/arapononz/' },
     // The canonical profile URL, resolved from a facebook.com/share/ short
     // link before adding — share links redirect and can rotate, so the footer
@@ -95,4 +100,4 @@ export const DATA_SOURCES = [
 ] as const
 
 export const POLL_DISCLAIMER =
-  'This poll is not a scientific survey. Results reflect the views of Arapono users only and are not representative of the New Zealand population. They should not be interpreted as a political opinion poll.'
+  'This poll is not a scientific survey. Results reflect the views of Politika users only and are not representative of the New Zealand population. They should not be interpreted as a political opinion poll.'

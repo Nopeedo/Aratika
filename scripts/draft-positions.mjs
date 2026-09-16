@@ -371,7 +371,7 @@ function discoverTopicUrl(indexUrl, topic) {
 // Manifesto PDFs are static and cover every topic — the reliable source for
 // JS-rendered party sites. Download + extract text.
 async function fetchPdfText(url) {
-  const tmp = join(tmpdir(), `aratika-manifesto-${Date.now()}.pdf`)
+  const tmp = join(tmpdir(), `politika-manifesto-${Date.now()}.pdf`)
   execFileSync('curl', ['-s', '-L', '--max-time', '60', '-A', UA, url, '-o', tmp], { maxBuffer: 64 * 1024 * 1024 })
   try {
     const parser = new PDFParse({ data: new Uint8Array(readFileSync(tmp)) })
@@ -467,7 +467,7 @@ function excerptSource(parts, excerpt) {
 
 function systemPrompt(topic) {
   const t = TOPICS[topic]
-  return `You are a strictly NON-PARTISAN analyst for Aratika, a New Zealand civic-information site. You are given text scraped from a political party's OWN official website. Your job is to summarise THAT party's stated position on ${t.label} (${t.desc}) for everyday New Zealanders.
+  return `You are a strictly NON-PARTISAN analyst for Politika, a New Zealand civic-information site. You are given text scraped from a political party's OWN official website. Your job is to summarise THAT party's stated position on ${t.label} (${t.desc}) for everyday New Zealanders.
 
 ABSOLUTE RULES:
 - GROUNDED: use ONLY the provided text. Do not use outside knowledge. Do not invent policies, numbers, or promises. If the text does not contain a clear position on ${t.label}, return {"found": false}.

@@ -1,5 +1,5 @@
 /**
- * /learn — Arapono Learn hub.
+ * /learn — Politika Learn hub.
  *
  * Interactive civics modules with four difficulty tiers. Every module in
  * LEARN_MODULES is currently live; the "coming soon" branch below stays because
@@ -44,7 +44,7 @@ export default function LearnHubPage() {
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(28px, 5vh, 48px) clamp(18px, 5vw, 36px) clamp(26px, 4vh, 42px)' }}>
           <div style={{ marginBottom: 10 }}>
-            <SectionDivider type="official" label="Arapono Learn" />
+            <SectionDivider type="official" label="Politika Learn" />
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'clamp(11px, 3vw, 16px)' }}>
             <div style={{ width: 'clamp(42px, 11vw, 54px)', height: 'clamp(42px, 11vw, 54px)', borderRadius: 15, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>

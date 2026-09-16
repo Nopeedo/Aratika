@@ -9,7 +9,7 @@
  * upsert) and cleared locally, so nothing is lost. Signed-in users are then
  * backed by Supabase as before.
  *
- * Cross-instance sync: every toggle broadcasts `aratika:tracks`, and the hook
+ * Cross-instance sync: every toggle broadcasts `politika:tracks`, and the hook
  * also listens for the native `storage` event, so multiple BookmarkButtons and
  * counters on the same page (or across tabs) stay in step for anonymous users.
  */
@@ -32,8 +32,8 @@ export interface Bookmark extends Omit<BookmarkEntity, 'refId'> {
   created_at?: string
 }
 
-const LS_KEY = 'aratika_tracks_v1'
-const SYNC_EVENT = 'aratika:tracks'
+const LS_KEY = 'politika_tracks_v1'
+const SYNC_EVENT = 'politika:tracks'
 const keyOf = (kind: string, ref: string) => `${kind}:${ref}`
 
 function readLocal(): Bookmark[] {

@@ -1,5 +1,5 @@
 /**
- * Arapono Learn — interactive civics curriculum content.
+ * Politika Learn — interactive civics curriculum content.
  *
  * Each module is authored at four difficulty tiers (kids → expert). The same
  * concept, four depths. Content is factual and non-partisan, drawn from

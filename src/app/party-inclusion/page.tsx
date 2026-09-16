@@ -1,5 +1,5 @@
 /**
- * /party-inclusion — Arapono's published rule for which parties appear and how.
+ * /party-inclusion — Politika's published rule for which parties appear and how.
  * This page IS the neutrality proof: a clear, public, registration-based inclusion
  * policy that anyone (users, funders, the parties themselves) can hold us to.
  */
@@ -13,7 +13,7 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } 
 export const metadata: Metadata = {
   title: 'How we decide which parties are included',
   description:
-    'Arapono’s inclusion policy: every party registered to contest the 2026 party vote is represented equally, by registration rather than polling. Poll figures are labelled, never inferred.',
+    'Politika’s inclusion policy: every party registered to contest the 2026 party vote is represented equally, by registration rather than polling. Poll figures are labelled, never inferred.',
 }
 
 const PRINCIPLES = [
@@ -52,7 +52,7 @@ export default function PartyInclusionPage() {
             How we decide which parties are included
           </h1>
           <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6, maxWidth: 640 }}>
-            Arapono is non-partisan, and fairness has to be a rule anyone can check — not a judgement call. So here is exactly
+            Politika is non-partisan, and fairness has to be a rule anyone can check — not a judgement call. So here is exactly
             how we choose which parties appear, and how we handle the parts that polling can’t cover fairly.
           </p>
         </div>

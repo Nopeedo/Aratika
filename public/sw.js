@@ -1,4 +1,4 @@
-/* Arapono service worker — Web Push + basic PWA shell.
+/* Politika service worker — Web Push + basic PWA shell.
  *
  * Kept dependency-free and minimal: it exists mainly to receive push messages
  * and show notifications (required for Web Push to work at all, including on
@@ -19,10 +19,10 @@ self.addEventListener('push', (event) => {
   try {
     payload = event.data ? event.data.json() : {}
   } catch {
-    payload = { title: 'Arapono', body: event.data ? event.data.text() : '' }
+    payload = { title: 'Politika', body: event.data ? event.data.text() : '' }
   }
 
-  const title = payload.title || 'Arapono'
+  const title = payload.title || 'Politika'
   const tag = payload.tag || undefined
   const options = {
     body: payload.body || '',

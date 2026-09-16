@@ -1,5 +1,5 @@
 /**
- * Arapono — Homepage
+ * Politika — Homepage
  *
  * Shrunk to the core purpose: help someone figure out who to vote for and where
  * they vote. The page is built around three things and nothing more —
@@ -40,7 +40,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
   /**
    * SIGNED-IN visitors go straight to /hub; everyone else gets the landing.
    *
-   * This used to key on an arapono_seen cookie set on first view, which sent
+   * This used to key on an politika_seen cookie set on first view, which sent
    * every repeat visitor to the hub whether or not they had an account — so an
    * anonymous reader's second visit opened on "Your Command Centre" with
    * nothing in it, a returning-user page for someone the site does not know.

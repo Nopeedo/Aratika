@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * InstallButton — a smart "Install Arapono" control.
+ * InstallButton — a smart "Install Politika" control.
  *  - Android / desktop Chrome: captures the browser's `beforeinstallprompt`
  *    event and fires the native install dialog on tap.
  *  - iOS Safari: can't be triggered programmatically, so it shows the
@@ -68,11 +68,11 @@ export function InstallButton() {
           <Download style={{ width: 20, height: 20, color: JADE }} />
         </span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>Install the Arapono app</div>
+          <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>Install the Politika app</div>
           <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.5, margin: '3px 0 0' }}>
             {needsSafari
-              ? <>There&rsquo;s no App Store download. On iPhone you add it straight from <b>Safari</b>. This browser can&rsquo;t, so open <b>arapono.org.nz in Safari</b> first.</>
-              : <>Add Arapono to your home screen. It opens like an app, and lets you get notifications{isIOS ? ' (required on iPhone)' : ''}. It&rsquo;s not an App Store download.</>}
+              ? <>There&rsquo;s no App Store download. On iPhone you add it straight from <b>Safari</b>. This browser can&rsquo;t, so open <b>politika.nz in Safari</b> first.</>
+              : <>Add Politika to your home screen. It opens like an app, and lets you get notifications{isIOS ? ' (required on iPhone)' : ''}. It&rsquo;s not an App Store download.</>}
           </p>
 
           <div style={{ marginTop: 14 }}>
@@ -87,10 +87,10 @@ export function InstallButton() {
             <div style={{ marginTop: 12, padding: '12px 14px', borderRadius: 12, background: '#f4f6f8', position: 'relative' }}>
               <button onClick={() => setShowIOS(false)} aria-label="Close" style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', cursor: 'pointer', color: SUB }}><X style={{ width: 15, height: 15 }} /></button>
               <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13.5, color: INK, lineHeight: 1.7 }}>
-                {needsSafari && <li>First open <b>arapono.org.nz in Safari</b> (this in-app browser can&rsquo;t install). Tap the <b>•••</b> or share icon → <b>Open in Safari</b>.</li>}
+                {needsSafari && <li>First open <b>politika.nz in Safari</b> (this in-app browser can&rsquo;t install). Tap the <b>•••</b> or share icon → <b>Open in Safari</b>.</li>}
                 <li>In Safari, tap the <b>Share</b> button <Share style={{ width: 13, height: 13, verticalAlign: '-2px' }} /> (the box with an ↑).</li>
                 <li>Scroll down, tap <b>Add to Home Screen</b> <SquarePlus style={{ width: 13, height: 13, verticalAlign: '-2px' }} />, then <b>Add</b>.</li>
-                <li>Open Arapono from your Home Screen. It now behaves like an app.</li>
+                <li>Open Politika from your Home Screen. It now behaves like an app.</li>
               </ol>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, fontSize: 12.5, color: JADE, fontWeight: 700 }}>
                 <Check style={{ width: 14, height: 14 }} /> Then you can turn on notifications.

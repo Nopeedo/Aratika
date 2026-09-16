@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 // profiles this page leads into.
 
 // Registered with the Electoral Commission to contest the 2026 party vote, but holding no
-// seats in the current (54th) Parliament. Listed EQUALLY and alphabetically — Arapono ranks
+// seats in the current (54th) Parliament. Listed EQUALLY and alphabetically — Politika ranks
 // or endorses none. Party names from the EC register (re-checked 23 August 2026, when
 // four parties registered on 5 August were added); official websites
 // and policy-focus areas taken from each party's own site.
@@ -221,7 +221,7 @@ function OtherRegisteredParties() {
   return (
     <div>
       <p style={{ fontSize: 14, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, margin: '0 0 18px', maxWidth: 720 }}>
-        Eleven parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament (register checked 23 August 2026). They’re listed <b style={{ color: INK }}>equally and alphabetically</b>. Arapono doesn’t rank or endorse any party.
+        Eleven parties are registered with the Electoral Commission to contest the 2026 party vote but hold no seats in the current Parliament (register checked 23 August 2026). They’re listed <b style={{ color: INK }}>equally and alphabetically</b>. Politika doesn’t rank or endorse any party.
       </p>
 
       {/* Ones we've fully profiled — same tile as the parties in Parliament,

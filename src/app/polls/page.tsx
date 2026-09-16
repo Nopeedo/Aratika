@@ -1,5 +1,5 @@
 /**
- * /polls — Arapono community polls (non-scientific). The voting feature needs
+ * /polls — Politika community polls (non-scientific). The voting feature needs
  * vote storage, so this is an honest "coming soon" with the disclaimer up front.
  */
 
@@ -12,7 +12,7 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } 
 
 export const metadata: Metadata = {
   title: 'Public Polls',
-  description: 'Arapono community polls. Share your view on the issues. Non-scientific, and built for engagement rather than measurement.',
+  description: 'Politika community polls. Share your view on the issues. Non-scientific, and built for engagement rather than measurement.',
 }
 
 export default function PollsPage() {
@@ -23,7 +23,7 @@ export default function PollsPage() {
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Public Polls" /></div>
           <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Have your say</h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
-            Quick community polls on the issues in front of Parliament — a way to see how Arapono readers are feeling.
+            Quick community polls on the issues in front of Parliament — a way to see how Politika readers are feeling.
           </p>
         </div>
       </div>

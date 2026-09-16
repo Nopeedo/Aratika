@@ -6,10 +6,10 @@
  * opening. Runs on a schedule (also a lightweight uptime check) and on demand.
  * Exits non-zero on any failure so the run goes red and GitHub emails.
  *
- * Run: BASE=https://arapono.org.nz node scripts/smoke.mjs
+ * Run: BASE=https://politika.nz node scripts/smoke.mjs
  */
-const BASE = process.env.BASE || 'https://arapono.org.nz'
-const UA = 'AraponoSmoke/1.0'
+const BASE = process.env.BASE || 'https://politika.nz'
+const UA = 'PolitikaSmoke/1.0'
 let failures = 0
 const ok = (cond, msg) => { console.log(`${cond ? 'PASS' : 'FAIL'}  ${msg}`); if (!cond) failures++ }
 

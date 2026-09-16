@@ -68,7 +68,7 @@ export function reportError(error: unknown, context?: Record<string, unknown>) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-sentry-envelope',
-      'X-Sentry-Auth': `Sentry sentry_version=7, sentry_client=arapono-lite/1.0, sentry_key=${target.key}`,
+      'X-Sentry-Auth': `Sentry sentry_version=7, sentry_client=politika-lite/1.0, sentry_key=${target.key}`,
     },
     body,
   })

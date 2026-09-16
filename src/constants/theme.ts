@@ -1,5 +1,5 @@
 /**
- * theme.ts — the single source of truth for Arapono's inline-style palette.
+ * theme.ts — the single source of truth for Politika's inline-style palette.
  *
  * Why this exists: globals.css already defines CSS variables for the brand, but
  * ~120 pages and components each declared their own `const INK = '#0c0e12'` at

@@ -108,7 +108,7 @@ export async function isSubscribed(): Promise<boolean> {
 export async function resyncSubscription(): Promise<void> {
   if (!pushSupported()) return
   try {
-    if (sessionStorage.getItem('arapono.push.resynced') === '1') return
+    if (sessionStorage.getItem('politika.push.resynced') === '1') return
   } catch { /* private mode — just proceed */ }
 
   const reg = await navigator.serviceWorker.getRegistration()
@@ -125,7 +125,7 @@ export async function resyncSubscription(): Promise<void> {
       body: JSON.stringify({ subscription: sub.toJSON(), userAgent: navigator.userAgent }),
     })
     if (res.ok) {
-      try { sessionStorage.setItem('arapono.push.resynced', '1') } catch { /* private mode */ }
+      try { sessionStorage.setItem('politika.push.resynced', '1') } catch { /* private mode */ }
     }
   } catch { /* offline — next load retries */ }
 }

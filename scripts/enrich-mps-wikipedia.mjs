@@ -17,7 +17,7 @@ import { dirname, join } from 'node:path'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SRC = join(__dirname, '..', 'src', 'constants', 'mps-generated.ts')
 const OUT = join(__dirname, '..', 'src', 'constants', 'mps-wikipedia.ts')
-const UA = 'Mozilla/5.0 (Aratika civic info; +https://aratika.nz)'
+const UA = 'Mozilla/5.0 (Politika civic info; +https://politika.nz)'
 
 // Extract {slug, name} for every MP from the generated source.
 const text = readFileSync(SRC, 'utf8')
