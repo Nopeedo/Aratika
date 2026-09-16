@@ -1,6 +1,14 @@
 {
-  "generated": "2026-09-15",
+  "generated": "2026-09-16",
   "changes": [
+    {
+      "mp": "todd-mcclay",
+      "field": "govBills",
+      "label": "Government bills in charge",
+      "from": 7,
+      "to": 8,
+      "date": "2026-09-16"
+    },
     {
       "mp": "paul-goldsmith",
       "field": "govBills",
