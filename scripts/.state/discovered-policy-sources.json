@@ -734,6 +734,14 @@
         "title": "Ensuring Humane Transport Conditions"
       },
       {
+        "url": "https://animaljustice.org.nz/policies/ajp-animal-policies/",
+        "title": "AJP Animal Policies Overview"
+      },
+      {
+        "url": "https://animaljustice.org.nz/policies/ajp-environmental-and-economic-policies/",
+        "title": "AJP Environmental and Economic Policies Overview"
+      },
+      {
         "url": "https://animaljustice.org.nz/policies/animal-experimentation/",
         "title": "Ending Animal Experimentation"
       },
@@ -743,7 +751,7 @@
       },
       {
         "url": "https://animaljustice.org.nz/policies/end-the-private-sale-and-use-of-fireworks/",
-        "title": "End Private Sale and Use of Fireworks"
+        "title": "End the Private Sale and Use of Fireworks"
       },
       {
         "url": "https://animaljustice.org.nz/policies/ensuring-adequate-living-conditions-and-environmental-standards/",
@@ -766,8 +774,24 @@
         "title": "Minimising Animal Suffering During Slaughter"
       },
       {
+        "url": "https://animaljustice.org.nz/policies/policy-summary/",
+        "title": "AJP Policy Summary"
+      },
+      {
         "url": "https://animaljustice.org.nz/policies/towards-a-cruelty-free-and-sustainable-fashion-industry/",
-        "title": "Towards a Cruelty Free and Sustainable Fashion Industry"
+        "title": "Towards a Cruelty-Free and Sustainable Fashion Industry"
+      }
+    ],
+    "economy": [
+      {
+        "url": "https://animaljustice.org.nz/policies/ajp-transition-to-a-plant-based-economy-policies/",
+        "title": "AJP Transition to a Plant-Based Economy Policies Overview"
+      }
+    ],
+    "health": [
+      {
+        "url": "https://animaljustice.org.nz/policies/ajp-people-policies-pack/",
+        "title": "AJP People Policies Overview"
       }
     ]
   },
@@ -912,8 +936,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-16",
+    "lastRun": "2026-09-17",
     "parties": 13,
-    "policyPages": 188
+    "policyPages": 193
   }
 }
