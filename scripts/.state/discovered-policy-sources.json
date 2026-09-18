@@ -239,7 +239,11 @@
       },
       {
         "url": "https://www.national.org.nz/policies/build-the-future",
-        "title": "Easier Building Consent System"
+        "title": "Easier Building Consent System for Commercial Buildings"
+      },
+      {
+        "url": "https://www.national.org.nz/policies/grocery-competition",
+        "title": "More Grocery Competition"
       },
       {
         "url": "https://www.national.org.nz/policies/hunters-and-anglers",
@@ -263,7 +267,7 @@
       },
       {
         "url": "https://www.national.org.nz/policies/responsibility-rules",
-        "title": "Budget Responsibility Rules"
+        "title": "National's Budget Responsibility Rules"
       },
       {
         "url": "https://www.national.org.nz/policies/solar",
@@ -273,13 +277,13 @@
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "Wider Access to 5% First Home Deposits"
+        "title": "Widening Access to 5% First Home Deposits"
       }
     ],
     "foreign-policy": [
       {
         "url": "https://www.national.org.nz/policies/new-trade",
-        "title": "New Zealand's Next Billion Customers – Trade Policy"
+        "title": "New Zealand's Next Billion Customers Trade Policy"
       }
     ],
     "environment": [
@@ -835,7 +839,7 @@
     "economy": [
       {
         "url": "https://allianceparty.nz/alliance-52-weeks-paid-parental-leave-gender-equality/",
-        "title": "Alliance 52 Weeks Paid Parental Leave and Gender Equality"
+        "title": "Alliance 52 Weeks Paid Parental Leave and Gender Equality Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
@@ -847,17 +851,21 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-rebuild-universal-social-security/",
-        "title": "Alliance Universal Social Security Plan"
+        "title": "Alliance Universal Social Security Policy"
+      },
+      {
+        "url": "https://allianceparty.nz/alliance-small-business-local-enterprise-cooperatives/",
+        "title": "Alliance Small Business, Local Enterprise and Cooperatives Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Alliance Tax Plan: First $20,000 Income Tax-Free with Wealth Tax"
+        "title": "Alliance Tax Plan: First $20,000 Income Tax-Free Funded by Wealth Tax"
       }
     ],
     "health": [
       {
         "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
-        "title": "Alliance Free GP Dental Optical and Audiology Health Policy"
+        "title": "Alliance Free GP, Dental, Optical and Audiology Health Policy"
       }
     ],
     "environment": [
@@ -936,8 +944,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-17",
+    "lastRun": "2026-09-18",
     "parties": 13,
-    "policyPages": 193
+    "policyPages": 195
   }
 }
