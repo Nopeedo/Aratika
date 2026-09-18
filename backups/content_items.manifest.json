@@ -1,14 +1,14 @@
 {
   "table": "content_items",
-  "rows": 5172,
+  "rows": 5269,
   "byType": {
-    "video": 1676,
-    "news": 2701,
+    "video": 1719,
+    "news": 2753,
     "candidate": 358,
     "position": 131,
-    "legislation": 287,
+    "legislation": 289,
     "poll": 19
   },
-  "contentSha256": "68ac969f330098a2",
+  "contentSha256": "1fdc8f75f0027cc9",
   "note": "Public content only. Restore via docs/RESTORE-RUNBOOK.md. Supabase PITR is the primary backup."
 }
