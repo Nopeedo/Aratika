@@ -1,5 +1,54 @@
 [
   {
+    "slug": "building-earthquake-prone-buildings-amendment-bill",
+    "title": "Building (Earthquake-prone Buildings) Amendment Bill",
+    "from": "Committee of whole House",
+    "to": "Royal Assent",
+    "date": "2026-09-20"
+  },
+  {
+    "slug": "public-works-amendment-bill",
+    "title": "Public Works Amendment Bill",
+    "from": "Committee of whole House",
+    "to": "Royal Assent",
+    "date": "2026-09-20"
+  },
+  {
+    "slug": "policing-amendment-bill",
+    "title": "Policing Amendment Bill",
+    "from": "Second Reading",
+    "to": "Royal Assent",
+    "date": "2026-09-20"
+  },
+  {
+    "slug": "corrections-management-of-prisoners-and-prisoners-property-amendment-bill",
+    "title": "Corrections (Management of Prisoners, and Prisoners’ Property) Amendment Bill",
+    "from": "Second Reading",
+    "to": "Committee of whole House",
+    "date": "2026-09-20"
+  },
+  {
+    "slug": "references-to-tiriti-o-waitangi-treaty-of-waitangi-standardisation-amendment-bil",
+    "title": "References to Tiriti o Waitangi/Treaty of Waitangi (Standardisation) Amendment Bill",
+    "from": "First Reading",
+    "to": "Select Committee",
+    "date": "2026-09-20"
+  },
+  {
+    "slug": "references-to-tiriti-o-waitangi-treaty-of-waitangi-strength-of-legislative-oblig",
+    "title": "References to Tiriti o Waitangi/Treaty of Waitangi (Strength of Legislative Obligations) Amendment Bill",
+    "from": "First Reading",
+    "to": "Select Committee",
+    "date": "2026-09-20"
+  },
+  {
+    "slug": "references-to-tiriti-o-waitangi-treaty-of-waitangi-repeals-amendment-bill",
+    "title": "References to Tiriti o Waitangi/Treaty of Waitangi (Repeals) Amendment Bill",
+    "from": "First Reading",
+    "to": "Select Committee",
+    "date": "2026-09-20"
+  },
+  {
     "slug": "summary-offences-move-on-orders-amendment-bill",
     "title": "Summary Offences (Move-on Orders) Amendment Bill",
     "from": "Committee of whole House",

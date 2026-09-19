@@ -1,6 +1,366 @@
 {
-  "generated": "2026-09-18",
+  "generated": "2026-09-19",
   "changes": [
+    {
+      "mp": "kieran-mcanulty",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 4454,
+      "to": 4460,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "deborah-russell",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 3807,
+      "to": 3811,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "tracey-mclellan",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2133,
+      "to": 2135,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "camilla-belich",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 13966,
+      "to": 13980,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "barbara-edmonds",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 7092,
+      "to": 7107,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "willow-jean-prime",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 4716,
+      "to": 4736,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "francisco-hernandez",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 28946,
+      "to": 29019,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "julie-anne-genter",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 462,
+      "to": 470,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "teanau-tuiono",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 5286,
+      "to": 5323,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "duncan-webb",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 3389,
+      "to": 3390,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "carmel-sepuloni",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2726,
+      "to": 2731,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "willie-jackson",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1166,
+      "to": 1170,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "arena-williams",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 3261,
+      "to": 3275,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "reuben-davidson",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1367,
+      "to": 1373,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "mike-davidson",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 238,
+      "to": 277,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "rachel-brooking",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 9167,
+      "to": 9178,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "vanushi-walters",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1016,
+      "to": 1045,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "jo-luxton",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 3903,
+      "to": 3917,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "ayesha-verrall",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 23307,
+      "to": 23316,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "ingrid-leary",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2540,
+      "to": 2544,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "steve-abel",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 653,
+      "to": 656,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "jan-tinetti",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 3442,
+      "to": 3460,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "ginny-andersen",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 5282,
+      "to": 5311,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "jenny-salesa",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 993,
+      "to": 995,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "chle-swarbrick",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1349,
+      "to": 1367,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "glen-bennett",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 443,
+      "to": 445,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "ricardo-menendez-march",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1321,
+      "to": 1324,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "lawrence-xu-nan",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1722,
+      "to": 1731,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "takuta-ferris",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 26,
+      "to": 27,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "scott-willis",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 582,
+      "to": 586,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "cushla-tangaere-manuel",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1160,
+      "to": 1166,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "rachel-boyack",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1331,
+      "to": 1341,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "phil-twyford",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2534,
+      "to": 2540,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "georgie-dansey",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 107,
+      "to": 109,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "shanan-halbert",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1492,
+      "to": 1496,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "chris-hipkins",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2969,
+      "to": 2977,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "damien-oconnor",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1597,
+      "to": 1609,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "greg-oconnor",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 797,
+      "to": 801,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "lan-pham",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1911,
+      "to": 2001,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "priyanca-radhakrishnan",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2338,
+      "to": 2374,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "dan-rosewarne",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 202,
+      "to": 208,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "lemauga-lydia-sosene",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1894,
+      "to": 1898,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "tangi-utikere",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 7503,
+      "to": 7558,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "helen-white",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 804,
+      "to": 808,
+      "date": "2026-09-19"
+    },
+    {
+      "mp": "megan-woods",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2876,
+      "to": 2882,
+      "date": "2026-09-19"
+    },
     {
       "mp": "paul-goldsmith",
       "field": "govBills",
