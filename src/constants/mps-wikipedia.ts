@@ -261,7 +261,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/James_Meager"
   },
   "ricardo-menendez-march": {
-    "bio": "Ricardo Menéndez March is a Mexican-born New Zealand activist and politician who, since 2020, is a Member of Parliament for the Green Party of Aotearoa New Zealand in the House of Representatives.",
+    "bio": "Ricardo Menéndez March is a New Zealand activist and politician who, since 2020, is a Member of Parliament for the Green Party of Aotearoa New Zealand in the House of Representatives.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Ricardo_Men%C3%A9ndez_March"
   },
   "mark-mitchell": {
