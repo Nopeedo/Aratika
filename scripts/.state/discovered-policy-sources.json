@@ -334,6 +334,10 @@
         "title": "Capital Gains Tax on Investment Property"
       },
       {
+        "url": "https://www.labour.org.nz/fairer-grocery-prices",
+        "title": "Labour's Fairer Grocery Prices Policy"
+      },
+      {
         "url": "https://www.labour.org.nz/farecap",
         "title": "$20 Public Transport Fare Cap"
       },
@@ -443,7 +447,7 @@
       },
       {
         "url": "https://www.act.org.nz/policies/rural",
-        "title": "ACT Backing Rural New Zealand Policy"
+        "title": "ACT's Backing Rural New Zealand Policy"
       }
     ],
     "education": [
@@ -875,6 +879,18 @@
       }
     ]
   },
+  "te-tai-tokerau-party": {
+    "treaty-maori-affairs": [
+      {
+        "url": "https://tetaitokerauparty.org.nz/?page_id=1063",
+        "title": "Te Tai Tokerau Party Policy Platform"
+      },
+      {
+        "url": "https://tetaitokerauparty.org.nz/our-policies/",
+        "title": "Te Tai Tokerau Party Policy Platform"
+      }
+    ]
+  },
   "womens-rights": {
     "democracy-government": [
       {
@@ -944,8 +960,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-19",
-    "parties": 13,
-    "policyPages": 195
+    "lastRun": "2026-09-20",
+    "parties": 14,
+    "policyPages": 198
   }
 }
