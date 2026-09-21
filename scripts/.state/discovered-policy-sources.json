@@ -331,7 +331,7 @@
       },
       {
         "url": "https://www.labour.org.nz/capitalgainstax",
-        "title": "Capital Gains Tax on Investment Property"
+        "title": "Labour Capital Gains Tax Policy"
       },
       {
         "url": "https://www.labour.org.nz/fairer-grocery-prices",
@@ -847,7 +847,7 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Alliance Full Employment and 35-Hour Week Workers' Rights Policy"
+        "title": "Alliance Full Employment, 35-Hour Week and Workers' Rights Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
@@ -863,7 +863,7 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Alliance Tax Plan: First $20,000 Income Tax-Free Funded by Wealth Tax"
+        "title": "Alliance Tax Plan: First $20,000 Income Tax-Free, Funded by Wealth Tax"
       }
     ],
     "health": [
@@ -872,10 +872,10 @@
         "title": "Alliance Free GP, Dental, Optical and Audiology Health Policy"
       }
     ],
-    "environment": [
+    "crime-justice": [
       {
-        "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
-        "title": "Alliance Just Transition Environment and Climate Policy"
+        "url": "https://allianceparty.nz/alliance-justice-policy-three-strikes-into-treatment/",
+        "title": "Alliance Justice Policy: Three Strikes and into Treatment"
       }
     ]
   },
@@ -960,7 +960,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-20",
+    "lastRun": "2026-09-21",
     "parties": 14,
     "policyPages": 198
   }
