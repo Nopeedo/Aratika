@@ -515,6 +515,33 @@ function buildDraft(party, topic, parsed, text, sourceParts, urls, url) {
   }
 }
 
+/**
+ * Patch `data` on an existing row without carrying a stale snapshot forward.
+ *
+ * draftOne reads the row once, then spends anything from ten seconds to a
+ * couple of minutes fetching pages and calling the model before it writes. A
+ * write of `{ ...existing.data, patch }` puts back whatever the row held at
+ * read time — so an editor who accepted this row's proposal in that window
+ * had their promotion reverted and the accepted proposal resurrected, and the
+ * log said nothing. The row is re-read here, immediately before the write,
+ * and the patch merged into what is there NOW; the write is guarded on the
+ * status the row had when first read and checked for a matched row.
+ *
+ * onProposal: what to do if the fresh row carries a proposal.
+ *   'skip' — someone staged one meanwhile; leave it and write nothing.
+ *   'drop' — this run supersedes it (--force re-drafting the same row).
+ */
+async function patchRow(existing, patch, label, { onProposal = 'skip' } = {}) {
+  const { data: fresh, error } = await supabase.from('content_items').select('data, status').eq('id', existing.id).maybeSingle()
+  if (error) { console.warn(`✗ ${label}: re-read failed (${error.message}) — nothing written`); return false }
+  if (!fresh || fresh.status !== existing.status) { console.log(`  ⏭ ${label}: row was ${existing.status} when read and is ${fresh?.status ?? 'gone'} now — nothing written`); return false }
+  const { proposed: current, ...keep } = fresh.data || {}
+  if (current && onProposal === 'skip') { console.log(`  ⏭ ${label}: a proposal was staged on this row meanwhile — nothing written`); return false }
+  const { data: hit, error: werr } = await supabase.from('content_items').update({ data: { ...keep, ...patch } }).eq('id', existing.id).eq('status', existing.status).select('id')
+  if (werr || !hit?.length) { console.warn(`✗ ${label}: write failed (${werr?.message || 'no row matched'})`); return false }
+  return true
+}
+
 async function draftOne(party, topic) {
   const sourceId = `${party.slug}-${topic}-${PERIOD}`
   let url
@@ -611,7 +638,7 @@ async function draftOne(party, topic) {
     const priorCombined = existing.data?.sourceHash
     const recordBaseline = async (why) => {
       if (DRY_RUN) { TALLY.baseline.push(`${party.slug}/${topic}`); console.log(`  ⋯ ${party.slug}/${topic}: ${why} — a real run would record the page hashes, no model call`); return }
-      await supabase.from('content_items').update({ data: { ...existing.data, sourceHashes: recordHashes, sourceHash: fingerprint } }).eq('id', existing.id).eq('status', existing.status)
+      if (!await patchRow(existing, { sourceHashes: recordHashes, sourceHash: fingerprint }, `${party.slug}/${topic}`, { onProposal: FORCE ? 'drop' : 'skip' })) return
       TALLY.baseline.push(`${party.slug}/${topic}`)
       console.log(`  ⋯ ${party.slug}/${topic}: ${why} — page hashes recorded, no re-draft`)
     }
@@ -681,9 +708,8 @@ async function draftOne(party, topic) {
       //    the live text is still supported. Record the hashes and move on.
       const citedMoved = [...reason.changed, ...reason.removed].some((u) => cited.has(u)) || gone.some((u) => cited.has(u))
       if (!citedMoved) {
-        const { proposed: _stale, ...keep } = existing.data || {}
-        await supabase.from('content_items').update({ data: { ...keep, sourceHashes: recordHashes, sourceHash: fingerprint } }).eq('id', existing.id).eq('status', 'approved')
-        console.log(`○ ${party.slug}/${topic}: no clear position in the pages that moved; the cited pages stand — live text kept, hashes recorded`)
+        if (await patchRow(existing, { sourceHashes: recordHashes, sourceHash: fingerprint }, `${party.slug}/${topic}`, { onProposal: FORCE ? 'drop' : 'skip' }))
+          console.log(`○ ${party.slug}/${topic}: no clear position in the pages that moved; the cited pages stand — live text kept, hashes recorded`)
         return
       }
       const label = TOPICS[topic].label
@@ -697,14 +723,13 @@ async function draftOne(party, topic) {
         reason: { added: reason.added, changed: reason.changed, removed: [...reason.removed, ...gone.filter((u) => !reason.removed.includes(u))] },
         what: 'No position on this topic is found in the party\'s current pages; the cited page changed or is gone. Approving replaces the live position with "no stated position".',
       }
-      const { data: hit, error } = await supabase.from('content_items').update({ data: { ...existing.data, proposed } }).eq('id', existing.id).eq('status', 'approved').select('id')
-      if (error || !hit?.length) { console.warn(`✗ ${party.slug}: could not stage withdrawal proposal (${error?.message || 'row changed under us'})`); return }
+      if (!await patchRow(existing, { proposed }, `${party.slug}/${topic}`, { onProposal: FORCE ? 'drop' : 'skip' })) return
       WROTE++
       TALLY.withdrawn.push(`${party.slug}/${topic}`)
       console.log(`  ⚠ ${party.slug}/${topic}: POSSIBLE WITHDRAWAL — proposal staged for the editor (live text untouched)`)
     } else if (live) {
-      await supabase.from('content_items').update({ data: { ...existing.data, sourceHashes: recordHashes, sourceHash: fingerprint } }).eq('id', existing.id).eq('status', 'approved')
-      console.log(`○ ${party.slug}/${topic}: still no clear position — hashes recorded`)
+      if (await patchRow(existing, { sourceHashes: recordHashes, sourceHash: fingerprint }, `${party.slug}/${topic}`, { onProposal: FORCE ? 'drop' : 'skip' }))
+        console.log(`○ ${party.slug}/${topic}: still no clear position — hashes recorded`)
     } else {
       console.warn(`○ ${party.slug}: no clear ${topic} position found in the page — needs a topic-specific source`)
     }
@@ -726,12 +751,8 @@ async function draftOne(party, topic) {
         ? { material: true, what: `The page this position cites (${existing.source_url}) is no longer among the pages read; the citation moves to ${url}.` }
         : await materialChange(liveContent, draft, TOPICS[topic].label, reason)
     if (!verdict.material) {
-      // Drop any proposal already on the row (only --force gets here with one):
-      // this verdict supersedes it. Spreading existing.data carried a stale
-      // proposal forward, so a row judged "not material" stayed in the queue
-      // with the earlier draft attached.
-      const { proposed: _stale, ...keep } = existing.data || {}
-      await supabase.from('content_items').update({ data: { ...keep, sourceHashes: recordHashes, sourceHash: fingerprint, sourceUrls: urls } }).eq('id', existing.id).eq('status', 'approved')
+      // Under --force this verdict supersedes any proposal already on the row.
+      if (!await patchRow(existing, { sourceHashes: recordHashes, sourceHash: fingerprint, sourceUrls: urls }, `${party.slug}/${topic}`, { onProposal: FORCE ? 'drop' : 'skip' })) return
       TALLY.immaterial.push(`${party.slug}/${topic}`)
       console.log(`  = ${party.slug}/${topic}: pages moved, policy did not — live text kept, hashes recorded (no review needed)`)
       return
@@ -743,12 +764,7 @@ async function draftOne(party, topic) {
       reason: { added: reason.added, changed: reason.changed, removed: [...reason.removed, ...gone.filter((u) => !reason.removed.includes(u))] },
       what: verdict.what,
     }
-    // Guarded: the row must still be approved (an editor cannot have rejected
-    // it — approved rows are never rejected — but it must not have vanished),
-    // and .select() proves a row matched. An update that matches nothing is
-    // not a success.
-    const { data: hit, error } = await supabase.from('content_items').update({ data: { ...existing.data, proposed } }).eq('id', existing.id).eq('status', 'approved').select('id')
-    if (error || !hit?.length) { console.warn(`✗ ${party.slug}: could not stage proposal (${error?.message || 'row changed under us'})`); return }
+    if (!await patchRow(existing, { proposed }, `${party.slug}/${topic}`, { onProposal: FORCE ? 'drop' : 'skip' })) return
     WROTE++
     TALLY.proposed.push(`${party.slug}/${topic}`)
     console.log(`✓ ${party.slug}/${topic}: PROPOSED update staged → /editor (live text untouched). ${verdict.what}`)
