@@ -1,6 +1,14 @@
 {
-  "generated": "2026-09-20",
+  "generated": "2026-09-21",
   "changes": [
+    {
+      "mp": "penny-simmonds",
+      "field": "govBills",
+      "label": "Government bills in charge",
+      "from": 4,
+      "to": 5,
+      "date": "2026-09-21"
+    },
     {
       "mp": "kieran-mcanulty",
       "field": "writtenQuestions",
