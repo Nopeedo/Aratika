@@ -10,6 +10,12 @@
  * clear position, we record nothing (never invent one). Every item keeps its
  * source_url. The human gate is the backstop.
  *
+ * A LIVE position is never taken down by this script. When a party's pages
+ * change, the re-draft is staged as data.proposed on the approved row (see
+ * src/lib/positions/proposal.ts) and the site keeps rendering what the editor
+ * last approved until they accept the proposal. Only rows with nothing live —
+ * new, pending, rejected — are written in place.
+ *
  * Run:
  *   node scripts/draft-positions.mjs                 (topic=economy, all parties)
  *   node scripts/draft-positions.mjs --topic=health
@@ -20,16 +26,13 @@
  */
 
 import { createClient } from '@supabase/supabase-js'
-import { createHash } from 'node:crypto'
 import Anthropic from '@anthropic-ai/sdk'
 import dotenv from 'dotenv'
-import { execFileSync } from 'node:child_process'
 import { parse } from 'node-html-parser'
-import { PDFParse } from 'pdf-parse'
-import { readFileSync, unlinkSync, existsSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { readFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { curlHtml, fetchAllSources, excerptSource, isVerbatim, pageHash, sourceFingerprint, diffSources, mergeHashes } from './lib/position-text.mjs'
 
 dotenv.config({ path: '.env.local' })
 
@@ -53,7 +56,7 @@ const IF_CHANGED = args.includes('--if-changed')
 // sourceFingerprint, and the first attempt at that dropped the .slice(0, 32),
 // which made every row read as drifted.
 const DRY_RUN = args.includes('--dry-run')
-const TALLY = { drifted: [], unchanged: [], baseline: [], newDraft: [], repointed: [] }
+const TALLY = { drifted: [], unchanged: [], baseline: [], newDraft: [], repointed: [], immaterial: [], proposed: [], notFound: [], unreachable: [], withdrawn: [] }
 const topicArg = (args.find((a) => a.startsWith('--topic=')) || '').split('=')[1] || 'economy'
 // --party accepts one slug or a comma-separated cohort:
 //   --party=green            one party
@@ -318,17 +321,6 @@ const PARTIES = [
   { slug: 'womens-rights',  name: 'The New Zealand Women’s Rights Party', sources: { default: 'https://womensrightsparty.nz/policy/' } },
 ]
 
-const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36'
-
-function curlHtml(url) {
-  return execFileSync('curl', ['-s', '-L', '--max-time', '30', '-A', UA, url], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 })
-}
-function fetchText(url) {
-  const root = parse(curlHtml(url))
-  root.querySelectorAll('script,style,noscript,svg,header,footer,nav,form').forEach((e) => e.remove())
-  return root.text.replace(/[ \t]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n').trim()
-}
-
 // Party policy "index" pages often just LINK to each topic. Find the topic-specific
 // sub-page so we draft from real content, not a menu of links.
 const TOPIC_KEYWORDS = {
@@ -368,24 +360,6 @@ function discoverTopicUrl(indexUrl, topic) {
   return best?.url || null
 }
 
-// Manifesto PDFs are static and cover every topic — the reliable source for
-// JS-rendered party sites. Download + extract text.
-async function fetchPdfText(url) {
-  const tmp = join(tmpdir(), `politika-manifesto-${Date.now()}.pdf`)
-  execFileSync('curl', ['-s', '-L', '--max-time', '60', '-A', UA, url, '-o', tmp], { maxBuffer: 64 * 1024 * 1024 })
-  try {
-    const parser = new PDFParse({ data: new Uint8Array(readFileSync(tmp)) })
-    const res = await parser.getText()
-    return (res.text || '').replace(/[ \t]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n').trim()
-  } finally {
-    try { unlinkSync(tmp) } catch { /* ignore */ }
-  }
-}
-
-async function fetchSource(url) {
-  return /\.pdf($|\?)/i.test(url) ? fetchPdfText(url) : fetchText(url)
-}
-
 /**
  * Policy pages watch-policy-pages.mjs has found for a party on a topic.
  *
@@ -418,51 +392,6 @@ const DISCOVERED = (() => {
 function sourceUrlsFor(slug, topic, primary) {
   const found = (DISCOVERED[slug]?.[topic] || []).map((x) => x.url)
   return [...new Set([primary, ...found].filter(Boolean))]
-}
-
-/**
- * Fetch every source and concatenate, labelled by URL.
- *
- * Labelling matters twice: the model can attribute a quote to the right page,
- * and the fingerprint of the whole moves when ANY constituent page changes or
- * when a new page joins the set. That second property is what makes a new
- * policy announcement visible to --if-changed without any new machinery — the
- * drift check already in this file starts catching new pages for free.
- */
-async function fetchAllSources(urls) {
-  const parts = []
-  for (const u of urls) {
-    try {
-      const t = await fetchSource(u)
-      if (t && t.length >= 200) parts.push({ url: u, text: t })
-    } catch (e) {
-      // One dead page among several must not lose the others. Reported, because
-      // a source that has quietly 404ed for weeks is worth seeing.
-      console.warn(`    ✗ source fetch failed: ${u} (${e.message})`)
-    }
-  }
-  return { text: parts.map((p) => `### SOURCE: ${p.url}\n${p.text}`).join('\n\n'), parts }
-}
-
-/**
- * Which fetched page a verbatim excerpt actually came from.
- *
- * With one source this question did not exist — the citation was the source.
- * With several it is the whole ballgame, and getting it wrong is worse than a
- * stale summary: the Greens' economy position cited
- * /government_in_the_economy_policy while quoting "Create KiwiMart, a publicly
- * owned supermarket chain" off the affordable-food page. The quote was
- * genuine and verbatim; the citation under it was wrong, so a reader clicking
- * through to check would not find it and would reasonably conclude we made it
- * up. That is the exact failure the source_url comment below was written about,
- * reintroduced by widening the source set.
- *
- * Returns null when no fetched page contains it, which the caller treats the
- * same way it treats a non-verbatim excerpt: discard.
- */
-function excerptSource(parts, excerpt) {
-  const hit = parts.find((p) => isVerbatim(p.text, excerpt))
-  return hit ? hit.url : null
 }
 
 function systemPrompt(topic) {
@@ -507,32 +436,84 @@ async function callModel(system, user) {
   throw lastErr
 }
 
-// ── Verbatim guardrail ────────────────────────────────────────────────────────
-// The model is told to copy quotes exactly, but LLMs drift — an audit (Jul 2026)
-// found paraphrases, stitched sentences and altered wording presented inside
-// quotation marks. This deterministically drops any excerpt/quote that is not an
-// actual substring of the scraped source, so a fabricated quote can never ship.
-function normText(s) {
-  return String(s)
-    .toLowerCase()
-    .replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-function isVerbatim(source, s) {
-  // Strip wrapping quotes / ellipsis so a legitimately trimmed excerpt still matches.
-  const q = normText(s).replace(/^["'….\s]+|["'….\s]+$/g, '')
-  if (q.length < 12) return false
-  return normText(source).includes(q)
-}
-
-/** Fingerprint of the source text a position was drafted from.
+/**
+ * Is the fresh draft a different POLICY, or the same policy in different words?
  *
- *  Whitespace-normalised so a reflow or a rotating "last updated" line does not
- *  read as a policy change, and truncated to the same window the model sees —
- *  a change past that point could not have affected the summary anyway. */
-const sourceFingerprint = (text) =>
-  createHash('sha256').update(String(text || '').replace(/\s+/g, ' ').trim().slice(0, 40000)).digest('hex').slice(0, 32)
+ * The page hashes say a page moved. They cannot say whether the party changed
+ * what it is promising or fixed a typo, added a photo caption, or published a
+ * new page that restates a commitment already summarised. Every one of those
+ * used to reach the editor as "Updated", which is how the same National economy
+ * position was re-approved on the 18th and back in the queue on the 20th.
+ *
+ * Cheap check first: identical stance, proposals and plain summary need no
+ * model. Otherwise one small call with both versions side by side. The answer
+ * is a gate, not a verdict on the content — an editor still reads anything
+ * that passes.
+ */
+async function materialChange(live, draft, topicLabel, reason = { added: [], changed: [], removed: [] }) {
+  const key = (x) => normKey([x.stance, ...(x.keyProposals || []), x.summaryBasic].join(' | '))
+  if (key(live) === key(draft)) return { material: false, what: '' }
+  const sys = `You compare two neutral summaries of the SAME New Zealand political party's stated policy on ${topicLabel}. CURRENT is what a civic-information site publishes now. NEW was just drafted from the party's own website today. Decide whether NEW reflects a MATERIAL change in the party's stated policy: a new commitment, a dropped or reversed commitment, a changed number, date, target or scope, or a different overall stance. Rewording, reordering, tighter or looser phrasing, different example wording, or different quotes for the SAME commitments are NOT material. Return ONLY JSON: {"material": true|false, "what": "<=40 words naming the change in plain terms, or an empty string if not material"}`
+  const show = (x) => JSON.stringify({ stance: x.stance, summary: x.summaryBasic, proposals: x.keyProposals || [], quote: x.quote || '' }, null, 1)
+  const user = `Pages that were new or changed since CURRENT was written: ${[...reason.added, ...reason.changed].join(', ') || '(unknown)'}\n\nCURRENT:\n${show(live)}\n\nNEW:\n${show(draft)}\n\nReturn ONLY the JSON.`
+  let raw = await callModel(sys, user)
+  raw = raw.replace(/^```(?:json)?\s*/i, '').replace(/```$/i, '').trim()
+  try {
+    const v = JSON.parse(raw)
+    // Strictly boolean. A verdict of "true" (the string) once read as
+    // non-material because `=== true` was false, and the change was baselined
+    // for good. Anything that is not a clear no is a yes: the failure mode of
+    // this gate must be "show the editor", never "drop it".
+    const m = v.material === true || v.material === 'true' ? true : v.material === false || v.material === 'false' ? false : null
+    if (m === null) return { material: true, what: '(could not classify the change — review it)' }
+    return { material: m, what: String(v.what || '').trim().slice(0, 300) }
+  } catch {
+    // An unparseable verdict is treated as material: the failure mode of a gate
+    // that cannot read its own answer must be "show the editor", never "drop it".
+    return { material: true, what: '(could not classify the change — review it)' }
+  }
+}
+const normKey = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+
+/** Turn the model's parsed JSON into the fields a position row carries. Quote
+ *  and excerpt guardrails applied here, once, for every write path. */
+function buildDraft(party, topic, parsed, text, sourceParts, urls, url) {
+  const keyProposals = Array.isArray(parsed.key_proposals) ? parsed.key_proposals.map((s) => String(s).trim()).filter(Boolean).slice(0, 8) : []
+  // Whether those bullets are promises or a record of delivery. Anything the
+  // model does not explicitly call a record is treated as a pledge: that is
+  // correct for every party out of government, and labelling a promise as an
+  // achievement is the worse of the two errors to make by default.
+  const framing = parsed.framing === 'record' ? 'record' : 'pledge'
+  const whoAffected = Array.isArray(parsed.who_affected)
+    ? parsed.who_affected.filter((x) => x && (x.group || x.detail)).map((x) => ({ group: String(x.group || '').trim(), detail: String(x.detail || '').trim() })).slice(0, 6)
+    : []
+  // Verbatim guardrail: keep only excerpts/quote that actually appear in the source.
+  const rawExcerpts = Array.isArray(parsed.excerpts) ? parsed.excerpts.map((s) => String(s).trim()).filter(Boolean) : []
+  // Attribute before truncating: an excerpt has to be verbatim in ONE named
+  // page, not merely somewhere in the concatenation of several. That is a
+  // strictly stronger check — a quote stitched across two sources passes
+  // isVerbatim(text) and fails here, correctly.
+  const attributed = rawExcerpts
+    .map((s) => ({ text: s, url: excerptSource(sourceParts, s) }))
+    .filter((e) => e.url)
+    .slice(0, 3)
+  // Parallel array rather than objects: excerpts is typed string[] in four
+  // frontend components and changing its shape would break them. Index i of
+  // excerptSources is the page excerpts[i] came from.
+  const excerpts = attributed.map((e) => e.text)
+  const excerptSources = attributed.map((e) => e.url)
+  const droppedExcerpts = rawExcerpts.length - excerpts.length
+  let quote = String(parsed.quote || '').trim()
+  if (quote && !isVerbatim(text, quote)) { quote = ''; console.warn(`  ⚠ ${party.slug}/${topic}: dropped non-verbatim quote`) }
+  if (droppedExcerpts > 0) console.warn(`  ⚠ ${party.slug}/${topic}: dropped ${droppedExcerpts} non-verbatim excerpt(s)`)
+  return {
+    summary: String(parsed.summary || '').trim(),
+    source_url: url,
+    stance: String(parsed.stance || '').trim(),
+    summaryBasic: String(parsed.summary_basic || '').trim(),
+    quote, keyProposals, framing, whoAffected, excerpts, excerptSources, sourceUrls: urls,
+  }
+}
 
 async function draftOne(party, topic) {
   const sourceId = `${party.slug}-${topic}-${PERIOD}`
@@ -549,9 +530,15 @@ async function draftOne(party, topic) {
     }
   }
 
-  // Don't clobber an editor-approved row unless --force (which AUGMENTS — see below).
   const { data: existing } = await supabase.from('content_items').select('id, status, summary, data, source_url').eq('type', 'position').eq('source_id', sourceId).maybeSingle()
-  if (existing?.status === 'approved' && !FORCE && !IF_CHANGED) { console.log(`⏭  ${party.slug}/${topic} already approved — skipping (use --force to add the deeper breakdown)`); return }
+  // LIVE = the site is rendering this row. Nothing below may change what it
+  // renders; a live row only ever gains a data.proposed for the editor.
+  const live = existing?.status === 'approved'
+  if (live && !FORCE && !IF_CHANGED) { console.log(`⏭  ${party.slug}/${topic} already approved — skipping (--if-changed checks its sources, --force re-drafts it as a proposal)`); return }
+  // A proposal already waiting: leave it for the editor rather than replacing
+  // it with today's draft of the same pages. Same reason a pending row is not
+  // re-drafted — a queue that rewrites itself under the reviewer is not a queue.
+  if (live && existing.data?.proposed && !FORCE) { console.log(`⏭  ${party.slug}/${topic}: a proposed update is already awaiting review`); return }
 
   // The 2023 backfill reads a single archived manifesto, so it must not pull in
   // pages the watcher found on the party's site today — those are 2026 policy.
@@ -563,185 +550,253 @@ async function draftOne(party, topic) {
   // actually taken from. The cache path has only one blob and no URL breakdown,
   // so it falls back to the primary url — same behaviour as before multi-source.
   let sourceParts = [{ url, text: text || '' }]
+  let failed = []
+  let gone = []
   if (text) { console.log(`  📄 ${party.slug}/${topic}: using browser-captured cache`) }
   else {
     try {
       const fetched = await fetchAllSources(urls)
       text = fetched.text
       sourceParts = fetched.parts
+      failed = fetched.failed
+      gone = fetched.gone
     } catch (e) { console.warn(`✗ ${party.slug}: fetch failed (${e.message})`); return }
   }
+  // A row that exists was drafted from a set of pages. If any page we could
+  // not read today is one it has read before, the model would be re-reading a
+  // PARTIAL set — and a summary written without the page that carries the tax
+  // commitments "drops" the tax commitments. That is not a change in the
+  // party's policy; it is a timeout on the runner. Defer the whole row until
+  // every page it knows answers. A row with no history has nothing to lose.
+  if (existing && failed.length) {
+    const known = new Set([...Object.keys(existing.data?.sourceHashes || {}), ...(existing.data?.sourceUrls || []), existing.source_url].filter(Boolean))
+    const blocking = existing.data?.sourceHashes ? failed.filter((u) => known.has(u)) : failed
+    if (blocking.length) {
+      TALLY.unreachable.push(`${party.slug}/${topic}`)
+      console.log(`  ⏸ ${party.slug}/${topic}: ${blocking.length} source(s) unreachable today — not re-reading from a partial set, nothing written`)
+      return
+    }
+  }
   if (!text || text.length < 400) { console.warn(`✗ ${party.slug}: source text too thin (${text?.length || 0} chars) — needs a better URL`); return }
+  if (failed.length) console.log(`    (${failed.length} of ${urls.length} source(s) did not fetch — unknown, not changed)`)
+  if (gone.length) console.log(`    (${gone.length} source(s) gone — HTTP 404/410)`)
 
+  // One fingerprint PER PAGE. The old single hash covered the concatenation of
+  // every source, so a page joining the set, a page timing out on the runner,
+  // or the watcher listing them in a different order all read as "the party
+  // changed its policy". Per page, each of those is a distinct, nameable event.
+  const pageHashes = Object.fromEntries(sourceParts.map((p) => [p.url, pageHash(p.text)]))
+  // What to RECORD: today's hash for every page read, the prior hash for any
+  // page that failed. Never drop a page we could not read, or it comes back
+  // tomorrow as "added" and re-proposes what an editor just rejected.
+  const recordHashes = mergeHashes(existing?.data?.sourceHashes, pageHashes, failed)
   const fingerprint = sourceFingerprint(text)
-  // Any existing row, not just an approved one. A row already waiting in the
-  // review queue would otherwise be re-drafted on every run, spending a model
-  // call to produce the same text an editor has not looked at yet.
+  const cited = new Set([existing?.source_url, ...(existing?.data?.excerptSources || [])].filter(Boolean))
+  let reason = { added: [], changed: [], removed: [] }
+  // The page this row cites is no longer among the pages read (a repoint,
+  // allowed by --replace). The citation under the quotes changes, which is
+  // material whatever the gate thinks of the words.
+  const repointing = !!(existing?.source_url && urls.length && !urls.includes(existing.source_url))
+
   if (IF_CHANGED && existing) {
-    // A repoint is not a drift, and must not be treated as one.
-    //
-    // The comparison below is "has THIS page changed since we read it". That
-    // only means anything if the page we are fetching is the page the row was
-    // drafted from. Where the config has since been pointed somewhere else —
-    // National's foreign policy was summarised from
-    // /policies/foreign-affairs-defence-and-veterans and the config now routes
-    // that topic to the /plan default — we were hashing page A and comparing it
-    // to a fresh fetch of page B. That can never match, so the row reported
-    // SOURCE CHANGED on every run, spent a model call reading a page that does
-    // not discuss the topic, got {found:false}, wrote nothing, and left the old
-    // fingerprint in place to do it all again next time. Twenty-one rows were
-    // doing this: a standing bill for no information.
-    //
-    // Moving a row to a new source is a real decision (it rewrites the citation
-    // under the quotes), so it is surfaced rather than done silently. --replace
-    // is the flag that does it.
-    //
-    // NARROWED once the watcher landed. The test used to be `source_url !== url`
-    // — the single configured URL — and that was too strict the moment a topic
-    // could have several sources. It was already too strict before: for topics
-    // with no explicit mapping, `url` is recomputed by discoverTopicUrl on every
-    // run while source_url stayed frozen at draft time, so any disagreement
-    // parked the row here permanently. Nothing would ever edit the config to
-    // match a runtime-discovered URL, so the condition sustained itself: 35 of
-    // ~107 rows were in that state, including labour/economy, labour/health,
-    // tpm/economy and nzfirst/economy — four of the most-read cost-of-living
-    // positions on the site, none of which had been drift-checked since.
-    //
-    // The real question is not "is this the same single URL" but "are we still
-    // reading the page this row was drafted from". If the stored source is still
-    // among the pages we fetch, this is not a repoint and the fingerprint
-    // comparison below is meaningful. Only a source we no longer read at all is
-    // a genuine repoint, and that stays a human decision because it rewrites the
-    // citation under the quotes.
-    if (existing.source_url && urls.length && !urls.includes(existing.source_url)) {
+    // A repoint is not a drift. If the page this row was drafted from is no
+    // longer among the pages we read at all, moving it is a citation decision
+    // for a human: --replace is the flag that allows it.
+    if (existing.source_url && urls.length && !urls.includes(existing.source_url) && !REPLACE) {
       TALLY.repointed.push(`${party.slug}/${topic}`)
       console.log(`  ↪ ${party.slug}/${topic}: NOT drift — drafted from ${existing.source_url}, no longer among the ${urls.length} source(s) read. Re-run with --replace to move it.`)
       return
     }
-    const prior = existing.data?.sourceHash
-    // No fingerprint means the row predates this check. Record one and leave the
-    // approved summary alone: re-drafting every old row on the first run would
-    // be a bill for no information, since we cannot tell whether it changed.
-    if (!prior) {
-      if (DRY_RUN) { TALLY.baseline.push(`${party.slug}/${topic}`); console.log(`  ⋯ ${party.slug}/${topic}: no baseline yet — a real run would record one, no model call`); return }
-      await supabase.from('content_items').update({ data: { ...existing.data, sourceHash: fingerprint } }).eq('id', existing.id)
-      console.log(`  ⋯ ${party.slug}/${topic}: baseline fingerprint recorded, no re-draft`)
-      return
+    const priorPages = existing.data?.sourceHashes
+    const priorCombined = existing.data?.sourceHash
+    const recordBaseline = async (why) => {
+      if (DRY_RUN) { TALLY.baseline.push(`${party.slug}/${topic}`); console.log(`  ⋯ ${party.slug}/${topic}: ${why} — a real run would record the page hashes, no model call`); return }
+      await supabase.from('content_items').update({ data: { ...existing.data, sourceHashes: recordHashes, sourceHash: fingerprint } }).eq('id', existing.id).eq('status', existing.status)
+      TALLY.baseline.push(`${party.slug}/${topic}`)
+      console.log(`  ⋯ ${party.slug}/${topic}: ${why} — page hashes recorded, no re-draft`)
     }
-    if (prior === fingerprint) { TALLY.unchanged.push(`${party.slug}/${topic}`); console.log(`⏭  ${party.slug}/${topic}: source unchanged`); return }
+    if (priorPages && typeof priorPages === 'object') {
+      reason = diffSources(priorPages, pageHashes, failed)
+    } else if (existing.data?.noPosition) {
+      // "No stated position" was recorded before the watcher existed, from an
+      // index page alone. Every page the watcher has since found on this topic
+      // is one this row has never read, so all of them count as new.
+      reason = { added: Object.keys(pageHashes), changed: [], removed: [] }
+    } else if (priorCombined) {
+      // Written before per-page hashes existed. If the old whole-set hash still
+      // matches, nothing has moved: record the per-page baseline and stop. If
+      // not, something moved and we cannot say which page — so every page is
+      // treated as changed and the material-change gate decides whether the
+      // POLICY moved, which is the question the old hash could never answer.
+      if (priorCombined === fingerprint) return recordBaseline('unchanged (legacy fingerprint matches)')
+      // (A failed fetch cannot reach here: the partial-set guard above returns
+      // first for any row that exists. So a moved legacy hash means a page
+      // moved, not that a page was missing from the concatenation.)
+      reason = { added: [], changed: Object.keys(pageHashes), removed: [], legacy: true }
+    } else {
+      return recordBaseline('no baseline yet')
+    }
+
+    const moved = reason.added.length + reason.changed.length + reason.removed.length
+    if (!moved) { TALLY.unchanged.push(`${party.slug}/${topic}`); console.log(`⏭  ${party.slug}/${topic}: sources unchanged${reason.unknown?.length ? ` (${reason.unknown.length} not fetched)` : ''}`); return }
+    // Only pages disappeared, and none of them is cited under the live text:
+    // the watcher dropped a stale index entry. Nothing to re-read.
+    if (!reason.added.length && !reason.changed.length && !reason.removed.some((u) => cited.has(u))) {
+      return recordBaseline(`${reason.removed.length} uncited page(s) dropped from the set`)
+    }
     TALLY.drifted.push(`${party.slug}/${topic}`)
-    console.log(`  ⚠ ${party.slug}/${topic}: SOURCE CHANGED — ${DRY_RUN ? 'a real run would re-draft this' : 're-drafting for review'}`)
+    const why = reason.legacy ? 'legacy fingerprint moved' : `+${reason.added.length} new, ~${reason.changed.length} changed, -${reason.removed.length} gone`
+    console.log(`  ⚠ ${party.slug}/${topic}: SOURCES MOVED (${why}) — ${DRY_RUN ? 'a real run would re-draft and gate this' : live ? 're-drafting as a proposal' : 're-drafting for review'}`)
+    for (const u of reason.added) console.log(`      + ${u}`)
+    for (const u of reason.changed.slice(0, 6)) console.log(`      ~ ${u}`)
     if (DRY_RUN) return
   }
   if (DRY_RUN) { console.log(`  · ${party.slug}/${topic}: would draft (no existing row)`); TALLY.newDraft.push(`${party.slug}/${topic}`); return }
 
   const cap = /\.pdf($|\?)/i.test(url) ? 120000 : 40000
-  let raw = await callModel(systemPrompt(topic), `Party: ${party.name}\nTopic: ${TOPICS[topic].label}\n\nOFFICIAL TEXT (may be truncated — find the ${TOPICS[topic].label} section):\n${text.slice(0, cap)}\n\nReturn ONLY the JSON.`)
+  // UPDATE, don't re-summarise. A live position is an editor-approved reading
+  // of these pages; asking for a fresh summary from scratch produced a fresh
+  // SAMPLE — the same pages, a different selection of proposals — and the gate
+  // then reported commitments "dropped" that the party had never dropped (TPM
+  // environment lost its freshwater-rights line; NZ First's Marsden Point zone
+  // moved from the climate summary to the economy one). With the current text
+  // in front of it, the model keeps what the pages still support, adds what is
+  // new, and removes only what is no longer there — so a proposal is a delta.
+  const prior = live && !existing.data?.noPosition ? existing.data : null
+  const priorBlock = prior ? `\n\nEARLIER SUMMARY (currently published, written from an older version of these pages — UPDATE it, do not start over):\n${JSON.stringify({ stance: prior.stance, summary_basic: prior.summaryBasic, summary: existing.summary, key_proposals: prior.keyProposals || [], framing: prior.framing || 'pledge' }, null, 1)}\nRULES FOR THE UPDATE: keep every key proposal above that the OFFICIAL TEXT still supports, in the same words where the text still supports those words; add proposals the text now states that are missing; remove a proposal ONLY if the text no longer supports it. Keep the stance and framing unless the text contradicts them. Quotes and excerpts must still be verbatim from the OFFICIAL TEXT below, never from the earlier summary.` : ''
+  let raw = await callModel(systemPrompt(topic), `Party: ${party.name}\nTopic: ${TOPICS[topic].label}${priorBlock}\n\nOFFICIAL TEXT (may be truncated — find the ${TOPICS[topic].label} section):\n${text.slice(0, cap)}\n\nReturn ONLY the JSON.`)
   raw = raw.replace(/^```(?:json)?\s*/i, '').replace(/```$/i, '').trim()
   let parsed
   try { parsed = JSON.parse(raw) } catch { console.warn(`✗ ${party.slug}: model did not return JSON`); return }
-  if (!parsed.found) { console.warn(`○ ${party.slug}: no clear ${topic} position found in the page — needs a topic-specific source`); return }
+  if (!parsed.found) {
+    TALLY.notFound.push(`${party.slug}/${topic}`)
+    if (live && !existing.data?.noPosition) {
+      // No position in the pages now. Two different situations:
+      //  - A page this row CITES changed or is gone, and the position is not
+      //    in what is left: the party may have withdrawn it. Silently keeping
+      //    the live text would leave a retired policy on the site for good, so
+      //    this is staged as a proposal whose content is "no stated position".
+      //    The editor decides; the publisher skips these unless told not to.
+      //  - The cited pages are as they were and only an uncited page moved:
+      //    the live text is still supported. Record the hashes and move on.
+      const citedMoved = [...reason.changed, ...reason.removed].some((u) => cited.has(u)) || gone.some((u) => cited.has(u))
+      if (!citedMoved) {
+        const { proposed: _stale, ...keep } = existing.data || {}
+        await supabase.from('content_items').update({ data: { ...keep, sourceHashes: recordHashes, sourceHash: fingerprint } }).eq('id', existing.id).eq('status', 'approved')
+        console.log(`○ ${party.slug}/${topic}: no clear position in the pages that moved; the cited pages stand — live text kept, hashes recorded`)
+        return
+      }
+      const label = TOPICS[topic].label
+      const note = `${party.name}'s current published policy pages do not set out a specific position on ${label}. The page this position cited has changed or been removed.`
+      const proposed = {
+        summary: note, source_url: url, stance: `No specific stated policy on ${label}`, summaryBasic: note, quote: '',
+        keyProposals: [], framing: 'pledge', whoAffected: [], excerpts: [], excerptSources: [], sourceUrls: urls,
+        noPosition: true,
+        sourceHashes: recordHashes, sourceHash: fingerprint, asOf: new Date().toISOString().slice(0, 10),
+        proposedAt: new Date().toISOString(),
+        reason: { added: reason.added, changed: reason.changed, removed: [...reason.removed, ...gone.filter((u) => !reason.removed.includes(u))] },
+        what: 'No position on this topic is found in the party\'s current pages; the cited page changed or is gone. Approving replaces the live position with "no stated position".',
+      }
+      const { data: hit, error } = await supabase.from('content_items').update({ data: { ...existing.data, proposed } }).eq('id', existing.id).eq('status', 'approved').select('id')
+      if (error || !hit?.length) { console.warn(`✗ ${party.slug}: could not stage withdrawal proposal (${error?.message || 'row changed under us'})`); return }
+      WROTE++
+      TALLY.withdrawn.push(`${party.slug}/${topic}`)
+      console.log(`  ⚠ ${party.slug}/${topic}: POSSIBLE WITHDRAWAL — proposal staged for the editor (live text untouched)`)
+    } else if (live) {
+      await supabase.from('content_items').update({ data: { ...existing.data, sourceHashes: recordHashes, sourceHash: fingerprint } }).eq('id', existing.id).eq('status', 'approved')
+      console.log(`○ ${party.slug}/${topic}: still no clear position — hashes recorded`)
+    } else {
+      console.warn(`○ ${party.slug}: no clear ${topic} position found in the page — needs a topic-specific source`)
+    }
+    return
+  }
 
   const today = new Date().toISOString().slice(0, 10)
-  const keyProposals = Array.isArray(parsed.key_proposals) ? parsed.key_proposals.map((s) => String(s).trim()).filter(Boolean).slice(0, 8) : []
-  // Whether those bullets are promises or a record of delivery. Anything the
-  // model does not explicitly call a record is treated as a pledge: that is
-  // correct for every party out of government, and labelling a promise as an
-  // achievement is the worse of the two errors to make by default.
-  const framing = parsed.framing === 'record' ? 'record' : 'pledge'
-  const whoAffected = Array.isArray(parsed.who_affected)
-    ? parsed.who_affected.filter((x) => x && (x.group || x.detail)).map((x) => ({ group: String(x.group || '').trim(), detail: String(x.detail || '').trim() })).slice(0, 6)
-    : []
-  // Verbatim guardrail: keep only excerpts/quote that actually appear in the source.
-  const rawExcerpts = Array.isArray(parsed.excerpts) ? parsed.excerpts.map((s) => String(s).trim()).filter(Boolean) : []
-  // Attribute before truncating: an excerpt now has to be verbatim in ONE named
-  // page, not merely somewhere in the concatenation of several. That is a
-  // strictly stronger check — a quote stitched across two sources passes
-  // isVerbatim(text) and fails here, correctly.
-  const attributed = rawExcerpts
-    .map((s) => ({ text: s, url: excerptSource(sourceParts, s) }))
-    .filter((e) => e.url)
-    .slice(0, 3)
-  const excerpts = attributed.map((e) => e.text)
-  // Parallel array rather than objects: excerpts is typed string[] in four
-  // frontend components (policy-explorer, bill-breakdown, bill-full-text,
-  // position-reader) and changing its shape would break them. Index i of this
-  // is the page excerpts[i] came from, so a citation can be rendered per quote
-  // whenever the frontend is ready for it.
-  const excerptSources = attributed.map((e) => e.url)
-  const droppedExcerpts = rawExcerpts.length - excerpts.length
-  let quote = String(parsed.quote || '').trim()
-  if (quote && !isVerbatim(text, quote)) { quote = ''; console.warn(`  ⚠ ${party.slug}/${topic}: dropped non-verbatim quote`) }
-  if (droppedExcerpts > 0) console.warn(`  ⚠ ${party.slug}/${topic}: dropped ${droppedExcerpts} non-verbatim excerpt(s)`)
+  const draft = buildDraft(party, topic, parsed, text, sourceParts, urls, url)
+
+  if (live) {
+    // Never in place. The site keeps rendering the approved fields; the editor
+    // gets the proposal beside them and decides. A "no stated position" row
+    // that now has one is material by definition — the gate compares policies,
+    // and there was none.
+    const liveContent = { stance: existing.data?.stance, keyProposals: existing.data?.keyProposals, summaryBasic: existing.data?.summaryBasic, quote: existing.data?.quote }
+    const verdict = existing.data?.noPosition
+      ? { material: true, what: 'A stated position now exists where "no stated position" was recorded.' }
+      : repointing
+        ? { material: true, what: `The page this position cites (${existing.source_url}) is no longer among the pages read; the citation moves to ${url}.` }
+        : await materialChange(liveContent, draft, TOPICS[topic].label, reason)
+    if (!verdict.material) {
+      // Drop any proposal already on the row (only --force gets here with one):
+      // this verdict supersedes it. Spreading existing.data carried a stale
+      // proposal forward, so a row judged "not material" stayed in the queue
+      // with the earlier draft attached.
+      const { proposed: _stale, ...keep } = existing.data || {}
+      await supabase.from('content_items').update({ data: { ...keep, sourceHashes: recordHashes, sourceHash: fingerprint, sourceUrls: urls } }).eq('id', existing.id).eq('status', 'approved')
+      TALLY.immaterial.push(`${party.slug}/${topic}`)
+      console.log(`  = ${party.slug}/${topic}: pages moved, policy did not — live text kept, hashes recorded (no review needed)`)
+      return
+    }
+    const proposed = {
+      ...draft,
+      sourceHashes: recordHashes, sourceHash: fingerprint, asOf: today,
+      proposedAt: new Date().toISOString(),
+      reason: { added: reason.added, changed: reason.changed, removed: [...reason.removed, ...gone.filter((u) => !reason.removed.includes(u))] },
+      what: verdict.what,
+    }
+    // Guarded: the row must still be approved (an editor cannot have rejected
+    // it — approved rows are never rejected — but it must not have vanished),
+    // and .select() proves a row matched. An update that matches nothing is
+    // not a success.
+    const { data: hit, error } = await supabase.from('content_items').update({ data: { ...existing.data, proposed } }).eq('id', existing.id).eq('status', 'approved').select('id')
+    if (error || !hit?.length) { console.warn(`✗ ${party.slug}: could not stage proposal (${error?.message || 'row changed under us'})`); return }
+    WROTE++
+    TALLY.proposed.push(`${party.slug}/${topic}`)
+    console.log(`✓ ${party.slug}/${topic}: PROPOSED update staged → /editor (live text untouched). ${verdict.what}`)
+    return
+  }
 
   if (existing) {
-    // Two modes, because "the source changed" and "we improved the source" are
-    // different situations.
-    //
-    // MERGE (default): keep the editor-approved stance and summary, add the
-    // deeper breakdown. Right when a party edits a page we were already reading
-    // — an editor's wording still describes it, and silently overwriting their
-    // work would be rude and lossy.
-    //
-    // REPLACE (--replace): rewrite the summary text as well. Right when the
-    // source has been REPOINTED — the Greens' every topic was summarised from
-    // their /policy index, a page of headings, so the approved stance describes
-    // a page we are no longer reading. Merging there keeps a sentence written
-    // about the wrong document and attaches fresh quotes to it.
+    // Nothing live to protect — a pending or rejected row — so the fresh draft
+    // replaces it in place and goes back to the queue.
     const ed = existing.data || {}
-    const rewritten = REPLACE ? {
-      stance: String(parsed.stance || '').trim(),
-      summaryBasic: String(parsed.summary_basic || '').trim(),
-      quote,
-    } : {}
-    // `period` is written explicitly, not inherited from the existing row.
-    //
-    // The spread used to carry it over, so a row first drafted from a 2023
-    // manifesto page and later re-drafted from current sources kept
-    // period='2023' — and the party page hides 2023 rows. Eleven National and
-    // NZ First positions were re-drafted from 2026 pages, verified, approved,
-    // and still invisible, because the one field that decides whether a
-    // position is "current" was the one field the rewrite left alone.
+    const { summary, source_url, ...fields } = draft
     const mergedData = {
-      ...ed, ...rewritten, keyProposals, framing, whoAffected, excerpts, excerptSources, sourceUrls: urls,
+      ...ed, ...fields,
       period: PERIOD, periodLabel: PERIOD === '2023' ? '2023 manifesto' : 'Current policy',
-      asOf: today, sourceHash: fingerprint,
+      asOf: today, sourceHashes: recordHashes, sourceHash: fingerprint,
     }
-    // source_url moves with the excerpts. It used to be left alone, so
-    // re-pointing a party at a better page — the Greens' housing_policy instead
-    // of their /policy index — rewrote the quotes from the new page while the
-    // citation still named the old one. The excerpts were then attributed to a
-    // page that does not contain them, which is a worse failure than the stale
-    // summary it was fixing.
-    const { error } = await supabase.from('content_items').update({ data: mergedData, ...(REPLACE ? { summary: String(parsed.summary || '').trim() } : {}), source_url: url, status: 'pending', change_kind: 'updated', updated_at: today }).eq('id', existing.id)
+    delete mergedData.proposed
+    delete mergedData.noPosition
+    // Guarded on the status we READ. The fetch and the model call take a
+    // minute or two, and an editor approving this row in that window must win:
+    // without the guard their approval was flipped back to pending and the
+    // text they approved replaced.
+    const { data: hit, error } = await supabase.from('content_items').update({ data: mergedData, summary, source_url, status: 'pending', change_kind: ed.noPosition ? 'new' : 'updated', updated_at: today }).eq('id', existing.id).eq('status', existing.status).select('id')
     if (error) { console.warn(`✗ ${party.slug}: update failed (${error.message})`); return }
+    if (!hit?.length) { console.log(`  ⏭ ${party.slug}/${topic}: row was ${existing.status} when read and is not now (an editor got there first) — nothing written`); return }
     WROTE++
-    console.log(REPLACE
-      ? `✓ ${party.slug}/${topic}: REWRITTEN from ${url} → pending review`
-      : `✓ ${party.slug}/${topic}: breakdown added (kept your approved text) → pending re-approve`)
+    console.log(`✓ ${party.slug}/${topic}: re-drafted (was ${existing.status}) → pending review`)
     return
   }
 
   const periodLabel = PERIOD === '2023' ? '2023 manifesto' : 'Current policy'
+  const { summary, source_url, ...fields } = draft
   const row = {
     type: 'position',
     source_id: sourceId,
     title: `${party.name} — ${TOPICS[topic].label} (${PERIOD === '2023' ? '2023 manifesto' : 'current policy'})`,
-    summary: String(parsed.summary || '').trim(),
+    summary,
     data: {
       party: party.slug, partyName: party.name, topic, topicLabel: TOPICS[topic].label,
       period: PERIOD, periodLabel,
-      stance: String(parsed.stance || '').trim(),
-      quote,
-      summaryBasic: String(parsed.summary_basic || '').trim(),
-      keyProposals, framing, whoAffected, excerpts, excerptSources, sourceUrls: urls,
+      ...fields,
       source_label: PERIOD === '2023' ? `${party.name} — 2023 manifesto` : `${party.name} — official policy page`,
       asOf: today,
-      // What the source said when this was written. --if-changed compares
-      // against it to decide whether the party has moved.
-      sourceHash: fingerprint,
+      // What each source said when this was written. --if-changed compares
+      // against these to decide whether the party has moved.
+      sourceHashes: recordHashes, sourceHash: fingerprint,
     },
-    source_url: url,
+    source_url,
     change_kind: 'new',
     status: 'pending',
   }
@@ -771,9 +826,14 @@ async function noPositionOne(party, topic) {
     },
     source_url: sourceArg, change_kind: 'new', status: 'pending',
   }
-  const { data: existing } = await supabase.from('content_items').select('id').eq('type', 'position').eq('source_id', sourceId).maybeSingle()
+  const { data: existing } = await supabase.from('content_items').select('id, status').eq('type', 'position').eq('source_id', sourceId).maybeSingle()
+  // A live position is never overwritten by this script — not even with "no
+  // position". If the party really has withdrawn it, the daily run stages a
+  // withdrawal proposal when the cited page changes; otherwise it is the
+  // editor's call, made in /editor with the live text in front of them.
+  if (existing?.status === 'approved') { console.error(`✗ ${party.slug}/${topic} is LIVE (approved). Not overwriting it with "no stated position" — review it in /editor instead.`); process.exitCode = 1; return }
   const res = existing
-    ? await supabase.from('content_items').update({ ...row, updated_at: new Date().toISOString() }).eq('id', existing.id)
+    ? await supabase.from('content_items').update({ ...row, updated_at: new Date().toISOString() }).eq('id', existing.id).eq('status', existing.status)
     : await supabase.from('content_items').insert(row)
   if (res.error) { console.warn(`✗ ${party.slug}: ${res.error.message}`); return }
   console.log(`✓ ${party.slug}/${topic}: recorded "no stated position" → pending review`)
@@ -841,8 +901,20 @@ ${failed} of ${list.length} part(ies) failed on ${topicArg} — see above.`)
     console.log(`   DRIFTED:          ${TALLY.drifted.length}${TALLY.drifted.length ? '  (' + TALLY.drifted.join(', ') + ')' : ''}`)
     console.log(`   repointed (need --replace, not drift): ${TALLY.repointed.length}${TALLY.repointed.length ? '  (' + TALLY.repointed.join(', ') + ')' : ''}`)
     console.log(`   would draft new:  ${TALLY.newDraft.length}${TALLY.newDraft.length ? '  (' + TALLY.newDraft.join(', ') + ')' : ''}`)
-    console.log(`   model calls a real run would make: ${TALLY.drifted.length + TALLY.newDraft.length}`)
+    console.log(`   model calls a real run would make: ${TALLY.drifted.length + TALLY.newDraft.length} draft(s), plus one gate call per drifted LIVE row`)
     return
+  }
+  if (IF_CHANGED) {
+    console.log(`
+── ${topicArg} — --if-changed ──`)
+    console.log(`   unchanged:            ${TALLY.unchanged.length}`)
+    console.log(`   baselined (no call):  ${TALLY.baseline.length}`)
+    console.log(`   moved, not material:  ${TALLY.immaterial.length}${TALLY.immaterial.length ? '  (' + TALLY.immaterial.join(', ') + ')' : ''}`)
+    console.log(`   PROPOSED for review:  ${TALLY.proposed.length}${TALLY.proposed.length ? '  (' + TALLY.proposed.join(', ') + ')' : ''}`)
+    console.log(`   no position found:    ${TALLY.notFound.length}${TALLY.notFound.length ? '  (' + TALLY.notFound.join(', ') + ')' : ''}`)
+    console.log(`   POSSIBLE WITHDRAWAL:  ${TALLY.withdrawn.length}${TALLY.withdrawn.length ? '  (' + TALLY.withdrawn.join(', ') + ')' : ''}`)
+    console.log(`   deferred, unreachable source: ${TALLY.unreachable.length}${TALLY.unreachable.length ? '  (' + TALLY.unreachable.join(', ') + ')' : ''}`)
+    console.log(`   repointed (need --replace): ${TALLY.repointed.length}${TALLY.repointed.length ? '  (' + TALLY.repointed.join(', ') + ')' : ''}`)
   }
   // A cap that stops quietly is indistinguishable from a run with nothing left
   // to do — the same shape as the bug this whole change exists to fix. Say what
@@ -857,9 +929,9 @@ ${failed} of ${list.length} part(ies) failed on ${topicArg} — see above.`)
       ? `--max-drafts=${MAX_DRAFTS}`
       : `--max-pending=${MAX_PENDING} (${PENDING_NOW} were already queued)`
     console.log(`\n⏸  ${deferred} part${deferred === 1 ? 'y' : 'ies'} deferred on ${topicArg}: hit ${why} after ${WROTE} write(s).`)
-    console.log('   Not skipped — the next run picks them up, since their fingerprints are still unmatched.')
+    console.log('   Not skipped — the next run picks them up, since their page hashes are still unmatched.')
   }
-  console.log(`\nDone. Review at /editor, then they appear on /policies/${topicArg}.`)
+  console.log(`\nDone. New positions and proposed updates are at /editor; nothing live changed.`)
 }
 
 main().catch((e) => { console.error(e); process.exit(1) })

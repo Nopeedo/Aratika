@@ -9,14 +9,22 @@ name: Refresh party positions
 # nothing anywhere reporting a problem. Eleven weeks out from an election, with
 # parties announcing constantly, that is the failure that matters.
 #
-# --if-changed compares a hash of the fetched source against the one stored when
-# the position was drafted, so a model call happens only when the page actually
-# moved. A steady-state run makes zero model calls: measured at 12 of 12 topics
-# skipped on the second consecutive run. That is what makes daily affordable.
+# --if-changed keeps a fingerprint PER SOURCE PAGE and re-reads a position only
+# when one of its pages is new, changed, or gone. A page that fails to fetch is
+# unknown, not changed. A steady-state run makes zero model calls.
 #
-# Nothing here can publish. Everything lands as `pending` for /editor, and an
-# approved position stays live until a human replaces it — so a changed source
-# never silently rewrites what a reader sees.
+# When pages did move, the re-draft is compared with the live text and only a
+# MATERIAL policy change — a new, dropped or altered commitment — reaches the
+# editor. Rewording and new quotes for the same commitments are recorded as
+# the new baseline and never queued. Until 21 Sep 2026 every moved fingerprint
+# was queued, which is how the same Labour and National positions were approved
+# on the 18th and back in /editor on the 20th.
+#
+# Nothing here can publish, and NOTHING HERE TAKES A POSITION DOWN. A material
+# change to a live position is staged as data.proposed on the approved row
+# (src/lib/positions/proposal.ts); the site keeps rendering the approved text
+# until an editor accepts the proposal. Only brand-new positions land as
+# `pending`, and those were never on the site to begin with.
 #
 # Requires ANTHROPIC_API_KEY in repo secrets. If that isn't set the job skips
 # cleanly rather than failing every day and training us to ignore red runs.
@@ -81,18 +89,16 @@ jobs:
           # unmatched fingerprint, so tomorrow's run picks it up. Once the
           # backlog drains the cap stops binding, because real changes are a
           # handful a day.
-          # --max-drafts bounds one run; --max-pending bounds how much of the
-          # SITE is missing, which is the number that actually matters. A
-          # re-drafted row goes to status='pending' and the site renders only
-          # 'approved', so a pending position is an absent one — and
-          # policy-comparison.tsx says so out loud: "No position on economy
-          # recorded yet for National, Labour, Green, ACT, NZ First, Te Pāti
-          # Māori". Three per topic across eleven topics would still be
-          # thirty-three positions dark in a night, so the queue depth is the
-          # real limit. Drafting pauses while the editor is behind.
+          # --max-drafts bounds one run. --max-pending used to bound how much
+          # of the SITE was missing, because a re-draft went to status='pending'
+          # and the site renders only 'approved'. Re-drafts of live positions
+          # are now proposals on the approved row and take nothing down, so the
+          # pending count is just new positions that were never live. It still
+          # bounds the queue — a wall of new drafts is no more reviewable than a
+          # wall of updates — but it is a review-load cap, not a darkness cap.
           MAX="${{ github.event.inputs.max_drafts }}"
-          [ -z "$MAX" ] && MAX=3
-          ARGS="--if-changed --max-drafts=$MAX --max-pending=6"
+          [ -z "$MAX" ] && MAX=5
+          ARGS="--if-changed --max-drafts=$MAX --max-pending=12"
           if [ -n "${{ github.event.inputs.parties }}" ]; then
             ARGS="$ARGS --party=${{ github.event.inputs.parties }}"
           fi

@@ -72,8 +72,32 @@ async function loadPending(): Promise<PendingItem[]> {
   // Only show items that are READY for editorial review — i.e. legislation that's
   // been AI-drafted (has a summary + breakdown). Raw, un-enriched feed items are
   // "pending enrichment", not "pending review", so they're hidden here.
-  return (rows as (PendingItem & { data: { enriched?: boolean } })[])
+  const pending = (rows as (PendingItem & { data: { enriched?: boolean } })[])
     .filter((it) => it.type !== 'legislation' || it.data?.enriched === true)
+
+  // PROPOSED UPDATES to positions that are already live. These rows are
+  // status='approved' — the site is rendering them right now — and carry the
+  // drafter's re-draft under data.proposed (src/lib/positions/proposal.ts).
+  // They used to arrive here as status='pending', which meant the position had
+  // been taken off the site the moment the party's page changed. Now it stays
+  // up, and what is queued is the CHANGE, not the position.
+  const { data: proposals } = await supabase
+    .from('content_items')
+    .select('id, type, title, data, summary, change_kind, source_url, fetched_at')
+    .eq('type', 'position')
+    .eq('status', 'approved')
+    .not('data->proposed', 'is', null)
+    .limit(1000)
+  const proposed: PendingItem[] = ((proposals ?? []) as PendingItem[]).map((it) => ({
+    ...it,
+    proposal: true,
+    change_kind: 'updated',
+    fetched_at: typeof (it.data?.proposed as { proposedAt?: unknown } | undefined)?.proposedAt === 'string'
+      ? (it.data.proposed as { proposedAt: string }).proposedAt
+      : it.fetched_at,
+  }))
+  // Newest first across both kinds, same as the pending query's own order.
+  return [...pending, ...proposed].sort((a, b) => (b.fetched_at ?? '').localeCompare(a.fetched_at ?? ''))
 }
 
 function Gate({ title, body, children }: { title: string; body: string; children: React.ReactNode }) {

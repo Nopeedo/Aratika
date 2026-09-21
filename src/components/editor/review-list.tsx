@@ -14,6 +14,7 @@ import { SITE } from '@/constants/site'
 import { StageTracker } from '@/components/bills/stage-tracker'
 import { HaveYourSay } from '@/components/bills/have-your-say'
 import { billSlugFromLink } from '@/lib/bills/slug'
+import { getProposal, type ProposedRevision } from '@/lib/positions/proposal'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 export interface PendingItem {
@@ -25,6 +26,9 @@ export interface PendingItem {
   change_kind: string
   source_url: string | null
   fetched_at: string | null
+  /** A LIVE position carrying a proposed update under data.proposed. The row is
+   *  approved and on the site; what is being reviewed is the change. */
+  proposal?: boolean
 }
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -119,6 +123,11 @@ const SIGNAL_FIELDS = ['parties', 'mps', 'topics', 'electorates', 'candidates', 
  * So it gets its own group at the end, to skim rather than read.
  */
 function signalOf(i: PendingItem): number {
+  // A position is about exactly one party and one topic by construction — it
+  // carries them as strings, not tag arrays, and scored zero here, which filed
+  // every position and every proposed update under "Nothing tagged", collapsed
+  // by default, next to the crosswords.
+  if (i.type === 'position') return 2
   let n = 0
   for (const f of SIGNAL_FIELDS) {
     const v = i.data?.[f]
@@ -391,8 +400,12 @@ function VideoRow({ item, onDone, selected, onToggleSelect }: { item: PendingIte
 }
 
 function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingItem; onDone: (id: string, action: 'approve' | 'reject') => void; selected: boolean; onToggleSelect: (id: string) => void }) {
-  const [summary, setSummary] = useState(item.summary ?? '')
-  const [summaryBasic, setSummaryBasic] = useState(typeof item.data?.summaryBasic === 'string' ? item.data.summaryBasic : '')
+  // A proposal's editable text is the PROPOSED text; the live text is shown
+  // beside it read-only. What is approved is the proposal, so that is what the
+  // editor should be able to touch up before it goes live.
+  const proposal = item.proposal ? getProposal(item.data) : null
+  const [summary, setSummary] = useState(proposal ? proposal.summary : (item.summary ?? ''))
+  const [summaryBasic, setSummaryBasic] = useState(proposal ? proposal.summaryBasic : (typeof item.data?.summaryBasic === 'string' ? item.data.summaryBasic : ''))
   const [notes, setNotes] = useState('')
   const [busy, setBusy] = useState<'approve' | 'reject' | null>(null)
   const [err, setErr] = useState<string | null>(null)
@@ -425,7 +438,7 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
     try {
       const res = await fetch('/api/editor/review', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: item.id, action, summary, summaryBasic, notes }),
+        body: JSON.stringify({ id: item.id, action, summary, summaryBasic, notes, proposal: !!proposal }),
       })
       if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.message || 'Failed') }
       onDone(item.id, action)
@@ -444,7 +457,10 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
   const age = useAge(published)
   const ageTone = AGE_STYLE[age?.tone ?? 'fresh']
 
-  const otherFields = Object.entries(item.data).filter(([k, v]) => v != null && v !== '' && !['policy_links', 'enriched', 'enriched_at'].includes(k))
+  // Internal bookkeeping the drafter keeps on a position — page hashes, the
+  // per-excerpt attribution array, a proposal — is not something to review,
+  // and an object rendered through String() reads "[object Object]".
+  const otherFields = Object.entries(item.data).filter(([k, v]) => v != null && v !== '' && !['policy_links', 'enriched', 'enriched_at', 'sourceHashes', 'sourceHash', 'sourceUrls', 'excerptSources', 'proposed', 'promotedAt', 'proposalRejectedAt', 'proposalRejectedBy'].includes(k))
 
   return (
     <div style={{ background: '#fff', border: `1px solid ${selected ? JADE : BORDER}`, borderRadius: 18, padding: '18px 20px' }}>
@@ -452,7 +468,7 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14, flexWrap: 'wrap' }}>
         <input type="checkbox" checked={selected} onChange={() => onToggleSelect(item.id)} title="Select for bulk action" style={{ width: 16, height: 16, cursor: 'pointer', accentColor: JADE }} />
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800, color: JADE, background: '#ecfdf5', border: '1px solid #cfe9d8', borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE, textTransform: 'capitalize' }}><FileText style={{ width: 12, height: 12 }} /> {isLegislation ? docType : item.type}</span>
-        <span style={{ fontSize: 11, fontWeight: 700, color: item.change_kind === 'new' ? '#1e40af' : '#92400e', background: item.change_kind === 'new' ? '#eff6ff' : '#fff7ed', border: `1px solid ${item.change_kind === 'new' ? '#bfdbfe' : '#fed7aa'}`, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>{item.change_kind === 'new' ? 'New' : 'Updated'}</span>
+        <span style={{ fontSize: 11, fontWeight: 700, color: item.change_kind === 'new' ? '#1e40af' : '#92400e', background: item.change_kind === 'new' ? '#eff6ff' : '#fff7ed', border: `1px solid ${item.change_kind === 'new' ? '#bfdbfe' : '#fed7aa'}`, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>{proposal ? 'Proposed update · live position stays up' : item.change_kind === 'new' ? 'New' : 'Updated'}</span>
         {published && (
           <span
             title={`Published by the source on ${absDate(published)}`}
@@ -511,6 +527,8 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
                 ))}
           </div>
         </>
+      ) : proposal ? (
+        <ProposalDiff item={item} proposal={proposal} />
       ) : (
         <>
           <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 12px' }}>{item.title}</h2>
@@ -539,7 +557,11 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
         <textarea value={summaryBasic} onChange={(e) => setSummaryBasic(e.target.value)} rows={3} placeholder="Plain-language summary anyone can understand, no jargon…" style={{ width: '100%', marginTop: 6, resize: 'vertical', fontFamily: MANROPE, fontSize: 13.5, color: INK, border: `1px solid ${BORDER}`, borderRadius: 11, padding: '10px 12px', outline: 'none', lineHeight: 1.5, background: '#fff' }} />
         <label style={{ display: 'block', marginTop: 12, fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Detailed summary — fuller, still plain</label>
         <textarea value={summary} onChange={(e) => setSummary(e.target.value)} rows={4} placeholder="Fuller neutral, factual summary…" style={{ width: '100%', marginTop: 6, resize: 'vertical', fontFamily: MANROPE, fontSize: 13.5, color: INK, border: `1px solid ${BORDER}`, borderRadius: 11, padding: '10px 12px', outline: 'none', lineHeight: 1.5, background: '#fff' }} />
-        <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '8px 0 0' }}>Toggle <b>Basic / Detailed</b> in the preview above to check both. Editing here updates the preview live.</p>
+        <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '8px 0 0' }}>
+          {proposal
+            ? <>These are the <b>proposed</b> texts. <b>Approve</b> replaces the live position with them; <b>Reject</b> keeps the live position exactly as it is and stops this same change being proposed again.</>
+            : <>Toggle <b>Basic / Detailed</b> in the preview above to check both. Editing here updates the preview live.</>}
+        </p>
         </>
         )}
 
@@ -561,6 +583,83 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
             {busy === 'reject' ? <Loader2 style={{ width: 15, height: 15 }} className="animate-spin" /> : 'Reject'}
           </button>
         </div>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * A proposed update beside the live position it would replace.
+ *
+ * The editor is deciding on a CHANGE, so the change is what is shown: the
+ * drafter's one-line account of it, the pages that were new or altered, then
+ * each field live-vs-proposed. Rows whose text is identical are collapsed to a
+ * single line — most of a proposal is usually unchanged, and making the reader
+ * diff two paragraphs by eye to find one new sentence was the old queue's
+ * problem in a new coat.
+ */
+function ProposalDiff({ item, proposal }: { item: PendingItem; proposal: ProposedRevision }) {
+  const d = item.data
+  const str = (v: unknown) => (typeof v === 'string' ? v : '')
+  const arr = (v: unknown) => (Array.isArray(v) ? (v as unknown[]).map(String) : [])
+  const liveNoPosition = d.noPosition === true
+  const rows: { label: string; live: string; next: string }[] = [
+    { label: 'Stance', live: str(d.stance), next: proposal.stance },
+    { label: 'Basic summary', live: str(d.summaryBasic), next: proposal.summaryBasic },
+    { label: 'Detailed summary', live: item.summary ?? '', next: proposal.summary },
+    { label: 'Key proposals', live: arr(d.keyProposals).join('\n'), next: (proposal.keyProposals ?? []).join('\n') },
+    { label: 'Quote', live: str(d.quote), next: proposal.quote ?? '' },
+    { label: 'Excerpts', live: arr(d.excerpts).join('\n'), next: (proposal.excerpts ?? []).join('\n') },
+    { label: 'Cited page', live: item.source_url ?? '', next: proposal.source_url },
+  ]
+  const pages = [
+    ...(proposal.reason?.added ?? []).map((u) => ({ u, k: 'new' })),
+    ...(proposal.reason?.changed ?? []).map((u) => ({ u, k: 'changed' })),
+    ...(proposal.reason?.removed ?? []).map((u) => ({ u, k: 'gone' })),
+  ]
+  const short = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>{item.title}</h2>
+      <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: 12, padding: '12px 14px', marginBottom: 12 }}>
+        <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: '#9a3412', fontFamily: MANROPE, marginBottom: 4 }}>What changed</div>
+        <p style={{ fontSize: 14, color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
+          {liveNoPosition ? 'The live entry says this party has no stated position on the topic. Their pages now contain one.' : proposal.what || 'The party\u2019s pages changed and the re-draft differs from the live text.'}
+        </p>
+        {pages.length > 0 && (
+          <ul style={{ margin: '8px 0 0', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 3 }}>
+            {pages.slice(0, 12).map(({ u, k }) => (
+              <li key={u} style={{ fontSize: 12, fontFamily: MANROPE, color: SECONDARY, display: 'flex', gap: 8, alignItems: 'baseline' }}>
+                <span style={{ fontWeight: 800, color: k === 'new' ? '#1e40af' : k === 'gone' ? '#b42318' : '#92400e', minWidth: 52 }}>{k === 'new' ? 'NEW' : k === 'gone' ? 'GONE' : 'CHANGED'}</span>
+                <a href={u} target="_blank" rel="noopener noreferrer" style={{ color: INK, textDecoration: 'none', wordBreak: 'break-all' }}>{short(u)}</a>
+              </li>
+            ))}
+            {pages.length > 12 && <li style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>and {pages.length - 12} more</li>}
+          </ul>
+        )}
+      </div>
+      <div style={{ border: `1px solid ${BORDER}`, borderRadius: 12, overflow: 'hidden' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '110px 1fr 1fr', background: SURFACE, borderBottom: `1px solid ${BORDER}`, fontSize: 11, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', fontFamily: MANROPE }}>
+          <div style={{ padding: '8px 10px', color: TERTIARY }}>Field</div>
+          <div style={{ padding: '8px 10px', color: TERTIARY }}>Live now</div>
+          <div style={{ padding: '8px 10px', color: JADE }}>Proposed</div>
+        </div>
+        {rows.map((r) => {
+          const same = r.live.trim() === r.next.trim()
+          return (
+            <div key={r.label} style={{ display: 'grid', gridTemplateColumns: '110px 1fr 1fr', borderBottom: `1px solid ${BORDER}`, fontSize: 12.5, fontFamily: MANROPE, lineHeight: 1.5 }}>
+              <div style={{ padding: '8px 10px', fontWeight: 700, color: TERTIARY }}>{r.label}</div>
+              {same ? (
+                <div style={{ padding: '8px 10px', color: TERTIARY, gridColumn: '2 / 4', fontStyle: 'italic' }}>unchanged{r.live ? ` — ${r.live.length > 90 ? r.live.slice(0, 90) + '…' : r.live}` : ''}</div>
+              ) : (
+                <>
+                  <div style={{ padding: '8px 10px', color: SECONDARY, whiteSpace: 'pre-wrap', wordBreak: 'break-word', borderRight: `1px solid ${BORDER}` }}>{r.live || <span style={{ color: TERTIARY }}>—</span>}</div>
+                  <div style={{ padding: '8px 10px', color: INK, whiteSpace: 'pre-wrap', wordBreak: 'break-word', background: '#f2faf5' }}>{r.next || <span style={{ color: TERTIARY }}>—</span>}</div>
+                </>
+              )}
+            </div>
+          )
+        })}
       </div>
     </div>
   )
