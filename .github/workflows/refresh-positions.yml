@@ -40,7 +40,7 @@ on:
         description: 'Comma-separated party slugs, e.g. national,labour,green (blank = all)'
         required: false
       max_drafts:
-        description: 'Max positions written per topic this run (blank = daily default of 3)'
+        description: 'Max positions written per topic this run (blank = daily default of 5)'
         required: false
 
 jobs:

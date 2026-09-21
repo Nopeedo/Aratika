@@ -891,8 +891,14 @@ async function main() {
       console.error(`✗ ${p.slug}/${topicArg}: ${msg}`)
     }
   }
-  if (failed > 0) console.error(`
+  if (failed > 0) {
+    console.error(`
 ${failed} of ${list.length} part(ies) failed on ${topicArg} — see above.`)
+    // A red run, not a quiet one. With exit 0 the workflow's per-topic failure
+    // accounting never fired, so an exhausted API balance looked like a day on
+    // which nothing had changed.
+    process.exitCode = 1
+  }
   if (DRY_RUN) {
     console.log(`
 ── ${topicArg} — dry run, nothing written ──`)
