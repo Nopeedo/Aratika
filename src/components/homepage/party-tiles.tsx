@@ -591,25 +591,36 @@ function PanelHeader({ p }: { p: TileParty }) {
     <div>
       <span style={{ display: 'block', fontSize: 'clamp(30px,6.4vw,56px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.05 }}>{p.name}</span>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 12 }}>
-        {/* Overlap the discs only when both are real photos — matches the party
-            tile elsewhere. Faces sit mid-frame so a 10px bite is invisible,
-            whereas initials run edge to edge and would get clipped. */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 12 }}>
+        {/* Each photo sits in a solid white ring — a frame, so the disc reads as
+            a portrait on the tinted card rather than a cut-out. Drawn as a
+            box-shadow spread so it adds no layout width. Overlap the discs
+            only when both are real photos — matches the party tile elsewhere.
+            Faces sit mid-frame so a 10px bite is invisible, whereas initials
+            run edge to edge and would get clipped; the ring on the second disc
+            is what makes the overlap read as two people rather than a blob. */}
         <span style={{ display: 'flex', flexShrink: 0 }}>
-          <Avatar name={p.leader} party={p.slug} src={p.leaderPhoto} size="md" face />
+          <span style={{ display: 'flex', borderRadius: '50%', boxShadow: '0 0 0 3px #fff' }}>
+            <Avatar name={p.leader} party={p.slug} src={p.leaderPhoto} size="md" face />
+          </span>
           {p.coLeader && (
-            <span style={{ marginLeft: p.leaderPhoto && p.coLeaderPhoto ? -10 : 4, borderRadius: '50%', boxShadow: '0 0 0 2px #fff' }}>
+            <span style={{ display: 'flex', marginLeft: p.leaderPhoto && p.coLeaderPhoto ? -10 : 6, borderRadius: '50%', boxShadow: '0 0 0 3px #fff' }}>
               <Avatar name={p.coLeader} party={p.slug} src={p.coLeaderPhoto} size="md" face />
             </span>
           )}
         </span>
-        <span style={{ textAlign: 'left' }}>
-          {/* Two lines reserved. "Marama Davidson & Chlöe Swarbrick" wraps on a
-              phone where "Christopher Luxon" does not, so the card grew by 17px
-              whenever the cycle reached a co-led party and pushed the page
-              down. Reserving the taller case costs one blank line on the others
-              and keeps the card a fixed height at every width. */}
-          <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25, minHeight: '2.5em' }}>
+        {/* Name and role as one tight pair, vertically centred against the
+            photo. The height reservation lives on this BLOCK, not on the name:
+            "Marama Davidson & Chlöe Swarbrick" wraps to two lines on a phone
+            where "Christopher Luxon" does not, so the card used to grow by 17px
+            whenever the cycle reached a co-led party and push the page down.
+            Reserving the taller case keeps the card a fixed height at every
+            width — but reserving it on the name alone left a blank line
+            between a one-line name and its role. Reserving it here and
+            centring the pair inside keeps the height and closes the gap.
+            55px = two name lines (15px × 1.25 × 2) + the role line. */}
+        <span style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left', minHeight: 55 }}>
+          <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>
             {p.leaderHref ? <Link href={p.leaderHref} style={{ color: INK, textDecoration: 'none' }}>{p.leader}</Link> : p.leader}
             {p.coLeader && (
               <>
@@ -619,7 +630,7 @@ function PanelHeader({ p }: { p: TileParty }) {
             )}
           </div>
           {/* Pluralised, so a co-led party never reads as having one leader. */}
-          <div style={{ fontSize: 12.5, fontWeight: 600, color: SUB, marginTop: 1, fontFamily: MANROPE }}>
+          <div style={{ fontSize: 12.5, fontWeight: 600, color: SUB, marginTop: 2, lineHeight: 1.3, fontFamily: MANROPE }}>
             {p.coLeader ? 'Co-leaders' : p.leaderTitle}
           </div>
         </span>
