@@ -13,7 +13,7 @@
 import * as React from 'react'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Landmark, Newspaper, PlayCircle, ScrollText } from 'lucide-react'
+import { ArrowRight, Landmark, Newspaper, PlayCircle, ScrollText } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
@@ -538,18 +538,30 @@ function BillsRow({ p }: { p: TileParty }) {
               ? 'None have passed into law yet.'
               : `${b.passed} of the ${b.total} ${b.passed === 1 ? 'is' : 'are'} now law.`}
         </p>
-      </div>
 
-      {/* The "government bills are the coalition's programme…" paragraph
-          that stood here is in the (i) bubble at the top of the box now: it
-          is process, and four lines of it sat between the figures and the
-          link out. */}
-      {/* Leaves this block the same way the policy section and the seats
-          section leave theirs: a party-coloured signpost, under the box. */}
-      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-        <SignLink href={none ? '/bills' : `/bills?party=${p.slug}`} icon={<ScrollText style={{ width: 15, height: 15, flexShrink: 0 }} />}>
-          {none ? 'Browse all bills' : `See ${p.name}’s ${b.total} bills`}
-        </SignLink>
+        {/* The way out sits INSIDE the box now, and quietly: a small outlined
+            chip rather than the filled signpost the policy and seats sections
+            close with. Three solid party-coloured signs stacked down one page
+            made each of them count for less, and this one is a footnote to
+            the figures above it rather than the way out of a section. */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 12 }}>
+          <Link
+            href={none ? '/bills' : `/bills?party=${p.slug}`}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '5px 10px', borderRadius: 999,
+              border: `1.5px solid ${seatColor(accent)}`, color: seatColor(accent),
+              background: 'transparent',
+              fontSize: 11.5, fontWeight: 800, fontFamily: MANROPE,
+              textDecoration: 'none', whiteSpace: 'nowrap',
+              transition: 'border-color .25s ease-in-out, color .25s ease-in-out',
+            }}
+          >
+            <ScrollText style={{ width: 12, height: 12, flexShrink: 0 }} />
+            {none ? 'Browse all bills' : `See ${p.name}\u2019s ${b.total} bills`}
+            <ArrowRight style={{ width: 13, height: 13, flexShrink: 0 }} strokeWidth={3} />
+          </Link>
+        </div>
       </div>
     </div>
   )
