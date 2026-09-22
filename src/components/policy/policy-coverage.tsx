@@ -8,15 +8,19 @@
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { CoverageMatrix } from './coverage-matrix'
-import { BORDER, INK, MANROPE, SECONDARY, SURFACE } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY } from '@/constants/theme'
 
 export async function PolicyCoverage({ maxWidth = 1100 }: { maxWidth?: number }) {
   const positions = await getAllApprovedPositions()
   if (positions.length === 0) return null
   const topics = POLICY_TOPIC_ORDER.map((slug) => ({ slug, label: POLICY_TOPICS[slug].label }))
 
+  // Transparent, so the page's weave runs behind the heading and the legend
+  // the same way it does everywhere else. The band used to sit on its own flat
+  // panel, which made it read as a separate page pasted into this one. The
+  // table inside keeps its white ground.
   return (
-    <section style={{ background: SURFACE, borderTop: `1px solid ${BORDER}` }}>
+    <section style={{ background: 'transparent', borderTop: `1px solid ${BORDER}` }}>
       <div style={{ maxWidth, margin: '0 auto', padding: '32px clamp(18px, 5vw, 36px)' }}>
         {/* No "Open the compare tool" link: on a topic page it pointed at the
             page you were already on, and the topic chips above are the way

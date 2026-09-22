@@ -141,7 +141,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
           scrolled it lands mid-column and reads as a bright stripe someone
           forgot to clean up. One opaque ground removes the boundary instead of
           trying to keep two backgrounds in step. */}
-      <div ref={boxRef} className="scroll-x" style={{ overflowX: 'auto', border: `1px solid ${BORDER}`, borderRadius: 14, background: '#fff' }}>
+      <div ref={boxRef} className="scroll-x coverage-scroll" style={{ overflowX: 'auto', border: `1px solid ${BORDER}`, borderRadius: 14, background: '#fff' }}>
         {/* No minWidth once paged: the point of a page is that it fits. */}
         <table className="coverage-matrix" style={{ borderCollapse: 'collapse', width: '100%', minWidth: pages > 1 ? undefined : 640, fontFamily: MANROPE, tableLayout: pages > 1 ? 'fixed' : undefined }}>
           <thead>
@@ -423,9 +423,25 @@ const MATRIX_CSS = `
   .coverage-band { white-space: normal; max-width: 200px; left: 6px; }
   /* The band is a divider, not a section header: same height as the rows it
      divides, so the eye reads straight past it into the second list. */
-  .coverage-matrix th.coverage-band-cell { font-size: 10.5px; padding-top: 3px; padding-bottom: 3px; }
+  /* padding-right holds the pager's INVISIBLE 44px hit box inside the
+     container. Without it the box overhangs the right edge by ~7px, which is
+     enough to make the container scrollable — a scrollbar and a swipe for a
+     margin nobody can see. */
+  /* "tr th." rather than "th.": the band cell is ALSO a :first-child, and
+     that rule has the same specificity, so it was winning on source order and
+     holding the padding at 3px. */
+  .coverage-matrix tr th.coverage-band-cell { font-size: 10.5px; padding-top: 3px; padding-bottom: 3px; padding-right: 14px; }
   /* Shown only where the table is paged, i.e. where the arrows exist at all. */
-  .coverage-band-pager { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  /* Above the container's right-edge fade (.scroll-x::after in globals.css),
+     which otherwise washes the "more topics" arrow out to nearly nothing. The
+     fade is a plain absolute overlay, so a positioned z-index clears it. */
+  /* No scrollbar under the table: the topics are PAGED, so on a phone the
+     grid always fits and the bar was a control for a gesture that does
+     nothing. overflow-x stays auto as a safety net for a viewport too narrow
+     for even one column, so the content is never unreachable, just unadorned. */
+  .coverage-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+  .coverage-scroll::-webkit-scrollbar { display: none; }
+  .coverage-band-pager { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; position: relative; z-index: 2; }
   /* Icon over a one-line, ellipsised name. The icon carries the meaning, so
      the name may be clipped without the column becoming a guess. */
   .coverage-topic-icon { display: block; margin: 0 auto 3px; width: 15px; height: 15px; }
