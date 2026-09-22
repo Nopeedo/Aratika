@@ -93,10 +93,19 @@
 } */
 
 /* ─── Base ───────────────────────────────────────────────────────────────── */
-/* overflow-x: hidden on both html and body — belt-and-braces against any single
+/* overflow-x: CLIP on both html and body — belt-and-braces against any single
    element (a fixed-position bar, a full-bleed rail, etc.) being a hair wider
    than the viewport and causing the whole page to shift/scroll sideways on
    mobile. Neither element is meant to scroll horizontally on its own.
+
+   clip, not hidden, and the difference is not cosmetic: `hidden` makes the
+   element a SCROLL CONTAINER, and a scroll container becomes the containing
+   block for position:sticky inside it. That is what silently un-stuck the
+   navbar — header{position:sticky;top:0} was sticking to a body that never
+   scrolls rather than to the viewport, so on a phone it scrolled away with
+   the page and opening the menu revealed a panel that was already off-screen
+   above. `clip` clips the same overflow without establishing a scrollport, so
+   sticky resolves against the viewport again.
 
    NO scroll-behavior: smooth here, deliberately. It used to be, and it broke
    navigation: the App Router scrolls to the top on every route change, and a
@@ -113,7 +122,7 @@
    policy explorer, the bills tracker, the bill reader and the battlegrounds
    map. Those keep working; only the accidental animation of route changes
    stops. */
-html { overflow-x: hidden; width: 100%; }
+html { overflow-x: clip; width: 100%; }
 
 body {
   background-color: var(--background);
@@ -121,7 +130,7 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
 }
 
