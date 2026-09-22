@@ -649,14 +649,11 @@ function FocusedCard({ slug, pos, topicLabel }: {
 
   return (
     <div>
-      {/* Only the ISSUE word is underlined, in the same hue as the pill border
-          the reader tapped, so it ties back to that pill — "NZ FIRST on
-          CLIMATE" gets the rule under CLIMATE alone. A border, not
-          text-decoration, so it sits clear of the descenders. */}
-      <div style={{ fontSize: fitTitleSize(`${party.name} on ${topicLabel}`), fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15, whiteSpace: 'nowrap' }}>
-        {party.name} on{' '}
-        <span style={{ display: 'inline-block', paddingBottom: 3, borderBottom: `3px solid ${topicHex}` }}>{topicLabel}</span>
-      </div>
+      {/* Underlined in the ISSUE's colour — the same hue as the pill border
+          the reader tapped — so the title ties back to that pill. A rule under
+          the text, not text-decoration, so it sits clear of the descenders and
+          spans only as wide as the title. */}
+      <div style={{ fontSize: fitTitleSize(`${party.name} on ${topicLabel}`), fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15, whiteSpace: 'nowrap', display: 'inline-block', paddingBottom: 4, borderBottom: `3px solid ${topicHex}` }}>{party.name} on {topicLabel}</div>
       {/* The stance headline is gone from the top of the panel. It restated the
           proposals directly beneath it — Labour's housing stance read "Capital
           gains tax on investment property; solar help for renters and
