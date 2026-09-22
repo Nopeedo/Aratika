@@ -21,6 +21,7 @@ import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { getProposalGrouping, type GroupedProposal } from '@/constants/policy-proposal-groups'
 import { TopicChip } from '@/components/homepage/topic-chip'
+import { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
 import { isLightHex } from '@/components/homepage/battleground-card'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import type { PartySlug } from '@/types'
@@ -479,6 +480,12 @@ function FirstLineBold({ text, style }: { text: string; style: React.CSSProperti
  *  it's server-render-safe and needs no post-hydration size-flash. Tuned so
  *  the shortest pairings sit at the "much bigger" size that was asked for,
  *  and the longest still lands on one line on the narrowest phone panel. */
+/** hex → rgba, for the feathered wash behind the panel title. */
+function rgba(hex: string, a: number): string {
+  const n = parseInt(hex.slice(1), 16)
+  return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`
+}
+
 function fitTitleSize(text: string): number {
   const MAX = 26, MIN = 13, SAFE_WIDTH = 300, GLYPH_RATIO = 0.66
   return Math.max(MIN, Math.min(MAX, SAFE_WIDTH / (text.length * GLYPH_RATIO)))
@@ -626,6 +633,10 @@ function FocusedCard({ slug, pos, topicLabel }: {
   // panel shows the raw keyProposals exactly as before.
   const grouping = pos ? getProposalGrouping(pos.topic, slug) : null
   const items: GroupedProposal[] = grouping?.proposals ?? bullets
+  // The issue's pill-border colour (TOPIC_BORDER_HEX, keyed by the Tailwind
+  // hue in the topic's textColor) — tints the wash behind the title below.
+  const topicHue = POLICY_TOPICS[pos?.topic as keyof typeof POLICY_TOPICS]?.textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
+  const topicHex = (TOPIC_BORDER_HEX[topicHue] ?? TOPIC_BORDER_HEX.slate).rest
   // Verbatim only — excerpts/quote are the two fields the ingestion script
   // mechanically verifies as exact substrings of the party's own published
   // text (see scripts/draft-positions.mjs). keyProposals/stance/summary are
@@ -644,7 +655,19 @@ function FocusedCard({ slug, pos, topicLabel }: {
 
   return (
     <div>
-      <div style={{ fontSize: fitTitleSize(`${party.name} on ${topicLabel}`), fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15, whiteSpace: 'nowrap' }}>{party.name} on {topicLabel}</div>
+      {/* Same feathered wash the section heading has ("What does X stand
+          for?"), but in the ISSUE's colour rather than the party's — the same
+          hue the topic's pill border uses, so the title ties back to the pill
+          the reader tapped. isolation + zIndex -1 keep the wash under the
+          text without it escaping behind the panel. */}
+      <div style={{ position: 'relative', isolation: 'isolate', marginBottom: 10 }}>
+        <div aria-hidden style={{
+          position: 'absolute', left: '-6%', right: '-6%', top: '-70%', bottom: '-70%',
+          background: `radial-gradient(ellipse at center, ${rgba(topicHex, 0.3)}, ${rgba(topicHex, 0)} 65%)`,
+          pointerEvents: 'none', zIndex: -1,
+        }} />
+        <div style={{ position: 'relative', fontSize: fitTitleSize(`${party.name} on ${topicLabel}`), fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), fontFamily: MANROPE, lineHeight: 1.15, whiteSpace: 'nowrap' }}>{party.name} on {topicLabel}</div>
+      </div>
       {/* The stance headline is gone from the top of the panel. It restated the
           proposals directly beneath it — Labour's housing stance read "Capital
           gains tax on investment property; solar help for renters and
