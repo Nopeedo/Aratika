@@ -1,11 +1,14 @@
 /**
- * CredibilityStrip — four sourced stat tiles + the "who we source from" badges.
+ * CredibilityStrip — four sourced stat tiles under their own section heading.
  * Sits at the foot of the beginner tier as a quiet trust anchor: everything a
  * newcomer just read is grounded in official sources.
+ *
+ * The "who we source from" badge row (NZ Parliament / Electoral Commission /
+ * Stats NZ / Non-partisan) that used to sit under the tiles was removed by
+ * request — the tiles carry the trust signal on their own.
  */
 
-import { ShieldCheck } from 'lucide-react'
-import { BORDER, INK, JADE, MANROPE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, MANROPE, TERTIARY } from '@/constants/theme'
 
 const STATS = [
   // 7 November 2026, from the Electoral Commission's media kit — the same date
@@ -43,18 +46,15 @@ export function CredibilityStrip() {
           floated at the vertical middle of a two-row grid beside it.
           Narrow widths were never affected, which is why it looked right on a
           phone and wrong on a laptop. */}
-      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px)', display: 'flex', flexDirection: 'column', gap: 18 }}>
+      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px)' }}>
+        {/* Section heading, in the same voice as "What does {party} stand for?"
+            above — the tiles were the only block on the page without one. */}
+        <h2 style={{ fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 18px' }}>
+          The election at a glance
+        </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 12 }}>
           {STATS.map((s) => (
             <StatTile key={s.label} {...s} />
-          ))}
-        </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 18px', alignItems: 'center' }}>
-          {['NZ Parliament', 'Electoral Commission', 'Stats NZ', 'Non-partisan & independent'].map((label) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 500, color: TERTIARY, fontFamily: MANROPE }}>
-              <ShieldCheck style={{ width: 13, height: 13, color: JADE, flexShrink: 0 }} />
-              {label}
-            </div>
           ))}
         </div>
       </div>
