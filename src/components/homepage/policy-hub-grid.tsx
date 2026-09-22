@@ -34,7 +34,10 @@ export async function PolicyHubGrid() {
             through parties one at a time and wants them side by side.
             /policies redirects to the first topic, so this lands on a real
             comparison rather than a menu. */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
+        {/* Left-aligned, not centred: it shares this container's left inset with
+            the issue pills above, so it sits in the same column as their left
+            edge and reads as the last item in that list. */}
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 28 }}>
           <CompareSignLink />
         </div>
       </div>
