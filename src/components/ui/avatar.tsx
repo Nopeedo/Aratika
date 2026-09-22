@@ -15,6 +15,19 @@ export interface AvatarProps {
   face?: boolean
 }
 
+/** The default `face` crop — focal point in the top third, 1.4× zoom — suits
+ *  the waist-up portraits most MP photos are: it lifts the face out of the
+ *  suit and shoulders. It's wrong for a photo that's ALREADY a tight headshot:
+ *  zooming 1.4× on the top 14% of one of those lands on the forehead and
+ *  pushes the face down out of the circle. Those get their own focal point
+ *  here, keyed by src. `y` is where the face centre sits in the source image;
+ *  little or no zoom because there's nothing to crop away. */
+const DEFAULT_FACE_CROP = { y: '14%', scale: 1.4 }
+const FACE_CROP: Record<string, { y: string; scale: number }> = {
+  // Tight headshot, eyes ~40% down, chin ~78%. Face centre ≈ 45%.
+  '/mps/winston-peters.jpg': { y: '45%', scale: 1.08 },
+}
+
 const sizes = {
   xs: { container: 'size-6  text-xs',   px: 24 },
   sm: { container: 'size-8  text-sm',   px: 32 },
@@ -35,6 +48,7 @@ function getInitials(name: string): string {
 export function Avatar({ src, name, party, size = 'md', className, face = false }: AvatarProps) {
   const { container, px } = sizes[size]
   const partyColor = party ? PARTY_COLORS[party] : null
+  const crop = face ? (src && FACE_CROP[src]) || DEFAULT_FACE_CROP : null
 
   return (
     <div
@@ -51,9 +65,11 @@ export function Avatar({ src, name, party, size = 'md', className, face = false 
           width={px}
           height={px}
           className="object-cover w-full h-full"
-          // Faces sit in the top third of these portraits — bias the crop up and
-          // zoom in so the face fills the circle instead of the suit/shoulders.
-          style={face ? { objectPosition: '50% 14%', transform: 'scale(1.4)', transformOrigin: '50% 14%' } : undefined}
+          // Bias the crop toward the face and zoom so it fills the circle instead
+          // of the suit/shoulders. Focal point + zoom come from FACE_CROP above:
+          // the default for waist-up portraits, a per-photo override for tight
+          // headshots where the default would push the face out of frame.
+          style={crop ? { objectPosition: `50% ${crop.y}`, transform: `scale(${crop.scale})`, transformOrigin: `50% ${crop.y}` } : undefined}
         />
       ) : (
         <div
