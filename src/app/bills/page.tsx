@@ -104,7 +104,10 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
               What the list covers and how to filter it is orientation, and the
               filters themselves are directly below, visible and labelled. */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>All bills this term</h2>
+            {/* Sized to match "The most debated bills" above it: the two are
+                peer sections of this page, and at 20px against 24px this one
+                read as a subheading of the carousel rather than its own. */}
+            <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>All bills this term</h2>
             <AboutAllBills />
           </div>
         </div>

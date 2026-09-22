@@ -44,7 +44,10 @@ const STATUS: Record<DefiningBill['statusKind'], { label: string; fg: string; bg
 }
 
 /** Feathers the last visible row out under the "show more" control. */
-const FOLD_MASK = 'linear-gradient(to bottom, #000 0%, #000 calc(100% - 46px), transparent 100%)'
+/* The fade has to reach up INTO the last row to be visible at all: the grid
+   carries 34px of bottom padding for the control to sit in, so a 46px fade
+   spent almost all of itself on empty space and the tiles cut off square. */
+const FOLD_MASK = 'linear-gradient(to bottom, #000 0%, #000 calc(100% - 86px), rgba(0,0,0,.12) calc(100% - 26px), transparent calc(100% - 10px))'
 
 /** How many tiles show before the rest are folded away. */
 const VISIBLE = 5
