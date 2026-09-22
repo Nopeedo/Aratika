@@ -178,7 +178,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
                       scrollport's edge inside the full-width cell, so the label
                       holds still while the columns move under it, exactly like
                       the party names below it. */}
-                  <th colSpan={shown.length + 1} scope="colgroup" style={{ ...tdBase, textAlign: 'left', background: SURFACE, fontSize: 11.5, fontWeight: 800, color: SECONDARY, letterSpacing: .2 }}>
+                  <th colSpan={shown.length + 1} scope="colgroup" className="coverage-band-cell" style={{ ...tdBase, textAlign: 'left', background: SURFACE, fontWeight: 800, color: SECONDARY, letterSpacing: .2 }}>
                     {/* Label left, arrows hard right on the same line. The
                         arrows were inside the label span, which wraps at 168px
                         on a phone, so they dropped underneath it. */}
@@ -189,8 +189,8 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
                           off-screen by the time a phone reader gets here. */}
                       {pages > 1 && (
                         <span className="coverage-band-pager">
-                          <PageButton onClick={() => setPage(cur - 1)} disabled={cur === 0} label="Previous topics"><ChevronLeft style={{ width: 15, height: 15 }} /></PageButton>
-                          <PageButton onClick={() => setPage(cur + 1)} disabled={cur >= pages - 1} label="More topics"><ChevronRight style={{ width: 15, height: 15 }} /></PageButton>
+                          <PageButton onClick={() => setPage(cur - 1)} disabled={cur === 0} label="Previous topics" size={24}><ChevronLeft style={{ width: 14, height: 14 }} /></PageButton>
+                          <PageButton onClick={() => setPage(cur + 1)} disabled={cur >= pages - 1} label="More topics" size={24}><ChevronRight style={{ width: 14, height: 14 }} /></PageButton>
                         </span>
                       )}
                     </span>
@@ -315,10 +315,12 @@ function TopicHeadCells({ topics, repeat = false }: { topics: { slug: string; la
 
 /** A pager arrow. Quiet at rest, invisible-but-present when it can't go
  *  further, so the row doesn't reflow as you step through the pages. */
-function PageButton({ onClick, disabled, label, children }: {
+function PageButton({ onClick, disabled, label, size = 30, children }: {
   onClick: () => void
   disabled: boolean
   label: string
+  /** The band's copy sits at 24 so that row is no taller than a data row. */
+  size?: number
   children: React.ReactNode
 }) {
   return (
@@ -327,14 +329,25 @@ function PageButton({ onClick, disabled, label, children }: {
       onClick={onClick}
       disabled={disabled}
       aria-label={label}
+      /* The VISIBLE button is the inner span; this element is only the hit
+         area. globals.css gives every button a 44px minimum on a phone (a
+         deliberate tap-target rule), which would otherwise have made the
+         band's row 57px tall for a 24px control. Padding out to 44 and
+         pulling the margin back leaves the layout footprint at `size` while
+         the finger still gets the full 44. */
       style={{
-        width: 30, height: 30, borderRadius: 9, cursor: disabled ? 'default' : 'pointer',
+        padding: (44 - size) / 2, margin: -(44 - size) / 2,
+        background: 'none', border: 'none',
+        cursor: disabled ? 'default' : 'pointer',
+        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      <span style={{
+        width: size, height: size, borderRadius: size > 26 ? 9 : 7,
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
         background: '#fff', border: `1px solid ${BORDER}`,
         color: disabled ? '#cdd2d8' : INK, opacity: disabled ? .55 : 1,
-      }}
-    >
-      {children}
+      }}>{children}</span>
     </button>
   )
 }
@@ -376,6 +389,7 @@ const MATRIX_CSS = `
    row growing with it, so a 31px row still offers a finger-sized target. */
 .coverage-hit { padding: 8px; margin: -8px; }
 .coverage-band { white-space: nowrap; display: inline-block; position: sticky; left: 12px; }
+.coverage-band-cell { font-size: 11.5px; }
 .coverage-band-pager { display: none; }
 @media (max-width: 760px) {
   /* 3px of vertical padding: the row is as tall as the tick inside it and
@@ -407,8 +421,11 @@ const MATRIX_CSS = `
   /* Fits on one line now that the label is four words; the cap is kept as a
      backstop so it can never jut across the tick columns. */
   .coverage-band { white-space: normal; max-width: 200px; left: 6px; }
+  /* The band is a divider, not a section header: same height as the rows it
+     divides, so the eye reads straight past it into the second list. */
+  .coverage-matrix th.coverage-band-cell { font-size: 10.5px; padding-top: 3px; padding-bottom: 3px; }
   /* Shown only where the table is paged, i.e. where the arrows exist at all. */
-  .coverage-band-pager { display: inline-flex; gap: 6px; flex-shrink: 0; }
+  .coverage-band-pager { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
   /* Icon over a one-line, ellipsised name. The icon carries the meaning, so
      the name may be clipped without the column becoming a guess. */
   .coverage-topic-icon { display: block; margin: 0 auto 3px; width: 15px; height: 15px; }
