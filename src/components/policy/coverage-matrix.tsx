@@ -43,7 +43,7 @@ function readableOnWhite(hex: string): string {
 
 /** Width of the sticky party column, shared by the header cell, the CSS and
  *  the fit calculation, so the three cannot drift apart. */
-const PARTY_COL = 68
+const PARTY_COL = 58
 
 export function CoverageMatrix({ positions, topics }: { positions: PartyPosition[]; topics: { slug: string; label: string }[] }) {
   const lookup = new Map<string, PartyPosition>()
@@ -374,17 +374,19 @@ const MATRIX_CSS = `
      and the ticks are centred in their own columns, so the space between them
      was doing nothing but pushing a topic column off the page. */
   .coverage-matrix th:first-child,
-  .coverage-matrix td:first-child { padding-left: 8px; padding-right: 5px; }
+  .coverage-matrix td:first-child { padding-left: 6px; padding-right: 3px; }
     /* Wraps to a second line instead of fading off: a clipped name is a guess,
      and the column has a rule down its right edge now, so a two-line name
      reads as one cell rather than as text drifting into the ticks. */
-  /* 11px and a 68px column: measured so every word in every party's short
-     name fits the line (the widest, "Outdoors", is 51px against 55px of
-     content). Only "Conservative" (73px) cannot, and overflow-wrap breaks a
-     word ONLY when it has no other option, so that one name is the single
-     place a split happens rather than the rule. */
+  /* 10.5px in a 58px column, gutters 6/3: measured so every word in every
+     party's short name still fits its line (the widest, "Outdoors" and
+     "Palestine", are 49px against 49px of content). Only "Conservative"
+     (70px) cannot, and overflow-wrap breaks a word ONLY when it has no other
+     option, so that one name is the single place a split happens rather than
+     the rule. Pushing the rule further left than this starts breaking
+     ordinary names. */
   .coverage-party-name {
-    font-size: 11px; display: block; line-height: 1.22;
+    font-size: 10.5px; display: block; line-height: 1.25;
     white-space: normal; overflow-wrap: break-word; hyphens: auto;
   }
   /* 168px, not 62vw: sized so the line breaks after "without", which keeps
