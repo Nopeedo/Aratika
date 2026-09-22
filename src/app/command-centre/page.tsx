@@ -48,7 +48,7 @@ const TRACKABLES = [
 ]
 
 const STEPS = [
-  { n: 1, title: 'Pick what matters', body: 'Tap Track on any MP, party, issue or bill. A free account takes a minute, and the first thing you tap is waiting in it.' },
+  { n: 1, title: 'Pick what matters', body: 'Tap Track on any MP, party, issue or bill. A free account takes a minute, and what you tapped is waiting in it.' },
   { n: 2, title: 'We watch it for you', body: 'Bill stages, submission deadlines, news and video on your things, gathered from official and credible sources.' },
   { n: 3, title: 'Walk in ready for 2026', body: 'Your feed stays current, and on election night you track the results live.' },
 ]
@@ -168,8 +168,12 @@ export default async function CommandCentrePage() {
       {/* Try it now */}
       <section id="try" style={{ background: SURFACE, borderBottom: `1px solid ${BORDER}`, scrollMarginTop: 72 }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px)' }}>
-          <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Pick your first one</h2>
-          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Tap Track on any of these. You&apos;ll create a free account, and it&apos;ll be there when you&apos;re in, on every device you sign in on.</p>
+          <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>{isLoggedIn ? 'Add to your command centre' : 'Pick your first one'}</h2>
+          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>
+            {isLoggedIn
+              ? <>Tap Track on any of these and it lands in your command centre.</>
+              : <>Tap Track on any of these. You&apos;ll create a free account, and it&apos;ll be there when you&apos;re in, on every device you sign in on.</>}
+          </p>
           <CommandCentreTryIt options={trackOptions} />
           {/* The notify and install controls used to sit here. Both need a
               signed-in user, and a visitor tapping them got a dead end. They

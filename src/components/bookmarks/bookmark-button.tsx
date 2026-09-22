@@ -44,7 +44,15 @@ export function BookmarkButton({
     const res = await toggle(entity)
     if (res.needsAuth) setPrompting(true)
   }
-  const prompt = prompting ? <TrackPrompt entity={entity} returnTo={pathname || '/'} onClose={() => setPrompting(false)} /> : null
+  // Where to bring them back to. usePathname() has no query string, and on
+  // /map the electorate lives in ?search=: returning to a bare /map showed an
+  // unselected map with no Track button, so the promised auto-track had no
+  // page to land on. The entity's own href is that same page WITH its state
+  // whenever it starts with the current path; anything else is a different
+  // page (an MP's profile linked from a list), and the current path wins.
+  const path = pathname || '/'
+  const returnTo = entity.href && (entity.href === path || entity.href.startsWith(path + '?')) ? entity.href : path
+  const prompt = prompting ? <TrackPrompt entity={entity} returnTo={returnTo} onClose={() => setPrompting(false)} /> : null
 
   if (variant === 'icon') {
     if (!known) {

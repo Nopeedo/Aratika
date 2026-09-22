@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Suspense } from 'react'
 import { Geist, Geist_Mono, Manrope, Space_Grotesk } from 'next/font/google'
 import { Navbar } from '@/components/layout/navbar'
+import { PendingTrackSync } from '@/components/bookmarks/pending-track-sync'
 import { Footer } from '@/components/layout/footer'
 import { PlanTracker } from '@/components/onboarding/plan-tracker'
 // import { PlanWidget } from '@/components/onboarding/plan-widget' // hidden for now
@@ -127,6 +128,7 @@ export default function RootLayout({
             you actually came from rather than a page's fixed parent. */}
         <NavHistory />
         <Navbar />
+        <PendingTrackSync />
         <PlanTracker />
         <main className="flex-1">{children}</main>
         {/* Plan feature hidden for now — restore this to bring back the floating checklist. */}

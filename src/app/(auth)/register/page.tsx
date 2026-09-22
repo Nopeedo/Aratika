@@ -8,6 +8,7 @@ import { Mail, User as UserIcon, MailCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell, Field, PasswordField, SubmitButton, ErrorBox, OrDivider, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
 import { GoogleSignIn } from '@/components/auth/google-signin'
+import { safeNext } from '@/lib/auth/safe-next'
 import { INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export default function RegisterPage() {
@@ -25,12 +26,11 @@ function RegisterInner() {
   /**
    * Where to land once the account exists. The Track prompt sends people here
    * with ?next=<the page they were on>, and the item they tapped is waiting in
-   * their command centre — so the right destination is that page, not the
-   * dashboard. Same-site paths only, the same test /login applies: anything
-   * else is an open redirect.
+   * their command centre, so the right destination is that page, not the
+   * dashboard. Same-site paths only, through the one helper /login and
+   * /auth/callback also use: anything else is an open redirect.
    */
-  const rawNext = params.get('next') ?? ''
-  const nextPath = /^\/(?![/\\])/.test(rawNext) ? rawNext : '/dashboard'
+  const nextPath = safeNext(params.get('next'))
 
   const [name, setName]         = React.useState('')
   const [email, setEmail]       = React.useState('')

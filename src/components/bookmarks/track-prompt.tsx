@@ -5,22 +5,26 @@
  *
  * Tracking needs an account, and the old behaviour was a silent bounce to
  * /login: no explanation, and the wrong page for someone who has never signed
- * up. This says why an account is worth it FOR THE THING THEY JUST TAPPED — an
- * MP's votes, a bill's next stage, a topic's positions — and sends them to
+ * up. This says why an account is worth it FOR THE THING THEY JUST TAPPED (an
+ * MP's votes, a bill's next stage, a topic's positions) and sends them to
  * create one, with the return path preserved so they land back here. The hook
  * has already remembered what they tried to track, so it is waiting for them.
  *
  * A dialog, not window.alert(): alert() blocks the page, cannot carry a link,
  * and reads as an error.
+ *
+ * Declining (Not now, the X, Escape, the backdrop) also forgets the intent:
+ * a tap the reader walked away from must not be applied to whichever account
+ * signs in on this browser next. Following either link keeps it.
  */
 
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Bookmark, X } from 'lucide-react'
-import type { BookmarkEntity } from '@/hooks/use-bookmarks'
+import { clearPendingTrack, type BookmarkEntity } from '@/hooks/use-bookmarks'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
-/** The plural the headline uses — "track policy topics", not "track policy". */
+/** The plural the headline uses: "track policy topics", not "track policy". */
 const NOUN: Record<BookmarkEntity['kind'], string> = {
   mp: 'MPs',
   party: 'parties',
@@ -41,27 +45,51 @@ function why(e: BookmarkEntity): string {
   }
 }
 
+const FOCUSABLE = 'a[href], button:not([disabled])'
+
 export function TrackPrompt({ entity, returnTo, onClose }: { entity: BookmarkEntity; returnTo: string; onClose: () => void }) {
+  const card = useRef<HTMLDivElement>(null)
   const primary = useRef<HTMLAnchorElement>(null)
+  // Where a click STARTED. A drag that begins on the card text and ends over
+  // the backdrop dispatches click to the backdrop; that is not a dismissal.
+  const pressedBackdrop = useRef(false)
   const next = encodeURIComponent(returnTo || '/')
 
+  const decline = () => { clearPendingTrack(); onClose() }
+
   useEffect(() => {
+    // Return focus to whatever opened the dialog (the Track button) on close;
+    // otherwise the focused element is unmounted and focus falls to <body>.
+    const opener = document.activeElement as HTMLElement | null
     primary.current?.focus()
-    const onKey = (ev: KeyboardEvent) => { if (ev.key === 'Escape') onClose() }
+    const onKey = (ev: KeyboardEvent) => {
+      if (ev.key === 'Escape') { ev.preventDefault(); decline(); return }
+      // Keep Tab inside the dialog. aria-modal promises the page behind is
+      // inert; without this, Tab from "Not now" walked onto the obscured page.
+      if (ev.key === 'Tab' && card.current) {
+        const items = Array.from(card.current.querySelectorAll<HTMLElement>(FOCUSABLE))
+        if (!items.length) return
+        const first = items[0], last = items[items.length - 1]
+        if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus() }
+        else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus() }
+      }
+    }
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+    return () => { window.removeEventListener('keydown', onKey); opener?.focus?.() }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div
-      onClick={onClose}
+      onMouseDown={(ev) => { pressedBackdrop.current = ev.target === ev.currentTarget }}
+      onClick={(ev) => { if (ev.target === ev.currentTarget && pressedBackdrop.current) decline() }}
       style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(12,14,18,.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 18 }}
     >
       <div
+        ref={card}
         role="dialog"
         aria-modal="true"
         aria-labelledby="track-prompt-title"
-        onClick={(ev) => ev.stopPropagation()}
         style={{ width: 'min(440px, 100%)', background: '#fff', borderRadius: 18, border: `1px solid ${BORDER}`, boxShadow: '0 24px 60px rgba(0,0,0,.25)', padding: '22px 22px 18px', fontFamily: MANROPE }}
       >
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
@@ -74,7 +102,7 @@ export function TrackPrompt({ entity, returnTo, onClose }: { entity: BookmarkEnt
             </h2>
             <p style={{ fontSize: 14.5, color: SECONDARY, margin: 0, lineHeight: 1.55 }}>{why(entity)}</p>
           </div>
-          <button onClick={onClose} aria-label="Not now" style={{ background: 'none', border: 'none', cursor: 'pointer', color: TERTIARY, padding: 4, margin: -4, flexShrink: 0 }}>
+          <button onClick={decline} aria-label="Not now" style={{ background: 'none', border: 'none', cursor: 'pointer', color: TERTIARY, padding: 4, margin: -4, flexShrink: 0 }}>
             <X style={{ width: 18, height: 18 }} />
           </button>
         </div>
@@ -93,7 +121,7 @@ export function TrackPrompt({ entity, returnTo, onClose }: { entity: BookmarkEnt
           >
             I have an account
           </Link>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: SECONDARY, fontSize: 14.5, fontWeight: 700, fontFamily: MANROPE, padding: '10px 4px', marginLeft: 'auto' }}>
+          <button onClick={decline} style={{ background: 'none', border: 'none', cursor: 'pointer', color: SECONDARY, fontSize: 14.5, fontWeight: 700, fontFamily: MANROPE, padding: '10px 4px', marginLeft: 'auto' }}>
             Not now
           </button>
         </div>

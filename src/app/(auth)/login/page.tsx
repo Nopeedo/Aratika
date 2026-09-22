@@ -9,6 +9,7 @@ import { Mail } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { AuthShell, Field, PasswordField, SubmitButton, ErrorBox, OrDivider } from '@/components/auth/auth-ui'
 import { GoogleSignIn } from '@/components/auth/google-signin'
+import { safeNext } from '@/lib/auth/safe-next'
 import { JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 export default function LoginPage() {
@@ -33,8 +34,7 @@ function LoginInner() {
    * regardless, so signing in from /settings dropped you on the wrong page.
    * Only same-site paths are honoured: a bare leading slash, not //host.
    */
-  const rawNext = params.get('next') ?? ''
-  const nextPath = /^\/(?!\/)/.test(rawNext) ? rawNext : '/dashboard'
+  const nextPath = safeNext(params.get('next'))
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
