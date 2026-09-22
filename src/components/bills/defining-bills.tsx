@@ -134,39 +134,44 @@ function BillPanel({ bill }: { bill: DefiningBill }) {
   const st = STATUS[bill.statusKind]
   const f = bill.featured
   return (
-    <div style={{ background: CARD, border: `1px solid ${LINE}`, borderRadius: 20, padding: 'clamp(20px, 3vw, 28px)', boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 28px 56px -46px rgba(0,0,0,.4)' }}>
+    <div className="bill-panel" style={{ background: CARD, border: `1px solid ${LINE}`, borderRadius: 20, padding: 'clamp(20px, 3vw, 28px)', boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 28px 56px -46px rgba(0,0,0,.4)' }}>
+      {/* Shipped with the component, and mounted for EVERY panel: it carries
+          the phone sizing for the whole card, not just the dated timeline it
+          started as. It used to render inside the timeline branch, so the
+          featured bill — the one with the journey and the big figures, and
+          the tallest card of the lot — never received any of it. */}
+      <style dangerouslySetInnerHTML={{ __html: TIMELINE_CSS }} />
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: st.fg, background: st.bg, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
         {st.label}
       </span>
-      <h3 style={{ fontSize: 'clamp(20px, 3.2vw, 25px)', fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: '13px 0 8px', lineHeight: 1.2 }}>{bill.title}</h3>
-      <p style={{ fontSize: 14.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 22px', maxWidth: 640 }}>{bill.what}</p>
+      <h3 className="bill-panel-title" style={{ fontSize: 'clamp(20px, 3.2vw, 25px)', fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: '13px 0 8px', lineHeight: 1.2 }}>{bill.title}</h3>
+      <p className="bill-panel-what" style={{ fontSize: 14.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 22px', maxWidth: 640 }}>{bill.what}</p>
 
       {/* The featured bill has a hand-built journey; every other bill has a dated
           timeline, so both get a progress read rather than only the spotlight. */}
       {f ? (
         <>
-          <p style={labelStyle}>Its journey through Parliament</p>
+          <p className="bill-panel-label" style={labelStyle}>Its journey through Parliament</p>
           <Journey nodes={f.journey} />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(140px, 100%), 1fr))', gap: 14, marginTop: 26, paddingTop: 22, borderTop: `1px solid ${LINE}` }}>
+          <div className="bill-panel-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(140px, 100%), 1fr))', gap: 14, marginTop: 26, paddingTop: 22, borderTop: `1px solid ${LINE}` }}>
             {f.stats.map((s, i) => (
               <div key={i}>
-                <div style={{ fontSize: 25, fontWeight: 800, letterSpacing: '-.02em', color: ACCENT_DK, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>
+                <div className="bill-panel-stat-n" style={{ fontSize: 25, fontWeight: 800, letterSpacing: '-.02em', color: ACCENT_DK, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>
                   {typeof s.to === 'number' ? <CountUp to={s.to} suffix={s.suffix ?? ''} /> : s.text}
                 </div>
-                <div style={{ fontSize: 12, color: MUTED, fontFamily: MANROPE, lineHeight: 1.4, marginTop: 3 }}>{s.label}</div>
+                <div className="bill-panel-stat-l" style={{ fontSize: 12, color: MUTED, fontFamily: MANROPE, lineHeight: 1.4, marginTop: 3 }}>{s.label}</div>
               </div>
             ))}
           </div>
         </>
       ) : bill.timeline && bill.timeline.length > 0 ? (
         <>
-          <p style={labelStyle}>How it progressed</p>
+          <p className="bill-panel-label" style={labelStyle}>How it progressed</p>
           {/* The date sits in a fixed 108px column beside the event. On a phone
               that left the event about 200px to wrap in, so a one-line note
               like "Government drops the plan for three ministers to have the
               final say" ran to five ragged lines. Under 760px the date moves
               above the event and the text gets the full card width. */}
-          <style dangerouslySetInnerHTML={{ __html: TIMELINE_CSS }} />
           <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
             {bill.timeline.slice(0, 4).map((t, i) => (
               <li key={i} className="bill-tl-row">
@@ -184,18 +189,18 @@ function BillPanel({ bill }: { bill: DefiningBill }) {
         </>
       ) : null}
 
-      <div style={{ marginTop: 24, paddingTop: 20, borderTop: `1px solid ${LINE}`, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 18 }}>
+      <div className="bill-panel-foot" style={{ marginTop: 24, paddingTop: 20, borderTop: `1px solid ${LINE}`, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 18 }}>
         <div>
-          <p style={labelStyle}>Why it matters</p>
+          <p className="bill-panel-label" style={labelStyle}>Why it matters</p>
           <p style={{ fontSize: 13.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.why}</p>
         </div>
         <div>
-          <p style={labelStyle}>Where it came from</p>
+          <p className="bill-panel-label" style={labelStyle}>Where it came from</p>
           <p style={{ fontSize: 13.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.champion}</p>
         </div>
       </div>
 
-      <Link href={`/bills/${bill.slug}`} style={{ marginTop: 22, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: ACCENT_DK, fontFamily: MANROPE, textDecoration: 'none' }}>
+      <Link className="bill-panel-more" href={`/bills/${bill.slug}`} style={{ marginTop: 22, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: ACCENT_DK, fontFamily: MANROPE, textDecoration: 'none' }}>
         Read the full breakdown <ArrowRight style={{ width: 14, height: 14 }} />
       </Link>
     </div>
@@ -206,20 +211,20 @@ function Journey({ nodes }: { nodes: NonNullable<DefiningBill['featured']>['jour
   const p = useProgress(1500)
   const n = nodes.length
   return (
-    <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', gap: 4 }}>
-      <span style={{ position: 'absolute', left: 11, right: 11, top: 11, height: 2, background: LINE }} />
-      <span style={{ position: 'absolute', left: 11, top: 11, height: 2, background: ACCENT, width: `calc((100% - 22px) * ${p})`, transition: 'width .2s linear' }} />
+    <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between', gap: 4, ['--bill-journey-p' as string]: String(p) } as React.CSSProperties}>
+      <span className="bill-journey-rail" style={{ position: 'absolute', left: 11, right: 11, top: 11, height: 2, background: LINE }} />
+      <span className="bill-journey-fill" style={{ position: 'absolute', left: 11, top: 11, height: 2, background: ACCENT, width: `calc((100% - 22px) * ${p})`, transition: 'width .2s linear' }} />
       {nodes.map((node, i) => {
         const lit = p >= (n > 1 ? i / (n - 1) : 1) - 0.001
         const isStop = node.state === 'stop'
         const beadBg = lit ? (isStop ? '#c23b3b' : ACCENT) : CARD
         const beadBorder = lit ? (isStop ? '#c23b3b' : ACCENT) : LINE
         return (
-          <div key={i} style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 9, flex: 1, textAlign: 'center' }}>
-            <span style={{ width: 24, height: 24, borderRadius: '50%', background: beadBg, border: `2px solid ${beadBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', transform: lit ? 'scale(1)' : 'scale(.7)', opacity: lit ? 1 : 0.55, transition: 'all .3s ease' }}>
+          <div key={i} className="bill-journey-node" style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 9, flex: 1, textAlign: 'center' }}>
+            <span className="bill-journey-bead" style={{ width: 24, height: 24, borderRadius: '50%', background: beadBg, border: `2px solid ${beadBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', transform: lit ? 'scale(1)' : 'scale(.7)', opacity: lit ? 1 : 0.55, transition: 'all .3s ease' }}>
               {lit && (isStop ? <X style={{ width: 12, height: 12, color: '#fff' }} /> : <Check style={{ width: 12, height: 12, color: '#fff' }} />)}
             </span>
-            <span style={{ fontSize: 10.5, fontWeight: lit ? 700 : 600, color: lit ? INK : MUTED, fontFamily: MANROPE, lineHeight: 1.3, maxWidth: '9ch', transition: 'color .3s ease' }}>{node.label}</span>
+            <span className="bill-journey-label" style={{ fontSize: 10.5, fontWeight: lit ? 700 : 600, color: lit ? INK : MUTED, fontFamily: MANROPE, lineHeight: 1.3, maxWidth: '9ch', transition: 'color .3s ease' }}>{node.label}</span>
           </div>
         )
       })}
@@ -255,6 +260,35 @@ const labelStyle: React.CSSProperties = { fontSize: 11, fontWeight: 800, letterS
    date's column width is set here, not inline, precisely so the media query can
    drop it. */
 const TIMELINE_CSS = `
+/* Compacting for phones, the same treatment the coverage matrix got: the card
+   was ~900px tall before the first stat, mostly padding and display type sized
+   for a desktop column. Every number here is a size REDUCTION, never a new
+   layout — the card reads the same, it just stops spending a screen and a half
+   saying it. Inline styles set the desktop sizes, so these have to be a media
+   query in a stylesheet to win. */
+@media (max-width: 600px) {
+  .bill-panel { padding: 14px !important; border-radius: 16px !important; }
+  .bill-panel-title { font-size: 19px !important; margin: 10px 0 6px !important; }
+  .bill-panel-what { font-size: 13px !important; line-height: 1.5 !important; margin-bottom: 14px !important; }
+  .bill-panel-label { font-size: 10px !important; margin-bottom: 10px !important; letter-spacing: .07em !important; }
+  /* Two up rather than one per row: "300,000+" and "90%" are short, and a
+     column each turned four figures into four full-width blocks. */
+  .bill-panel-stats { grid-template-columns: 1fr 1fr !important; gap: 10px !important; margin-top: 14px !important; padding-top: 12px !important; }
+  .bill-panel-stat-n { font-size: 19px !important; }
+  .bill-panel-stat-l { font-size: 11px !important; line-height: 1.3 !important; }
+  .bill-panel-foot { margin-top: 14px !important; padding-top: 12px !important; gap: 12px !important; }
+  .bill-panel-foot p:last-child { font-size: 12.5px !important; line-height: 1.5 !important; }
+  .bill-panel-more { margin-top: 14px !important; font-size: 12.5px !important; }
+  .bill-journey-node { gap: 6px !important; }
+  .bill-journey-bead { width: 18px !important; height: 18px !important; }
+  .bill-journey-bead svg { width: 9px !important; height: 9px !important; }
+  .bill-journey-label { font-size: 9.5px !important; max-width: 8ch !important; }
+  /* The rail is positioned against the bead's centre, so it moves with it:
+     half of 18 is 9, not 11. */
+  .bill-journey-rail { left: 9px !important; right: 9px !important; top: 8px !important; }
+  .bill-journey-fill { left: 9px !important; top: 8px !important; width: calc((100% - 18px) * var(--bill-journey-p, 0)) !important; }
+}
+
 .bill-tl-row { display: flex; gap: 11px; align-items: flex-start; }
 .bill-tl-dot { flex-shrink: 0; margin-top: 6px; }
 .bill-tl-date { width: 108px; flex-shrink: 0; }
