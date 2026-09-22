@@ -1,6 +1,14 @@
 {
-  "generated": "2026-09-21",
+  "generated": "2026-09-22",
   "changes": [
+    {
+      "mp": "paul-goldsmith",
+      "field": "govBills",
+      "label": "Government bills in charge",
+      "from": 48,
+      "to": 50,
+      "date": "2026-09-22"
+    },
     {
       "mp": "penny-simmonds",
       "field": "govBills",
