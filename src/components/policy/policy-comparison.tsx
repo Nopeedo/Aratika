@@ -10,6 +10,9 @@
 
 import { CONTESTING_PARTIES, PARLIAMENTARY_PARTIES } from '@/constants/parties'
 import { PartyPositions } from '@/components/policy/party-positions'
+import { TrackWithAccount } from '@/components/bookmarks/track-with-account'
+import { POLICY_TOPICS } from '@/constants/policy-topics'
+import { topicColors } from '@/constants/topic-colors'
 import type { PartyPosition } from '@/lib/positions/live'
 import { MANROPE, SECONDARY } from '@/constants/theme'
 
@@ -39,6 +42,8 @@ export function PolicyComparison({ positions, topicLabel, topic }: { positions: 
   // preview — three answers from one dataset. A missing position is reported
   // honestly below as "no position recorded yet", which is true.
   const current = (slug: string) => positions.find((p) => p.party === slug && p.period === '2026')
+  // The issue's colour, for the track control at the foot of the list.
+  const hue = topicColors(POLICY_TOPICS[topic as keyof typeof POLICY_TOPICS]?.textColor ?? '').border
 
   return (
     <div>
@@ -47,6 +52,22 @@ export function PolicyComparison({ positions, topicLabel, topic }: { positions: 
       <PartyPositions parties={PARLIAMENTARY_PARTIES} getPos={current} topic={topic} topicLabel={topicLabel} />
 
       <NotInParliament getPos={current} topic={topic} topicLabel={topicLabel} />
+
+      {/* Track again at the foot of the list. The one under the heading is for
+          the reader who knows immediately; this is for the one who has just
+          read every party's position and NOW has a reason to follow it. Same
+          control, so both show the same state and either can turn it off. */}
+      <div style={{ marginTop: 18 }}>
+        <TrackWithAccount
+          entity={{
+            kind: 'policy', refId: topic, label: topicLabel,
+            sublabel: 'Policy topic', href: `/policies/${topic}`, accent: hue,
+          }}
+          label={`Track ${topicLabel.toLowerCase()} changes`}
+          savedLabel={`Tracking ${topicLabel.toLowerCase()} changes`}
+          accent={hue}
+        />
+      </div>
 
       {/* No sourcing footnote here any more. It lives in the (i) bubble beside
           the topic pill in the header (TopicInfoButton), removed from the foot
