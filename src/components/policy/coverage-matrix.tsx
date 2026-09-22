@@ -43,7 +43,7 @@ function readableOnWhite(hex: string): string {
 
 /** Width of the sticky party column, shared by the header cell, the CSS and
  *  the fit calculation, so the three cannot drift apart. */
-const PARTY_COL = 74
+const PARTY_COL = 62
 
 export function CoverageMatrix({ positions, topics }: { positions: PartyPosition[]; topics: { slug: string; label: string }[] }) {
   const lookup = new Map<string, PartyPosition>()
@@ -221,11 +221,13 @@ function Row({ slug, topics, lookup }: { slug: PartySlug; topics: { slug: string
   const party = PARTY_PROFILES[slug]
   return (
     <tr>
-      {/* whiteSpace normal + a hard width, overriding tdBase's nowrap: with
-          the dot gone the column is 86px, and "Outdoors & Freedom" on one
-          line ran straight under the first tick column. It wraps to two
-          lines now and stays inside its own cell. */}
-      <td style={{ ...tdBase, whiteSpace: 'normal', width: PARTY_COL, maxWidth: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }}>
+      {/* A hard width, overriding tdBase's nowrap handling: the long names
+          ("Outdoors & Freedom", "Te Pāti Māori") no longer wrap to two lines
+          but run to the column edge and FADE OUT there, by request — a
+          narrower column buys another topic and a shorter row, and a party
+          is recognisable from its first word and its colour. The full name is
+          the cell's title. */}
+      <td style={{ ...tdBase, width: PARTY_COL, maxWidth: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }} title={PARTY_NAMES[slug].short}>
         {/* Short name, not the full registered one: this column is sized by its
             longest label, and "Animal Justice Party Aotearoa New Zealand" was
             pushing it past half the screen on a phone while the topic cells sat
@@ -367,8 +369,16 @@ const MATRIX_CSS = `
      and the ticks are centred in their own columns, so the space between them
      was doing nothing but pushing a topic column off the page. */
   .coverage-matrix th:first-child,
-  .coverage-matrix td:first-child { padding-left: 10px; padding-right: 2px; }
-  .coverage-party-name { font-size: 12px; display: block; line-height: 1.2; overflow-wrap: break-word; }
+  .coverage-matrix td:first-child { padding-left: 8px; padding-right: 0; }
+    /* One line, clipped with a fade rather than an ellipsis: "…" spends three
+     characters saying nothing, and the soft edge reads as "there is more of
+     this word" without costing any width. */
+  .coverage-party-name {
+    font-size: 12px; display: block; line-height: 1.2;
+    white-space: nowrap; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 12px), transparent 100%);
+    mask-image: linear-gradient(to right, #000 calc(100% - 12px), transparent 100%);
+  }
   /* 168px, not 62vw: sized so the line breaks after "without", which keeps
      the label's widest line inside the sticky party column instead of jutting
      into the tick columns. */
