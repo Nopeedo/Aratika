@@ -31,10 +31,15 @@ import { INK, MANROPE } from '@/constants/theme'
 
 /** Selector for the header pill this floats in for. */
 const HEADER_PILL = '.topic-head h2'
+/** Where the pill stops: the coverage band. Its own topic headings are right
+ *  there, so a floating one is both redundant and in the way of the table. */
+const STOP_AT = '#coverage-start'
 
 export function FloatingTopicPill({ topic }: { topic: string }) {
   const t = POLICY_TOPICS[topic as PolicyTopic]
   const [shown, setShown] = useState(false)
+  /** True once the coverage band has been reached: the pill stops there. */
+  const [reached, setReached] = useState(false)
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -56,6 +61,37 @@ export function FloatingTopicPill({ topic }: { topic: string }) {
     }, { threshold: 0 })
     io.observe(target)
     return () => io.disconnect()
+  }, [topic])
+
+  /**
+   * ...and hide again from the coverage band down. This one is a scroll check,
+   * NOT an observer, and the reason is worth recording: an IntersectionObserver
+   * reports CHANGES in intersection, and "above the viewport" and "below the
+   * viewport" are the same non-intersecting state. Jump between them — which is
+   * what tapping a topic and landing at a new scroll position does — and no
+   * callback fires at all, so the flag sticks at whatever it was. The pill then
+   * stayed hidden for the whole page. Reading the rect on scroll always gives
+   * the right answer.
+   *
+   * rAF-throttled, so it measures once a frame at most, and passive so it never
+   * holds up the scroll itself.
+   */
+  useEffect(() => {
+    const stop = document.querySelector(STOP_AT)
+    if (!stop) return
+    let queued = false
+    const measure = () => {
+      queued = false
+      const top = stop.getBoundingClientRect().top
+      const at = top <= window.innerHeight
+      setReached(at)
+      if (at) setOpen(false)
+    }
+    const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(measure) } }
+    measure()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll) }
   }, [topic])
 
   // Close on route change (the topic prop changes — adjust during render
@@ -107,20 +143,22 @@ export function FloatingTopicPill({ topic }: { topic: string }) {
   const hue = t.textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
   const border = TOPIC_BORDER_HEX[hue] ?? TOPIC_BORDER_HEX.slate
   const others = POLICY_TOPIC_ORDER.filter((k) => k !== topic)
+  // Out of view above, and not yet at the coverage band.
+  const visible = shown && !reached
 
   return (
     <div
       ref={rootRef}
-      aria-hidden={!shown}
+      aria-hidden={!visible}
       style={{
         position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 40,
         pointerEvents: 'none', isolation: 'isolate',
         padding: '0 14px calc(14px + env(safe-area-inset-bottom, 0px))',
-        opacity: shown ? 1 : 0,
+        opacity: visible ? 1 : 0,
         // No transform while shown: a transformed ancestor becomes the
         // containing block for position:fixed, which would pin the scrim to
         // this strip instead of the viewport.
-        transform: shown ? undefined : 'translateY(12px)',
+        transform: visible ? undefined : 'translateY(12px)',
         transition: 'opacity .2s ease, transform .2s ease',
       }}
     >
@@ -174,7 +212,7 @@ export function FloatingTopicPill({ topic }: { topic: string }) {
           onClick={() => setOpen(!open)}
           aria-expanded={open}
           aria-label={`Current topic: ${t.label}. Choose another topic`}
-          tabIndex={shown ? 0 : -1}
+          tabIndex={visible ? 0 : -1}
           className={t.color}
           style={{
             // Gone the instant a chip is picked, so the chip drops into an
@@ -189,7 +227,10 @@ export function FloatingTopicPill({ topic }: { topic: string }) {
             fontSize: t.label.length > 16 ? 'clamp(17px, 4.9vw, 30px)' : 'clamp(24px, 6.5vw, 32px)',
             fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15,
             color: INK, fontFamily: MANROPE, cursor: 'pointer', whiteSpace: 'nowrap',
-            pointerEvents: 'auto',
+            // Not clickable while it is invisible: at the coverage band it sits
+            // over the table, and an invisible target there would eat taps
+            // meant for the cells underneath.
+            pointerEvents: visible ? 'auto' : 'none',
           }}
         >
           {Icon && <Icon className={`size-7 ${t.textColor}`} style={{ flexShrink: 0 }} />}

@@ -29,7 +29,9 @@ export async function PolicyCoverage({ maxWidth = 1100, nested = false }: {
   // panel, which made it read as a separate page pasted into this one. The
   // table inside keeps its white ground.
   return (
-    <section style={{ background: 'transparent', borderTop: `1px solid ${BORDER}` }}>
+    // id: the floating topic pill hides once this section is reached, so the
+    // table is never read through a pill sitting over its rows.
+    <section id="coverage-start" style={{ background: 'transparent', borderTop: `1px solid ${BORDER}` }}>
       <div style={{ maxWidth: nested ? undefined : maxWidth, margin: '0 auto', padding: nested ? '32px 0' : '32px clamp(18px, 5vw, 36px)' }}>
         {/* No "Open the compare tool" link: on a topic page it pointed at the
             page you were already on, and the topic chips above are the way
