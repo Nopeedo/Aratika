@@ -79,7 +79,10 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
           width: 26, height: 26, minWidth: 26, minHeight: 26, alignSelf: 'center', borderRadius: '50%', padding: 0, cursor: 'pointer',
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           background: open ? accent : 'transparent',
-          border: `1.5px solid ${open ? accent : BORDER}`,
+          // No ring at rest: the glyph is already a circle, and a border around
+          // it drew a second one in grey. The ring (and the fill) come back
+          // only while it is open, to show which control the bubble belongs to.
+          border: `1.5px solid ${open ? accent : 'transparent'}`,
           color: open ? '#fff' : SECONDARY,
           transition: 'background .15s ease, border-color .15s ease, color .15s ease',
         }}
