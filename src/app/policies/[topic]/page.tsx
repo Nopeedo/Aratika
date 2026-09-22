@@ -169,7 +169,7 @@ export default async function PolicyTopicPage(
 
         {/* The bare "Track" button became this: the same action, with the
             reason for it said first. See TopicFollowInvite. */}
-        <TopicFollowInvite topic={topic} label={t.label} />
+        <TopicFollowInvite topic={topic} />
 
         {/* "What this covers" is no longer a card here — it lives in the (i)
             bubble beside the topic pill in the header (TopicInfoButton), with
