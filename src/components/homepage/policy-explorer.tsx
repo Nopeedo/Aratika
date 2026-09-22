@@ -681,7 +681,9 @@ function FocusedCard({ slug, pos, topicLabel }: {
       {items.length > 0 && (
         <ul style={{ listStyle: 'none', margin: '4px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
           {items.map((it, i) => {
-            const liStyle: React.CSSProperties = { fontSize: 20, color: INK, lineHeight: 1.35, fontFamily: MANROPE }
+            // 17px, down from 20. Trialled on one panel first (NZ First /
+            // Economy), compared against the rest, then applied everywhere.
+            const liStyle: React.CSSProperties = { fontSize: 17, color: INK, lineHeight: 1.35, fontFamily: MANROPE }
             const text = typeof it === 'string' ? it : it.headline
             return (
               <li key={i} style={liStyle}>
