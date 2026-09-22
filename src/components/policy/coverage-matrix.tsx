@@ -151,7 +151,13 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
                   and thBase's maxWidth:0 (which lets the topic headings clip)
                   collapsed the party column to 18px and slid the names under
                   the ticks. PARTY_COL in the measuring effect is this number. */}
-                      <th style={{ ...thBase, maxWidth: PARTY_COL, width: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, borderRight: PARTY_EDGE }}>Party</th>
+                      <th style={{ ...thBase, maxWidth: PARTY_COL, width: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, borderRight: PARTY_EDGE }}>
+                {/* Empty by design: the column holds party names, which say so
+                    themselves, and "Party" was the only heading in the row that
+                    wasn't a topic. Named for screen readers, which do still
+                    want to hear what the row header column is. */}
+                <span className="sr-only">Party</span>
+              </th>
               <TopicHeadCells topics={shown} />
             </tr>
           </thead>
