@@ -5,13 +5,11 @@
  * and hands them to the client explorer. Placed directly under the compass.
  */
 
-import Link from 'next/link'
-import { Scale, ArrowRight } from 'lucide-react'
 import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { PolicyExplorer } from '@/components/homepage/policy-explorer'
 import { PolicyHubHeading } from '@/components/homepage/policy-hub-heading'
-import { BORDER, CARD_SHADOW, INK, JADE, JADE_DARK, MANROPE } from '@/constants/theme'
+import { CompareSignLink } from '@/components/homepage/compare-sign-link'
 
 export async function PolicyHubGrid() {
   const positions = await getAllApprovedPositions()
@@ -37,23 +35,7 @@ export async function PolicyHubGrid() {
             /policies redirects to the first topic, so this lands on a real
             comparison rather than a menu. */}
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 28 }}>
-          <Link
-            href="/policies"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '13px 22px', borderRadius: 12, background: JADE,
-              // Both icons are lucide, which paints from currentColor — so the
-              // one colour here turns the scales, the arrow and the label white
-              // together.
-              border: `1px solid ${JADE_DARK}`, color: '#fff', textDecoration: 'none',
-              fontSize: 15, fontWeight: 800, fontFamily: MANROPE,
-              boxShadow: CARD_SHADOW,
-            }}
-          >
-            <Scale style={{ width: 17, height: 17 }} />
-            Compare every party, issue by issue
-            <ArrowRight style={{ width: 16, height: 16 }} />
-          </Link>
+          <CompareSignLink />
         </div>
       </div>
     </section>
