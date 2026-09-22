@@ -30,7 +30,6 @@ export function BillsInfoButton({ accent, governing, slug }: {
 }) {
   const { panelSlug, select } = usePartyCycle()
   const [open, setOpen] = useState(false)
-  const wrap = useRef<HTMLDivElement>(null)
   const bubble = useRef<HTMLDivElement>(null)
   // The button sits in the box's top-right corner, so a 340px bubble anchored
   // to it hangs off the right of a phone. Shift it back inside.
@@ -46,13 +45,21 @@ export function BillsInfoButton({ accent, governing, slug }: {
     setShift(over > 0 ? -over : 0)
   }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  /**
+   * Escape closes it; the X closes it; tapping the (i) again closes it.
+   * Tapping ELSEWHERE does not, by request.
+   *
+   * It used to close on any pointerdown outside the bubble, which is the
+   * usual popover behaviour and was wrong here: these bubbles are several
+   * paragraphs long, so reading one means scrolling, and a scroll that starts
+   * with a finger anywhere but exactly inside the card reads as an outside
+   * tap and shuts it mid-sentence. A thing you have to read is not a menu.
+   */
   useEffect(() => {
     if (!open) return
-    const onDown = (e: PointerEvent) => { if (!wrap.current?.contains(e.target as Node)) setOpen(false) }
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
-    document.addEventListener('pointerdown', onDown)
     document.addEventListener('keydown', onKey)
-    return () => { document.removeEventListener('pointerdown', onDown); document.removeEventListener('keydown', onKey) }
+    return () => { document.removeEventListener('keydown', onKey) }
   }, [open])
 
   const h = (text: string) => (
@@ -63,7 +70,7 @@ export function BillsInfoButton({ accent, governing, slug }: {
   )
 
   return (
-    <div ref={wrap} style={{ position: 'relative', display: 'inline-flex', flexShrink: 0 }}>
+    <div style={{ position: 'relative', display: 'inline-flex', flexShrink: 0 }}>
       <button
         type="button"
         onClick={() => {
@@ -78,15 +85,19 @@ export function BillsInfoButton({ accent, governing, slug }: {
         aria-controls={id}
         aria-label="What bills before the House means"
         style={{
-          width: 26, height: 26, minWidth: 26, minHeight: 26, borderRadius: '50%', padding: 0, cursor: 'pointer',
+          // No ring at rest: the glyph already reads as a circle, and a ring
+          // around it made two concentric circles at 26px. The ring (and the
+          // fill) come back only while it is open, to show it is the thing
+          // the bubble belongs to.
+          width: 34, height: 34, minWidth: 34, minHeight: 34, borderRadius: '50%', padding: 0, cursor: 'pointer',
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           background: open ? accent : 'transparent',
-          border: `1.5px solid ${open ? accent : BORDER}`,
+          border: open ? `1.5px solid ${accent}` : '1.5px solid transparent',
           color: open ? '#fff' : SECONDARY,
           transition: 'background .15s ease, border-color .15s ease, color .15s ease',
         }}
       >
-        <Info style={{ width: 15, height: 15 }} strokeWidth={2.25} />
+        <Info style={{ width: 30, height: 30 }} strokeWidth={2} />
       </button>
 
       {open && (

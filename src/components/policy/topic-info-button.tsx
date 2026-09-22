@@ -24,7 +24,6 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
   accent: string
 }) {
   const [open, setOpen] = useState(false)
-  const wrap = useRef<HTMLDivElement>(null)
   const bubble = useRef<HTMLDivElement>(null)
   // How far left to shift the bubble so it stays inside the viewport. It is
   // anchored to the button's left edge, and the button sits to the right of
@@ -42,15 +41,21 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
     setShift(over > 0 ? -Math.min(over, naturalLeft - gutter) : 0)
   }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Close on a tap anywhere else, or Escape — a bubble that only closes from
-  // its own X is a modal in disguise.
+  /**
+   * Escape closes it; the X closes it; tapping the (i) again closes it.
+   * Tapping ELSEWHERE does not, by request.
+   *
+   * It used to close on any pointerdown outside the bubble, which is the
+   * usual popover behaviour and was wrong here: these bubbles are several
+   * paragraphs long, so reading one means scrolling, and a scroll that starts
+   * with a finger anywhere but exactly inside the card reads as an outside
+   * tap and shuts it mid-sentence. A thing you have to read is not a menu.
+   */
   useEffect(() => {
     if (!open) return
-    const onDown = (e: PointerEvent) => { if (!wrap.current?.contains(e.target as Node)) setOpen(false) }
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
-    document.addEventListener('pointerdown', onDown)
     document.addEventListener('keydown', onKey)
-    return () => { document.removeEventListener('pointerdown', onDown); document.removeEventListener('keydown', onKey) }
+    return () => { document.removeEventListener('keydown', onKey) }
   }, [open])
 
   const h = (text: string) => (
@@ -61,7 +66,7 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
   )
 
   return (
-    <div ref={wrap} style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', alignSelf: 'center', flexShrink: 0 }}>
+    <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', alignSelf: 'center', flexShrink: 0 }}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}

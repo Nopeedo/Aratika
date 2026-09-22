@@ -6,7 +6,7 @@
  * The pattern arrived three times: beside the topic pill on /policies/[topic],
  * in the corner of the homepage bills box, and now on the bills tracker. Each
  * copy re-derived the same four things — a quiet circle that fills in when
- * open, a card anchored under it, closing on tap-outside/Escape/×, and the
+ * open, a card anchored under it, closing on its × or Escape, and the
  * shift that keeps a 340px bubble inside a 375px phone. This is the shell;
  * callers supply only what the bubble says.
  *
@@ -38,7 +38,6 @@ export function InfoButton({
   children: ReactNode
 }) {
   const [open, setOpen] = useState(false)
-  const wrap = useRef<HTMLDivElement>(null)
   const bubble = useRef<HTMLDivElement>(null)
   const [shift, setShift] = useState(0)
   const id = useId()
@@ -59,18 +58,25 @@ export function InfoButton({
     setShift(over > 0 ? -Math.min(over, naturalLeft - gutter) : 0)
   }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // A bubble that only closes from its own × is a modal in disguise.
+  /**
+   * Escape closes it; the X closes it; tapping the (i) again closes it.
+   * Tapping ELSEWHERE does not, by request.
+   *
+   * It used to close on any pointerdown outside the bubble, which is the
+   * usual popover behaviour and was wrong here: these bubbles are several
+   * paragraphs long, so reading one means scrolling, and a scroll that starts
+   * with a finger anywhere but exactly inside the card reads as an outside
+   * tap and shuts it mid-sentence. A thing you have to read is not a menu.
+   */
   useEffect(() => {
     if (!open) return
-    const onDown = (e: PointerEvent) => { if (!wrap.current?.contains(e.target as Node)) setOpen(false) }
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
-    document.addEventListener('pointerdown', onDown)
     document.addEventListener('keydown', onKey)
-    return () => { document.removeEventListener('pointerdown', onDown); document.removeEventListener('keydown', onKey) }
+    return () => { document.removeEventListener('keydown', onKey) }
   }, [open])
 
   return (
-    <div ref={wrap} style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', alignSelf: 'center', flexShrink: 0 }}>
+    <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', alignSelf: 'center', flexShrink: 0 }}>
       <button
         type="button"
         onClick={() => { if (!open) onOpen?.(); setOpen((v) => !v) }}
