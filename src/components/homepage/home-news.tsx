@@ -49,7 +49,7 @@ export function HomeNews() {
               </Link>
             </div>
             <p style={{ fontSize: 14, color: TERTIARY, fontFamily: MANROPE, marginBottom: 4, marginTop: 0 }}>
-              A curated live feed is on the way. Until then — and always — we only ever surface real,
+              A curated live feed is on the way. Until then, and always, we only ever surface real,
               sourced reporting, never invented headlines. Here&apos;s where to follow it directly.
             </p>
             {NEWS_SOURCES.map((item) => (
@@ -70,14 +70,14 @@ export function HomeNews() {
               </div>
               <div style={{ fontSize: 20, fontWeight: 800, color: '#fff', fontFamily: MANROPE, marginBottom: 8 }}>Find your issues</div>
               <p style={{ fontSize: 16, fontWeight: 500, lineHeight: 1.55, margin: '0 0 18px', color: 'rgba(255,255,255,.8)', fontFamily: MANROPE }}>
-                Pick what you care about and how much you already know — and Politika will pitch everything at your level. No account needed.
+                Pick what you care about and how much you already know, and Politika will pitch everything at your level. No account needed.
               </p>
               <Link href="/start" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, padding: '11px 0', borderRadius: 11, background: '#fff', color: '#0c0e12', fontSize: 16, fontWeight: 800, textDecoration: 'none', fontFamily: MANROPE }}>
                 <Compass style={{ width: 16, height: 16 }} /> Start the walkthrough
               </Link>
             </div>
             <p style={{ marginTop: 12, fontSize: 13, color: TERTIARY, fontFamily: MANROPE }}>
-              Community polls are coming soon — see <Link href="/polls" style={{ color: SECONDARY, fontWeight: 700 }}>polls</Link>.
+              Community polls are coming soon, see <Link href="/polls" style={{ color: SECONDARY, fontWeight: 700 }}>polls</Link>.
             </p>
           </div>
 

@@ -36,10 +36,10 @@ export function MPCard({ mp, party }: { mp: MPProfile; party: PartyProfile }) {
   const fields: { label: string; value: string }[] = [
     { label: 'Party',      value: party.name },
     { label: 'Role',       value: mp.role === 'electorate' ? 'Electorate' : 'List' },
-    { label: 'Electorate', value: mp.role === 'electorate' ? (mp.electorate ?? '—') : 'List MP' },
+    { label: 'Electorate', value: mp.role === 'electorate' ? (mp.electorate ?? '') : 'List MP' },
     { label: 'Status',     value: mp.status === 'active' ? 'Active' : 'Former' },
-    { label: 'Entered',    value: mp.enteredParliament ? String(mp.enteredParliament) : '—' },
-    { label: 'Majority',   value: typeof mp.electorateMajority === 'number' ? formatNumber(mp.electorateMajority) : '—' },
+    { label: 'Entered',    value: mp.enteredParliament ? String(mp.enteredParliament) : '' },
+    { label: 'Majority',   value: typeof mp.electorateMajority === 'number' ? formatNumber(mp.electorateMajority) : '' },
   ]
 
   return (

@@ -228,7 +228,7 @@ export function LetterStudio({ templateId, ctx: ctx0 }: { templateId: LetterTemp
 
               <p style={{ fontSize: 12, color: SECONDARY, lineHeight: 1.55, margin: '10px 0 0' }}>
                 {tooLong
-                  ? 'Your letter is long enough that some email services would cut it short in the link, so opening one of these copies the full text to your clipboard — paste it into the message.'
+                  ? 'Your letter is long enough that some email services would cut it short in the link, so opening one of these copies the full text to your clipboard, paste it into the message.'
                   : 'These open a new message with your letter already in it.'}
               </p>
             </div>

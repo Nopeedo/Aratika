@@ -222,7 +222,7 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
               repeated on all seventeen tiles. */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, fontSize: 11, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE }}>
             <span aria-hidden style={{ width: 22, flexShrink: 0, borderTop: `1.5px dashed ${hexToRgba(INK, 0.32)}` }} />
-            <span>5% — the party vote needed to enter Parliament without winning an electorate</span>
+            <span>5%, the party vote needed to enter Parliament without winning an electorate</span>
           </div>
 
           {/* The parties no pollster reports on its own. Said once, over all of
@@ -235,7 +235,7 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
             return (
               <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid ${LINE}` }}>
                 <div style={{ fontSize: 11.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 10, lineHeight: 1.5 }}>
-                  Pollsters don&rsquo;t report these {unreported.length} separately — they&rsquo;re inside the &ldquo;Others&rdquo; figure
+                  Pollsters don&rsquo;t report these {unreported.length} separately, they&rsquo;re inside the &ldquo;Others&rdquo; figure
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                   {unreported.map((slug) => (
@@ -282,7 +282,7 @@ function Row({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null;
   const tint = (a: number) => hexToRgba(colour, a)
 
   return (
-    <Link href={`/parties/${slug}`} className="pc-row" aria-label={`${names.full} — open party page`}>
+    <Link href={`/parties/${slug}`} className="pc-row" aria-label={`${names.full}: open party page`}>
       {/* Name and its metadata together. Seats and the in-via-electorates note
           used to sit under the figure on the right, where "via electorates"
           wrapped to two lines and made Te Pāti Māori's row taller than every

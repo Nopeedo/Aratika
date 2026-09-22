@@ -145,7 +145,7 @@ export function QuickGuide() {
         <div>
           <h1 style={{ fontSize: 'clamp(24px,4vw,30px)', fontWeight: 800, letterSpacing: '-.02em', margin: '0 0 6px' }}>How deep do you want to go?</h1>
           <p style={{ fontSize: 15.5, color: SUB, lineHeight: 1.5, margin: '0 0 22px' }}>
-            You can change your mind any time — this just sets where we point you next.
+            You can change your mind any time, this just sets where we point you next.
           </p>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {([['basics', 'Just the basics', 'A quick starting point I can act on today.'], ['compare', 'I want to compare properly', 'The full picture across every party.']] as [Depth, string, string][]).map(([val, label, desc]) => {
@@ -194,7 +194,7 @@ function Result({ issues, readiness, depth, onRestart }: { issues: PolicyTopic[]
     <div>
       <h1 style={{ fontSize: 'clamp(25px,4.4vw,32px)', fontWeight: 800, letterSpacing: '-.02em', margin: '0 0 6px' }}>Here&rsquo;s your starting point</h1>
       <p style={{ fontSize: 15.5, color: SUB, lineHeight: 1.5, margin: '0 0 24px' }}>
-        Three quick things, built from your answers. Take them one at a time — no rush.
+        Three quick things, built from your answers. Take them one at a time, no rush.
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -216,7 +216,7 @@ function Result({ issues, readiness, depth, onRestart }: { issues: PolicyTopic[]
         <Card icon={<Vote style={{ width: 18, height: 18, color: JADE }} />} title="Getting ready to vote">
           {readiness === 'enrolled' ? (
             <p style={{ fontSize: 14, color: SUB, lineHeight: 1.55, margin: '0 0 12px' }}>
-              You&rsquo;re enrolled — nice. Nothing to do here except decide. When you&rsquo;re ready, we&rsquo;ll help you find your candidates.
+              You&rsquo;re enrolled, nice. Nothing to do here except decide. When you&rsquo;re ready, we&rsquo;ll help you find your candidates.
             </p>
           ) : (
             <p style={{ fontSize: 14, color: SUB, lineHeight: 1.55, margin: '0 0 12px' }}>

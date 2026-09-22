@@ -34,7 +34,7 @@ export default async function RecordHubPage() {
   const valueAt = (sid: string, year: number) => {
     const s = ECONOMIC_DATA.series.find((x) => x.id === sid)
     const p = s?.points.find((pt) => pt.year === year)
-    return p ? p.value.toFixed(1) : '—'
+    return p ? p.value.toFixed(1) : ''
   }
 
   return (
@@ -60,7 +60,7 @@ export default async function RecordHubPage() {
           <ShieldAlert style={{ width: 18, height: 18, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 12.5, color: '#1e3a8a', fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
             <b>Private view.</b> Statuses assessed to a January 2026 knowledge cutoff. Economic figures are official annual
-            data (World Bank, compiling IMF/ILO/national sources) — context only, never attributed to a single policy.
+            data (World Bank, compiling IMF/ILO/national sources), context only, never attributed to a single policy.
           </p>
         </div>
 
@@ -97,7 +97,7 @@ export default async function RecordHubPage() {
           <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Economic data</h2>
         </div>
         <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px' }}>
-          Annual official series. Retrieved {ECONOMIC_DATA.generatedAt} — CPI from OECD (sourced from Stats NZ); GDP, unemployment &amp; debt from World Bank Open Data.
+          Annual official series. Retrieved {ECONOMIC_DATA.generatedAt}, CPI from OECD (sourced from Stats NZ); GDP, unemployment &amp; debt from World Bank Open Data.
         </p>
 
         <div style={{ overflowX: 'auto', border: `1px solid ${BORDER}`, borderRadius: 14 }}>
@@ -118,11 +118,11 @@ export default async function RecordHubPage() {
                   </td>
                   {years.map((y) => {
                     const v = valueAt(s.id, y)
-                    return <td key={y} style={{ ...td, color: v === '—' ? '#cbd0d6' : INK, fontWeight: v === '—' ? 400 : 700, fontFamily: DISPLAY }}>{v}</td>
+                    return <td key={y} style={{ ...td, color: v === '' ? '#cbd0d6' : INK, fontWeight: v === '' ? 400 : 700, fontFamily: DISPLAY }}>{v}</td>
                   })}
                   <td style={{ ...td, whiteSpace: 'nowrap' }}>
                     <a href={s.primaryUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11.5, fontWeight: 700, color: JADE, textDecoration: 'none' }}>
-                      {s.primaryLabel.split(' — ')[0]} <ExternalLink style={{ width: 11, height: 11 }} />
+                      {s.primaryLabel.split('')[0]} <ExternalLink style={{ width: 11, height: 11 }} />
                     </a>
                   </td>
                 </tr>
@@ -131,7 +131,7 @@ export default async function RecordHubPage() {
           </table>
         </div>
         <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 12, lineHeight: 1.5 }}>
-          “—” = year not in the source range (annual figures can lag ~a year). The Official Cash Rate isn’t in this feed —
+          “, ” = year not in the source range (annual figures can lag ~a year). The Official Cash Rate isn’t in this feed
           see the full record for the live RBNZ link. Charts and the full breakdown are on the{' '}
           <Link href="/record/national" style={{ color: JADE, fontWeight: 700 }}>National record</Link>.
         </p>

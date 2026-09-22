@@ -37,11 +37,11 @@ export function TrackCta() {
             <Target style={{ width: 15, height: 15 }} /> Your Command Centre
           </div>
           <h2 style={{ fontSize: 'clamp(28px,5vw,39px)', fontWeight: 800, letterSpacing: '-.01em', color: '#fff', fontFamily: MANROPE, margin: '0 0 12px', lineHeight: 1.12, maxWidth: 640 }}>
-            Track what matters to you — we keep it current
+            Track what matters to you, we keep it current
           </h2>
           <p style={{ fontSize: 'clamp(16px,2.3vw,18px)', fontWeight: 500, color: 'rgba(255,255,255,.78)', fontFamily: MANROPE, margin: 0, lineHeight: 1.6, maxWidth: 620 }}>
             Follow the MPs, parties, issues and bills you care about. The news, video and votes on exactly those things
-            come to you — one place, kept up to date all the way to the 2026 election.
+            come to you, one place, kept up to date all the way to the 2026 election.
           </p>
         </div>
 

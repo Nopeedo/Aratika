@@ -136,7 +136,7 @@ export async function POST(req: Request) {
   // row was published or reviewed by someone else while this editor read it.
   const { data: hit, error } = await supabase.from('content_items').update(update).eq('id', id).eq('status', 'pending').select('id')
   if (error) return NextResponse.json({ error: 'update_failed', message: error.message }, { status: 500 })
-  if (!hit?.length) return NextResponse.json({ error: 'not_pending', message: 'This item is no longer pending — someone else reviewed or published it. Reload the queue.' }, { status: 409 })
+  if (!hit?.length) return NextResponse.json({ error: 'not_pending', message: 'This item is no longer pending, someone else reviewed or published it. Reload the queue.' }, { status: 409 })
 
   return NextResponse.json({ ok: true })
 }

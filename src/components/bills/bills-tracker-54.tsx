@@ -163,7 +163,7 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', background: '#fff', border: `2px solid ${partyColour}`, borderRadius: 14, padding: '12px 16px', marginBottom: 18 }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 9, fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>
             <span style={{ width: 10, height: 10, borderRadius: 3, background: partyColour, flexShrink: 0 }} />
-            Showing {PARTY_NAMES[initialParty as PartySlug]?.short ?? initialParty}’s bills — {filtered.length} of {stats.total}
+            Showing {PARTY_NAMES[initialParty as PartySlug]?.short ?? initialParty}’s bills{filtered.length} of {stats.total}
           </span>
           <button onClick={reset} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '8px 12px', fontFamily: MANROPE, cursor: 'pointer' }}>
             <X style={{ width: 13, height: 13 }} /> Show all bills

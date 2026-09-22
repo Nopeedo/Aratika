@@ -84,7 +84,7 @@ export function PartyPolicyExplorer({ partySlug, partyName, accent, positions, d
             <Info style={{ width: 18, height: 18, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 13.5, color: '#1e3a8a', fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
               <b>We haven&rsquo;t recorded {partyName}&rsquo;s position on {meta.label.toLowerCase()} yet.</b> When they publish
-              one we&rsquo;ll summarise it neutrally with the source — every contesting party is covered the same way.
+              one we&rsquo;ll summarise it neutrally with the source, every contesting party is covered the same way.
             </p>
           </div>
         )}

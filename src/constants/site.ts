@@ -2,7 +2,7 @@ export const SITE = {
   name: 'Politika',
   tagline: 'Navigating New Zealand Politics',
   description:
-    'Your one-stop resource for clear, credible information on New Zealand\'s parliament, MPs, parties, and policies — all in one place.',
+    'Your one-stop resource for clear, credible information on New Zealand\'s parliament, MPs, parties, and policies, all in one place.',
   url: 'https://politika.nz',
   email: 'hello@politika.nz',
   // Official accounts. These feed three things at once: the footer links, the
@@ -88,7 +88,7 @@ export const DATA_SOURCES = [
   {
     name: 'Radio New Zealand (RNZ)',
     url: 'https://www.rnz.co.nz',
-    description: 'Public broadcaster — political news',
+    description: 'Public broadcaster: political news',
     tier: 'rss' as const,
   },
   {

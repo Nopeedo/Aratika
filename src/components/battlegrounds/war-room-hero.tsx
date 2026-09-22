@@ -97,7 +97,7 @@ export function WarRoomHero({
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 12 }}>
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: 22, fontWeight: 800, color: JADE_DARK, fontFamily: MANROPE, lineHeight: 1 }}>{days ?? '—'}</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: JADE_DARK, fontFamily: MANROPE, lineHeight: 1 }}>{days ?? ''}</div>
               <div style={{ fontSize: 10.5, color: SUB, fontFamily: MANROPE, marginTop: 2 }}>days to election day</div>
             </div>
             {action}

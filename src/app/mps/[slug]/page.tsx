@@ -94,7 +94,7 @@ function ImpactTile({ label, value }: { label: string; value: number | null }) {
   return (
     <div style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 12, padding: '12px 14px', minWidth: 0 }}>
       <div style={{ fontSize: 24, fontWeight: 700, color: value === null ? TERTIARY : INK, fontFamily: DISPLAY, lineHeight: 1 }}>
-        {value === null ? '—' : value}
+        {value === null ? '' : value}
       </div>
       <div style={{ fontSize: 11.5, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginTop: 6, lineHeight: 1.3 }}>{label}</div>
       {value === null && <div style={{ marginTop: 5 }}><ComingTag /></div>}
@@ -327,7 +327,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
                       </div>
                       {govBills.length > 8 && (
                         <div style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, marginTop: 8 }}>
-                          +{govBills.length - 8} more — see the <Link href="/bills" style={{ color: JADE, fontWeight: 700 }}>Bills tracker</Link>
+                          +{govBills.length - 8} more, see the <Link href="/bills" style={{ color: JADE, fontWeight: 700 }}>Bills tracker</Link>
                         </div>
                       )}
                     </div>
@@ -468,7 +468,7 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <Card style={{ padding: '20px 22px' }}>
             <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 14 }}>At a glance</div>
-            <Stat icon={MapPin} label="Electorate" value={mp.role === 'electorate' ? (mp.electorate ?? '—') : 'List MP'} />
+            <Stat icon={MapPin} label="Electorate" value={mp.role === 'electorate' ? (mp.electorate ?? '') : 'List MP'} />
             <Stat icon={Landmark} label="Role" value={mp.role === 'electorate' ? 'Electorate MP' : 'List MP'} />
             {mp.title && <Stat icon={Briefcase} label="Title" value={mp.title} />}
             {mp.enteredParliament && <Stat icon={Calendar} label="Entered Parliament" value={String(mp.enteredParliament)} />}
@@ -500,8 +500,8 @@ export default async function MPProfilePage({ params }: { params: Promise<{ slug
               </div>
               {govBills.length > 0 && <Stat icon={FileText} label="Govt bills in charge" value={String(govBills.length)} />}
               <Stat icon={FileText} label="Members’ bills (ballot)" value={String(ballotBills.length)} />
-              <Stat icon={MessageSquare} label="Written questions" value={typeof mp.writtenQuestions === 'number' ? String(mp.writtenQuestions) : '—'} coming={typeof mp.writtenQuestions !== 'number'} />
-              <Stat icon={Vote} label="Speeches" value={typeof mp.speeches === 'number' ? String(mp.speeches) : '—'} coming={typeof mp.speeches !== 'number'} />
+              <Stat icon={MessageSquare} label="Written questions" value={typeof mp.writtenQuestions === 'number' ? String(mp.writtenQuestions) : ''} coming={typeof mp.writtenQuestions !== 'number'} />
+              <Stat icon={Vote} label="Speeches" value={typeof mp.speeches === 'number' ? String(mp.speeches) : ''} coming={typeof mp.speeches !== 'number'} />
             </Card>
           )}
 

@@ -33,7 +33,7 @@ export default function AboutPage() {
           </h1>
           <p style={{ fontSize: 18, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.6, margin: 0 }}>
             Politika is an independent, non-partisan platform that helps every New Zealander understand who represents them,
-            what’s being decided, and how to have their say — all sourced from official information.
+            what’s being decided, and how to have their say, all sourced from official information.
           </p>
         </div>
       </div>
@@ -45,8 +45,8 @@ export default function AboutPage() {
           <h2 style={{ fontSize: 22, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Why we exist</h2>
           <p style={{ fontSize: 15.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
             Politics shapes everyday life, yet official information is scattered, jargon-heavy, and easy to tune out. Politika
-            brings it together in one place — MP and party profiles, the bills before the House, an interactive electorate
-            map, plain-language explainers, and tools to write to your representatives — so getting informed feels less like
+            brings it together in one place, MP and party profiles, the bills before the House, an interactive electorate
+            map, plain-language explainers, and tools to write to your representatives, so getting informed feels less like
             a chore and more like something you actually want to do.
           </p>
         </section>

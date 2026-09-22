@@ -157,7 +157,7 @@ export function PollSnapshot({
           </div>
 
           <p style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-            Party-vote and preferred-PM figures compiled from published polls — <a href={pollsSource} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>aggregate ↗</a>.
+            Party-vote and preferred-PM figures compiled from published polls<a href={pollsSource} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>aggregate ↗</a>.
             Poll-of-polls is a simple average of the latest poll from each company.
           </p>
         </div>

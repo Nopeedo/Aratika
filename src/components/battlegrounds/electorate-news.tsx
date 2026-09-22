@@ -32,7 +32,7 @@ export async function ElectorateNews({ electorateName }: { electorateName: strin
       <div style={{ display: 'flex', gap: 12, padding: '16px 18px', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14 }}>
         <Newspaper style={{ width: 18, height: 18, color: TERTIARY, flexShrink: 0, marginTop: 1 }} />
         <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-          No coverage naming {electorateName} or its MP yet in our tracked feeds — this fills in automatically as outlets report on the race.
+          No coverage naming {electorateName} or its MP yet in our tracked feeds, this fills in automatically as outlets report on the race.
         </p>
       </div>
     )

@@ -52,7 +52,7 @@ export function PremiumGate({
         </div>
         <h3 style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>{featureName} is a Premium feature</h3>
         <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 16px' }}>
-          Upgrade to draft and export letters and submissions. You write every word — Politika gives you the
+          Upgrade to draft and export letters and submissions. You write every word, Politika gives you the
           right structure and official-channel links.
         </p>
 

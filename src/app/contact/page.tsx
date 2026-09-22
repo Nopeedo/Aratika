@@ -25,7 +25,7 @@ export default function ContactPage() {
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Contact" /></div>
           <h1 style={{ fontSize: 'clamp(24px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.1 }}>Contact &amp; corrections</h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6, maxWidth: 620 }}>
-            We’d love to hear from you — and if we’ve got something wrong, we want to fix it fast.
+            We’d love to hear from you, and if we’ve got something wrong, we want to fix it fast.
           </p>
         </div>
       </div>
@@ -61,7 +61,7 @@ export default function ContactPage() {
           </div>
           <p style={{ fontSize: 14, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.7, margin: '0 0 10px' }}>
             Accuracy and non-partisanship are the whole point of Politika. When you report an error, we check it against the
-            official source — the New Zealand Parliament, the Electoral Commission, Stats NZ, or legislation.govt.nz — and
+            official source, the New Zealand Parliament, the Electoral Commission, Stats NZ, or legislation.govt.nz, and
             correct it promptly if it’s wrong. We’re grateful for the help: it keeps the platform trustworthy.
           </p>
           <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>

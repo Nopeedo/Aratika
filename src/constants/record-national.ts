@@ -54,12 +54,12 @@ export interface Priority {
 
 // ─── Sources (link to the official source area; confirm the specific record there) ──
 const S = {
-  beehive: { label: 'beehive.govt.nz — Government 100-day plan', url: 'https://www.beehive.govt.nz/' },
-  coalition: { label: 'DPMC — Coalition agreements', url: 'https://www.dpmc.govt.nz/' },
+  beehive: { label: 'beehive.govt.nz, Government 100-day plan', url: 'https://www.beehive.govt.nz/' },
+  coalition: { label: 'DPMC: Coalition agreements', url: 'https://www.dpmc.govt.nz/' },
   legislation: { label: 'legislation.govt.nz', url: 'https://www.legislation.govt.nz/' },
-  parliament: { label: 'Parliament — Bills & laws', url: 'https://www.parliament.nz/en/pb/bills-and-laws/' },
-  national: { label: 'National Party — published plan', url: 'https://www.national.org.nz/' },
-  budget: { label: 'Budget 2024 — Treasury', url: 'https://www.treasury.govt.nz/' },
+  parliament: { label: 'Parliament, Bills & laws', url: 'https://www.parliament.nz/en/pb/bills-and-laws/' },
+  national: { label: 'National Party: published plan', url: 'https://www.national.org.nz/' },
+  budget: { label: 'Budget 2024, Treasury', url: 'https://www.treasury.govt.nz/' },
 } as const
 
 export const GOVERNMENT = {
@@ -95,13 +95,13 @@ export const PROMISES: PromiseItem[] = [
   // Law & order
   { id: 'three-strikes', category: 'Law & order', status: 'delivered',
     text: 'Reinstate a Three Strikes sentencing regime.',
-    evidence: 'Three Strikes legislation reintroduced and passed (2025).', source: S.legislation, asOf: '2025 — verify' },
+    evidence: 'Three Strikes legislation reintroduced and passed (2025).', source: S.legislation, asOf: '2025, verify' },
   { id: 'gang-patches', category: 'Law & order', status: 'delivered',
     text: 'Ban gang patches and insignia in public places.',
     evidence: 'Gangs legislation passed 2024; public patch ban in force from Nov 2024.', source: S.legislation, asOf: 'In force Nov 2024' },
   { id: 'boot-camps', category: 'Law & order', status: 'in_progress',
     text: 'Establish military-style academies for serious young offenders.',
-    evidence: 'Youth "boot camp" pilot launched in 2024; programme ongoing.', source: S.beehive, asOf: 'Pilot from 2024 — verify outcomes' },
+    evidence: 'Youth "boot camp" pilot launched in 2024; programme ongoing.', source: S.beehive, asOf: 'Pilot from 2024, verify outcomes' },
   { id: 'phones-schools', category: 'Law & order / Education', status: 'delivered',
     text: 'Ban cellphone use in schools.',
     evidence: 'School cellphone ban applied from the start of the 2024 school year.', source: S.beehive, asOf: 'From Term 1, 2024' },
@@ -128,7 +128,7 @@ export const PROMISES: PromiseItem[] = [
   // Treaty / co-governance
   { id: 'treaty-principles', category: 'Treaty & governance', status: 'changed',
     text: 'Coalition commitment (ACT) to introduce a Treaty Principles Bill and support it to select committee.',
-    evidence: 'Bill introduced Nov 2024 and went to select committee; defeated at second reading in April 2025 — National did not support it further.', source: S.parliament, asOf: 'Defeated 2nd reading, Apr 2025 — verify' },
+    evidence: 'Bill introduced Nov 2024 and went to select committee; defeated at second reading in April 2025, National did not support it further.', source: S.parliament, asOf: 'Defeated 2nd reading, Apr 2025, verify' },
   { id: '7aa', category: 'Treaty & governance', status: 'delivered',
     text: 'Remove section 7AA from the Oranga Tamariki Act.',
     evidence: 'Section 7AA repealed via Oranga Tamariki amendment legislation (2024).', source: S.legislation, asOf: '2024' },
@@ -139,7 +139,7 @@ export const PROMISES: PromiseItem[] = [
     evidence: 'RBNZ remit changed to a single price-stability focus (Dec 2023).', source: S.beehive, asOf: 'Dec 2023' },
   { id: 'public-spend', category: 'Economy', status: 'in_progress',
     text: 'Reduce government back-office spending and the size of the public service.',
-    evidence: 'Agency savings targets set; public-service reductions through 2024–25.', source: S.budget, asOf: 'Ongoing — verify latest' },
+    evidence: 'Agency savings targets set; public-service reductions through 2024–25.', source: S.budget, asOf: 'Ongoing: verify latest' },
   { id: 'bright-line', category: 'Tax & cost of living', status: 'delivered',
     text: 'Return the bright-line test on property to two years.',
     evidence: 'Bright-line period reduced to two years from 1 July 2024.', source: S.beehive, asOf: 'From 1 Jul 2024' },
@@ -151,7 +151,7 @@ export const PROMISES: PromiseItem[] = [
     evidence: 'Benefit indexation changed to CPI via legislation (2024).', source: S.legislation, asOf: '2024' },
   { id: 'welfare-sanctions', category: 'Welfare', status: 'in_progress',
     text: 'Reintroduce work obligations and sanctions for job seekers.',
-    evidence: 'Welfare "traffic light" obligations and sanctions introduced (2024); rollout ongoing.', source: S.beehive, asOf: 'From 2024 — verify' },
+    evidence: 'Welfare "traffic light" obligations and sanctions introduced (2024); rollout ongoing.', source: S.beehive, asOf: 'From 2024, verify' },
   { id: 'productivity-commission', category: 'Public sector', status: 'delivered',
     text: 'Disestablish the Productivity Commission.',
     evidence: 'The New Zealand Productivity Commission closed in early 2024.', source: S.beehive, asOf: 'Feb 2024' },
@@ -172,7 +172,7 @@ export const PROMISES: PromiseItem[] = [
     evidence: 'Pseudoephedrine products permitted for sale again (2024).', source: S.legislation, asOf: '2024' },
   { id: 'charter-schools', category: 'Education', status: 'delivered',
     text: 'Reintroduce charter schools.',
-    evidence: 'Charter school model reinstated via legislation (2024); first schools from 2025.', source: S.legislation, asOf: 'Legislated 2024; schools 2025 — verify' },
+    evidence: 'Charter school model reinstated via legislation (2024); first schools from 2025.', source: S.legislation, asOf: 'Legislated 2024; schools 2025, verify' },
   { id: 'structured-literacy', category: 'Education', status: 'delivered',
     text: 'Require an hour each of reading, writing and maths, with structured literacy.',
     evidence: 'Structured literacy and the daily reading/writing/maths requirement introduced in primary schools (2024).', source: S.beehive, asOf: 'From 2024' },
@@ -181,7 +181,7 @@ export const PROMISES: PromiseItem[] = [
     evidence: 'Legislation (2024) requires councils to hold referendums to keep Māori wards.', source: S.legislation, asOf: '2024' },
   { id: 'rma-replace', category: 'Water & infrastructure', status: 'in_progress',
     text: 'Replace the Resource Management Act with new, simpler legislation.',
-    evidence: 'Replacement resource-management bills introduced; full replacement under way.', source: S.parliament, asOf: 'Ongoing 2025 — verify' },
+    evidence: 'Replacement resource-management bills introduced; full replacement under way.', source: S.parliament, asOf: 'Ongoing 2025, verify' },
   { id: 'he-puapua', category: 'Treaty & governance', status: 'delivered',
     text: 'Stop work on He Puapua.',
     evidence: 'Government confirmed it would not progress the He Puapua report.', source: S.coalition, asOf: '2023–24' },

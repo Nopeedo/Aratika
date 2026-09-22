@@ -247,7 +247,7 @@ export function ReviewList({ initial }: { initial: PendingItem[] }) {
         </div>
         {bulkErr && <div style={{ width: '100%', fontSize: 12.5, color: '#b42318', fontFamily: MANROPE }}>{bulkErr}</div>}
         <div style={{ width: '100%', fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.4 }}>
-          Bulk-approve publishes the AI-drafted breakdowns as-is. Spot-check a sample first — anything you bulk-publish skips the per-item read.
+          Bulk-approve publishes the AI-drafted breakdowns as-is. Spot-check a sample first, anything you bulk-publish skips the per-item read.
         </div>
       </div>
 
@@ -286,7 +286,7 @@ export function ReviewList({ initial }: { initial: PendingItem[] }) {
               Nothing tagged ({low.length})
             </button>
             <span style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, flex: '1 1 240px', lineHeight: 1.4 }}>
-              No party, MP, topic, electorate or bill matched. Usually crosswords, weather and sport —
+              No party, MP, topic, electorate or bill matched. Usually crosswords, weather and sport
               but the taggers do miss things, so skim before clearing.
             </span>
             <button onClick={() => setSelected(new Set(low.map((i) => i.id)))} style={{ fontSize: 12.5, fontWeight: 700, fontFamily: MANROPE, padding: '5px 11px', borderRadius: 999, cursor: 'pointer', color: '#991b1b', background: '#fef2f2', border: '1px solid #fecaca', whiteSpace: 'nowrap' }}>
@@ -487,7 +487,7 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
           {/* LIVE PREVIEW — how it appears on the site */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
             <Eye style={{ width: 14, height: 14, color: JADE }} />
-            <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Preview — how readers will see it</span>
+            <span style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Preview, how readers will see it</span>
           </div>
           <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden', marginBottom: 18 }}>
             {/* faux browser bar */}
@@ -521,7 +521,7 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 4 }}>
             {newsTags.length === 0
-              ? <span style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE }}>No party / MP / topic tags — won’t reach any tracked dashboard.</span>
+              ? <span style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE }}>No party / MP / topic tags, won’t reach any tracked dashboard.</span>
               : newsTags.map((tg, i) => (
                   <span key={i} style={{ fontSize: 11, fontWeight: 700, color: tg.fg, background: tg.c, border: `1px solid ${tg.b}`, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE, textTransform: 'capitalize' }}>{tg.t}</span>
                 ))}
@@ -549,13 +549,13 @@ function ReviewCard({ item, onDone, selected, onToggleSelect }: { item: PendingI
       <div style={{ background: '#fbfaf8', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 16px' }}>
         {isNews ? (
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.5 }}>
-            Headline + snippet + link from the outlet’s own feed — nothing is rewritten. <b style={{ color: INK }}>Approve</b> to publish it to the live feed, or <b style={{ color: '#b42318' }}>Reject</b> to keep it off the site.
+            Headline + snippet + link from the outlet’s own feed, nothing is rewritten. <b style={{ color: INK }}>Approve</b> to publish it to the live feed, or <b style={{ color: '#b42318' }}>Reject</b> to keep it off the site.
           </p>
         ) : (
         <>
-        <label style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Basic summary — plain, no jargon (what readers see by default)</label>
+        <label style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Basic summary, plain, no jargon (what readers see by default)</label>
         <textarea value={summaryBasic} onChange={(e) => setSummaryBasic(e.target.value)} rows={3} placeholder="Plain-language summary anyone can understand, no jargon…" style={{ width: '100%', marginTop: 6, resize: 'vertical', fontFamily: MANROPE, fontSize: 13.5, color: INK, border: `1px solid ${BORDER}`, borderRadius: 11, padding: '10px 12px', outline: 'none', lineHeight: 1.5, background: '#fff' }} />
-        <label style={{ display: 'block', marginTop: 12, fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Detailed summary — fuller, still plain</label>
+        <label style={{ display: 'block', marginTop: 12, fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Detailed summary, fuller, still plain</label>
         <textarea value={summary} onChange={(e) => setSummary(e.target.value)} rows={4} placeholder="Fuller neutral, factual summary…" style={{ width: '100%', marginTop: 6, resize: 'vertical', fontFamily: MANROPE, fontSize: 13.5, color: INK, border: `1px solid ${BORDER}`, borderRadius: 11, padding: '10px 12px', outline: 'none', lineHeight: 1.5, background: '#fff' }} />
         <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '8px 0 0' }}>
           {proposal
@@ -650,11 +650,11 @@ function ProposalDiff({ item, proposal }: { item: PendingItem; proposal: Propose
             <div key={r.label} style={{ display: 'grid', gridTemplateColumns: '110px 1fr 1fr', borderBottom: `1px solid ${BORDER}`, fontSize: 12.5, fontFamily: MANROPE, lineHeight: 1.5 }}>
               <div style={{ padding: '8px 10px', fontWeight: 700, color: TERTIARY }}>{r.label}</div>
               {same ? (
-                <div style={{ padding: '8px 10px', color: TERTIARY, gridColumn: '2 / 4', fontStyle: 'italic' }}>unchanged{r.live ? ` — ${r.live.length > 90 ? r.live.slice(0, 90) + '…' : r.live}` : ''}</div>
+                <div style={{ padding: '8px 10px', color: TERTIARY, gridColumn: '2 / 4', fontStyle: 'italic' }}>unchanged{r.live ? `: ${r.live.length > 90 ? r.live.slice(0, 90) + '…' : r.live}` : ''}</div>
               ) : (
                 <>
-                  <div style={{ padding: '8px 10px', color: SECONDARY, whiteSpace: 'pre-wrap', wordBreak: 'break-word', borderRight: `1px solid ${BORDER}` }}>{r.live || <span style={{ color: TERTIARY }}>—</span>}</div>
-                  <div style={{ padding: '8px 10px', color: INK, whiteSpace: 'pre-wrap', wordBreak: 'break-word', background: '#f2faf5' }}>{r.next || <span style={{ color: TERTIARY }}>—</span>}</div>
+                  <div style={{ padding: '8px 10px', color: SECONDARY, whiteSpace: 'pre-wrap', wordBreak: 'break-word', borderRight: `1px solid ${BORDER}` }}>{r.live || <span style={{ color: TERTIARY }}></span>}</div>
+                  <div style={{ padding: '8px 10px', color: INK, whiteSpace: 'pre-wrap', wordBreak: 'break-word', background: '#f2faf5' }}>{r.next || <span style={{ color: TERTIARY }}></span>}</div>
                 </>
               )}
             </div>

@@ -80,9 +80,9 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
       <h3 style={{ fontSize: 19, fontWeight: 800, color: INK, margin: '0 0 2px' }}>{selected}</h3>
       <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14 }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <Row label="2023 winner" value={info.mpName ?? '—'} />
-        <Row label="Party" value={info.party ? PARTY_NAMES[info.party].short : '—'} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
-        <Row label="Majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : '—'} />
+        <Row label="2023 winner" value={info.mpName ?? ''} />
+        <Row label="Party" value={info.party ? PARTY_NAMES[info.party].short : ''} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
+        <Row label="Majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : ''} />
       </div>
       <Link href={`/battlegrounds/${selectedKey}`} style={{ marginTop: 12, textDecoration: 'none' }}>
         <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px', color: '#fff', fontSize: 14, fontWeight: 800 }}>View this battle <ArrowRight style={{ width: 15, height: 15 }} /></span>

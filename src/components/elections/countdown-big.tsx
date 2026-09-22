@@ -32,7 +32,7 @@ export function CountdownBig() {
       </div>
       <div style={{ marginLeft: 'auto', textAlign: 'right', fontFamily: MANROPE }}>
         <div style={{ fontSize: 38, fontWeight: 800, color: '#fff', lineHeight: 1 }}>
-          {days === null ? '—' : `~${days.toLocaleString('en-NZ')}`}
+          {days === null ? '' : `~${days.toLocaleString('en-NZ')}`}
         </div>
         <div style={{ fontSize: 13, color: '#9aa0aa' }}>days to go</div>
       </div>

@@ -55,7 +55,7 @@ export default function ParliamentPage() {
           <div style={{ marginBottom: 8 }}><SectionDivider type="official" label="Current Parliament" /></div>
           <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>The 54th Parliament</h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.6, margin: 0 }}>
-            Who holds power, who opposes it, and how it’s arranged — the make-up of New Zealand’s House of Representatives since the 2023 election.
+            Who holds power, who opposes it, and how it’s arranged, the make-up of New Zealand’s House of Representatives since the 2023 election.
           </p>
         </div>
       </div>
@@ -77,7 +77,7 @@ export default function ParliamentPage() {
         <section>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>The Government</h2>
           <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 16px' }}>
-            The Prime Minister and ministers who run the country — {ministers.length} ministers across the coalition.
+            The Prime Minister and ministers who run the country{ministers.length} ministers across the coalition.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(250px, 100%), 1fr))', gap: 12 }}>
             {ministers.map((m) => (

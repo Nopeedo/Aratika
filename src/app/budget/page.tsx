@@ -56,7 +56,7 @@ export default function BudgetPage() {
           </h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '10px 0 0', maxWidth: 680, lineHeight: 1.55 }}>
             Delivered {BUDGET_META.deliveredOn}. A plain-English, non-partisan breakdown of what the
-            Government is spending, by sector — with every figure taken from The Treasury.
+            Government is spending, by sector, with every figure taken from The Treasury.
           </p>
         </div>
       </div>
@@ -115,7 +115,7 @@ export default function BudgetPage() {
         {/* ── In context (what's already in place) ────────────── */}
         <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px', marginBottom: 42, background: '#f8fafc' }}>
           <div style={{ fontSize: 14.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 8 }}>
-            In context — what’s already in place
+            In context, what’s already in place
           </div>
           <ul style={{ margin: 0, padding: '0 0 0 18px', display: 'flex', flexDirection: 'column', gap: 6 }}>
             {BUDGET_BASELINE.points.map((pt, i) => (

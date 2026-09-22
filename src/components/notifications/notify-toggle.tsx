@@ -76,7 +76,7 @@ export function NotifyToggle() {
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 15.5, fontWeight: 800, color: INK }}>Notifications</div>
           <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.5, margin: '3px 0 0' }}>
-            Get a heads-up when something you follow moves — a bill you track advances, or there’s big news on a party you follow.
+            Get a heads-up when something you follow moves, a bill you track advances, or there’s big news on a party you follow.
           </p>
 
           {state === 'ios' && (

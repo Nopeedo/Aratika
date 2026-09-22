@@ -27,7 +27,7 @@ export default async function EditorPollsPage() {
           <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>Polls</h1>
           <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
             Enter each published poll as it comes out. The Election Centre averages these into the poll-of-polls and seat
-            projection — so keep every figure to what the pollster actually published, with a source link.
+            projection, so keep every figure to what the pollster actually published, with a source link.
           </p>
         </div>
       </div>

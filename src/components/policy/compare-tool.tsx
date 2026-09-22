@@ -126,12 +126,12 @@ export function CompareTool({ positions, topics }: { positions: PartyPosition[];
         <PartyPositions parties={visibleParties} getPos={(s) => byParty.get(s)} detailed={detailed} topic={topic} topicLabel={topicLabel} />
       ) : (
         <div style={{ textAlign: 'center', padding: '40px 0', color: TERTIARY, fontFamily: MANROPE, fontSize: 14 }}>
-          All parties hidden — turn some back on above.
+          All parties hidden, turn some back on above.
         </div>
       )}
 
       <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '16px 0 0', lineHeight: 1.5 }}>
-        Positions are summarised neutrally from each party’s official policy and checked by an editor before publishing — never paraphrased without the source linked. Politika is non-partisan.{' '}
+        Positions are summarised neutrally from each party’s official policy and checked by an editor before publishing, never paraphrased without the source linked. Politika is non-partisan.{' '}
         <Link href="/party-inclusion" style={{ color: JADE, fontWeight: 700 }}>How we decide who’s included →</Link>{' · '}
         <Link href={`/policies/${topic}`} style={{ color: JADE, fontWeight: 700 }}>Open the {topicLabel} topic page →</Link>
       </p>

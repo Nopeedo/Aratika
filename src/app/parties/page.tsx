@@ -105,7 +105,7 @@ export default function PartiesPage() {
                 fontFamily: 'var(--font-manrope), system-ui, sans-serif',
                 marginBottom: 4,
               }}>
-                54th Parliament — {TOTAL_SEATS} seats total
+                54th Parliament{TOTAL_SEATS} seats total
               </div>
               {/* Seat bar — fills the column up to 400px, shrinks on narrow screens */}
               <div style={{ display: 'flex', gap: 2, height: 10, width: '100%', maxWidth: 400, borderRadius: 999, overflow: 'hidden' }}>
@@ -235,7 +235,7 @@ function OtherRegisteredParties() {
       {/* The rest — neutral rows with official site + policy focus, until they're profiled too */}
       {REGISTERED_NON_PARLIAMENTARY.some((p) => !p.profile) && (
       <p style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', margin: '0 0 12px' }}>
-        Full profiles for the remaining registered parties are on the way — for now, their official site and policy focus:
+        Full profiles for the remaining registered parties are on the way, for now, their official site and policy focus:
       </p>
       )}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
@@ -246,7 +246,7 @@ function OtherRegisteredParties() {
         ))}
       </div>
       <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: 'var(--font-manrope), system-ui, sans-serif', lineHeight: 1.6, margin: '16px 0 0', maxWidth: 760 }}>
-        Party names from the Electoral Commission’s register of registered political parties (as at 1 July 2026); official websites and policy-focus areas are taken from each party’s own site. Further registered parties will appear here as we verify them; three more — the Alliance Party, New Zealand Loyal and Te Tai Tokerau Party — have applied and are under consideration ahead of the 6 August 2026 registration deadline.{' '}
+        Party names from the Electoral Commission’s register of registered political parties (as at 1 July 2026); official websites and policy-focus areas are taken from each party’s own site. Further registered parties will appear here as we verify them; three more, the Alliance Party, New Zealand Loyal and Te Tai Tokerau Party, have applied and are under consideration ahead of the 6 August 2026 registration deadline.{' '}
         <a href={EC_REGISTER_URL} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>See the full register ↗</a>
       </p>
     </div>

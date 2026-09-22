@@ -57,7 +57,7 @@ export function MpCoverage({ slug, name, accent, news, videos }: {
     return (
       <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
         Nothing tagged to {name} in the current window. Coverage is concentrated on ministers and
-        party leaders — most backbenchers appear rarely, and that is the real state of the record
+        party leaders, most backbenchers appear rarely, and that is the real state of the record
         rather than a gap in ours.
       </p>
     )

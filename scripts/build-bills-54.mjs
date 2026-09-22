@@ -173,7 +173,7 @@ export interface Bill54 {
   /** ISO date the committee reports back. */
   reportDue?: string | null
 }
-export const BILLS_54_META = { asOf: '${AS_OF}', total: ${tracker.length}, passed: ${passed.length}, sourceLabel: 'NZ Parliament — Bills', sourceUrl: 'https://bills.parliament.nz/' }
+export const BILLS_54_META = { asOf: '${AS_OF}', total: ${tracker.length}, passed: ${passed.length}, sourceLabel: 'NZ Parliament: Bills', sourceUrl: 'https://bills.parliament.nz/' }
 export const BILL_CATEGORIES = ${JSON.stringify([...new Set(tracker.map((b) => b.category))].sort())}
 export const BILLS_54: Bill54[] = ${JSON.stringify(tracker, null, 0)}
 `)
@@ -210,7 +210,7 @@ writeFileSync(OUT_ACT, `/**
  *  - MP_GOV_BILLS:    government bills the MP is "member in charge" of (Ministers).
  */
 export interface BillRef { title: string; status?: string }
-export const BILL_ACTIVITY_META = { asOf: '${AS_OF}', sourceLabel: 'NZ Parliament — Bills', sourceUrl: 'https://bills.parliament.nz/' }
+export const BILL_ACTIVITY_META = { asOf: '${AS_OF}', sourceLabel: 'NZ Parliament: Bills', sourceUrl: 'https://bills.parliament.nz/' }
 export const MP_PASSED_BILLS: Record<string, BillRef[]> = ${JSON.stringify(passedMembers, null, 2)}
 export const MP_GOV_BILLS: Record<string, BillRef[]> = ${JSON.stringify(govByMinister, null, 2)}
 `)

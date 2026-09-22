@@ -40,19 +40,19 @@ const S = {
 } as const
 
 const lbl: Record<string, string> = {
-  national: 'National — policy & 2026 announcements',
-  labour:   'Labour — policy & 2026 announcements',
-  green:    'Green — complete policy',
-  act:      'ACT — policy & 2026 announcements',
-  nzfirst:  'NZ First — policy & 2026 announcements',
-  tpm:      'Te Pāti Māori — policy & 2026 announcements',
+  national: 'National: policy & 2026 announcements',
+  labour:   'Labour: policy & 2026 announcements',
+  green:    'Green: complete policy',
+  act:      'ACT: policy & 2026 announcements',
+  nzfirst:  'NZ First: policy & 2026 announcements',
+  tpm:      'Te Pāti Māori: policy & 2026 announcements',
 }
 
 export const COMPASS_STANCES: CompassStances = {
   // 1 ── Taxes should be lower, even if it means less public-service spending ──
   'tax-vs-services': {
     national: { stance: 'support',          summary: 'Favours lower taxes and fiscal restraint over expanding public spending.', quote: null, sourceUrl: S.national, sourceLabel: lbl.national },
-    labour:   { stance: 'oppose',           summary: 'Backs a capital gains tax on property to fund services — not lower taxes.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.labour },
+    labour:   { stance: 'oppose',           summary: 'Backs a capital gains tax on property to fund services, not lower taxes.', quote: null, sourceUrl: S.tracker, sourceLabel: lbl.labour },
     green:    { stance: 'strongly_oppose',  summary: 'Proposes a wealth tax and higher income/corporate rates to fund services.', quote: 'In Government, the Green Party will tackle inequality through a fairer tax system and Government spending.', sourceUrl: S.green, sourceLabel: lbl.green },
     act:      { stance: 'strongly_support', summary: 'Campaigns to cut government spending, lower taxes and merge ministries.', quote: null, sourceUrl: S.act, sourceLabel: lbl.act },
     nzfirst:  { stance: 'mixed',            summary: 'Economically interventionist rather than tax-cutting; focus on cost of living.', quote: null, sourceUrl: S.nzfirst, sourceLabel: lbl.nzfirst },

@@ -23,7 +23,7 @@ export default function ElectionsHub() {
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="General Elections" /></div>
           <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Elections</h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
-            The election that built the current Parliament, and the next one on the horizon — with official results from the
+            The election that built the current Parliament, and the next one on the horizon, with official results from the
             Electoral Commission.
           </p>
         </div>

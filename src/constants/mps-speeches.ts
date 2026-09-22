@@ -9,7 +9,7 @@ export interface MPSpeeches { count: number; recent: SpeechRef[] }
 export const SPEECHES_META = {
   term: 54,
   sourceUrl: 'https://hansard.parliament.nz/',
-  sourceLabel: 'Hansard — the official report of Parliament (hansard.parliament.nz)',
+  sourceLabel: 'Hansard, the official report of Parliament (hansard.parliament.nz)',
 }
 export const MP_SPEECHES: Record<string, MPSpeeches> = {
   "maureen-pugh": {

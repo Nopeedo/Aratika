@@ -99,7 +99,7 @@ export function CompanionWidget() {
                   {messages.length === 0 && (
                     <div>
                       <p style={{ fontSize: 14, color: SECONDARY, lineHeight: 1.55, margin: '0 0 14px' }}>
-                        Kia ora 👋 I’m your guide to NZ politics. Ask me anything — what a term means, how something works, or what’s on this page. There are no silly questions.
+                        Kia ora 👋 I’m your guide to NZ politics. Ask me anything, what a term means, how something works, or what’s on this page. There are no silly questions.
                       </p>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
                         {SUGGESTIONS.map((s) => (
@@ -180,7 +180,7 @@ function SignedOut() {
       <div style={{ width: 48, height: 48, borderRadius: 13, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}><Lock style={{ width: 22, height: 22, color: JADE }} /></div>
       <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 7 }}>Sign in to ask Politika</div>
       <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 18px' }}>
-        Your free account unlocks the assistant — ask questions, get guidance, and understand any page, all in plain language.
+        Your free account unlocks the assistant, ask questions, get guidance, and understand any page, all in plain language.
       </p>
       <div style={{ display: 'flex', gap: 9 }}>
         <Link href="/register" style={{ padding: '10px 18px', borderRadius: 11, background: JADE, color: '#fff', fontSize: 13.5, fontWeight: 800, textDecoration: 'none', fontFamily: MANROPE }}>Sign up free</Link>

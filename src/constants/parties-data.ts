@@ -85,7 +85,7 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     coreValues: [
       'Lower taxes and responsible government spending',
       'Strong economic growth and a competitive business environment',
-      'Law and order — personal and community safety',
+      'Law and order: personal and community safety',
       'Individual freedom and personal responsibility',
       'Strong public services delivered efficiently',
       'New Zealand\'s security and international relationships',
@@ -158,7 +158,7 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
       'ACT emerged from the free-market reforms of the 1984–1993 Labour government, founded by ' +
       'former Labour MP Roger Douglas and others who sought to continue economic liberalisation. ' +
       'After years at the margins of parliament, the party surged under David Seymour\'s leadership, ' +
-      'winning 11 seats in 2023 — its best result in over two decades.',
+      'winning 11 seats in 2023, its best result in over two decades.',
     ideology:      ['Classical liberalism', 'Libertarianism', 'Free market', 'Fiscal conservatism'],
     coreValues: [
       'Small government and lower taxes',
@@ -166,7 +166,7 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
       'Free markets and deregulation',
       'Education choice and school autonomy',
       'Law and order based on clear consequences',
-      'Treaty principles — one rule of law for all New Zealanders',
+      'Treaty principles: one rule of law for all New Zealanders',
     ],
     keyPolicyAreas: ['economy', 'education', 'crime-justice', 'treaty-maori-affairs', 'health'],
   },
@@ -186,17 +186,17 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     seats:         15,
     electorateSeats: 1,
     listSeats:       14,
-    founded_note:  'Founded in 1990, with roots in the Values Party (1972) — one of the world\'s first green parties',
+    founded_note:  'Founded in 1990, with roots in the Values Party (1972), one of the world\'s first green parties',
     website:       'https://www.greens.org.nz',
     parliamentUrl: 'https://www.parliament.nz/en/mps-and-electorates/party/green-party-of-aotearoa-new-zealand',
     tagline:       'Green and progressive party focused on climate, environment, and social justice',
     overview:
       'The Green Party of Aotearoa New Zealand is a progressive party advocating for bold climate ' +
       'action, environmental protection, and social and economic justice. With roots in the Values ' +
-      'Party — one of the world\'s first green parties, founded in 1972 — the Greens are currently ' +
+      'Party, one of the world\'s first green parties, founded in 1972, the Greens are currently ' +
       'the third-largest party in opposition with 15 seats.',
     history:
-      'The Green Party traces its origins to the Values Party of 1972 — a world first in green ' +
+      'The Green Party traces its origins to the Values Party of 1972, a world first in green ' +
       'politics. The modern Green Party was formally established in 1990. The Greens supported the ' +
       'Labour-led government from 2017–2023 in a confidence and supply arrangement, and remain ' +
       'a significant force in opposition politics.',
@@ -204,10 +204,10 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     coreValues: [
       'Urgent, science-based climate action and net-zero emissions',
       'Protection of New Zealand\'s natural environment and biodiversity',
-      'Social equity — ending poverty and reducing inequality',
+      'Social equity: ending poverty and reducing inequality',
       'Te Tiriti o Waitangi partnership and Māori rights',
       'Affordable housing and a fair rental market',
-      'A wellbeing economy — measuring success beyond GDP',
+      'A wellbeing economy: measuring success beyond GDP',
     ],
     keyPolicyAreas: ['climate', 'environment', 'housing', 'economy', 'treaty-maori-affairs', 'health'],
   },
@@ -242,7 +242,7 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
       'failing to return to parliament in 2020, NZ First made a comeback in 2023 with 8 seats.',
     ideology:      ['Populism', 'Nationalism', 'Centrism', 'Economic nationalism', 'Social conservatism'],
     coreValues: [
-      'New Zealand sovereignty — NZ owned and NZ controlled',
+      'New Zealand sovereignty: NZ owned and NZ controlled',
       'Regional development and investment outside the main centres',
       'Supporting New Zealand\'s senior citizens',
       'Controlling foreign ownership of New Zealand land and assets',
@@ -339,14 +339,14 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     founded_note:  'Founded in 2016 by economist Gareth Morgan as an evidence-based, policy-focused party; now led by a new generation.',
     website:       'https://www.opportunity.org.nz/',
     parliamentUrl: 'https://www.opportunity.org.nz/',
-    tagline:       'Evidence-based policy — unity, innovation and nature.',
-    overview:      'The Opportunity Party (TOP) is a small, policy-focused party campaigning on evidence-based reform — most notably an overhaul of the tax system — alongside environmental restoration and a less combative style of politics. It is contesting the 2026 election but is not currently in Parliament.',
+    tagline:       'Evidence-based policy: unity, innovation and nature.',
+    overview:      'The Opportunity Party (TOP) is a small, policy-focused party campaigning on evidence-based reform, most notably an overhaul of the tax system, alongside environmental restoration and a less combative style of politics. It is contesting the 2026 election but is not currently in Parliament.',
     history:       'TOP was founded in 2016 by economist and philanthropist Gareth Morgan. It has stood at every general election since, but has not crossed the 5% party-vote threshold or won an electorate seat, so it holds no seats in the 54th Parliament. It is now led by Qiulae Wong.',
     ideology:      ['Evidence-based policy', 'Tax reform', 'Environmentalism', 'Social liberalism'],
     coreValues: [
       'Reset the tax system so it is fairer and rewards work and innovation',
       'Build a sustainable, high-wage economy where people can afford the basics',
-      'Restore nature — healthier oceans and land, and real climate action',
+      'Restore nature: healthier oceans and land, and real climate action',
       'Lower the political temperature and seek long-term, cross-party solutions',
       'Make policy based on evidence rather than ideology',
     ],
@@ -402,7 +402,7 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     website:       'https://animaljustice.org.nz/',
     parliamentUrl: 'https://animaljustice.org.nz/',
     tagline:       'Compassionate, non-violent, sustainable.',
-    overview:      'The Animal Justice Party is a New Zealand party centred on animal welfare and animal rights. It advocates non-violence towards animals, environmental sustainability, and a transition away from animal-based agriculture towards a plant-based economy, and campaigns for stronger legal protections for animals — including a proposed Commissioner for Animals. It holds no seats in the current Parliament.',
+    overview:      'The Animal Justice Party is a New Zealand party centred on animal welfare and animal rights. It advocates non-violence towards animals, environmental sustainability, and a transition away from animal-based agriculture towards a plant-based economy, and campaigns for stronger legal protections for animals, including a proposed Commissioner for Animals. It holds no seats in the current Parliament.',
     history:       'The party grew out of the Animal Justice Auckland advocacy group and consultation with the Australian Animal Justice Party, and registered with the Electoral Commission in August 2023. It contested its first general election that year, standing 17 candidates for 0.17% of the party vote and no seats, and later ran in the 2025 local elections. It is co-led by Danette Wereta and Rob McNeil.',
     ideology:      ['Animal rights', 'Animal welfare', 'Environmentalism'],
     coreValues: [
@@ -438,7 +438,7 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     ideology:      ['Cannabis-law reform', 'Single-issue party', 'Drug-policy reform'],
     coreValues: [
       'Legalise the possession, growing and use of cannabis for adults over 18',
-      '“Education not incarceration” — regulate rather than criminalise',
+      '“Education not incarceration”, regulate rather than criminalise',
       'A regulated R18 cannabis market, including home-grown medicinal use',
       'Expunge past cannabis convictions',
       'Allow large-scale hemp cultivation for fuel, paper and materials',
@@ -463,7 +463,7 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
     parliamentUrl: 'https://www.conservatives.nz/',
     tagline:       'Strong families, a strong economy, a better future.',
     overview:      'The Conservative Party NZ is a socially and fiscally conservative party. It campaigns on traditional family values, lower taxation and smaller government, free speech, and citizen-initiated referendums, and states that it opposes what it calls “woke” ideology. It holds no seats in the current Parliament.',
-    history:       'Founded in 2011 by businessman Colin Craig as the Conservative Party, its best result was 3.97% of the party vote in 2014 — never reaching the 5% threshold or an electorate seat. It was rebranded New Conservative in 2017 and reverted to Conservative Party NZ in 2026; Helen Houghton is its leader.',
+    history:       'Founded in 2011 by businessman Colin Craig as the Conservative Party, its best result was 3.97% of the party vote in 2014, never reaching the 5% threshold or an electorate seat. It was rebranded New Conservative in 2017 and reverted to Conservative Party NZ in 2026; Helen Houghton is its leader.',
     ideology:      ['Social conservatism', 'Fiscal conservatism'],
     coreValues: [
       'Defend what the party calls traditional values',

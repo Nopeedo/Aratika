@@ -48,7 +48,7 @@ export default function FaqPage() {
           <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Help" /></div>
           <h1 style={{ fontSize: 'clamp(24px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.1 }}>Frequently asked questions</h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6, maxWidth: 620 }}>
-            The honest answers — who we are, how we stay neutral, where our information comes from, and how to get started.
+            The honest answers, who we are, how we stay neutral, where our information comes from, and how to get started.
           </p>
         </div>
       </div>
@@ -57,32 +57,32 @@ export default function FaqPage() {
 
         <Section label="Trust & independence">
           <QA q="Is Politika politically neutral?" first>
-            Yes — non-partisanship is the whole point. We present every party the same way, in their own words, and we never
+            Yes, non-partisanship is the whole point. We present every party the same way, in their own words, and we never
             tell you who to vote for. We don’t take positions on issues, endorse candidates, or run opinion pieces, and every
             claim is sourced to an official record you can check yourself.
           </QA>
           <QA q="Do you tell me who to vote for?">
-            Never. Politika exists to help you understand your choices and feel confident — the decision is entirely yours.
+            Never. Politika exists to help you understand your choices and feel confident, the decision is entirely yours.
             Even the personal <Link href="/start" style={linkS}>compass</Link> shows where you overlap with each party without
             picking a winner.
           </QA>
           <QA q="Who is behind Politika?">
-            Politika is an independent, non-partisan platform — not affiliated with any political party, candidate, or lobby
+            Politika is an independent, non-partisan platform, not affiliated with any political party, candidate, or lobby
             group. We are working to formalise it as a registered charitable trust with an independent board, so that its
             independence and governance are structurally guaranteed rather than just promised.
           </QA>
           <QA q="How is Politika funded, and will it stay free?">
             Politika is free, with no ads and no paywall, and we’re committed to keeping it that way. Our model is civic and
-            philanthropic grant funding — not advertising, subscriptions, or selling your data — so the platform can stay open
+            philanthropic grant funding, not advertising, subscriptions, or selling your data, so the platform can stay open
             to everyone. We’ll always be transparent about where our support comes from.
           </QA>
           <QA q="Where does your information come from?">
-            Official, public sources — the New Zealand Parliament, the Electoral Commission, Stats NZ, the Treasury,
+            Official, public sources, the New Zealand Parliament, the Electoral Commission, Stats NZ, the Treasury,
             legislation.govt.nz, and each party’s own published policy. Wherever we state a fact or figure, we link to its
             source so you can verify it. See <Link href="/about#sources" style={linkS}>Our Sources</Link> for the full list.
           </QA>
           <QA q="How current is the information?">
-            We keep it current continuously — the news feed refreshes several times a day, and parliamentary and election data
+            We keep it current continuously, the news feed refreshes several times a day, and parliamentary and election data
             is updated regularly. Where a figure has an “as at” date, we show it, so you always know how fresh it is.
           </QA>
           <QA q="What if you get something wrong?">
@@ -95,7 +95,7 @@ export default function FaqPage() {
         <Section label="Using Politika">
           <QA q="Do I need an account? Is it really free?" first>
             The whole platform is free, and you don’t need an account to use it. An optional free account lets you track the
-            parties, MPs and issues you care about — but everything essential works without signing in.
+            parties, MPs and issues you care about, but everything essential works without signing in.
           </QA>
           <QA q="I’m new to politics. Where do I start?">
             Right at the top of the <Link href="/" style={linkS}>home page</Link>. Use “Start here” to explore the parties, or
@@ -103,7 +103,7 @@ export default function FaqPage() {
             on <strong>Explain terms</strong> in the menu. It adds plain-language definitions to key words across the site.
           </QA>
           <QA q="Does it work on my phone?">
-            Yes — Politika works on phones, tablets and computers.
+            Yes, Politika works on phones, tablets and computers.
           </QA>
           <QA q="What data do you collect about me?">
             As little as possible. We use privacy-respecting analytics to understand what’s useful, and if you create an
@@ -120,7 +120,7 @@ export default function FaqPage() {
           <div>
             <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Still have a question?</h2>
             <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>
-              We’d genuinely like to hear from you — questions, feedback, partnerships, or media.
+              We’d genuinely like to hear from you, questions, feedback, partnerships, or media.
             </p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               <a href={`mailto:${SITE.email}?subject=Politika%20enquiry`} style={btn(true)}><Mail style={ic} /> Email us</a>

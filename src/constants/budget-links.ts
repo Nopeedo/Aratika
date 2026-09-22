@@ -36,12 +36,12 @@ export const BUDGET_LINKS: BudgetLink[] = [
   {
     area: 'Infrastructure', item: '$294m to resource management system reform',
     relation: 'advances', promiseId: 'rma-replace',
-    note: 'Funds the work to replace the RMA — a commitment still marked in progress on the scorecard.',
+    note: 'Funds the work to replace the RMA, a commitment still marked in progress on the scorecard.',
   },
   {
     area: 'Infrastructure', item: '$1.8b for the Cambridge to Piarere Expressway',
     relation: 'advances', priority: 'Infrastructure & growth',
-    note: 'A "Road of National Significance" — part of the infrastructure & growth priority.',
+    note: 'A "Road of National Significance", part of the infrastructure & growth priority.',
   },
   {
     area: 'Savings & reprioritisation', item: '$424m reprioritised + $2b baseline reductions',
@@ -71,9 +71,9 @@ export const BUDGET_LINKS: BudgetLink[] = [
 
   // ── New in this Budget (no prior commitment in the scorecard) ──
   {
-    area: 'Cost of living', item: '$373m — $50/week In-Work Tax Credit boost (up to a year)',
+    area: 'Cost of living', item: '$373m, $50/week In-Work Tax Credit boost (up to a year)',
     relation: 'new', priority: 'Cost of living',
-    note: 'A new, temporary measure responding to fuel-price pressure — not a pre-existing promise.',
+    note: 'A new, temporary measure responding to fuel-price pressure, not a pre-existing promise.',
   },
   {
     area: 'Education', item: 'Double Trades Academy places to 20,000; end final-year Fees Free (~$1b saving)',
@@ -108,10 +108,10 @@ export const FUNDED_PROMISE_IDS = new Set(
  * (the at-a-glance pages show the totals as charts only).
  */
 export const BUDGET_BASELINE = {
-  source: { label: 'Treasury — How taxpayers’ money is spent', url: 'https://www.budget.govt.nz/budget/2026/at-a-glance/taxpayers-money.htm' },
+  source: { label: 'Treasury: How taxpayers’ money is spent', url: 'https://www.budget.govt.nz/budget/2026/at-a-glance/taxpayers-money.htm' },
   points: [
     'Health, education, welfare and NZ Superannuation are the biggest areas of core Crown spending (Treasury, forecast core Crown expenses 2026/27).',
     'Government revenue is raised largely from income tax, GST and corporate tax.',
-    'New infrastructure funding sits on top of an existing pipeline — around $60 billion is expected to be spent over the next four years.',
+    'New infrastructure funding sits on top of an existing pipeline, around $60 billion is expected to be spent over the next four years.',
   ],
 }

@@ -100,7 +100,7 @@ export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug;
           </Link>
         )}
         <a href={r.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, fontWeight: 700, color: TERTIARY, fontFamily: MANROPE, textDecoration: 'none' }}>
-          Source: NZ Parliament — Bills <ExternalLink style={{ width: 12, height: 12 }} />
+          Source: NZ Parliament, Bills <ExternalLink style={{ width: 12, height: 12 }} />
         </a>
       </div>
     </div>

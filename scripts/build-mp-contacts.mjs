@@ -213,7 +213,7 @@ export interface MPContact {
 export const MP_CONTACTS_META = {
   asOf: '${today}',
   count: ${rows.length},
-  sourceLabel: 'New Zealand Parliament — members of Parliament',
+  sourceLabel: 'New Zealand Parliament: members of Parliament',
   sourceUrl: 'https://www.parliament.nz/en/mps-and-electorates/members-of-parliament/',
 }
 

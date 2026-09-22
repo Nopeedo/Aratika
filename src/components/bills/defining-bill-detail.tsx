@@ -214,7 +214,7 @@ export function DefiningBillDetail({ bill, readerSlugs = {} }: { bill: DefiningB
             </Link>
           )}
           <a href={bill.source.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 700, color: MUTED, fontFamily: MANROPE, textDecoration: 'none' }}>
-            Verify at the official source — {bill.source.label} <ExternalLink style={{ width: 13, height: 13 }} />
+            Verify at the official source{bill.source.label} <ExternalLink style={{ width: 13, height: 13 }} />
           </a>
         </div>
 
@@ -232,7 +232,7 @@ export function DefiningBillDetail({ bill, readerSlugs = {} }: { bill: DefiningB
         )}
 
         <p style={{ fontSize: 12, color: '#8a8f86', fontFamily: MANROPE, lineHeight: 1.55, margin: '26px 0 0', background: SOFT, border: `1px solid ${LINE}`, borderRadius: 12, padding: '12px 15px' }}>
-          Neutral summary, {DEFINING_BILLS_META.asOf} knowledge cut-off — confirm any later changes at the official source. Politika does not take a side.
+          Neutral summary, {DEFINING_BILLS_META.asOf} knowledge cut-off, confirm any later changes at the official source. Politika does not take a side.
         </p>
       </div>
     </div>

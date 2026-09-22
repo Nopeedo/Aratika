@@ -28,15 +28,15 @@ const clip = (s: string, n: number) => (s.length > n ? s.slice(0, n).trimEnd() +
 const PAGES: KnowledgeItem[] = [
   { id: 'page-map', type: 'page', title: 'Interactive electorate map', text: 'Click any part of New Zealand to see who represents that area, their party, and electorate. General and Māori electorate layers.', href: '/map' },
   { id: 'page-mps', type: 'page', title: 'MPs directory', text: 'A searchable, filterable directory of all 123 current Members of Parliament with profiles.', href: '/mps' },
-  { id: 'page-parties', type: 'page', title: 'Parties overview', text: 'All six parliamentary parties plus profiles — leaders, history, values and key policy areas.', href: '/parties' },
+  { id: 'page-parties', type: 'page', title: 'Parties overview', text: 'All six parliamentary parties plus profiles, leaders, history, values and key policy areas.', href: '/parties' },
   { id: 'page-policies', type: 'page', title: 'Policy comparison', text: 'Compare where each party stands across the major policy topics, side by side, from official party material.', href: '/policies' },
   { id: 'page-compare', type: 'page', title: 'Compare parties', text: 'Put parties side by side on the issues to see their positions together.', href: '/policies' },
-  { id: 'page-bills', type: 'page', title: 'Bills tracker', text: 'Bills currently before the House — their type, stage, and what they propose.', href: '/bills' },
+  { id: 'page-bills', type: 'page', title: 'Bills tracker', text: 'Bills currently before the House, their type, stage, and what they propose.', href: '/bills' },
   { id: 'page-learn', type: 'page', title: 'Learn how Parliament works', text: 'Interactive lessons from beginner to expert: MMP, your two votes, how a bill becomes law, select committees and more. Also a Kids tier.', href: '/learn' },
   { id: 'page-take-action', type: 'page', title: 'Take Action studio', text: 'Draft a letter to your MP or a Minister, make a select-committee submission, or file an Official Information Act (OIA) request. A Premium feature.', href: '/take-action' },
   { id: 'page-elections', type: 'page', title: 'Elections', text: 'Official 2023 results and the upcoming 2026 general election, nationally and by electorate.', href: '/elections' },
   { id: 'page-battlegrounds', type: 'page', title: 'Battlegrounds', text: 'A marginality map of the electorates and per-seat pages tracking incumbents and 2026 candidates.', href: '/battlegrounds' },
-  { id: 'page-parliament', type: 'page', title: 'Parliament overview', text: 'A snapshot of the current Parliament — seat distribution, the government, and the opposition.', href: '/parliament' },
+  { id: 'page-parliament', type: 'page', title: 'Parliament overview', text: 'A snapshot of the current Parliament, seat distribution, the government, and the opposition.', href: '/parliament' },
   { id: 'page-glossary', type: 'page', title: 'Glossary', text: 'Plain-language definitions of New Zealand political terms.', href: '/glossary' },
   { id: 'page-start', type: 'page', title: 'Find what matters to you', text: 'A short walkthrough that finds the issues you care about and builds you a personalised plan.', href: '/start' },
   { id: 'page-plan', type: 'page', title: 'Your plan', text: 'Your personalised, tick-as-you-go plan of the parts of Politika that help you most.', href: '/plan' },
@@ -51,7 +51,7 @@ function build(): KnowledgeItem[] {
     if (!p || slug === 'independent') continue
     items.push({
       id: `party-${slug}`, type: 'party', title: p.name, href: `/parties/${slug}`,
-      text: clip(`${p.fullName}. ${p.tagline}. Leader: ${p.leader} (${p.leaderTitle})${p.coLeader ? `, co-leader ${p.coLeader}` : ''}. Currently ${p.status}${p.coalitionRole ? ` — ${p.coalitionRole}` : ''}, ${p.seats} seats. ${p.overview} Ideology: ${p.ideology.join(', ')}. Key policy areas: ${p.keyPolicyAreas.join(', ')}.`, 520),
+      text: clip(`${p.fullName}. ${p.tagline}. Leader: ${p.leader} (${p.leaderTitle})${p.coLeader ? `, co-leader ${p.coLeader}` : ''}. Currently ${p.status}${p.coalitionRole ? `, ${p.coalitionRole}` : ''}, ${p.seats} seats. ${p.overview} Ideology: ${p.ideology.join(', ')}. Key policy areas: ${p.keyPolicyAreas.join(', ')}.`, 520),
     })
   }
 
@@ -85,7 +85,7 @@ function build(): KnowledgeItem[] {
     const intro = (m.tiers.beginner?.intro ?? []).map((b) => b.body).join(' ')
     items.push({
       id: `learn-${m.id}`, type: 'learn', title: `Learn: ${m.title}`, href: `/learn/${m.id}`,
-      text: clip(`${m.title} — ${m.subtitle}. ${intro}`, 460),
+      text: clip(`${m.title}. ${m.subtitle}. ${intro}`, 460),
     })
   }
 
@@ -132,5 +132,5 @@ export function retrieve(query: string, limit = 8): KnowledgeItem[] {
 /** Format retrieved items as a CONTEXT block for the model. */
 export function formatContext(items: KnowledgeItem[]): string {
   if (items.length === 0) return '(no matching Politika content found)'
-  return items.map((it, i) => `[${i + 1}] ${it.title} — ${it.text} (link: ${it.href})`).join('\n')
+  return items.map((it, i) => `[${i + 1}] ${it.title}: ${it.text} (link: ${it.href})`).join('\n')
 }

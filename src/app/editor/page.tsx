@@ -23,7 +23,7 @@ export default async function EditorPage() {
           <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>Editorial review</h1>
           <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
             Items the daily pipeline pulled from official sources, awaiting an editor’s check. Nothing here is on the public
-            site until it’s approved — make sure each reads factually and neutrally.
+            site until it’s approved, make sure each reads factually and neutrally.
           </p>
           <div style={{ marginTop: 16 }}>
             <Link href="/editor/polls" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 15px', borderRadius: 10, border: `1px solid ${BORDER}`, background: '#fff', color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>

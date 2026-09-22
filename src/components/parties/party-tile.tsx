@@ -139,7 +139,7 @@ export function PartyTile({ slug }: { slug: PartySlug }) {
             </span>
           ) : (
             <span style={{ display: 'block', fontSize: 11.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.4 }}>
-              Contesting 2026 — no seats in this Parliament
+              Contesting 2026, no seats in this Parliament
             </span>
           )}
         </span>

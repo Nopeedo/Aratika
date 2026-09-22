@@ -121,7 +121,7 @@ export function ResultsView({ e }: { e: ElectionData }) {
       {/* Source */}
       <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 14 }}>
         <a href={e.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
-          Source: Electoral Commission — official {e.year} General Election results <ArrowUpRight style={{ width: 11, height: 11, display: 'inline', verticalAlign: '-1px' }} />
+          Source: Electoral Commission, official {e.year} General Election results <ArrowUpRight style={{ width: 11, height: 11, display: 'inline', verticalAlign: '-1px' }} />
         </a>
       </div>
     </div>

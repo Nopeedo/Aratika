@@ -61,27 +61,27 @@ const MMP: LearnModule = {
 
     kids: {
       intro: [
-        { body: 'New Zealand has lots of people — far too many to all sit in one room and decide the rules! So we choose some people to do it for us. They meet in a big building called Parliament.' },
+        { body: 'New Zealand has lots of people, far too many to all sit in one room and decide the rules! So we choose some people to do it for us. They meet in a big building called Parliament.' },
         { heading: 'We choose them by voting', body: 'When you grow up, you get to vote. Voting is how we say who we want to make the rules for everyone.' },
-        { heading: 'Two ticks!', body: 'In New Zealand you get to make TWO choices when you vote. One choice picks a team (a party). The other choice picks one person from your local area. Try the colourful chart below — move the sliders and watch the seats fill up!' },
+        { heading: 'Two ticks!', body: 'In New Zealand you get to make TWO choices when you vote. One choice picks a team (a party). The other choice picks one person from your local area. Try the colourful chart below, move the sliders and watch the seats fill up!' },
       ],
       quiz: [
         { q: 'Where do the people we choose make the rules?', options: ['A castle', 'Parliament', 'The library'], answer: 1, explain: 'Yes! They meet in Parliament.' },
-        { q: 'How do we choose them?', options: ['By voting', 'By running fast', 'By drawing'], answer: 0, explain: 'That’s right — we vote!' },
-        { q: 'How many choices do you get when you vote in New Zealand?', options: ['One', 'Two', 'Ten'], answer: 1, explain: 'Two ticks — one for a team, one for a local person.' },
+        { q: 'How do we choose them?', options: ['By voting', 'By running fast', 'By drawing'], answer: 0, explain: 'That’s right: we vote!' },
+        { q: 'How many choices do you get when you vote in New Zealand?', options: ['One', 'Two', 'Ten'], answer: 1, explain: 'Two ticks: one for a team, one for a local person.' },
       ],
     },
 
     beginner: {
       intro: [
-        { body: 'New Zealand uses a voting system called MMP — Mixed Member Proportional. The big idea is simple: a party’s share of seats in Parliament should match its share of the votes.' },
-        { heading: 'You get two votes', body: 'Your party vote chooses which party you support — this is the most important one, because it decides how many seats each party gets. Your electorate vote chooses the local MP for the area you live in.' },
-        { heading: 'Parliament has 120 seats', body: 'To govern, a party (or a group of parties working together) needs more than half — at least 61 seats. Use the seat allocator below: drag the party-vote sliders and watch the seats fill the House.' },
+        { body: 'New Zealand uses a voting system called MMP, Mixed Member Proportional. The big idea is simple: a party’s share of seats in Parliament should match its share of the votes.' },
+        { heading: 'You get two votes', body: 'Your party vote chooses which party you support, this is the most important one, because it decides how many seats each party gets. Your electorate vote chooses the local MP for the area you live in.' },
+        { heading: 'Parliament has 120 seats', body: 'To govern, a party (or a group of parties working together) needs more than half, at least 61 seats. Use the seat allocator below: drag the party-vote sliders and watch the seats fill the House.' },
       ],
       quiz: [
-        { q: 'Which of your two votes decides how many seats a party gets?', options: ['The electorate vote', 'The party vote', 'Neither'], answer: 1, explain: 'The party vote is the key one — it sets each party’s share of seats.' },
+        { q: 'Which of your two votes decides how many seats a party gets?', options: ['The electorate vote', 'The party vote', 'Neither'], answer: 1, explain: 'The party vote is the key one, it sets each party’s share of seats.' },
         { q: 'About how many seats are usually in Parliament?', options: ['50', '120', '300'], answer: 1, explain: 'Parliament has around 120 seats.' },
-        { q: 'How many seats are needed to govern?', options: ['At least 61', 'Exactly 100', 'Any number'], answer: 0, explain: 'You need more than half — at least 61 of 120.' },
+        { q: 'How many seats are needed to govern?', options: ['At least 61', 'Exactly 100', 'Any number'], answer: 0, explain: 'You need more than half, at least 61 of 120.' },
         { q: 'What does your electorate vote choose?', options: ['The Prime Minister', 'Your local MP', 'The whole government'], answer: 1, explain: 'It picks the MP for your local electorate.' },
       ],
     },
@@ -104,8 +104,8 @@ const MMP: LearnModule = {
     expert: {
       intro: [
         { body: 'MMP allocates seats using the Sainte-Laguë method. Each qualifying party’s party-vote total is divided by the odd numbers 1, 3, 5, 7… The resulting quotients are ranked, and the 120 seats awarded to the highest quotients in turn.' },
-        { heading: 'Qualifying', body: 'Only parties that reach 5% of the party vote — or win at least one electorate — enter the Sainte-Laguë allocation. Votes for non-qualifying parties are effectively wasted, and are excluded before allocation.' },
-        { heading: 'Overhang', body: 'If a party wins more electorate seats than its party-vote entitlement, it keeps the extra seats and Parliament temporarily grows beyond 120 — an overhang. The 54th Parliament has 123 seats for this reason.' },
+        { heading: 'Qualifying', body: 'Only parties that reach 5% of the party vote, or win at least one electorate, enter the Sainte-Laguë allocation. Votes for non-qualifying parties are effectively wasted, and are excluded before allocation.' },
+        { heading: 'Overhang', body: 'If a party wins more electorate seats than its party-vote entitlement, it keeps the extra seats and Parliament temporarily grows beyond 120, an overhang. The 54th Parliament has 123 seats for this reason.' },
         { heading: 'Coalition formation', body: 'After the count, the Governor-General appoints a government able to command confidence of the House. By convention this is the bloc that can demonstrate 61+ votes on confidence and supply. Use the tools below to model allocations and majorities.' },
       ],
       quiz: [
@@ -133,20 +133,20 @@ const BILL: LearnModule = {
       intro: [
         { body: 'A new rule for the whole country starts as just an idea. While it’s still an idea being decided, we call it a bill.' },
         { heading: 'Lots of checks', body: 'A bill can’t become a real rule straight away. First, lots of people read it, talk about it, and fix it up to make it better.' },
-        { heading: 'Voting yes', body: 'At each step, the people in Parliament vote. If enough of them say “yes” every time, the bill finally becomes a real rule — a law! Follow the bill below as it travels along its journey.' },
+        { heading: 'Voting yes', body: 'At each step, the people in Parliament vote. If enough of them say “yes” every time, the bill finally becomes a real rule, a law! Follow the bill below as it travels along its journey.' },
       ],
       quiz: [
-        { q: 'What do we call a new rule while it is still being decided?', options: ['A law', 'A bill', 'A book'], answer: 1, explain: 'Yes — it’s called a bill until it passes!' },
+        { q: 'What do we call a new rule while it is still being decided?', options: ['A law', 'A bill', 'A book'], answer: 1, explain: 'Yes, it’s called a bill until it passes!' },
         { q: 'How do people in Parliament decide if a bill should keep going?', options: ['They vote', 'They run a race', 'They flip a coin'], answer: 0, explain: 'They vote at each step.' },
-        { q: 'What does a bill become if it passes all the steps?', options: ['A game', 'A law', 'A song'], answer: 1, explain: 'It becomes a law — a real rule for the country!' },
+        { q: 'What does a bill become if it passes all the steps?', options: ['A game', 'A law', 'A song'], answer: 1, explain: 'It becomes a law: a real rule for the country!' },
       ],
     },
 
     beginner: {
       intro: [
-        { body: 'A bill is a proposed law. Before it can become law, it must pass through several stages in Parliament — and survive a vote at each one.' },
+        { body: 'A bill is a proposed law. Before it can become law, it must pass through several stages in Parliament, and survive a vote at each one.' },
         { heading: 'Three readings', body: 'A bill is debated three times (called “readings”). In between, a select committee studies it closely and the public can have their say by making a submission.' },
-        { heading: 'Becoming law', body: 'If a bill passes its third reading, the Governor-General signs it (“Royal assent”) and it becomes an Act — the official law of New Zealand. Click through each stage below to follow a bill’s journey.' },
+        { heading: 'Becoming law', body: 'If a bill passes its third reading, the Governor-General signs it (“Royal assent”) and it becomes an Act, the official law of New Zealand. Click through each stage below to follow a bill’s journey.' },
       ],
       quiz: [
         { q: 'What is a bill?', options: ['A finished law', 'A proposed law', 'A type of vote'], answer: 1, explain: 'A bill is a proposed law that still has to pass through Parliament.' },
@@ -175,7 +175,7 @@ const BILL: LearnModule = {
       intro: [
         { body: 'A bill’s passage is governed by the Standing Orders of the House. Each reading is a decision of the House; failure at any reading defeats the bill. Government bills dominate the order paper, with Member’s, Local and Private bills filling members’ days.' },
         { heading: 'Amendments & SOPs', body: 'Amendments are proposed through the select committee report and, at the committee of the whole House, via Supplementary Order Papers (SOPs). The committee stage can be taken in parts and debated by question.' },
-        { heading: 'Urgency & time', body: 'The Government can move urgency to compress or skip stages and sit beyond normal hours. Some bills bypass select committee entirely under urgency — a recurring point of constitutional debate.' },
+        { heading: 'Urgency & time', body: 'The Government can move urgency to compress or skip stages and sit beyond normal hours. Some bills bypass select committee entirely under urgency, a recurring point of constitutional debate.' },
         { heading: 'Financial veto & entrenchment', body: 'The Government holds a financial veto over provisions with more than minor fiscal impact. A few provisions (e.g. core electoral law) are entrenched, requiring a 75% majority or a referendum to change. Walk the full process below.' },
       ],
       quiz: [
@@ -201,7 +201,7 @@ const WHAT_IS: LearnModule = {
     kids: {
       intro: [
         { body: 'Parliament is where the rules for all of New Zealand are made. It’s a big group of people we choose, who meet in Wellington.' },
-        { heading: 'A building shaped like a beehive!', body: 'One of the Parliament buildings is even shaped like a beehive — that’s where the country’s leaders have their offices.' },
+        { heading: 'A building shaped like a beehive!', body: 'One of the Parliament buildings is even shaped like a beehive, that’s where the country’s leaders have their offices.' },
         { heading: 'Working together', body: 'Lots of different people have different jobs. Tap the cards below to meet the main parts.' },
       ],
       quiz: [
@@ -212,8 +212,8 @@ const WHAT_IS: LearnModule = {
     },
     beginner: {
       intro: [
-        { body: 'Parliament is the body that makes New Zealand’s laws. It is made up of the House of Representatives — the MPs we elect — and the Sovereign (King Charles III), represented here by the Governor-General.' },
-        { heading: 'Parliament vs the Government', body: 'The Government — the Prime Minister and ministers — is formed from Parliament, but it’s a separate part that runs the country day to day. Ministers work in the Beehive.' },
+        { body: 'Parliament is the body that makes New Zealand’s laws. It is made up of the House of Representatives, the MPs we elect, and the Sovereign (King Charles III), represented here by the Governor-General.' },
+        { heading: 'Parliament vs the Government', body: 'The Government, the Prime Minister and ministers, is formed from Parliament, but it’s a separate part that runs the country day to day. Ministers work in the Beehive.' },
         { heading: 'The main parts', body: 'Tap each card below to see who does what in New Zealand’s system.' },
       ],
       quiz: [
@@ -224,21 +224,21 @@ const WHAT_IS: LearnModule = {
     },
     intermediate: {
       intro: [
-        { body: 'New Zealand’s system has three branches: the legislature (Parliament — the House plus the Sovereign), the executive (the Government: PM, Cabinet, ministers and the public service), and the judiciary (the courts).' },
-        { heading: 'No single written constitution', body: 'New Zealand’s constitution is found across several sources — the Constitution Act 1986, other statutes, the Treaty of Waitangi, and conventions — rather than one document.' },
+        { body: 'New Zealand’s system has three branches: the legislature (Parliament, the House plus the Sovereign), the executive (the Government: PM, Cabinet, ministers and the public service), and the judiciary (the courts).' },
+        { heading: 'No single written constitution', body: 'New Zealand’s constitution is found across several sources, the Constitution Act 1986, other statutes, the Treaty of Waitangi, and conventions, rather than one document.' },
         { heading: 'Checks and balances', body: 'The House passes laws and controls money; the Government must hold the confidence of the House; the Governor-General gives Royal assent; the courts apply the law independently. Explore the parts below.' },
       ],
       quiz: [
-        { q: 'Which branch makes the laws?', options: ['The executive', 'The legislature (Parliament)', 'The judiciary'], answer: 1, explain: 'Parliament — the legislature — makes the laws.' },
+        { q: 'Which branch makes the laws?', options: ['The executive', 'The legislature (Parliament)', 'The judiciary'], answer: 1, explain: 'Parliament, the legislature, makes the laws.' },
         { q: 'The Government must hold the ___ of the House.', options: ['confidence', 'silence', 'majority of ministers'], answer: 0, explain: 'A government must hold the confidence of the House.' },
         { q: 'Where is New Zealand’s constitution found?', options: ['In one written document', 'Across several sources and conventions', 'Only in the Treaty of Waitangi'], answer: 1, explain: 'It is spread across statutes, the Treaty, and conventions.' },
       ],
     },
     expert: {
       intro: [
-        { body: 'New Zealand is a constitutional monarchy with a Westminster-style parliamentary system. Since the Legislative Council was abolished in 1951, Parliament has been unicameral — a single chamber, the House of Representatives, together with the Sovereign.' },
+        { body: 'New Zealand is a constitutional monarchy with a Westminster-style parliamentary system. Since the Legislative Council was abolished in 1951, Parliament has been unicameral, a single chamber, the House of Representatives, together with the Sovereign.' },
         { heading: 'Parliamentary sovereignty', body: 'Parliament can make or unmake any law; courts cannot strike down primary legislation. This is tempered by conventions, the Treaty, the Bill of Rights Act, and democratic accountability.' },
-        { heading: 'Conventions & the Cabinet Manual', body: 'Much of the system runs on unwritten convention — codified in practice by the Cabinet Manual — including responsible government, collective responsibility, and the Governor-General acting on ministerial advice.' },
+        { heading: 'Conventions & the Cabinet Manual', body: 'Much of the system runs on unwritten convention, codified in practice by the Cabinet Manual, including responsible government, collective responsibility, and the Governor-General acting on ministerial advice.' },
         { heading: 'Separation of powers', body: 'The separation is partial: the executive sits within and is drawn from the legislature, while the judiciary is independent. Explore each part below.' },
       ],
       quiz: [
@@ -262,13 +262,13 @@ const ELEC_LIST: LearnModule = {
   tiers: {
     kids: {
       intro: [
-        { body: 'New Zealand has two kinds of MPs. Some are picked to look after a local area — these are electorate MPs.' },
+        { body: 'New Zealand has two kinds of MPs. Some are picked to look after a local area, these are electorate MPs.' },
         { heading: 'List MPs', body: 'Others come from a party’s list to make the numbers fair. They’re called list MPs. Both kinds are real MPs who help make the rules!' },
         { heading: 'Your two votes', body: 'You help choose both. Try the ballot below to see what each of your two votes does.' },
       ],
       quiz: [
         { q: 'Which MP looks after a local area?', options: ['A list MP', 'An electorate MP', 'The Speaker'], answer: 1, explain: 'Electorate MPs represent a local area.' },
-        { q: 'How many kinds of MPs are there?', options: ['Two', 'Five', 'Ten'], answer: 0, explain: 'Two — electorate MPs and list MPs.' },
+        { q: 'How many kinds of MPs are there?', options: ['Two', 'Five', 'Ten'], answer: 0, explain: 'Two, electorate MPs and list MPs.' },
         { q: 'How many votes do you get?', options: ['One', 'Two', 'Three'], answer: 1, explain: 'You get two votes.' },
       ],
     },
@@ -286,13 +286,13 @@ const ELEC_LIST: LearnModule = {
     },
     intermediate: {
       intro: [
-        { body: 'In the 2023 election there were 72 electorate seats (65 general + 7 Māori electorates). The remaining seats — around 48 — are list seats that top each party up to its proportional share.' },
+        { body: 'In the 2023 election there were 72 electorate seats (65 general + 7 Māori electorates). The remaining seats, around 48, are list seats that top each party up to its proportional share.' },
         { heading: 'Electorate first, then list', body: 'A party’s party-vote share sets its total number of seats. It fills its electorate wins first, then tops up from its list to reach that total.' },
         { heading: 'The Māori electorates', body: 'Voters of Māori descent can choose to be on the Māori roll and elect MPs in dedicated Māori electorates. The number of Māori seats depends on Māori-roll enrolment.' },
       ],
       quiz: [
-        { q: 'How many electorate seats were there in the 2023 election?', options: ['48', '72', '120'], answer: 1, explain: '72 — 65 general plus 7 Māori electorates.' },
-        { q: 'Which seats does a party fill first?', options: ['List seats', 'Electorate seats, then list top-up', 'Neither — it’s random'], answer: 1, explain: 'Electorate wins first, then list top-up to the proportional total.' },
+        { q: 'How many electorate seats were there in the 2023 election?', options: ['48', '72', '120'], answer: 1, explain: '72, 65 general plus 7 Māori electorates.' },
+        { q: 'Which seats does a party fill first?', options: ['List seats', 'Electorate seats, then list top-up', 'Neither: it’s random'], answer: 1, explain: 'Electorate wins first, then list top-up to the proportional total.' },
         { q: 'What determines the number of Māori electorate seats?', options: ['The Prime Minister', 'Māori-roll enrolment', 'A fixed number in the constitution'], answer: 1, explain: 'It depends on how many people are on the Māori roll.' },
       ],
     },
@@ -300,12 +300,12 @@ const ELEC_LIST: LearnModule = {
       intro: [
         { body: 'Parties submit closed, ranked party lists before the election. Candidates may stand in both an electorate and on the list (dual candidacy).' },
         { heading: 'List top-up mechanics', body: 'After electorate results, list seats are allocated so each qualifying party reaches its Sainte-Laguë entitlement. A candidate who loses their electorate can still enter Parliament from the list.' },
-        { heading: 'Vacancies', body: 'An electorate vacancy triggers a by-election. A list vacancy is filled by the next available candidate on that party’s list — no by-election needed.' },
+        { heading: 'Vacancies', body: 'An electorate vacancy triggers a by-election. A list vacancy is filled by the next available candidate on that party’s list, no by-election needed.' },
         { heading: 'The Māori roll', body: 'The number of Māori electorates is recalculated using the Māori Electoral Option and census data; voters can now switch rolls at most times. Try the ballot below.' },
       ],
       quiz: [
         { q: 'Can a candidate stand in both an electorate and on the list?', options: ['Yes (dual candidacy)', 'No', 'Only party leaders'], answer: 0, explain: 'Dual candidacy is allowed.' },
-        { q: 'How is a list vacancy filled?', options: ['A by-election', 'The next candidate on the party’s list', 'The Speaker decides'], answer: 1, explain: 'The next available list candidate fills it — no by-election.' },
+        { q: 'How is a list vacancy filled?', options: ['A by-election', 'The next candidate on the party’s list', 'The Speaker decides'], answer: 1, explain: 'The next available list candidate fills it, no by-election.' },
         { q: 'What triggers a by-election?', options: ['A list vacancy', 'An electorate vacancy', 'A change of government'], answer: 1, explain: 'Only electorate vacancies trigger by-elections.' },
       ],
     },
@@ -325,7 +325,7 @@ const COMMITTEES: LearnModule = {
     kids: {
       intro: [
         { body: 'A select committee is a small team of MPs who look closely at a new rule before it’s finished.' },
-        { heading: 'They ask YOU!', body: 'The best part: they ask the public what they think. Anyone can send in their ideas — even kids!' },
+        { heading: 'They ask YOU!', body: 'The best part: they ask the public what they think. Anyone can send in their ideas, even kids!' },
         { heading: 'The steps', body: 'Tap through the cards below to see how it works.' },
       ],
       quiz: [
@@ -337,7 +337,7 @@ const COMMITTEES: LearnModule = {
     beginner: {
       intro: [
         { body: 'Select committees are small groups of MPs from different parties who study bills closely after their first reading.' },
-        { heading: 'Public submissions', body: 'They invite the public to make submissions — anyone can have their say in writing, and ask to speak to the committee in person.' },
+        { heading: 'Public submissions', body: 'They invite the public to make submissions, anyone can have their say in writing, and ask to speak to the committee in person.' },
         { heading: 'Reporting back', body: 'The committee suggests changes and reports back to Parliament. Committees also keep an eye on what the government is doing. Step through the process below.' },
       ],
       quiz: [
@@ -349,7 +349,7 @@ const COMMITTEES: LearnModule = {
     intermediate: {
       intro: [
         { body: 'After a bill’s first reading it is usually referred to a subject select committee. The committee calls for public submissions, hears from submitters, officials and experts, and works through the bill in detail.' },
-        { heading: 'Reporting back', body: 'It reports to the House — normally within six months — with recommended amendments, before the second reading.' },
+        { heading: 'Reporting back', body: 'It reports to the House, normally within six months, with recommended amendments, before the second reading.' },
         { heading: 'Beyond bills', body: 'Committees also scrutinise government spending through the Estimates and annual reviews, run inquiries into matters of public interest, and consider petitions. Step through the process below.' },
       ],
       quiz: [
@@ -387,7 +387,7 @@ const ROLES_MOD: LearnModule = {
     kids: {
       intro: [
         { body: 'Lots of people have different jobs in Parliament. The Prime Minister is the leader of the team that runs the country.' },
-        { heading: 'Ministers', body: 'Ministers each look after one big topic — like health, or schools.' },
+        { heading: 'Ministers', body: 'Ministers each look after one big topic, like health, or schools.' },
         { heading: 'The Speaker', body: 'The Speaker makes sure everyone takes turns and follows the rules. Tap the cards below to meet everyone.' },
       ],
       quiz: [
@@ -410,7 +410,7 @@ const ROLES_MOD: LearnModule = {
     },
     intermediate: {
       intro: [
-        { body: 'The Prime Minister commands the confidence of the House and chairs Cabinet. Cabinet makes collective decisions that all ministers must publicly support — “collective responsibility”.' },
+        { body: 'The Prime Minister commands the confidence of the House and chairs Cabinet. Cabinet makes collective decisions that all ministers must publicly support, “collective responsibility”.' },
         { heading: 'Accountability', body: 'Ministers are individually accountable to the House for their portfolios. The Opposition’s shadow ministers scrutinise their government counterparts.' },
         { heading: 'Keeping order', body: 'The Speaker, elected by MPs, presides impartially. Whips manage their party’s voting and attendance. Explore the roles below.' },
       ],
@@ -423,7 +423,7 @@ const ROLES_MOD: LearnModule = {
     expert: {
       intro: [
         { body: 'New Zealand observes both collective Cabinet responsibility and individual ministerial responsibility. Ministers may sit inside or outside Cabinet, and support-party ministers may hold portfolios under confidence-and-supply arrangements.' },
-        { heading: 'The Executive Council', body: 'The Executive Council — all ministers plus the Governor-General — gives legal effect to government decisions through Orders in Council.' },
+        { heading: 'The Executive Council', body: 'The Executive Council, all ministers plus the Governor-General, gives legal effect to government decisions through Orders in Council.' },
         { heading: 'Managing the House', body: 'The Leader of the House arranges government business and the order paper. The Speaker holds a casting vote only where procedure requires and oversees Officers of Parliament.' },
         { heading: 'Support arrangements', body: 'Confidence-and-supply agreements set out how support parties will vote on confidence and the Budget, often in exchange for policy and portfolios. Explore the roles below.' },
       ],

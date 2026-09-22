@@ -150,7 +150,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
               <div>
                 <Label icon={Megaphone} text="Spokesperson roles" />
                 <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>
-                  {mp.portfolios.map((p) => <li key={p} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6 }}>{p.replace(/^Spokesperson — /, '')}</li>)}
+                  {mp.portfolios.map((p) => <li key={p} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6 }}>{p.replace(/^Spokesperson, /, '')}</li>)}
                 </ul>
               </div>
             )}
@@ -354,8 +354,8 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
               <UserRound style={{ width: 20, height: 20, color: SECONDARY, flexShrink: 0, marginTop: 1 }} />
               <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
                 Parties select their {info.name} candidates in the lead-up to the election, and nominations close about a month before
-                election day. As each candidate is confirmed, their profile — background, priorities, the policies that matter to
-                them, and the legislation they want to champion — will appear here.
+                election day. As each candidate is confirmed, their profile, background, priorities, the policies that matter to
+                them, and the legislation they want to champion, will appear here.
               </p>
             </div>
           ),
@@ -561,7 +561,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
         <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 14, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
           <Info style={{ width: 15, height: 15, color: TERTIARY, flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
-            2023 result and margin: Electoral Commission. 2026 candidates are added only once officially confirmed — never assumed.
+            2023 result and margin: Electoral Commission. 2026 candidates are added only once officially confirmed, never assumed.
           </p>
         </div>
       </div>

@@ -5,7 +5,7 @@
  *  - MP_GOV_BILLS:    government bills the MP is "member in charge" of (Ministers).
  */
 export interface BillRef { title: string; status?: string }
-export const BILL_ACTIVITY_META = { asOf: '22 September 2026', sourceLabel: 'NZ Parliament — Bills', sourceUrl: 'https://bills.parliament.nz/' }
+export const BILL_ACTIVITY_META = { asOf: '22 September 2026', sourceLabel: 'NZ Parliament: Bills', sourceUrl: 'https://bills.parliament.nz/' }
 export const MP_PASSED_BILLS: Record<string, BillRef[]> = {
   "shane-reti": [
     {

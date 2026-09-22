@@ -40,7 +40,7 @@ export default async function NewsPage() {
             The Latest
           </h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '10px 0 0', maxWidth: 660, lineHeight: 1.55 }}>
-            Track the 2026 campaign as it happens — every party, every issue. Aggregated from credible NZ newsrooms and official sources; tap any story to read it at the source.
+            Track the 2026 campaign as it happens, every party, every issue. Aggregated from credible NZ newsrooms and official sources; tap any story to read it at the source.
           </p>
         </div>
       </div>
@@ -60,7 +60,7 @@ export default async function NewsPage() {
         <div style={{ marginTop: 32, padding: '16px 18px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14 }}>
           <div style={{ fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 6 }}>How this works</div>
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>
-            Politika aggregates headlines from credible outlets’ own news feeds and links straight to the original — we don’t republish articles. Party and issue tags are applied automatically, using the same rules for every registered party, and we never rank or rate them.
+            Politika aggregates headlines from credible outlets’ own news feeds and links straight to the original, we don’t republish articles. Party and issue tags are applied automatically, using the same rules for every registered party, and we never rank or rate them.
           </p>
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>
             One thing to read this feed with: <b style={{ color: INK }}>how much coverage each party gets reflects how much the news media write about them, not an editorial choice by us.</b> Larger parties are written about more often. One of our sources is also the Beehive, the Government’s own release feed, which naturally carries more from whichever parties are in government.

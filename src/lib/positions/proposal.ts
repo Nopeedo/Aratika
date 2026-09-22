@@ -99,15 +99,15 @@ export function promoteProposal(row: PositionRow, overrides: PromoteOverrides = 
   let title: string | undefined
   if (proposal.noPosition) {
     data.noPosition = true
-    data.source_label = `${partyName} — official policy index`
-    title = `${partyName} — ${topicLabel} (no stated position)`
+    data.source_label = `${partyName}: official policy index`
+    title = `${partyName}: ${topicLabel} (no stated position)`
   } else {
     delete data.noPosition
     if (wasNoPosition) {
       // The public label and title said "policy index" / "no stated position".
       // A position drafted from a real page is cited to that page.
-      data.source_label = `${partyName} — official policy page`
-      title = `${partyName} — ${topicLabel} (current policy)`
+      data.source_label = `${partyName}: official policy page`
+      title = `${partyName}: ${topicLabel} (current policy)`
     }
   }
   data.promotedAt = proposal.proposedAt

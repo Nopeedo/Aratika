@@ -22,8 +22,8 @@ export const HOW_TO_VOTE: LearnModule = {
     kids: {
       intro: [
         { body: 'Voting is how grown-ups in New Zealand help choose who makes the rules. When you turn 18, you get to vote too!' },
-        { heading: 'Getting ready', body: 'Before you can vote, you put your name on a special list called the roll — so everyone knows you’re ready to have your say.' },
-        { heading: 'Making your choice', body: 'On voting day you go to a voting place, get a special paper, and tick the boxes for who you want. Then you pop it in a box. No one else gets to see your ticks — it’s a secret!' },
+        { heading: 'Getting ready', body: 'Before you can vote, you put your name on a special list called the roll, so everyone knows you’re ready to have your say.' },
+        { heading: 'Making your choice', body: 'On voting day you go to a voting place, get a special paper, and tick the boxes for who you want. Then you pop it in a box. No one else gets to see your ticks, it’s a secret!' },
       ],
       quiz: [
         { q: 'How old do you have to be to vote?', options: ['5', '18', '100'], answer: 1, explain: 'You can vote once you turn 18.' },
@@ -35,8 +35,8 @@ export const HOW_TO_VOTE: LearnModule = {
       intro: [
         { body: 'Voting in New Zealand is free, secret, and only takes a few minutes. Here’s how it works from start to finish.' },
         { heading: '1. Check you can vote', body: 'You can vote if you’re 18 or over and a New Zealand citizen or permanent resident who has lived here at some point for more than a year.' },
-        { heading: '2. Enrol', body: 'You need to be on the electoral roll. Enrolling is free at vote.nz — and you can now enrol right up to and including election day.' },
-        { heading: '3. Vote', body: 'You can vote early (advance voting opens about two weeks before) or on election day. Go to any voting place, give your name, and you’ll get your voting paper. Then make your two ticks — try the demo below.' },
+        { heading: '2. Enrol', body: 'You need to be on the electoral roll. Enrolling is free at vote.nz, and you can now enrol right up to and including election day.' },
+        { heading: '3. Vote', body: 'You can vote early (advance voting opens about two weeks before) or on election day. Go to any voting place, give your name, and you’ll get your voting paper. Then make your two ticks, try the demo below.' },
       ],
       quiz: [
         { q: 'Where can you enrol to vote?', options: ['vote.nz', 'Only at a bank', 'You’re added automatically'], answer: 0, explain: 'Enrol free at vote.nz (or by phone/paper).' },
@@ -47,7 +47,7 @@ export const HOW_TO_VOTE: LearnModule = {
     },
     intermediate: {
       intro: [
-        { body: 'To vote in a general election you must be enrolled. Enrolment is open continuously and can be done online, by phone, or on paper — including on election day itself.' },
+        { body: 'To vote in a general election you must be enrolled. Enrolment is open continuously and can be done online, by phone, or on paper, including on election day itself.' },
         { heading: 'Eligibility', body: 'You can enrol and vote if you are 18+ and a NZ citizen or permanent resident who has, at some time, lived in New Zealand continuously for 12 months or more.' },
         { heading: 'General or Māori roll', body: 'If you are of Māori descent, when you enrol you can choose the Māori roll or the general roll. Your choice decides whether you vote in a Māori or a general electorate.' },
         { heading: 'Ways to vote', body: 'Advance voting runs for roughly two weeks before election day; you can also vote on the day. If you’re away or overseas, you can cast a special vote.' },
@@ -64,8 +64,8 @@ export const HOW_TO_VOTE: LearnModule = {
       intro: [
         { body: 'Enrolment and voting are administered by the independent Electoral Commission under the Electoral Act 1993. Enrolment is a legal requirement for eligible electors; voting itself is not compulsory.' },
         { heading: 'Same-day enrolment', body: 'Since 2023, electors can enrol or update details during advance voting and on election day, voting at the same time. These are processed as special votes.' },
-        { heading: 'Special votes', body: 'Special votes cover electors not on a printed electorate roll — same-day enrolments, overseas voters, and others. They are counted in the official count, which is why results can shift after election night.' },
-        { heading: 'Integrity', body: 'The ballot is secret, voting places are staffed and may be scrutineered, and the count is conducted with provision for recounts — designed to be both trustworthy and auditable.' },
+        { heading: 'Special votes', body: 'Special votes cover electors not on a printed electorate roll, same-day enrolments, overseas voters, and others. They are counted in the official count, which is why results can shift after election night.' },
+        { heading: 'Integrity', body: 'The ballot is secret, voting places are staffed and may be scrutineered, and the count is conducted with provision for recounts, designed to be both trustworthy and auditable.' },
       ],
       quiz: [
         { q: 'Is voting compulsory in New Zealand?', options: ['Yes', 'No, but enrolment is required', 'Both optional'], answer: 1, explain: 'Enrolment is legally required; voting is not compulsory.' },
@@ -93,19 +93,19 @@ export const GOVERNMENT_FORMATION: LearnModule = {
       ],
       quiz: [
         { q: 'What do we do after everyone votes?', options: ['Count the votes', 'Have a party', 'Start again'], answer: 0, explain: 'We count the votes to share out the seats.' },
-        { q: 'To be in charge, a team needs…', options: ['More than half the seats', 'Just one seat', 'The most fans'], answer: 0, explain: 'More than half — at least 61 of 120.' },
+        { q: 'To be in charge, a team needs…', options: ['More than half the seats', 'Just one seat', 'The most fans'], answer: 0, explain: 'More than half, at least 61 of 120.' },
         { q: 'What if no team has enough seats?', options: ['They give up', 'They join together', 'They flip a coin'], answer: 1, explain: 'They team up to reach more than half.' },
       ],
     },
     beginner: {
       intro: [
-        { body: 'Winning the most votes doesn’t automatically make you the government. What matters is who can get the support of more than half of Parliament — at least 61 of the 120 seats.' },
+        { body: 'Winning the most votes doesn’t automatically make you the government. What matters is who can get the support of more than half of Parliament, at least 61 of the 120 seats.' },
         { heading: 'Why coalitions happen', body: 'Under MMP, one party rarely wins 61 seats alone. So after the election, parties talk and team up to reach a majority together. This is a coalition.' },
-        { heading: 'The agreements', body: 'Parties write down what they’ve agreed — which policies they’ll support and which ministers each party gets. A smaller party might sign a “confidence and supply” deal to support the bigger party without fully joining.' },
+        { heading: 'The agreements', body: 'Parties write down what they’ve agreed, which policies they’ll support and which ministers each party gets. A smaller party might sign a “confidence and supply” deal to support the bigger party without fully joining.' },
         { heading: 'Forming the government', body: 'Once a group can show it has 61+ seats, the Governor-General appoints its leader as Prime Minister. Use the tools below to combine parties into a majority.' },
       ],
       quiz: [
-        { q: 'How many seats are needed to govern?', options: ['The most votes', 'At least 61', 'Exactly 50'], answer: 1, explain: 'A majority — at least 61 of 120.' },
+        { q: 'How many seats are needed to govern?', options: ['The most votes', 'At least 61', 'Exactly 50'], answer: 1, explain: 'A majority, at least 61 of 120.' },
         { q: 'Why do parties form coalitions?', options: ['It’s the law', 'One party rarely wins 61 alone', 'To save money'], answer: 1, explain: 'MMP makes single-party majorities rare.' },
         { q: 'Who appoints the Prime Minister?', options: ['The Governor-General', 'The public directly', 'The media'], answer: 0, explain: 'The Governor-General appoints whoever can command a majority.' },
         { q: 'A confidence and supply agreement is…', options: ['A party fully joining government', 'A smaller party supporting the government on key votes', 'A new election'], answer: 1, explain: 'Support on confidence and the Budget, without fully joining.' },
@@ -113,7 +113,7 @@ export const GOVERNMENT_FORMATION: LearnModule = {
     },
     intermediate: {
       intro: [
-        { body: 'After an election, government formation hinges on which group of parties can command the confidence of the House — a majority willing to support the government on confidence votes and the Budget (supply).' },
+        { body: 'After an election, government formation hinges on which group of parties can command the confidence of the House, a majority willing to support the government on confidence votes and the Budget (supply).' },
         { heading: 'Types of agreement', body: 'Arrangements range from full coalitions (parties share Cabinet) to confidence-and-supply deals and looser cooperation agreements. Each sets out policy commitments and ministerial roles.' },
         { heading: 'Negotiation period', body: 'Because counting (including special votes) and negotiations take time, weeks can pass between election day and a new government. The previous government stays on in a “caretaker” role until then.' },
         { heading: 'Appointment', body: 'The Governor-General appoints as Prime Minister the person who can demonstrate the confidence of the House. Model this with the seat allocator and Build-a-Government below.' },
@@ -129,11 +129,11 @@ export const GOVERNMENT_FORMATION: LearnModule = {
       intro: [
         { body: 'Government formation is governed by constitutional convention rather than a single statute: the Governor-General appoints a Prime Minister able to command the confidence of the House of Representatives.' },
         { heading: 'Confidence and supply', body: '“Confidence” refers to votes testing whether the government retains the House’s support; “supply” refers to the Budget. A government must be able to win both to remain in office.' },
-        { heading: 'The caretaker convention', body: 'Until a new administration is formed (or an incumbent confirms it retains confidence), the outgoing government observes the caretaker convention — limiting itself to routine, non-controversial decisions.' },
+        { heading: 'The caretaker convention', body: 'Until a new administration is formed (or an incumbent confirms it retains confidence), the outgoing government observes the caretaker convention, limiting itself to routine, non-controversial decisions.' },
         { heading: '2023 example', body: 'The 2023 election produced a three-party arrangement: a National–ACT–New Zealand First coalition, set out in published agreements specifying portfolios and policy commitments.' },
       ],
       quiz: [
-        { q: 'Government formation in NZ is primarily governed by…', options: ['A written constitution', 'Constitutional convention', 'The Electoral Act alone'], answer: 1, explain: 'Largely by convention — the confidence-of-the-House test.' },
+        { q: 'Government formation in NZ is primarily governed by…', options: ['A written constitution', 'Constitutional convention', 'The Electoral Act alone'], answer: 1, explain: 'Largely by convention: the confidence-of-the-House test.' },
         { q: 'What does “supply” refer to?', options: ['Military supplies', 'The Budget', 'Party funding'], answer: 1, explain: 'Supply = the Budget/appropriations.' },
         { q: 'Under the caretaker convention, the outgoing government…', options: ['Makes any decisions it likes', 'Limits itself to routine matters', 'Cannot act at all'], answer: 1, explain: 'It restricts itself to routine decisions until a government forms.' },
         { q: 'The 2023 government was formed by…', options: ['National alone', 'National–ACT–NZ First', 'Labour–Green'], answer: 1, explain: 'A National–ACT–NZ First coalition.' },
@@ -165,7 +165,7 @@ export const HAVE_YOUR_SAY: LearnModule = {
     beginner: {
       intro: [
         { body: 'Voting every three years isn’t the only way to be heard. Between elections, there are real, free ways to influence decisions.' },
-        { heading: 'Make a submission', body: 'When a bill is being examined by a select committee, anyone can send a submission saying what they think — for, against, or suggesting changes. You can even speak to the committee.' },
+        { heading: 'Make a submission', body: 'When a bill is being examined by a select committee, anyone can send a submission saying what they think, for, against, or suggesting changes. You can even speak to the committee.' },
         { heading: 'Petitions & your MP', body: 'You can start or sign a petition to Parliament, and you can write to or meet your local MP at their electorate clinic.' },
         { heading: 'Ask for information (OIA)', body: 'Under the Official Information Act, anyone can ask a government department for information, and they must usually reply within 20 working days.' },
         { heading: 'Politika can help', body: 'Politika’s Take Action studio helps you draft a submission, a letter to your MP, or an OIA request.' },
@@ -179,11 +179,11 @@ export const HAVE_YOUR_SAY: LearnModule = {
     },
     intermediate: {
       intro: [
-        { body: 'New Zealand’s system gives the public several formal channels to participate between elections — not just at the ballot box.' },
+        { body: 'New Zealand’s system gives the public several formal channels to participate between elections, not just at the ballot box.' },
         { heading: 'Select committee submissions', body: 'Most bills are referred to a select committee that calls for public submissions. Submissions can be written and, if you wish, presented orally. Committees report back with recommended changes.' },
         { heading: 'Petitions', body: 'Any person can present a petition to the House asking it to take action. A petition with enough support can prompt a committee inquiry.' },
         { heading: 'Official information', body: 'The Official Information Act 1982 (central government) and LGOIMA (local government) let you request information, subject to limited withholding grounds.' },
-        { heading: 'Local government', body: 'Councils consult on long-term plans, annual plans, and bylaws — you can submit on these too.' },
+        { heading: 'Local government', body: 'Councils consult on long-term plans, annual plans, and bylaws, you can submit on these too.' },
       ],
       quiz: [
         { q: 'What usually happens to most bills after the first reading?', options: ['They become law immediately', 'They’re referred to a select committee for submissions', 'They’re deleted'], answer: 1, explain: 'Select committees call for public submissions.' },
@@ -196,7 +196,7 @@ export const HAVE_YOUR_SAY: LearnModule = {
       intro: [
         { body: 'Beyond triennial elections, participation rights are embedded across several statutes and Parliament’s Standing Orders, making New Zealand’s legislative process unusually open to public input.' },
         { heading: 'Submissions and Standing Orders', body: 'Standing Orders require most bills to be referred to a select committee that invites submissions and hears evidence; committees may recommend amendments before the second reading.' },
-        { heading: 'Official information regime', body: 'The OIA 1982 (central) and LGOIMA 1987 (local) establish a principle of availability — information must be released unless a specified withholding ground applies, with Ombudsman review of refusals.' },
+        { heading: 'Official information regime', body: 'The OIA 1982 (central) and LGOIMA 1987 (local) establish a principle of availability, information must be released unless a specified withholding ground applies, with Ombudsman review of refusals.' },
         { heading: 'Practical leverage', body: 'Coordinated, specific, evidence-based submissions are more influential than volume alone; committees weigh substance. Politika’s Take Action tools help structure these.' },
       ],
       quiz: [
@@ -219,8 +219,8 @@ export const POLICY_TOPICS_MOD: LearnModule = {
   tiers: {
     kids: {
       intro: [
-        { body: 'A policy is a plan for fixing a problem or making things better — like a plan for more houses, or cleaner rivers.' },
-        { heading: 'Different ideas', body: 'Different teams (parties) have different plans for the same problem. That’s okay — it gives us choices!' },
+        { body: 'A policy is a plan for fixing a problem or making things better, like a plan for more houses, or cleaner rivers.' },
+        { heading: 'Different ideas', body: 'Different teams (parties) have different plans for the same problem. That’s okay, it gives us choices!' },
         { heading: 'Picking what matters', body: 'When you vote, you can think about which problems matter most to you, and which team’s plan you like best.' },
       ],
       quiz: [
@@ -231,30 +231,30 @@ export const POLICY_TOPICS_MOD: LearnModule = {
     },
     beginner: {
       intro: [
-        { body: 'A “policy” is a party’s plan or position on an issue — like housing, health, or climate. Policies are how parties say what they’d actually do if you vote for them.' },
+        { body: 'A “policy” is a party’s plan or position on an issue, like housing, health, or climate. Policies are how parties say what they’d actually do if you vote for them.' },
         { heading: 'From idea to action', body: 'Policies turn into real changes through laws (bills), the Budget (how money is spent), and rules made by government departments.' },
-        { heading: 'Politika’s policy topics', body: 'Politika sorts the big issues into topics — like housing, health, the economy, education, and climate — so you can compare where each party stands, side by side.' },
+        { heading: 'Politika’s policy topics', body: 'Politika sorts the big issues into topics, like housing, health, the economy, education, and climate, so you can compare where each party stands, side by side.' },
         { heading: 'Find what matters to you', body: 'There’s no “right” set of priorities. Use Politika’s walkthrough to find the issues you care about, then compare the parties’ positions on them.' },
       ],
       quiz: [
         { q: 'A policy is…', options: ['A party’s plan/position on an issue', 'A type of election', 'A government building'], answer: 0, explain: 'A policy is a party’s position on an issue.' },
         { q: 'How do policies become real changes?', options: ['Through laws, the Budget, and rules', 'Automatically', 'Only through protests'], answer: 0, explain: 'Via legislation, spending, and regulation.' },
         { q: 'What does Politika do with the issues?', options: ['Sorts them into topics to compare parties', 'Hides them', 'Ranks parties best to worst'], answer: 0, explain: 'It groups issues into topics so you can compare positions.' },
-        { q: 'Who decides which issues matter most?', options: ['Politika tells you', 'You do', 'The government'], answer: 1, explain: 'You decide what matters — Politika just shows the facts.' },
+        { q: 'Who decides which issues matter most?', options: ['Politika tells you', 'You do', 'The government'], answer: 1, explain: 'You decide what matters: Politika just shows the facts.' },
       ],
     },
     intermediate: {
       intro: [
-        { body: 'Public policy is a party’s or government’s settled approach to an issue. A position becomes a manifesto commitment, then — if the party is in government — is delivered through legislation, the Budget, or regulation.' },
+        { body: 'Public policy is a party’s or government’s settled approach to an issue. A position becomes a manifesto commitment, then, if the party is in government, is delivered through legislation, the Budget, or regulation.' },
         { heading: 'Why parties differ', body: 'Parties weigh values (e.g. individual choice vs collective provision) and evidence differently, so they reach different policies on the same issue. Comparing them is how voters judge fit.' },
-        { heading: 'Topics on Politika', body: 'Politika organises positions into policy topics — housing, health, economy, education, climate, environment, crime & justice, Treaty & Māori affairs, immigration, foreign policy — drawn from official party material.' },
-        { heading: 'Using them well', body: 'Identify your priority issues, read each party’s stated position, and check it against their record. Politika presents positions factually — it does not recommend a vote.' },
+        { heading: 'Topics on Politika', body: 'Politika organises positions into policy topics, housing, health, economy, education, climate, environment, crime & justice, Treaty & Māori affairs, immigration, foreign policy, drawn from official party material.' },
+        { heading: 'Using them well', body: 'Identify your priority issues, read each party’s stated position, and check it against their record. Politika presents positions factually, it does not recommend a vote.' },
       ],
       quiz: [
         { q: 'A manifesto is…', options: ['A party’s set of policy commitments', 'A type of vote', 'A government department'], answer: 0, explain: 'A manifesto sets out a party’s policy commitments.' },
         { q: 'Policies are delivered mainly through…', options: ['Legislation, the Budget, and regulation', 'Press releases only', 'Opinion polls'], answer: 0, explain: 'Laws, spending, and rules.' },
         { q: 'Why do parties reach different policies?', options: ['They weigh values and evidence differently', 'One party is always right', 'Random chance'], answer: 0, explain: 'Different values and readings of evidence.' },
-        { q: 'Politika’s policy pages…', options: ['Tell you who to vote for', 'Show positions factually so you decide', 'Only show one party'], answer: 1, explain: 'Politika is non-partisan — it shows positions; you decide.' },
+        { q: 'Politika’s policy pages…', options: ['Tell you who to vote for', 'Show positions factually so you decide', 'Only show one party'], answer: 1, explain: 'Politika is non-partisan: it shows positions; you decide.' },
       ],
     },
     expert: {
@@ -262,13 +262,13 @@ export const POLICY_TOPICS_MOD: LearnModule = {
         { body: 'Policy is the link between political values and state action. A position articulated in opposition or a manifesto is converted, in office, into instruments: primary legislation, appropriations, secondary legislation, and administrative practice.' },
         { heading: 'The policy cycle', body: 'Typically: problem definition → options and advice (often from the public service) → decision → implementation → evaluation. Manifesto commitments enter this cycle, shaped by feasibility, cost, and coalition agreements.' },
         { heading: 'Constraints', body: 'Policy is bounded by fiscal limits (the Budget), legal constraints (including the Bill of Rights and Treaty considerations), coalition compromises, and the advice of officials.' },
-        { heading: 'Reading positions critically', body: 'Compare a party’s stated position with its revealed preferences — sponsored bills, votes, and spending. Stated and enacted policy can diverge, especially under coalition. Politika surfaces positions, neutrally.' },
+        { heading: 'Reading positions critically', body: 'Compare a party’s stated position with its revealed preferences, sponsored bills, votes, and spending. Stated and enacted policy can diverge, especially under coalition. Politika surfaces positions, neutrally.' },
       ],
       quiz: [
         { q: 'Policy converts values into…', options: ['State action (laws, spending, rules)', 'Television ads', 'Election dates'], answer: 0, explain: 'Into legislation, appropriations, and administrative practice.' },
         { q: 'Which is a stage of the policy cycle?', options: ['Problem definition', 'Coin toss', 'Coronation'], answer: 0, explain: 'Problem definition → options → decision → implementation → evaluation.' },
         { q: 'A key constraint on policy is…', options: ['Fiscal and legal limits', 'The weather', 'Party colours'], answer: 0, explain: 'Budgets, law (e.g. NZBORA, Treaty), and coalition compromise.' },
-        { q: 'To judge a party’s real position, also look at…', options: ['Its record — bills, votes, spending', 'Only its slogans', 'Its logo'], answer: 0, explain: 'Compare stated positions with revealed preferences.' },
+        { q: 'To judge a party’s real position, also look at…', options: ['Its record: bills, votes, spending', 'Only its slogans', 'Its logo'], answer: 0, explain: 'Compare stated positions with revealed preferences.' },
       ],
     },
   },

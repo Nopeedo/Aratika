@@ -24,7 +24,7 @@ export default function TermsPage() {
       <p>
         Politika provides general information for civic understanding. It is <strong>not legal, financial, or electoral
         advice</strong>, and nothing here tells you how to vote. We draw on official sources and work hard to be accurate,
-        but we don’t guarantee the information is complete or error-free — for anything you rely on, check the original
+        but we don’t guarantee the information is complete or error-free, for anything you rely on, check the original
         official source. If you spot a mistake, please tell us via the <a href="/contact">correction page</a>.
       </p>
 
@@ -43,7 +43,7 @@ export default function TermsPage() {
       <h2>5. The Take Action studio</h2>
       <p>
         Our drafting tools help you write letters and submissions in <strong>your own words</strong>. Politika does not send
-        anything on your behalf and does not store what you draft — you review it and send it through official channels
+        anything on your behalf and does not store what you draft, you review it and send it through official channels
         yourself. <strong>You are responsible for the content you send</strong> and for using the correct, current official
         contact details and deadlines.
       </p>
@@ -60,8 +60,8 @@ export default function TermsPage() {
 
       <h2>8. Intellectual property &amp; sources</h2>
       <p>
-        Politika’s own content, design and code belong to us. Underlying data comes from official sources — including the
-        New Zealand Parliament, the Electoral Commission, and Stats NZ — and remains subject to their respective licences;
+        Politika’s own content, design and code belong to us. Underlying data comes from official sources, including the
+        New Zealand Parliament, the Electoral Commission, and Stats NZ, and remains subject to their respective licences;
         we attribute these where used. MP photographs are used under their stated licences with attribution.
       </p>
 

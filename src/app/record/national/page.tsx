@@ -109,7 +109,7 @@ export default async function NationalRecordPage() {
         <Link href="/record/analysis" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '13px 16px', borderRadius: 12, border: `1px solid ${BORDER}`, background: SURFACE, textDecoration: 'none', marginBottom: 26 }}>
           <Target style={{ width: 17, height: 17, color: JADE, flexShrink: 0 }} />
           <span style={{ flex: 1, fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE }}>
-            Flagship policy deep dives — arguments for &amp; against, who’s most affected, official analysis
+            Flagship policy deep dives, arguments for &amp; against, who’s most affected, official analysis
           </span>
           <ArrowUpRight style={{ width: 16, height: 16, color: TERTIARY }} />
         </Link>
@@ -159,7 +159,7 @@ export default async function NationalRecordPage() {
             <ShieldAlert style={{ width: 16, height: 16, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 12.5, color: '#1e3a8a', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
               A factual cross-reference, <b>not a verdict</b>. A Budget allocation shows money has been committed to an
-              area — it doesn’t prove an outcome was achieved. Promise statuses above are unchanged. Figures from{' '}
+              area, it doesn’t prove an outcome was achieved. Promise statuses above are unchanged. Figures from{' '}
               {BUDGET_META.sourceLabel}, {BUDGET_META.title} ({BUDGET_META.deliveredOn}).
             </p>
           </div>
@@ -273,7 +273,7 @@ export default async function NationalRecordPage() {
           <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 14, lineHeight: 1.5 }}>
             Charted data retrieved {ECONOMIC_DATA.generatedAt}: CPI from OECD (NZ figures sourced from Stats NZ);
             GDP, unemployment and Crown debt from World Bank Open Data (compiling official IMF / ILO / national figures).
-            Annual figures can lag about a year — each card also links its NZ primary source (Stats NZ / Treasury).
+            Annual figures can lag about a year, each card also links its NZ primary source (Stats NZ / Treasury).
             Re-run the fetch script to refresh.
           </p>
         </div>
@@ -343,10 +343,10 @@ function OcrCard() {
       <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginBottom: 10 }}>The Reserve Bank’s policy interest rate.</div>
       <p style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 10px' }}>
         Held at 5.5% into 2024, then cut progressively from August 2024 as inflation eased. The OCR isn’t in the charted
-        feed — check the live decision history at the source.
+        feed, check the live decision history at the source.
       </p>
       <a href="https://www.rbnz.govt.nz/monetary-policy/official-cash-rate-decisions" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-        RBNZ — OCR decisions <ArrowUpRight style={{ width: 12, height: 12 }} />
+        RBNZ, OCR decisions <ArrowUpRight style={{ width: 12, height: 12 }} />
       </a>
     </div>
   )

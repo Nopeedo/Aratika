@@ -25,7 +25,7 @@ const PRINCIPLES = [
   {
     icon: ListChecks,
     title: 'Equal in structure, neutral in order',
-    body: 'Every contesting party gets the same sections and the same treatment. We group parties by whether they currently hold seats, which is a plain fact rather than a ranking. Parties in Parliament are listed by the seats they hold. The rest are listed by the most recent published poll reading for each — never by our own judgement of who matters. Parties that pollsters do not report separately have no figure to order by, so they are listed alphabetically at the end of their group; that means unmeasured, not unsupported. Where a party hasn’t published a position on a topic, we say so honestly rather than leaving them out.',
+    body: 'Every contesting party gets the same sections and the same treatment. We group parties by whether they currently hold seats, which is a plain fact rather than a ranking. Parties in Parliament are listed by the seats they hold. The rest are listed by the most recent published poll reading for each, never by our own judgement of who matters. Parties that pollsters do not report separately have no figure to order by, so they are listed alphabetically at the end of their group; that means unmeasured, not unsupported. Where a party hasn’t published a position on a topic, we say so honestly rather than leaving them out.',
   },
   {
     icon: BarChart3,
@@ -52,7 +52,7 @@ export default function PartyInclusionPage() {
             How we decide which parties are included
           </h1>
           <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6, maxWidth: 640 }}>
-            Politika is non-partisan, and fairness has to be a rule anyone can check — not a judgement call. So here is exactly
+            Politika is non-partisan, and fairness has to be a rule anyone can check, not a judgement call. So here is exactly
             how we choose which parties appear, and how we handle the parts that polling can’t cover fairly.
           </p>
         </div>
@@ -97,7 +97,7 @@ export default function PartyInclusionPage() {
 
         <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 16 }}>
           <a href="https://elections.nz" target="_blank" rel="noopener noreferrer" style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
-            Source: Electoral Commission — register of political parties (elections.nz) <ArrowUpRight style={{ width: 12, height: 12, display: 'inline', verticalAlign: '-2px' }} />
+            Source: Electoral Commission, register of political parties (elections.nz) <ArrowUpRight style={{ width: 12, height: 12, display: 'inline', verticalAlign: '-2px' }} />
           </a>
         </div>
       </div>

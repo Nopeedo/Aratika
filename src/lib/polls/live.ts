@@ -74,7 +74,7 @@ function pollsterKey(name: string): string {
 function preferDisplay(candidate: Poll, current: Poll): boolean {
   const n = (p: Poll) => Object.keys(p.parties).length
   if (n(candidate) !== n(current)) return n(candidate) > n(current)
-  const dashed = (s: string) => /[–—]/.test(s)
+  const dashed = (s: string) => /[–, ]/.test(s)
   if (dashed(candidate.pollster) !== dashed(current.pollster)) return dashed(candidate.pollster)
   return candidate.pollster < current.pollster
 }

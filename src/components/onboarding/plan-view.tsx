@@ -34,7 +34,7 @@ export function PlanView() {
         </div>
         <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>You don’t have a plan yet</h1>
         <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 22px' }}>
-          Take the quick walkthrough and Politika will build you a personalised, tick-as-you-go plan — the issues you care
+          Take the quick walkthrough and Politika will build you a personalised, tick-as-you-go plan, the issues you care
           about and the parts of the site that help you most.
         </p>
         <Link href="/start" style={primaryLink}><Compass style={ic} /> Take the walkthrough <ArrowRight style={ic} /></Link>
@@ -54,7 +54,7 @@ export function PlanView() {
       {/* header + progress */}
       <h1 style={{ fontSize: 'clamp(24px, 7vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Your plan</h1>
       <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 20px', lineHeight: 1.55 }}>
-        Built from your answers. Steps tick off as you go — pick up wherever you left off.
+        Built from your answers. Steps tick off as you go, pick up wherever you left off.
       </p>
 
       <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '18px 20px', marginBottom: 22 }}>

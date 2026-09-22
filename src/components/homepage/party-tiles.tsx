@@ -676,7 +676,7 @@ function PanelStance({ p }: { p: TileParty }) {
       ))}
       {p.positions.length < p.topicsTotal && (
         <p style={{ fontSize: 13, color: MUTE, fontStyle: 'italic', margin: '10px 0 0', fontFamily: MANROPE }}>
-          {p.positions.length} of {p.topicsTotal} policy topics captured so far — more being added.
+          {p.positions.length} of {p.topicsTotal} policy topics captured so far, more being added.
         </p>
       )}
 

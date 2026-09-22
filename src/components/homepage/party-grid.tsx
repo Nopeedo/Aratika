@@ -42,7 +42,7 @@ export function PartyGrid() {
               Pick a party. See what they’re really about.
             </h2>
             <p style={{ fontSize: 15.5, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '8px 0 0', maxWidth: 560, lineHeight: 1.55 }}>
-              Tap any party for the full picture — leadership, where they stand, and their record.
+              Tap any party for the full picture, leadership, where they stand, and their record.
             </p>
           </div>
           <Link href="/policies" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 11, background: INK, color: '#fff', fontSize: 13.5, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>

@@ -42,11 +42,11 @@ export const NAV_ITEMS: NavItem[] = [
   // people have ever tracked a topic (housing and economy, last on 7 Aug),
   // against seven electorates, and the `policy` bookmark kind feeds a whole
   // notification path that was therefore starved of subscribers.
-  { label: 'Policies', href: '/policies', description: 'Where the parties stand issue by issue — and follow the issues you care about', feature: 'policies' },
+  { label: 'Policies', href: '/policies', description: 'Where the parties stand issue by issue, and follow the issues you care about', feature: 'policies' },
   {
     label: 'Your Electorate', description: 'Find your seat, your MP and the 2026 race', feature: 'map',
     children: [
-      { label: 'Electorate map', href: '/map', description: 'Interactive map — find your MP', feature: 'map' },
+      { label: 'Electorate map', href: '/map', description: 'Interactive map: find your MP', feature: 'map' },
       { label: 'Battlegrounds', href: '/battlegrounds', description: 'Electorate races & candidates for 2026', feature: 'battlegrounds' },
       { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
     ],
@@ -54,7 +54,7 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: 'The Record', description: 'What this Parliament has actually done', feature: 'bills',
     children: [
-      { label: 'Bills tracker', href: '/bills', description: 'Bills before the House — plain-language', feature: 'bills' },
+      { label: 'Bills tracker', href: '/bills', description: 'Bills before the House: plain-language', feature: 'bills' },
       { label: 'Budget 2026', href: '/budget', description: 'Where the Government is spending', feature: 'budget' },
       { label: 'Parliament', href: '/parliament', description: 'Current seats, cabinet and snapshot', feature: 'parliament' },
     ],
@@ -62,11 +62,11 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: 'Latest', description: 'Live election news & video', feature: 'news',
     children: [
-      { label: 'News', href: '/news', description: 'Live election news — every party, every issue', feature: 'news' },
+      { label: 'News', href: '/news', description: 'Live election news: every party, every issue', feature: 'news' },
       { label: 'Video', href: '/news#video', description: 'Leaders & the press', feature: 'news' },
     ],
   },
-  { label: 'Learn', href: '/learn', description: 'How voting and Parliament work — beginner to expert', feature: 'learn' },
+  { label: 'Learn', href: '/learn', description: 'How voting and Parliament work, beginner to expert', feature: 'learn' },
 ]
 
 /** A nav item is visible if it (a) is a direct link with its feature enabled, or

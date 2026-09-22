@@ -50,10 +50,10 @@ export const POLICY_ANALYSIS: PolicyAnalysis[] = [
       'Critics note FamilyBoost take-up came in below forecast, questioning its reach.',
       'Restoring landlord deductibility was criticised as benefiting property investors over renters/first-home buyers.',
     ],
-    mostAffected: 'Middle-income earners (tax thresholds), property investors (deductibility + bright-line), and families with young children (FamilyBoost). Treasury/IRD published distributional analysis with Budget 2024 — see the official source for the breakdown by income.',
+    mostAffected: 'Middle-income earners (tax thresholds), property investors (deductibility + bright-line), and families with young children (FamilyBoost). Treasury/IRD published distributional analysis with Budget 2024, see the official source for the breakdown by income.',
     official: [
-      { label: 'Budget 2024 & tax analysis — Treasury', url: TREASURY },
-      { label: 'Tax legislation — legislation.govt.nz', url: LEG },
+      { label: 'Budget 2024 & tax analysis, Treasury', url: TREASURY },
+      { label: 'Tax legislation: legislation.govt.nz', url: LEG },
     ],
     publicReception: 'Cost of living has consistently ranked as voters’ top concern in published polls; views on the package’s fairness were mixed (see poll aggregators for sourced figures).',
   },
@@ -72,8 +72,8 @@ export const POLICY_ANALYSIS: PolicyAnalysis[] = [
     ],
     mostAffected: 'Gang-affiliated individuals and their communities; serious repeat offenders; Māori (over-representation in the justice system is noted in official analyses); Police and Corrections. See the RIS for the assessed impacts.',
     official: [
-      { label: 'Gangs / sentencing Acts — legislation.govt.nz', url: LEG },
-      { label: 'Regulatory Impact Statement (Justice) — Treasury area', url: TREASURY },
+      { label: 'Gangs / sentencing Acts: legislation.govt.nz', url: LEG },
+      { label: 'Regulatory Impact Statement (Justice): Treasury area', url: TREASURY },
     ],
   },
   {
@@ -89,10 +89,10 @@ export const POLICY_ANALYSIS: PolicyAnalysis[] = [
       'Critics argue the previous model’s scale and balance-sheet capacity would have spread the cost of large infrastructure upgrades.',
       'Local-government and some experts warn small/rural councils may face higher water costs, and that the underlying funding gap remains.',
     ],
-    mostAffected: 'Ratepayers — especially in small and rural councils — and councils themselves. The RIS for the replacement framework sets out the assessed cost impacts.',
+    mostAffected: 'Ratepayers, especially in small and rural councils, and councils themselves. The RIS for the replacement framework sets out the assessed cost impacts.',
     official: [
-      { label: 'Water Services repeal & replacement — legislation.govt.nz', url: LEG },
-      { label: 'Local Water Done Well bills — Parliament', url: BILLS_URL },
+      { label: 'Water Services repeal & replacement, legislation.govt.nz', url: LEG },
+      { label: 'Local Water Done Well bills, Parliament', url: BILLS_URL },
     ],
   },
   {
@@ -109,7 +109,7 @@ export const POLICY_ANALYSIS: PolicyAnalysis[] = [
     ],
     mostAffected: 'Māori, and the wider Treaty-settlement and constitutional framework.',
     official: [
-      { label: 'Treaty Principles Bill & select-committee report — Parliament', url: BILLS_URL },
+      { label: 'Treaty Principles Bill & select-committee report, Parliament', url: BILLS_URL },
       { label: 'Waitangi Tribunal reports', url: 'https://www.waitangitribunal.govt.nz/' },
     ],
     publicReception: 'The Bill drew a record number of select-committee submissions (the large majority opposed) and a major hīkoi; it was defeated at second reading in April 2025 (verifiable via Parliament).',
@@ -128,8 +128,8 @@ export const POLICY_ANALYSIS: PolicyAnalysis[] = [
     ],
     mostAffected: 'Developers and infrastructure proponents; environmental and conservation interests; councils and iwi. The RIS (Ministry for the Environment) sets out the assessed trade-offs.',
     official: [
-      { label: 'Fast-track Approvals Act & RMA bills — legislation.govt.nz', url: LEG },
-      { label: 'Regulatory Impact Statement (MfE) — Treasury area', url: TREASURY },
+      { label: 'Fast-track Approvals Act & RMA bills, legislation.govt.nz', url: LEG },
+      { label: 'Regulatory Impact Statement (MfE): Treasury area', url: TREASURY },
     ],
   },
   {
@@ -145,8 +145,8 @@ export const POLICY_ANALYSIS: PolicyAnalysis[] = [
     ],
     mostAffected: 'Māori health outcomes and Māori health providers; the structure of Health NZ. The RIS (Health) records the assessed impacts.',
     official: [
-      { label: 'Pae Ora amendment — legislation.govt.nz', url: LEG },
-      { label: 'Regulatory Impact Statement (Health) — Treasury area', url: TREASURY },
+      { label: 'Pae Ora amendment: legislation.govt.nz', url: LEG },
+      { label: 'Regulatory Impact Statement (Health): Treasury area', url: TREASURY },
     ],
   },
   {
@@ -160,17 +160,17 @@ export const POLICY_ANALYSIS: PolicyAnalysis[] = [
     argumentsAgainst: [
       'Critics argue indexing to prices rather than wages erodes benefits relative to incomes over time, widening the gap, and that sanctions can harm vulnerable people and children.',
     ],
-    mostAffected: 'Beneficiaries and lower-income households over time — including sole parents and children in benefit-reliant families. The RIS (MSD) contains the distributional analysis.',
+    mostAffected: 'Beneficiaries and lower-income households over time, including sole parents and children in benefit-reliant families. The RIS (MSD) contains the distributional analysis.',
     official: [
-      { label: 'Social security amendments — legislation.govt.nz', url: LEG },
-      { label: 'Regulatory Impact Statement (MSD) — Treasury area', url: TREASURY },
+      { label: 'Social security amendments: legislation.govt.nz', url: LEG },
+      { label: 'Regulatory Impact Statement (MSD): Treasury area', url: TREASURY },
     ],
   },
   {
     id: 'smokefree',
     title: 'Repeal of the smokefree amendments',
     relatedPromiseIds: ['smokefree'],
-    designedToAffect: 'Tobacco regulation — repealing the previous government’s smokefree-generation ban, denicotinisation and retailer-reduction measures.',
+    designedToAffect: 'Tobacco regulation, repealing the previous government’s smokefree-generation ban, denicotinisation and retailer-reduction measures.',
     argumentsFor: [
       'The Government argued the repealed settings risked an illicit market and crime targeting fewer outlets, and cited retailer viability and personal choice; tobacco excise is also a revenue source.',
     ],
@@ -179,8 +179,8 @@ export const POLICY_ANALYSIS: PolicyAnalysis[] = [
     ],
     mostAffected: 'Smokers; Māori and Pacific communities (higher smoking prevalence); public-health outcomes. See the RIS (Health) for the assessed impacts.',
     official: [
-      { label: 'Smokefree amendment — legislation.govt.nz', url: LEG },
-      { label: 'Regulatory Impact Statement (Health) — Treasury area', url: TREASURY },
+      { label: 'Smokefree amendment: legislation.govt.nz', url: LEG },
+      { label: 'Regulatory Impact Statement (Health): Treasury area', url: TREASURY },
     ],
   },
 ]

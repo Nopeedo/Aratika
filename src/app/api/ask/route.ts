@@ -96,7 +96,7 @@ export async function POST(req: Request) {
   if (used >= limit) {
     return NextResponse.json({
       error: 'limit', remaining: 0,
-      message: `You've reached today's limit of ${limit} questions — it resets tomorrow.${isPremium ? '' : ' Premium members get more.'}`,
+      message: `You've reached today's limit of ${limit} questions. It resets tomorrow.${isPremium ? '' : ' Premium members get more.'}`,
     }, { status: 429 })
   }
 
@@ -147,10 +147,10 @@ export async function POST(req: Request) {
     console.error('[ask] model error', e)
     const message = e instanceof Error && /ANTHROPIC_API_KEY/.test(e.message)
       ? 'Ask Politika isn’t configured yet (missing API key).'
-      : 'Sorry — I had trouble answering just then. Please try again in a moment.'
+      : 'Sorry, I had trouble answering just then. Please try again in a moment.'
     return NextResponse.json({ error: 'model', message }, { status: 502 })
   }
-  if (!answer) answer = 'I’m not sure about that one. Try rephrasing it, or have a look around the site — I can only answer from Politika’s own information.'
+  if (!answer) answer = 'I’m not sure about that one. Try rephrasing it, or have a look around the site, I can only answer from Politika’s own information.'
 
   // ── count it (after a successful answer) ──
   let remaining = Math.max(0, limit - used - 1)

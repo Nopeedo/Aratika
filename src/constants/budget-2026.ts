@@ -20,7 +20,7 @@ export const BUDGET_META = {
   deliveredOn: '28 May 2026',
   financeMinister: 'Minister of Finance',
   governmentLabel: 'National-led coalition government (National, ACT, NZ First)',
-  sourceLabel: 'The Treasury — Budget at a Glance',
+  sourceLabel: 'The Treasury: Budget at a Glance',
   sourceUrl: 'https://www.budget.govt.nz/budget/2026/at-a-glance/index.htm',
   fiscalDataUrl: 'https://www.budget.govt.nz/budget/2026/data-library.htm',
   // Treasury's own measurement note — essential for reading the figures correctly.
@@ -32,7 +32,7 @@ export const BUDGET_META = {
 export const BUDGET_THEMES: string[] = [
   'Gets the books back to surplus and reduces debt as a share of GDP.',
   'Invests to drive better results in health, education, and law and order.',
-  'Delivers infrastructure projects — hospitals, schools, courthouses, police stations, rail upgrades and a new Road of National Significance.',
+  'Delivers infrastructure projects, hospitals, schools, courthouses, police stations, rail upgrades and a new Road of National Significance.',
   'Provides temporary, targeted support for households and public services facing fuel-price pressures.',
   'Advances reforms to increase energy security, boost housing growth and replace the RMA.',
   'Continues to rebuild the capacity of the Defence Force.',
@@ -118,7 +118,7 @@ export const BUDGET_SECTORS: BudgetSector[] = [
       { amount: '$503m', kind: 'operating', text: 'Frontline Corrections services, including resources to manage prison growth.' },
       { amount: '$50m', kind: 'operating', text: 'Additional funding for frontline policing.' },
       { amount: '$215m', kind: 'capital', text: 'New courthouses in Rotorua and new police stations in Whanganui and Greymouth.' },
-      { amount: '$21m', kind: 'operating', text: 'Customs — combat drug smuggling and transnational crime.' },
+      { amount: '$21m', kind: 'operating', text: 'Customs: combat drug smuggling and transnational crime.' },
       { kind: 'operating', text: 'Funding to reform the firearms safety system.' },
     ],
   },
@@ -126,7 +126,7 @@ export const BUDGET_SECTORS: BudgetSector[] = [
     key: 'infrastructure',
     label: 'Infrastructure',
     headline: '$1.8b expressway + $1.2b rail',
-    blurb: 'Funding to build or enable infrastructure. New spending sits on top of an existing pipeline — around $60 billion is expected to be spent over the next four years.',
+    blurb: 'Funding to build or enable infrastructure. New spending sits on top of an existing pipeline, around $60 billion is expected to be spent over the next four years.',
     items: [
       { amount: '$1.8b', kind: 'capital', text: 'Build the Cambridge to Piarere Expressway (a Road of National Significance).' },
       { amount: '$705m + $477m', kind: 'mixed', text: 'Renew and upgrade the rail network ($705m capital, $477m operating).' },

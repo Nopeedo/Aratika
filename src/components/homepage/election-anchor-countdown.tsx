@@ -23,7 +23,7 @@ export function AnchorCountdownTile() {
         Sat 7 Nov 2026
       </div>
       <div style={{ fontSize: 22, fontWeight: 800, color: '#36e08a', fontFamily: MANROPE, lineHeight: 1.1 }}>
-        {days === null ? '—' : days} <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,.6)' }}>days to go</span>
+        {days === null ? '' : days} <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,.6)' }}>days to go</span>
       </div>
     </Link>
   )

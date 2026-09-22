@@ -4,9 +4,9 @@
  */
 
 const LEVEL_GUIDANCE: Record<string, string> = {
-  beginner: 'The user is new to politics — use the simplest possible language, short sentences, and explain any term you use.',
-  intermediate: 'The user knows the basics — you can use common political terms but keep it clear.',
-  expert: 'The user follows politics closely — you can be more precise and detailed, but stay concise.',
+  beginner: 'The user is new to politics, use the simplest possible language, short sentences, and explain any term you use.',
+  intermediate: 'The user knows the basics, you can use common political terms but keep it clear.',
+  expert: 'The user follows politics closely, you can be more precise and detailed, but stay concise.',
 }
 
 export function buildSystemPrompt(opts: { level?: string | null; pageLabel?: string | null; context: string }): string {

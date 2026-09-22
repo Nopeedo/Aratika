@@ -53,7 +53,7 @@ export function PolicyDeepDive({
       <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: showTitle ? 6 : 14 }}>
         <ScrollText style={{ width: 16, height: 16, color: accent }} />
         <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.09em', textTransform: 'uppercase', color: SECONDARY, fontFamily: MANROPE }}>
-          In depth — from {partyName}’s policy document
+          In depth, from {partyName}’s policy document
           {dive.source.documentDate && <span style={{ color: TERTIARY }}> · {dive.source.documentDate}</span>}
         </span>
       </div>

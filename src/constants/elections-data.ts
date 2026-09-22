@@ -66,7 +66,7 @@ const ELECTION_2023: ElectionData = {
     { name: 'Other registered parties',      votePct: 2.15, partyVotes: 61_221 },
   ],
   notes: [
-    'These are the official count results (122 seats). A by-election in Port Waikato on 25 November 2023 — held after a candidate died during the campaign — added one National seat, bringing the 54th Parliament to 123 seats (National 49).',
+    'These are the official count results (122 seats). A by-election in Port Waikato on 25 November 2023, held after a candidate died during the campaign, added one National seat, bringing the 54th Parliament to 123 seats (National 49).',
     'Te Pāti Māori won 6 electorate seats, more than its party-vote entitlement, creating a small overhang.',
   ],
   sourceUrl: 'https://www.electionresults.govt.nz/electionresults_2023/',

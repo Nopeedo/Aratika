@@ -204,7 +204,7 @@ export default async function BillDetailPage(
             </div>
             <p style={{ fontSize: 13.5, color: '#1e40af', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 14px' }}>
               This bill is open for public submissions{committee ? ` to the ${committee} Committee` : ''}. Anyone can make one
-              and you don&apos;t need to be an expert — it closes <b>{closes}</b>. Draft yours with Politika, then lodge it
+              and you don&apos;t need to be an expert, it closes <b>{closes}</b>. Draft yours with Politika, then lodge it
               through the official Parliament process.
             </p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -240,7 +240,7 @@ export default async function BillDetailPage(
               <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Have your say</h2>
             </div>
             <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 14px' }}>
-              This bill is at the select committee stage — the point where the public can make submissions
+              This bill is at the select committee stage, the point where the public can make submissions
               {committee ? ` to the ${committee} Committee` : ''}. No closing date has been published yet; check the
               official page for when the window opens.
             </p>
@@ -263,7 +263,7 @@ export default async function BillDetailPage(
             <Info style={{ width: 16, height: 16, color: '#1e40af', flexShrink: 0, marginTop: 1 }} />
             <p style={{ fontSize: 12.5, color: '#1e3a8a', fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
               The member in charge and the division (vote) results for each reading will appear here once
-              the live Parliament data integration is in place — including how each party and MP voted.
+              the live Parliament data integration is in place, including how each party and MP voted.
             </p>
           </div>
           {/* Premium teaser */}

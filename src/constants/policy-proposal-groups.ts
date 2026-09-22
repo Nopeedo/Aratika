@@ -55,7 +55,7 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
         headline: '28% tax on any profit made when a commercial or residential property is sold, excluding the family home',
         details: [
           'Farms, KiwiSaver, shares, business assets, gifts and inheritances are also exempt',
-          'Applies only to gains made after 1 July 2027 — no profit made before that date is taxed',
+          'Applies only to gains made after 1 July 2027, no profit made before that date is taxed',
           'Paid when the property is sold, not while it is held',
           'Charged at the individual level, so each owner is taxed on their share of the gain',
           'All revenue is ring-fenced for health funding, starting with three free doctor’s visits a year',
@@ -479,7 +479,7 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
     // both widen choice, but they are two distinct mechanisms — an account
     // families spend, and a type of school — so they stay apart.
     proposals: [
-      'Introduce Student Education Accounts — publicly funded accounts parents can spend at any registered school or provider',
+      'Introduce Student Education Accounts, publicly funded accounts parents can spend at any registered school or provider',
       'Publish detailed, comparable school performance data for parents',
       {
         headline: 'Raise teacher training standards and introduce performance-based pay',
@@ -488,7 +488,7 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
           'Introduce performance-based pay so schools can reward their best teachers',
         ],
       },
-      'Restore and expand partnership (charter) schools — publicly funded but independently run',
+      'Restore and expand partnership (charter) schools, publicly funded but independently run',
       'Keep curriculum focused on core subjects: reading, writing, maths, science, and history',
     ],
   },
@@ -500,7 +500,7 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
       {
         headline: 'Bring back Three Strikes, and longer sentences for attacks on vulnerable workers',
         details: [
-          'Bring back Three Strikes — serious repeat violent or sexual offenders serve full sentences with no parole',
+          'Bring back Three Strikes, serious repeat violent or sexual offenders serve full sentences with no parole',
           'Longer sentences for attacks on vulnerable workers such as shop staff and bus drivers',
         ],
       },

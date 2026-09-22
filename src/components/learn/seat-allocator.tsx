@@ -93,7 +93,7 @@ export function SeatAllocator() {
                 />
                 {below && (
                   <div style={{ fontSize: 10.5, color: '#b45309', fontFamily: MANROPE, marginTop: 1 }}>
-                    Below the 5% threshold — no list seats
+                    Below the 5% threshold, no list seats
                   </div>
                 )}
               </div>

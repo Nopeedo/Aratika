@@ -50,7 +50,7 @@ export default async function PolicyAnalysisPage() {
           <ShieldAlert style={{ width: 18, height: 18, color: '#b45309', flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 12.5, color: '#92400e', fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
             <b>Drafted summaries. Verify before use.</b> The arguments below describe the <b>documented public debate</b> (attributed to
-            who made them) — they are contested claims, not Politika’s verdict, assessed to a January 2026 cutoff. Who’s
+            who made them), they are contested claims, not Politika’s verdict, assessed to a January 2026 cutoff. Who’s
             affected points to the official Regulatory Impact Statement; figures live there. Nothing here attributes an
             economic outcome to a single policy.
           </p>
@@ -111,7 +111,7 @@ export default async function PolicyAnalysisPage() {
         </div>
 
         <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 22, lineHeight: 1.5 }}>
-          Official links open the source’s main area (legislation.govt.nz, Parliament, Treasury) — locate the specific Act,
+          Official links open the source’s main area (legislation.govt.nz, Parliament, Treasury), locate the specific Act,
           Regulatory Impact Statement or select-committee report there. Full promise scorecard and bills on the{' '}
           <Link href="/record/national" style={{ color: JADE, fontWeight: 700 }}>National record</Link>.
         </p>

@@ -68,7 +68,7 @@ export function KeyDates({ today }: { today: string }) {
               rests on and was nowhere in it. */}
           <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
             You must be enrolled to vote, and 2026 changed when. Enrolment closes{' '}
-            <b style={{ color: INK }}>before</b> advance voting opens — unlike 2023, you cannot enrol
+            <b style={{ color: INK }}>before</b> advance voting opens, unlike 2023, you cannot enrol
             once advance voting starts or on election day.
           </p>
         </div>

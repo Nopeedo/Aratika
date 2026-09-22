@@ -20,7 +20,7 @@ export function PremiumCta() {
           </div>
           <h2 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-.01em', color: '#ffffff', fontFamily: MANROPE, marginBottom: 12 }}>Go deeper with Premium</h2>
           <p style={{ fontSize: 17, fontWeight: 500, color: '#6b7078', fontFamily: MANROPE, lineHeight: 1.6 }}>
-            Everything in free, plus detailed voting records, live dashboard tracking, and alerts — so you never miss what your MP does next.
+            Everything in free, plus detailed voting records, live dashboard tracking, and alerts, so you never miss what your MP does next.
           </p>
         </div>
 

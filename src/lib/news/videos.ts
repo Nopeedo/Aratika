@@ -145,7 +145,7 @@ export async function getInterviewVideos(limit = 12): Promise<VideoItem[]> {
   // interview we couldn't attribute is never silently dropped.
   const buckets = new Map<string, VideoItem[]>()
   for (const v of pool) {
-    const key = v.parties[0] ?? '—'
+    const key = v.parties[0] ?? ''
     if (!buckets.has(key)) buckets.set(key, [])
     buckets.get(key)!.push(v)
   }

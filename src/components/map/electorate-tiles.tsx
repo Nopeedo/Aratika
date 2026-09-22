@@ -36,8 +36,8 @@ export function ElectorateTiles({ name }: { name: string }) {
           <MapPin style={{ width: 16, height: 16, color: JADE }} />{name}
         </h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <Row label="Electorate MP" value={info.mpName ?? '—'} />
-          <Row label="Party" value={party ? PARTY_NAMES[party].short : '—'} color={party ? PARTY_COLORS[party].bg : undefined} />
+          <Row label="Electorate MP" value={info.mpName ?? ''} />
+          <Row label="Party" value={party ? PARTY_NAMES[party].short : ''} color={party ? PARTY_COLORS[party].bg : undefined} />
           {info.majority != null && <Row label="2023 majority" value={formatNumber(info.majority)} />}
         </div>
         {slug && mp && (

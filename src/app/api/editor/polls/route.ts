@@ -45,7 +45,7 @@ export async function POST(req: Request) {
   const { error } = await admin.from('content_items').upsert({
     type: 'poll',
     source_id,
-    title: `${pollster} — ${fieldwork || date}`,
+    title: `${pollster}: ${fieldwork || date}`,
     status: 'approved',
     source_url: sourceUrl || null,
     reviewed_by: user.id,

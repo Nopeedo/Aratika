@@ -353,7 +353,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
             )
           ) : (
             <p style={{ fontSize: 15, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
-              Party positions on {selTopic.label.toLowerCase()} are being sourced from official policy and editor-checked — they’ll appear here soon.
+              Party positions on {selTopic.label.toLowerCase()} are being sourced from official policy and editor-checked, they’ll appear here soon.
             </p>
           )}
         </div>
@@ -374,20 +374,20 @@ function toBullets(text: string | null | undefined): string[] {
     .filter(Boolean)
 }
 
-// Words that tend to introduce the supporting half of a proposal — the
-// method/purpose/target clause — rather than the core action itself.
+// Words that tend to introduce the supporting half of a proposal, the
+// method/purpose/target clause, rather than the core action itself.
 // Deliberately narrow: "of"/"in"/"and"/"the" etc. are left out because they
 // show up mid-action too often ("investment in major infrastructure" should
 // stay whole) and would chop leads down to almost nothing.
 const LEAD_SPLIT_WORDS = new Set(['to', 'with', 'through', 'where', 'for', 'so', 'by', 'without', 'under', 'within', 'from', 'using', 'while'])
 
-/** Bold the action, leave the rest at normal weight — no words added,
+/** Bold the action, leave the rest at normal weight, no words added,
  *  removed, or reordered, purely a type-weight split so the eye catches the
  *  verb+object first. Bold is capped at the first sentence, full stop: a
  *  clause boundary (;:.!?) ends it even if no split word ever appears, so a
  *  compound proposal like "Equal rights for all; remove race-based policies
  *  and co-governance" can't render fully bold end to end. Whichever comes
- *  first — a split word, or the end of the first clause — wins. Split words
+ *  first, a split word, or the end of the first clause, wins. Split words
  *  only count from the 3rd word on (a lead is never one or two words); a
  *  clause boundary counts as soon as it appears, since a genuine sentence
  *  end is a stronger signal than the minimum-lead-length guard. */
@@ -405,21 +405,20 @@ function splitLead(text: string): [string, string] {
   return [text, '']
 }
 
-/** Bold only what actually fits on the FIRST RENDERED LINE, never more — a
+/** Bold only what actually fits on the FIRST RENDERED LINE, never more, a
  *  word/grammar heuristic (like splitLead above) can't guarantee that: "Define
  *  Treaty of Waitangi principles in law based on the 1840 text, including
  *  equal rights" is a grammatically fine lead but spans three lines. There's
- *  no way to know where a line actually breaks without asking the browser —
- *  it depends on the panel's real width, the font, and every word's own
- *  length — so this measures it with the Range API instead of guessing.
+ *  no way to know where a line actually breaks without asking the browser, *  it depends on the panel's real width, the font, and every word's own
+ *  length, so this measures it with the Range API instead of guessing.
  *
  *  A hidden clone of the text (absolutely positioned, so it doesn't affect
- *  layout) sits behind the visible bold/regular split. After every layout —
- *  first paint and on resize — it walks word boundaries, extending a Range
+ *  layout) sits behind the visible bold/regular split. After every layout
+ *  first paint and on resize, it walks word boundaries, extending a Range
  *  over the clone and checking getClientRects().length: more than one rect
  *  means that word pushed the range onto a second line. The last word that
  *  still reported a single rect is where bold stops. Runs in
- *  useLayoutEffect so the measurement lands before the browser paints —
+ *  useLayoutEffect so the measurement lands before the browser paints
  *  a plain useEffect would flash the fallback (fully bold) for one frame. */
 function FirstLineBold({ text, style }: { text: string; style: React.CSSProperties }) {
   const measureRef = useRef<HTMLSpanElement>(null)
@@ -594,7 +593,7 @@ function FocusedCard({ slug, pos, topicLabel }: {
   if (!pos) {
     return (
       <p style={{ fontSize: 16, color: TERTIARY, lineHeight: 1.55, margin: 0, fontFamily: MANROPE }}>
-        No {topicLabel.toLowerCase()} position captured yet for {party.name} — being sourced from official policy, then editor-checked.
+        No {topicLabel.toLowerCase()} position captured yet for {party.name}, being sourced from official policy, then editor-checked.
       </p>
     )
   }

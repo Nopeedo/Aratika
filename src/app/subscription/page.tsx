@@ -46,7 +46,7 @@ export default function SubscriptionPage() {
             Do more with Politika
           </h1>
           <p style={{ fontSize: 17, color: SECONDARY, fontFamily: MANROPE, maxWidth: 560, margin: '0 auto', lineHeight: 1.6 }}>
-            The information is always free. Premium adds the tools to act on it — and helps keep Politika
+            The information is always free. Premium adds the tools to act on it, and helps keep Politika
             independent and non-partisan.
           </p>
         </div>

@@ -81,7 +81,7 @@ export function reportError(error: unknown, context?: Record<string, unknown>) {
     .catch(() => {
       if (!warned) {
         warned = true
-        console.warn('[reportError] could not reach Sentry — errors are logged but not forwarded.')
+        console.warn('[reportError] could not reach Sentry, errors are logged but not forwarded.')
       }
     })
 }

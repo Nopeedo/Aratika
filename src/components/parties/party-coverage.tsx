@@ -46,7 +46,7 @@ function Empty({ what }: { what: string }) {
   return (
     <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
       No {what} tagged to this party in the current window. That is the real state of the
-      pool, not a loading error — coverage of the smaller parties is genuinely thin.
+      pool, not a loading error, coverage of the smaller parties is genuinely thin.
     </p>
   )
 }

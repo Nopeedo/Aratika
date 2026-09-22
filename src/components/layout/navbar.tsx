@@ -234,7 +234,7 @@ export function Navbar() {
                   <Button variant="premium" asChild>
                     <Link href="/subscription">
                       <Crown className="size-4" />
-                      Upgrade to Premium — $20/month
+                      Upgrade to Premium, $20/month
                     </Link>
                   </Button>
                 )}

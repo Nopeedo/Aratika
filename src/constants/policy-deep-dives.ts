@@ -131,8 +131,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     title: 'Targeted capital gains tax on property',
     summary:
       'Labour proposes a 28 percent tax on the profit made when a commercial or residential property is sold, ' +
-      'excluding the family home. It applies only to gains made after 1 July 2027 — any increase in value before ' +
-      'that date is not taxed — and is generally paid at the point of sale. The party says all revenue would be ' +
+      'excluding the family home. It applies only to gains made after 1 July 2027, any increase in value before ' +
+      'that date is not taxed, and is generally paid at the point of sale. The party says all revenue would be ' +
       'ring-fenced for health, funding three free GP visits a year for everyone.',
 
     facts: [
@@ -201,7 +201,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Losses can be carried forward, but only against like assets',
         body:
           'Selling a covered property for less than its cost, including improvements, creates a capital loss. That loss ' +
-          'can be carried forward against future capital gains, but it is ring-fenced — it cannot be set against salary ' +
+          'can be carried forward against future capital gains, but it is ring-fenced, it cannot be set against salary ' +
           'or other income.',
       },
       {
@@ -224,9 +224,9 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         ],
         outcome: [
           'The family home is excluded, so it is not taxed',
-          'The rental sells for $750,000 — tax applies only to the $50,000 gain since valuation day',
+          'The rental sells for $750,000, tax applies only to the $50,000 gain since valuation day',
           'On the business sale, the building’s value must be separated from the business’s',
-          'Only the part of the price reflecting the rise in the commercial property is taxed — not gains from the business itself or the new equipment',
+          'Only the part of the price reflecting the rise in the commercial property is taxed, not gains from the business itself or the new equipment',
         ],
       },
       {
@@ -240,7 +240,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'When Liam dies, his share transfers to Phyllis with no tax to pay',
           'When Phyllis dies, the five children cannot agree how to split the assets and decide to sell both',
           'Inheritances are exempt, so no tax is due when the assets transfer to the executor',
-          'Both are sold within six months — the family home for $1,100,000 and the holiday home for $650,000',
+          'Both are sold within six months, the family home for $1,100,000 and the holiday home for $650,000',
           'The children split $1,750,000 with no tax to pay',
         ],
       },
@@ -279,7 +279,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     openQuestions: [
       'The document does not define “family home”, so how the exemption applies to mixed-use or multi-dwelling properties is not set out.',
-      'The valuation method is not fixed — it says different options will be available, in line with the Tax Working Group’s recommendations.',
+      'The valuation method is not fixed, it says different options will be available, in line with the Tax Working Group’s recommendations.',
       'Everything not covered in the document is deferred: it states that all other tax technical details will follow the 2019 Tax Working Group’s recommendations.',
       'The revenue figures are the party’s projection from a 2019 model with updated assumptions, not an independent costing.',
     ],
@@ -326,7 +326,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       'Services that are already free, such as immunisations or Access and Choice services',
       'After-hours care',
       'ACC visits',
-      'Clinical phone triage — which also does not count against your three visits',
+      'Clinical phone triage, which also does not count against your three visits',
     ],
 
     mechanics: [
@@ -346,7 +346,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Three a year, use them or lose them',
         body:
-          'The entitlement is three visits per person per calendar year and does not accumulate — unused visits do not ' +
+          'The entitlement is three visits per person per calendar year and does not accumulate, unused visits do not ' +
           'carry into the next year. Where an issue is resolved through phone triage rather than an appointment, it is ' +
           'not counted against the three.',
       },
@@ -355,7 +355,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The document sets out the funding model as the underlying problem: general practice has been paid mainly a ' +
           'flat amount per enrolled person, with clinics able to charge a co-payment on top. It cites independent ' +
-          'analysis from 2022 finding general practice underfunded by around 7.6 percent — about $137 million against ' +
+          'analysis from 2022 finding general practice underfunded by around 7.6 percent, about $137 million against ' +
           'total practice income of $1.67 billion.',
       },
       {
@@ -375,10 +375,10 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'Labour says more people seeing a doctor is the point, and that it worked with general practice ' +
           'representatives on changes to free up around 4.58 million appointments a year.',
         bullets: [
-          'Clinical phone triage — around 1.9 million freed, and a further 2.9 million streamlined',
-          'AI scribes and other digital tools — around 1.5 million',
-          'Better information for people with long-term conditions — around 1 million',
-          'Targeted facilities funding in high-demand areas — around 180,000',
+          'Clinical phone triage, around 1.9 million freed, and a further 2.9 million streamlined',
+          'AI scribes and other digital tools, around 1.5 million',
+          'Better information for people with long-term conditions, around 1 million',
+          'Targeted facilities funding in high-demand areas, around 180,000',
         ],
       },
       {
@@ -408,7 +408,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         { period: '2030 & outyears', amount: '$548m' },
       ],
       basis:
-        'Labour’s own costings for the whole package — the visits themselves, the Medicard and app, clinical triage, ' +
+        'Labour’s own costings for the whole package, the visits themselves, the Medicard and app, clinical triage, ' +
         'digital tools, self-care, the Independent Pricing Authority and facilities grants. The document does not ' +
         'state an independent cost check.',
     },
@@ -430,7 +430,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     openQuestions: [
       'The document does not say what a patient pays for a fourth visit in the same year.',
-      'The national GP funding rate is not specified — the document says the Independent Pricing Authority would set it once operating, by July 2028.',
+      'The national GP funding rate is not specified, the document says the Independent Pricing Authority would set it once operating, by July 2028.',
       'The 4.58 million appointments figure is Labour’s estimate, developed with general practice representatives; no independent modelling is cited.',
       'The costings are the party’s own, and the document does not state an independent cost check.',
     ],
@@ -471,11 +471,11 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       'Invest in infrastructure and innovative New Zealand businesses',
       'Hold Crown-owned assets that have both a commercial and a public good purpose',
       'Invest and borrow in its own right',
-      'Take returns that are social as well as financial — the document gives community renewable energy and high-tech start-ups as examples',
+      'Take returns that are social as well as financial, the document gives community renewable energy and high-tech start-ups as examples',
     ],
 
     exempt: [
-      'Sell the assets it is seeded with — the document says this would be prevented in legislation',
+      'Sell the assets it is seeded with, the document says this would be prevented in legislation',
       'Sell its other assets without explicit Ministerial approval',
       'Be told by the Minister of Finance which individual investments to make',
     ],
@@ -485,7 +485,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Separate from the Super Fund, run by the same people',
         body:
           'The fund would sit alongside the New Zealand Super Fund rather than inside it, and be governed by the ' +
-          'Guardians of the Super Fund — the existing body that runs it. The Minister of Finance would be sole ' +
+          'Guardians of the Super Fund, the existing body that runs it. The Minister of Finance would be sole ' +
           'shareholder.',
       },
       {
@@ -505,14 +505,14 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'What independence would mean in practice',
         body:
           'The fund would operate under legislation and a public policy statement. The Minister of Finance would set ' +
-          'broad objectives through a letter of expectation but would have no power to direct individual investments — ' +
+          'broad objectives through a letter of expectation but would have no power to direct individual investments' +
           'the same arm’s-length arrangement the Super Fund uses.',
       },
       {
         heading: 'Returns measured two ways',
         body:
           'The document is explicit that some investments may not deliver the returns of global markets, and argues ' +
-          'they would create national value instead — stronger communities, lower costs, more resilient industries, and ' +
+          'they would create national value instead, stronger communities, lower costs, more resilient industries, and ' +
           'keeping talent and ideas in New Zealand.',
       },
       {
@@ -597,7 +597,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     ],
 
     exempt: [
-      'Corporate-owned practices — the document says the scheme is for owner-operated clinics only',
+      'Corporate-owned practices, the document says the scheme is for owner-operated clinics only',
       'A second loan for a doctor who has already had one',
       'More than 50 loans in any year',
     ],
@@ -852,14 +852,14 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'A higher company rate for large firms only',
         body:
-          'The company rate rises from 28 to 33 percent for businesses with annual turnover above $30 million — the ' +
+          'The company rate rises from 28 to 33 percent for businesses with annual turnover above $30 million, the ' +
           'threshold Inland Revenue uses to define a large business, which the document says is about 0.7 percent of ' +
           'firms. Everyone below it stays at 28 percent.',
       },
       {
         heading: 'A levy on the big banks',
         body:
-          'An annual levy of 0.06 percent on the total liabilities of banks holding more than $100 billion — which the ' +
+          'An annual levy of 0.06 percent on the total liabilities of banks holding more than $100 billion, which the ' +
           'document says captures ANZ, ASB, BNZ and Westpac, and matches a levy Australia already has. The stated ' +
           'purposes are the fiscal risk of highly leveraged banks, bank profitability, and levelling the field for ' +
           'smaller competitors.',
@@ -901,7 +901,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'In the second, someone is gifted a family home worth $1.5 million and $1.25 million in shares and bonds',
         ],
         outcome: [
-          'The first pays nothing — the family home is exempt, and what is left is under the $1 million threshold',
+          'The first pays nothing, the family home is exempt, and what is left is under the $1 million threshold',
           'The second pays 33 percent on $250,000, being the value above $1 million once the family home is excluded',
         ],
       },
@@ -940,11 +940,11 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       'The document does not say when the changes would take effect; the costings begin in 2027/28.',
       'Beyond property, shares and bonds having known values, and art over $50,000 being taken at its insured value, it does not set out how net assets would be valued each year.',
       'Behavioural response to the changes is excluded from the modelling, which the document states directly.',
-      'Flow-on effects on other tax revenue — it gives GST and company tax as examples — are described as uncertain and are not included.',
+      'Flow-on effects on other tax revenue, it gives GST and company tax as examples, are described as uncertain and are not included.',
     ],
 
     source: {
-      documentTitle: 'A tax system for all of us — Tax policy 2026',
+      documentTitle: 'A tax system for all of us, Tax policy 2026',
       publisher: 'Green Party of Aotearoa New Zealand',
       authorisedBy: 'Marama Davidson and Chlöe Swarbrick, Green Party Co-leaders, Parliament Buildings, Wellington',
       // The Green Party's policy index has no dedicated tax page, so there is no
@@ -957,13 +957,13 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     topics: ['climate'],
     party: 'green',
     slug: 'energy-plan-kiwipower',
-    title: 'Power for all of us — the energy plan and Kiwipower',
+    title: 'Power for all of us, the energy plan and Kiwipower',
     // Covers both the energy policy and the standalone Kiwipower explainer.
     // They overlap heavily on Kiwipower, so two deep dives would repeat most of
     // each other; both documents are named in the source block.
     summary:
       'The Green Party proposes cutting power bills through household and community ownership of renewable ' +
-      'generation, and creating Kiwipower — a publicly owned Crown entity to build and contract the backup ' +
+      'generation, and creating Kiwipower, a publicly owned Crown entity to build and contract the backup ' +
       '“firming” capacity the system needs when hydro lakes are low or wind drops. It includes zero-interest loans ' +
       'for solar and batteries, a renters’ right to solar, expanded home insulation, and funds for community, ' +
       'public-housing and Māori-housing renewable projects.',
@@ -998,7 +998,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         bullets: [
           'Central government would hold 20 percent, with councils and the Local Government Funding Agency splitting the rest',
           'The Energy Efficiency and Conservation Authority would run it',
-          'Up to 90 percent of rateable properties could access it — if all councils take part',
+          'Up to 90 percent of rateable properties could access it, if all councils take part',
           'The document estimates the scheme could be running in as little as six months',
         ],
       },
@@ -1006,8 +1006,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Renters, and plug-in solar',
         body:
           'The document says renters are four to five times more likely to experience energy hardship but least able ' +
-          'to benefit from rooftop solar. It proposes legalising plug-in solar — smaller, cheaper units needing no ' +
-          'special installation that can move with a tenant — and a right to solar stopping landlords or body ' +
+          'to benefit from rooftop solar. It proposes legalising plug-in solar, smaller, cheaper units needing no ' +
+          'special installation that can move with a tenant, and a right to solar stopping landlords or body ' +
           'corporates unreasonably blocking safe, certified systems, through changes to tenancy and body corporate law.',
       },
       {
@@ -1026,8 +1026,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Community-owned generation',
         body:
-          '$200 million for locally led projects — the document names schools, marae, libraries, recreation centres, ' +
-          'community energy groups, iwi and Māori organisations and local government — funded by reallocating fossil ' +
+          '$200 million for locally led projects, the document names schools, marae, libraries, recreation centres, ' +
+          'community energy groups, iwi and Māori organisations and local government, funded by reallocating fossil ' +
           'fuel subsidies. It estimates this could put solar on 1,500 schools and 500 marae and fund 500 further ' +
           'projects, and includes enabling peer-to-peer energy trading.',
       },
@@ -1035,18 +1035,18 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Public and Māori housing',
         body:
           'Rooftop solar on more than half of all public homes within four years, with installation mandated on new or ' +
-          'renovated public homes where appropriate. Separately, $80 million for renewable energy on Māori housing — ' +
+          'renovated public homes where appropriate. Separately, $80 million for renewable energy on Māori housing' +
           'the document notes Māori are two to three times more likely to experience energy hardship.',
       },
       {
         heading: 'Kiwipower: what it is and how it would work',
         body:
           'A publicly owned Crown entity, accountable to a Minister, created to fix what the documents call a firming ' +
-          'shortage — the backup capacity that keeps supply reliable when hydro and wind are low. It would be ' +
+          'shortage, the backup capacity that keeps supply reliable when hydro and wind are low. It would be ' +
           'established by the end of 2027 with legislation passed and a board appointed.',
         bullets: [
           'Contract access to existing firming, including hydro and thermal now held by the big power companies',
-          'Invest in new renewable firming and storage — geothermal, biomass, batteries, small pumped hydro, demand response',
+          'Invest in new renewable firming and storage, geothermal, biomass, batteries, small pumped hydro, demand response',
           'Offer fair, transparent contracts to independent retailers, generators and large energy users',
           'Big power companies would face a regulated access obligation to offer a portion of their firming capacity, at a fair return',
           'Funded by a four-year $980 million appropriation, which the party attributes to its proposed tax on the super-rich',
@@ -1089,13 +1089,13 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     openQuestions: [
       'The loan scheme depends on councils opting in. The document says up to 90 percent of rateable properties could access it if all councils participate, but does not say what happens where they do not.',
-      'The split between operating and capital spending for Kiwipower is not set — the document says its board would decide, within the $980 million envelope.',
+      'The split between operating and capital spending for Kiwipower is not set, the document says its board would decide, within the $980 million envelope.',
       'No start date is given for the renters’ right to solar or for legalising plug-in solar.',
       'The savings figures are modelled estimates, and the document says the plug-in solar figure is based on Parliamentary Library estimates of savings in Australia rather than New Zealand data.',
     ],
 
     source: {
-      documentTitle: 'Power for all of us — Energy policy 2026',
+      documentTitle: 'Power for all of us, Energy policy 2026',
       publisher: 'Green Party of Aotearoa New Zealand',
       authorisedBy: 'Marama Davidson and Chlöe Swarbrick, Green Party Co-leaders, Parliament Buildings, Wellington',
       url: 'https://www.greens.org.nz/energy_policy',
@@ -1144,7 +1144,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       'Affirming the te reo Māori texts of He Whakaputanga o te Rangatiratanga o Nu Tireni 1835 and Te Tiriti o Waitangi 1840 as the founding constitutional documents',
       'A Waitangi Tribunal that is fully resourced and has binding decision-making authority',
       'Mutually agreed resolution of, and restitution for, outstanding historical and contemporary breaches',
-      'Return of whenua to Māori — Hoki Whenua Mai — as central to restoring wellbeing',
+      'Return of whenua to Māori, Hoki Whenua Mai, as central to restoring wellbeing',
       'Constitutional transformation along the lines envisioned by Matike Mai',
       'Upholding UNDRIP and the Mataatua Declaration on Cultural and Intellectual Property Rights of Indigenous Peoples',
     ],
@@ -1168,7 +1168,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Tino rangatiratanga',
         body:
           'It affirms tino rangatiratanga of whānau, hapū and iwi over their whenua, awa, moana, kāinga and taonga, ' +
-          'both tangible and intangible — including mātauranga Māori, rongoā, tikanga and kawa, and taonga species — ' +
+          'both tangible and intangible, including mātauranga Māori, rongoā, tikanga and kawa, and taonga species' +
           'and commits to devolving power and resources to tangata whenua-led decision-making.',
       },
       {
@@ -1187,7 +1187,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'loss.',
       },
       {
-        heading: 'Ōritetanga — equity',
+        heading: 'Ōritetanga: equity',
         body:
           'The policy attributes inequitable systems and disparities to the systemic racism of settler colonialism, ' +
           'notes further disparity for rangatahi, takatāpui and tāngata whaikaha, and seeks equitable outcomes across ' +
@@ -1238,7 +1238,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     topics: ['treaty-maori-affairs'],
     party: 'green',
     slug: 'maori-manifesto',
-    title: 'Māori Manifesto — kaupapa Māori and Te Tiriti commitments',
+    title: 'Māori Manifesto: kaupapa Māori and Te Tiriti commitments',
     // Scoped to two chapters of a document that spans about thirty policy
     // areas. Those two are where it names legislation and funds; the rest is a
     // paragraph and a few bullets per topic, which belongs in the position
@@ -1270,7 +1270,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     covered: [
       'Amending the Treaty of Waitangi Act to recognise Te Tiriti as the authoritative text, working in conjunction with He Whakaputanga',
       'Te Tiriti-based decision-making across government, with iwi and hapū resourced as partners rather than advisors',
-      'Reforming Treaty settlements — removing “full and final” clauses, ending the large natural grouping approach, validating hapū rangatiratanga',
+      'Reforming Treaty settlements, removing “full and final” clauses, ending the large natural grouping approach, validating hapū rangatiratanga',
       'A better resourced Waitangi Tribunal with power to make binding recommendations for return of Crown and private land',
       'Returning whenua wrongfully alienated outside settlements, including exploring a right of first refusal at point of sale',
       'A Marae Resilience Fund, an end to perpetual leases on whenua Māori, and Public Works Act protections',
@@ -1280,7 +1280,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Which Act would change, and how',
         body:
-          'The manifesto proposes amending the Treaty of Waitangi Act so that Te Tiriti — the te reo Māori text — is ' +
+          'The manifesto proposes amending the Treaty of Waitangi Act so that Te Tiriti, the te reo Māori text, is ' +
           'recognised as the authoritative one, and that it works in conjunction with He Whakaputanga o te ' +
           'Rangatiratanga o Nu Tireni. That is a change to which text has legal standing, not only to how it is ' +
           'interpreted.',
@@ -1289,7 +1289,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'A Waitangi Tribunal that can order land returned',
         body:
           'Beyond more resourcing, the manifesto would give the Tribunal power to make binding recommendations for the ' +
-          'return of land to iwi, whānau and hapū — and states this covers private as well as Crown land. The document ' +
+          'return of land to iwi, whānau and hapū, and states this covers private as well as Crown land. The document ' +
           'does not set out how that would work where land is privately held.',
       },
       {
@@ -1342,7 +1342,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     openQuestions: [
       'No dates are given for any of the legislative changes.',
-      'The manifesto carries no costings — not for the Marae Resilience Fund, nor for land return.',
+      'The manifesto carries no costings, not for the Marae Resilience Fund, nor for land return.',
       'It does not say how binding Tribunal recommendations would operate over privately owned land, which is the most consequential of the proposals.',
       'The right-of-first-refusal process is described as something to explore rather than a settled mechanism.',
     ],
@@ -1369,7 +1369,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       'National proposes making KiwiSaver contributions compulsory for all workers from 1 July 2028, at the default ' +
       'rate on a glidepath reaching 6 percent each from employee and employer by 2032. Alongside it: a $1,500 Baby ' +
       'Boost with automatic enrolment at birth, a government KiwiSaver contribution for people on paid parental ' +
-      'leave whether or not they contribute themselves, and compulsory employer contributions for workers over 65 — ' +
+      'leave whether or not they contribute themselves, and compulsory employer contributions for workers over 65' +
       'all from 1 July 2027.',
 
     facts: [
@@ -1386,7 +1386,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     covered: [
       'All workers, from 1 July 2028, at the prevailing default contribution rate',
-      'Self-employed people, at the employee-equivalent rate — 4 percent rather than the combined 8',
+      'Self-employed people, at the employee-equivalent rate, 4 percent rather than the combined 8',
       'Every child born in New Zealand, automatically enrolled with a $1,500 payment',
       'People on paid parental leave, who receive a government contribution regardless of their own',
       'Employees aged over 65, whose employers would have to contribute as for anyone else',
@@ -1395,7 +1395,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     exempt: [
       'Employees already saving through another employer-managed defined contribution scheme',
       'People receiving paid parental leave, for the period they are out of work',
-      'Anyone suspending contributions — but only by meeting the existing hardship test',
+      'Anyone suspending contributions, but only by meeting the existing hardship test',
     ],
 
     mechanics: [
@@ -1411,7 +1411,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'The exceptions, and the hardship test',
         body:
           'Three carve-outs: another employer-managed scheme, the period someone is on paid parental leave, and ' +
-          'suspension — which would require meeting the hardship test already used for early withdrawal. The ' +
+          'suspension, which would require meeting the hardship test already used for early withdrawal. The ' +
           'self-employed would pay only the employee share, 4 percent rather than the combined 8.',
       },
       {
@@ -1496,7 +1496,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     ],
 
     openQuestions: [
-      'The document does not say what happens if a worker simply does not contribute — only that suspending requires meeting the hardship test.',
+      'The document does not say what happens if a worker simply does not contribute, only that suspending requires meeting the hardship test.',
       'It does not say whether the self-employed rate stays at 4 percent or follows the glidepath up to 6.',
       'It does not say whether the $1,500 Baby Boost would be indexed.',
       'The cost is to come from future Budget operating allowances rather than from identified savings or revenue.',
@@ -1513,7 +1513,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     topics: ['foreign-policy'],
     party: 'national',
     slug: 'trade-agenda',
-    title: 'New Zealand’s Next Billion Customers — the trade agenda',
+    title: 'New Zealand’s Next Billion Customers, the trade agenda',
     summary:
       'National proposes opening trade negotiations with seven new economies over five years, extending the ' +
       'essential-supplies agreement signed with Singapore to other partners, cutting border paperwork through ' +
@@ -1548,13 +1548,13 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'almost 700 million people and over US$5 trillion of GDP, against current New Zealand exports of $1.8 ' +
           'billion.',
         bullets: [
-          'Brazil — 214m people, US$2.19tn GDP, $205.81m of New Zealand exports today',
-          'Switzerland — 8.7m, US$936.56bn, $467.64m',
-          'Argentina — 46m, US$638.37bn, $75.2m',
-          'EFTA (Iceland, Liechtenstein, Norway) — 6m, US$525.09bn, $83.78m',
-          'Bangladesh — 178m, US$450.12bn, $670.15m',
-          'Nigeria — 242m, US$252.26bn, $224.99m',
-          'Uruguay — 3.5m, US$80.96bn, $27.36m',
+          'Brazil, 214m people, US$2.19tn GDP, $205.81m of New Zealand exports today',
+          'Switzerland: 8.7m, US$936.56bn, $467.64m',
+          'Argentina: 46m, US$638.37bn, $75.2m',
+          'EFTA (Iceland, Liechtenstein, Norway): 6m, US$525.09bn, $83.78m',
+          'Bangladesh: 178m, US$450.12bn, $670.15m',
+          'Nigeria: 242m, US$252.26bn, $224.99m',
+          'Uruguay: 3.5m, US$80.96bn, $27.36m',
         ],
       },
       {
@@ -1578,7 +1578,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'A different job for NZTE',
         body:
           'NZTE works with around 1,000 companies. The document says it has largely responded to companies that ask ' +
-          'for help, and proposes shifting it to what it calls a “lead and follow” model — identifying which exporters ' +
+          'for help, and proposes shifting it to what it calls a “lead and follow” model, identifying which exporters ' +
           'stand to gain when a new agreement opens a tariff window and approaching them, and building forward-looking ' +
           'sector opportunity maps.',
       },
@@ -1610,7 +1610,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     ],
 
     openQuestions: [
-      'The document carries no costings — neither for the negotiations themselves nor for the extra NZTE resourcing it proposes.',
+      'The document carries no costings, neither for the negotiations themselves nor for the extra NZTE resourcing it proposes.',
       'It commits to commencing negotiations with seven economies, not to concluding any of them, and gives no expected timeframe for a deal.',
       'The $1 billion of non-tariff barriers to be removed is a target; the document does not say which barriers or how they would be counted.',
       'The record it sets out for the current term is the party’s own account, without independent sourcing in the document.',
@@ -1665,7 +1665,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The document describes wild animals as managed through a fragmented set of laws, agencies and plans, with ' +
           'responsibilities often unclear and valued species sometimes treated simply as pests. It would recognise in ' +
-          'law species providing recreational, economic, environmental or cultural value — while saying action would ' +
+          'law species providing recreational, economic, environmental or cultural value, while saying action would ' +
           'still be taken where populations cause unacceptable environmental damage, managed to local conditions.',
       },
       {
@@ -1679,7 +1679,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'More herds of special interest',
         body:
-          'Two herds — wapiti and sika — were designated this term under the Game Animal Council (Herds of Special ' +
+          'Two herds, wapiti and sika, were designated this term under the Game Animal Council (Herds of Special ' +
           'Interest) Amendment Act 2026. National would seek proposals for more on that model, saying selections would ' +
           'be evidence-based and require strong local and hunter support, and would replace the Tahr Control Plan 1993 ' +
           'with a plan developed alongside the tahr hunting community.',
@@ -1780,7 +1780,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     exempt: [
       'The maximum weekly payment rate, which the document says is unchanged',
       'Eligibility settings, also stated as unchanged',
-      'The total entitlement per child — sharing divides the 30 weeks rather than adding to them',
+      'The total entitlement per child, sharing divides the 30 weeks rather than adding to them',
     ],
 
     mechanics: [
@@ -1791,9 +1791,9 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'parents whose entitlement commences on or after its effective date, so it is the start date of the leave ' +
           'that decides which entitlement applies rather than the date of birth alone.',
         bullets: [
-          'Budget 2027 — from 1 July 2027 — 27 weeks',
-          'Budget 2028 — from 1 July 2028 — 28 weeks',
-          'Budget 2029 — from 1 July 2029 — 30 weeks',
+          'Budget 2027, from 1 July 2027, 27 weeks',
+          'Budget 2028, from 1 July 2028, 28 weeks',
+          'Budget 2029, from 1 July 2029, 30 weeks',
         ],
       },
       {
@@ -1807,7 +1807,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Taking leave at the same time',
         body:
           'Parents can already split the entitlement, but not use it simultaneously. This would let them take all or ' +
-          'part of it together, apart, then together again in whatever order suits — while the combined total stays ' +
+          'part of it together, apart, then together again in whatever order suits, while the combined total stays ' +
           'the same.',
       },
       {
@@ -1875,7 +1875,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     openQuestions: [
       'The 40-week aim carries no date and is stated as subject to fiscal conditions.',
-      'The schedule depends on Budget operating allowances, and the largest step is timed to a forecast surplus — the document does not say what happens to it if that forecast changes.',
+      'The schedule depends on Budget operating allowances, and the largest step is timed to a forecast surplus, the document does not say what happens to it if that forecast changes.',
       'Sharing divides the entitlement rather than adding to it, and the document does not say how the weeks would be apportioned if parents could not agree.',
       'It does not say whether the maximum weekly payment would move over the period, only that the rate policy is unchanged.',
     ],
@@ -1918,7 +1918,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     covered: [
       'Jobseeker Support, Sole Parent Support, Student Allowance and Supported Living Allowance',
-      'Working for Families — both the family tax credit and the in-work tax credit',
+      'Working for Families, both the family tax credit and the in-work tax credit',
       'Paid Parental Leave payments and Best Start',
       'NZ Superannuation, replaced by the Citizen’s Income plus a top-up to current Super rates',
     ],
@@ -1954,7 +1954,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'approved automatically if the criteria are met. Each abates by 10 cents in the dollar once household income ' +
           'passes somewhere between $50,000 and $75,000.',
         bullets: [
-          'Child Support Income, highest in a child’s first year — $18,250 for a first child, $17,250 for each subsequent — falling to $7,750 and $6,750 for years 4 to 18',
+          'Child Support Income, highest in a child’s first year, $18,250 for a first child, $17,250 for each subsequent, falling to $7,750 and $6,750 for years 4 to 18',
           'An extra $9,500 a year for sole parents',
           'A disability allowance of $6,000',
           'Superannuitant top-ups of $10,000 for a single person, or $5,250 in total for a couple',
@@ -1964,7 +1964,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'The Land Value Tax',
         body:
-          'An annual charge on the unimproved value of land — explicitly not the buildings or other improvements on ' +
+          'An annual charge on the unimproved value of land, explicitly not the buildings or other improvements on ' +
           'it. The stated intent is to make land banking expensive and dense development comparatively cheaper, since ' +
           'the bill does not rise when you build. Urban land values are already assessed in council rating valuations; ' +
           'the document says rural land is harder to value, which is why its rate is lower.',
@@ -2019,7 +2019,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       ],
       basis:
         'TOP’s own costing on 2024 numbers: $25,997 million of revenue against $21,916 million of cost. The Citizen’s ' +
-        'Income figure is net — a headline $69.6 billion, less $23.4 billion clawed back through income tax and $32.6 ' +
+        'Income figure is net, a headline $69.6 billion, less $23.4 billion clawed back through income tax and $32.6 ' +
         'billion of replaced benefits. Administration savings are attributed mostly to MSD and Inland Revenue. The ' +
         'document notes this table was corrected on 7 August 2026 after earlier versions used incorrect data.',
     },
@@ -2040,7 +2040,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     ],
 
     openQuestions: [
-      'The two documents describe the KiwiSaver 2.0 phase-in differently: the overview says 0.5 percentage points a year reaching full rates after eight years, while the addendum says 1 percent a year over six — and its own table does not reach 6 percent each until year nine.',
+      'The two documents describe the KiwiSaver 2.0 phase-in differently: the overview says 0.5 percentage points a year reaching full rates after eight years, while the addendum says 1 percent a year over six, and its own table does not reach 6 percent each until year nine.',
       'Rural land is described as harder to value than urban land, but neither document says how it would be valued.',
       'The farmer deferral is described only as “more limited” than the superannuitant one, without saying what the limit would be.',
       'The costings are built on 2024 numbers, and the document records that the table was corrected in August 2026 after earlier versions used incorrect data.',
@@ -2095,8 +2095,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     ],
 
     exempt: [
-      'Seabirds — albatross, petrels and penguins',
-      'Marine mammals — New Zealand sea lions and southern right whales',
+      'Seabirds: albatross, petrels and penguins',
+      'Marine mammals: New Zealand sea lions and southern right whales',
       'Māui and Hector’s dolphins',
       'Threatened fish including mako sharks and Antarctic toothfish',
     ],
@@ -2134,7 +2134,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'A staged phase-out of bottom trawling',
         body:
-          'Bottom-contact methods — trawling, dredging and Danish seining — would be phased out on a timetable rather ' +
+          'Bottom-contact methods, trawling, dredging and Danish seining, would be phased out on a timetable rather ' +
           'than banned at once, with transition assistance for affected operators to retrain, retool for other methods, ' +
           'or exit the industry.',
         bullets: [
@@ -2149,7 +2149,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'Commercial fishers already pay fisheries management costs under the Fisheries (Cost Recovery) Rules 2001, ' +
           'but the document says industry levies cover less than half of what monitoring, enforcement and ' +
           'administration actually cost. TOP would move to a beneficiary-pays system of resource rentals funding ' +
-          'protected-area management, threatened species recovery, habitat restoration and research — set, it says, ' +
+          'protected-area management, threatened species recovery, habitat restoration and research, set, it says, ' +
           'at a level that keeps the industry viable.',
       },
       {
@@ -2157,15 +2157,15 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The expansion would be planned across Parliament rather than in one term, and designed using systematic ' +
           'conservation planning rather than drawn on a map. The Marine Reserves Act 1971 would be replaced, on the ' +
-          'grounds that it offers only one tool — the full no-take reserve — through an adversarial process. Planning ' +
+          'grounds that it offers only one tool, the full no-take reserve, through an adversarial process. Planning ' +
           'would be run in resourced partnership with iwi and hapū, commercial and recreational fishers, tourism ' +
           'operators, conservation groups, scientists and councils.',
       },
       {
         heading: 'Beyond our own waters',
         body:
-          'New Zealand would support regional blue corridors — linked protected areas across several nations’ waters ' +
-          'following migratory whales, tuna, seabirds and turtles — and legislate to ratify the High Seas Treaty, the ' +
+          'New Zealand would support regional blue corridors, linked protected areas across several nations’ waters ' +
+          'following migratory whales, tuna, seabirds and turtles, and legislate to ratify the High Seas Treaty, the ' +
           'first legal framework for protecting international waters. All seabed mining applications in the ' +
           'territorial sea and EEZ would be opposed.',
       },
@@ -2250,7 +2250,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     openQuestions: [
       'The summary of reforms promises bottom trawling phased out “in all inshore areas by 2030”, but the detailed section gives only immediate closures in the Hauraki Gulf and other areas in critical decline, with no inshore end date.',
       'The same document puts commercial catch exported without value-added processing at “between 60% and 90%” in one section and “over 90%” in another.',
-      'Marine protection is stated as reaching 30 percent in the summary and 30 percent by 2035 in the detail, with 20 percent by 2030 as an intermediate step — the summary does not carry the dates.',
+      'Marine protection is stated as reaching 30 percent in the summary and 30 percent by 2035 in the detail, with 20 percent by 2030 as an intermediate step, the summary does not carry the dates.',
       'The 86 percent protection alongside 86 percent of catch figure is attributed to research that is not named or cited.',
       'What the increased resource rentals would actually be set at is not stated, only that they would keep the industry viable.',
       'No cost is attached to the marine protected area expansion, the Ocean Secretariat or the transition assistance for trawl operators separately from the $100 million total.',
@@ -2270,7 +2270,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     slug: 'abundant-energy',
     title: 'Abundant Energy: tripling renewable generation by 2050',
     summary:
-      'TOP would set a 30 GW renewable capacity target for 2050 — roughly triple today’s — locked in through a ' +
+      'TOP would set a 30 GW renewable capacity target for 2050, roughly triple today’s, locked in through a ' +
       '25-year cross-party Energy Strategy. New generation would be underwritten by a Capacity Investment Scheme ' +
       'modelled on Australia’s. Four energy regulators would merge into one, and 29 distribution companies into six ' +
       'to eight. The Crown’s dividends from its gentailer shareholdings, about $500 million a year, would be ' +
@@ -2291,12 +2291,12 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     // Again not a covered/exempt pairing — two lists the document gives
     // explicitly, and the most useful things to put side by side here.
     covered: [
-      'Administering council lending for the electrification loan scheme — about $6m a year',
-      'Administering the Capacity Investment Scheme — about $5m a year',
-      'Helping communities and distributors enable distributed generation — about $10m a year',
-      'Co-funding small-scale community generation in isolated communities — up to $100m a year, supporting up to $2bn of capital spending',
-      'Expanding Warmer Kiwi Homes — about $80m a year',
-      'Electrifying council bus fleets — up to $125m a year, supporting up to $2.5bn of capital spending',
+      'Administering council lending for the electrification loan scheme, about $6m a year',
+      'Administering the Capacity Investment Scheme, about $5m a year',
+      'Helping communities and distributors enable distributed generation, about $10m a year',
+      'Co-funding small-scale community generation in isolated communities, up to $100m a year, supporting up to $2bn of capital spending',
+      'Expanding Warmer Kiwi Homes: about $80m a year',
+      'Electrifying council bus fleets, up to $125m a year, supporting up to $2.5bn of capital spending',
     ],
 
     exempt: [
@@ -2314,7 +2314,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'Transpower’s “Accelerated Electrification” scenario gets to roughly 22 GW by 2050, which the document says ' +
           'is enough to muddle through decarbonisation but not to deliver abundance. Reaching 30 GW means building ' +
           'slightly more each year than the 556 MW added in 2024, sustained for decades. Because that depends on ' +
-          'private investment over a very long horizon, TOP would seek a cross-party 25-year Energy Strategy — the ' +
+          'private investment over a very long horizon, TOP would seek a cross-party 25-year Energy Strategy, the ' +
           'stated point being to end “on-again off-again” pumped hydro and LNG announcements.',
       },
       {
@@ -2332,14 +2332,14 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'A mirror-image scheme for large industrial energy users: long-term government guarantees, won through ' +
           'competitive tender, that their electricity price will not exceed a set amount if they switch off fossil ' +
-          'fuels. The stated purpose is timing — creating baseline demand that arrives alongside the new generation ' +
+          'fuels. The stated purpose is timing, creating baseline demand that arrives alongside the new generation ' +
           'the capacity scheme brings on.',
       },
       {
         heading: 'Ringfencing the Crown’s own dividends',
         body:
           'The document’s sharpest claim about the status quo is that the biggest single beneficiary of high power ' +
-          'prices is the government itself, through its majority stakes in three of the four big gentailers — which ' +
+          'prices is the government itself, through its majority stakes in three of the four big gentailers, which ' +
           'leaves successive governments with no incentive to change the rules producing those profits. Ringfencing ' +
           'that revenue is meant to break the conflict and pay for everything else in the policy.',
       },
@@ -2358,7 +2358,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'Buller Electricity with under 5,000. The document argues they lack the scale to fund decarbonisation, and ' +
           'that the Commerce Commission’s light-handed regulation has held allowable capital investment down. It would ' +
           'consolidate them into six to eight firms and rewrite the revenue rules for them and Transpower to permit ' +
-          'anticipatory investment — building capacity before it is needed rather than in response to demand.',
+          'anticipatory investment, building capacity before it is needed rather than in response to demand.',
       },
       {
         heading: 'Low-interest loans through your rates bill',
@@ -2380,7 +2380,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Warmer Kiwi Homes, doubled and widened',
         body:
           'EECA’s existing insulation and heating programme would have its funding doubled and its scope extended to ' +
-          'appliance electrification and rooftop solar for low-income households — the households the document says ' +
+          'appliance electrification and rooftop solar for low-income households, the households the document says ' +
           'are least able to capture those benefits on their own.',
       },
       {
@@ -2393,7 +2393,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'How the lights stay on',
         body:
-          'Grid stability comes primarily from overbuilding — having more renewable capacity than the grid needs, so ' +
+          'Grid stability comes primarily from overbuilding, having more renewable capacity than the grid needs, so ' +
           'wind and solar run ahead of hydro and water is left in the dams as a fast-response reserve, topped up by ' +
           'new geothermal and hydro. Household and community storage is described as building resilience and shifting ' +
           'peaks rather than solving dry years; grid-scale storage helps with peaks too. Huntly stays available as a ' +
@@ -2404,7 +2404,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The document explicitly rejects three things. The LNG import terminal, on the grounds it locks in imported ' +
           'fuel and exposure to volatile international prices. Structural separation of the gentailers, as lengthy and ' +
-          'costly without addressing what they see as the real problem — the incentive to underinvest. And counting ' +
+          'costly without addressing what they see as the real problem, the incentive to underinvest. And counting ' +
           'deep core geothermal or fusion in the planned generation mix, as unproven at grid scale, while supporting ' +
           'research and noting the capacity scheme is technology-neutral if a breakthrough comes.',
       },
@@ -2422,7 +2422,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         { period: 'Administration', amount: '~$21m/yr' },
       ],
       basis:
-        'Every operating cost is drawn from the ringfenced dividends rather than new revenue — but the document is ' +
+        'Every operating cost is drawn from the ringfenced dividends rather than new revenue, but the document is ' +
         'explicit that taking that money out of core Crown revenue is itself a cost needing another source, and names ' +
         'the land value tax. The Capacity Investment Scheme sits separately as a contingent liability on the balance ' +
         'sheet with a stated expected value of $0, since it is designed never to pay out. TOP also publishes the ' +
@@ -2451,10 +2451,10 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     openQuestions: [
       'The summary promises direct household savings of “$500+” a year, while the assumptions table behind it works to $600.',
-      'The whole plan is paid for by ringfencing dividends the Crown already collects, which the document says must then be replaced from elsewhere — it names the land value tax, so this policy leans on the tax policy passing too.',
+      'The whole plan is paid for by ringfencing dividends the Crown already collects, which the document says must then be replaced from elsewhere, it names the land value tax, so this policy leans on the tax policy passing too.',
       'The Capacity Investment Scheme is carried as a contingent liability with an expected value of $0, and the document acknowledges risk if power prices fall sharply without quantifying it.',
       'Consolidating 29 distributors into six to eight is stated as the outcome, but not whether it would happen by merger, regulation or compulsion.',
-      'The GDP claim rests on about $45 billion of capital spending — half of an estimated $30 billion grid and $60 billion generation total, assumed to be genuinely new rather than already planned. That assumption is stated but not tested.',
+      'The GDP claim rests on about $45 billion of capital spending, half of an estimated $30 billion grid and $60 billion generation total, assumed to be genuinely new rather than already planned. That assumption is stated but not tested.',
       'Bus electrification is a mandate on councils that the document says will be fully centrally funded, but it does not say who ends up owning the vehicles and charging assets.',
     ],
 
@@ -2476,7 +2476,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     title: 'Intergenerational Infrastructure: borrowing $60bn and taking the politics out',
     summary:
       'TOP would legislate Te Waihanga’s 30-year National Infrastructure Plan so a single government cannot dismantle ' +
-      'it, and borrow up to $60 billion — about 15 percent of GDP — over five to ten years to fund it through six ' +
+      'it, and borrow up to $60 billion, about 15 percent of GDP, over five to ten years to fund it through six ' +
       'named funds. Sixty percent of infrastructure spending would be mandated to maintaining what already exists. ' +
       'Te Waihanga would grow into a National Infrastructure Agency with backstop powers over councils and agencies ' +
       'that let their assets run down.',
@@ -2494,12 +2494,12 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     exemptLabel: 'New funding tools for councils',
 
     covered: [
-      'New Zealand Infrastructure Fund — $32bn, subsuming the Local Government Funding Agency and NIFFCo',
-      'Local Government Regeneration Fund — $15bn for the council maintenance backlog',
-      'The full Ratepayer Assistance Scheme — $5.3bn across solar, rates deferral and developer credit',
-      'Climate Resilience Fund — $5bn for nature-based solutions',
-      'National Land Transport Fund — $3bn ringfenced for rail, active and public transport',
-      'Crown Build Guarantee and Housing Fund — $0.5bn',
+      'New Zealand Infrastructure Fund, $32bn, subsuming the Local Government Funding Agency and NIFFCo',
+      'Local Government Regeneration Fund, $15bn for the council maintenance backlog',
+      'The full Ratepayer Assistance Scheme, $5.3bn across solar, rates deferral and developer credit',
+      'Climate Resilience Fund: $5bn for nature-based solutions',
+      'National Land Transport Fund, $3bn ringfenced for rail, active and public transport',
+      'Crown Build Guarantee and Housing Fund, $0.5bn',
     ],
 
     exempt: [
@@ -2525,7 +2525,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Making cancellation cost something',
         body:
           'Major projects a new government wants to cancel would need an enabling Bill and a full select committee ' +
-          'process — the same route by which the commitment was made. The document is careful that this is not a veto: ' +
+          'process, the same route by which the commitment was made. The document is careful that this is not a veto: ' +
           'the point is a visible parliamentary process and a public record instead of a Budget footnote. Alongside it, ' +
           'a public progress scorecard published at 100 days, 12 months and three years against the pipeline.',
       },
@@ -2533,7 +2533,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Readiness reviews tied to the money',
         body:
           'All major government-funded investment proposals would face an independent readiness review by Te Waihanga ' +
-          'before approval. The Government has already accepted this; TOP’s addition is enforcement — Treasury capital ' +
+          'before approval. The Government has already accepted this; TOP’s addition is enforcement, Treasury capital ' +
           'allocations would be conditional on passing it. Projects that fail the review, CBAx cost-benefit analysis or ' +
           'the maintenance threshold do not proceed.',
       },
@@ -2542,8 +2542,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The Plan proposes 60 percent of future infrastructure spending go to maintenance, and TOP would mandate and ' +
           'fund it, with Te Waihanga setting the standards that central and local entities are measured against. The ' +
-          'document’s evidence for the problem is blunt: in 2025, 12 of 31 central government agencies — including ' +
-          'Police and Defence — had no asset register at all. Every asset-owning public entity would have to name an ' +
+          'document’s evidence for the problem is blunt: in 2025, 12 of 31 central government agencies, including ' +
+          'Police and Defence, had no asset register at all. Every asset-owning public entity would have to name an ' +
           'executive legally and professionally accountable for asset stewardship.',
       },
       {
@@ -2551,8 +2551,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'Where poor planning or deferred maintenance is found, Te Waihanga could ask the Audit Office to open a ' +
           'formal review, publicly reprimand the chief executive and the mayor or chair, and in extreme cases send ' +
-          'experts in directly. The document compares this to the Auditor-General — an independent officer who can ' +
-          'make adverse findings about elected bodies without replacing them — and reserves direct intervention for ' +
+          'experts in directly. The document compares this to the Auditor-General, an independent officer who can ' +
+          'make adverse findings about elected bodies without replacing them, and reserves direct intervention for ' +
           'extreme cases.',
       },
       {
@@ -2561,7 +2561,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'The OECD ranks New Zealand last of 33 countries for professionalisation and accountability in asset ' +
           'management. Public entities managing assets above a threshold would have to staff their leadership with ' +
           'certified asset management practitioners. Separately, every infrastructure body would have to formally ' +
-          'consider demand management — load-spreading, time-of-use charging, better use of what exists — before ' +
+          'consider demand management, load-spreading, time-of-use charging, better use of what exists, before ' +
           'committing to new capital.',
       },
       {
@@ -2570,7 +2570,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'Gross public debt is around 51 percent of GDP against an OECD average near 112 percent, with an AA to AAA ' +
           'credit rating. On that basis the document argues an extra 15 percent of GDP in special infrastructure debt ' +
           'is safe, costing $2.5 to $3.5 billion a year in interest and lifting infrastructure spending from 5–6 ' +
-          'percent of GDP to 6–7 percent. Its counter-argument is that deferring maintenance is also borrowing — just ' +
+          'percent of GDP to 6–7 percent. Its counter-argument is that deferring maintenance is also borrowing, just ' +
           'invisibly, from future generations, as degraded assets.',
       },
       {
@@ -2604,7 +2604,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The document names construction cost inflation as “the most legitimate technical risk in the policy”. Its ' +
           'answer is that Christchurch was a sudden unplanned demand spike in one region, where this is a paced, ' +
-          'nationally coordinated build-up with Te Waihanga levelling workloads in dialogue with industry — and that ' +
+          'nationally coordinated build-up with Te Waihanga levelling workloads in dialogue with industry, and that ' +
           'the 60 percent maintenance share means much of the money goes to repair and renewal, which is less ' +
           'inflation-prone than greenfield building.',
       },
@@ -2632,7 +2632,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         'The $60 billion is capital borrowed over about ten years, not annual spending. Operating costs are small ' +
         'beside it: an enlarged Te Waihanga is benchmarked at $80 million against the UK’s new combined ' +
         'infrastructure agency, of which about $53 million already exists across Te Waihanga, NIFFCo and Crown ' +
-        'Infrastructure Delivery, leaving $27 million new. Free public transport is costed net — roughly $300 million ' +
+        'Infrastructure Delivery, leaving $27 million new. Free public transport is costed net, roughly $300 million ' +
         'of fare revenue forgone, less savings the document puts at $80–90 million on the planned national ticketing ' +
         'system, $30–40 million on cash handling and back office, and $30–40 million from 20 percent faster boarding.',
     },
@@ -2657,11 +2657,11 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     ],
 
     openQuestions: [
-      'Free public transport is costed at $150 million a year in the FAQ but appears nowhere in the policy itself — there is no description of what it covers, who is eligible, or when it would start.',
+      'Free public transport is costed at $150 million a year in the FAQ but appears nowhere in the policy itself, there is no description of what it covers, who is eligible, or when it would start.',
       'The enabling Bill requirement applies to projects “over a certain threshold” in the policy and over $250 million in the FAQ.',
       'The Regeneration Fund is described in the FAQ as “$6,000-per-head”, but $15 billion across New Zealand’s population is closer to $2,800 each, and the document does not say what the figure is per.',
       'The $275 billion existing pipeline is called explicitly unaffordable and Te Waihanga is to prioritise ruthlessly, but nothing in the document names what would be dropped.',
-      'The 60 percent maintenance mandate is said to apply to the portfolio rather than any individual agency, and Te Waihanga would assess each entity against its own asset base — so what the 60 percent actually binds is left open.',
+      'The 60 percent maintenance mandate is said to apply to the portfolio rather than any individual agency, and Te Waihanga would assess each entity against its own asset base, so what the 60 percent actually binds is left open.',
       'Certified asset management staffing is required of entities holding assets “over a certain threshold”, which is not specified.',
     ],
 
@@ -2726,8 +2726,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'The document’s framing figure is that New Zealand spends 1.5 percent of GDP on R&D, which it compares to ' +
           'Poland and Turkey, against an OECD average of 2.7 percent. It would recommit to a 2 percent target within ' +
           'ten years with at least 0.6 percent public science, and set 3 percent by 2050. In the near term that means ' +
-          'restoring the 2024 science reorganisation cuts — which the Save Science Coalition puts at $90 million a ' +
-          'year and 550 jobs, and the Royal Society Fellows at $300 million in total — and lifting funding back to ' +
+          'restoring the 2024 science reorganisation cuts, which the Save Science Coalition puts at $90 million a ' +
+          'year and 550 jobs, and the Royal Society Fellows at $300 million in total, and lifting funding back to ' +
           'inflation-adjusted 2018 levels, with a new fund for early and mid-career researchers and the humanities and ' +
           'social sciences brought into contestable rounds.',
       },
@@ -2742,7 +2742,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Polytechnics as regional productivity engines',
         body:
-          'Baseline funding cut by the current government would be restored and pointed at practical business skills — ' +
+          'Baseline funding cut by the current government would be restored and pointed at practical business skills' +
           'market development, export access, cashflow, finance. Polytechnics and public research organisations would ' +
           'be bulk-funded up to $10,000 per business enquiry to work on real problems, and given an explicit mandate ' +
           'to lead regional productivity growth as hubs for sector initiatives.',
@@ -2760,7 +2760,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'Student loan interest accrued over up to three years spent overseas would be rolled back, for both new ' +
           'graduates and those already abroad. The relief applies at the end of loan repayment and is conditional on ' +
-          'being resident in New Zealand when the loan is repaid — the stated intent being to encourage people to go ' +
+          'being resident in New Zealand when the loan is repaid, the stated intent being to encourage people to go ' +
           'and get experience, then come back with it.',
       },
       {
@@ -2814,10 +2814,10 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       ],
       basis:
         'The document itemises all 13 components with an assumption stated against each, and the lines add to $1,330.5 ' +
-        'million — exactly the $1.33 billion total it claims. Science funding here combines restoring recent cuts ' +
+        'million, exactly the $1.33 billion total it claims. Science funding here combines restoring recent cuts ' +
         '($125m), early and mid-career researchers ($100m) and the major contestable funds ($175m). Polytechnics ' +
         'combines restored baseline funding ($80m) with bulk funding for business enquiries ($20m). The party labels ' +
-        'two of its own estimates arbitrary — the Commerce Commission uplift and the widened R&D credit — and says ' +
+        'two of its own estimates arbitrary, the Commerce Commission uplift and the widened R&D credit, and says ' +
         'remaining measures are legislative changes absorbable within departmental baselines.',
     },
 
@@ -2843,9 +2843,9 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     openQuestions: [
       'The document is titled Breakthrough Economy but refers to itself twice as “Productivity Unleashed” in its own FAQ, without reconciling the two names.',
       'The claim that market concentration in banking, supermarkets and building materials costs the average household $30 a week is stated without a source.',
-      'Two costings are described by the party itself as arbitrary — a 20 percent uplift to the Commerce Commission’s budget and a 5 percent expansion of the R&D credit.',
+      'Two costings are described by the party itself as arbitrary, a 20 percent uplift to the Commerce Commission’s budget and a 5 percent expansion of the R&D credit.',
       'The claim of up to 2 percent additional long-term GDP growth is supported by comparison to Singapore and Estonia and a list of multipliers from other jurisdictions, but is not modelled for New Zealand.',
-      'Student loan interest forgiveness is costed at half the $170–215 million annual accrual, and the document notes much of that is paper accrual on defaulted loans and that borrower behaviour could change — but does not test what happens if it does.',
+      'Student loan interest forgiveness is costed at half the $170–215 million annual accrual, and the document notes much of that is paper accrual on defaulted loans and that borrower behaviour could change, but does not test what happens if it does.',
       'The population policy sets no migration number, deferring it to a consultation; “moderate sustained positive migration” is the only stated direction.',
       'AI regulation is central to the productivity case but deferred entirely to a separate AI policy not included in this document.',
     ],
@@ -2864,8 +2864,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     slug: 'citizens-voice',
     title: 'Citizens’ assemblies and a Commissioner for Citizens’ Voice',
     summary:
-      'TOP would create citizens’ assemblies — randomly selected groups of New Zealanders, the same number as there ' +
-      'are MPs, working for up to a year on one long-term problem — overseen by a new Parliamentary Commissioner for ' +
+      'TOP would create citizens’ assemblies, randomly selected groups of New Zealanders, the same number as there ' +
+      'are MPs, working for up to a year on one long-term problem, overseen by a new Parliamentary Commissioner for ' +
       'Citizens’ Voice. Parliament would have to formally debate and respond to each set of recommendations, and the ' +
       'Commissioner would report publicly on what happened next.',
 
@@ -2882,7 +2882,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'What a citizens’ assembly is',
         body:
-          'A group of New Zealanders — the same number as there are MPs — selected at random so the group is broadly ' +
+          'A group of New Zealanders, the same number as there are MPs, selected at random so the group is broadly ' +
           'representative of the country. They are given one issue, access to evidence and expert briefings, and up to ' +
           'a year to work through it, ending in a set of recommendations. The document’s central claim is about who ' +
           'those recommendations come from: the participants themselves, rather than politicians, officials, experts ' +
@@ -2900,7 +2900,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'How an issue gets picked',
         body:
           'Four routes are described. Parliament can ask the Commissioner to take up a question. The public can ' +
-          'petition — the document uses 150,000 signatories as its example of the kind of threshold involved. The ' +
+          'petition, the document uses 150,000 signatories as its example of the kind of threshold involved. The ' +
           'Commissioner can initiate an assembly independently, drawing on research or public debate. And iwi, ' +
           'community organisations or experts can raise an issue directly.',
       },
@@ -2915,8 +2915,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'The problem it is aimed at',
         body:
-          'The case made is about time horizons. Some questions — the document’s framing is long-term challenges ' +
-          'needing public buy-in — sit badly with a three-year electoral cycle, and others have become too ' +
+          'The case made is about time horizons. Some questions, the document’s framing is long-term challenges ' +
+          'needing public buy-in, sit badly with a three-year electoral cycle, and others have become too ' +
           'politically charged for Parliament to handle. An assembly is offered as a way to get a considered public ' +
           'answer on exactly those.',
       },
@@ -2925,7 +2925,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The document points to the Treaty Principles Bill as its illustration: a constitutional question it argues ' +
           'should have been worked through as a national conversation involving both Treaty partners, rather than ' +
-          'settled by the politics of one term. The characterisation is TOP’s own — the point being made is about ' +
+          'settled by the politics of one term. The characterisation is TOP’s own, the point being made is about ' +
           'process, not about the Bill’s contents.',
       },
     ],
@@ -2952,10 +2952,10 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     ],
 
     openQuestions: [
-      'No cost is given — not for the Commissioner’s office, not for running an assembly, and not for supporting participants for up to a year.',
+      'No cost is given, not for the Commissioner’s office, not for running an assembly, and not for supporting participants for up to a year.',
       'The 150,000-signature figure is offered as an example rather than a commitment, so the actual petition threshold is undecided.',
       'Members are described as randomly selected and representative, but how they are recruited, paid, or released from work for a year is not set out.',
-      'Parliament must debate and respond, but nothing follows from a rejection — the accountability described is publicity through annual reports, not consequence.',
+      'Parliament must debate and respond, but nothing follows from a rejection, the accountability described is publicity through annual reports, not consequence.',
       'The Commissioner would choose between competing topics using transparent criteria, which are named but never defined.',
       'This document is dated June 2025, a year older than the rest of TOP’s published policy set, so it may not reflect the party’s current 2026 position.',
     ],
@@ -2999,14 +2999,14 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     exemptLabel: 'The skilled roles it compares them with',
 
     covered: [
-      'Fast food workers — 2,480 approved',
-      'Beauty therapists — 2,119 approved',
-      'Newspaper deliverers — 35 approved',
+      'Fast food workers: 2,480 approved',
+      'Beauty therapists: 2,119 approved',
+      'Newspaper deliverers: 35 approved',
     ],
 
     exempt: [
-      'Software engineers — 1,052 approved',
-      'Biomedical engineers — 30 approved',
+      'Software engineers: 1,052 approved',
+      'Biomedical engineers: 30 approved',
     ],
 
     mechanics: [
@@ -3075,11 +3075,11 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     ],
 
     openQuestions: [
-      'The deportation threshold is written as offences “carrying sentences of 10 years or more”, which does not say whether it means the maximum penalty available for the offence or the sentence actually imposed — a distinction that decides how many people it reaches.',
+      'The deportation threshold is written as offences “carrying sentences of 10 years or more”, which does not say whether it means the maximum penalty available for the offence or the sentence actually imposed, a distinction that decides how many people it reaches.',
       'The visa approval figures are raw counts. “Since July 2022” is attached to the first comparison only, no period is given for the second, and none of them say how many people applied.',
       'What counts as “basic” English, and what the higher standards for students and residents would be, is not specified.',
       'The five-year stand-down is stated for all residence class visa holders without saying whether it reaches refugees and protected persons, or people who already hold residence.',
-      'How the $6-a-day surcharge would be charged — upfront for the visa term, or as an ongoing levy — is not described beyond the $80 million estimate.',
+      'How the $6-a-day surcharge would be charged, upfront for the visa term, or as an ongoing levy, is not described beyond the $80 million estimate.',
       'The size, cost and powers of the overstayer enforcement unit are not stated.',
     ],
 
@@ -3101,7 +3101,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       'ACT would give teachers an explicit legal power to order a disruptive student out of the classroom, with ' +
       'reasonable force available if the student refuses twice. Staff acting in good faith would get clear legal ' +
       'protection, an assault on anyone at school would automatically trigger removal and a stand-down or suspension, ' +
-      'and parent meetings would become mandatory for serious or repeated behaviour — enforced with fines of up to ' +
+      'and parent meetings would become mandatory for serious or repeated behaviour, enforced with fines of up to ' +
       '$3,000 and liability for deliberate property damage.',
 
     facts: [
@@ -3117,8 +3117,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     exemptLabel: 'What the policy rules out',
 
     covered: [
-      'Violence, threats, intimidation or destruction of property — on the first occurrence',
-      'Refusing to leave the classroom after being lawfully directed — on the first occurrence',
+      'Violence, threats, intimidation or destruction of property, on the first occurrence',
+      'Refusing to leave the classroom after being lawfully directed, on the first occurrence',
       'Repeated low-level disruption, but only where the parent has not already engaged with the school in good faith',
       'Non-engagement itself escalates, to the Ministry of Education or the Oranga Tamariki and Police Youth Aid pathway',
     ],
@@ -3142,7 +3142,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Where a removed student goes',
         body:
-          'To a supervised, staffed space in the school — an existing pastoral office, deans’ room or learning support ' +
+          'To a supervised, staffed space in the school, an existing pastoral office, deans’ room or learning support ' +
           'room. The document draws an explicit line here: not an empty or lockable room, which is what separates this ' +
           'from the seclusion rooms banned in 2017 after the Miramar case, where children were locked in confinement ' +
           'as punishment.',
@@ -3263,7 +3263,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     exempt: [
       'Managing game animals on conservation land',
-      'Dictating which helicopters venison recovery operators may use — safety returns to the Civil Aviation Authority',
+      'Dictating which helicopters venison recovery operators may use, safety returns to the Civil Aviation Authority',
       'Deciding hut and track funding without offering community groups first refusal',
     ],
 
@@ -3306,7 +3306,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'DOC would stop dictating which helicopters commercial venison recovery operators use, with aircraft safety ' +
           'left to the Civil Aviation Authority. In exchange, the Game Animal Council could restrict commercial take ' +
-          'by animal gender where necessary — the document’s concern being that current permits let operators strip ' +
+          'by animal gender where necessary, the document’s concern being that current permits let operators strip ' +
           'out the trophy stags recreational hunters value most.',
       },
       {
@@ -3395,12 +3395,12 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     exemptLabel: 'Departments left as they are',
 
     covered: [
-      'New Zealand Revenue and Customs — Inland Revenue and the Customs Service',
-      'Ministry of Defence and Security — Defence, the Defence Force, GCSB and NZSIS',
-      'Ministry of Justice and Law — Justice, Corrections, Police, the Serious Fraud Office, NEMA, Fire and Emergency, and Treaty Settlements',
-      'Ministry of Cities, Environment, Regions and Transport — Environment, Housing and Urban Development, Transport, Local Government and Infrastructure',
-      'Ministry of Health and Wellbeing — Health, Health New Zealand, the Cancer Control Agency and ACC',
-      'Ministry for Culture and Heritage — Ethnic Communities, Pacific Peoples, Seniors, Women, Māori Development, and Arts, Culture and Heritage',
+      'New Zealand Revenue and Customs, Inland Revenue and the Customs Service',
+      'Ministry of Defence and Security, Defence, the Defence Force, GCSB and NZSIS',
+      'Ministry of Justice and Law, Justice, Corrections, Police, the Serious Fraud Office, NEMA, Fire and Emergency, and Treaty Settlements',
+      'Ministry of Cities, Environment, Regions and Transport, Environment, Housing and Urban Development, Transport, Local Government and Infrastructure',
+      'Ministry of Health and Wellbeing, Health, Health New Zealand, the Cancer Control Agency and ACC',
+      'Ministry for Culture and Heritage, Ethnic Communities, Pacific Peoples, Seniors, Women, Māori Development, and Arts, Culture and Heritage',
     ],
 
     exempt: [
@@ -3427,7 +3427,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           '78 ministerial portfolios would become 18. The argument is that splitting responsibility this far makes ' +
           'problems like housing and crime everyone’s job and nobody’s duty. Combined with the department mergers, ' +
-          'each department would report to one minister for its budget and outcomes — with MCERT named as the ' +
+          'each department would report to one minister for its budget and outcomes, with MCERT named as the ' +
           'exception.',
       },
       {
@@ -3448,8 +3448,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Protecting the frontline',
         body:
-          'The document is explicit that consolidation targets duplicated head-office functions — multiple ' +
-          'communications offices, HR teams, finance teams and executive layers — and not nurses, teachers or police. ' +
+          'The document is explicit that consolidation targets duplicated head-office functions, multiple ' +
+          'communications offices, HR teams, finance teams and executive layers, and not nurses, teachers or police. ' +
           'Savings could go back to frontline services, to taxpayers, or to paying down debt.',
       },
       {
@@ -3568,7 +3568,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Selling your own solar back',
         body:
           'Households generating their own power would be able to sell it back to the grid at the same price they pay ' +
-          'for power — a straight retail-rate buy-back rather than the lower rates typically offered now.',
+          'for power, a straight retail-rate buy-back rather than the lower rates typically offered now.',
       },
       {
         heading: 'A National Energy Strategy',
@@ -3598,7 +3598,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     openQuestions: [
       'No cost, timeline or legislative vehicle is given for the split.',
-      'Whether the separation would be by ownership or operational within existing companies is not stated — the difference decides how far it goes.',
+      'Whether the separation would be by ownership or operational within existing companies is not stated, the difference decides how far it goes.',
       'What replaces the current pricing system is not described, beyond ending the rule that the most expensive generator sets the price.',
       'The solar buy-back is set at the retail price a household pays, and the document does not say who absorbs the gap between that and the wholesale rate.',
       'Who would hold the fixed-price contracts for new generation, and what happens if wholesale prices fall below the fixed price, is not addressed.',
@@ -3620,7 +3620,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     title: 'A KiwiSaver Generation: enrolment at birth',
     summary:
       'NZ First would make KiwiSaver enrolment automatic at birth, with an immediate $1,000 Crown contribution for New ' +
-      'Zealand citizens only — a once-per-lifetime payment meant to compound for decades. It is designed to work with ' +
+      'Zealand citizens only, a once-per-lifetime payment meant to compound for decades. It is designed to work with ' +
       'their existing campaign policy of compulsory KiwiSaver across the workforce, with employee and employer ' +
       'contributions rising to 8 percent and eventually 10.',
 
@@ -3695,8 +3695,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     slug: 'break-up-the-supermarket-duopoly',
     title: 'Breaking up the supermarket duopoly',
     summary:
-      'NZ First would legislate to split Foodstuffs into two nationwide cooperatives by brand — New World and Four ' +
-      'Square in one, Pak’nSave in the other — putting both in direct competition with Woolworths. Commerce ' +
+      'NZ First would legislate to split Foodstuffs into two nationwide cooperatives by brand, New World and Four ' +
+      'Square in one, Pak’nSave in the other, putting both in direct competition with Woolworths. Commerce ' +
       'Commission penalties would rise to match Australia’s, the Grocery Commissioner would gain power to ' +
       'investigate, make binding decisions and impose penalties, and a new industry-rules framework under the ' +
       'Commerce Act 1986 would allow faster targeted action on the path from farm to shelf.',
@@ -3714,7 +3714,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     exemptLabel: 'What the Grocery Commissioner would gain',
 
     covered: [
-      'Penalties lifted to match Australia — up to $10 million, three times the gain, or 10 percent of turnover',
+      'Penalties lifted to match Australia, up to $10 million, three times the gain, or 10 percent of turnover',
       'Faster investigations',
       'Real enforcement powers for serious breaches',
       'A new industry-rules framework under the Commerce Act 1986, allowing targeted action without waiting for new legislation',
@@ -3731,8 +3731,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Splitting Foodstuffs in two',
         body:
-          'Legislation would break Foodstuffs into two nationwide cooperatives along brand lines — one holding New ' +
-          'World and Four Square, the other Pak’nSave — so that both compete directly with Woolworths New Zealand ' +
+          'Legislation would break Foodstuffs into two nationwide cooperatives along brand lines, one holding New ' +
+          'World and Four Square, the other Pak’nSave, so that both compete directly with Woolworths New Zealand ' +
           'and with each other. The stated aim is real pressure to lower prices, improve value and treat suppliers ' +
           'fairly.',
       },
@@ -3874,7 +3874,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The concern raised is that New Zealand risks exporting critical minerals raw and letting others capture ' +
           'the value. The response is continued investment in science and innovation, and rebuilding the sector ' +
-          'workforce — including reopening the School of Mines so New Zealanders can take the high-paying jobs.',
+          'workforce, including reopening the School of Mines so New Zealanders can take the high-paying jobs.',
       },
     ],
 
@@ -3901,7 +3901,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     openQuestions: [
       'No total royalty figure is given, so there is no way to tell what the regional half would amount to.',
-      'Who would hold and spend the regional share — councils, a new body, or central government — is not stated.',
+      'Who would hold and spend the regional share, councils, a new body, or central government, is not stated.',
       'Which region receives the share where a mine spans a boundary, or sits offshore, is not addressed.',
       'Whether the new mining zones would permit mining on conservation land is not said, though the policy does cut back DOC’s role.',
       '“Reining in” DOC and other agencies is not defined, and no statutory change is named.',
@@ -3923,7 +3923,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     title: 'Buying back the BNZ to build a New Zealand owned bank',
     summary:
       'NZ First would buy the Bank of New Zealand back from National Australia Bank and merge it with Kiwibank to ' +
-      'form the National Bank of New Zealand — fully Crown owned, commercially run, and big enough to compete with ' +
+      'form the National Bank of New Zealand, fully Crown owned, commercially run, and big enough to compete with ' +
       'ANZ, ASB and Westpac. It would not come out of the operating budget: the funding stack is a sovereign banking ' +
       'bond, long-dated Crown debt, a limited tranche of Future Fund and ACC money, and Kiwibank’s existing capital.',
 
@@ -4062,7 +4062,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'What the zone covers',
         body:
           'The former refinery site and Northport, focused on energy generation and distribution and on maritime ' +
-          'activity — including the new drydock, servicing ship repairs from New Zealand and around the world. The ' +
+          'activity, including the new drydock, servicing ship repairs from New Zealand and around the world. The ' +
           'document places it in a wider strategy of producing more for export while fortifying national security.',
       },
       {
@@ -4076,7 +4076,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Foreign investment',
         body:
           'Changes to the Overseas Investment Act are under consideration to make quality foreign investment in the ' +
-          'zone easier, while the document says national interest and ownership would still be protected — it points ' +
+          'zone easier, while the document says national interest and ownership would still be protected, it points ' +
           'to Darwin, whose port is foreign-owned, as what it wants to avoid.',
       },
       {
@@ -4176,7 +4176,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Why they say now',
         body:
           'Survey costs are described as sitting at structural lows, and capital as moving into politically stable ' +
-          'basins since the conflict in the Strait of Hormuz — but that to move, it needs modern data. The document ' +
+          'basins since the conflict in the Strait of Hormuz, but that to move, it needs modern data. The document ' +
           'points to Namibia, whose data acquisition campaign began in 2022, and Guyana, which went from first ' +
           'discovery to South America’s third-largest producer in under a decade.',
       },
@@ -4193,7 +4193,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The document explicitly contrasts itself with what it calls tinkering around the edges with solar panel ' +
           'plans, arguing that does next to nothing for fuel and gas insecurity, and frames the issue as economic ' +
-          'sovereignty rather than energy policy — New Zealand ceasing to be beholden to other nations’ decisions.',
+          'sovereignty rather than energy policy, New Zealand ceasing to be beholden to other nations’ decisions.',
       },
     ],
 
@@ -4258,7 +4258,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     coveredLabel: 'The birth figures the policy cites',
     covered: [
-      'Citizen births falling from 52,506 in 2006 to 36,351 in 2025 — a 30 percent drop',
+      'Citizen births falling from 52,506 in 2006 to 36,351 in 2025, a 30 percent drop',
       'Non-citizen births rising from 8,001 in 2006 to 14,380 in 2025',
       'The share of all births shifting from 87% citizen and 13% non-citizen in 2006 to 72% and 28% last year',
       'A birthrate of 1.53 per person against the 2.1 needed for replacement',
@@ -4289,8 +4289,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Why cost is the lever they pick',
         body:
-          'The document lists several reasons people have fewer children or have them later — prioritising careers, ' +
-          'wanting a dependent-free adulthood, rising costs, and the sacrifices involved — and picks cost as the one ' +
+          'The document lists several reasons people have fewer children or have them later, prioritising careers, ' +
+          'wanting a dependent-free adulthood, rising costs, and the sacrifices involved, and picks cost as the one ' +
           'a government can move, describing the grant as substantially lowering one main barrier.',
       },
     ],
@@ -4338,8 +4338,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     summary:
       'NZ First has a member’s bill to disestablish the Independent Māori Statutory Board, the unelected body created ' +
       'alongside the Auckland Super City in 2010. Its functions, property and obligations would transfer back to ' +
-      'Auckland Council. The argument made is accountability: that ratepayers fund the board — $3.5 million last ' +
-      'year — without being able to elect or remove its members. The document states the change would not stop the ' +
+      'Auckland Council. The argument made is accountability: that ratepayers fund the board, $3.5 million last ' +
+      'year, without being able to elect or remove its members. The document states the change would not stop the ' +
       'council engaging with Māori.',
 
     facts: [
@@ -4357,7 +4357,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     covered: [
       'Prevent Auckland Council from engaging with Māori',
       'Prevent the council recognising Māori interests',
-      'Interrupt council operations — the bill provides for an orderly transition of functions, property and obligations',
+      'Interrupt council operations, the bill provides for an orderly transition of functions, property and obligations',
     ],
 
     mechanics: [
@@ -4387,7 +4387,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'What the document says it does not change',
         body:
           'It states directly that removing the board does not prevent Auckland Council from engaging with Māori or ' +
-          'recognising their interests — the stated intent being that such engagement happens through democratically ' +
+          'recognising their interests, the stated intent being that such engagement happens through democratically ' +
           'accountable structures instead.',
       },
     ],
@@ -4554,7 +4554,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'Permanent residence and citizenship are treated as different things doing different jobs. Residence gives ' +
           'the right to live, work, study and build a life; citizenship is described as the formal bond of allegiance, ' +
           'belonging, responsibility and democratic authority. The policy is that only the second should carry the ' +
-          'vote — the party’s phrase is that the distinction “should matter again”.',
+          'vote, the party’s phrase is that the distinction “should matter again”.',
       },
       {
         heading: 'How it is argued',
@@ -4587,7 +4587,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     ],
 
     openQuestions: [
-      'Local council voting and referendums are both named as part of the problem, but the stated remedy covers general elections — whether local elections change too is not said.',
+      'Local council voting and referendums are both named as part of the problem, but the stated remedy covers general elections, whether local elections change too is not said.',
       'Nothing is said about people already enrolled as residents: whether they would be removed from the roll, and if so when or how they would be told.',
       'The document does not say whether the change would apply from a future election or immediately.',
       'No estimate is given of how many current voters it would affect.',
@@ -4658,7 +4658,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'A Te Tiriti Impact Statement on every Bill',
         body:
-          'Every Bill before Parliament would have to include one — the third mechanism, aimed at putting Te Tiriti ' +
+          'Every Bill before Parliament would have to include one, the third mechanism, aimed at putting Te Tiriti ' +
           'into the legislative process at the point a law is written rather than after it is challenged.',
       },
       {
@@ -4728,7 +4728,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     title: 'A permanent ban on seabed mining',
     summary:
       'Co-leader Debbie Ngarewa-Packer has reintroduced a member’s bill, the Seabed Mining Prohibition Act, to ban ' +
-      'seabed mining permanently — closing all legal pathways including fast-track approvals, and applying across the ' +
+      'seabed mining permanently, closing all legal pathways including fast-track approvals, and applying across the ' +
       'coastal marine area, the exclusive economic zone and the continental shelf. It is the second version, ' +
       'strengthened to account for fast-track legislation; the first was supported by the Greens and voted down by ' +
       'Labour.',
@@ -4755,7 +4755,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The Seabed Mining Prohibition Act would close all legal pathways for seabed mining, fast-track approvals ' +
           'included, and apply across the coastal marine area, the exclusive economic zone and the continental shelf ' +
-          '— so the ban is defined by where the seabed is rather than by which consenting regime applies.',
+          'so the ban is defined by where the seabed is rather than by which consenting regime applies.',
       },
       {
         heading: 'Why a second version',
@@ -4841,7 +4841,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     summary:
       'The party would legislate for pay equity in the private sector as well as the public, reinstate support for ' +
       'Fair Pay Agreements, and pay income support to people raising children or caring for elders. On retirement, it ' +
-      'targets a KiwiSaver gap it puts at 25 percent between women and men, with four specific changes — including a ' +
+      'targets a KiwiSaver gap it puts at 25 percent between women and men, with four specific changes, including a ' +
       'State contribution to the KiwiSaver of unpaid carers, and continued employer contributions through maternity ' +
       'leave.',
 
@@ -4869,7 +4869,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'The argument is that work typically done by women, and particularly by Māori and Pasifika women, stays ' +
           'undervalued, producing both a sex-based pay gap and a sex and ethnicity gap. The proposals are a strong ' +
           'onus on employers, publication of average hourly pay statistics broken down by occupation, sex and ' +
-          'ethnicity, and reinstated legislative support for Fair Pay Agreements — applied to private sector jobs as ' +
+          'ethnicity, and reinstated legislative support for Fair Pay Agreements, applied to private sector jobs as ' +
           'well as public.',
       },
       {
@@ -4886,7 +4886,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'Income support while raising children or caring for elders, on the stated basis that mothering and caring ' +
           'is work that contributes to society. Alongside it, the party backs the Child Poverty Action Group’s ' +
           'campaign to reform Working for Families so it reaches all lower income families, and singles out ' +
-          'discrimination against beneficiary families — many headed by single mothers — for removal.',
+          'discrimination against beneficiary families, many headed by single mothers, for removal.',
       },
       {
         heading: 'Why retirement savings diverge',
@@ -4894,7 +4894,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'The causes given are low pay in typically female jobs, lower lifetime income, part-time work, career breaks ' +
           'to raise children, and disadvantage after relationship breakdowns. The document puts the resulting average ' +
           'KiwiSaver balance for women at 25 percent below men’s across all age groups, and describes the compounding ' +
-          'effect of the pay gap as costing three or more years of retirement income — which it notes matters more ' +
+          'effect of the pay gap as costing three or more years of retirement income, which it notes matters more ' +
           'because women tend to live longer.',
       },
       {
@@ -4932,7 +4932,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     openQuestions: [
       'No cost is given for the State contribution to carers’ KiwiSaver, or for continuing employer contributions through maternity leave.',
       'The 25 percent KiwiSaver gap and the 150,000 pay equity claims figure are both given without a source.',
-      '“Income support for carers” is not defined — no rate, eligibility test, or relationship to existing benefits is set out.',
+      '“Income support for carers” is not defined, no rate, eligibility test, or relationship to existing benefits is set out.',
       'What effective pay equity policy would require of private sector employers, beyond publishing pay statistics, is not stated.',
       'Reinstating legislative support for Fair Pay Agreements is proposed without saying in what form.',
       'Free financial advice for women is advocated without saying who would provide or fund it.',
@@ -5127,8 +5127,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Parents and classroom resources',
         body:
           'Schools would give parents and caregivers full disclosure of what is being taught, and dispose of resources ' +
-          'that conflate sex with gender or confuse sexual orientation with gender. Outside agencies are named — ' +
-          'Inside Out and Qtopia — and would not provide resources or instruction in schools, with the document ' +
+          'that conflate sex with gender or confuse sexual orientation with gender. Outside agencies are named' +
+          'Inside Out and Qtopia, and would not provide resources or instruction in schools, with the document ' +
           'placing particular weight on cases where the teacher is not present.',
       },
       {
@@ -5173,7 +5173,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     openQuestions: [
       'The reservations about the RSE Framework are referred to but never set out.',
-      'No mechanism is described for requiring schools to disclose curriculum content, dispose of resources or exclude named agencies — whether by guidance, funding condition or legislation.',
+      'No mechanism is described for requiring schools to disclose curriculum content, dispose of resources or exclude named agencies, whether by guidance, funding condition or legislation.',
       'The statement that supporting social transition is a clinical intervention leading often to medical transition is asserted; the Cass Report is cited for referral practice but not for this claim.',
       'What happens where a child’s distress involves their parents, and involving parents may not be safe, is not addressed.',
       'Whether the expectations apply to private and state-integrated schools as well as state schools is not stated.',
@@ -5195,7 +5195,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     slug: 'prostitution-hate-crime-prisons',
     title: 'Prostitution law, hate crime and women’s prisons',
     summary:
-      'The Prostitution Reform Act 2003 would be replaced with the Equality Model — decriminalising the prostituted ' +
+      'The Prostitution Reform Act 2003 would be replaced with the Equality Model, decriminalising the prostituted ' +
       'person, criminalising buyers and brothel owners, and funding exit services. On hate crime the party opposes ' +
       'new offences but wants “sex” added to the aggravating factors already in the Sentencing Act. It opposes ' +
       'housing biological males in women’s prisons, and backs a ban on “rough sex” as a defence to murder or serious ' +
@@ -5215,13 +5215,13 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
 
     covered: [
       'Decriminalisation for the prostituted person',
-      'Criminal liability for those who exploit them — the buyer and the brothel owner',
+      'Criminal liability for those who exploit them, the buyer and the brothel owner',
       'Exit services including housing, education, training, legal and welfare services',
       'Childcare, and emotional and psychological support to help women build new lives',
     ],
 
     exempt: [
-      'No new “hate crime” laws — the party opposes creating them',
+      'No new “hate crime” laws, the party opposes creating them',
       '“Sex” added to the Sentencing Act’s existing aggravating factors instead',
       '“Gender identity” opposed as an aggravating factor',
       '“Hostility” kept as the statutory word rather than “hate”, which they call too subjective and vague',
@@ -5231,7 +5231,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Replacing the Prostitution Reform Act',
         body:
-          'The Equality Model — also called the Nordic Model, Abolition Model or Sex Buyer Law — would replace the ' +
+          'The Equality Model, also called the Nordic Model, Abolition Model or Sex Buyer Law, would replace the ' +
           'Prostitution Reform Act 2003. It decriminalises the prostituted person while criminalising those who ' +
           'exploit them, and pairs that with funded exit services for women wanting to leave: housing, education, ' +
           'training, legal and welfare services, childcare, and emotional and psychological support.',
@@ -5255,7 +5255,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The position is against new hate crime laws but for a specific amendment. The Sentencing Act’s section ' +
           '9(1)(h) lists characteristics including race, colour, nationality, religion, gender identity, sexual ' +
-          'orientation, age and disability — but not sex. The document argues that absence suggests hating women is ' +
+          'orientation, age and disability, but not sex. The document argues that absence suggests hating women is ' +
           'more acceptable than other hatreds, and would add “sex” to the list. It opposes hate crime laws generally ' +
           'as creating what it calls a hierarchy of victimhood, and prefers standalone sex-based laws with penalties ' +
           'matching the seriousness of the offence.',
@@ -5327,7 +5327,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     title: 'Animals in law: legal standing, a Commissioner, and ending factory farming',
     summary:
       'The AJP would end the legal classification of animals as property, define sentience in legislation, and create ' +
-      'an independent Commissioner for Animals — taking oversight away from the ministry that also promotes farming ' +
+      'an independent Commissioner for Animals, taking oversight away from the ministry that also promotes farming ' +
       'exports. It would ban the most harmful farming and fishing practices with funded transition support for ' +
       'farmers, make no-kill the national default for pounds, ban recreational hunting, and replace cat culls with ' +
       'desexing, Trap-Neuter-Return and predator-proof fencing.',
@@ -5348,7 +5348,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       'Define animal sentience in legislation',
       'Strengthen legal protections recognising animals as sentient beings',
       'A new legislative framework with positive welfare obligations',
-      'Constitutional rights for nature — legal personhood for ecosystems and species',
+      'Constitutional rights for nature, legal personhood for ecosystems and species',
       'Abolish the legal classification of animals as property and grant animals legal rights',
     ],
 
@@ -5367,7 +5367,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
           'The document’s foundational claim is that animals are property under New Zealand law, and that this makes ' +
           'them very hard to protect in any meaningful way. The proposed framework defines sentience in legislation, ' +
           'recognises animals as sentient beings, imposes positive welfare obligations rather than only prohibitions, ' +
-          'and grants animals legal rights — alongside advocating legal personhood for ecosystems and species.',
+          'and grants animals legal rights, alongside advocating legal personhood for ecosystems and species.',
       },
       {
         heading: 'An independent Commissioner for Animals',
@@ -5382,7 +5382,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'The long-term goal is stated plainly as abolishing animal farming and moving to plant-based, cellular and ' +
           'sustainable agriculture. The nearer-term steps are banning the most harmful farming and fishing practices, ' +
-          'tougher enforcement, and financial support for farmers to change — the document is explicit that the ' +
+          'tougher enforcement, and financial support for farmers to change, the document is explicit that the ' +
           'transition takes time and that change leaving rural communities behind is not good change.',
       },
       {
@@ -5405,7 +5405,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         body:
           'Recreational hunting and hunting competitions would be banned. The stated reasons are the suffering caused ' +
           'to target animals and to non-target species taken unintentionally, and the effect the party argues ' +
-          'competitions have in normalising killing — it names school activities such as “Toss the Poss” as teaching ' +
+          'competitions have in normalising killing, it names school activities such as “Toss the Poss” as teaching ' +
           'children to treat some species as disposable.',
       },
       {
@@ -5444,7 +5444,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     ],
 
     openQuestions: [
-      'No cost is given for any of it — not the Commissioner, the transition support for farmers, the desexing programme, or pound reform.',
+      'No cost is given for any of it, not the Commissioner, the transition support for farmers, the desexing programme, or pound reform.',
       'No timeline is given for the transition away from animal farming, which the document accepts will take time.',
       'What "the most harmful farming and fishing practices" covers, and where the line falls, is not defined.',
       'Granting animals legal rights is stated as an aim without describing how those rights would be exercised or enforced, or by whom.',
@@ -5471,7 +5471,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     title: 'The food system: plant-based public catering and vet costs',
     summary:
       'More plant-based food in schools, hospitals and public institutions, which the party argues would cut costs ' +
-      'and improve nutrition — citing modelling that a shift to plant-rich diets could save the health system up to ' +
+      'and improve nutrition, citing modelling that a shift to plant-rich diets could save the health system up to ' +
       '$22 billion in prevented chronic disease. Alongside it: clearer food labelling, fairer access to veterinary ' +
       'care as vet bills become unaffordable, and bereavement leave for the loss of an animal.',
 
@@ -5496,7 +5496,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Food labelling',
         body:
-          'Clearer labelling so people can make informed choices — presented as a consumer information measure ' +
+          'Clearer labelling so people can make informed choices, presented as a consumer information measure ' +
           'alongside the catering change rather than a restriction on what can be sold.',
       },
       {
@@ -5509,7 +5509,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Why they treat food as a health policy',
         body:
-          'The document links the food system to health costs, emissions and water quality in one argument — putting ' +
+          'The document links the food system to health costs, emissions and water quality in one argument, putting ' +
           'sheep and cattle at nearly half of New Zealand’s greenhouse gas emissions and citing Ministry for the ' +
           'Environment data that 95 percent of waterways in farming areas exceed safe contamination limits, with the ' +
           'health costs of the current food system running into the billions.',
@@ -5536,7 +5536,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     openQuestions: [
       'Whether plant-based catering would be mandated, offered alongside existing options, or phased in is not stated.',
       'The $22 billion figure is cited to external modelling without a period over which the saving accrues.',
-      '“Fairer access to veterinary care” is not defined — no subsidy, scheme or price mechanism is described.',
+      '“Fairer access to veterinary care” is not defined, no subsidy, scheme or price mechanism is described.',
       'Bereavement leave is supported without saying how much, for whom, or whether it would be statutory.',
       'What clearer food labelling would require is not specified.',
       'No cost is given for any of the measures, including the catering change that carries the savings claim.',
@@ -5565,8 +5565,8 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
     slug: 'smaller-government',
     title: 'Smaller government: spending, agencies and regulation',
     summary:
-      'The Conservatives would shrink government to what they call its core business — justice, defence, border ' +
-      'control and critical infrastructure — abolishing agencies and programmes they judge useless, ending all ' +
+      'The Conservatives would shrink government to what they call its core business, justice, defence, border ' +
+      'control and critical infrastructure, abolishing agencies and programmes they judge useless, ending all ' +
       'climate-focused taxes, subsidies and regulations, and ending corporate welfare including media subsidies. ' +
       'Working for Families would be replaced by FamilyBuilder tax cuts, legislation would curtail what they term ' +
       'unconstitutional bureaucratic power, and spending would be redirected to roads, bridges and waterways.',
@@ -5621,7 +5621,7 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
         heading: 'Welfare and education',
         body:
           'The welfare system would be reformed with Working for Families replaced by FamilyBuilder tax cuts, and ' +
-          'education reformed including early childhood education — the stated test being whether the system ' +
+          'education reformed including early childhood education, the stated test being whether the system ' +
           'supports the family rather than undermining it.',
       },
       {
@@ -5634,15 +5634,15 @@ export const POLICY_DEEP_DIVES: PolicyDeepDive[] = [
       {
         heading: 'Where the money would go instead',
         body:
-          'Spending redirected towards critical services and infrastructure — roads, bridges and waterways are named ' +
-          '— with major infrastructure projects reviewed for viability, real benefit, and delivery on time and within ' +
+          'Spending redirected towards critical services and infrastructure, roads, bridges and waterways are named ' +
+          'with major infrastructure projects reviewed for viability, real benefit, and delivery on time and within ' +
           'budget.',
       },
       {
         heading: 'Reviewing spending as a habit',
         body:
           'The party would regularly review current expenditure, which it notes is day-to-day spending that dwarfs ' +
-          'capital expenditure, with a view to reducing costs — presenting this as something every government should ' +
+          'capital expenditure, with a view to reducing costs, presenting this as something every government should ' +
           'do continuously rather than as a one-off exercise.',
       },
     ],

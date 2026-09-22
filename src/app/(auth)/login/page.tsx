@@ -71,7 +71,7 @@ function LoginInner() {
           <div style={{ display: 'flex', gap: 9, padding: '11px 13px', background: '#ecfdf5', border: `1px solid ${JADE}2e`, borderRadius: 11 }}>
             <Info style={{ width: 15, height: 15, color: JADE, flexShrink: 0, marginTop: 2 }} />
             <p style={{ fontSize: 13, color: '#1c1917', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-              Your dashboard is where everything you track lives — it needs an account so it can follow you between visits.
+              Your dashboard is where everything you track lives, it needs an account so it can follow you between visits.
               Log in, or <Link href="/register" style={{ color: JADE, fontWeight: 800, textDecoration: 'none' }}>create a free one</Link> in under a minute.
             </p>
           </div>

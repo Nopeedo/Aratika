@@ -52,7 +52,7 @@ export function PollAdmin({ initial }: { initial: EditorPoll[] }) {
     const json = await res.json().catch(() => ({}))
     setBusy(false)
     if (res.ok) {
-      setMsg({ ok: true, text: 'Poll saved — it’s live in the poll-of-polls.' })
+      setMsg({ ok: true, text: 'Poll saved: it’s live in the poll-of-polls.' })
       setPollster(''); setFieldwork(''); setDate(''); setSourceUrl(''); setPct(emptyParties())
       router.refresh()
     } else {
@@ -92,7 +92,7 @@ export function PollAdmin({ initial }: { initial: EditorPoll[] }) {
               <div key={p} style={{ display: 'flex', alignItems: 'center', gap: 8, border: `1px solid ${BORDER}`, borderRadius: 10, padding: '6px 10px' }}>
                 <span style={{ width: 10, height: 10, borderRadius: '50%', background: PARTY_COLORS[p].bg, flexShrink: 0 }} />
                 <span style={{ fontSize: 12.5, fontWeight: 700, color: INK, fontFamily: MANROPE, flex: 1, minWidth: 0 }}>{PARTY_NAMES[p as PartySlug].short}</span>
-                <input type="number" step="0.1" min="0" max="100" value={pct[p]} onChange={(e) => setPct((s) => ({ ...s, [p]: e.target.value }))} placeholder="—" style={{ ...inp, width: 62, padding: '6px 8px', textAlign: 'right' }} />
+                <input type="number" step="0.1" min="0" max="100" value={pct[p]} onChange={(e) => setPct((s) => ({ ...s, [p]: e.target.value }))} placeholder="" style={{ ...inp, width: 62, padding: '6px 8px', textAlign: 'right' }} />
               </div>
             ))}
           </div>
@@ -113,7 +113,7 @@ export function PollAdmin({ initial }: { initial: EditorPoll[] }) {
         </div>
         {initial.length === 0 ? (
           <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE }}>
-            No polls entered yet — the Election Centre is showing the bundled starter set until you add the first one.
+            No polls entered yet, the Election Centre is showing the bundled starter set until you add the first one.
           </p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

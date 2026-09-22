@@ -26,8 +26,8 @@ export const MP_DETAIL: Record<string, Partial<MPProfile>> = {
     portfolios: [
       'Leader of the Opposition',
       'Labour Party Leader',
-      'Opposition Spokesperson — National Security and Intelligence',
-      'Opposition Spokesperson — Ministerial Services',
+      'Opposition Spokesperson: National Security and Intelligence',
+      'Opposition Spokesperson: Ministerial Services',
     ],
     committees: ['Intelligence and Security'],
   },
@@ -41,11 +41,11 @@ export const MP_DETAIL: Record<string, Partial<MPProfile>> = {
       'and became Green co-leader in 2024. She is the party’s spokesperson for finance, climate change, and mental health.',
     portfolios: [
       'Green Party Co-Leader',
-      'Spokesperson — Finance',
-      'Spokesperson — Climate Change',
-      'Spokesperson — Mental Health',
-      'Spokesperson — Drug Law Reform',
-      'Spokesperson — Revenue',
+      'Spokesperson: Finance',
+      'Spokesperson: Climate Change',
+      'Spokesperson: Mental Health',
+      'Spokesperson: Drug Law Reform',
+      'Spokesperson: Revenue',
     ],
   },
 
@@ -58,10 +58,10 @@ export const MP_DETAIL: Record<string, Partial<MPProfile>> = {
       'and the prevention of family and sexual violence.',
     portfolios: [
       'Green Party Co-Leader',
-      'Spokesperson — Conservation',
-      'Spokesperson — Child Poverty Reduction',
-      'Spokesperson — Prevention of Family and Sexual Violence',
-      'Spokesperson — Social Investment',
+      'Spokesperson: Conservation',
+      'Spokesperson: Child Poverty Reduction',
+      'Spokesperson: Prevention of Family and Sexual Violence',
+      'Spokesperson: Social Investment',
     ],
   },
 
@@ -156,7 +156,7 @@ export const MP_DETAIL: Record<string, Partial<MPProfile>> = {
       'Erica Stanford is the Member of Parliament for East Coast Bays. First elected in 2017, she is Minister of ' +
       'Education and Minister of Immigration, and lead coordination minister for the Government’s response to the ' +
       'Royal Commission into Abuse in Care.',
-    portfolios: ['Minister of Education', 'Minister of Immigration', 'Lead Coordination Minister — Abuse in Care Response'],
+    portfolios: ['Minister of Education', 'Minister of Immigration', 'Lead Coordination Minister: Abuse in Care Response'],
   },
 
   'paul-goldsmith': {
@@ -328,7 +328,7 @@ export const MP_DETAIL: Record<string, Partial<MPProfile>> = {
     title: 'Deputy Leader of the Opposition',
     enteredParliament: 2008,
     bio: 'Carmel Sepuloni is the Member of Parliament for Kelston and deputy leader of the Labour Party. First elected in 2008, she served as Deputy Prime Minister in the 2023 Labour government and is now Deputy Leader of the Opposition.',
-    portfolios: ['Deputy Leader of the Opposition', 'Labour Party Deputy Leader', 'Opposition Spokesperson — Pacific Peoples', 'Opposition Spokesperson — Women', 'Opposition Spokesperson — Auckland Issues'],
+    portfolios: ['Deputy Leader of the Opposition', 'Labour Party Deputy Leader', 'Opposition Spokesperson: Pacific Peoples', 'Opposition Spokesperson: Women', 'Opposition Spokesperson: Auckland Issues'],
   },
 
 }

@@ -272,7 +272,7 @@ function ContenderCard({
         </select>
       </div>
       <p className="ff-stance" style={{ fontSize: 15.5, fontFamily: MANROPE, lineHeight: 1.65, margin: 0 }}>
-        {pos ? plain(pos) : '—'}
+        {pos ? plain(pos) : ''}
       </p>
       {pos && pos.keyProposals.length > 0 && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>

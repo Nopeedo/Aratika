@@ -25,7 +25,7 @@ import { SITE } from '@/constants/site'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'What Politika collects, what stays on your device, and who else your browser talks to — under the New Zealand Privacy Act 2020.',
+  description: 'What Politika collects, what stays on your device, and who else your browser talks to, under the New Zealand Privacy Act 2020.',
 }
 
 export default function PrivacyPage() {
@@ -49,7 +49,7 @@ export default function PrivacyPage() {
 
       <h2>You can use most of Politika without an account</h2>
       <p>
-        Reading the site — parties, policies, MPs, bills, the map, the news feed — needs no account and no sign-in. If
+        Reading the site, parties, policies, MPs, bills, the map, the news feed, needs no account and no sign-in. If
         you follow things or work through the Learn modules while signed out, that is saved <strong>in your own
         browser</strong> and never sent to us. See “What stays on your device” below.
       </p>
@@ -66,7 +66,7 @@ export default function PrivacyPage() {
       <p>
         <strong>Signing in uploads what was in your browser.</strong> If you followed things or did Learn modules before
         making an account, they are copied to your account the first time you sign in, and cleared from your browser.
-        That is how your dashboard has them on your other devices — but it does mean choices you made while signed out
+        That is how your dashboard has them on your other devices, but it does mean choices you made while signed out
         become part of your account.
       </p>
 
@@ -81,9 +81,9 @@ export default function PrivacyPage() {
         <li>
           <strong>Alerts about bills you follow.</strong> If a bill you track opens for public submissions, we email you
           once to say so, with the closing date and a link to have your say. Turning the email switch off stops these
-          too — it’s one switch for everything we send you, and the unsubscribe link in any of our emails does the same.
+          too, it’s one switch for everything we send you, and the unsubscribe link in any of our emails does the same.
         </li>
-        <li><strong>Account emails</strong> — confirming your address, or resetting your password.</li>
+        <li><strong>Account emails</strong>, confirming your address, or resetting your password.</li>
       </ul>
       <p>
         We keep a record that an alert was sent to you, so we don’t send the same one twice. We don’t sell your address,
@@ -100,7 +100,7 @@ export default function PrivacyPage() {
 
       <h2>What we deliberately do not collect</h2>
       <ul>
-        <li><strong>Your letters and submissions.</strong> The drafting tools run entirely in your browser. We never receive, store or send what you write — you copy it and send it yourself.</li>
+        <li><strong>Your letters and submissions.</strong> The drafting tools run entirely in your browser. We never receive, store or send what you write, you copy it and send it yourself.</li>
         <li><strong>Card or bank details.</strong> There is nothing to pay for, so we never ask.</li>
         <li><strong>Your location.</strong> We don’t ask your device for it. If you search an address on the map, that happens in your browser to find your electorate.</li>
         <li><strong>Sensitive information.</strong> We don’t ask for it and don’t want it. We never ask who you vote for, and the compass doesn’t record your answers to us.</li>
@@ -108,26 +108,26 @@ export default function PrivacyPage() {
 
       <h2>Cookies and measurement</h2>
       <p>
-        We use <strong>sign-in cookies only</strong> — they keep you logged in and keep the sign-in process secure.
+        We use <strong>sign-in cookies only</strong>, they keep you logged in and keep the sign-in process secure.
         There are no advertising cookies and no third-party tracking cookies.
       </p>
       <p>
-        We do measure how the site performs — page speed and how pages are used — through our host, Vercel. It’s
+        We do measure how the site performs, page speed and how pages are used, through our host, Vercel. It’s
         cookieless and not tied to your account. One thing worth naming: if you finish the political compass, we record
         that it was finished, how many issues you engaged with, and the voting-frequency option you picked. <strong>Your
-        actual answers, your issues and any party leaning are not sent</strong> — we only learn that the tool is being
+        actual answers, your issues and any party leaning are not sent</strong>, we only learn that the tool is being
         used and roughly by whom.
       </p>
 
       <h2>Who else your browser talks to</h2>
       <p>We keep this list short on purpose. When you use Politika, these are the others involved:</p>
       <ul>
-        <li><strong>Supabase</strong> — stores accounts and everything above, and sends account emails.</li>
-        <li><strong>Vercel</strong> — hosts the site, and provides the performance measurement described above.</li>
-        <li><strong>Zoho Mail</strong> — carries the weekly email and bill alerts we send you.</li>
-        <li><strong>Esri</strong> — supplies the background imagery for the electorate map. Loading the map means Esri receives your IP address and which part of the country you’re looking at.</li>
-        <li><strong>News publishers</strong> — article pictures on the news page load from RNZ, the Beehive, NZ Herald, Stuff and Newsroom directly, so those sites see your IP address when the page loads. The headlines link out to them too.</li>
-        <li><strong>Your browser’s notification service</strong> — Google, Apple or Mozilla, depending on your browser, but only if you turn notifications on. The message itself is encrypted before it leaves us, though they can see that something was sent to your device.</li>
+        <li><strong>Supabase</strong>, stores accounts and everything above, and sends account emails.</li>
+        <li><strong>Vercel</strong>, hosts the site, and provides the performance measurement described above.</li>
+        <li><strong>Zoho Mail</strong>, carries the weekly email and bill alerts we send you.</li>
+        <li><strong>Esri</strong>, supplies the background imagery for the electorate map. Loading the map means Esri receives your IP address and which part of the country you’re looking at.</li>
+        <li><strong>News publishers</strong>, article pictures on the news page load from RNZ, the Beehive, NZ Herald, Stuff and Newsroom directly, so those sites see your IP address when the page loads. The headlines link out to them too.</li>
+        <li><strong>Your browser’s notification service</strong>, Google, Apple or Mozilla, depending on your browser, but only if you turn notifications on. The message itself is encrypted before it leaves us, though they can see that something was sent to your device.</li>
       </ul>
       <p>
         Each handles data under its own obligations. We don’t otherwise disclose your information except where the law
@@ -139,7 +139,7 @@ export default function PrivacyPage() {
         Under the Privacy Act 2020 you can ask to <strong>see</strong> or <strong>correct</strong> the personal
         information we hold about you, and you can ask us to <strong>delete your account and everything attached to
         it</strong>. Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or use the{' '}
-        <a href="/contact">contact page</a> and we’ll do it. There is no self-service delete button yet — until there
+        <a href="/contact">contact page</a> and we’ll do it. There is no self-service delete button yet, until there
         is, we do it by hand on request, which we’ll confirm to you when it’s done.
       </p>
       <p>
@@ -163,8 +163,8 @@ export default function PrivacyPage() {
 
       <h2>Information about MPs, candidates and parties</h2>
       <p>
-        What we publish about MPs, candidates and parties comes from official public records — Parliament, the Electoral
-        Commission, Stats NZ — and their own published material, and relates to their public roles. Contact details we
+        What we publish about MPs, candidates and parties comes from official public records, Parliament, the Electoral
+        Commission, Stats NZ, and their own published material, and relates to their public roles. Contact details we
         show for MPs are the ones Parliament publishes. We don’t publish private details such as home addresses.
       </p>
 

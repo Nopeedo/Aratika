@@ -47,7 +47,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
           people assume what they can see is all there is. Hidden on wider
           screens where the whole table is visible. */}
       <p className="scroll-x-hint" style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 8px' }}>
-        Swipe across to see all {topics.length} topics — the party column stays put.
+        Swipe across to see all {topics.length} topics, the party column stays put.
       </p>
       {/* Opaque white ground. The table's cells are transparent over the page's
           warm texture while the sticky party column is solid white — at rest

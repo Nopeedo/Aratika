@@ -74,7 +74,7 @@ export function DashboardElection({ parties, electorates }: { parties: ElectionP
         </div>
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontSize: 30, fontWeight: 800, color: CREAM, fontFamily: MANROPE, lineHeight: 1 }}>
-            {days === null ? '—' : days > 0 ? days : '0'}
+            {days === null ? '' : days > 0 ? days : '0'}
           </div>
           <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(245,233,221,.6)', fontFamily: MANROPE, textTransform: 'uppercase', letterSpacing: '.06em', marginTop: 3 }}>
             {days !== null && days <= 0 ? 'Election day' : 'days to go'}

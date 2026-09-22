@@ -118,7 +118,7 @@ export function CommandHero() {
           {ADVANCE_START && ADVANCE_END && (
             <> Advance voting runs <b>{longDate(ADVANCE_START)}</b> to <b>{longDate(ADVANCE_END)}</b>.</>
           )}{' '}
-          Dates from the {ELECTORAL_SOURCE.name.split('—')[0].trim()}.
+          Dates from the {ELECTORAL_SOURCE.name.split('')[0].trim()}.
         </p>
 
         {/* Jump nav — coloured chips, same language as the policy chips.

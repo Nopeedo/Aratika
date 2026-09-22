@@ -139,7 +139,7 @@ export function AlertsBanner() {
     result === 'done' ? 'Alerts are on'
     : result === 'auth' ? 'Sign in to turn alerts on'
     : result === 'denied' ? 'Alerts are blocked in your browser settings'
-    : result === 'error' ? 'That didn’t work — try again'
+    : result === 'error' ? 'That didn’t work: try again'
     : busy ? 'Just a sec…'
     : mode === 'notify' ? 'Turn on alerts'
     : mode === 'ios' ? 'Add Politika to your Home Screen'

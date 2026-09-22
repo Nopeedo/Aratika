@@ -49,7 +49,7 @@ export function PollTracker() {
         <h2 style={{ fontSize: 'clamp(20px, 4vw, 26px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>2026 poll tracker</h2>
         <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6, maxWidth: 620 }}>
           A snapshot of published polls as at <b style={{ color: INK }}>{POLLS_AS_AT}</b>. We show the average across the most recent poll
-          from each company — Politika reports what pollsters publish and <b style={{ color: INK }}>does not predict the result</b>.
+          from each company, Politika reports what pollsters publish and <b style={{ color: INK }}>does not predict the result</b>.
         </p>
       </div>
 
@@ -166,9 +166,9 @@ export function PollTracker() {
       {/* Sources */}
       <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
         Party-vote and preferred-PM figures compiled from published polls (Roy Morgan, 1News–Verian, The Post–Freshwater, Talbot Mills,
-        Taxpayers’ Union–Curia) — <a href={POLLS_SOURCE} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>aggregate ↗</a>.
+        Taxpayers’ Union–Curia)<a href={POLLS_SOURCE} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>aggregate ↗</a>.
         Turnout and enrolment: <a href={PARTICIPATION_SOURCE} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>Electoral Commission ↗</a>.
-        Poll-of-polls is a simple average; the seat estimate applies Sainte-Laguë to those averages. A snapshot — refreshed as new polls are published.
+        Poll-of-polls is a simple average; the seat estimate applies Sainte-Laguë to those averages. A snapshot, refreshed as new polls are published.
       </p>
     </div>
   )

@@ -35,7 +35,7 @@ export async function GET(req: Request) {
     .select('user_id')
 
   if (error || !data || data.length === 0) {
-    return page('Link expired', 'We couldn’t match that link to a subscription — it may have already been used.', false)
+    return page('Link expired', 'We couldn’t match that link to a subscription, it may have already been used.', false)
   }
-  return page('You’re unsubscribed', 'You won’t get the weekly Politika email anymore. Your account and any push notifications are unchanged — you can re-enable the email anytime in your command centre.', true)
+  return page('You’re unsubscribed', 'You won’t get the weekly Politika email anymore. Your account and any push notifications are unchanged, you can re-enable the email anytime in your command centre.', true)
 }

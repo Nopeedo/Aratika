@@ -299,7 +299,7 @@ export function CommandCentre({ initial, updates: initialUpdates = {} }: {
             </div>
             <p style={{ fontSize: 13, color: '#1e40af', fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
               {openTracked.map((b) => b.label).join(' · ')} {openTracked.length === 1 ? 'is' : 'are'} open for public submissions.
-              Anyone can tell the select committee what they think — you don’t need to be an expert.
+              Anyone can tell the select committee what they think, you don’t need to be an expert.
             </p>
           </div>
         </div>

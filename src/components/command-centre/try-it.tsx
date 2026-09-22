@@ -61,7 +61,7 @@ export function CommandCentreTryIt({ options }: { options: BookmarkEntity[] }) {
               ) : (
                 <>
                   <Link href="/register" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: '#fff', background: JADE, borderRadius: 9, padding: '8px 14px', textDecoration: 'none', fontFamily: MANROPE }}>
-                    Save these — sign up free <ArrowRight style={{ width: 14, height: 14 }} />
+                    Save these, sign up free <ArrowRight style={{ width: 14, height: 14 }} />
                   </Link>
                   <span style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE }}>They&apos;re saved on this device meanwhile.</span>
                 </>

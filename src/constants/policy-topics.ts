@@ -68,7 +68,7 @@ export const POLICY_TOPICS: Record<PolicyTopic, PolicyTopicMeta> = {
     label: 'Foreign Policy',
     description: 'International relations, trade, and defence',
     longDescription:
-      'Encompasses NZ\'s relationships with Australia, the Pacific, China, the USA, and other nations — plus trade agreements, AUKUS/Five Eyes, and defence spending.',
+      'Encompasses NZ\'s relationships with Australia, the Pacific, China, the USA, and other nations, plus trade agreements, AUKUS/Five Eyes, and defence spending.',
     icon: 'Globe',
     color: 'bg-cyan-100',
     textColor: 'text-cyan-700',

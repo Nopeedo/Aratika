@@ -348,7 +348,7 @@ function HeroCard() {
           color: '#0c0e12',
           fontFamily: 'var(--font-manrope), system-ui, sans-serif',
         }}>
-          Seat Distribution — {META.parliament}
+          Seat Distribution{META.parliament}
         </div>
         <Link
           href="/parliament"

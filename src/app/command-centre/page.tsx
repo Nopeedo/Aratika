@@ -91,7 +91,7 @@ export default async function CommandCentrePage() {
         <div style={{ background: '#ecfdf5', borderBottom: `1px solid ${JADE}2e` }}>
           <div style={{ maxWidth: 900, margin: '0 auto', padding: '10px clamp(18px, 5vw, 36px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
             <span style={{ fontSize: 13.5, color: INK, fontFamily: MANROPE, fontWeight: 600 }}>
-              You’re signed in — this is the explainer.
+              You’re signed in, this is the explainer.
             </span>
             <Link href="/dashboard" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: '#fff', background: JADE, borderRadius: 999, padding: '7px 15px', textDecoration: 'none', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
               Go to your command centre <ArrowRight style={{ width: 14, height: 14 }} />
@@ -110,7 +110,7 @@ export default async function CommandCentrePage() {
             Track what matters to you.<br />We keep it current.
           </h1>
           <p style={{ fontSize: 'clamp(15px, 2.4vw, 18px)', fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 24px', lineHeight: 1.55, maxWidth: 640 }}>
-            Politics is scattered across a dozen sources. Pick the MPs, parties, issues and bills you care about —
+            Politics is scattered across a dozen sources. Pick the MPs, parties, issues and bills you care about
             and Politika brings the news, video and bill updates on exactly those things into one place, kept up to date
             all the way to the 2026 election.
           </p>
@@ -234,8 +234,8 @@ export default async function CommandCentrePage() {
           </div>
           <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 30px)', fontWeight: 800, color: '#fff', fontFamily: MANROPE, margin: '0 0 12px', lineHeight: 1.15 }}>Track the election in real time</h2>
           <p style={{ fontSize: 15.5, color: 'rgba(255,255,255,.78)', fontFamily: MANROPE, margin: '0 0 20px', lineHeight: 1.6, maxWidth: 640 }}>
-            Follow the parties and the local race on your ballot now. On election night, watch the results come in live —
-            party vote, seats, and your electorate — sourced from the Electoral Commission, with the people and parties you
+            Follow the parties and the local race on your ballot now. On election night, watch the results come in live
+            party vote, seats, and your electorate, sourced from the Electoral Commission, with the people and parties you
             track surfaced first.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18 }}>

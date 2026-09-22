@@ -41,18 +41,18 @@ export function buildPlan(p: Preferences): Rec[] {
 
   // ── Goals (strongest intent signal) ──
   if (has('decide-vote')) {
-    recs.push({ href: '/policies', title: 'Compare the parties side by side', reason: 'You want to work out who to vote for — line all six parties up on the issues.', icon: 'Scale', weight: 92 })
-    recs.push({ href: '/map', title: 'Find your local MP', reason: 'See who represents you right now — and who’s standing in your seat in 2026.', icon: 'MapPin', weight: 90 })
+    recs.push({ href: '/policies', title: 'Compare the parties side by side', reason: 'You want to work out who to vote for, line all six parties up on the issues.', icon: 'Scale', weight: 92 })
+    recs.push({ href: '/map', title: 'Find your local MP', reason: 'See who represents you right now, and who’s standing in your seat in 2026.', icon: 'MapPin', weight: 90 })
   }
   if (has('understand')) {
-    recs.push({ href: '/learn', title: 'Learn how it all works', reason: 'You want to understand the system — start with plain-language, interactive lessons.', icon: 'GraduationCap', weight: 91 })
+    recs.push({ href: '/learn', title: 'Learn how it all works', reason: 'You want to understand the system, start with plain-language, interactive lessons.', icon: 'GraduationCap', weight: 91 })
   }
   if (has('accountability')) {
-    recs.push({ href: '/bills', title: 'Track the bills in Parliament', reason: 'You want to keep politicians honest — follow the actual laws moving through the House.', icon: 'FileText', weight: 91 })
-    recs.push({ href: '/take-action', title: 'Write to your MP', reason: 'Hold them to account directly — draft a letter or a select-committee submission.', icon: 'PenLine', weight: 76, premium: PREMIUM_ENABLED })
+    recs.push({ href: '/bills', title: 'Track the bills in Parliament', reason: 'You want to keep politicians honest, follow the actual laws moving through the House.', icon: 'FileText', weight: 91 })
+    recs.push({ href: '/take-action', title: 'Write to your MP', reason: 'Hold them to account directly, draft a letter or a select-committee submission.', icon: 'PenLine', weight: 76, premium: PREMIUM_ENABLED })
   }
   if (has('help-others')) {
-    recs.push({ href: '/learn', title: 'The Kids & beginner lessons', reason: 'You’re helping someone else learn — bite-sized, friendly lessons for every age.', icon: 'GraduationCap', weight: 88 })
+    recs.push({ href: '/learn', title: 'The Kids & beginner lessons', reason: 'You’re helping someone else learn, bite-sized, friendly lessons for every age.', icon: 'GraduationCap', weight: 88 })
   }
   if (has('curious')) {
     recs.push({ href: '/parties', title: 'Meet the parties', reason: 'Just having a look? Start with who’s who in Parliament.', icon: 'Users', weight: 68 })
@@ -64,21 +64,21 @@ export function buildPlan(p: Preferences): Rec[] {
       href: '/learn/mmp',
       title: 'How voting actually works',
       reason: p.votingStatus === 'never'
-        ? 'New to voting? Learn how MMP and your two votes work — in plain English, no jargon.'
-        : 'Your first vote is coming in 2026 — here’s exactly how MMP and your two votes work.',
+        ? 'New to voting? Learn how MMP and your two votes work, in plain English, no jargon.'
+        : 'Your first vote is coming in 2026, here’s exactly how MMP and your two votes work.',
       icon: 'Vote', weight: 89,
     })
   }
 
   // ── Mood (tone + reassurance, routed to the right place) ──
   if (p.mood === 'sceptical') {
-    recs.push({ href: '/mps', title: 'Check the receipts yourself', reason: 'Sceptical? Every MP profile is built from official records — don’t take our word for it.', icon: 'Eye', weight: 66 })
+    recs.push({ href: '/mps', title: 'Check the receipts yourself', reason: 'Sceptical? Every MP profile is built from official records, don’t take our word for it.', icon: 'Eye', weight: 66 })
   }
   if (p.mood === 'overwhelmed') {
-    recs.push({ href: '/learn', title: 'Start with one small lesson', reason: 'Feeling overwhelmed is normal — you don’t need to know everything. Start with a single 5-minute lesson.', icon: 'GraduationCap', weight: 66 })
+    recs.push({ href: '/learn', title: 'Start with one small lesson', reason: 'Feeling overwhelmed is normal, you don’t need to know everything. Start with a single 5-minute lesson.', icon: 'GraduationCap', weight: 66 })
   }
   if (p.mood === 'engaged') {
-    recs.push({ href: '/battlegrounds', title: 'Explore the 2026 battlegrounds', reason: 'You follow politics closely — see which seats are on a knife-edge heading into 2026.', icon: 'Swords', weight: 64 })
+    recs.push({ href: '/battlegrounds', title: 'Explore the 2026 battlegrounds', reason: 'You follow politics closely, see which seats are on a knife-edge heading into 2026.', icon: 'Swords', weight: 64 })
   }
 
   // ── Comfort level ──
@@ -91,10 +91,10 @@ export function buildPlan(p: Preferences): Rec[] {
 
   // ── Learning style ──
   if (p.learnStyles.includes('visual')) {
-    recs.push({ href: '/map', title: 'The interactive electorate map', reason: 'You like things visual — explore New Zealand seat by seat.', icon: 'Map', weight: 46 })
+    recs.push({ href: '/map', title: 'The interactive electorate map', reason: 'You like things visual: explore New Zealand seat by seat.', icon: 'Map', weight: 46 })
   }
   if (p.learnStyles.includes('deep')) {
-    recs.push({ href: '/bills', title: 'Go deep on the legislation', reason: 'You like the full picture — read exactly what each bill does and where it’s at.', icon: 'FileText', weight: 46 })
+    recs.push({ href: '/bills', title: 'Go deep on the legislation', reason: 'You like the full picture, read exactly what each bill does and where it’s at.', icon: 'FileText', weight: 46 })
   }
 
   // dedupe by destination, keeping the highest-weight (strongest) reason
