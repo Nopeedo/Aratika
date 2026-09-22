@@ -16,7 +16,7 @@
  * Curated and neutral; every panel links to the bill's own sourced breakdown.
  */
 
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Check, X } from 'lucide-react'
 import { DEFINING_BILLS, DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
@@ -52,7 +52,6 @@ export function DefiningBills() {
   const [fading, setFading] = useState(false)
 
   const shown = status ? DEFINING_BILLS.filter((b) => b.statusKind === status) : DEFINING_BILLS
-  const bill = active ? DEFINING_BILLS.find((b) => b.slug === active) ?? null : null
 
   function select(slug: string) {
     // Tapping the open tile closes it, the same as the pills: a reader who
@@ -119,26 +118,26 @@ export function DefiningBills() {
           arrow buttons and a swipe for something that now fits. */}
       <div
         style={{
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(168px, 100%), 1fr))',
-          gap: 10, padding: '14px 0 2px',
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))',
+          gap: 8, padding: '12px 0 2px', alignItems: 'start',
         }}
       >
         {shown.map((b) => {
           const st = STATUS[b.statusKind]
           const on = b.slug === active
           return (
-            /* Styled like the issue chips: the status colour as the FILL, a
-               bold outline of the same hue, and the weight of that outline
-               (2px → 3px) as the only thing that changes when one is open. No
-               bar across the top — the fill says which status it is, and the
-               bar was saying it a second time in a third shade. */
+            <Fragment key={b.slug}>
+            {/* Styled like the issue chips: the status colour as the FILL, a
+                bold outline of the same hue, and the weight of that outline
+                (2px to 3px) as the only thing that changes when one is open.
+                No bar across the top: the fill says which status it is, and
+                the bar was saying it a second time in a third shade. */}
             <button
-              key={b.slug}
               onClick={() => select(b.slug)}
               aria-expanded={on}
               style={{
                 textAlign: 'left', cursor: 'pointer',
-                background: st.bg, borderRadius: 13, padding: '11px 13px 12px',
+                background: st.bg, borderRadius: 11, padding: '7px 10px 8px',
                 borderStyle: 'solid',
                 borderWidth: on ? 3 : 2,
                 borderColor: on ? st.fg : st.bar,
@@ -146,19 +145,26 @@ export function DefiningBills() {
                 fontFamily: MANROPE,
               }}
             >
-              <span style={{ display: 'block', fontSize: 10.5, fontWeight: 800, color: st.fg, fontFamily: MANROPE, marginBottom: 4 }}>{st.label}</span>
-              <span style={{ display: 'block', fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.28 }}>{b.title}</span>
+              <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: st.fg, fontFamily: MANROPE, marginBottom: 2 }}>{st.label}</span>
+              <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{b.title}</span>
             </button>
+
+            {/* The detail opens directly under the tile that was tapped
+                rather than at the foot of the whole grid, so the answer is
+                next to the question. It spans every column, which on a wider
+                screen breaks the row at the tapped tile — the same way an
+                accordion behaves, and the only arrangement in which "beneath
+                that tile" is true at more than one column. */}
+            {on && (
+              <div style={{ gridColumn: '1 / -1', opacity: fading ? 0 : 1, transition: `opacity ${FADE_MS}ms ease-in-out` }}>
+                <BillPanel bill={b} onClose={() => setActive(null)} />
+              </div>
+            )}
+            </Fragment>
           )
         })}
       </div>
 
-      {/* Panel — only once a tile has been tapped. */}
-      {bill && (
-        <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${FADE_MS}ms ease-in-out`, marginTop: 14 }}>
-          <BillPanel bill={bill} onClose={() => setActive(null)} />
-        </div>
-      )}
 
       <p style={{ fontSize: 11.5, color: '#8a8f86', fontFamily: MANROPE, margin: '16px 0 0', lineHeight: 1.5, maxWidth: 640 }}>
         {DEFINING_BILLS_META.note}
