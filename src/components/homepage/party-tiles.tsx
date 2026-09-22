@@ -343,7 +343,7 @@ export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
       <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
         <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
           <div style={{ marginBottom: 6, fontSize: 12.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: MUTE, fontFamily: MANROPE }}>
-            In the news
+            Latest in media
           </div>
           <div style={{ marginBottom: 14 }}>
             {/* Names the party. In the tile panel the surrounding card said whose
