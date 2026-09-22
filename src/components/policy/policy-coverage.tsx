@@ -5,11 +5,10 @@
  * none yet.
  */
 
-import Link from 'next/link'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { CoverageMatrix } from './coverage-matrix'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY, SURFACE } from '@/constants/theme'
 
 export async function PolicyCoverage({ maxWidth = 1100 }: { maxWidth?: number }) {
   const positions = await getAllApprovedPositions()
@@ -19,12 +18,12 @@ export async function PolicyCoverage({ maxWidth = 1100 }: { maxWidth?: number })
   return (
     <section style={{ background: SURFACE, borderTop: `1px solid ${BORDER}` }}>
       <div style={{ maxWidth, margin: '0 auto', padding: '32px clamp(18px, 5vw, 36px)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 12, marginBottom: 12 }}>
-          <div>
-            <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Coverage at a glance</h2>
-            <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>Which party holds a published position on which topic.</p>
-          </div>
-          <Link href="/policies" style={{ fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}>Open the compare tool →</Link>
+        {/* No "Open the compare tool" link: on a topic page it pointed at the
+            page you were already on, and the topic chips above are the way
+            around the comparison. Removed by request. */}
+        <div style={{ marginBottom: 12 }}>
+          <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Coverage at a glance</h2>
+          <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>Which party holds a published position on which topic.</p>
         </div>
         <CoverageMatrix positions={positions} topics={topics} />
       </div>
