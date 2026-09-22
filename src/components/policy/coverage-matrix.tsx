@@ -250,14 +250,14 @@ function Row({ slug, topics, lookup }: { slug: PartySlug; topics: { slug: string
           <td key={t.slug} style={{ ...tdBase, textAlign: 'center' }}>
             {pos ? (
               pos.noPosition ? (
-                <Link href={`/policies/${t.slug}/${slug}`} title="No stated position (verified)" style={{ color: TERTIARY, textDecoration: 'none', fontWeight: 800, fontSize: 15 }}>∅</Link>
+                <Link href={`/policies/${t.slug}/${slug}`} title="No stated position (verified)" className="coverage-hit" style={{ color: TERTIARY, textDecoration: 'none', fontWeight: 800, fontSize: 15 }}>∅</Link>
               ) : (
                 /* A bare tick in the party's colour, not a filled tile: the
                    tile was 22px of chrome around a 13px glyph in every cell,
                    and with eighteen rows of them the grid read as blocks
                    rather than as marks. */
-                <Link href={`/policies/${t.slug}/${slug}`} title={pos.stance || 'View position'} style={{ display: 'inline-flex' }}>
-                  <Check style={{ width: 17, height: 17, color: readableOnWhite(party.color) }} strokeWidth={3.25} />
+                <Link href={`/policies/${t.slug}/${slug}`} title={pos.stance || 'View position'} className="coverage-hit" style={{ display: 'inline-flex' }}>
+                  <Check className="coverage-tick" style={{ color: readableOnWhite(party.color) }} strokeWidth={3.25} />
                 </Link>
               )
             ) : (
@@ -371,11 +371,18 @@ const MATRIX_CSS = `
 .coverage-matrix th,
 .coverage-matrix td { padding: 10px 12px; }
 .coverage-party-name { font-size: 13px; }
+.coverage-tick { width: 17px; height: 17px; display: block; }
+/* Padding out, margin back in: the tap area grows past the glyph without the
+   row growing with it, so a 31px row still offers a finger-sized target. */
+.coverage-hit { padding: 8px; margin: -8px; }
 .coverage-band { white-space: nowrap; display: inline-block; position: sticky; left: 12px; }
 .coverage-band-pager { display: none; }
 @media (max-width: 760px) {
-  .coverage-matrix th,
-  .coverage-matrix td { padding: 9px 4px; }
+  /* 3px of vertical padding: the row is as tall as the tick inside it and
+     nothing more, which is the point of an at-a-glance grid. The header keeps
+     a little more room because it carries an icon over a word. */
+  .coverage-matrix td { padding: 3px 4px; }
+  .coverage-matrix th { padding: 6px 4px; }
   /* Almost no right gutter on the party column: the names are left-aligned
      and the ticks are centred in their own columns, so the space between them
      was doing nothing but pushing a topic column off the page. */
@@ -391,8 +398,10 @@ const MATRIX_CSS = `
      option, so that one name is the single place a split happens rather than
      the rule. Pushing the rule further left than this starts breaking
      ordinary names. */
+  /* The tick is the tallest thing in a row, so it sets the row height. */
+  .coverage-tick { width: 15px; height: 15px; }
   .coverage-party-name {
-    font-size: 10.5px; display: block; line-height: 1.25;
+    font-size: 10.5px; display: block; line-height: 1.2;
     white-space: normal; overflow-wrap: break-word; hyphens: auto;
   }
   /* Fits on one line now that the label is four words; the cap is kept as a
