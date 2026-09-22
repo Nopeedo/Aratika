@@ -90,22 +90,23 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
             position: 'absolute', top: 'calc(100% + 10px)', left: shift, zIndex: 30,
             width: 'min(340px, calc(100vw - 36px))',
             background: '#fff', border: `1px solid ${BORDER}`, borderTop: `3px solid ${accent}`,
-            borderRadius: 14, padding: '16px 18px 4px',
+            borderRadius: 14, padding: '16px 36px 4px 18px',
             boxShadow: '0 4px 8px rgba(42,18,6,.06), 0 16px 32px -12px rgba(42,18,6,.22)',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-            <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>What this covers</div>
-            <button type="button" onClick={() => setOpen(false)} aria-label="Close" style={{ background: 'none', border: 'none', padding: 4, cursor: 'pointer', color: SECONDARY, display: 'inline-flex' }}>
-              <X style={{ width: 16, height: 16 }} />
-            </button>
-          </div>
+          {/* No title row — removed by request so the content starts at the
+              top. The close sits in the corner, out of the text's way; the
+              first section heading leaves room for it. */}
+          <button type="button" onClick={() => setOpen(false)} aria-label="Close" style={{ position: 'absolute', top: 10, right: 10, background: 'none', border: 'none', padding: 4, cursor: 'pointer', color: SECONDARY, display: 'inline-flex' }}>
+            <X style={{ width: 16, height: 16 }} />
+          </button>
 
           {h(topicLabel)}
           {p(covers)}
 
-          {h('Where each position comes from')}
-          {p('Where each party stands going into the 2026 election, summarised neutrally from their own current policy pages and checked by an editor before publishing. Every position is dated and links to the page it came from — nothing is paraphrased without the source beside it.')}
+          {h('How this is sourced')}
+          {p('Every position here is taken from the party\u2019s own current policy pages, summarised neutrally and checked by an editor before it goes up. Each one is dated and links to the page it came from.')}
+          {p('We put the source in front of you on purpose. A summary is only ever a starting point. Follow the link and read what the party actually says, in their words, before you decide anything.')}
         </div>
       )}
     </div>
