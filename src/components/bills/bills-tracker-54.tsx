@@ -17,7 +17,9 @@ import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, External
 import { BILLS_54, BILL_CATEGORIES, BILLS_54_META, type Bill54 } from '@/constants/bills-54'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { normMemberName } from '@/lib/bills/normalize-member'
-import type { PartySlug } from '@/types'
+import { billsForTopic } from '@/lib/bills/by-topic'
+import { POLICY_TOPICS } from '@/constants/policy-topics'
+import type { PartySlug, PolicyTopic } from '@/types'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
@@ -43,9 +45,22 @@ const PAGE_SIZE = 24
 const byDateDesc = (a: Bill54, b: Bill54) => (b.date || '').localeCompare(a.date || '')
 const DEFAULT_ORDER = [...BILLS_54].sort(byDateDesc)
 
-export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialParty, initialBill }: { readerSlugs?: Record<string, string>; memberParty?: Record<string, string>; initialParty?: string; initialBill?: string }) {
+export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialParty, initialBill, initialTopic }: { readerSlugs?: Record<string, string>; memberParty?: Record<string, string>; initialParty?: string; initialBill?: string; initialTopic?: string }) {
   const [q, setQ] = useState('')
   const [cat, setCat] = useState('All')
+  /**
+   * Arriving from a policy topic (/bills?topic=immigration). NOT the category
+   * dropdown: a topic is not one category — see lib/bills/by-topic.ts, where
+   * Immigration is title-matched rather than taking all of "Work & social".
+   * Filtering by the same rules the topic page used is what makes the button
+   * that sends people here honest about what they will find.
+   */
+  const [topic, setTopic] = useState<string | undefined>(initialTopic)
+  const topicSlugs = useMemo(() => {
+    if (!topic) return null
+    const { passed, active } = billsForTopic(topic as PolicyTopic)
+    return new Set([...passed, ...active].map((b) => b.slug + b.number))
+  }, [topic])
   const [type, setType] = useState('All')
   const [status, setStatus] = useState('All')
   const [party, setParty] = useState<string>(initialParty || 'All')
@@ -123,6 +138,7 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
   const filtered = useMemo(() => {
     const ql = q.trim().toLowerCase()
     return BILLS_54.filter((b) =>
+      (!topicSlugs || topicSlugs.has(b.slug + b.number)) &&
       (cat === 'All' || b.category === cat) &&
       (type === 'All' || b.type === type) &&
       (status === 'All' || b.status === status) &&
@@ -130,10 +146,10 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
       (!subsOnly || isOpen(b)) &&
       (!ql || b.title.toLowerCase().includes(ql) || (b.member || '').toLowerCase().includes(ql)),
     ).sort(byDateDesc)
-  }, [q, cat, type, status, party, memberParty, subsOnly, today])
+  }, [q, cat, type, status, party, memberParty, subsOnly, today, topicSlugs])
 
   const active = cat !== 'All' || type !== 'All' || status !== 'All' || party !== 'All' || q !== '' || subsOnly
-  const reset = () => { setQ(''); setCat('All'); setType('All'); setStatus('All'); setParty('All'); setSubsOnly(false) }
+  const reset = () => { setQ(''); setCat('All'); setType('All'); setStatus('All'); setParty('All'); setSubsOnly(false); setTopic(undefined) }
 
   // Narrowing the filters must not leave you stranded on a page that no longer
   // exists (e.g. on page 9 of 12, then filtering down to 30 results). Reset
@@ -164,6 +180,22 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 9, fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>
             <span style={{ width: 10, height: 10, borderRadius: 3, background: partyColour, flexShrink: 0 }} />
             Showing {PARTY_NAMES[initialParty as PartySlug]?.short ?? initialParty}’s bills{filtered.length} of {stats.total}
+          </span>
+          <button onClick={reset} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '8px 12px', fontFamily: MANROPE, cursor: 'pointer' }}>
+            <X style={{ width: 13, height: 13 }} /> Show all bills
+          </button>
+        </div>
+      )}
+
+      {/* Arrived from a policy topic. Says so plainly and offers the way out,
+          because the topic filter is not one of the dropdowns below: a reader
+          who could not see why the list was short would have no control to
+          explain it. */}
+      {topic && POLICY_TOPICS[topic as keyof typeof POLICY_TOPICS] && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', background: '#fff', border: `2px solid ${JADE}`, borderRadius: 14, padding: '12px 16px', marginBottom: 18 }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 9, fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>
+            <span style={{ width: 10, height: 10, borderRadius: 3, background: JADE, flexShrink: 0 }} />
+            Showing {POLICY_TOPICS[topic as keyof typeof POLICY_TOPICS].label.toLowerCase()} bills: {filtered.length} of {stats.total}
           </span>
           <button onClick={reset} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '8px 12px', fontFamily: MANROPE, cursor: 'pointer' }}>
             <X style={{ width: 13, height: 13 }} /> Show all bills

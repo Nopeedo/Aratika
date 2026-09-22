@@ -9,7 +9,7 @@ import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import { BackToParty } from '@/components/policy/back-to-party'
 import { notFound } from 'next/navigation'
-import { Info } from 'lucide-react'
+import { Info, ScrollText } from 'lucide-react'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
@@ -22,7 +22,7 @@ import { TopicBackground } from '@/components/policy/topic-background'
 import { TopicInfoButton } from '@/components/policy/topic-info-button'
 import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
-import { BillsForTopic } from '@/components/bills/bills-for-topic'
+import { SignShape } from '@/components/ui/sign-link'
 import { INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 
@@ -181,8 +181,22 @@ export default async function PolicyTopicPage(
             bubble beside the topic pill in the header (TopicInfoButton), with
             the sourcing and grouping definitions alongside it. */}
 
-        {/* What's been legislated this term (bills → record, beside the comparison) */}
-        <BillsForTopic topic={topic as PolicyTopic} label={t.label} />
+        {/* The legislative record is a SIGN now, not a section. The full band
+            listed six bills and their stages under the party positions, which
+            is a second subject on a page about what the parties say; the
+            reader who wants the record can have the whole of it on the
+            tracker, filtered to this topic, rather than a sample of it here.
+            Same signpost shape the homepage uses, in the issue's colour. */}
+        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+          <SignShape
+            href={`/bills?topic=${topic}`}
+            color={topicBorder.active}
+            fg="#fff"
+            icon={<ScrollText style={{ width: 15, height: 15, flexShrink: 0 }} />}
+          >
+            What&rsquo;s become law this term
+          </SignShape>
+        </div>
 
         </div>
 
