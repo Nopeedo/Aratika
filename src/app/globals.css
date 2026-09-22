@@ -507,14 +507,21 @@ a, button, [role='button'], summary {
 /* Topic switcher on /policies/[topic]: the homepage chips (same colours and
    borders), but at the compact pill size the row had before it borrowed them.
    Descendant selector outranks the bare .ap-chip rules above at every width. */
-.topic-switcher .ap-chip {
+/* .status-pill rides along with every rule below: the bills page's status
+   pills are meant to be the same control as this row, and "the same" held by
+   two sets of numbers in two files drifts the first time one of them moves.
+   Both sizes (this one and the phone one further down) now come from here. */
+.topic-switcher .ap-chip,
+.status-pill {
   padding: 5px 11px !important;
   gap: 6px !important;
   border-radius: 999px !important;
   border-width: 2px !important;
 }
-.topic-switcher .ap-chip span { font-size: 12.5px !important; }
+.topic-switcher .ap-chip span,
+.status-pill { font-size: 12.5px !important; }
 .topic-switcher .ap-chip svg  { width: 13px !important; height: 13px !important; }
+.status-pill span { font-size: 11px !important; }
 /* Topic menu behind the floating pill on /policies/[topic]: the same chips
    at the compact pill size, dimmed to 60% until touched. The tapped one is
    animated by the component; these rules only set the resting look. */
@@ -536,13 +543,16 @@ a, button, [role='button'], summary {
    rule so it wins there too. */
 @media (max-width: 767px) {
   .topic-switcher { gap: 5px !important; }
-  .topic-switcher .ap-chip {
+  .topic-switcher .ap-chip,
+  .status-pill {
     padding: 4px 9px !important;
     gap: 4px !important;
     border-width: 1.5px !important;
   }
-  .topic-switcher .ap-chip span { font-size: 11.5px !important; }
+  .topic-switcher .ap-chip span,
+  .status-pill { font-size: 11.5px !important; }
   .topic-switcher .ap-chip svg  { width: 12px !important; height: 12px !important; }
+  .status-pill span { font-size: 10.5px !important; }
 }
 /* The current topic stays at full strength; the rest recede so one pill
    reads as "you are here" without changing its own design. Hover/focus brings

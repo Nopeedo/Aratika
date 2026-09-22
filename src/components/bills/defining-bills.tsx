@@ -95,24 +95,35 @@ export function DefiningBills() {
           const on = status === kind
           const n = DEFINING_BILLS.filter((b) => b.statusKind === kind).length
           return (
+            /* The BUTTON is only the tap target; the span inside is the pill.
+               globals.css gives every button a 44px minimum on a phone (a
+               deliberate tap-target rule) and the switcher's chips are links,
+               so a button styled as a pill came out half as tall again as the
+               row it is meant to match. Padding out and pulling the margin
+               back keeps the finger target and hands the size back to CSS. */
             <button
               key={kind}
               onClick={() => filter(kind)}
               aria-pressed={on}
-              /* Same measurements as the topic switcher at the top of the
-                 comparison page: 5/11 padding, 12.5px label, 2px border,
-                 fully round. */
               style={{
-                display: 'inline-flex', alignItems: 'center', gap: 6,
-                padding: '5px 11px', borderRadius: 999, cursor: 'pointer',
-                background: on ? st.bg : CARD,
-                border: `2px solid ${on ? st.bar : hexToRgba(st.bar, 0.34)}`,
-                color: st.fg, fontFamily: MANROPE, fontSize: 12.5, fontWeight: 800,
-                transition: 'background-color .2s ease, border-color .2s ease',
+                display: 'inline-flex', padding: '8px 0', margin: '-8px 0',
+                background: 'none', border: 'none', cursor: 'pointer',
               }}
             >
-              {st.label}
-              <span style={{ fontSize: 11, fontWeight: 700, opacity: .75 }}>{n}</span>
+              <span
+                className="status-pill"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 6,
+                  borderRadius: 999,
+                  background: on ? st.bg : CARD,
+                  border: `2px solid ${on ? st.bar : hexToRgba(st.bar, 0.34)}`,
+                  color: st.fg, fontFamily: MANROPE, fontWeight: 800,
+                  transition: 'background-color .2s ease, border-color .2s ease',
+                }}
+              >
+                {st.label}
+                <span style={{ fontWeight: 700, opacity: .75 }}>{n}</span>
+              </span>
             </button>
           )
         })}
