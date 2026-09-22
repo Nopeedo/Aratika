@@ -40,7 +40,10 @@ export const NAV_ITEMS: NavItem[] = [
   // people have ever tracked a topic (housing and economy, last on 7 Aug),
   // against seven electorates, and the `policy` bookmark kind feeds a whole
   // notification path that was therefore starved of subscribers.
-  { label: 'Policies', href: '/policies', description: 'Where the parties stand issue by issue, and follow the issues you care about', feature: 'policies' },
+  // "Policy Comparison", not "Policies": /policies redirects to the first
+  // topic's comparison page, so the label now says what the destination
+  // actually is rather than naming a section.
+  { label: 'Policy Comparison', href: '/policies', description: 'Where the parties stand issue by issue, and follow the issues you care about', feature: 'policies' },
   {
     label: 'Your Electorate', description: 'Find your seat, your MP and the 2026 race', feature: 'map',
     children: [
