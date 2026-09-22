@@ -108,7 +108,9 @@ export function TrackWithAccount({ entity, label, savedLabel, accent }: {
 }
 
 /** The ask itself: a dialog over the page, never a navigation. */
-function AccountDialog({ accent, what, onClose, onSignedIn }: {
+/** Exported so BookmarkButton raises the SAME on-page ask rather than a
+ *  second implementation of it. */
+export function AccountDialog({ accent, what, onClose, onSignedIn }: {
   accent: string
   what: string
   onClose: () => void

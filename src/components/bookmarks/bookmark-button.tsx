@@ -2,7 +2,8 @@
 
 /**
  * BookmarkButton — "Track" control for an MP, party, electorate or policy.
- * Free + account-required: a signed-out reader who taps it gets TrackPrompt —
+ * Free + account-required: a signed-out reader who taps it gets the on-page
+ * account ask (AccountDialog) —
  * why an account is worth it for this thing, and a link to create one that
  * brings them back here with it tracked. (It used to bounce silently to /login,
  * which explained nothing and was the wrong page for someone with no account.)
@@ -19,10 +20,9 @@
  */
 
 import { useState } from 'react'
-import { usePathname } from 'next/navigation'
 import { Bookmark, BookmarkCheck } from 'lucide-react'
 import { useBookmarks, type BookmarkEntity } from '@/hooks/use-bookmarks'
-import { TrackPrompt } from '@/components/bookmarks/track-prompt'
+import { AccountDialog } from '@/components/bookmarks/track-with-account'
 import { BORDER, INK, JADE, MANROPE } from '@/constants/theme'
 
 export function BookmarkButton({
@@ -49,7 +49,6 @@ export function BookmarkButton({
    *  than standing on its own. */
   compact?: boolean
 }) {
-  const pathname = usePathname()
   const { isBookmarked, toggle, authLoading, loading } = useBookmarks()
   const [prompting, setPrompting] = useState(false)
   const saved = isBookmarked(entity.kind, entity.refId)
@@ -61,15 +60,14 @@ export function BookmarkButton({
     const res = await toggle(entity)
     if (res.needsAuth) setPrompting(true)
   }
-  // Where to bring them back to. usePathname() has no query string, and on
-  // /map the electorate lives in ?search=: returning to a bare /map showed an
-  // unselected map with no Track button, so the promised auto-track had no
-  // page to land on. The entity's own href is that same page WITH its state
-  // whenever it starts with the current path; anything else is a different
-  // page (an MP's profile linked from a list), and the current path wins.
-  const path = pathname || '/'
-  const returnTo = entity.href && (entity.href === path || entity.href.startsWith(path + '?')) ? entity.href : path
-  const prompt = prompting ? <TrackPrompt entity={entity} returnTo={returnTo} onClose={() => setPrompting(false)} /> : null
+  // No returnTo any more: the ask happens over the page, so there is no
+  // trip away from it to come back from.
+  // The account ask happens over the page, and the tap that raised it is
+  // carried out the moment there is a session — same dialog the policy page's
+  // Track control uses, so there is one of these, not two.
+  const prompt = prompting
+    ? <AccountDialog accent={entity.accent ?? JADE} what={entity.label} onClose={() => setPrompting(false)} onSignedIn={async () => { await toggle(entity) }} />
+    : null
 
   if (variant === 'icon') {
     if (!known) {
