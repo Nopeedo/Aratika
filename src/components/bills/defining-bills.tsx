@@ -81,43 +81,35 @@ export function DefiningBills() {
 
       {/* Status pills. Same tap-to-filter as the issue chips on the comparison
           page, including tapping the lit one to clear it. Each carries its own
-          status colour, so the pill and the tiles it filters to agree. */}
+          status colour, so the pill and the tiles it filters to agree.
+
+          "All" leads the row: tapping the lit pill already cleared the filter,
+          but that is a thing you have to know, and a reader who has narrowed
+          to one status needs somewhere obvious to go back to. It is the site's
+          jade rather than a status colour, because it is not one of them. */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 14 }}>
+        <Pill
+          label="All"
+          count={DEFINING_BILLS.length}
+          on={status === null}
+          fg={ACCENT_DK}
+          bar={ACCENT}
+          bg="#e0f3e7"
+          onClick={() => { setStatus(null); }}
+        />
         {STATUS_ORDER.map((kind) => {
           const st = STATUS[kind]
-          const on = status === kind
-          const n = DEFINING_BILLS.filter((b) => b.statusKind === kind).length
           return (
-            /* The BUTTON is only the tap target; the span inside is the pill.
-               globals.css gives every button a 44px minimum on a phone (a
-               deliberate tap-target rule) and the switcher's chips are links,
-               so a button styled as a pill came out half as tall again as the
-               row it is meant to match. Padding out and pulling the margin
-               back keeps the finger target and hands the size back to CSS. */
-            <button
+            <Pill
               key={kind}
+              label={st.label}
+              count={DEFINING_BILLS.filter((b) => b.statusKind === kind).length}
+              on={status === kind}
+              fg={st.fg}
+              bar={st.bar}
+              bg={st.bg}
               onClick={() => filter(kind)}
-              aria-pressed={on}
-              style={{
-                display: 'inline-flex', padding: '8px 0', margin: '-8px 0',
-                background: 'none', border: 'none', cursor: 'pointer',
-              }}
-            >
-              <span
-                className="status-pill"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 6,
-                  borderRadius: 999,
-                  background: on ? st.bg : CARD,
-                  border: `2px solid ${on ? st.bar : hexToRgba(st.bar, 0.34)}`,
-                  color: st.fg, fontFamily: MANROPE, fontWeight: 800,
-                  transition: 'background-color .2s ease, border-color .2s ease',
-                }}
-              >
-                {st.label}
-                <span style={{ fontWeight: 700, opacity: .75 }}>{n}</span>
-              </span>
-            </button>
+            />
           )
         })}
       </div>
@@ -172,6 +164,49 @@ export function DefiningBills() {
         {DEFINING_BILLS_META.note}
       </p>
     </section>
+  )
+}
+
+/** One filter pill.
+ *
+ *  The BUTTON is only the tap target; the span inside is the pill. globals.css
+ *  gives every button a 44px minimum on a phone (a deliberate tap-target rule)
+ *  and the chip row this matches is made of links, so a button styled as a pill
+ *  came out half as tall again as the row it copies. Padding out and pulling
+ *  the margin back keeps the finger target and hands the size back to CSS. */
+function Pill({ label, count, on, fg, bar, bg, onClick }: {
+  label: string
+  count: number
+  on: boolean
+  fg: string
+  bar: string
+  bg: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={on}
+      style={{
+        display: 'inline-flex', padding: '8px 0', margin: '-8px 0',
+        background: 'none', border: 'none', cursor: 'pointer',
+      }}
+    >
+      <span
+        className="status-pill"
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          borderRadius: 999,
+          background: on ? bg : CARD,
+          border: `2px solid ${on ? bar : hexToRgba(bar, 0.34)}`,
+          color: fg, fontFamily: MANROPE, fontWeight: 800,
+          transition: 'background-color .2s ease, border-color .2s ease',
+        }}
+      >
+        {label}
+        <span style={{ fontWeight: 700, opacity: .75 }}>{count}</span>
+      </span>
+    </button>
   )
 }
 

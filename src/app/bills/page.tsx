@@ -28,6 +28,10 @@ export const metadata: Metadata = {
     'their type, stage and progress, with plain-language breakdowns.',
 }
 
+/** Holds the wash at full strength through the tracker, then feathers it out
+ *  over the last 12% so the footer notes are not sitting in colour. */
+const BILLS_WASH = 'linear-gradient(to bottom, rgba(0,0,0,.13) 0%, rgba(0,0,0,.13) 82%, rgba(0,0,0,0) 97%)'
+
 export default async function BillsPage({ searchParams }: { searchParams: Promise<{ party?: string; bill?: string; topic?: string }> }) {
   const { party: initialParty, bill: initialBill, topic: initialTopic } = await searchParams
   const readable = await getApprovedBills()
@@ -43,7 +47,21 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
   const memberParty = memberPartyMap()
 
   return (
-    <div style={WOVEN_PAGE}>
+    /* The page has a colour of its own now: the site's jade, washed over the
+       same weave every other page uses, fading out down the last stretch so
+       the closing source notes sit on plain ground. Same construction as
+       TopicBackground on /policies/[topic], but a fixed colour and no
+       measuring — nothing here changes hue as you read. isolation + zIndex
+       keep the wash behind the content without it escaping the page. */
+    <div style={{ ...WOVEN_PAGE, position: 'relative', isolation: 'isolate' }}>
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute', inset: 0, zIndex: -1, pointerEvents: 'none',
+          backgroundColor: JADE,
+          WebkitMaskImage: BILLS_WASH, maskImage: BILLS_WASH,
+        }}
+      />
 
       {/* Header. No rule under it — the page and the header share the same
           woven ground, and the line was drawing a box around a title. */}
