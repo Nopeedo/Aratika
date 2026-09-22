@@ -551,6 +551,12 @@ a, button, [role='button'], summary {
   }
   .topic-switcher .ap-chip span,
   .status-pill { font-size: 11.5px !important; }
+  /* The bills row holds four pills and has to keep them on ONE line at 375px:
+     at the shared size they need 322px of a 297px row. Two pixels of padding
+     and the two gaps buy the 25px back. Scoped to this row on purpose — the
+     switcher it copies has a row to itself and does not need the squeeze. */
+  .bills-status-row { gap: 4px !important; }
+  .bills-status-row .status-pill { padding: 4px 6px !important; gap: 4px !important; }
   .topic-switcher .ap-chip svg  { width: 12px !important; height: 12px !important; }
   .status-pill span { font-size: 10.5px !important; }
 }
@@ -655,3 +661,8 @@ a, button, [role='button'], summary {
   .stack-row { flex-wrap: wrap; row-gap: 6px; }
   .stack-row > .stack-tail { flex-basis: 100%; justify-content: flex-start; }
 }
+
+/* The MP rails on the homepage scroll sideways; the scrollbar itself is noise
+   inside a small framed box, and the arrow buttons are the visible control. */
+.mp-rail { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.mp-rail::-webkit-scrollbar { display: none; }

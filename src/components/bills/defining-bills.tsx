@@ -20,6 +20,7 @@ import { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Check, X } from 'lucide-react'
 import { DEFINING_BILLS, DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
+import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { INK, MANROPE } from '@/constants/theme'
 
 const CARD = '#ffffff', MUTED = '#667066', LINE = '#e4ebe2'
@@ -75,8 +76,17 @@ export function DefiningBills() {
       {/* The "Since the 2023 election" eyebrow is under the page title now:
           it dates the whole page rather than this section alone. */}
       {/* No standfirst under the heading: it explained the tiles that are
-          directly below and visibly tappable. */}
-      <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>The most debated bills</h2>
+          directly below and visibly tappable. The curation note that used to
+          close the section is in the (i) — it is a caveat about how the list
+          was chosen and how current it is, which is worth having and is not
+          worth four lines under the bills themselves. */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>The most debated bills</h2>
+        <InfoButton accent={ACCENT_DK} label="How these bills were chosen" size={24}>
+          <InfoHeading accent={ACCENT_DK}>How these were chosen</InfoHeading>
+          <InfoText>{DEFINING_BILLS_META.note}</InfoText>
+        </InfoButton>
+      </div>
 
       {/* Status pills. Same tap-to-filter as the issue chips on the comparison
           page, including tapping the lit one to clear it. Each carries its own
@@ -86,7 +96,7 @@ export function DefiningBills() {
           but that is a thing you have to know, and a reader who has narrowed
           to one status needs somewhere obvious to go back to. It is the site's
           jade rather than a status colour, because it is not one of them. */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 14 }}>
+      <div className="bills-status-row" style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 14 }}>
         <Pill
           label="All"
           count={DEFINING_BILLS.length}
@@ -165,10 +175,6 @@ export function DefiningBills() {
         })}
       </div>
 
-
-      <p style={{ fontSize: 11.5, color: '#8a8f86', fontFamily: MANROPE, margin: '16px 0 0', lineHeight: 1.5, maxWidth: 640 }}>
-        {DEFINING_BILLS_META.note}
-      </p>
     </section>
   )
 }
