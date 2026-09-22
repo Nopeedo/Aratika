@@ -61,7 +61,7 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
   )
 
   return (
-    <div ref={wrap} style={{ position: 'relative', display: 'inline-flex', flexShrink: 0 }}>
+    <div ref={wrap} style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', alignSelf: 'center', flexShrink: 0 }}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -69,9 +69,11 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
         aria-controls={id}
         aria-label={`What ${topicLabel} covers, and where the positions come from`}
         style={{
-          width: 26, height: 26, borderRadius: '50%', padding: 0, cursor: 'pointer',
+          // Fixed box + alignSelf: the header row stretches its children, and
+          // a stretched circle is an oval. No fill when closed, just the ring.
+          width: 26, height: 26, minWidth: 26, minHeight: 26, alignSelf: 'center', borderRadius: '50%', padding: 0, cursor: 'pointer',
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-          background: open ? accent : 'rgba(255,255,255,.7)',
+          background: open ? accent : 'transparent',
           border: `1.5px solid ${open ? accent : BORDER}`,
           color: open ? '#fff' : SECONDARY,
           transition: 'background .15s ease, border-color .15s ease, color .15s ease',
