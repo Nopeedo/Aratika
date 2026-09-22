@@ -18,7 +18,7 @@
 
 import { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Check, X } from 'lucide-react'
+import { ArrowRight, Check, ChevronDown, X } from 'lucide-react'
 import { DEFINING_BILLS, DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
 import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { INK, MANROPE } from '@/constants/theme'
@@ -43,6 +43,12 @@ const STATUS: Record<DefiningBill['statusKind'], { label: string; fg: string; bg
   'in-progress': { label: 'In progress', fg: '#92400e', bg: '#f8ecd4', bar: '#c07a12' },
 }
 
+/** Feathers the last visible row out under the "show more" control. */
+const FOLD_MASK = 'linear-gradient(to bottom, #000 0%, #000 calc(100% - 46px), transparent 100%)'
+
+/** How many tiles show before the rest are folded away. */
+const VISIBLE = 5
+
 /** Pill order: what is still live, then what passed, then what did not. */
 const STATUS_ORDER: DefiningBill['statusKind'][] = ['in-progress', 'law', 'defeated']
 
@@ -50,9 +56,17 @@ export function DefiningBills() {
   // Nothing open to begin with, by design — see the note at the top.
   const [active, setActive] = useState<string | null>(null)
   const [status, setStatus] = useState<DefiningBill['statusKind'] | null>(null)
+  // Five at a time. Eight tiles is a lot of list before the tracker below it,
+  // and a reader who wants a particular bill has the pills to narrow with.
+  const [showAll, setShowAll] = useState(false)
   const [fading, setFading] = useState(false)
 
-  const shown = status ? DEFINING_BILLS.filter((b) => b.statusKind === status) : DEFINING_BILLS
+  const matching = status ? DEFINING_BILLS.filter((b) => b.statusKind === status) : DEFINING_BILLS
+  const hidden = Math.max(0, matching.length - VISIBLE)
+  // The open bill always renders, even when it sits past the cut: collapsing
+  // the list must not close something the reader opened.
+  const collapsed = !showAll && hidden > 0 && !matching.slice(VISIBLE).some((b) => b.slug === active)
+  const shown = collapsed ? matching.slice(0, VISIBLE) : matching
 
   function select(slug: string) {
     // Tapping the open tile closes it, the same as the pills: a reader who
@@ -67,6 +81,7 @@ export function DefiningBills() {
   function filter(kind: DefiningBill['statusKind']) {
     const next = kind === status ? null : kind
     setStatus(next)
+    setShowAll(false)
     // Don't leave a panel open for a bill the filter has just hidden.
     if (active && next && DEFINING_BILLS.find((b) => b.slug === active)?.statusKind !== next) setActive(null)
   }
@@ -126,10 +141,16 @@ export function DefiningBills() {
       {/* Tiles wrap rather than scroll sideways: with the pills above doing the
           narrowing, a row never holds more than a handful, and a rail meant two
           arrow buttons and a swipe for something that now fits. */}
+      <div style={{ position: 'relative' }}>
       <div
         style={{
           display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))',
-          gap: 8, padding: '12px 0 2px', alignItems: 'start',
+          gap: 8, alignItems: 'start',
+          // Fades the last visible row out rather than cutting it off square,
+          // so the list reads as continuing rather than ending. The extra
+          // bottom padding while collapsed is the room the control sits in.
+          padding: collapsed ? '12px 0 34px' : '12px 0 2px',
+          ...(collapsed ? { WebkitMaskImage: FOLD_MASK, maskImage: FOLD_MASK } : null),
         }}
       >
         {shown.map((b) => {
@@ -155,8 +176,23 @@ export function DefiningBills() {
                 fontFamily: MANROPE,
               }}
             >
-              <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: st.fg, fontFamily: MANROPE, marginBottom: 2 }}>{st.label}</span>
-              <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{b.title}</span>
+              {/* Chevron on every tile, so a tile reads as something that
+                  opens before it has been tapped. It turns to point up once
+                  the detail is showing, which is the same tap that closes it. */}
+              <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ flex: 1, minWidth: 0 }}>
+                  <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: st.fg, fontFamily: MANROPE, marginBottom: 2 }}>{st.label}</span>
+                  <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{b.title}</span>
+                </span>
+                <ChevronDown
+                  style={{
+                    width: 15, height: 15, flexShrink: 0, color: st.fg,
+                    transform: on ? 'rotate(180deg)' : 'none',
+                    transition: 'transform .2s ease',
+                  }}
+                  strokeWidth={3}
+                />
+              </span>
             </button>
 
             {/* The detail opens directly under the tile that was tapped
@@ -174,7 +210,50 @@ export function DefiningBills() {
           )
         })}
       </div>
+      {/* One control, both directions: the arrow points down at a list with
+          more in it and up at one already open. It names the number rather
+          than saying "more", because "3 more" is a decision a reader can make
+          and "more" is not.
 
+          While collapsed it sits ON the fade at the foot of the list, where
+          the fade is already saying "this continues" — so the affordance and
+          the explanation are the same place rather than two. Once open there
+          is no fade to sit on, so it takes its own line underneath. */}
+      {hidden > 0 && collapsed && (
+        <button
+          onClick={() => setShowAll(true)}
+          aria-expanded={false}
+          style={{
+            position: 'absolute', left: '50%', bottom: 0, transform: 'translateX(-50%)',
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            padding: '6px 12px', borderRadius: 999,
+            background: 'none', border: 'none', cursor: 'pointer',
+            fontFamily: MANROPE, fontSize: 12, fontWeight: 800, color: ACCENT_DK,
+          }}
+        >
+          Show {hidden} more
+          <ChevronDown style={{ width: 15, height: 15 }} strokeWidth={3} />
+        </button>
+      )}
+      </div>
+
+      {hidden > 0 && !collapsed && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 8 }}>
+          <button
+            onClick={() => setShowAll(false)}
+            aria-expanded
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 5,
+              padding: '8px 12px', margin: '-4px 0',
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontFamily: MANROPE, fontSize: 12, fontWeight: 800, color: ACCENT_DK,
+            }}
+          >
+            Show fewer
+            <ChevronDown style={{ width: 15, height: 15, transform: 'rotate(180deg)' }} strokeWidth={3} />
+          </button>
+        </div>
+      )}
     </section>
   )
 }
@@ -249,10 +328,15 @@ function BillPanel({ bill, onClose }: { bill: DefiningBill; onClose: () => void 
 
       {/* The featured bill has a hand-built journey; every other bill has a dated
           timeline, so both get a progress read rather than only the spotlight. */}
+      {/* Every bill gets the journey now, not just the hand-built one: the
+          shape of how far something got is the first thing a reader wants,
+          and a dated list alone made them assemble it themselves. Where a
+          bill also has dated milestones, those still follow underneath. */}
+      <p className="bill-panel-label" style={labelStyle}>Its journey through Parliament</p>
+      <Journey nodes={f ? f.journey : deriveJourney(bill)} />
+
       {f ? (
         <>
-          <p className="bill-panel-label" style={labelStyle}>Its journey through Parliament</p>
-          <Journey nodes={f.journey} />
           <div className="bill-panel-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(140px, 100%), 1fr))', gap: 14, marginTop: 26, paddingTop: 22, borderTop: `1px solid ${LINE}` }}>
             {f.stats.map((s, i) => (
               <div key={i}>
@@ -266,7 +350,7 @@ function BillPanel({ bill, onClose }: { bill: DefiningBill; onClose: () => void 
         </>
       ) : bill.timeline && bill.timeline.length > 0 ? (
         <>
-          <p className="bill-panel-label" style={labelStyle}>How it progressed</p>
+          <p className="bill-panel-label" style={{ ...labelStyle, marginTop: 20 }}>How it progressed</p>
           {/* The date sits in a fixed 108px column beside the event. On a phone
               that left the event about 200px to wrap in, so a one-line note
               like "Government drops the plan for three ministers to have the
@@ -305,6 +389,39 @@ function BillPanel({ bill, onClose }: { bill: DefiningBill; onClose: () => void 
       </Link>
     </div>
   )
+}
+
+/**
+ * The journey beads for a bill that has no hand-built one.
+ *
+ * Four stages, matched against the bill's OWN dated milestones by keyword, so
+ * nothing is claimed that the transcribed timeline does not say. The one piece
+ * of reasoning applied on top: a bill that is now law necessarily cleared every
+ * stage before it, whether or not our timeline lists each one — Three Strikes
+ * records "introduced and passed its first reading" and then royal assent, and
+ * leaving select committee unlit there would say it skipped a stage it cannot
+ * have skipped.
+ *
+ * An in-progress bill lights only what the timeline evidences and leaves the
+ * rest dark: where it has actually got to is a fact, and guessing it from a
+ * status badge would be inventing one.
+ */
+function deriveJourney(bill: DefiningBill): NonNullable<DefiningBill['featured']>['journey'] {
+  const text = (bill.timeline ?? []).map((t) => t.event.toLowerCase()).join(' | ')
+  const law = bill.statusKind === 'law'
+  const seen = (...needles: string[]) => law || needles.some((n) => text.includes(n))
+
+  const last =
+    bill.statusKind === 'law' ? { label: 'Now law', state: 'done' as const }
+    : bill.statusKind === 'defeated' ? { label: 'Defeated', state: 'stop' as const }
+    : { label: 'In progress', state: 'current' as const }
+
+  return [
+    { label: 'Introduced', state: seen('introduc') ? 'done' : 'current' },
+    { label: 'First reading', state: seen('first reading') ? 'done' : 'current' },
+    { label: 'Select committee', state: seen('committee', 'submission') ? 'done' : 'current' },
+    last,
+  ]
 }
 
 function Journey({ nodes }: { nodes: NonNullable<DefiningBill['featured']>['journey'] }) {
