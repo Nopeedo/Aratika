@@ -274,9 +274,10 @@ function TopicHeadCells({ topics, repeat = false }: { topics: { slug: string; la
       {topics.map((t) => {
         const meta = POLICY_TOPICS[t.slug as keyof typeof POLICY_TOPICS]
         const Icon = TOPIC_ICONS[meta?.icon]
-        // Each heading in its own issue's colour, the same hue its pill border
-        // and its panel carry, so a column is identifiable by colour as well
-        // as by a clipped word.
+        // The ICON carries the issue's colour, the same hue its pill border and
+        // its panel carry; the name under it stays plain text. Colouring the
+        // word too made a row of six headings read as six links competing with
+        // the ticks below them.
         const hue = topicColors(meta?.textColor ?? '').border
         return (
           <Cell key={t.slug} style={{ ...thBase, background: repeat ? SURFACE : undefined, textAlign: 'center' }}>
@@ -293,9 +294,9 @@ function TopicHeadCells({ topics, repeat = false }: { topics: { slug: string; la
               title={t.label}
               aria-label={t.label}
               className="coverage-topic"
-              style={{ color: hue, textDecoration: 'none' }}
+              style={{ color: SECONDARY, textDecoration: 'none' }}
             >
-              {Icon && <Icon className="coverage-topic-icon" aria-hidden />}
+              {Icon && <Icon className="coverage-topic-icon" style={{ color: hue }} aria-hidden />}
               <span className="coverage-topic-label">{t.label}</span>
             </Link>
           </Cell>
