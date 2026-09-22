@@ -57,6 +57,29 @@ export function Navbar() {
     setMobileOpen(false)
   }, [pathname])
 
+  /**
+   * Scroll anchoring off while the menu is open.
+   *
+   * The panel lives inside the sticky header, so opening it makes the header
+   * tall and closing it makes it short again. The browser answers each of
+   * those by scrolling the page to hold the content still — which is right
+   * for a reader staying put, and wrong the moment they tap a link: the App
+   * Router puts the new route at scroll 0, the panel then unmounts, and the
+   * compensation for that pushes them 64px down, arriving with the page
+   * heading tucked under the navbar.
+   *
+   * Turning anchoring off for the life of the open menu removes the
+   * compensation rather than racing it — a scrollTo afterwards has to land
+   * after an adjustment the browser has not necessarily made yet.
+   */
+  React.useEffect(() => {
+    if (!mobileOpen) return
+    const root = document.documentElement
+    const prev = root.style.overflowAnchor
+    root.style.overflowAnchor = 'none'
+    return () => { root.style.overflowAnchor = prev }
+  }, [mobileOpen])
+
   // Live auth state from Supabase
   const { user, isPremium } = useUser()
   const isLoggedIn = !!user

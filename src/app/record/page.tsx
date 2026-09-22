@@ -122,7 +122,7 @@ export default async function RecordHubPage() {
                   })}
                   <td style={{ ...td, whiteSpace: 'nowrap' }}>
                     <a href={s.primaryUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11.5, fontWeight: 700, color: JADE, textDecoration: 'none' }}>
-                      {s.primaryLabel.split('')[0]} <ExternalLink style={{ width: 11, height: 11 }} />
+                      {s.primaryLabel.split('\u2014')[0].trim()} <ExternalLink style={{ width: 11, height: 11 }} />
                     </a>
                   </td>
                 </tr>

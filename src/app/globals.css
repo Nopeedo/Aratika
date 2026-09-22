@@ -134,6 +134,22 @@ body {
   width: 100%;
 }
 
+/* ─── Route changes land below the navbar ────────────────────────────────── */
+/* The App Router does not window.scrollTo(0,0) on a route change: it calls
+   scrollIntoView on the new page's first element, which aligns that element
+   with the VIEWPORT top. The navbar is sticky and 4rem tall, so it then sits
+   over the top of the page a reader just asked for — tap "Election Centre"
+   from halfway down a page and you arrive 64px in, with the page heading
+   tucked behind the bar.
+
+   scroll-margin-top on exactly that element reserves the navbar's height for
+   it. Scoped this narrowly ON PURPOSE: scroll-padding-top on the scroll
+   container would have been the one-liner, but it applies to every anchor
+   jump as well, and the in-page anchors (#key-dates, #parties, the bills
+   tracker, the policy panel) already carry their own scroll-margin to clear
+   the same bar — they would each have been pushed down twice. */
+main > :first-child { scroll-margin-top: 4rem; }
+
 /* ─── Focus ──────────────────────────────────────────────────────────────── */
 :focus-visible {
   outline: 2px solid #1F8A4C;

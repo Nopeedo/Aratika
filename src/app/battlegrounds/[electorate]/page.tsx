@@ -150,7 +150,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
               <div>
                 <Label icon={Megaphone} text="Spokesperson roles" />
                 <ul style={{ margin: '8px 0 0', paddingLeft: 18 }}>
-                  {mp.portfolios.map((p) => <li key={p} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6 }}>{p.replace(/^Spokesperson, /, '')}</li>)}
+                  {mp.portfolios.map((p) => <li key={p} style={{ fontSize: 13, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6 }}>{p.replace(/^Spokesperson\s*[\u2014:,-]\s*/, '')}</li>)}
                 </ul>
               </div>
             )}
