@@ -18,7 +18,7 @@ import { redirect } from 'next/navigation'
 import { CinematicHeroBurnt as CinematicHero } from '@/components/homepage/cinematic-hero-burnt'
 import { PartyCycleProvider } from '@/components/homepage/party-cycle'
 import { HomeBackground } from '@/components/homepage/home-background'
-import { PartyTilesSection, PartyNewsSection, PartyBillsSection } from '@/components/homepage/party-tiles-section'
+import { PartyTilesSection, PartyNewsSection, PartySeatsSection, PartyBillsSection } from '@/components/homepage/party-tiles-section'
 // import { PartyStanceSection } from '@/components/homepage/party-tiles-section' // hidden — see below
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { ThisTerm } from '@/components/homepage/this-term'
@@ -86,10 +86,12 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         {/* ═══ CORE 2 — explore by issue ═══ */}
         <PolicyHubGrid />
 
-        {/* Bills before the House — what the selected party has actually put
-            forward this term. Sits right after their stated positions so the
-            reader goes from "what they say" to "what they've tabled" without
-            a break. Follows the tile selection. */}
+        {/* Seats, then bills — the selected party's standing in the House and
+            what they have actually put before it. Both sit right after their
+            stated positions (and the compare sign that closes that section) so
+            the reader goes from "what they say" to "what they hold" to "what
+            they've tabled" without a break. Both follow the tile selection. */}
+        <PartySeatsSection />
         <PartyBillsSection />
 
         {/* "Summary of Party Stance" disabled on the front page — component

@@ -14,7 +14,7 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { trackerBills } from '@/lib/bills/member-party'
 import { getNewsForParty } from '@/lib/news/live'
 import { getVideosForParty } from '@/lib/news/videos'
-import { PartyTiles, PartyStanceSummary, PartyNewsSummary, PartyBillsSummary, type TileParty, type TilePosition } from '@/components/homepage/party-tiles'
+import { PartyTiles, PartyStanceSummary, PartyNewsSummary, PartyBillsSummary, PartySeatsSummary, type TileParty, type TilePosition } from '@/components/homepage/party-tiles'
 import type { PartySlug, PolicyTopic } from '@/types'
 
 // The six parties in Parliament, in current-seat order (TOP is extra-parliamentary).
@@ -147,6 +147,14 @@ export async function PartyTilesSection() {
 export async function PartyNewsSection() {
   const parties = await buildTileParties()
   return <PartyNewsSummary parties={parties} />
+}
+
+/** Seats in Parliament for the selected party, as its own homepage section
+ *  directly after the "Compare every party" sign. Was rendered inside the tile
+ *  block; moved below the policy section by request. */
+export async function PartySeatsSection() {
+  const parties = await buildTileParties()
+  return <PartySeatsSummary parties={parties} />
 }
 
 /** Bills before the House for the selected party, as its own homepage section
