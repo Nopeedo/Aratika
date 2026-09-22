@@ -251,19 +251,30 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
         </section>
       )}
 
-      {/* What they have put before the House, and the way into the tracker
-          filtered to them. */}
-      {cur && (
-        <section style={{ background: 'transparent' }}>
-          <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 32px' }}>
-            <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
-              <BillsRow p={cur} />
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Bills before the House used to render here too. It now lives in its own
+          section below "What does {party} stand for?" — see PartyBillsSummary. */}
 
     </>
+  )
+}
+
+/** Bills before the House for the selected party, as its own homepage section.
+ *  Placed after "What does {party} stand for?" rather than inside the tile
+ *  block — same shape as PartyNewsSummary, following the tile selection through
+ *  the shared party cycle and crossfading on its clock. */
+export function PartyBillsSummary({ parties }: { parties: TileParty[] }) {
+  const { panelSlug, fading, fadeMs } = usePartyCycle()
+  const p = parties.find((x) => x.slug === panelSlug) || null
+  if (!p) return null
+
+  return (
+    <section style={{ background: 'transparent' }}>
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 32px' }}>
+        <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
+          <BillsRow p={p} />
+        </div>
+      </div>
+    </section>
   )
 }
 
