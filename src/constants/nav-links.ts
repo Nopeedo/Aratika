@@ -23,12 +23,10 @@ export interface NavItem {
   /** Feature gate for the pillar itself (a group also shows if any child is enabled). */
   feature: string
   children?: NavChild[]
-  /** Render this top-level link as an accented pill (the headline destination). */
-  highlight?: boolean
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: 'Election Centre', href: '/elections/2026', description: 'Polls, seat projection, your electorate and live results on the night', feature: 'elections', highlight: true },
+  { label: 'Election Centre', href: '/elections/2026', description: 'Polls, seat projection, your electorate and live results on the night', feature: 'elections' },
   // "Your Vote" (/start, the personal compass) left the nav by request — the
   // pillar was one label among seven, and the compass now rides the two pages
   // everyone actually lands on instead: the homepage card moved above the

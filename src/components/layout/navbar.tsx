@@ -90,20 +90,6 @@ export function Navbar() {
             {NAV.map((item) =>
               item.children ? (
                 <DesktopGroup key={item.label} item={item} active={groupActive(item)} isActive={isActive} />
-              ) : item.highlight ? (
-                <Link
-                  key={item.href}
-                  href={item.href!}
-                  className={cn(
-                    'px-3 py-2 mr-1 rounded-md text-sm font-semibold transition-colors inline-flex items-center gap-1.5',
-                    isActive(item.href)
-                      ? 'bg-brand-jade-dark text-white'
-                      : 'bg-brand-jade text-white hover:bg-brand-jade-dark',
-                  )}
-                >
-                  <span className="size-1.5 rounded-full bg-white/90" aria-hidden="true" />
-                  {item.label}
-                </Link>
               ) : (
                 <Link
                   key={item.href}
@@ -188,21 +174,6 @@ export function Navbar() {
             {NAV.map((item) =>
               item.children ? (
                 <MobileGroup key={item.label} item={item} isActive={isActive} />
-              ) : item.highlight ? (
-                <Link
-                  key={item.href}
-                  href={item.href!}
-                  className={cn(
-                    'block px-3 py-2.5 rounded-md text-sm font-semibold transition-colors',
-                    isActive(item.href) ? 'bg-brand-jade-dark text-white' : 'bg-brand-jade text-white hover:bg-brand-jade-dark',
-                  )}
-                >
-                  <span className="flex items-center gap-2">
-                    <span className="size-1.5 rounded-full bg-white/90" aria-hidden="true" />
-                    {item.label}
-                  </span>
-                  <span className="block text-xs font-normal text-white/75 mt-0.5">{item.description}</span>
-                </Link>
               ) : (
                 <Link
                   key={item.href}
