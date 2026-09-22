@@ -64,7 +64,47 @@ export function PartyCycleProvider({ children }: { children: ReactNode }) {
     return () => { cancelled = true; clearTimeout(t1); clearTimeout(t2) }
   }, [autoplay, reduce])
 
-  const select = (slug: string | null) => { setAutoplay(false); setFading(false); setSelected(slug) }
+  /**
+   * Tapping a tile must never move the page under the reader.
+   *
+   * It used to, badly, on the FIRST tap: selectedSlug goes null → slug, which
+   * changes what ThisTerm and the corner compass draw ABOVE wherever you are
+   * reading, and the whole party-dependent page below it swaps at once. The
+   * sections re-flow, the document grows, and the browser's scroll anchoring
+   * lands you somewhere else entirely — a few hundred pixels, reading as a
+   * jump to a random spot.
+   *
+   * So the position is pinned: remember where the reader was and hold them
+   * there for ~700ms of re-flow. Their OWN scrolling wins immediately — any
+   * wheel, touch, or key input cancels the pin — so this can only undo the
+   * page moving by itself, never fight a person.
+   */
+  const select = (slug: string | null) => {
+    setAutoplay(false)
+    setFading(false)
+    setSelected(slug)
+    if (typeof window === 'undefined') return
+    const y = window.scrollY
+    let stop = false
+    const release = () => { stop = true }
+    const opts = { passive: true, once: true } as const
+    window.addEventListener('wheel', release, opts)
+    window.addEventListener('touchmove', release, opts)
+    window.addEventListener('keydown', release, opts)
+    const until = performance.now() + 700
+    const hold = () => {
+      if (stop) return cleanup()
+      if (Math.abs(window.scrollY - y) > 1) window.scrollTo(0, y)
+      if (performance.now() < until) requestAnimationFrame(hold)
+      else cleanup()
+    }
+    const cleanup = () => {
+      window.removeEventListener('wheel', release)
+      window.removeEventListener('touchmove', release)
+      window.removeEventListener('keydown', release)
+    }
+    requestAnimationFrame(hold)
+  }
 
   const cycleSlug = ORDER[index]
   const panelSlug = autoplay ? cycleSlug : selected

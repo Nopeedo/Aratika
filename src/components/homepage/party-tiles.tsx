@@ -11,11 +11,16 @@
  */
 
 import * as React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Armchair, Landmark, Newspaper, PlayCircle } from 'lucide-react'
+import { Landmark, Newspaper, PlayCircle, ScrollText } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
+import { BASELINE_ELECTION } from '@/constants/elections-data'
+import { PARTY_COLORS, PARTY_NAMES } from '@/constants/parties'
+import { BillsInfoButton } from '@/components/homepage/bills-info-button'
+import { SignLink } from '@/components/homepage/compare-sign-link'
+import { VideoLightbox, type PlayingVideo } from '@/components/homepage/video-lightbox'
 import type { PartySlug } from '@/types'
 import { INK, MANROPE } from '@/constants/theme'
 
@@ -104,7 +109,7 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
     const measure = () => {
       const widths = parties.map((p) => nameMeasureRefs.current[p.slug]?.getBoundingClientRect().width ?? 0)
       const max = Math.max(...widths, 0)
-      if (max > 0) setTabWidth(Math.ceil(max) + 32) // + the tab's own 16px/side padding
+      if (max > 0) setTabWidth(Math.ceil(max) + 36) // + the tab's own 18px/side padding
     }
     measure()
     document.fonts?.ready?.then(measure)
@@ -149,7 +154,9 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
           <span
             key={p.slug}
             ref={(el) => { nameMeasureRefs.current[p.slug] = el }}
-            style={{ fontSize: 15, fontWeight: 800, letterSpacing: '-.01em', fontFamily: MANROPE, whiteSpace: 'nowrap' }}
+            // Must match the tab's own type exactly, or the measured width
+            // is wrong and the longest name clips.
+            style={{ fontSize: 19, fontWeight: 800, letterSpacing: '-.01em', fontFamily: MANROPE, whiteSpace: 'nowrap' }}
           >
             {p.name}
           </span>
@@ -170,11 +177,11 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
               position: 'absolute', bottom: 0, right: 0,
               width: tabWidth ?? undefined, textAlign: 'center', boxSizing: 'border-box',
               whiteSpace: 'nowrap', background: cur.color, borderRadius: '10px 10px 0 0',
-              padding: '8px 16px', boxShadow: '0 -4px 10px rgba(0,0,0,.15)',
+              padding: '9px 18px', boxShadow: '0 -4px 10px rgba(0,0,0,.15)',
               opacity: cardVisible ? 0 : 1,
               transition: 'background-color .3s ease-in-out, opacity .3s ease-in-out',
             }}>
-              <span style={{ fontSize: 15, fontWeight: 800, letterSpacing: '-.01em', color: '#fff', fontFamily: MANROPE, lineHeight: 1.25 }}>{cur.name}</span>
+              <span style={{ fontSize: 19, fontWeight: 800, letterSpacing: '-.01em', color: '#fff', fontFamily: MANROPE, lineHeight: 1.25 }}>{cur.name}</span>
             </div>
           </div>
         </section>
@@ -319,6 +326,9 @@ function fmtDate(iso: string | null): string {
  */
 export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
   const { panelSlug, fading, fadeMs } = usePartyCycle()
+  // The clip playing over the page, if any. Held here rather than per-row so
+  // only one can be open, and so it survives the row list re-rendering.
+  const [playing, setPlaying] = useState<PlayingVideo | null>(null)
   const p = parties.find((x) => x.slug === panelSlug) || null
   if (!p) return null
 
@@ -330,24 +340,21 @@ export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
 
   return (
     <section style={{ background: 'transparent' }}>
-      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 56px' }}>
+      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
         <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
           <div style={{ marginBottom: 6, fontSize: 12.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: MUTE, fontFamily: MANROPE }}>
             In the news
           </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap', marginBottom: 18 }}>
+          <div style={{ marginBottom: 14 }}>
             {/* Names the party. In the tile panel the surrounding card said whose
                 coverage this was; standing on its own between two other sections
                 it has to say so itself. */}
             {/* Two lines reserved. "…on Te Pāti Māori" wraps on a phone where
                 "…on ACT" does not, which changed the page height every time the
                 cycle turned. */}
-            <h2 style={{ fontSize: 'clamp(24px,3.6vw,31px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.2, minHeight: '2.4em' }}>
+            <h2 style={{ fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.2, minHeight: '2.4em' }}>
               What&rsquo;s being reported on <span style={{ color: seatColor(p.color) }}>{p.name}</span>
             </h2>
-            <Link href="/news" style={{ fontSize: 14, fontWeight: 800, color: seatColor(p.color), textDecoration: 'none', fontFamily: MANROPE }}>
-              All coverage &rarr;
-            </Link>
           </div>
 
           {nothing ? (
@@ -355,20 +362,24 @@ export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
               Nothing naming {p.name} in the outlets we track right now. This fills in on its own as they report.
             </p>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 12 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 7 }}>
               {items.map((it) => it.kind === 'video' ? (
-                <a key={it.v.id} href={`https://www.youtube.com/watch?v=${it.v.videoId}`} target="_blank" rel="noopener noreferrer" style={rowStyle}>
-                  <span style={{ position: 'relative', width: 58, height: 42, borderRadius: 8, flexShrink: 0, overflow: 'hidden', background: '#000', display: 'block' }}>
+                // A clip plays HERE, over the page, instead of handing the
+                // reader to YouTube — a button, not a link, so it can't be
+                // caught by the new-tab handler. Clips that refuse to embed
+                // fall back to a new tab from inside the panel.
+                <button key={it.v.id} type="button" onClick={() => setPlaying({ videoId: it.v.videoId, title: it.v.title, source: it.v.source })} style={{ ...rowStyle, width: '100%', textAlign: 'left', cursor: 'pointer', font: 'inherit' }}>
+                  <span style={{ position: 'relative', width: 52, height: 38, borderRadius: 7, flexShrink: 0, overflow: 'hidden', background: '#000', display: 'block' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={it.v.thumbnail} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     <PlayCircle style={{ position: 'absolute', inset: 0, margin: 'auto', width: 18, height: 18, color: '#fff' }} />
                   </span>
                   <Meta source={it.v.source} date={it.v.pubDate} title={it.v.title} />
-                </a>
+                </button>
               ) : (
                 <a key={it.n.id} href={it.n.link} target="_blank" rel="noopener noreferrer" style={rowStyle}>
                   <span style={{
-                    width: 32, height: 32, borderRadius: 8, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    width: 30, height: 30, borderRadius: 7, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
                     background: it.n.kind === 'government' ? '#fff7e6' : '#eef4ff',
                   }}>
                     {it.n.kind === 'government'
@@ -380,8 +391,21 @@ export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
               ))}
             </div>
           )}
+
+          {/* Leaves this section the way the others leave theirs: a
+              party-coloured signpost, under the list rather than beside the
+              heading. */}
+          <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 16 }}>
+            <SignLink href="/news" icon={<Newspaper style={{ width: 15, height: 15, flexShrink: 0 }} />}>
+              All coverage
+            </SignLink>
+          </div>
         </div>
       </div>
+
+      {playing && (
+        <VideoLightbox video={playing} accent={seatColor(p.color)} onClose={() => setPlaying(null)} />
+      )}
     </section>
   )
 }
@@ -404,7 +428,7 @@ function Meta({ source, date, title }: { source: string; date: string | null; ti
           full headline is on the other side of the link. */}
       <span style={{
         display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-        fontSize: 14, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.4, minHeight: '2.8em',
+        fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35, minHeight: '2.7em',
       }}>{title}</span>
     </span>
   )
@@ -418,9 +442,10 @@ const clamp2: React.CSSProperties = {
   display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
 }
 
+// Compact by design: these are a scan list, not a set of cards to dwell on.
 const rowStyle: React.CSSProperties = {
-  display: 'flex', gap: 12, alignItems: 'center', textDecoration: 'none',
-  border: `1px solid ${LINE}`, borderRadius: 12, padding: '10px 12px', background: '#fff',
+  display: 'flex', gap: 10, alignItems: 'center', textDecoration: 'none',
+  border: `1px solid ${LINE}`, borderRadius: 10, padding: '7px 10px', background: '#fff',
 }
 
 /**
@@ -448,9 +473,6 @@ function BillsRow({ p }: { p: TileParty }) {
 
   return (
     <div>
-      <div style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: SUB, fontFamily: MANROPE, marginBottom: 10 }}>
-        Bills before the House
-      </div>
 
       {/* Same shape for every party, including one with nothing to show.
           A party with no bills used to render a single sentence where the others
@@ -470,45 +492,65 @@ function BillsRow({ p }: { p: TileParty }) {
           per party, which was the last 105px of page shift left after the empty
           state was squared away. A grid of three keeps one row for everyone, and
           the blanks are trailing so the real figures stay left-aligned. */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 16, marginBottom: 10 }}>
-        {[
-          ...(p.governing ? [<Stat key="gov" n={b.government} label="Government bills" sub="by their ministers" accent={accent} />] : []),
-          <Stat key="mem" n={b.members} label={<>Members&rsquo; bills</>} sub="by their MPs" accent={accent} />,
-          ...(b.other > 0 ? [<Stat key="oth" n={b.other} label="Local &amp; private" sub="one-off bills" accent={accent} />] : []),
-        ].concat([<span key="p1" />, <span key="p2" />]).slice(0, 3)}
-      </div>
+      {/* The figures sit in a framed rectangle, spanning the column, in the
+          same party-coloured frame the chamber arch above them wears — so the
+          two blocks read as one section rather than a chart and some loose
+          numbers. The "x of y are now law" line goes inside it: it is a fact
+          about these figures, not a note after them. */}
+      <div style={{
+        border: `4px solid ${PARTY_COLORS[p.slug as keyof typeof PARTY_COLORS]?.bg ?? p.color}`,
+        background: PARTY_COLORS[p.slug as keyof typeof PARTY_COLORS]?.light ?? '#fff',
+        borderRadius: 16, padding: '16px 14px', marginBottom: 12,
+        transition: 'border-color .25s ease-in-out, background-color .25s ease-in-out',
+        textAlign: 'center',
+      }}>
+        {/* Heading inside the box now, in full black, with the (i) in the
+            top-right corner carrying the process explanation that used to run
+            as body copy underneath. */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 12 }}>
+          <div style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: '#000', fontFamily: MANROPE, textAlign: 'center', paddingLeft: 26 }}>
+            Bills before the House
+          </div>
+          <BillsInfoButton accent={accent} governing={!!p.governing} slug={p.slug} />
+        </div>
+        {/* Columns size to the figures that EXIST rather than always being
+            three with blanks padding the row: on a phone that gave every stat
+            a third of the width whether or not anything was in the other two,
+            which squeezed "Government bills" to 60px and clipped it. auto-fit
+            keeps two per row at phone widths and puts all three on one line as
+            soon as there is room. */}
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fit, minmax(min(92px, 100%), 1fr))`, gap: '14px 16px', justifyItems: 'center' }}>
+          {[
+            // One word per label. The heading above already says these are
+            // bills, so repeating it in every column only made "Government
+            // bills" wrap to two lines in a 100px column.
+            ...(p.governing ? [<Stat key="gov" n={b.government} label="Government" sub="by their ministers" accent={accent} icon />] : []),
+            <Stat key="mem" n={b.members} label="Members" sub="by their MPs" accent={accent} icon />,
+            ...(b.other > 0 ? [<Stat key="oth" n={b.other} label={<>Local &amp; private</>} sub="one-off bills" accent={accent} icon />] : []),
+          ]}
+        </div>
       {/* Kept to one line at every width — the longer wording wrapped on a phone
           and put the shift straight back. */}
-      <p style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>
-        {none
-          ? 'None before the House this term.'
-          : b.passed === 0
-            ? 'None have passed into law yet.'
-            : `${b.passed} of the ${b.total} ${b.passed === 1 ? 'is' : 'are'} now law.`}
-      </p>
+        <p style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, margin: 0 }}>
+          {none
+            ? 'None before the House this term.'
+            : b.passed === 0
+              ? 'None have passed into law yet.'
+              : `${b.passed} of the ${b.total} ${b.passed === 1 ? 'is' : 'are'} now law.`}
+        </p>
+      </div>
 
-      {/* The point of the whole block. Without this, "National 203" against
-          "Te Pāti Māori 0" reads as a scoreboard. */}
-      <p style={{ fontSize: 13.5, color: SUB, fontFamily: MANROPE, margin: '0 0 12px', lineHeight: 1.55, maxWidth: 620 }}>
-        {p.governing ? (
-          <>
-            Government bills are the coalition&rsquo;s programme, counted here by the party of the minister in charge
-            rather than belonging to that party alone.
-          </>
-        ) : (
-          <>
-            Only ministers introduce government bills, so a party in opposition has none. Their MPs enter the
-            members&rsquo; ballot instead, which is drawn at random.
-          </>
-        )}
-      </p>
-
-      <Link
-        href={none ? '/bills' : `/bills?party=${p.slug}`}
-        style={{ fontSize: 14, fontWeight: 800, color: p.color, textDecoration: 'none', fontFamily: MANROPE }}
-      >
-        {none ? 'Browse all bills' : `See ${p.name}’s ${b.total} bills`} &rarr;
-      </Link>
+      {/* The "government bills are the coalition's programme…" paragraph
+          that stood here is in the (i) bubble at the top of the box now: it
+          is process, and four lines of it sat between the figures and the
+          link out. */}
+      {/* Leaves this block the same way the policy section and the seats
+          section leave theirs: a party-coloured signpost, under the box. */}
+      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+        <SignLink href={none ? '/bills' : `/bills?party=${p.slug}`} icon={<ScrollText style={{ width: 15, height: 15, flexShrink: 0 }} />}>
+          {none ? 'Browse all bills' : `See ${p.name}’s ${b.total} bills`}
+        </SignLink>
+      </div>
     </div>
   )
 }
@@ -518,17 +560,23 @@ function BillsRow({ p }: { p: TileParty }) {
  *  than "Members' bills / by their MPs", so a governing party's bills block was
  *  20px taller and the page still moved as the cycle turned. Two lines are
  *  reserved for each, which is what the longest of them needs. */
-function Stat({ n, label, sub, accent }: { n: number; label: React.ReactNode; sub: string; accent: string }) {
+function Stat({ n, label, sub, accent, icon }: { n: number; label: React.ReactNode; sub: string; accent: string; icon?: boolean }) {
   return (
     // The reservation is on the tile, not on each line. Putting a two-line
     // minHeight on the label opened a visible gap between it and the sublabel
     // wherever the label only needed one line, which was every desktop width.
     // Reserving the whole tile puts the slack under the last line instead,
     // where nobody sees it.
-    <div style={{ minHeight: 112 }}>
-      <div style={{ fontSize: 34, fontWeight: 800, lineHeight: 1, color: accent, fontFamily: MANROPE }}>{n}</div>
-      <div style={{ ...clamp2, fontSize: 13.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginTop: 5, lineHeight: 1.25 }}>{label}</div>
-      <div style={{ ...clamp2, fontSize: 12.5, color: SUB, fontFamily: MANROPE, marginTop: 1, lineHeight: 1.3 }}>{sub}</div>
+    <div style={{ minHeight: 96, minWidth: 0, textAlign: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
+        {icon && <ScrollText style={{ width: 24, height: 24, flexShrink: 0, color: accent }} strokeWidth={2.2} aria-hidden />}
+        <span style={{ fontSize: 34, fontWeight: 800, lineHeight: 1, color: accent, fontFamily: MANROPE }}>{n}</span>
+      </div>
+      {/* One line, shrunk to fit rather than wrapped: these sit in ~100px
+          columns on a phone and a label that wraps puts the sublabel under it
+          at a different height in each column. */}
+      <div style={{ fontSize: 'clamp(12px, 3.6vw, 13.5px)', fontWeight: 800, color: INK, fontFamily: MANROPE, marginTop: 5, lineHeight: 1.25, whiteSpace: 'nowrap' }}>{label}</div>
+      <div style={{ ...clamp2, fontSize: 'clamp(11.5px, 3.3vw, 12.5px)', color: SUB, fontFamily: MANROPE, marginTop: 1, lineHeight: 1.3 }}>{sub}</div>
     </div>
   )
 }
@@ -641,15 +689,111 @@ function PanelHeader({ p }: { p: TileParty }) {
 
 /** Seats in Parliament — its own standalone row, above the "Where they stand" box. */
 function SeatsRow({ p }: { p: TileParty }) {
+  const res = BASELINE_ELECTION.results?.find((r) => r.party === p.slug)
+  const votePct = res?.votePct
+  // Who formed the government is recorded as a sentence ("National – ACT –
+  // New Zealand First coalition"), so the parties are read back out of it by
+  // name rather than kept as a second list that could drift from it.
+  const govText = BASELINE_ELECTION.governmentFormed ?? ''
+  const govParties = (['national', 'labour', 'green', 'act', 'nzfirst', 'tpm'] as const)
+    .filter((slug) => govText.includes(PARTY_NAMES[slug].full) || govText.includes(PARTY_NAMES[slug].short))
+  const inGovernment = govParties.includes(p.slug as typeof govParties[number])
+  const govPartners = govParties.filter((slug) => slug !== p.slug).map((slug) => PARTY_NAMES[slug].short).join(' and ')
+  const labelRef = useRef<HTMLSpanElement>(null)
+  const lineRef = useRef<HTMLSpanElement>(null)
+  const [size, setSize] = useState(17)
+  // Width of "Seats in Parliament", so the lines under it can be held
+  // NARROWER than the label — they are supporting detail and shouldn't
+  // out-measure the thing they support. They wrap inside it instead.
+  const [labelW, setLabelW] = useState<number | null>(null)
+
+  // Fit the vote line to the width of "Seats in Parliament" above it. A
+  // clamp() can't do this: the line ends in the party's NAME, so its natural
+  // width swings from "ACT" to "Te Pāti Māori" and only one of them would
+  // land on the label's width. Measured at a fixed base size and scaled, so
+  // the two lines stay the same width at every breakpoint. The label is what
+  // sets the column's width, so scaling the line to it can't feed back.
+  useLayoutEffect(() => {
+    const label = labelRef.current, line = lineRef.current
+    if (!label || !line) return
+    const fit = () => {
+      const want = label.getBoundingClientRect().width
+      if (!want) return
+      setLabelW(want)
+      line.style.fontSize = '20px'
+      const natural = line.getBoundingClientRect().width
+      if (natural > 0) setSize(Math.min(26, Math.max(12, (20 * want) / natural)))
+    }
+    fit()
+    window.addEventListener('resize', fit)
+    return () => window.removeEventListener('resize', fit)
+  }, [p.slug, p.name])
+
+  // A centred column, not a row: the number sits in the chamber arch's
+  // opening above it (ParliamentNow tucks it up there), so it has to be the
+  // only thing on its line — hence no armchair beside it, and the label and
+  // the party vote stacked underneath.
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-      <Armchair style={{ width: 64, height: 64, marginLeft: 10, color: seatColor(p.color) }} strokeWidth={2} aria-hidden />
-      <span style={{ fontSize: 72, fontWeight: 800, lineHeight: 1, color: seatColor(p.color), fontFamily: MANROPE }}>{p.seats}</span>
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', textAlign: 'left' }}>
-        <span style={{ fontSize: 20, fontWeight: 800, color: SUB, textTransform: 'uppercase', letterSpacing: '.02em', lineHeight: 1.15, fontFamily: MANROPE }}>Seats in</span>
-        <span style={{ fontSize: 20, fontWeight: 800, color: SUB, textTransform: 'uppercase', letterSpacing: '.02em', lineHeight: 1.15, fontFamily: MANROPE }}>Parliament</span>
-        <span style={{ fontSize: 15, fontWeight: 600, color: '#5b3d2a', marginTop: 4, fontFamily: MANROPE }}>As of 2023 election</span>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+      {/* The OFFICIAL COUNT, not the party profile's current seat total, so
+          the three figures in this block agree: the profile has National on
+          49 (the Port Waikato by-election in Nov 2023 added a seat) while the
+          chamber above lights 48 and the split below reads 43 + 5. The
+          heading says "as elected at the 2023 General Election", so the
+          count is the number that belongs here. */}
+      <span style={{ fontSize: 72, fontWeight: 800, lineHeight: 1, color: seatColor(p.color), fontFamily: MANROPE }}>{res?.seats ?? p.seats}</span>
+      <span ref={labelRef} style={{ fontSize: 20, fontWeight: 800, color: INK, textTransform: 'uppercase', letterSpacing: '.02em', lineHeight: 1.15, marginTop: 6, whiteSpace: 'nowrap', fontFamily: MANROPE }}>Seats in Parliament</span>
+      {/* What won those seats, rather than "as of 2023 election" — the date
+          is already in the heading above. Phrased as a share of PEOPLE, not
+          "of the party vote": that wording assumes the reader knows MMP has
+          two votes, and the question it left them with was "11.6% of what?".
+          Strictly it is the party vote; "voters chose" is accurate about who
+          without making the reader learn the mechanism first. */}
+      {votePct != null && (
+        <span ref={lineRef} style={{ fontSize: size, fontWeight: 800, color: seatColor(p.color), marginTop: 5, lineHeight: 1.25, whiteSpace: 'nowrap', fontFamily: MANROPE }}>
+          {/* The figure carries a white BRUSH underline: a filled stroke that
+              swells in the middle and tapers at both ends, the way a loaded
+              brush leaves the paper — not a hairline rule. */}
+          <span style={{ position: 'relative', display: 'inline-block', whiteSpace: 'nowrap' }}>
+            {votePct.toFixed(1)}%
+            <svg
+              aria-hidden
+              viewBox="0 0 100 12"
+              preserveAspectRatio="none"
+              style={{ position: 'absolute', left: '-5%', width: '110%', bottom: '-0.34em', height: '0.44em', overflow: 'visible' }}
+            >
+              <path
+                d="M1.6 8.4 C 20 5.0, 44 7.0, 64 5.0 C 78 3.6, 89 4.3, 98.6 3.0
+                   C 97.4 5.0, 93 6.0, 86 6.6 C 74 7.6, 60 7.4, 44 9.0
+                   C 30 10.4, 14 11.2, 2.2 10.2 Z"
+                fill="#fff"
+              />
+            </svg>
+          </span>
+          {' '}of voters chose {p.name}
+        </span>
+      )}
+
+      {/* How those seats were won, and where the party ended up. Both come
+          from the official 2023 result and neither was anywhere on the site:
+          the electorate/list split is the clearest illustration of MMP there
+          is (Te Pāti Māori hold 6 seats on 3.1% because all six are
+          electorates), and whether a party is IN government is the fact that
+          frames everything else the reader is about to read about them. */}
+      <div style={{ marginTop: 12, maxWidth: labelW ? labelW * 0.88 : undefined, fontSize: 14.5, fontWeight: 800, lineHeight: 1.35, fontFamily: MANROPE, color: INK }}>
+        {/* Names the party and says what it DOES — "governs" rather than the
+            static "in government" — so the line reads as a statement about
+            them rather than a status label. */}
+        {inGovernment
+          ? <><span style={{ color: seatColor(p.color) }}>{p.name}</span> governs{govPartners ? <span style={{ fontWeight: 600, color: SUB }}> with {govPartners}</span> : null}</>
+          : <><span style={{ color: seatColor(p.color) }}>{p.name}</span> is in opposition</>}
       </div>
+      {/* The electorate-vs-list split was here ("2 won a local seat, 9 came
+          off the party list"). Removed: it explains the MMP MECHANISM, and
+          the reader's question at this point on the front page is who the
+          parties are and what they stand for. The numbers are still in
+          elections-data (electorateSeats / listSeats) if it earns a place on
+          the Election Centre, where the mechanism is the subject. */}
     </div>
   )
 }

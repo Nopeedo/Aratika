@@ -37,6 +37,20 @@ import { SPECTRUM_ORDER, type PartyResult } from '@/constants/elections-data'
 import type { PartySlug } from '@/types'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
+/** A seat dot's rim: the same hue, darkened, so a pale fill (ACT's yellow)
+ *  still reads as a disc on a light ground. Near-black fills (NZ First) are
+ *  left alone — a darker ring on them would be invisible anyway, and a
+ *  lighter one would look like a halo. */
+function rimColor(hex: string): string | undefined {
+  const m = hex.replace('#', '')
+  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
+  const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+  if (lum < 0.18) return undefined
+  const f = lum > 0.6 ? 0.55 : 0.7
+  const d = (v: number) => Math.round(v * f).toString(16).padStart(2, '0')
+  return `#${d(r)}${d(g)}${d(b)}`
+}
+
 const EMPTY = '#e4e3de'
 const RIGHT_BLOC: PartySlug[] = ['national', 'act', 'nzfirst']
 const LEFT_BLOC: PartySlug[] = ['labour', 'green', 'tpm']
@@ -85,7 +99,7 @@ function seatOrder(byParty: Record<string, number>): PartySlug[] {
 }
 
 export function SeatChamber({
-  elected, electedTotal, electedYear, electedSlug, projection, projectionTotal, asAt,
+  elected, electedTotal, electedYear, electedSlug, projection, projectionTotal, asAt, home = false, heading, frameColor, frameLight, highlight,
 }: {
   elected: PartyResult[]
   electedTotal: number
@@ -94,6 +108,23 @@ export function SeatChamber({
   projection: SeatEntry[]
   projectionTotal: number
   asAt: string
+  /**
+   * Homepage variant: the elected chamber only — no "The seats" eyebrow and
+   * no tabs (polls and build-a-majority stay on the Election Centre), and
+   * the heading at the homepage section size so it sits level with "The
+   * election at a glance". Same chart, same card, same numbers.
+   */
+  home?: boolean
+  /** Replaces the h2 in the home variant (the homepage supplies a heading
+   *  that follows the party tiles). The sub-line and results link stay. */
+  heading?: React.ReactNode
+  /** Home variant: colour the two containers in the selected party's colours,
+   *  the way the party panel above them is coloured. */
+  frameColor?: string
+  frameLight?: string
+  /** Light up only this party's seats; the rest fade back. Follows the
+   *  homepage tiles, so the arch answers "which of these are theirs?". */
+  highlight?: string
 }) {
   const [mode, setMode] = React.useState<Mode>('elected')
   const [picked, setPicked] = React.useState<Set<PartySlug>>(new Set())
@@ -110,6 +141,44 @@ export function SeatChamber({
   const byParty = isElected ? electedByParty : projectedByParty
 
   const geo = React.useMemo(() => hemicycle(total), [total])
+
+  // The dome frame, derived from the seats themselves rather than guessed
+  // with border-radius: the outermost dot sits at (cx ± outerR, cy), so a
+  // semicircle of outerR + dotR + GAP keeps an EXACT, constant margin all the
+  // way round the arc. Drawn in the SVG so it scales with the chart.
+  const dome = React.useMemo(() => {
+    const GAP = 16, CORNER = 10, STROKE = 4
+    const cx = geo.width / 2
+    const cy = Math.max(...geo.seats.map((s) => s.y))
+    const dist = geo.seats.map((s) => Math.hypot(s.x - cx, s.y - cy))
+    // A BAND, not a dome: the outer edge clears the outermost row by GAP and
+    // the inner edge clears the innermost row by the same, so the frame
+    // follows the seating on both sides with an exact, constant margin.
+    const R = Math.max(...dist) + geo.dotR + GAP
+    const Ri = Math.max(CORNER * 2, Math.min(...dist) - geo.dotR - GAP)
+    const bottom = cy + geo.dotR + GAP
+    const d = [
+      `M ${cx - R} ${bottom - CORNER}`,
+      `L ${cx - R} ${cy}`,
+      `A ${R} ${R} 0 0 1 ${cx + R} ${cy}`,
+      `L ${cx + R} ${bottom - CORNER}`,
+      `A ${CORNER} ${CORNER} 0 0 1 ${cx + R - CORNER} ${bottom}`,
+      `L ${cx + Ri + CORNER} ${bottom}`,
+      `A ${CORNER} ${CORNER} 0 0 1 ${cx + Ri} ${bottom - CORNER}`,
+      `L ${cx + Ri} ${cy}`,
+      `A ${Ri} ${Ri} 0 0 0 ${cx - Ri} ${cy}`,
+      `L ${cx - Ri} ${bottom - CORNER}`,
+      `A ${CORNER} ${CORNER} 0 0 1 ${cx - Ri - CORNER} ${bottom}`,
+      `L ${cx - R + CORNER} ${bottom}`,
+      `A ${CORNER} ${CORNER} 0 0 1 ${cx - R} ${bottom - CORNER}`,
+      'Z',
+    ].join(' ')
+    const pad = STROKE / 2 + 1
+    return {
+      d, stroke: STROKE,
+      viewBox: `${cx - R - pad} ${cy - R - pad} ${(R + pad) * 2} ${bottom - cy + R + pad * 2}`,
+    }
+  }, [geo])
   const seatParties = React.useMemo(() => seatOrder(byParty), [byParty])
 
   // Rows, biggest first. Same shape in all three modes so the list doesn't
@@ -146,20 +215,27 @@ export function SeatChamber({
     : mode === 'polls' ? 'If the polls held today'
     : 'Build a majority'
   const sub = mode === 'elected'
-    ? `As elected at the ${electedYear} General Election. It doesn’t reflect any changes in party membership since.`
+    // On the homepage the line is trimmed to the fact itself; the Election
+    // Centre keeps the membership-changes caveat, where the detail belongs.
+    ? home
+      ? `As elected at the ${electedYear} General Election.`
+      : `As elected at the ${electedYear} General Election. It doesn’t reflect any changes in party membership since.`
     : mode === 'polls'
     ? `A seat estimate from the poll averages as at ${asAt}. Polls are not a result.`
     : `Under MMP the biggest party doesn’t automatically govern. A bloc needs ${majority} of ${total}. Tap parties to build one.`
 
   return (
     <div>
+      {!home && (
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 9 }}>
         <Landmark style={{ width: 14, height: 14 }} /> The seats
       </div>
+      )}
 
       {/* Three equal columns rather than a wrapping pill row: at 343px a row of
           pills either wraps unevenly or scrolls sideways, and a toggle you have
           to scroll to see the third option of is a toggle with two options. */}
+      {!home && (
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 4, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 12, padding: 4, marginBottom: 14 }}>
         {TABS.map((t) => {
           const on = mode === t.key
@@ -180,45 +256,89 @@ export function SeatChamber({
           )
         })}
       </div>
+      )}
 
-      <h2 style={{ fontSize: 'clamp(20px, 4.4vw, 26px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 5px' }}>{title}</h2>
+      {heading ?? (
+        <h2 style={{ fontSize: home ? 'clamp(28px,5.5vw,32px)' : 'clamp(20px, 4.4vw, 26px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 5px' }}>{title}</h2>
+      )}
       <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 8px', maxWidth: 580, lineHeight: 1.55 }}>{sub}</p>
-      {mode === 'elected' && (
+      {/* The homepage puts this link below the numbers instead, as a signpost
+          (see ParliamentNow) — the same shape the policy section closes with. */}
+      {mode === 'elected' && !home && (
         <Link href={`/elections/${electedSlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
           Full {electedYear} results <ArrowRight style={{ width: 14, height: 14 }} />
         </Link>
       )}
 
-      <div style={{ marginTop: 14, border: `1px solid ${BORDER}`, borderRadius: 18, background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)', padding: 16 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 18, alignItems: 'center' }}>
+      {/* Home variant splits the card in two: the chamber sits in a container
+          shaped like the chamber itself (a dome — big elliptical top corners,
+          small square-ish bottom ones), and the numbers in an ordinary card
+          below it, on the page ground. Only the chamber gets a frame: the
+          party panel's thick colour border on its light fill. Elsewhere it
+          stays one plain card with the chart and numbers side by side. */}
+      <div style={home
+        ? { marginTop: 14, display: 'flex', flexDirection: 'column', gap: 12 }
+        : { marginTop: 14, border: `1px solid ${BORDER}`, borderRadius: 18, background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)', padding: 16 }}>
+        <div style={home
+          ? { display: 'contents' }
+          : { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 18, alignItems: 'center' }}>
 
           {/* Chart */}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <svg viewBox={`0 0 ${geo.width} ${geo.height}`} style={{ width: '100%', maxWidth: 460 }} role="img"
+            <svg viewBox={home ? dome.viewBox : `0 0 ${geo.width} ${geo.height}`} style={{ width: '100%', maxWidth: 460 }} role="img"
               aria-label={mode === 'build' ? `${chosenSeats} of ${total} seats selected` : `Seat distribution, ${total} seats`}>
+              {/* The frame, drawn first so the seats sit on it. */}
+              {home && (
+                <path
+                  d={dome.d}
+                  fill={frameLight ?? '#fff'}
+                  stroke={frameColor ?? BORDER}
+                  strokeWidth={dome.stroke}
+                  strokeLinejoin="round"
+                  style={{ transition: 'fill .25s ease-in-out, stroke .25s ease-in-out' }}
+                />
+              )}
               {geo.seats.map((s, i) => {
                 const party = seatParties[i]
                 const lit = mode !== 'build' || (party && picked.has(party))
                 // Round the coordinates: Math.cos/sin can differ in the last
                 // floating-point digit between the server render and the
                 // browser's, which trips hydration on the raw values.
+                // Seats that aren't the highlighted party's fade back rather
+                // than vanish: the shape of the whole House is the point, and
+                // an arch with holes in it isn't a chamber.
+                const dim = !!highlight && party !== highlight
+                const fill = party && lit ? PARTY_COLORS[party].bg : EMPTY
+                const rim = party && lit ? rimColor(PARTY_COLORS[party].bg) : undefined
                 return (
                   <circle
                     key={i}
                     cx={Math.round(s.x * 100) / 100}
                     cy={Math.round(s.y * 100) / 100}
-                    r={geo.dotR}
-                    fill={party && lit ? PARTY_COLORS[party].bg : EMPTY}
-                    style={{ transition: 'fill .25s ease' }}
+                    // Shrink by half the rim so the dot's OUTER edge stays put
+                    // — otherwise every seat grows by a pixel and the rows
+                    // start touching.
+                    r={geo.dotR - (rim ? 0.5 : 0)}
+                    fill={fill}
+                    stroke={rim}
+                    strokeWidth={rim ? 1 : undefined}
+                    opacity={dim ? 0.38 : 1}
+                    style={{ transition: 'fill .25s ease, opacity .3s ease-in-out' }}
                   />
                 )
               })}
-              <text x={geo.width / 2} y={geo.height - 30} textAnchor="middle" style={{ fontFamily: MANROPE, fontWeight: 800, fontSize: 31, fill: mode === 'build' && hasMajority ? JADE : INK }}>{bigNumber}</text>
-              <text x={geo.width / 2} y={geo.height - 13} textAnchor="middle" style={{ fontFamily: MANROPE, fontWeight: 600, fontSize: 12, fill: TERTIARY }}>{caption}</text>
+              {/* The chamber total sits in the middle of the arc — but not on
+                  the homepage, where the number under the dome is the selected
+                  party's seat count and two figures there read as one. */}
+              {!home && <text x={geo.width / 2} y={geo.height - 30} textAnchor="middle" style={{ fontFamily: MANROPE, fontWeight: 800, fontSize: 31, fill: mode === 'build' && hasMajority ? JADE : INK }}>{bigNumber}</text>}
+              {!home && <text x={geo.width / 2} y={geo.height - 13} textAnchor="middle" style={{ fontFamily: MANROPE, fontWeight: 600, fontSize: 12, fill: TERTIARY }}>{caption}</text>}
             </svg>
           </div>
 
-          {/* Numbers */}
+          {/* Numbers. Not on the homepage: the party's own seat count sits
+              under the dome there (ParliamentNow), and a full table of all six
+              repeated the chart beside it. */}
+          {!home && (
           <div>
             {mode === 'build' && (
               <div style={{ marginBottom: 13 }}>
@@ -274,6 +394,7 @@ export function SeatChamber({
               })}
             </div>
           </div>
+          )}
         </div>
       </div>
 

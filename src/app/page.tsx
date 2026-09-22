@@ -21,11 +21,12 @@ import { HomeBackground } from '@/components/homepage/home-background'
 import { PartyTilesSection, PartyNewsSection, PartySeatsSection, PartyBillsSection } from '@/components/homepage/party-tiles-section'
 // import { PartyStanceSection } from '@/components/homepage/party-tiles-section' // hidden — see below
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
-import { ThisTerm } from '@/components/homepage/this-term'
+// import { ThisTerm } from '@/components/homepage/this-term' // hidden — see below
 import { FindMyMpButton } from '@/components/homepage/find-my-mp-button'
 import { CompassCta } from '@/components/compass/compass-cta'
 import { WhatsMoved } from '@/components/homepage/whats-moved'
-import { CredibilityStrip } from '@/components/homepage/credibility-strip'
+// import { CredibilityStrip } from '@/components/homepage/credibility-strip' // hidden — see below
+import { ParliamentNow } from '@/components/homepage/parliament-now'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 import { AlertsBanner } from '@/components/notifications/alerts-banner'
 import { OpenLinksInNewTab } from '@/components/homepage/open-links-in-new-tab'
@@ -92,14 +93,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         {/* ═══ CORE 2 — explore by issue ═══ */}
         <PolicyHubGrid />
 
-        {/* Seats, then bills — the selected party's standing in the House and
-            what they have actually put before it. Both sit right after their
-            stated positions (and the compare sign that closes that section) so
-            the reader goes from "what they say" to "what they hold" to "what
-            they've tabled" without a break. Both follow the tile selection. */}
-        <PartySeatsSection />
-        <PartyBillsSection />
-
         {/* "Summary of Party Stance" disabled on the front page — component
             is intact (party-tiles-section.tsx / party-tiles.tsx PanelStance),
             uncomment to bring it back. */}
@@ -112,12 +105,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             they have seen what the site does with them. Its results now link
             to our own sourced positions for all seven parties. */}
 
-        {/* ═══ CORE 3 — what is already settled ═══
-            The tiles say who is standing, the issues say what they claim, and
-            this says where things actually stand before any of it changes. It
-            reads the same party selection the tiles set, so tapping a party up
-            there lights their electorates down here. */}
-        <ThisTerm />
+        {/* "Who's in Parliament right now" — the electorate map — was here.
+            Removed from the front page by request. The component is intact
+            (this-term.tsx) and the full map still lives at /map; uncomment
+            the import and this line to bring it back. */}
+        {/* <ThisTerm /> */}
 
         {/* ── In the news — follows the tile selection ──
             Its own section rather than a row inside the tile panel: the panel
@@ -126,6 +118,15 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             headline is worth more once the reader knows the seats and the
             bills it is talking about. */}
         <PartyNewsSection />
+
+        {/* ── The Parliament you're voting to change ──
+            The 2023 chamber and seat table, same chart as the Election Centre
+            (which keeps its own copy, with the polls and build-a-majority
+            tabs). Sits just before the stat tiles: the seats ARE the biggest
+            of those numbers, drawn. Sits directly under the coverage: a
+            headline about a party reads better once you know how many seats
+            they hold and which side of the House they are on. */}
+        <ParliamentNow seats={<PartySeatsSection />} bills={<PartyBillsSection />} />
 
         {/* ── Latest: what has moved ──
             New candidates and bill stage changes, each linking to where the
@@ -136,8 +137,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             Renders nothing when both windows are empty. */}
         <WhatsMoved />
 
-        {/* ── Why you can trust it (slim) ── */}
-        <CredibilityStrip />
+        {/* "The election at a glance" — the four stat tiles — was here.
+            Removed from the front page by request. The component is intact
+            (credibility-strip.tsx); uncomment the import and this line to
+            bring it back. */}
+        {/* <CredibilityStrip /> */}
 
         {/* Alerts / install prompt — down here, after the content has made its
             case, not under the hero where it used to sit. Asking someone to
