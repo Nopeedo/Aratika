@@ -21,7 +21,6 @@ import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { getProposalGrouping, type GroupedProposal } from '@/constants/policy-proposal-groups'
 import { TopicChip } from '@/components/homepage/topic-chip'
-import { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
 import { isLightHex } from '@/components/homepage/battleground-card'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import type { PartySlug } from '@/types'
@@ -627,10 +626,6 @@ function FocusedCard({ slug, pos, topicLabel }: {
   // panel shows the raw keyProposals exactly as before.
   const grouping = pos ? getProposalGrouping(pos.topic, slug) : null
   const items: GroupedProposal[] = grouping?.proposals ?? bullets
-  // The issue's pill-border colour (TOPIC_BORDER_HEX, keyed by the Tailwind
-  // hue in the topic's textColor) — the title's underline below.
-  const topicHue = POLICY_TOPICS[pos?.topic as keyof typeof POLICY_TOPICS]?.textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
-  const topicHex = (TOPIC_BORDER_HEX[topicHue] ?? TOPIC_BORDER_HEX.slate).rest
   // Verbatim only — excerpts/quote are the two fields the ingestion script
   // mechanically verifies as exact substrings of the party's own published
   // text (see scripts/draft-positions.mjs). keyProposals/stance/summary are
@@ -649,11 +644,7 @@ function FocusedCard({ slug, pos, topicLabel }: {
 
   return (
     <div>
-      {/* Underlined in the ISSUE's colour — the same hue as the pill border
-          the reader tapped — so the title ties back to that pill. A rule under
-          the text, not text-decoration, so it sits clear of the descenders and
-          spans only as wide as the title. */}
-      <div style={{ fontSize: fitTitleSize(`${party.name} on ${topicLabel}`), fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15, whiteSpace: 'nowrap', display: 'inline-block', paddingBottom: 4, borderBottom: `3px solid ${topicHex}` }}>{party.name} on {topicLabel}</div>
+      <div style={{ fontSize: fitTitleSize(`${party.name} on ${topicLabel}`), fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15, whiteSpace: 'nowrap' }}>{party.name} on {topicLabel}</div>
       {/* The stance headline is gone from the top of the panel. It restated the
           proposals directly beneath it — Labour's housing stance read "Capital
           gains tax on investment property; solar help for renters and
