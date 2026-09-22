@@ -163,7 +163,7 @@ export function Navbar() {
               href="/?full=1"
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'flex items-center gap-2 px-3 py-2.5 rounded-md text-sm font-semibold transition-colors mb-1 pb-3 border-b border-border',
+                'flex items-center gap-2 px-3 py-2.5 rounded-md text-sm font-semibold transition-colors',
                 pathname === '/' ? 'text-brand-jade bg-brand-jade-subtle' : 'text-foreground hover:bg-surface',
               )}
             >
@@ -186,7 +186,6 @@ export function Navbar() {
                   )}
                 >
                   {item.label}
-                  <span className="block text-xs font-normal text-muted mt-0.5">{item.description}</span>
                 </Link>
               ),
             )}
