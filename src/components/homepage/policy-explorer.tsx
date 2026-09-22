@@ -511,8 +511,7 @@ function readableOnWhite(hex: string): string {
 /**
  * MoreDetail — the party's own cited words, expanded in place.
  *
- * Same grid-rows transition as SeeMore above, deliberately: two expanders on
- * one panel behaving differently reads as two different mechanisms.
+ * Grid-rows expander — see the note below on why it's rendered conditionally.
  */
 function MoreDetail({ excerpts, accent }: { excerpts: string[]; accent: string }) {
   const [open, setOpen] = useState(false)
@@ -531,7 +530,7 @@ function MoreDetail({ excerpts, accent }: { excerpts: string[]; accent: string }
         <ChevronDown style={{ width: 15, height: 15, flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
       </button>
       {/* Rendered conditionally, NOT the grid-template-rows 0fr/1fr transition
-          SeeMore uses a few lines above. That trick animates height only where
+          a grid-rows expander would use. That trick animates height only where
           `1fr` has a definite size to resolve against; inside this focused card
           it resolved to 0px, so the panel reported aria-expanded="true" while
           staying visually shut with 258px of content clipped behind
@@ -553,39 +552,6 @@ function MoreDetail({ excerpts, accent }: { excerpts: string[]; accent: string }
           </div>
         </div>
       )}
-    </div>
-  )
-}
-
-function SeeMore({ details, accent }: { details: string[]; accent: string }) {
-  const [open, setOpen] = useState(false)
-  const tone = readableOnWhite(accent)
-  return (
-    <div style={{ marginTop: 7 }}>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        style={{
-          display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none',
-          padding: 0, cursor: 'pointer', fontFamily: MANROPE, fontSize: 14.5, fontWeight: 700, color: tone,
-        }}
-      >
-        {open ? 'Show less' : 'See more'}
-        <ChevronDown style={{ width: 14, height: 14, flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
-      </button>
-      <div style={{ display: 'grid', gridTemplateRows: open ? '1fr' : '0fr', transition: 'grid-template-rows .3s ease' }}>
-        <div style={{ overflow: 'hidden' }}>
-          <ul style={{
-            listStyle: 'none', margin: '10px 0 0', padding: '2px 0 2px 13px',
-            borderLeft: `2px solid ${accent}33`,
-            display: 'flex', flexDirection: 'column', gap: 9,
-          }}>
-            {details.map((d) => (
-              <li key={d} style={{ fontSize: 16, fontWeight: 400, color: '#3f372f', lineHeight: 1.45, fontFamily: MANROPE }}>{d}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
     </div>
   )
 }
@@ -680,7 +646,9 @@ function FocusedCard({ slug, pos, topicLabel }: {
             return (
               <li key={i} style={liStyle}>
                 <FirstLineBold text={text} style={liStyle} />
-                {typeof it !== 'string' && <SeeMore details={it.details} accent={c} />}
+                {/* No "See more" expander under merged proposals any more —
+                    removed by request. The grouping's headline stands on its
+                    own; the full list is on the breakdown page. */}
               </li>
             )
           })}
