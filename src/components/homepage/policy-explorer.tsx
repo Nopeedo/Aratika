@@ -21,6 +21,7 @@ import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { getProposalGrouping, type GroupedProposal } from '@/constants/policy-proposal-groups'
 import { TopicChip } from '@/components/homepage/topic-chip'
+import { topicColors } from '@/constants/topic-colors'
 import { isLightHex } from '@/components/homepage/battleground-card'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import type { PartySlug } from '@/types'
@@ -41,7 +42,7 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
   // until the user taps a tile, their pick afterwards. Using it (rather than
   // selectedSlug) means opening an issue always lands on content — it rolls
   // along with the tiles instead of asking the reader to pick a party first.
-  const { panelSlug, accentColor, fading, fadeMs, select } = usePartyCycle()
+  const { panelSlug, fading, fadeMs, select } = usePartyCycle()
   const shown = panelSlug && PARTY_PROFILES[panelSlug as PartySlug] ? (panelSlug as PartySlug) : null
   const panelRef = useRef<HTMLDivElement>(null)
 
@@ -324,10 +325,12 @@ export function PolicyExplorer({ topicKeys, positions }: { topicKeys: string[]; 
           ref={panelRef}
           className="pe-panel"
           style={{
-            // Consumed by .pe-panel's mobile border rule — keeps the container
-            // in step with the party colour cycling at the top of the page.
-            ['--pe-accent' as string]: accentColor,
-            background: '#fff', padding: '18px clamp(14px, 4vw, 22px)', scrollMarginTop: 80,
+            // Consumed by .pe-panel's mobile border rule. The container wears
+            // the ISSUE's colours — the same border and fill as the pill the
+            // reader tapped — not the party's, so panel and pill read as one
+            // thing. (It used to follow the cycling party colour.)
+            ['--pe-accent' as string]: topicColors(selTopic.textColor).border,
+            background: topicColors(selTopic.textColor).bg, padding: '18px clamp(14px, 4vw, 22px)', scrollMarginTop: 80,
           } as React.CSSProperties}
         >
           {/* No title/subtitle here — the chip above the container already names

@@ -23,3 +23,31 @@ export const TOPIC_BORDER_HEX: Record<string, { rest: string; active: string }> 
   teal: { rest: '#0f766e', active: '#134e4a' },
   indigo: { rest: '#4338ca', active: '#312e81' },
 }
+
+/** The pill's FILL per hue — Tailwind's `-100` shade, the same as the
+ *  `bg-{hue}-100` class each topic carries in POLICY_TOPICS. Used as the
+ *  FALLBACK inside var(--color-{hue}-100, …) below: Tailwind v4 defines its
+ *  palette in oklch and these v3 hexes are a hair off, so the live value comes
+ *  from Tailwind's own theme variable and matches the pill exactly. */
+export const TOPIC_BG_HEX: Record<string, string> = {
+  blue: '#dbeafe',
+  orange: '#ffedd5',
+  red: '#fee2e2',
+  green: '#dcfce7',
+  purple: '#f3e8ff',
+  slate: '#f1f5f9',
+  cyan: '#cffafe',
+  amber: '#fef3c7',
+  teal: '#ccfbf1',
+  indigo: '#e0e7ff',
+}
+
+/** Both colours for a topic key, looked up the way TopicChip does it (hue
+ *  parsed from the topic's textColor class). */
+export function topicColors(textColor: string): { border: string; bg: string } {
+  const hue = textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
+  return {
+    border: (TOPIC_BORDER_HEX[hue] ?? TOPIC_BORDER_HEX.slate).rest,
+    bg: `var(--color-${hue in TOPIC_BG_HEX ? hue : 'slate'}-100, ${TOPIC_BG_HEX[hue] ?? TOPIC_BG_HEX.slate})`,
+  }
+}
