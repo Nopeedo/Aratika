@@ -14,7 +14,6 @@ import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
 import { PolicyTopic } from '@/types'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { getApprovedPositions } from '@/lib/positions/live'
 import { TopicSwitcher } from '@/components/policy/topic-switcher'
@@ -24,7 +23,7 @@ import { TopicInfoButton } from '@/components/policy/topic-info-button'
 import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BillsForTopic } from '@/components/bills/bills-for-topic'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 
 export function generateStaticParams() {
@@ -161,6 +160,13 @@ export default async function PolicyTopicPage(
         )}
         </div>
 
+        {/* Coverage at a glance, moved up from the foot of the page by
+            request: it sits directly under the party cards it summarises,
+            where "who has a position on what" answers the question the cards
+            above just raised, rather than after the bills and the track
+            button where nobody had got to it. */}
+        <PolicyCoverage maxWidth={1000} />
+
         {/* Track — moved out of the header by request. Sits after the
             comparison, just above the scope note, so the header is title →
             pills → topic and nothing else. */}
@@ -180,15 +186,11 @@ export default async function PolicyTopicPage(
 
         </div>
 
-        {/* Source */}
-        <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 16, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-          <SectionDivider type="official" label="Sources" />
-          <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
-            Topic framing is editorial. Party positions reflect each party&apos;s most recent published policy — not their stance at a past election — sourced from official party material.
-          </p>
-        </div>
+        {/* The "Sources" footnote is gone from the foot of the page, by
+            request. Nothing is lost: every position carries its own dated
+            source link, and how the positions are sourced is in the (i)
+            bubble beside the topic pill at the top. */}
       </div>
-      <PolicyCoverage maxWidth={1000} />
     </TopicBackground>
   )
 }
