@@ -16,9 +16,9 @@
  * eleven, so the arrows never appear there.
  */
 
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Check, ChevronLeft, ChevronRight, Minus } from 'lucide-react'
+import { ArrowRight, Check, ChevronLeft, ChevronRight, ExternalLink, Minus, X } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { topicColors } from '@/constants/topic-colors'
 import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
@@ -94,6 +94,11 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
     return () => ro.disconnect()
   }, [topics.length])
 
+  /** The cell a reader has tapped: its position if there is one, plus the
+   *  party and topic so an EMPTY cell can be previewed too (a dash is an
+   *  answer — "not captured yet" — and people tap it expecting to be told). */
+  const [preview, setPreview] = useState<{ slug: PartySlug; topic: { slug: string; label: string }; pos?: PartyPosition } | null>(null)
+
   const pages = Math.ceil(topics.length / perPage)
   const cur = Math.min(page, pages - 1)
   const shown = pages > 1 ? topics.slice(cur * perPage, cur * perPage + perPage) : topics
@@ -111,7 +116,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
           globals.css — the deployed HTML had the new class names while the
           deployed CSS bundle did not have the rules. In here they cannot
           desync, because they are the same payload. */}
-      <style dangerouslySetInnerHTML={{ __html: MATRIX_CSS }} />
+      <style dangerouslySetInnerHTML={{ __html: MATRIX_CSS + PREVIEW_CSS }} />
       {/* The pager. Only rendered when the topics don't all fit, so it is
           absent on a desktop and on the widest phones. It says which topics
           you are looking at, because "3 of 11" with no names would make the
@@ -163,7 +168,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
           </thead>
           <tbody>
             {PARTY_DIRECTORY_ORDER.map((slug) => (
-              <Row key={slug} slug={slug} topics={shown} lookup={lookup} />
+              <Row key={slug} slug={slug} topics={shown} lookup={lookup} onPreview={setPreview} />
             ))}
             {/* The parties outside Parliament sit in their own labelled band. They
                 hold real published positions too — hiding them read as "no data",
@@ -206,7 +211,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
                   <TopicHeadCells topics={shown} repeat />
                 </tr>
                 {minors.map((slug) => (
-                  <Row key={slug} slug={slug} topics={shown} lookup={lookup} />
+                  <Row key={slug} slug={slug} topics={shown} lookup={lookup} onPreview={setPreview} />
                 ))}
               </>
             )}
@@ -219,11 +224,22 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
         <Legend swatch={<span style={{ fontWeight: 800, color: TERTIARY, fontSize: 15 }}>∅</span>} label="No stated position (verified)" />
         <Legend swatch={<Minus style={{ width: 13, height: 13, color: '#cdd2d8' }} />} label="Not captured yet" />
       </div>
+
+      {preview && (
+        <PreviewSheet
+          slug={preview.slug}
+          topic={preview.topic}
+          pos={preview.pos}
+          onClose={() => setPreview(null)}
+        />
+      )}
     </div>
   )
 }
 
-function Row({ slug, topics, lookup }: { slug: PartySlug; topics: { slug: string; label: string }[]; lookup: Map<string, PartyPosition> }) {
+type OpenPreview = (p: { slug: PartySlug; topic: { slug: string; label: string }; pos?: PartyPosition }) => void
+
+function Row({ slug, topics, lookup, onPreview }: { slug: PartySlug; topics: { slug: string; label: string }[]; lookup: Map<string, PartyPosition>; onPreview: OpenPreview }) {
   const party = PARTY_PROFILES[slug]
   return (
     <tr>
@@ -246,23 +262,41 @@ function Row({ slug, topics, lookup }: { slug: PartySlug; topics: { slug: string
       </td>
       {topics.map((t) => {
         const pos = lookup.get(`${slug}::${t.slug}`)
+        /* Every cell opens a PREVIEW of that party on that topic rather than
+           navigating straight to the full breakdown — including an empty one,
+           because "not captured yet" is an answer a reader is entitled to see
+           when they tap. It stays an <a> to the breakdown so the keyboard,
+           the status bar and cmd/ctrl-click all behave like the link it is;
+           only a plain click is intercepted. */
+        const open = (e: React.MouseEvent) => {
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+          e.preventDefault()
+          onPreview({ slug, topic: t, pos })
+        }
         return (
           <td key={t.slug} style={{ ...tdBase, textAlign: 'center' }}>
-            {pos ? (
-              pos.noPosition ? (
-                <Link href={`/policies/${t.slug}/${slug}`} title="No stated position (verified)" className="coverage-hit" style={{ color: TERTIARY, textDecoration: 'none', fontWeight: 800, fontSize: 15 }}>∅</Link>
-              ) : (
-                /* A bare tick in the party's colour, not a filled tile: the
-                   tile was 22px of chrome around a 13px glyph in every cell,
-                   and with eighteen rows of them the grid read as blocks
-                   rather than as marks. */
-                <Link href={`/policies/${t.slug}/${slug}`} title={pos.stance || 'View position'} className="coverage-hit" style={{ display: 'inline-flex' }}>
+            <Link
+              href={`/policies/${t.slug}/${slug}`}
+              onClick={open}
+              title={pos ? (pos.noPosition ? 'No stated position (verified)' : pos.stance || 'View position') : `No ${t.label.toLowerCase()} position captured yet`}
+              aria-label={`${PARTY_NAMES[slug].short} on ${t.label}`}
+              className="coverage-hit"
+              style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: TERTIARY, textDecoration: 'none' }}
+            >
+              {pos ? (
+                pos.noPosition ? (
+                  <span style={{ fontWeight: 800, fontSize: 15 }}>∅</span>
+                ) : (
+                  /* A bare tick in the party's colour, not a filled tile: the
+                     tile was 22px of chrome around a 13px glyph in every cell,
+                     and with eighteen rows of them the grid read as blocks
+                     rather than as marks. */
                   <Check className="coverage-tick" style={{ color: readableOnWhite(party.color) }} strokeWidth={3.25} />
-                </Link>
-              )
-            ) : (
-              <Minus style={{ width: 13, height: 13, color: '#cdd2d8' }} />
-            )}
+                )
+              ) : (
+                <Minus style={{ width: 13, height: 13, color: '#cdd2d8' }} />
+              )}
+            </Link>
           </td>
         )
       })}
@@ -310,6 +344,104 @@ function TopicHeadCells({ topics, repeat = false }: { topics: { slug: string; la
         )
       })}
     </>
+  )
+}
+
+/**
+ * PreviewSheet — what one party says on one topic, without leaving the grid.
+ *
+ * Tapping a cell used to jump to the full breakdown page, which is a lot of
+ * navigation to answer "what's behind this tick?" — and on a phone it cost the
+ * reader their place in a table they had just paged to. This shows the stance
+ * and the party's own proposals in place, and keeps the breakdown one tap away
+ * for whoever wants all of it.
+ *
+ * A bottom sheet on a phone (thumb-reachable, the shape people expect there)
+ * and a centred card on a desktop; one component, positioned by CSS.
+ */
+function PreviewSheet({ slug, topic, pos, onClose }: {
+  slug: PartySlug
+  topic: { slug: string; label: string }
+  pos?: PartyPosition
+  onClose: () => void
+}) {
+  const party = PARTY_PROFILES[slug]
+  const tone = readableOnWhite(party.color)
+  const topicHue = topicColors(POLICY_TOPICS[topic.slug as keyof typeof POLICY_TOPICS]?.textColor ?? '').border
+
+  // Escape closes, and the page behind does not scroll while it is open.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = prev }
+  }, [onClose])
+
+  const body = pos?.summaryBasic || pos?.summary
+  const proposals = pos?.keyProposals?.slice(0, 4) ?? []
+
+  return (
+    <div
+      className="coverage-preview-scrim"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${PARTY_NAMES[slug].short} on ${topic.label}`}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
+    >
+      <div className="coverage-preview">
+        {/* The party's colour down the top edge, the issue's beside the label:
+            the two things the cell was the intersection of. */}
+        <div style={{ height: 4, background: party.color, borderRadius: '16px 16px 0 0' }} />
+        <div style={{ padding: '14px 16px 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 17, fontWeight: 800, color: tone, fontFamily: MANROPE, lineHeight: 1.2 }}>{PARTY_NAMES[slug].short}</div>
+              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: topicHue, fontFamily: MANROPE, marginTop: 3 }}>{topic.label}</div>
+            </div>
+            <button type="button" onClick={onClose} aria-label="Close" style={{ background: 'none', border: 'none', padding: 6, margin: -6, cursor: 'pointer', color: SECONDARY, display: 'inline-flex', flexShrink: 0 }}>
+              <X style={{ width: 18, height: 18 }} />
+            </button>
+          </div>
+
+          <div style={{ marginTop: 12 }}>
+            {!pos ? (
+              <p style={{ fontSize: 14, color: INK, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
+                No {topic.label.toLowerCase()} position captured yet. That is a gap in our coverage, not a statement that {PARTY_NAMES[slug].short} has no view on it.
+              </p>
+            ) : pos.noPosition ? (
+              <p style={{ fontSize: 14, color: INK, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
+                We checked {PARTY_NAMES[slug].short}&rsquo;s own policy material and found no stated position on {topic.label.toLowerCase()}. The source is linked below so you can see the same page we did.
+              </p>
+            ) : (
+              <>
+                {(pos.stance || body) && (
+                  <p style={{ fontSize: 14.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.45, margin: 0 }}>{pos.stance || body}</p>
+                )}
+                {proposals.length > 0 && (
+                  <ul style={{ listStyle: 'none', margin: '12px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {proposals.map((d) => (
+                      <li key={d} style={{ fontSize: 13.5, color: INK, fontFamily: MANROPE, lineHeight: 1.45, paddingLeft: 13, borderLeft: `2px solid ${party.color}55` }}>{d}</li>
+                    ))}
+                  </ul>
+                )}
+              </>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 14, marginTop: 16, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
+            <Link href={`/policies/${topic.slug}/${slug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: topicHue, textDecoration: 'none', fontFamily: MANROPE }}>
+              Full breakdown <ArrowRight style={{ width: 14, height: 14 }} />
+            </Link>
+            {pos?.sourceUrl && (
+              <a href={pos.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE }}>
+                {pos.sourceLabel || 'Source'} <ExternalLink style={{ width: 12, height: 12 }} />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -374,6 +506,32 @@ const tdBase: React.CSSProperties = { borderBottom: `1px solid ${BORDER}`, white
    and with the topics paged rather than scrolled there is nothing sliding
    under it to show. */
 const PARTY_EDGE = `1px solid ${BORDER}`
+
+/* Preview sheet: bottom sheet on a phone, centred card on a desktop. */
+const PREVIEW_CSS = `
+.coverage-preview-scrim {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(20, 16, 12, .38);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.coverage-preview {
+  background: #fff; border-radius: 16px; width: 100%; max-width: 420px;
+  max-height: 80vh; overflow-y: auto;
+  box-shadow: 0 8px 20px rgba(42,18,6,.12), 0 32px 60px -20px rgba(42,18,6,.35);
+  animation: coverage-preview-in .18s ease-out;
+}
+@keyframes coverage-preview-in { from { opacity: 0; transform: translateY(6px) scale(.985); } to { opacity: 1; transform: none; } }
+@media (max-width: 600px) {
+  .coverage-preview-scrim { align-items: flex-end; padding: 0; }
+  .coverage-preview {
+    max-width: none; border-radius: 18px 18px 0 0; max-height: 86vh;
+    padding-bottom: env(safe-area-inset-bottom);
+    animation-name: coverage-sheet-in;
+  }
+}
+@keyframes coverage-sheet-in { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .coverage-preview { animation: none; } }
+`
 
 /* On a phone the party column was taking well over half the visible width and
    only one topic column showed, while the cells it left were mostly empty space
