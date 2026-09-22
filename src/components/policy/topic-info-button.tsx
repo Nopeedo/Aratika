@@ -3,8 +3,8 @@
 /**
  * TopicInfoButton — a small, quiet (i) beside the topic pill on the comparison
  * page. Tapping it opens a "What this covers" bubble holding the definitions a
- * reader needs to read the page fairly: what the topic includes, where each
- * party's position comes from, and how the parties are grouped.
+ * reader needs to read the page fairly: what the topic includes and where
+ * each party's position comes from.
  *
  * Deliberately a button + bubble, not a card on the page: the definitions are
  * the same on every topic, and a reader who has them once shouldn't have to
@@ -106,12 +106,6 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
 
           {h('Where each position comes from')}
           {p('Where each party stands going into the 2026 election, summarised neutrally from their own current policy pages and checked by an editor before publishing. Every position is dated and links to the page it came from — nothing is paraphrased without the source beside it.')}
-
-          {h('How parties are grouped')}
-          {p('Parties in Parliament first, then every other party registered with the Electoral Commission to contest the party vote. Inclusion is by registration, not by polling, so smaller parties are never left out for being small.')}
-
-          {h('No position yet')}
-          {p('Means the party has not published one on this topic, or ours is still being checked — not that they have no view. Politika is non-partisan.')}
         </div>
       )}
     </div>
