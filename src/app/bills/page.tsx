@@ -13,7 +13,6 @@ import type { Metadata } from 'next'
 import { ExternalLink } from 'lucide-react'
 import { BillsTracker54 } from '@/components/bills/bills-tracker-54'
 import { DefiningBills } from '@/components/bills/defining-bills'
-import { HowToReadBills } from '@/components/bills/how-to-read-bills'
 import { AboutBillsTracker, AboutAllBills } from '@/components/bills/about-bills-tracker'
 import { BILLS_54_META } from '@/constants/bills-54'
 import { getApprovedBills } from '@/lib/bills/live'
@@ -60,9 +59,6 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
               Bills Tracker
             </h1>
             <AboutBillsTracker />
-          </div>
-          <div style={{ marginTop: 12 }}>
-            <HowToReadBills />
           </div>
         </div>
       </div>

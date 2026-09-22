@@ -5,8 +5,8 @@
  * dataset (src/constants/bills-54.ts, from the official bills API).
  *
  * Lets a visitor narrow down by policy area, bill type, stage, party or keyword.
- * The "how to read this" primer that used to sit here now opens the page (see
- * HowToReadBills) — it's orientation, so it belongs above the fold, not below
+ * The "how to read this" primer that used to sit here is in the (i) beside the
+ * page title: it's orientation, so it belongs above the fold rather than below
  * the carousel.
  */
 

@@ -3,23 +3,22 @@
 /**
  * DefiningBills — the bills that defined the term since the 2023 election.
  *
- * Presented as a tile carousel rather than a spotlight card plus a grid of
- * eight: you pick a bill and its detail swaps in below, the same interaction as
- * the homepage party tiles. That was the point of the change — eight stacked
- * cards plus a spotlight ran to several screens on a phone, and a reader had to
- * scroll past all of it to reach the tracker. One tile row plus one panel is a
- * fraction of the height and puts every bill one tap away.
+ * Status pills, then tiles, then a panel — and nothing is expanded until you
+ * ask for it. The section used to open with one bill's full detail already
+ * showing, which is a screen and a half of one bill before a reader has picked
+ * anything, and made the other eight look like footnotes to it.
  *
- * The old status filter chips are gone with it: with all eight tiles visible and
- * each carrying its status colour, filtering eight items added a control without
- * removing any work.
+ * The pills filter by what happened to the bill (in progress / now law /
+ * defeated), the same tap-to-filter as the issue chips on the comparison page,
+ * and tapping the lit one clears it. The tiles are the bills themselves; tap
+ * one and its detail opens beneath, tap it again and it closes.
  *
  * Curated and neutral; every panel links to the bill's own sourced breakdown.
  */
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Landmark, ArrowRight, Check, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Landmark, ArrowRight, Check, X } from 'lucide-react'
 import { DEFINING_BILLS, DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
 import { INK, MANROPE } from '@/constants/theme'
 
@@ -43,22 +42,34 @@ const STATUS: Record<DefiningBill['statusKind'], { label: string; fg: string; bg
   'in-progress': { label: 'In progress', fg: '#92400e', bg: '#f8ecd4', bar: '#c07a12' },
 }
 
-export function DefiningBills() {
-  const first = DEFINING_BILLS.find((b) => b.featured) ?? DEFINING_BILLS[0]
-  const [active, setActive] = useState(first.slug)
-  const [fading, setFading] = useState(false)
-  const railRef = useRef<HTMLDivElement>(null)
+/** Pill order: what is still live, then what passed, then what did not. */
+const STATUS_ORDER: DefiningBill['statusKind'][] = ['in-progress', 'law', 'defeated']
 
-  const bill = DEFINING_BILLS.find((b) => b.slug === active) ?? first
+export function DefiningBills() {
+  // Nothing open to begin with, by design — see the note at the top.
+  const [active, setActive] = useState<string | null>(null)
+  const [status, setStatus] = useState<DefiningBill['statusKind'] | null>(null)
+  const [fading, setFading] = useState(false)
+
+  const shown = status ? DEFINING_BILLS.filter((b) => b.statusKind === status) : DEFINING_BILLS
+  const bill = active ? DEFINING_BILLS.find((b) => b.slug === active) ?? null : null
 
   function select(slug: string) {
-    if (slug === active) return
-    // Fade the panel out, swap, fade back in — so the height change doesn't jump.
+    // Tapping the open tile closes it, the same as the pills: a reader who
+    // opened something by tapping expects the same tap to undo it.
+    if (slug === active) { setActive(null); return }
+    if (!active) { setActive(slug); return }
+    // Swapping between bills fades, so the height change doesn't jump.
     setFading(true)
     setTimeout(() => { setActive(slug); setFading(false) }, FADE_MS)
   }
 
-  const scroll = (dir: number) => railRef.current?.scrollBy({ left: dir * 320, behavior: 'smooth' })
+  function filter(kind: DefiningBill['statusKind']) {
+    const next = kind === status ? null : kind
+    setStatus(next)
+    // Don't leave a panel open for a bill the filter has just hidden.
+    if (active && next && DEFINING_BILLS.find((b) => b.slug === active)?.statusKind !== next) setActive(null)
+  }
 
   return (
     <section style={{ marginBottom: 48 }}>
@@ -71,39 +82,61 @@ export function DefiningBills() {
         <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: ACCENT_DK, fontFamily: MANROPE }}>Since the 2023 election</span>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
-        <div>
-          {/* No standfirst under the heading: it explained the tiles that are
-              directly below and visibly tappable, and led with the same 2026
-              framing the eyebrow has dropped. */}
-          <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>The bills that defined this term</h2>
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button onClick={() => scroll(-1)} aria-label="Scroll bills left" style={arrowBtn}><ChevronLeft style={{ width: 17, height: 17 }} /></button>
-          <button onClick={() => scroll(1)} aria-label="Scroll bills right" style={arrowBtn}><ChevronRight style={{ width: 17, height: 17 }} /></button>
-        </div>
+      {/* No standfirst under the heading: it explained the tiles that are
+          directly below and visibly tappable. */}
+      <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>The bills that defined this term</h2>
+
+      {/* Status pills. Same tap-to-filter as the issue chips on the comparison
+          page, including tapping the lit one to clear it. Each carries its own
+          status colour, so the pill and the tiles it filters to agree. */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 14 }}>
+        {STATUS_ORDER.map((kind) => {
+          const st = STATUS[kind]
+          const on = status === kind
+          const n = DEFINING_BILLS.filter((b) => b.statusKind === kind).length
+          return (
+            <button
+              key={kind}
+              onClick={() => filter(kind)}
+              aria-pressed={on}
+              /* Same measurements as the topic switcher at the top of the
+                 comparison page: 5/11 padding, 12.5px label, 2px border,
+                 fully round. */
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                padding: '5px 11px', borderRadius: 999, cursor: 'pointer',
+                background: on ? st.bg : CARD,
+                border: `2px solid ${on ? st.bar : hexToRgba(st.bar, 0.34)}`,
+                color: st.fg, fontFamily: MANROPE, fontSize: 12.5, fontWeight: 800,
+                transition: 'background-color .2s ease, border-color .2s ease',
+              }}
+            >
+              {st.label}
+              <span style={{ fontSize: 11, fontWeight: 700, opacity: .75 }}>{n}</span>
+            </button>
+          )
+        })}
       </div>
 
-      {/* Tile rail — horizontally scrollable so eight bills cost one row on a
-          phone instead of eight stacked cards. */}
+      {/* Tiles wrap rather than scroll sideways: with the pills above doing the
+          narrowing, a row never holds more than a handful, and a rail meant two
+          arrow buttons and a swipe for something that now fits. */}
       <div
-        ref={railRef}
         style={{
-          display: 'flex', gap: 10, overflowX: 'auto', scrollSnapType: 'x mandatory',
-          padding: '16px 2px 6px', margin: '0 -2px',
-          scrollbarWidth: 'thin', WebkitOverflowScrolling: 'touch',
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(168px, 100%), 1fr))',
+          gap: 10, padding: '14px 0 2px',
         }}
       >
-        {DEFINING_BILLS.map((b) => {
+        {shown.map((b) => {
           const st = STATUS[b.statusKind]
           const on = b.slug === active
           return (
             <button
               key={b.slug}
               onClick={() => select(b.slug)}
-              aria-pressed={on}
+              aria-expanded={on}
               style={{
-                flex: '0 0 auto', width: 168, scrollSnapAlign: 'start', textAlign: 'left', cursor: 'pointer',
+                textAlign: 'left', cursor: 'pointer',
                 background: CARD, borderRadius: 13, padding: '11px 13px 12px',
                 // Unselected keeps the status colour at reduced strength, so each tile
                 // reads as a distinct bill up front rather than a faint grey box.
@@ -122,10 +155,12 @@ export function DefiningBills() {
         })}
       </div>
 
-      {/* Panel — the selected bill */}
-      <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${FADE_MS}ms ease-in-out` }}>
-        <BillPanel bill={bill} />
-      </div>
+      {/* Panel — only once a tile has been tapped. */}
+      {bill && (
+        <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${FADE_MS}ms ease-in-out`, marginTop: 14 }}>
+          <BillPanel bill={bill} onClose={() => setActive(null)} />
+        </div>
+      )}
 
       <p style={{ fontSize: 11.5, color: '#8a8f86', fontFamily: MANROPE, margin: '16px 0 0', lineHeight: 1.5, maxWidth: 640 }}>
         {DEFINING_BILLS_META.note}
@@ -134,7 +169,7 @@ export function DefiningBills() {
   )
 }
 
-function BillPanel({ bill }: { bill: DefiningBill }) {
+function BillPanel({ bill, onClose }: { bill: DefiningBill; onClose: () => void }) {
   const st = STATUS[bill.statusKind]
   const f = bill.featured
   return (
@@ -145,9 +180,17 @@ function BillPanel({ bill }: { bill: DefiningBill }) {
           featured bill — the one with the journey and the big figures, and
           the tallest card of the lot — never received any of it. */}
       <style dangerouslySetInnerHTML={{ __html: TIMELINE_CSS }} />
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: st.fg, background: st.bg, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
-        {st.label}
-      </span>
+      {/* Badge left, close right: the tile that opened this is above and can
+          close it again, but a reader who has scrolled the panel's length
+          should not have to go back up to find that out. */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: st.fg, background: st.bg, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
+          {st.label}
+        </span>
+        <button type="button" onClick={onClose} aria-label="Close this bill" style={{ background: 'none', border: 'none', padding: 6, margin: -6, cursor: 'pointer', color: MUTED, display: 'inline-flex', flexShrink: 0 }}>
+          <X style={{ width: 17, height: 17 }} />
+        </button>
+      </div>
       <h3 className="bill-panel-title" style={{ fontSize: 'clamp(20px, 3.2vw, 25px)', fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: '13px 0 8px', lineHeight: 1.2 }}>{bill.title}</h3>
       <p className="bill-panel-what" style={{ fontSize: 14.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 22px', maxWidth: 640 }}>{bill.what}</p>
 
@@ -303,7 +346,3 @@ const TIMELINE_CSS = `
   .bill-tl-event { grid-column: 2; grid-row: 2; }
 }
 `
-const arrowBtn: React.CSSProperties = {
-  display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 34, height: 34,
-  borderRadius: 999, border: `1px solid ${LINE}`, background: CARD, color: INK, cursor: 'pointer',
-}
