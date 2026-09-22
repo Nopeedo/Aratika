@@ -40,7 +40,7 @@ export async function PolicyCoverage({ maxWidth = 1100, nested = false }: {
               rather than one topic, so it should carry the same weight on the
               page rather than read as a footnote to it. */}
           <h2 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.15 }}>Party Policy Table Comparison</h2>
-          <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.45 }}>Which party holds a published position on which topic.</p>
+          <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.45 }}>Parties&rsquo; published positions on each topic.</p>
         </div>
         <CoverageMatrix positions={positions} topics={topics} />
       </div>
