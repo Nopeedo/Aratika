@@ -76,7 +76,7 @@ export function PartyPositions({ parties, getPos, detailed, topic, topicLabel }:
                     <span style={{ display: 'block', fontSize: 16, fontWeight: 700, color: INK, lineHeight: 1.4, marginTop: 3 }}>{pos.stance || body}</span>
                   ) : (
                     <span style={{ display: 'block', fontSize: 14, color: TERTIARY, lineHeight: 1.5, marginTop: 3 }}>
-                      No {topicLabel.toLowerCase()} position captured yet — being sourced from {party.name}’s official policy, then editor-checked.
+                      No {topicLabel.toLowerCase()} position captured yet. Being sourced from {party.name}’s official policy, then editor-checked.
                     </span>
                   )}
                 </span>

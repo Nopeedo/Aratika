@@ -8,11 +8,10 @@
  * cites its source.
  */
 
-import { CONTESTING_PARTIES, PARLIAMENTARY_PARTIES, PARTY_NAMES } from '@/constants/parties'
+import { CONTESTING_PARTIES, PARLIAMENTARY_PARTIES } from '@/constants/parties'
 import { PartyPositions } from '@/components/policy/party-positions'
 import type { PartyPosition } from '@/lib/positions/live'
-import type { PartySlug } from '@/types'
-import { JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { MANROPE, SECONDARY } from '@/constants/theme'
 
 /**
  * The head-to-head list is the parties that HOLD SEATS — PARLIAMENTARY_PARTIES,
@@ -81,10 +80,7 @@ function NotInParliament({ getPos, topic, topicLabel }: {
   topicLabel: string
 }) {
   const withPos = ALSO_CONTESTING.filter((p) => getPos(p))
-  const withoutPos = ALSO_CONTESTING.filter((p) => !getPos(p))
   if (withPos.length === 0) return null
-
-  const name = (p: PartySlug) => PARTY_NAMES[p]?.short ?? p
 
   return (
     <div style={{ marginTop: 26 }}>
@@ -92,14 +88,14 @@ function NotInParliament({ getPos, topic, topicLabel }: {
         Parties not in Parliament
       </h3>
 
-      <PartyPositions parties={withPos} getPos={getPos} topic={topic} topicLabel={topicLabel} />
-
-      {withoutPos.length > 0 && (
-        <p style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, margin: '14px 0 0', lineHeight: 1.55 }}>
-          No position on {topicLabel.toLowerCase()} recorded yet for {withoutPos.map(name).join(', ')}.{' '}
-          That is a gap in our coverage, not a statement that they have no view.
-        </p>
-      )}
+      {/* EVERY party in this group gets its own card, including the ones with
+          nothing captured yet: PartyPositions already renders those as a card
+          reading "no position captured yet". They used to be swept into a grey
+          sentence underneath the list, which named nine parties in a run-on
+          line nobody reads and gave them a different, lesser shape on the page
+          than the parties we happen to have got to. Same card, same size, the
+          gap stated plainly inside it. */}
+      <PartyPositions parties={ALSO_CONTESTING} getPos={getPos} topic={topic} topicLabel={topicLabel} />
     </div>
   )
 }
