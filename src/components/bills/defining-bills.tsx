@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * DefiningBills — the bills the 2026 election is being fought over.
+ * DefiningBills — the bills that defined the term since the 2023 election.
  *
  * Presented as a tile carousel rather than a spotlight card plus a grid of
  * eight: you pick a bill and its detail swaps in below, the same interaction as
@@ -64,15 +64,19 @@ export function DefiningBills() {
     <section style={{ marginBottom: 48 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
         <Landmark style={{ width: 16, height: 16, color: ACCENT_DK }} />
-        <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: ACCENT_DK, fontFamily: MANROPE }}>Shaping the 2026 election</span>
+        {/* Anchored to the term this actually covers. "Shaping the 2026
+            election" was a claim about an election that has not happened;
+            these are the laws made since the 2023 one, which is a fact and
+            says which years the list is drawn from. */}
+        <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: ACCENT_DK, fontFamily: MANROPE }}>Since the 2023 election</span>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 14, flexWrap: 'wrap' }}>
         <div>
+          {/* No standfirst under the heading: it explained the tiles that are
+              directly below and visibly tappable, and led with the same 2026
+              framing the eyebrow has dropped. */}
           <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>The bills that defined this term</h2>
-          <p style={{ fontSize: 14.5, color: MUTED, fontFamily: MANROPE, margin: '6px 0 0', maxWidth: 620, lineHeight: 1.55 }}>
-            The legislation the 2026 election is being fought over. Tap a bill to see what it does, where it got to, and why it matters.
-          </p>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button onClick={() => scroll(-1)} aria-label="Scroll bills left" style={arrowBtn}><ChevronLeft style={{ width: 17, height: 17 }} /></button>

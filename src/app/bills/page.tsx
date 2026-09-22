@@ -14,11 +14,11 @@ import { ExternalLink } from 'lucide-react'
 import { BillsTracker54 } from '@/components/bills/bills-tracker-54'
 import { DefiningBills } from '@/components/bills/defining-bills'
 import { HowToReadBills } from '@/components/bills/how-to-read-bills'
-import { AboutBillsTracker } from '@/components/bills/about-bills-tracker'
+import { AboutBillsTracker, AboutAllBills } from '@/components/bills/about-bills-tracker'
 import { BILLS_54_META } from '@/constants/bills-54'
 import { getApprovedBills } from '@/lib/bills/live'
 import { memberPartyMap } from '@/lib/bills/member-party'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -77,16 +77,13 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
 
         {/* ── Full bills tracker (54th Parliament) ── */}
         <div style={{ marginBottom: 16 }}>
-          {/* Plain words: "before Parliament" and "of this Parliament" are
-              both Parliament's phrasing for "this term", and a reader who
-              does not already know that reads them as the same thing said
-              twice. The heading says which bills; the line says since when.
-              No "x have passed into law" either: that figure is in the row
-              directly below, and the description said it a second time. */}
-          <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>All bills this term</h2>
-          <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
-            Every bill put to Parliament since the last election, including the ones already made law. Filter by topic, type or stage.
-          </p>
+          {/* The description that stood here is in the (i) beside the heading.
+              What the list covers and how to filter it is orientation, and the
+              filters themselves are directly below, visible and labelled. */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>All bills this term</h2>
+            <AboutAllBills />
+          </div>
         </div>
 
         <BillsTracker54 readerSlugs={readerSlugs} memberParty={memberParty} initialParty={initialParty} initialBill={initialBill} initialTopic={initialTopic} />
