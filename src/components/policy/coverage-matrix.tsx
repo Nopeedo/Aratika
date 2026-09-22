@@ -219,7 +219,10 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
         </table>
       </div>
       {/* Legend */}
-      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginTop: 10 }}>
+      {/* columnGap only. On a phone the three items wrap to three lines, and a
+          symmetric 16px gap put as much air between the lines as between the
+          words, which read as three separate notes rather than one key. */}
+      <div style={{ display: 'flex', columnGap: 16, rowGap: 0, flexWrap: 'wrap', marginTop: 10 }}>
         <Legend swatch={<Check style={{ width: 15, height: 15, color: '#1F8A4C' }} strokeWidth={3.25} />} label="Published position" />
         <Legend swatch={<span style={{ fontWeight: 800, color: TERTIARY, fontSize: 15 }}>∅</span>} label="No stated position (verified)" />
         <Legend swatch={<Minus style={{ width: 13, height: 13, color: '#cdd2d8' }} />} label="Not captured yet" />
@@ -486,7 +489,7 @@ function PageButton({ onClick, disabled, label, size = 30, children }: {
 
 function Legend({ swatch, label }: { swatch: React.ReactNode; label: string }) {
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12, color: SECONDARY, fontFamily: MANROPE }}>
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12, lineHeight: 1.3, color: SECONDARY, fontFamily: MANROPE }}>
       {swatch} {label}
     </span>
   )
