@@ -565,7 +565,10 @@ function FocusedCard({ slug, pos, topicLabel }: {
   topicLabel: string
 }) {
   const party = PARTY_PROFILES[slug]
-  const c = party.color
+  // The ISSUE's colour — the panel border / pressed pill hue — tints the
+  // title and every link in this panel, so the whole card reads as one
+  // colour. The party colour is left to the tile row and the panel heading.
+  const topicHex = topicColors(POLICY_TOPICS[pos?.topic as keyof typeof POLICY_TOPICS]?.textColor ?? '').border
   const body = pos?.summaryBasic || pos?.summary
   // The same editor-written keyProposals the full breakdown page lists (under
   // "what they'll do" or "what they've done", depending on the position's
@@ -604,7 +607,7 @@ function FocusedCard({ slug, pos, topicLabel }: {
           Treaty & Māori Affairs". Now long ones wrap instead. */}
       {/* Whole title in the ISSUE's colour — the same hue as the panel border
           and the pressed pill above it — not the party's. */}
-      <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: topicColors(POLICY_TOPICS[pos.topic as keyof typeof POLICY_TOPICS]?.textColor ?? '').border, marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15 }}>{party.name} on {topicLabel}</div>
+      <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: topicHex, marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15 }}>{party.name} on {topicLabel}</div>
       {/* The stance headline is gone from the top of the panel. It restated the
           proposals directly beneath it — Labour's housing stance read "Capital
           gains tax on investment property; solar help for renters and
@@ -680,7 +683,7 @@ function FocusedCard({ slug, pos, topicLabel }: {
           document rather than written by us, so expanding adds the party's
           voice rather than more of ours. 106 of 113 positions carry them. */}
       {pos && pos.excerpts.length > 0 && (
-        <MoreDetail excerpts={pos.excerpts} accent={c} />
+        <MoreDetail excerpts={pos.excerpts} accent={topicHex} />
       )}
 
       {/* The full page, demoted to a quiet link. Still reachable, no longer the
@@ -690,7 +693,7 @@ function FocusedCard({ slug, pos, topicLabel }: {
           href={`/policies/${pos.topic}/${slug}`}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 14,
-            fontSize: 14, fontWeight: 700, color: readableOnWhite(c),
+            fontSize: 14, fontWeight: 700, color: topicHex,
             textDecoration: 'none', fontFamily: MANROPE,
           }}
         >
