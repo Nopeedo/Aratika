@@ -339,7 +339,7 @@
       },
       {
         "url": "https://www.labour.org.nz/farecap",
-        "title": "$20 Public Transport Fare Cap"
+        "title": "Labour's $20 Public Transport Fare Cap"
       },
       {
         "url": "https://www.labour.org.nz/fiscal-strategy",
@@ -347,7 +347,7 @@
       },
       {
         "url": "https://www.labour.org.nz/futurefund",
-        "title": "New Zealand Future Fund"
+        "title": "Labour's New Zealand Future Fund"
       },
       {
         "url": "https://www.labour.org.nz/priority-pages/our-priorities/",
@@ -355,7 +355,7 @@
       },
       {
         "url": "https://www.labour.org.nz/small-business-action-plan",
-        "title": "Small Business Action Plan – payments, investment and GST"
+        "title": "Labour's Small Business Action Plan"
       },
       {
         "url": "https://www.labour.org.nz/small-business-first",
@@ -369,7 +369,7 @@
     "health": [
       {
         "url": "https://www.labour.org.nz/cervicalscreening",
-        "title": "Free Cervical Screening"
+        "title": "Labour's Free Cervical Screening"
       },
       {
         "url": "https://www.labour.org.nz/familydoctorloanscheme",
@@ -377,29 +377,29 @@
       },
       {
         "url": "https://www.labour.org.nz/graduate-nurse-job-guarantee",
-        "title": "Graduate Nurse Job Guarantee"
+        "title": "Labour's Graduate Nurse Job Guarantee"
       },
       {
         "url": "https://www.labour.org.nz/maternityscans",
-        "title": "Free Maternity Scans"
+        "title": "Labour's Free Maternity Scans"
       },
       {
         "url": "https://www.labour.org.nz/medicard",
-        "title": "Free Doctor's Visits via Medicard"
+        "title": "Labour's Free Doctor's Visits Medicard"
       },
       {
         "url": "https://www.labour.org.nz/prescriptions",
-        "title": "Free Prescriptions"
+        "title": "Labour's Free Prescriptions"
       }
     ],
     "education": [
       {
         "url": "https://www.labour.org.nz/apprenticeshipboost",
-        "title": "Apprenticeship Boost Expansion"
+        "title": "Labour's Apprenticeship Boost Expansion"
       },
       {
         "url": "https://www.labour.org.nz/maori-trades-training",
-        "title": "Backing Māori into Skilled Work – trades training"
+        "title": "Labour's Māori Trades Training Investment"
       }
     ],
     "climate": [
@@ -960,7 +960,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-21",
+    "lastRun": "2026-09-22",
     "parties": 14,
     "policyPages": 198
   }
