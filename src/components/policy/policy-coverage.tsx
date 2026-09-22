@@ -35,8 +35,12 @@ export async function PolicyCoverage({ maxWidth = 1100, nested = false }: {
             page you were already on, and the topic chips above are the way
             around the comparison. Removed by request. */}
         <div style={{ marginBottom: 12 }}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Coverage at a glance</h2>
-          <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>Which party holds a published position on which topic.</p>
+          {/* Same scale as the page's own "Party Policy Comparison" h1: this
+              is the other half of that comparison, the whole field at once
+              rather than one topic, so it should carry the same weight on the
+              page rather than read as a footnote to it. */}
+          <h2 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.15 }}>Party Policy Table Comparison</h2>
+          <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.45 }}>Which party holds a published position on which topic.</p>
         </div>
         <CoverageMatrix positions={positions} topics={topics} />
       </div>
