@@ -28,6 +28,7 @@ import { WhatsMoved } from '@/components/homepage/whats-moved'
 import { CredibilityStrip } from '@/components/homepage/credibility-strip'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 import { AlertsBanner } from '@/components/notifications/alerts-banner'
+import { OpenLinksInNewTab } from '@/components/homepage/open-links-in-new-tab'
 import { createClient } from '@/lib/supabase/server'
 
 // The navbar logo and the hub both link to /?full=1, which serves the same
@@ -71,6 +72,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           current party's accent colour; sections are transparent so it shows
           through. */}
       <HomeBackground>
+        {/* Every link in the page content opens a new tab. Renders nothing —
+            deliberately NOT a wrapper, since a wrapper div would become the
+            sticky tile row's containing block (see party-tiles.tsx). */}
+        <OpenLinksInNewTab />
+
         {/* ── The choice: guided help, or explore ── */}
         <CinematicHero />
 
