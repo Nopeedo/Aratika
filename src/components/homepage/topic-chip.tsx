@@ -21,7 +21,7 @@ import { INK, MANROPE } from '@/constants/theme'
 export { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
 import { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
 
-export function TopicChip({ topicKey, active, onClick, href, style }: {
+export function TopicChip({ topicKey, active, onClick, href, keepScroll, style }: {
   topicKey: string
   active: boolean
   /** Required unless `href` is given. */
@@ -32,6 +32,13 @@ export function TopicChip({ topicKey, active, onClick, href, style }: {
    * middle-clicked, opened in a new tab, or read as a link by a screen reader.
    */
   href?: string
+  /**
+   * With `href`: keep the page's scroll position on navigation (Next's
+   * scroll={false}). For a switcher that sits in the page being switched —
+   * the reader stays put and the content under them changes — not for a
+   * link out to another page.
+   */
+  keepScroll?: boolean
   style?: React.CSSProperties
 }) {
   const t = POLICY_TOPICS[topicKey as keyof typeof POLICY_TOPICS]
@@ -55,7 +62,7 @@ export function TopicChip({ topicKey, active, onClick, href, style }: {
 
   if (href) {
     return (
-      <Link href={href} className={`ap-chip ${t.color}`} style={shared}>
+      <Link href={href} scroll={!keepScroll} className={`ap-chip ${t.color}`} style={shared} aria-current={active ? 'page' : undefined}>
         {inner}
       </Link>
     )

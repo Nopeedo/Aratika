@@ -35,7 +35,7 @@ export function CompareSignLink() {
       href="/policies"
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 8,
-        padding: `10px ${POINT + 16}px 10px 16px`,
+        padding: `9px ${POINT + 12}px 9px 14px`,
         background: accentColor, color: fg,
         borderRadius: '12px 0 0 12px',
         clipPath: `polygon(0 0, calc(100% - ${POINT}px) 0, 100% 50%, calc(100% - ${POINT}px) 100%, 0 100%)`,
@@ -46,7 +46,9 @@ export function CompareSignLink() {
       }}
     >
       <Scale style={{ width: 14, height: 14, flexShrink: 0 }} />
-      Compare every party, issue by issue
+      {/* Short on purpose: the reader has just skimmed one party's positions,
+          and this is the door to the full, every-party comparison. */}
+      Compare policies in depth
       {/* The arrow carries the emphasis: bigger and heavier than the label,
           and it points the same way the sign does. */}
       <ArrowRight style={{ width: 20, height: 20, flexShrink: 0, marginLeft: 2 }} strokeWidth={3} />

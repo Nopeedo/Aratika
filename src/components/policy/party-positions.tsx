@@ -4,9 +4,8 @@
  * PartyPositions — the shared, mobile-first "scannable stacked" comparison list.
  * Each party is a full-width row with its STANCE shown up front, so scrolling
  * gives a fast read of every party's position on a topic; tap a row to expand
- * the detail (summary, quote, source, full breakdown). One "expand all" control
- * lets desktop users open everything at once. Used by the per-topic page and the
- * compare tool. Neutral directory order; honest empty state; every row sourced.
+ * the detail (summary, quote, source, full breakdown). Used by the per-topic
+ * page and the compare tool. Neutral directory order; honest empty state; every row sourced.
  */
 
 import { useState } from 'react'
@@ -15,52 +14,64 @@ import { ExternalLink, ArrowRight, ChevronDown } from 'lucide-react'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, tint } from '@/constants/theme'
+import { isLightHex } from '@/components/homepage/battleground-card'
+
+/** The party colour as text. Most read fine as-is; the light ones (ACT's
+ *  yellow, Freedoms NZ's cyan) vanish on a pale tint, so they are darkened
+ *  in place — same hue, less light — rather than swapped for ink. */
+function nameColor(hex: string): string {
+  if (!isLightHex(hex)) return hex
+  const h = hex.replace('#', '')
+  const n = parseInt(h, 16)
+  const d = (c: number) => Math.round(c * 0.62).toString(16).padStart(2, '0')
+  return `#${d((n >> 16) & 255)}${d((n >> 8) & 255)}${d(n & 255)}`
+}
 
 export function PartyPositions({ parties, getPos, detailed, topic, topicLabel }: {
   parties: string[]
   getPos: (slug: string) => PartyPosition | undefined
-  detailed: boolean
+  /**
+   * Page-level plain/detailed switch (the compare tool still has one). When
+   * it is omitted each card carries its OWN Plain / Detailed toggle inside the
+   * expanded row — the topic page dropped its global control by request, so
+   * a reader flips the depth of the one party they're reading, not all seven.
+   */
+  detailed?: boolean
   topic: string
   topicLabel: string
 }) {
   const [open, setOpen] = useState<Set<string>>(new Set())
+  const [detailedRows, setDetailedRows] = useState<Set<string>>(new Set())
+  const perCard = detailed === undefined
   const withData = parties.filter((s) => getPos(s))
-  const allOpen = withData.length > 0 && withData.every((s) => open.has(s))
   const toggle = (s: string) => setOpen((p) => { const n = new Set(p); n.has(s) ? n.delete(s) : n.add(s); return n })
 
   return (
     <div>
-      {withData.length > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
-          <button
-            onClick={() => setOpen(allOpen ? new Set() : new Set(withData))}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE }}
-          >
-            {allOpen ? 'Collapse all' : 'Expand all'}
-            <ChevronDown style={{ width: 14, height: 14, transform: allOpen ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
-          </button>
-        </div>
-      )}
-
       <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
         {parties.map((slug) => {
           const party = PARTY_PROFILES[slug as PartySlug]
           const pos = getPos(slug)
           const isOpen = open.has(slug)
-          const body = detailed ? (pos?.summary || pos?.summaryBasic) : (pos?.summaryBasic || pos?.summary)
+          const rowDetailed = perCard ? detailedRows.has(slug) : !!detailed
+          const body = rowDetailed ? (pos?.summary || pos?.summaryBasic) : (pos?.summaryBasic || pos?.summary)
+          // Only offer the switch when there are two different texts to switch between.
+          const canToggle = perCard && !!pos?.summary && !!pos?.summaryBasic && pos.summary !== pos.summaryBasic
+          // Each card wears its party: a faint wash of the colour behind it,
+          // a thin rule of it all the way round, and the name set in it.
           return (
-            <div key={slug} style={{ border: `1px solid ${BORDER}`, borderLeft: `4px solid ${party.color}`, borderRadius: 12, overflow: 'hidden', background: '#fff' }}>
+            <div key={slug} style={{ border: `1px solid ${tint(party.color, 0.55)}`, borderRadius: 12, overflow: 'hidden', background: `linear-gradient(${tint(party.color, 0.07)}, ${tint(party.color, 0.07)}), #fff` }}>
               <button
                 onClick={() => pos && toggle(slug)}
                 aria-expanded={pos ? isOpen : undefined}
                 style={{ display: 'flex', alignItems: 'flex-start', gap: 11, width: '100%', textAlign: 'left', padding: '13px 14px', background: 'none', border: 'none', cursor: pos ? 'pointer' : 'default', fontFamily: MANROPE }}
               >
                 <span style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: 17, fontWeight: 800, color: INK }}>{party.name}</span>
-                    {pos && <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY }}>{pos.periodLabel}</span>}
-                  </span>
+                  {/* No "CURRENT POLICY" tag beside the name: every row on
+                      this list is current policy (2023 fallbacks were removed
+                      in PolicyComparison), so the label said nothing. */}
+                  <span style={{ display: 'block', fontSize: 17, fontWeight: 800, color: nameColor(party.color) }}>{party.name}</span>
                   {pos ? (
                     <span style={{ display: 'block', fontSize: 16, fontWeight: 700, color: INK, lineHeight: 1.4, marginTop: 3 }}>{pos.stance || body}</span>
                   ) : (
@@ -74,6 +85,17 @@ export function PartyPositions({ parties, getPos, detailed, topic, topicLabel }:
 
               {pos && isOpen && (
                 <div style={{ padding: '0 14px 14px' }}>
+                  {canToggle && (
+                    <div style={{ display: 'inline-flex', background: '#f6f4ef', border: `1px solid ${BORDER}`, borderRadius: 9, padding: 2, marginBottom: 10 }}>
+                      {[{ k: false, label: 'Plain' }, { k: true, label: 'Detailed' }].map((o) => (
+                        <button key={o.label} onClick={() => setDetailedRows((p) => { const n = new Set(p); o.k ? n.add(slug) : n.delete(slug); return n })} style={{
+                          padding: '4px 11px', borderRadius: 7, border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 700, fontFamily: MANROPE,
+                          background: rowDetailed === o.k ? '#fff' : 'transparent', color: rowDetailed === o.k ? INK : TERTIARY,
+                          boxShadow: rowDetailed === o.k ? '0 1px 3px rgba(12,14,18,.08)' : 'none',
+                        }}>{o.label}</button>
+                      ))}
+                    </div>
+                  )}
                   {body && pos.stance && (
                     <p style={{ fontSize: 15, color: '#33373f', lineHeight: 1.6, margin: '0 0 10px', fontFamily: MANROPE }}>{body}</p>
                   )}

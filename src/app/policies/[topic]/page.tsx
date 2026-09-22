@@ -12,15 +12,19 @@ import { notFound } from 'next/navigation'
 import { Info } from 'lucide-react'
 import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
+import { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
 import { PolicyTopic } from '@/types'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { getApprovedPositions } from '@/lib/positions/live'
 import { TopicSwitcher } from '@/components/policy/topic-switcher'
+import { FloatingTopicPill } from '@/components/policy/floating-topic-pill'
+import { TopicBackground } from '@/components/policy/topic-background'
+import { TopicInfoButton } from '@/components/policy/topic-info-button'
 import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BillsForTopic } from '@/components/bills/bills-for-topic'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 
 export function generateStaticParams() {
@@ -43,65 +47,93 @@ export default async function PolicyTopicPage(
   const t = POLICY_TOPICS[topic as PolicyTopic]
   if (!t) notFound()
   const Icon = TOPIC_ICONS[t.icon]
+  const hue = t.textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
+  const topicBorder = TOPIC_BORDER_HEX[hue] ?? TOPIC_BORDER_HEX.slate
 
 
   const positions = await getApprovedPositions(topic)
 
   return (
-    <div style={WOVEN_PAGE}>
+    // The homepage weave, washed with THIS topic's colour (the same hue its
+    // pill wears) through the comparison, fading out below it.
+    <TopicBackground color={topicBorder.rest}>
 
       {/* Header */}
-      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) clamp(18px, 5vw, 36px)' }}>
+      {/* No hairline under the header — removed by request; the header and
+          the content share the same woven ground. */}
+      <div>
+        {/* Small bottom padding: the comparison should sit snug under the
+            subtext, not a section-break away from it. */}
+        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 6px' }}>
           {/* Only renders when ?from= names a party — i.e. the reader came
               here from that party's own policy section and may want to go
               back. Suspense keeps this page static. */}
           <div style={{ marginBottom: 14 }}><Suspense fallback={null}><BackToParty /></Suspense></div>
 
+          {/* Page title. The topic used to be the h1, which read as if each
+              issue were its own page; this IS the comparison page, and the
+              topic below is which slice of it you're on. */}
+          <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 18px', lineHeight: 1.15 }}>
+            Party Policy Comparison
+          </h1>
+
           {/* No "All policy topics" link any more. /policies redirects here, so
               it pointed at the page you were already on. The chip row below is
               the topic navigation, and it is always in reach. */}
-          <div className="topic-head" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div className={t.color} style={{ width: 56, height: 56, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              {Icon && <Icon className={`size-7 ${t.textColor}`} />}
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>Policy Topic</div>
-              {/* Scales down on narrow screens. At a fixed 36px, “Democracy &
-                  Government” needed 214px of a 150px column and ran under the
-                  Track button. */}
-              <h1 style={{ fontSize: 'clamp(26px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.15 }}>{t.label}</h1>
-            </div>
-            {/* Wrapped so a media query can drop it to its own line below 560px
-                — see .topic-head in globals.css. */}
-            <div className="topic-head-track">
-              <BookmarkButton entity={{
-                kind: 'policy', refId: topic, label: t.label,
-                sublabel: 'Policy topic', href: `/policies/${topic}`, accent: JADE,
-              }} />
-            </div>
+          {/* Every issue, so a reader can pivot topic without backing out to
+              the index — the mirror of the party switcher on /parties/[slug].
+              Sits right under the page title, ABOVE the topic block: pick an
+              issue first, then see which one you're on. It is navigation, so it
+              belongs with the title it changes, not between the description
+              and the content. */}
+          <div style={{ marginBottom: 22 }}>
+            <TopicSwitcher current={topic} />
           </div>
+
+          <div className="topic-head" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            {/* The topic, as a large clone of the pill above that picked it —
+                same tint, same coloured border, icon + name — so the header
+                says "this one" in the same language as the switcher. Not a
+                link; it is the heading. */}
+            <h2
+              className={t.color}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 12,
+                padding: '10px 22px 10px 18px', borderRadius: 999,
+                border: `3px solid ${topicBorder.active}`,
+                // Always one line. The long labels ("Democracy & Government")
+                // take a smaller size so they still fit a phone in one line
+                // rather than breaking the pill into two.
+                fontSize: t.label.length > 16 ? 'clamp(17px, 4.9vw, 30px)' : 'clamp(24px, 6.5vw, 32px)',
+                fontWeight: 800, letterSpacing: '-.02em',
+                color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.15,
+                maxWidth: '100%', whiteSpace: 'nowrap',
+              }}
+            >
+              {Icon && <Icon className={`size-7 ${t.textColor}`} style={{ flexShrink: 0 }} />}
+              <span>{t.label}</span>
+            </h2>
+            {/* Soft (i): opens the "What this covers" bubble — the topic's
+                scope plus the definitions the page relies on. */}
+            <TopicInfoButton topicLabel={t.label} covers={t.longDescription} accent={topicBorder.active} />
+          </div>
+          {/* Plain subtext, not a heading: says what the list below is.
+              Does NOT name the topic: the pill above already does, and
+              "…on Democracy & Government" wrapped to a second line on a phone
+              while "…on Health" didn't, so switching topic shifted everything
+              beneath by a line even with scroll kept. One line, every topic,
+              every device. */}
+          <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '12px 0 0', lineHeight: 1.45, whiteSpace: 'nowrap' }}>
+            Where each party stands on this issue
+          </p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '32px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* Once the title pill scrolls off, a copy of it pins bottom-right with
+          the other topics one tap away. */}
+      <FloatingTopicPill topic={topic} />
 
-        {/* What this covers */}
-        <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 18, padding: '22px 24px' }}>
-          <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>What this covers</h2>
-          <p style={{ fontSize: 14.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>{t.longDescription}</p>
-        </div>
-
-        {/* Every issue, so a reader can pivot topic without backing out to the
-            index. The mirror of the party switcher on /parties/[slug] — the two
-            pages are transposes of one dataset and now navigate the same way.
-
-            This replaces a "Parties prioritising {t.label}" card grid. Every
-            party in it appeared again in the comparison directly below, so it
-            was a duplicate list standing between the reader and the content —
-            and it ranked parties by hand-maintained keyPolicyAreas metadata
-            rather than by anything sourced. */}
-        <TopicSwitcher current={topic} />
+      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '10px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
 
         {/* Everything below the chips fades in on a topic change. `key` is the
             topic, so React remounts this subtree and the animation replays;
@@ -112,7 +144,9 @@ export default async function PolicyTopicPage(
             Honoured by prefers-reduced-motion in globals.css. */}
         <div key={topic} className="topic-swap" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
 
-        {/* Detailed party-by-party comparison */}
+        {/* Detailed party-by-party comparison. The id marks where the
+            background wash ends (TopicBackground measures it). */}
+        <div id="topic-content">
         {positions.length > 0 ? (
           <PolicyComparison positions={positions} topicLabel={t.label} topic={topic} />
         ) : (
@@ -125,6 +159,21 @@ export default async function PolicyTopicPage(
             </p>
           </div>
         )}
+        </div>
+
+        {/* Track — moved out of the header by request. Sits after the
+            comparison, just above the scope note, so the header is title →
+            pills → topic and nothing else. */}
+        <div>
+          <BookmarkButton entity={{
+            kind: 'policy', refId: topic, label: t.label,
+            sublabel: 'Policy topic', href: `/policies/${topic}`, accent: JADE,
+          }} />
+        </div>
+
+        {/* "What this covers" is no longer a card here — it lives in the (i)
+            bubble beside the topic pill in the header (TopicInfoButton), with
+            the sourcing and grouping definitions alongside it. */}
 
         {/* What's been legislated this term (bills → record, beside the comparison) */}
         <BillsForTopic topic={topic as PolicyTopic} label={t.label} />
@@ -140,6 +189,6 @@ export default async function PolicyTopicPage(
         </div>
       </div>
       <PolicyCoverage maxWidth={1000} />
-    </div>
+    </TopicBackground>
   )
 }

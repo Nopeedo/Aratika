@@ -479,6 +479,54 @@ a, button, [role='button'], summary {
   }
 }
 
+/* Topic switcher on /policies/[topic]: the homepage chips (same colours and
+   borders), but at the compact pill size the row had before it borrowed them.
+   Descendant selector outranks the bare .ap-chip rules above at every width. */
+.topic-switcher .ap-chip {
+  padding: 5px 11px !important;
+  gap: 6px !important;
+  border-radius: 999px !important;
+  border-width: 2px !important;
+}
+.topic-switcher .ap-chip span { font-size: 12.5px !important; }
+.topic-switcher .ap-chip svg  { width: 13px !important; height: 13px !important; }
+/* Topic menu behind the floating pill on /policies/[topic]: the same chips
+   at the compact pill size, dimmed to 60% until touched. The tapped one is
+   animated by the component; these rules only set the resting look. */
+.topic-menu .ap-chip {
+  padding: 5px 11px !important;
+  gap: 6px !important;
+  border-radius: 999px !important;
+  border-width: 2px !important;
+  opacity: .6;
+  transition: opacity .18s ease;
+}
+.topic-menu .ap-chip span { font-size: 12.5px !important; }
+.topic-menu .ap-chip svg  { width: 13px !important; height: 13px !important; }
+.topic-menu .ap-chip:hover,
+.topic-menu .ap-chip:focus-visible { opacity: 1; }
+
+/* Phones: tighter still, so the eleven topics pack into five rows or so
+   rather than eight. Two levels of specificity above the mobile .ap-chip
+   rule so it wins there too. */
+@media (max-width: 767px) {
+  .topic-switcher { gap: 5px !important; }
+  .topic-switcher .ap-chip {
+    padding: 4px 9px !important;
+    gap: 4px !important;
+    border-width: 1.5px !important;
+  }
+  .topic-switcher .ap-chip span { font-size: 11.5px !important; }
+  .topic-switcher .ap-chip svg  { width: 12px !important; height: 12px !important; }
+}
+/* The current topic stays at full strength; the rest recede so one pill
+   reads as "you are here" without changing its own design. Hover/focus brings
+   a pill back so it still feels tappable. */
+.topic-switcher .ap-chip { transition: opacity .18s ease; }
+.topic-switcher .ap-chip:not([aria-current]) { opacity: .55; }
+.topic-switcher .ap-chip:not([aria-current]):hover,
+.topic-switcher .ap-chip:not([aria-current]):focus-visible { opacity: 1; }
+
 /* The party page's content column keeps 36px gutters, which is a fifth of a
    360px phone. Tighten them so the topic chips get the width they need — with
    the card chrome already removed, this is what takes the picker from one chip
@@ -541,15 +589,6 @@ a, button, [role='button'], summary {
   .party-swap { animation: none; }
 }
 
-/* Policy topic header.
-   Icon + title + Track sat on one row at every width. On a 375px phone that
-   left the title a 150px column: "Economy" needed 157px and ran under the Track
-   button, and "Democracy & Government" needed 214px and broke to three lines.
-   Below 560px the button drops to its own line and the title gets the row. */
-@media (max-width: 560px) {
-  .topic-head { flex-wrap: wrap; }
-  .topic-head-track { flex-basis: 100%; }
-}
 
 /* ── Policy topic swap ──────────────────────────────────────────────────────
    The content below the topic chips on /policies/[topic], faded in on change.
