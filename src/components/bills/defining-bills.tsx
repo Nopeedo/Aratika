@@ -18,7 +18,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Landmark, ArrowRight, Check, X } from 'lucide-react'
+import { ArrowRight, Check, X } from 'lucide-react'
 import { DEFINING_BILLS, DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
 import { INK, MANROPE } from '@/constants/theme'
 
@@ -73,15 +73,8 @@ export function DefiningBills() {
 
   return (
     <section style={{ marginBottom: 48 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-        <Landmark style={{ width: 16, height: 16, color: ACCENT_DK }} />
-        {/* Anchored to the term this actually covers. "Shaping the 2026
-            election" was a claim about an election that has not happened;
-            these are the laws made since the 2023 one, which is a fact and
-            says which years the list is drawn from. */}
-        <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: ACCENT_DK, fontFamily: MANROPE }}>Since the 2023 election</span>
-      </div>
-
+      {/* The "Since the 2023 election" eyebrow is under the page title now:
+          it dates the whole page rather than this section alone. */}
       {/* No standfirst under the heading: it explained the tiles that are
           directly below and visibly tappable. */}
       <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>The bills that defined this term</h2>

@@ -10,14 +10,14 @@
  */
 
 import type { Metadata } from 'next'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, Landmark } from 'lucide-react'
 import { BillsTracker54 } from '@/components/bills/bills-tracker-54'
 import { DefiningBills } from '@/components/bills/defining-bills'
 import { AboutBillsTracker, AboutAllBills } from '@/components/bills/about-bills-tracker'
 import { BILLS_54_META } from '@/constants/bills-54'
 import { getApprovedBills } from '@/lib/bills/live'
 import { memberPartyMap } from '@/lib/bills/member-party'
-import { BORDER, INK, JADE, MANROPE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { INK, JADE, JADE_DARK, MANROPE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const dynamic = 'force-dynamic'
 
@@ -45,9 +45,10 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
   return (
     <div style={WOVEN_PAGE}>
 
-      {/* Header */}
-      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
+      {/* Header. No rule under it — the page and the header share the same
+          woven ground, and the line was drawing a box around a title. */}
+      <div>
+        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 24px' }}>
           {/* No "Official Parliament Data" badge: the page says where every
               bill came from on the bill itself, and the badge was a claim
               about the page rather than a fact about any of its rows. */}
@@ -59,6 +60,14 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
               Bills Tracker
             </h1>
             <AboutBillsTracker />
+          </div>
+
+          {/* Moved up from the defining-bills section below: it dates the whole
+              page, not just that one carousel, and under the title is where a
+              reader looks to find out which years they are reading about. */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10 }}>
+            <Landmark style={{ width: 16, height: 16, color: JADE_DARK }} />
+            <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE_DARK, fontFamily: MANROPE }}>Since the 2023 election</span>
           </div>
         </div>
       </div>
