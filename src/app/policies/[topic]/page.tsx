@@ -165,7 +165,7 @@ export default async function PolicyTopicPage(
             where "who has a position on what" answers the question the cards
             above just raised, rather than after the bills and the track
             button where nobody had got to it. */}
-        <PolicyCoverage maxWidth={1000} />
+        <PolicyCoverage nested />
 
         {/* Track — moved out of the header by request. Sits after the
             comparison, just above the scope note, so the header is title →

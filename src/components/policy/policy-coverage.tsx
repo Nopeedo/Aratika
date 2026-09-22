@@ -10,7 +10,16 @@ import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { CoverageMatrix } from './coverage-matrix'
 import { BORDER, INK, MANROPE, SECONDARY } from '@/constants/theme'
 
-export async function PolicyCoverage({ maxWidth = 1100 }: { maxWidth?: number }) {
+export async function PolicyCoverage({ maxWidth = 1100, nested = false }: {
+  maxWidth?: number
+  /**
+   * Set when the band is rendered INSIDE a page container that already has the
+   * page's horizontal inset (the topic page, since the band moved up under the
+   * comparison). It then adds none of its own, so the table lines up exactly
+   * with the party cards above it instead of sitting inset twice.
+   */
+  nested?: boolean
+}) {
   const positions = await getAllApprovedPositions()
   if (positions.length === 0) return null
   const topics = POLICY_TOPIC_ORDER.map((slug) => ({ slug, label: POLICY_TOPICS[slug].label }))
@@ -21,7 +30,7 @@ export async function PolicyCoverage({ maxWidth = 1100 }: { maxWidth?: number })
   // table inside keeps its white ground.
   return (
     <section style={{ background: 'transparent', borderTop: `1px solid ${BORDER}` }}>
-      <div style={{ maxWidth, margin: '0 auto', padding: '32px clamp(18px, 5vw, 36px)' }}>
+      <div style={{ maxWidth: nested ? undefined : maxWidth, margin: '0 auto', padding: nested ? '32px 0' : '32px clamp(18px, 5vw, 36px)' }}>
         {/* No "Open the compare tool" link: on a topic page it pointed at the
             page you were already on, and the topic chips above are the way
             around the comparison. Removed by request. */}
