@@ -11,10 +11,10 @@
 
 import type { Metadata } from 'next'
 import { ExternalLink } from 'lucide-react'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { BillsTracker54 } from '@/components/bills/bills-tracker-54'
 import { DefiningBills } from '@/components/bills/defining-bills'
 import { HowToReadBills } from '@/components/bills/how-to-read-bills'
+import { AboutBillsTracker } from '@/components/bills/about-bills-tracker'
 import { BILLS_54_META } from '@/constants/bills-54'
 import { getApprovedBills } from '@/lib/bills/live'
 import { memberPartyMap } from '@/lib/bills/member-party'
@@ -49,26 +49,28 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
-          <div style={{ marginBottom: 8 }}>
-            <SectionDivider type="official" label="Official Parliament Data" />
+          {/* No "Official Parliament Data" badge: the page says where every
+              bill came from on the bill itself, and the badge was a claim
+              about the page rather than a fact about any of its rows. */}
+          {/* Title, then the two explanations as (i) buttons beside it: what
+              this page IS and how to read it are both orientation, and eight
+              lines of it stood between the reader and the bills. */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0 }}>
+              Bills Tracker
+            </h1>
+            <AboutBillsTracker />
           </div>
-          <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, marginBottom: 10 }}>
-            Bills Tracker
-          </h1>
-          <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
-            Bills before the <b style={{ color: INK }}>House of Representatives</b>: what they propose, their
-            type, and how far they&apos;ve progressed. Read plain-language breakdowns of the ones we&apos;ve explained.
-          </p>
+          <div style={{ marginTop: 12 }}>
+            <HowToReadBills />
+          </div>
         </div>
       </div>
 
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '32px clamp(18px, 5vw, 36px) 64px' }}>
 
-        {/* Orientation first: what a bill is and what the stages mean, before any
-            of the bills themselves. */}
-        <div style={{ marginBottom: 28 }}>
-          <HowToReadBills />
-        </div>
+        {/* The "how to read this" primer is an (i) beside the title now, not a
+            card here. */}
 
         {/* ── Bills shaping the election (curated) ── */}
         <DefiningBills />
