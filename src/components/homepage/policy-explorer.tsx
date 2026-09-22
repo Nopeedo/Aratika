@@ -602,7 +602,11 @@ function FocusedCard({ slug, pos, topicLabel }: {
           character count so the longest titles stayed on one
           line, which left "ACT on Health" twice the size of "Te Pāti Māori on
           Treaty & Māori Affairs". Now long ones wrap instead. */}
-      <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15 }}>{party.name} on {topicLabel}</div>
+      {/* Party name in the party's colour; "on {Issue}" in the issue's colour —
+          the same hue as the panel border and the pressed pill above it. */}
+      <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '.01em', textTransform: 'uppercase', color: readableOnWhite(c), marginBottom: 10, fontFamily: MANROPE, lineHeight: 1.15 }}>
+        {party.name} <span style={{ color: topicColors(POLICY_TOPICS[pos.topic as keyof typeof POLICY_TOPICS]?.textColor ?? '').border }}>on {topicLabel}</span>
+      </div>
       {/* The stance headline is gone from the top of the panel. It restated the
           proposals directly beneath it — Labour's housing stance read "Capital
           gains tax on investment property; solar help for renters and
