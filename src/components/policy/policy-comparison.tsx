@@ -10,20 +10,24 @@
 
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
-import { CONTESTING_PARTIES, PARTY_NAMES } from '@/constants/parties'
+import { CONTESTING_PARTIES, PARLIAMENTARY_PARTIES, PARTY_NAMES } from '@/constants/parties'
 import { PartyPositions } from '@/components/policy/party-positions'
 import type { PartyPosition } from '@/lib/positions/live'
 import type { PartySlug } from '@/types'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 /**
- * Every registered contesting party that isn't in the head-to-head list above.
+ * The head-to-head list is the parties that HOLD SEATS — PARLIAMENTARY_PARTIES,
+ * not PARTY_DIRECTORY_ORDER, which also carries TOP. TOP has no seats; putting
+ * it alone among the six read as favouring one minor party over the ten
+ * others, so it now sits with them under "also contesting" below.
+ *
+ * Every registered contesting party that isn't in the head-to-head list.
  * DERIVED, not a second hand-kept array: a party added to CONTESTING_PARTIES
  * and forgotten here would have been invisible on every topic page, which is
  * exactly how thirty-four published positions came to be rendering nowhere.
  */
-const ALSO_CONTESTING = CONTESTING_PARTIES.filter((p) => !PARTY_DIRECTORY_ORDER.includes(p))
+const ALSO_CONTESTING = CONTESTING_PARTIES.filter((p) => !PARLIAMENTARY_PARTIES.includes(p))
 
 export function PolicyComparison({ positions, topicLabel, topic }: { positions: PartyPosition[]; topicLabel: string; topic: string }) {
   const [detailed, setDetailed] = useState(false)
@@ -58,7 +62,7 @@ export function PolicyComparison({ positions, topicLabel, topic }: { positions: 
         </div>
       </div>
 
-      <PartyPositions parties={PARTY_DIRECTORY_ORDER} getPos={current} detailed={detailed} topic={topic} topicLabel={topicLabel} />
+      <PartyPositions parties={PARLIAMENTARY_PARTIES} getPos={current} detailed={detailed} topic={topic} topicLabel={topicLabel} />
 
       <AlsoContesting getPos={current} detailed={detailed} topic={topic} topicLabel={topicLabel} />
 
