@@ -1,6 +1,6 @@
 /**
  * /bills — Bills tracker.
- * Top: the curated bills that defined this term, as a tile carousel. Below: the
+ * Top: the curated most-debated bills, as status pills and tiles. Below: the
  * full current-bills snapshot for the 54th Parliament.
  *
  * The approved breakdowns are still fetched, but no longer shown as their own

@@ -1,5 +1,5 @@
 /**
- * DefiningBillDetail — breakdown page for a "bill that defined this term".
+ * DefiningBillDetail — breakdown page for one of the most-debated bills.
  * Jade theme: dated timeline, Manrope, and the vetted defining-bills.ts content
  * (no fabrication). Richer sections render only where populated, so every bill
  * degrades gracefully.

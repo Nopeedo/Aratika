@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * DefiningBills — the bills that defined the term since the 2023 election.
+ * DefiningBills — the term's most debated bills, since the 2023 election.
  *
  * Status pills, then tiles, then a panel — and nothing is expanded until you
  * ask for it. The section used to open with one bill's full detail already
@@ -77,7 +77,7 @@ export function DefiningBills() {
           it dates the whole page rather than this section alone. */}
       {/* No standfirst under the heading: it explained the tiles that are
           directly below and visibly tappable. */}
-      <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>The bills that defined this term</h2>
+      <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>The most debated bills</h2>
 
       {/* Status pills. Same tap-to-filter as the issue chips on the comparison
           page, including tapping the lit one to clear it. Each carries its own

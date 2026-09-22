@@ -96,7 +96,7 @@ export default async function BillDetailPage(
 ) {
   const { slug } = await params
 
-  // Curated "bills that defined this term" get their own breakdown view.
+  // Curated "most debated bills" get their own breakdown view.
   //
   // It is handed the published-breakdown map so the real bills it lists can send
   // a reader to our own plain-language page first, and only out to Parliament
