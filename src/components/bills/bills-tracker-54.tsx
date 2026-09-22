@@ -209,13 +209,18 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
           and an inline style would beat any of them. */}
       <style dangerouslySetInnerHTML={{ __html: TRACKER_CSS }} />
 
-      {/* Stat chips (click to filter by stage) */}
+      {/* Standing figures for the term, NOT filters. They were buttons that
+          each set the filter bar below them, which made a reader wonder which
+          of the two rows was in charge and left a chip lit next to a select
+          saying something else. The selects do the filtering; this row says
+          what is in the House. "Open for submissions" kept its filter, which
+          only lived here — it is an option in the stage select now. */}
       <div className="bills-stats" style={{ marginBottom: 18 }}>
-        <StatChip icon={Landmark} value={stats.total} label="Bills this term" active={status === 'All' && type === 'All' && !subsOnly} onClick={reset} />
-        <StatChip icon={BadgeCheck} value={stats.passed} label="Passed into law" active={status === 'Royal Assent'} onClick={() => setStatus('Royal Assent')} />
-        <StatChip icon={Megaphone} value={stats.committee} label="At select committee" active={status === 'Select Committee'} onClick={() => setStatus('Select Committee')} />
-        {openCount > 0 && <StatChip icon={PenLine} value={openCount} label="Open for submissions" active={subsOnly} onClick={() => setSubsOnly((v) => !v)} />}
-        <StatChip icon={Users} value={stats.members} label="Member’s bills" active={type === "Member's"} onClick={() => setType((t) => (t === "Member's" ? 'All' : "Member's"))} />
+        <Stat icon={Landmark} value={stats.total} label="Bills this term" />
+        <Stat icon={BadgeCheck} value={stats.passed} label="Passed into law" />
+        <Stat icon={Megaphone} value={stats.committee} label="At select committee" />
+        {openCount > 0 && <Stat icon={PenLine} value={openCount} label="Open for submissions" />}
+        <Stat icon={Users} value={stats.members} label="Member’s bills" />
       </div>
 
       {/* Filter bar */}
@@ -227,7 +232,16 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
         </div>
         <Select value={cat} onChange={setCat} options={['All', ...BILL_CATEGORIES]} allLabel="All policy areas" />
         <Select value={type} onChange={setType} options={['All', 'Government', "Member's", 'Local', 'Private']} allLabel="All types" />
-        <Select value={status} onChange={setStatus} options={['All', ...statuses]} allLabel="All stages" fmt={(s) => (s === 'Royal Assent' ? 'Passed into law' : s)} />
+        {/* OPEN_SUBS is not a stage the bill data carries — it is the
+            submissions-open window, which used to be a chip above. Folding it
+            in here keeps that filter reachable now the figures are inert. */}
+        <Select
+          value={subsOnly ? OPEN_SUBS : status}
+          onChange={(v) => { setSubsOnly(v === OPEN_SUBS); setStatus(v === OPEN_SUBS ? 'All' : v) }}
+          options={['All', ...(openCount > 0 ? [OPEN_SUBS] : []), ...statuses]}
+          allLabel="All stages"
+          fmt={(s) => (s === 'Royal Assent' ? 'Passed into law' : s)}
+        />
         {parties.length > 0 && <Select value={party} onChange={setParty} options={['All', ...parties]} allLabel="All parties" fmt={(s) => PARTY_NAMES[s as PartySlug]?.short ?? s} />}
         {active && (
           <button onClick={reset} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '9px 12px', fontFamily: MANROPE, cursor: 'pointer' }}>
@@ -366,17 +380,14 @@ function fmtDate(iso?: string | null) {
    dropdowns did the same underneath, so the controls pushed the actual bills
    most of a screen further down. */
 const TRACKER_CSS = `
-.bills-stats { display: flex; flex-wrap: wrap; gap: 10px; }
+.bills-stats { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; }
 .bills-filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .bills-search { flex: 1 1 240px; min-width: 200px; }
 .bills-select { max-width: 200px; }
 @media (max-width: 760px) {
-  /* Two fixed columns cut ~140px cells, which is narrower than the longest
-     label ("Open for submissions") can render on one line. auto-fit with a
-     real minimum drops to a single column on a phone and takes the second
-     back as soon as the width is actually there. */
-  .bills-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px; }
-  .bills-stats > button { width: 100%; padding: 9px 10px; gap: 7px; }
+  /* Still one wrapping line on a phone: they are five short facts now, not
+     five tappable cards, so they no longer need a column each. */
+  .bills-stats { gap: 5px 14px; }
   .bills-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .bills-search { grid-column: 1 / -1; min-width: 0; }
   .bills-select { max-width: none; width: 100%; min-width: 0; }
@@ -384,15 +395,19 @@ const TRACKER_CSS = `
 }
 `
 
-function StatChip({ icon: Icon, value, label, active, onClick }: { icon: React.ElementType; value: number; label: string; active: boolean; onClick: () => void }) {
+/** One standing figure. A span, not a button: nothing here is clickable. */
+function Stat({ icon: Icon, value, label }: { icon: React.ElementType; value: number; label: string }) {
   return (
-    <button onClick={onClick} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '10px 14px', borderRadius: 12, border: `1px solid ${active ? JADE : BORDER}`, background: active ? '#ecfdf5' : '#fff', cursor: 'pointer', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
-      <Icon style={{ width: 17, height: 17, color: JADE }} />
-      <span style={{ fontSize: 18, fontWeight: 800, color: INK }}>{value}</span>
-      <span style={{ fontSize: 12.5, fontWeight: 600, color: SECONDARY }}>{label}</span>
-    </button>
+    <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 5, fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
+      <Icon style={{ width: 13, height: 13, color: JADE, alignSelf: 'center', flexShrink: 0 }} />
+      <span style={{ fontSize: 14, fontWeight: 800, color: INK }}>{value}</span>
+      <span style={{ fontSize: 12, fontWeight: 600, color: SECONDARY }}>{label}</span>
+    </span>
   )
 }
+
+/** Pseudo-stage for the submissions-open filter — see the stage select. */
+const OPEN_SUBS = 'Open for submissions'
 
 function Select({ value, onChange, options, allLabel, fmt }: { value: string; onChange: (v: string) => void; options: string[]; allLabel: string; fmt?: (s: string) => string }) {
   return (
