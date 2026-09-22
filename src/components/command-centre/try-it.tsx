@@ -1,10 +1,12 @@
 'use client'
 
 /**
- * CommandCentreTryIt — the "feel it in five seconds" island on the Command Centre
- * explainer. Real Track buttons for a handful of parties + issues (tracking works
- * anonymously via localStorage), plus a live tray that fills as you tap, so a
- * logged-out visitor experiences the payoff before ever making an account.
+ * CommandCentreTryIt — the "pick what matters" island on the Command Centre
+ * explainer. Real Track buttons for a handful of parties + issues, plus a tray
+ * that fills as a signed-in reader taps. A signed-out reader who taps one gets
+ * the account prompt (tracking needs an account since 22 Sep 2026), and the
+ * thing they tapped is waiting in their command centre once they are in — so
+ * the tray's job for them is to say that, not to pretend to fill.
  */
 
 import Link from 'next/link'
@@ -37,7 +39,10 @@ export function CommandCentreTryIt({ options }: { options: BookmarkEntity[] }) {
           <span style={{ fontSize: 15, color: TERTIARY, fontFamily: MANROPE }}>Loading your tracked items…</span>
         ) : n === 0 ? (
           <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 16, color: SECONDARY, fontFamily: MANROPE }}>
-            <Target style={{ width: 15, height: 15, color: TERTIARY }} /> Nothing tracked yet. Tap <b style={{ color: INK }}>Track</b> on a few above and watch this fill up.
+            <Target style={{ width: 15, height: 15, color: TERTIARY }} />
+            {user
+              ? <>Nothing tracked yet. Tap <b style={{ color: INK }}>Track</b> on a few above and watch this fill up.</>
+              : <>Tap <b style={{ color: INK }}>Track</b> on one above. You&apos;ll set up a free account, and it&apos;ll be in your command centre when you&apos;re in.</>}
           </span>
         ) : (
           <div>
@@ -60,10 +65,9 @@ export function CommandCentreTryIt({ options }: { options: BookmarkEntity[] }) {
                 </Link>
               ) : (
                 <>
-                  <Link href="/register" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: '#fff', background: JADE, borderRadius: 9, padding: '8px 14px', textDecoration: 'none', fontFamily: MANROPE }}>
-                    Save these, sign up free <ArrowRight style={{ width: 14, height: 14 }} />
+                  <Link href="/register?next=%2Fcommand-centre" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: '#fff', background: JADE, borderRadius: 9, padding: '8px 14px', textDecoration: 'none', fontFamily: MANROPE }}>
+                    Sign up free <ArrowRight style={{ width: 14, height: 14 }} />
                   </Link>
-                  <span style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE }}>They&apos;re saved on this device meanwhile.</span>
                 </>
               )}
             </div>

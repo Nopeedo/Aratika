@@ -22,6 +22,15 @@ function RegisterInner() {
   const router = useRouter()
   const params = useSearchParams()
   const isPremium = params.get('plan') === 'premium'
+  /**
+   * Where to land once the account exists. The Track prompt sends people here
+   * with ?next=<the page they were on>, and the item they tapped is waiting in
+   * their command centre — so the right destination is that page, not the
+   * dashboard. Same-site paths only, the same test /login applies: anything
+   * else is an open redirect.
+   */
+  const rawNext = params.get('next') ?? ''
+  const nextPath = /^\/(?![/\\])/.test(rawNext) ? rawNext : '/dashboard'
 
   const [name, setName]         = React.useState('')
   const [email, setEmail]       = React.useState('')
@@ -43,7 +52,10 @@ function RegisterInner() {
       email,
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        // The confirmation link brings them back to where they were. If the
+        // Supabase redirect allowlist drops the query, /auth/callback falls
+        // back to the dashboard, where the tracked item is waiting anyway.
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
         data: { name },
       },
     })
@@ -54,7 +66,7 @@ function RegisterInner() {
     }
     // If email confirmation is on, there's no active session yet → ask them to check email.
     if (data.session) {
-      router.push('/dashboard')
+      router.push(nextPath)
       router.refresh()
     } else {
       setSent(true)
@@ -73,7 +85,7 @@ function RegisterInner() {
             We&apos;ve sent a confirmation link to <b>{email}</b>. Click it to verify your
             account, then log in.
           </p>
-          <Link href="/login" style={{ display: 'inline-block', marginTop: 20, fontSize: 13.5, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE }}>
+          <Link href={`/login?next=${encodeURIComponent(nextPath)}`} style={{ display: 'inline-block', marginTop: 20, fontSize: 13.5, fontWeight: 700, color: JADE, textDecoration: 'none', fontFamily: MANROPE }}>
             Go to log in →
           </Link>
         </div>
@@ -88,7 +100,7 @@ function RegisterInner() {
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {error && <ErrorBox message={error} />}
-        <GoogleSignIn next={isPremium ? '/subscription' : '/dashboard'} onError={setError} />
+        <GoogleSignIn next={isPremium ? '/subscription' : nextPath} onError={setError} />
         <OrDivider />
       </div>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14, marginTop: 14 }}>

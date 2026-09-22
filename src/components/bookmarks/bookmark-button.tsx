@@ -2,8 +2,11 @@
 
 /**
  * BookmarkButton — "Track" control for an MP, party, electorate or policy.
- * Free + login-required: signed-out users are routed to /login (with a return
- * path). Saved items show up in the user's command centre (/dashboard).
+ * Free + account-required: a signed-out reader who taps it gets TrackPrompt —
+ * why an account is worth it for this thing, and a link to create one that
+ * brings them back here with it tracked. (It used to bounce silently to /login,
+ * which explained nothing and was the wrong page for someone with no account.)
+ * Saved items show up in the user's command centre (/dashboard).
  *
  * IT MUST NOT CLAIM A STATE IT DOES NOT KNOW YET. useBookmarks starts with an
  * empty set and `loading: true` while it checks auth and fetches the list, and
@@ -15,9 +18,11 @@
  * no label, nothing to act on, no layout shift when the answer arrives.
  */
 
-import { useRouter, usePathname } from 'next/navigation'
+import { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { Bookmark, BookmarkCheck } from 'lucide-react'
 import { useBookmarks, type BookmarkEntity } from '@/hooks/use-bookmarks'
+import { TrackPrompt } from '@/components/bookmarks/track-prompt'
 import { BORDER, INK, JADE, MANROPE } from '@/constants/theme'
 
 export function BookmarkButton({
@@ -27,9 +32,9 @@ export function BookmarkButton({
   entity: BookmarkEntity
   variant?: 'pill' | 'icon'
 }) {
-  const router = useRouter()
   const pathname = usePathname()
   const { isBookmarked, toggle, authLoading, loading } = useBookmarks()
+  const [prompting, setPrompting] = useState(false)
   const saved = isBookmarked(entity.kind, entity.refId)
   // Unknown until BOTH the auth check and the list have settled. `loading`
   // alone is not enough: it is only set false after auth resolves.
@@ -37,8 +42,9 @@ export function BookmarkButton({
 
   async function onClick() {
     const res = await toggle(entity)
-    if (res.needsAuth) router.push(`/login?next=${encodeURIComponent(pathname || '/')}`)
+    if (res.needsAuth) setPrompting(true)
   }
+  const prompt = prompting ? <TrackPrompt entity={entity} returnTo={pathname || '/'} onClose={() => setPrompting(false)} /> : null
 
   if (variant === 'icon') {
     if (!known) {
@@ -50,6 +56,8 @@ export function BookmarkButton({
       )
     }
     return (
+      <>
+      {prompt}
       <button
         onClick={onClick}
         disabled={authLoading}
@@ -65,6 +73,7 @@ export function BookmarkButton({
       >
         {saved ? <BookmarkCheck style={{ width: 18, height: 18 }} /> : <Bookmark style={{ width: 18, height: 18 }} />}
       </button>
+      </>
     )
   }
 
@@ -84,6 +93,8 @@ export function BookmarkButton({
   }
 
   return (
+    <>
+    {prompt}
     <button
       onClick={onClick}
       disabled={authLoading}
@@ -98,5 +109,6 @@ export function BookmarkButton({
       {saved ? <BookmarkCheck style={{ width: 16, height: 16 }} /> : <Bookmark style={{ width: 16, height: 16 }} />}
       {saved ? 'Tracking' : 'Track'}
     </button>
+    </>
   )
 }

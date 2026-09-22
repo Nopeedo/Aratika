@@ -49,9 +49,10 @@ export default function PrivacyPage() {
 
       <h2>You can use most of Politika without an account</h2>
       <p>
-        Reading the site, parties, policies, MPs, bills, the map, the news feed, needs no account and no sign-in. If
-        you follow things or work through the Learn modules while signed out, that is saved <strong>in your own
-        browser</strong> and never sent to us. See “What stays on your device” below.
+        Reading the site, parties, policies, MPs, bills, the map, the news feed, needs no account and no sign-in.
+        Tracking things does need an account, so that we can tell you when they move. If you work through the Learn
+        modules while signed out, that progress is saved <strong>in your own browser</strong> and never sent to us.
+        See “What stays on your device” below.
       </p>
 
       <h2>What we collect if you create an account</h2>
@@ -93,7 +94,8 @@ export default function PrivacyPage() {
       <h2>What stays on your device</h2>
       <p>
         Signed out, the site remembers things in your browser’s own storage. It never reaches our servers, and clearing
-        your browser data removes it: the things you’ve followed, your Learn scores, which onboarding steps you’ve done,
+        your browser data removes it: the one thing you last tapped Track on before signing up (so it can be tracked
+        for you once you are in), your Learn scores, which onboarding steps you’ve done,
         whether you’ve asked for jargon to be explained, your answers to the quick guide (including whether you said
         you’re enrolled), banners you’ve dismissed, and when you last looked at a particular MP’s page.
       </p>

@@ -48,12 +48,12 @@ export function TrackCta() {
         {/* Auto-advancing "how tracking works" review — one type at a time */}
         <TrackShowcase />
 
-        {/* Try it — INLINE, no navigation. Track buttons + a live tray that fills as you tap. */}
+        {/* Try it — INLINE. Track buttons; a signed-out tap opens the account prompt, a signed-in one fills the tray. */}
         <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 22, padding: 'clamp(20px, 4vw, 32px)', marginTop: 14 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 12, flexWrap: 'wrap', marginBottom: 16 }}>
             <div>
-              <h3 style={{ fontSize: 21, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px' }}>Try it now, no sign-up</h3>
-              <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Tap Track and watch your command centre take shape.</p>
+              <h3 style={{ fontSize: 21, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 3px' }}>Pick your first one</h3>
+              <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>Tap Track on one of these. You&apos;ll create a free account, and it&apos;ll be waiting in your command centre.</p>
             </div>
             <Link href="/command-centre" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 15, fontWeight: 800, color: JADE, textDecoration: 'none', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
               Live feed &amp; election tracker <ArrowRight style={{ width: 14, height: 14 }} />

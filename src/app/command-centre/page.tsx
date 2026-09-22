@@ -2,7 +2,7 @@
  * /command-centre — the PUBLIC explainer for Politika's tracking feature.
  * Works logged-out: teaches what you can track (MPs, parties, policies, bills)
  * and how news + video come to you, lets a visitor try tracking on the spot
- * (anonymous — see CommandCentreTryIt), shows a live sample of the real feed,
+ * (see CommandCentreTryIt), shows a live sample of the real feed,
  * and frames the 2026 election as the live payoff. Aesthetics are deliberately
  * plain for now — the pipeline first, the look later.
  */
@@ -48,7 +48,7 @@ const TRACKABLES = [
 ]
 
 const STEPS = [
-  { n: 1, title: 'Pick what matters', body: 'Tap Track on any MP, party, issue or bill. No sign-up needed to start.' },
+  { n: 1, title: 'Pick what matters', body: 'Tap Track on any MP, party, issue or bill. A free account takes a minute, and the first thing you tap is waiting in it.' },
   { n: 2, title: 'We watch it for you', body: 'Bill stages, submission deadlines, news and video on your things, gathered from official and credible sources.' },
   { n: 3, title: 'Walk in ready for 2026', body: 'Your feed stays current, and on election night you track the results live.' },
 ]
@@ -168,13 +168,13 @@ export default async function CommandCentrePage() {
       {/* Try it now */}
       <section id="try" style={{ background: SURFACE, borderBottom: `1px solid ${BORDER}`, scrollMarginTop: 72 }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px)' }}>
-          <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Try it now, no sign-up</h2>
-          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Tap Track on a few and watch your command centre take shape. Sign up later to keep it across devices.</p>
+          <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 28px)', fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Pick your first one</h2>
+          <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', lineHeight: 1.55 }}>Tap Track on any of these. You&apos;ll create a free account, and it&apos;ll be there when you&apos;re in, on every device you sign in on.</p>
           <CommandCentreTryIt options={trackOptions} />
           {/* The notify and install controls used to sit here. Both need a
-              signed-in user, and this section is headed "no sign-up" — so a
-              visitor tapping them got a dead end. They now live on the
-              dashboard, under the tracked items they actually notify about. */}
+              signed-in user, and a visitor tapping them got a dead end. They
+              now live on the dashboard, under the tracked items they actually
+              notify about. */}
         </div>
       </section>
 
