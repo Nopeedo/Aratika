@@ -135,24 +135,26 @@ export function DefiningBills() {
           const st = STATUS[b.statusKind]
           const on = b.slug === active
           return (
+            /* Styled like the issue chips: the status colour as the FILL, a
+               bold outline of the same hue, and the weight of that outline
+               (2px → 3px) as the only thing that changes when one is open. No
+               bar across the top — the fill says which status it is, and the
+               bar was saying it a second time in a third shade. */
             <button
               key={b.slug}
               onClick={() => select(b.slug)}
               aria-expanded={on}
               style={{
                 textAlign: 'left', cursor: 'pointer',
-                background: CARD, borderRadius: 13, padding: '11px 13px 12px',
-                // Unselected keeps the status colour at reduced strength, so each tile
-                // reads as a distinct bill up front rather than a faint grey box.
-                border: `2px solid ${on ? st.bar : hexToRgba(st.bar, 0.38)}`,
-                boxShadow: on ? '0 6px 18px -10px rgba(0,0,0,.45)' : '0 1px 2px rgba(0,0,0,.03)',
-                transform: on ? 'translateY(-2px)' : 'none',
-                transition: 'border-color .2s ease, box-shadow .2s ease, transform .2s ease',
+                background: st.bg, borderRadius: 13, padding: '11px 13px 12px',
+                borderStyle: 'solid',
+                borderWidth: on ? 3 : 2,
+                borderColor: on ? st.fg : st.bar,
+                transition: 'border-color .2s ease, border-width .2s ease',
                 fontFamily: MANROPE,
               }}
             >
-              <span style={{ display: 'block', height: 3, borderRadius: 999, background: st.bar, opacity: on ? 1 : 0.6, marginBottom: 9, transition: 'opacity .2s ease' }} />
-              <span style={{ display: 'block', fontSize: 10, fontWeight: 800, color: st.fg, fontFamily: MANROPE, marginBottom: 4 }}>{st.label}</span>
+              <span style={{ display: 'block', fontSize: 10.5, fontWeight: 800, color: st.fg, fontFamily: MANROPE, marginBottom: 4 }}>{st.label}</span>
               <span style={{ display: 'block', fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.28 }}>{b.title}</span>
             </button>
           )
