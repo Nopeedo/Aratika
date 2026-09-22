@@ -18,7 +18,7 @@
  */
 
 import Link from 'next/link'
-import { Bookmark } from 'lucide-react'
+import { ArrowRight, Bookmark } from 'lucide-react'
 import { topicColors } from '@/constants/topic-colors'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { INK, MANROPE, SECONDARY } from '@/constants/theme'
@@ -60,6 +60,7 @@ export function TopicFollowInvite({ topic }: { topic: string }) {
           }}
         >
           <Bookmark style={{ width: 15, height: 15 }} /> Track with a free account
+          <ArrowRight style={{ width: 15, height: 15, marginLeft: 1 }} />
         </Link>
         <Link href={`/login?next=${next}`} style={{ fontSize: 13.5, fontWeight: 700, color: border, textDecoration: 'none', fontFamily: MANROPE }}>
           Already have one? Sign in

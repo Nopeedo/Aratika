@@ -14,6 +14,7 @@ import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
 import { PolicyTopic } from '@/types'
+import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { TopicFollowInvite } from '@/components/policy/topic-follow-invite'
 import { getApprovedPositions } from '@/lib/positions/live'
 import { TopicSwitcher } from '@/components/policy/topic-switcher'
@@ -125,6 +126,24 @@ export default async function PolicyTopicPage(
           <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '12px 0 0', lineHeight: 1.45, whiteSpace: 'nowrap' }}>
             Where each party stands on this issue
           </p>
+
+          {/* Tracking, where the thing being tracked is named right above it.
+              Compact and in the issue's colour so it reads as part of the
+              heading block rather than as a second call to action competing
+              with the comparison below. The invitation to make an account
+              still sits at the foot of the page for anyone signed out. */}
+          <div style={{ marginTop: 12 }}>
+            <BookmarkButton
+              entity={{
+                kind: 'policy', refId: topic, label: t.label,
+                sublabel: 'Policy topic', href: `/policies/${topic}`, accent: topicBorder.active,
+              }}
+              label={`Track ${t.label.toLowerCase()} changes`}
+              savedLabel={`Tracking ${t.label.toLowerCase()} changes`}
+              accent={topicBorder.active}
+              compact
+            />
+          </div>
         </div>
       </div>
 

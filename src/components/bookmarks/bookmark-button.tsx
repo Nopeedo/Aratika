@@ -28,9 +28,26 @@ import { BORDER, INK, JADE, MANROPE } from '@/constants/theme'
 export function BookmarkButton({
   entity,
   variant = 'pill',
+  label,
+  savedLabel,
+  accent,
+  compact = false,
 }: {
   entity: BookmarkEntity
   variant?: 'pill' | 'icon'
+  /**
+   * Override the pill's wording. "Track" alone is fine beside a thing it
+   * obviously refers to; under a topic heading it reads better as what it
+   * actually does ("Track immigration changes"). The saved state gets its own
+   * label so it can stay a statement rather than an instruction.
+   */
+  label?: string
+  savedLabel?: string
+  /** Tint for the resting state, so the control can wear the issue's colour. */
+  accent?: string
+  /** Smaller type and padding, for a control that sits under a heading rather
+   *  than standing on its own. */
+  compact?: boolean
 }) {
   const pathname = usePathname()
   const { isBookmarked, toggle, authLoading, loading } = useBookmarks()
@@ -85,17 +102,23 @@ export function BookmarkButton({
     )
   }
 
+  const pad = compact ? '6px 11px' : '9px 16px'
+  const size = compact ? 13.5 : 16
+  const glyph = compact ? 14 : 16
+  const restText = label ?? 'Track'
+  const savedText = savedLabel ?? (label ? `Tracking ${entity.label.toLowerCase()}` : 'Tracking')
+
   if (!known) {
     // Same box as the real control so nothing moves when it resolves.
     return (
       <span aria-hidden style={{
         display: 'inline-flex', alignItems: 'center', gap: 7,
-        padding: '9px 16px', borderRadius: 10, fontSize: 16, fontWeight: 800, fontFamily: MANROPE,
+        padding: pad, borderRadius: 10, fontSize: size, fontWeight: 800, fontFamily: MANROPE,
         background: '#fff', border: `1px solid ${BORDER}`, color: 'transparent', opacity: 0.5,
         whiteSpace: 'nowrap',
       }}>
-        <Bookmark style={{ width: 16, height: 16, color: BORDER }} />
-        Track
+        <Bookmark style={{ width: glyph, height: glyph, color: BORDER }} />
+        {restText}
       </span>
     )
   }
@@ -109,13 +132,13 @@ export function BookmarkButton({
       aria-pressed={saved}
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 7, cursor: authLoading ? 'default' : 'pointer',
-        padding: '9px 16px', borderRadius: 10, fontSize: 16, fontWeight: 800, fontFamily: MANROPE,
-        background: saved ? '#ecfdf5' : '#fff', border: `1px solid ${saved ? '#a7f3d0' : BORDER}`,
-        color: saved ? JADE : INK, transition: 'all .15s ease', whiteSpace: 'nowrap',
+        padding: pad, borderRadius: 10, fontSize: size, fontWeight: 800, fontFamily: MANROPE,
+        background: saved ? '#ecfdf5' : '#fff', border: `1px solid ${saved ? '#a7f3d0' : (accent ?? BORDER)}`,
+        color: saved ? JADE : (accent ?? INK), transition: 'all .15s ease', whiteSpace: 'nowrap',
       }}
     >
-      {saved ? <BookmarkCheck style={{ width: 16, height: 16 }} /> : <Bookmark style={{ width: 16, height: 16 }} />}
-      {saved ? 'Tracking' : 'Track'}
+      {saved ? <BookmarkCheck style={{ width: glyph, height: glyph }} /> : <Bookmark style={{ width: glyph, height: glyph }} />}
+      {saved ? savedText : restText}
     </button>
     </>
   )
