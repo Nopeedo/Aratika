@@ -43,7 +43,7 @@ function readableOnWhite(hex: string): string {
 
 /** Width of the sticky party column, shared by the header cell, the CSS and
  *  the fit calculation, so the three cannot drift apart. */
-const PARTY_COL = 62
+const PARTY_COL = 68
 
 export function CoverageMatrix({ positions, topics }: { positions: PartyPosition[]; topics: { slug: string; label: string }[] }) {
   const lookup = new Map<string, PartyPosition>()
@@ -151,7 +151,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
                   and thBase's maxWidth:0 (which lets the topic headings clip)
                   collapsed the party column to 18px and slid the names under
                   the ticks. PARTY_COL in the measuring effect is this number. */}
-              <th style={{ ...thBase, maxWidth: PARTY_COL, width: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }}>Party</th>
+                      <th style={{ ...thBase, maxWidth: PARTY_COL, width: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, borderRight: PARTY_EDGE }}>Party</th>
               <TopicHeadCells topics={shown} />
             </tr>
           </thead>
@@ -196,7 +196,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
                     same header again, and a screen reader should not be told
                     the table has a second set of column names. */}
                 <tr aria-hidden>
-                  <td style={{ ...tdBase, width: PARTY_COL, maxWidth: PARTY_COL, position: 'sticky', left: 0, background: SURFACE, zIndex: 1, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }} />
+                  <td style={{ ...tdBase, width: PARTY_COL, maxWidth: PARTY_COL, position: 'sticky', left: 0, background: SURFACE, zIndex: 1, borderRight: PARTY_EDGE }} />
                   <TopicHeadCells topics={shown} repeat />
                 </tr>
                 {minors.map((slug) => (
@@ -223,11 +223,10 @@ function Row({ slug, topics, lookup }: { slug: PartySlug; topics: { slug: string
     <tr>
       {/* A hard width, overriding tdBase's nowrap handling: the long names
           ("Outdoors & Freedom", "Te Pāti Māori") no longer wrap to two lines
-          but run to the column edge and FADE OUT there, by request — a
-          narrower column buys another topic and a shorter row, and a party
-          is recognisable from its first word and its colour. The full name is
-          the cell's title. */}
-      <td style={{ ...tdBase, width: PARTY_COL, maxWidth: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, boxShadow: '2px 0 4px rgba(12,14,18,.06)' }} title={PARTY_NAMES[slug].short}>
+          wrap to a second line inside the column rather than running under
+          the ticks, with a rule down the column's right edge separating the
+          two. The full name is also the cell's title. */}
+      <td style={{ ...tdBase, whiteSpace: 'normal', width: PARTY_COL, maxWidth: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, borderRight: PARTY_EDGE }} title={PARTY_NAMES[slug].short}>
         {/* Short name, not the full registered one: this column is sized by its
             longest label, and "Animal Justice Party Aotearoa New Zealand" was
             pushing it past half the screen on a phone while the topic cells sat
@@ -350,6 +349,12 @@ function Legend({ swatch, label }: { swatch: React.ReactNode; label: string }) {
 // nowrap and never wrap anyway.
 const thBase: React.CSSProperties = { fontSize: 11.5, maxWidth: 0, fontWeight: 800, color: SECONDARY, borderBottom: `1px solid ${BORDER}`, verticalAlign: 'bottom', lineHeight: 1.25 }
 const tdBase: React.CSSProperties = { borderBottom: `1px solid ${BORDER}`, whiteSpace: 'nowrap' }
+/* The party column's right-hand rule: an actual line between the names and the
+   ticks, by request. It replaces the soft shadow that used to mark that edge —
+   the shadow was there to show the column was pinned over scrolling content,
+   and with the topics paged rather than scrolled there is nothing sliding
+   under it to show. */
+const PARTY_EDGE = `1px solid ${BORDER}`
 
 /* On a phone the party column was taking well over half the visible width and
    only one topic column showed, while the cells it left were mostly empty space
@@ -369,15 +374,18 @@ const MATRIX_CSS = `
      and the ticks are centred in their own columns, so the space between them
      was doing nothing but pushing a topic column off the page. */
   .coverage-matrix th:first-child,
-  .coverage-matrix td:first-child { padding-left: 8px; padding-right: 0; }
-    /* One line, clipped with a fade rather than an ellipsis: "…" spends three
-     characters saying nothing, and the soft edge reads as "there is more of
-     this word" without costing any width. */
+  .coverage-matrix td:first-child { padding-left: 8px; padding-right: 5px; }
+    /* Wraps to a second line instead of fading off: a clipped name is a guess,
+     and the column has a rule down its right edge now, so a two-line name
+     reads as one cell rather than as text drifting into the ticks. */
+  /* 11px and a 68px column: measured so every word in every party's short
+     name fits the line (the widest, "Outdoors", is 51px against 55px of
+     content). Only "Conservative" (73px) cannot, and overflow-wrap breaks a
+     word ONLY when it has no other option, so that one name is the single
+     place a split happens rather than the rule. */
   .coverage-party-name {
-    font-size: 12px; display: block; line-height: 1.2;
-    white-space: nowrap; overflow: hidden;
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 12px), transparent 100%);
-    mask-image: linear-gradient(to right, #000 calc(100% - 12px), transparent 100%);
+    font-size: 11px; display: block; line-height: 1.22;
+    white-space: normal; overflow-wrap: break-word; hyphens: auto;
   }
   /* 168px, not 62vw: sized so the line breaks after "without", which keeps
      the label's widest line inside the sticky party column instead of jutting
