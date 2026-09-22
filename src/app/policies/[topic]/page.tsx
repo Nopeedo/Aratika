@@ -14,7 +14,7 @@ import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
 import { PolicyTopic } from '@/types'
-import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
+import { TrackWithAccount } from '@/components/bookmarks/track-with-account'
 import { TopicFollowInvite } from '@/components/policy/topic-follow-invite'
 import { getApprovedPositions } from '@/lib/positions/live'
 import { TopicSwitcher } from '@/components/policy/topic-switcher'
@@ -24,7 +24,7 @@ import { TopicInfoButton } from '@/components/policy/topic-info-button'
 import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { SignShape } from '@/components/ui/sign-link'
-import { INK, MANROPE, SECONDARY } from '@/constants/theme'
+import { INK, MANROPE } from '@/constants/theme'
 
 
 export function generateStaticParams() {
@@ -117,23 +117,16 @@ export default async function PolicyTopicPage(
                 scope plus the definitions the page relies on. */}
             <TopicInfoButton topicLabel={t.label} covers={t.longDescription} accent={topicBorder.active} />
           </div>
-          {/* Plain subtext, not a heading: says what the list below is.
-              Does NOT name the topic: the pill above already does, and
-              "…on Democracy & Government" wrapped to a second line on a phone
-              while "…on Health" didn't, so switching topic shifted everything
-              beneath by a line even with scroll kept. One line, every topic,
-              every device. */}
-          <p style={{ fontSize: 15, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '12px 0 0', lineHeight: 1.45, whiteSpace: 'nowrap' }}>
-            Where each party stands on this issue
-          </p>
-
+          {/* No subtext under the pill. It read "Where each party stands on
+              this issue", which the pill and the party cards below it already
+              say between them. */}
           {/* Tracking, where the thing being tracked is named right above it.
               Compact and in the issue's colour so it reads as part of the
               heading block rather than as a second call to action competing
               with the comparison below. The invitation to make an account
               still sits at the foot of the page for anyone signed out. */}
-          <div style={{ marginTop: 12 }}>
-            <BookmarkButton
+          <div style={{ marginTop: 14 }}>
+            <TrackWithAccount
               entity={{
                 kind: 'policy', refId: topic, label: t.label,
                 sublabel: 'Policy topic', href: `/policies/${topic}`, accent: topicBorder.active,
@@ -141,7 +134,6 @@ export default async function PolicyTopicPage(
               label={`Track ${t.label.toLowerCase()} changes`}
               savedLabel={`Tracking ${t.label.toLowerCase()} changes`}
               accent={topicBorder.active}
-              compact
             />
           </div>
         </div>
