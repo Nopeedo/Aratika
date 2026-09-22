@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu, X, ChevronDown, Map, User, LogOut, Crown, ListChecks, Home as HomeIcon, Settings } from 'lucide-react'
+import { Menu, X, ChevronDown, Map, User, LogOut, Crown, ListChecks, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { Button } from '@/components/ui/button'
 import { visibleNav, type NavItem } from '@/constants/nav-links'
@@ -163,12 +163,11 @@ export function Navbar() {
               href="/?full=1"
               onClick={() => setMobileOpen(false)}
               className={cn(
-                'flex items-center gap-2 px-3 py-2.5 rounded-md text-sm font-semibold transition-colors',
+                'block px-3 py-2.5 rounded-md text-sm font-semibold transition-colors',
                 pathname === '/' ? 'text-brand-jade bg-brand-jade-subtle' : 'text-foreground hover:bg-surface',
               )}
             >
-              <HomeIcon className="size-4" />
-              Home
+              Home page
             </Link>
 
             {NAV.map((item) =>
