@@ -77,9 +77,15 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
 
         {/* ── Full bills tracker (54th Parliament) ── */}
         <div style={{ marginBottom: 16 }}>
-          <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>All bills before Parliament</h2>
+          {/* Plain words: "before Parliament" and "of this Parliament" are
+              both Parliament's phrasing for "this term", and a reader who
+              does not already know that reads them as the same thing said
+              twice. The heading says which bills; the line says since when.
+              No "x have passed into law" either: that figure is in the row
+              directly below, and the description said it a second time. */}
+          <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>All bills this term</h2>
           <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
-            Every bill of this Parliament. Filter by policy area, type or stage. {BILLS_54_META.passed} have passed into law.
+            Every bill put to Parliament since the last election, including the ones already made law. Filter by topic, type or stage.
           </p>
         </div>
 
