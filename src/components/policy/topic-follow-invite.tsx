@@ -59,7 +59,7 @@ export function TopicFollowInvite({ topic }: { topic: string }) {
             textDecoration: 'none', fontFamily: MANROPE,
           }}
         >
-          <Bookmark style={{ width: 15, height: 15 }} /> Track when something changes
+          <Bookmark style={{ width: 15, height: 15 }} /> Track with a free account
         </Link>
         <Link href={`/login?next=${next}`} style={{ fontSize: 13.5, fontWeight: 700, color: border, textDecoration: 'none', fontFamily: MANROPE }}>
           Already have one? Sign in
