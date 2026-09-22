@@ -43,11 +43,13 @@ export const TOPIC_BG_HEX: Record<string, string> = {
 }
 
 /** Both colours for a topic key, looked up the way TopicChip does it (hue
- *  parsed from the topic's textColor class). */
+ *  parsed from the topic's textColor class). `border` is the ACTIVE shade —
+ *  the panel sits under the pill in its pressed state, so it has to match
+ *  that darker border, not the resting one. */
 export function topicColors(textColor: string): { border: string; bg: string } {
   const hue = textColor.match(/text-(\w+)-\d+/)?.[1] ?? 'slate'
   return {
-    border: (TOPIC_BORDER_HEX[hue] ?? TOPIC_BORDER_HEX.slate).rest,
+    border: (TOPIC_BORDER_HEX[hue] ?? TOPIC_BORDER_HEX.slate).active,
     bg: `var(--color-${hue in TOPIC_BG_HEX ? hue : 'slate'}-100, ${TOPIC_BG_HEX[hue] ?? TOPIC_BG_HEX.slate})`,
   }
 }
