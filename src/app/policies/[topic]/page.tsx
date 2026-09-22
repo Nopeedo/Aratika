@@ -14,7 +14,7 @@ import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
 import { TOPIC_BORDER_HEX } from '@/constants/topic-colors'
 import { PolicyTopic } from '@/types'
-import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
+import { TopicFollowInvite } from '@/components/policy/topic-follow-invite'
 import { getApprovedPositions } from '@/lib/positions/live'
 import { TopicSwitcher } from '@/components/policy/topic-switcher'
 import { FloatingTopicPill } from '@/components/policy/floating-topic-pill'
@@ -23,7 +23,7 @@ import { TopicInfoButton } from '@/components/policy/topic-info-button'
 import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { SignShape } from '@/components/ui/sign-link'
-import { INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
+import { INK, MANROPE, SECONDARY } from '@/constants/theme'
 
 
 export function generateStaticParams() {
@@ -167,15 +167,9 @@ export default async function PolicyTopicPage(
             button where nobody had got to it. */}
         <PolicyCoverage nested />
 
-        {/* Track — moved out of the header by request. Sits after the
-            comparison, just above the scope note, so the header is title →
-            pills → topic and nothing else. */}
-        <div>
-          <BookmarkButton entity={{
-            kind: 'policy', refId: topic, label: t.label,
-            sublabel: 'Policy topic', href: `/policies/${topic}`, accent: JADE,
-          }} />
-        </div>
+        {/* The bare "Track" button became this: the same action, with the
+            reason for it said first. See TopicFollowInvite. */}
+        <TopicFollowInvite topic={topic} label={t.label} />
 
         {/* "What this covers" is no longer a card here — it lives in the (i)
             bubble beside the topic pill in the header (TopicInfoButton), with
