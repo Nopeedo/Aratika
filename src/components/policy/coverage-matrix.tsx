@@ -177,7 +177,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
                         arrows were inside the label span, which wraps at 168px
                         on a phone, so they dropped underneath it. */}
                     <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-                      <span className="coverage-band">Also contesting, without seats in Parliament</span>
+                      <span className="coverage-band">Parties not in Parliament</span>
                       {/* The pager again, on the band: this is where the second
                           list starts, and the copy at the top of the table is
                           off-screen by the time a phone reader gets here. */}
@@ -389,10 +389,9 @@ const MATRIX_CSS = `
     font-size: 10.5px; display: block; line-height: 1.25;
     white-space: normal; overflow-wrap: break-word; hyphens: auto;
   }
-  /* 168px, not 62vw: sized so the line breaks after "without", which keeps
-     the label's widest line inside the sticky party column instead of jutting
-     into the tick columns. */
-  .coverage-band { white-space: normal; max-width: 168px; left: 10px; }
+  /* Fits on one line now that the label is four words; the cap is kept as a
+     backstop so it can never jut across the tick columns. */
+  .coverage-band { white-space: normal; max-width: 200px; left: 6px; }
   /* Shown only where the table is paged, i.e. where the arrows exist at all. */
   .coverage-band-pager { display: inline-flex; gap: 6px; flex-shrink: 0; }
   /* Icon over a one-line, ellipsised name. The icon carries the meaning, so
