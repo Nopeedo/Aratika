@@ -11,7 +11,6 @@ import { PREMIUM_ENABLED } from '@/constants/features'
 import { SITE } from '@/constants/site'
 import { useUser } from '@/hooks/use-user'
 import { createClient } from '@/lib/supabase/client'
-import { LogoMark } from '@/components/brand/logo-mark'
 
 const NAV = visibleNav()
 const cleanHref = (href: string) => href.split('#')[0]
@@ -24,13 +23,12 @@ function PolitikaLogo() {
     // returning visitor hitting / is redirected to /hub (see app/page.tsx), so
     // without the flag clicking the logo bounces them to the hub instead of the
     // homepage, which reads as the logo being broken.
-    <Link href="/?full=1" className="flex items-center gap-2 shrink-0" aria-label={`${SITE.name} home`}>
-      {/* The green treatment — jade tile, white chevrons — matching the app
-          icon and favicon, so the thing in the navbar is the same object as
-          the thing on the home screen. Was a white tile with jade chevrons. */}
-      <span className="flex items-center justify-center size-8 rounded-lg shadow-md shrink-0" style={{ background: '#1F8A4C' }}>
-        <LogoMark size={19} reversed />
-      </span>
+    <Link href="/?full=1" className="flex items-center shrink-0" aria-label={`${SITE.name} home`}>
+      {/* No mark beside the name. The jade tile and the name were saying the
+          same thing twice in a 64px bar, and the tile was the half a reader
+          cannot read. The word alone, at a size that can carry the bar on its
+          own, is the mark. The tile is still the app icon and the favicon,
+          where a word at this size would not fit. */}
       {/* "Poli" in ink, "tika" in jade — tika (right, just, correct), so the
           split says what the site is for, the way Ara|pono once did with pono
           (true). Written out rather than sliced from SITE.name on purpose: a
@@ -38,7 +36,7 @@ function PolitikaLogo() {
           to make this decision again rather than colour letters at an offset
           left over from this name. The footer and the share-image card carry
           the same split; change all three together. */}
-      <span className="font-semibold text-lg text-foreground tracking-tight">
+      <span className="font-bold text-2xl text-foreground tracking-tight">
         Poli<span style={{ color: '#1F8A4C' }}>tika</span>
       </span>
     </Link>
