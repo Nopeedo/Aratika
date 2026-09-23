@@ -18,9 +18,10 @@
 
 import { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, Check, ChevronDown, X } from 'lucide-react'
+import { ArrowRight, Check, ChevronDown, ExternalLink, X } from 'lucide-react'
 import { DEFINING_BILLS, DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
 import { PARTY_COLORS, PARTY_NAMES } from '@/constants/parties'
+import { TopicChip } from '@/components/homepage/topic-chip'
 import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { INK, MANROPE } from '@/constants/theme'
 
@@ -332,57 +333,80 @@ function BillPanel({ bill, onClose }: { bill: DefiningBill; onClose: () => void 
   const st = STATUS[bill.statusKind]
   const f = bill.featured
   return (
-    <div className="bill-panel" style={{ background: CARD, border: `1px solid ${LINE}`, borderRadius: 20, padding: 'clamp(20px, 3vw, 28px)', boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 28px 56px -46px rgba(0,0,0,.4)' }}>
-      {/* Shipped with the component, and mounted for EVERY panel: it carries
+    <div className="bill-panel" style={{
+      background: CARD, border: `1px solid ${LINE}`, borderRadius: 16,
+      padding: 'clamp(14px, 2.5vw, 20px)', marginTop: 2,
+      boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 20px 40px -34px rgba(0,0,0,.4)',
+    }}>
+      {/* Shipped with the component and mounted for EVERY panel: it carries
           the phone sizing for the whole card, not just the dated timeline it
-          started as. It used to render inside the timeline branch, so the
-          featured bill — the one with the journey and the big figures, and
-          the tallest card of the lot — never received any of it. */}
+          started as. */}
       <style dangerouslySetInnerHTML={{ __html: TIMELINE_CSS }} />
-      {/* Badge left, close right: the tile that opened this is above and can
-          close it again, but a reader who has scrolled the panel's length
-          should not have to go back up to find that out. */}
+
+      {/* From here down this panel follows the tracker's BillBreakdown exactly
+          — same container, same badge-and-close row, same title size, the
+          summary with the full-breakdown link inside it, then the journey,
+          then the meta block, then the source link. The two lists sit on one
+          page and a reader opens them the same way, so opening one should not
+          produce a differently-shaped thing. What is EXTRA here is extra data,
+          not a different design: these eight bills carry a dated timeline and
+          a why/where write-up that the other 285 do not. */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: st.fg, background: st.bg, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: st.fg, background: st.bg, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
           {st.label}
         </span>
         <button type="button" onClick={onClose} aria-label="Close this bill" style={{ background: 'none', border: 'none', padding: 6, margin: -6, cursor: 'pointer', color: MUTED, display: 'inline-flex', flexShrink: 0 }}>
           <X style={{ width: 17, height: 17 }} />
         </button>
       </div>
-      <h3 className="bill-panel-title" style={{ fontSize: 'clamp(20px, 3.2vw, 25px)', fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: '13px 0 8px', lineHeight: 1.2 }}>{bill.title}</h3>
-      <p className="bill-panel-what" style={{ fontSize: 14.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 22px', maxWidth: 640 }}>{bill.what}</p>
 
-      {/* The featured bill has a hand-built journey; every other bill has a dated
-          timeline, so both get a progress read rather than only the spotlight. */}
-      {/* Every bill gets the journey now, not just the hand-built one: the
-          shape of how far something got is the first thing a reader wants,
-          and a dated list alone made them assemble it themselves. Where a
-          bill also has dated milestones, those still follow underneath. */}
+      <h3 className="bill-panel-title" style={{ fontSize: 'clamp(17px, 2.6vw, 21px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '11px 0 8px', lineHeight: 1.2 }}>{bill.title}</h3>
+
+      {/* The summary, with the way to the rest of it at the end of the
+          sentence rather than as a signpost of its own — the tracker's
+          arrangement, for the same reason: it was the loudest thing in the
+          panel for a link most readers will not take. */}
+      <p className="bill-panel-what" style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>
+        {bill.what}{' '}
+        <Link
+          href={`/bills/${bill.slug}`}
+          style={{ display: 'inline-flex', alignItems: 'baseline', gap: 3, fontSize: 12.5, fontWeight: 800, color: st.fg, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}
+        >
+          Read the full breakdown <ArrowRight style={{ width: 12, height: 12, alignSelf: 'center' }} strokeWidth={3} />
+        </Link>
+      </p>
+
       <p className="bill-panel-label" style={labelStyle}>Its journey through Parliament</p>
       <Journey nodes={f ? f.journey : deriveJourney(bill)} />
 
-      {/* The featured bill's headline figures are gone until they are sourced:
-          "300,000+ submissions, a national record", "90% of submissions
-          opposed" and the 112-11 vote were hand-written into the data, and the
-          bill's three sources are page-level links that do not evidence any of
-          them directly. On the one bill whose subject is a single party, and
-          where every figure cuts the same way, that is not a standard this
-          site holds elsewhere — the policy panels only quote text a script has
-          checked is verbatim. The dated timeline below says the same things
-          with dates against them, including the second-reading defeat.
+      {/* Party and policy area, in the tracker's meta block. "In charge" there
+          names the member; here the equivalent fact is which party the bill
+          belongs to, which the tile above already tags. */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 16 }}>
+        <div style={{ fontSize: 12.5, color: MUTED, fontFamily: MANROPE, display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+          <span>In charge:</span>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800,
+            color: '#3f444c', background: '#fff', border: `1px solid ${LINE}`,
+            borderRadius: 999, padding: '1px 8px', fontFamily: MANROPE, whiteSpace: 'nowrap',
+          }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: PARTY_COLORS[bill.party]?.bg ?? st.bar, flexShrink: 0 }} />
+            {PARTY_NAMES[bill.party]?.short ?? bill.party}
+          </span>
+        </div>
+        {bill.topic && (
+          <div className="topic-switcher" style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
+            <span style={{ fontSize: 12.5, color: MUTED, fontFamily: MANROPE }}>Area:</span>
+            <TopicChip topicKey={bill.topic} active={false} href={`/policies/${bill.topic}`} />
+          </div>
+        )}
+      </div>
 
-          To bring them back: cite each figure (the Justice Committee report
-          for the submissions count and the share opposed, Hansard for the
-          vote) and show the citation under the numbers. */}
-      {bill.timeline && bill.timeline.length > 0 ? (
+      {/* Dated milestones — extra data these eight carry, in the same label
+          style as everything above. */}
+      {bill.timeline && bill.timeline.length > 0 && (
         <>
-          <p className="bill-panel-label" style={{ ...labelStyle, marginTop: 20 }}>How it progressed</p>
-          {/* The date sits in a fixed 108px column beside the event. On a phone
-              that left the event about 200px to wrap in, so a one-line note
-              like "Government drops the plan for three ministers to have the
-              final say" ran to five ragged lines. Under 760px the date moves
-              above the event and the text gets the full card width. */}
+          <p className="bill-panel-label" style={{ ...labelStyle, marginTop: 18 }}>How it progressed</p>
           <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
             {bill.timeline.slice(0, 4).map((t, i) => (
               <li key={i} className="bill-tl-row">
@@ -398,22 +422,27 @@ function BillPanel({ bill, onClose }: { bill: DefiningBill; onClose: () => void 
             </p>
           )}
         </>
-      ) : null}
+      )}
 
-      <div className="bill-panel-foot" style={{ marginTop: 24, paddingTop: 20, borderTop: `1px solid ${LINE}`, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 18 }}>
+      <div className="bill-panel-foot" style={{ marginTop: 16, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 14 }}>
         <div>
-          <p className="bill-panel-label" style={labelStyle}>Why it matters</p>
-          <p style={{ fontSize: 13.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.why}</p>
+          <p className="bill-panel-label" style={{ ...labelStyle, marginBottom: 6 }}>Why it matters</p>
+          <p style={{ fontSize: 13, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.why}</p>
         </div>
         <div>
-          <p className="bill-panel-label" style={labelStyle}>Where it came from</p>
-          <p style={{ fontSize: 13.5, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.champion}</p>
+          <p className="bill-panel-label" style={{ ...labelStyle, marginBottom: 6 }}>Where it came from</p>
+          <p style={{ fontSize: 13, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.champion}</p>
         </div>
       </div>
 
-      <Link className="bill-panel-more" href={`/bills/${bill.slug}`} style={{ marginTop: 22, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: ACCENT_DK, fontFamily: MANROPE, textDecoration: 'none' }}>
-        Read the full breakdown <ArrowRight style={{ width: 14, height: 14 }} />
-      </Link>
+      {/* The source, where the tracker puts its official-page link: anything
+          here can be checked at source rather than taken on trust. */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', marginTop: 14 }}>
+        <a href={bill.source.url} target="_blank" rel="noopener noreferrer"
+           style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12.5, fontWeight: 700, color: MUTED, fontFamily: MANROPE, textDecoration: 'none' }}>
+          {bill.source.label} <ExternalLink style={{ width: 11, height: 11 }} />
+        </a>
+      </div>
     </div>
   )
 }
