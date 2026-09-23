@@ -15,10 +15,10 @@
  */
 
 import Link from 'next/link'
-import { Newspaper, Play, ArrowRight } from 'lucide-react'
+import { Play, ArrowRight } from 'lucide-react'
 import { getNewsForParty } from '@/lib/news/live'
 import { getVideosForParty } from '@/lib/news/videos'
-import { INK, SECONDARY, TERTIARY, BORDER, MANROPE, tint } from '@/constants/theme'
+import { INK, TERTIARY, BORDER, MANROPE, tint } from '@/constants/theme'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -51,7 +51,7 @@ function Empty({ what }: { what: string }) {
   )
 }
 
-export async function PartyCoverage({ slug, name, colour }: { slug: string; name: string; colour: string }) {
+export async function PartyCoverage({ slug, colour }: { slug: string; colour: string }) {
   const [news, videos] = await Promise.all([
     getNewsForParty(slug, 5),
     getVideosForParty(slug, 4),
@@ -62,12 +62,16 @@ export async function PartyCoverage({ slug, name, colour }: { slug: string; name
     <div style={{ borderTop: `1px solid ${BORDER}` }}>
       <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '30px clamp(18px, 5vw, 36px) 36px' }}>
 
-        <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>
-          Latest coverage
+        {/* A section heading, not a card title. This is the last band of the
+            page and the only part of it that is not the party's own material,
+            so it announces itself; at 16px it was the same size as the header
+            of a collapsed rectangle and read as one more of them. */}
+        <h2 style={{ fontSize: 'clamp(22px, 5.5vw, 28px)', fontWeight: 800, letterSpacing: '-.015em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.15 }}>
+          Latest News &amp; Video
         </h2>
-        <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 20px', lineHeight: 1.5 }}>
-          News and video mentioning {name}, from the sources on our coverage page.
-        </p>
+        {/* No standfirst. It said the headings say: this is news and video
+            about the party, and "from the sources on our coverage page" is
+            provenance nobody had asked for yet. */}
 
         <div style={{ display: 'grid', // min() so the track can never be wider than its container: a bare
           // minmax(300px, …) is 300px even inside a 288px column on a 320px
@@ -75,7 +79,10 @@ export async function PartyCoverage({ slug, name, colour }: { slug: string; name
           gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 28 }}>
 
           <div>
-            <ColumnHeading icon={Newspaper} label="In the news" accent={colour} />
+            {/* No "In the news" heading: the section is named Latest News &
+                Video and the stories are the first thing under it, so the
+                label was naming what was already obvious. "On video" stays,
+                because the thumbnails below it need telling apart. */}
             {news.length === 0 ? <Empty what="news" /> : (
               <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {news.map((n, i) => (

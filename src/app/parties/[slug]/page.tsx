@@ -447,7 +447,7 @@ export default async function PartyProfilePage(
       {/* ═══════════════ Latest coverage ═══════════════ */}
       {/* Sits below the party's own material on purpose: the page leads with
           what the party says, then shows what is being reported about it. */}
-      <PartyCoverage slug={slug} name={party.name} colour={party.color} />
+      <PartyCoverage slug={slug} colour={party.color} />
 
       {/* ═══════════════ Source attribution ═══════════════ */}
       <div style={{ borderTop: `1px solid ${BORDER}`, background: SURFACE }}>
