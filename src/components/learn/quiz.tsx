@@ -63,8 +63,16 @@ export function Quiz({
             <span style={{ fontSize: 20 }}>🌟</span> You earned a sticker!
           </motion.div>
         )}
-        <button onClick={restart} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 18, fontSize: 13, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '8px 14px', cursor: 'pointer', fontFamily: MANROPE }}>
-          <RotateCcw style={{ width: 13, height: 13 }} /> Try again
+        {/* §3.1: the button is the 44px hit area, the span is the control.
+            Styled at 33px this rendered 44px tall, because globals.css gives
+            every <button> a 44px minimum on phones. 33px to look at, 44px to
+            hit. */}
+        {/* The 18px of air the visible control used to sit on, less the 8px of
+            padding that is now above it. */}
+        <button onClick={restart} style={{ display: 'inline-flex', padding: '8px 0', margin: '10px 0 -8px', background: 'none', border: 'none', cursor: 'pointer' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '8px 14px', fontFamily: MANROPE }}>
+            <RotateCcw style={{ width: 13, height: 13 }} /> Try again
+          </span>
         </button>
       </motion.div>
     )

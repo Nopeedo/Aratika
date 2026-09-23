@@ -2,38 +2,58 @@
 
 /**
  * Build-a-Government — pick parties from the real 2023 result and try to reach
- * the 62-seat majority (54th Parliament has 123 seats due to an overhang).
+ * a majority of the 54th Parliament.
+ *
+ * WHERE THE NUMBERS COME FROM. This file used to hold its own copy of the 2023
+ * result (National 49, Labour 34, Green 15, ACT 11, NZ First 8, Te Pāti Māori
+ * 6) and its own HOUSE = 123 and MAJORITY = 62 beside it. All three are now
+ * read or derived: the seats come from CURRENT_SEATS in constants/parties.ts,
+ * the House is their sum, and the majority is half of it plus one. §1.3 says
+ * one fact in one place, and the version that mattered here is the one where
+ * the numbers cannot drift apart: a House of 123 typed in by hand stays 123
+ * after somebody corrects a seat count.
+ *
+ * The party toggles were a six-cell grid of checkbox cards. At 375px the grid
+ * track needed 308px and this card's padding left it 299.5px, so it collapsed
+ * to one column and six parties became six full-width rows, 352px of them.
+ * They are §2.2 pills now, in the composition ballot-bills.tsx already uses for
+ * filtering by party: two rows, about 54px.
  */
 
 import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Check, PartyPopper } from 'lucide-react'
-import { PARTY_COLORS } from '@/constants/parties'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { PARTY_COLORS, PARTY_NAMES, CURRENT_SEATS } from '@/constants/parties'
+import type { PartySlug } from '@/types'
+import { InfoHeading, InfoText } from '@/components/ui/info-button'
+import { WidgetHeader } from './module-widget-header'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, tint } from '@/constants/theme'
 
-interface Bloc { key: string; name: string; seats: number; color: string }
+/** The parties that won seats in 2023, largest first. Names, colours and seat
+ *  counts all come from constants/parties.ts, so a party that is recoloured or
+ *  recounted anywhere on Politika is recoloured and recounted here. */
+const ELECTED: PartySlug[] = ['national', 'labour', 'green', 'act', 'nzfirst', 'tpm']
 
-// Official 2023 general election result (54th Parliament, 123 seats).
-const RESULT_2023: Bloc[] = [
-  { key: 'national', name: 'National',      seats: 49, color: PARTY_COLORS.national.bg },
-  { key: 'labour',   name: 'Labour',        seats: 34, color: PARTY_COLORS.labour.bg },
-  { key: 'green',    name: 'Green',         seats: 15, color: PARTY_COLORS.green.bg },
-  { key: 'act',      name: 'ACT',           seats: 11, color: PARTY_COLORS.act.bg },
-  { key: 'nzfirst',  name: 'NZ First',      seats: 8,  color: PARTY_COLORS.nzfirst.bg },
-  { key: 'tpm',      name: 'Te Pāti Māori', seats: 6,  color: PARTY_COLORS.tpm.bg },
-]
-const HOUSE = 123
-const MAJORITY = 62
+/** The parties that actually formed the government after the 2023 election.
+ *  Kept as slugs rather than as the sentence "National + ACT + New Zealand
+ *  First (68 seats)" that used to sit under the exercise: the 68 is then
+ *  arithmetic on the sourced table above it rather than a figure of its own. */
+const GOVERNMENT_2023: PartySlug[] = ['national', 'act', 'nzfirst']
 
-export function BuildGovernment() {
-  const [picked, setPicked] = useState<Set<string>>(new Set())
+const seatsOf = (slugs: PartySlug[]) => slugs.reduce((s, k) => s + CURRENT_SEATS[k], 0)
+
+const HOUSE = seatsOf(ELECTED)
+const MAJORITY = Math.floor(HOUSE / 2) + 1
+const GOVT_SEATS = seatsOf(GOVERNMENT_2023)
+
+export function BuildGovernment({ accent }: { accent: string }) {
+  const [picked, setPicked] = useState<Set<PartySlug>>(new Set())
 
   const total = useMemo(
-    () => RESULT_2023.filter((b) => picked.has(b.key)).reduce((s, b) => s + b.seats, 0),
+    () => ELECTED.filter((k) => picked.has(k)).reduce((s, k) => s + CURRENT_SEATS[k], 0),
     [picked],
   )
   const hasMajority = total >= MAJORITY
-  const toggle = (key: string) =>
+  const toggle = (key: PartySlug) =>
     setPicked((prev) => {
       const next = new Set(prev)
       if (next.has(key)) next.delete(key)
@@ -45,13 +65,29 @@ export function BuildGovernment() {
   const majorityPct = (MAJORITY / HOUSE) * 100
 
   return (
-    <div style={{ border: `1px solid ${BORDER}`, borderRadius: 20, overflow: 'hidden', background: '#fff' }}>
-      <div style={{ padding: '14px 18px', borderBottom: `1px solid ${BORDER}`, background: SURFACE }}>
-        <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Build a Government</div>
-        <div style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE }}>
-          Using the real 2023 result, pick parties to reach the {MAJORITY}-seat majority.
-        </div>
-      </div>
+    <div style={{ border: `1px solid ${BORDER}`, borderRadius: 20, background: '#fff' }}>
+      <WidgetHeader title="Build a government" accent={accent} infoLabel="How building a government works">
+        <InfoHeading accent={accent}>What to do</InfoHeading>
+        <InfoText>
+          Pick parties until they add up to {MAJORITY} seats or more. That is the number
+          needed to command the confidence of the House, which is what forming a government
+          means.
+        </InfoText>
+        <InfoHeading accent={accent}>Why {HOUSE} seats, not 120</InfoHeading>
+        <InfoText>
+          Parliament normally has 120 seats, where {Math.floor(120 / 2) + 1} is a majority,
+          and that is the House the seat allocator models. The 54th Parliament has {HOUSE},
+          because Te Pāti Māori won more electorate seats than its share of the party vote
+          entitled it to. Those extra seats are added to the House rather than taken off
+          another party, which is called an overhang, so the majority here is {MAJORITY}.
+        </InfoText>
+        <InfoHeading accent={accent}>What actually happened</InfoHeading>
+        <InfoText>
+          {GOVERNMENT_2023.map((k) => PARTY_NAMES[k].short).join(', ')} formed the
+          government, {GOVT_SEATS} seats between them. Seat counts are the official 2023
+          general election result, Electoral Commission.
+        </InfoText>
+      </WidgetHeader>
 
       <div style={{ padding: 18 }}>
         {/* progress bar */}
@@ -72,50 +108,68 @@ export function BuildGovernment() {
         </div>
 
         {/* outcome */}
-        <div style={{ minHeight: 26, marginTop: 10, marginBottom: 14 }}>
+        <div style={{ minHeight: 26, marginTop: 10, marginBottom: 12 }}>
           {hasMajority ? (
-            <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>
-              <PartyPopper style={{ width: 15, height: 15 }} /> Majority reached. This bloc can form a government.
+            <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} style={{ fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE }}>
+              Majority reached. This bloc can form a government.
             </motion.div>
           ) : (
             <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>
-              {total === 0 ? 'Select parties to begin…' : `${MAJORITY - total} more seat${MAJORITY - total === 1 ? '' : 's'} needed for a majority.`}
+              {total === 0 ? 'Pick a party to begin.' : `${MAJORITY - total} more seat${MAJORITY - total === 1 ? '' : 's'} needed for a majority.`}
             </div>
           )}
         </div>
 
-        {/* party toggles */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))', gap: 8 }}>
-          {RESULT_2023.map((b) => {
-            const on = picked.has(b.key)
-            return (
-              <button
-                key={b.key}
-                onClick={() => toggle(b.key)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 9, padding: '10px 12px', cursor: 'pointer',
-                  borderRadius: 12, fontFamily: MANROPE, textAlign: 'left',
-                  border: `1.5px solid ${on ? b.color : BORDER}`,
-                  background: on ? `${b.color}14` : '#fff',
-                  transition: 'all .15s',
-                }}
-              >
-                <span style={{ position: 'relative', width: 18, height: 18, borderRadius: 6, background: on ? b.color : '#fff', border: `1.5px solid ${on ? b.color : TERTIARY}`, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  {on && <Check style={{ width: 12, height: 12, color: '#fff' }} />}
-                </span>
-                <span style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ display: 'block', fontSize: 12.5, fontWeight: 700, color: INK, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{b.name}</span>
-                  <span style={{ display: 'block', fontSize: 11, color: SECONDARY }}>{b.seats} seats</span>
-                </span>
-              </button>
-            )
-          })}
+        {/* §2.2 pills, multi-select: lit = the party's light fill with its
+            colour at full strength on the border, unlit = white with the same
+            hue at 34%. The tick that used to sit in a box on the left has gone
+            with the card: a lit pill already says it is chosen (§1.3). */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {ELECTED.map((slug) => (
+            <PartyPill
+              key={slug}
+              label={PARTY_NAMES[slug].short}
+              seats={CURRENT_SEATS[slug]}
+              colour={PARTY_COLORS[slug].bg}
+              light={PARTY_COLORS[slug].light}
+              on={picked.has(slug)}
+              onClick={() => toggle(slug)}
+            />
+          ))}
         </div>
-
-        <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '12px 0 0' }}>
-          The actual government formed in 2023 was National + ACT + New Zealand First (68 seats).
-        </p>
       </div>
     </div>
+  )
+}
+
+/** §3.1: the button is the 44px hit area, the span is the pill. */
+function PartyPill({ label, seats, colour, light, on, onClick }: {
+  label: string
+  seats: number
+  colour: string
+  light: string
+  on: boolean
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={on}
+      style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}
+    >
+      <span
+        className="status-pill"
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6, borderRadius: 999,
+          background: on ? light : '#fff',
+          border: `2px solid ${on ? colour : tint(colour, 0.34)}`,
+          color: INK, fontFamily: MANROPE, fontWeight: 800, whiteSpace: 'nowrap',
+          transition: 'background-color .2s ease, border-color .2s ease',
+        }}
+      >
+        {label}
+        <span style={{ fontWeight: 700, opacity: .75 }}>{seats}</span>
+      </span>
+    </button>
   )
 }

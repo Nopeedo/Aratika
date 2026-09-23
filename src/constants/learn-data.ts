@@ -456,3 +456,52 @@ export function getModule(id: string): LearnModule | undefined {
 }
 
 export const LEARN_MODULE_IDS = LEARN_MODULES.filter((m) => m.status === 'live').map((m) => m.id)
+
+// ─── Hub grouping ─────────────────────────────────────────────────────────────
+
+/**
+ * The four groups the /learn hub's pill row filters by (§2.14).
+ *
+ * They replace nothing visible: the hub had ten undifferentiated cards and no
+ * way to narrow, which is the same complaint §2.14 answered on /parties, where
+ * three stacked headings were "a filter the reader operates by scrolling".
+ *
+ * Named for what the reader is trying to DO rather than for what kind of lesson
+ * it is, which is §2.10's rule for the homepage signpost groups: "Voting" and
+ * "Having a say" are errands, "Electoral systems" and "Civic participation" are
+ * shelf labels.
+ *
+ * This is a table keyed by module id rather than a `group` field on
+ * LearnModule because six modules are declared in this file and four in
+ * learn-extra.ts. One table means a module added to either file is grouped in
+ * one place, and a module nobody groups falls back to null and still appears
+ * under All rather than disappearing from the hub, which is the same
+ * fallback-not-throw shape learnTheme() uses in learn-theme.ts.
+ */
+export type LearnGroup = 'voting' | 'government' | 'law' | 'say'
+
+export const LEARN_GROUPS: { key: LearnGroup; label: string }[] = [
+  { key: 'voting', label: 'Voting' },
+  { key: 'government', label: 'Government' },
+  { key: 'law', label: 'Making law' },
+  { key: 'say', label: 'Having a say' },
+]
+
+const MODULE_GROUP: Record<string, LearnGroup> = {
+  'mmp': 'voting',
+  'how-to-vote': 'voting',
+  'electorate-vs-list': 'voting',
+  'government-formation': 'government',
+  'what-is-parliament': 'government',
+  'roles': 'government',
+  'how-a-bill-becomes-law': 'law',
+  'select-committees': 'law',
+  'have-your-say': 'say',
+  'how-policies-work': 'say',
+}
+
+/** Read through this, never MODULE_GROUP directly: an ungrouped module is a
+ *  module that only answers to the All pill, not a crash. */
+export function learnGroup(id: string): LearnGroup | null {
+  return MODULE_GROUP[id] ?? null
+}
