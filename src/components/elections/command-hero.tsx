@@ -84,16 +84,17 @@ export function CommandHero({ today }: { today: string }) {
           2026 general election
         </h1>
 
-        {/* One tile, above the date cards now (was below them). The label
-            does the job the deleted date line was doing badly: it says what
-            the number counts to without restating 7 November, which the
-            cards below own. */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
-          <div style={{ textAlign: 'center' }}>
-            <Tile text={days === null ? '––' : String(days)} />
-            <div style={{ fontSize: 'clamp(10px,1.3vw,12px)', fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: WARM, fontFamily: MANROPE, marginTop: 9 }}>
-              days until election day
-            </div>
+        {/* One tile, above the date cards now (was below them), with the
+            label beside it rather than centred underneath — two lines,
+            sized to reach roughly the tile's own height rather than sitting
+            as a small caption under it. The label does the job the deleted
+            date line was doing badly: it says what the number counts to
+            without restating 7 November, which the cards below own. */}
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16, marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
+          <Tile text={days === null ? '––' : String(days)} />
+          <div style={{ display: 'flex', flexDirection: 'column', fontSize: 'clamp(15px, 3.6vw, 21px)', fontWeight: 800, letterSpacing: '.02em', lineHeight: 1.2, textTransform: 'uppercase', color: WARM, fontFamily: MANROPE }}>
+            <span>Days until</span>
+            <span>election day</span>
           </div>
         </div>
 
