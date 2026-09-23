@@ -44,14 +44,12 @@ export const NAV_ITEMS: NavItem[] = [
   // topic's comparison page, so the label now says what the destination
   // actually is rather than naming a section.
   { label: 'Policy Comparison', href: '/policies', description: 'Where the parties stand issue by issue, and follow the issues you care about', feature: 'policies' },
-  {
-    label: 'Your Electorate', description: 'Find your seat, your MP and the 2026 race', feature: 'map',
-    children: [
-      { label: 'Electorate map', href: '/map', description: 'Interactive map: find your MP', feature: 'map' },
-      { label: 'Battlegrounds', href: '/battlegrounds', description: 'Electorate races & candidates for 2026', feature: 'battlegrounds' },
-      { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
-    ],
-  },
+  // "Your Electorate" is gone as a group for the same reason The Record is:
+  // the label named the grouping, not the destinations, and each of the three
+  // cost a tap to reach through it.
+  { label: 'Electorate map', href: '/map', description: 'Interactive map: find your MP', feature: 'map' },
+  { label: 'Battlegrounds', href: '/battlegrounds', description: 'Electorate races & candidates for 2026', feature: 'battlegrounds' },
+  { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
   // "The Record" is gone as a group: it held three destinations that have
   // nothing to do with each other beyond all being facts about this term, so
   // the label explained the grouping rather than the pages, and every one of
