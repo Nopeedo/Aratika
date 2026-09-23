@@ -317,22 +317,28 @@ export default async function PartyProfilePage(
               </div>
             </div>
 
-            {/* Right: seat figure — the party's colour all the way round and a
-                wash of it inside, rather than a white card with a coloured lid. */}
+            {/* Right: the seat figure, on one line.
+                It was a 150x156 square with a 54px numeral, a 2px border of
+                the party's colour and a drop shadow, which on a phone was a
+                block the width of the column between the party's links and
+                everything the page had to say about them. A number that is
+                0 for eleven of the seventeen parties does not earn that.
+                Reads as a sentence now: 15 seats, 12.2% of 123. */}
             <div style={{
-              background: tint(party.color, 0.10), border: `2px solid ${party.color}`, borderRadius: 18,
-              padding: '20px 26px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)',
-              textAlign: 'center', alignSelf: 'flex-start', minWidth: 150,
+              display: 'inline-flex', alignItems: 'baseline', gap: 7, flexWrap: 'wrap',
+              background: tint(party.color, 0.10), border: `1px solid ${tint(party.color, 0.45)}`,
+              borderRadius: 999, padding: '5px 14px',
+              alignSelf: 'flex-start', fontFamily: MANROPE,
             }}>
-              <div style={{ fontSize: 54, fontWeight: 700, letterSpacing: '-.03em', color: INK, fontFamily: DISPLAY, lineHeight: 1 }}>
+              <span style={{ fontSize: 19, fontWeight: 700, letterSpacing: '-.02em', color: INK, fontFamily: DISPLAY, lineHeight: 1 }}>
                 {seats}
-              </div>
-              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginTop: 4 }}>
-                Seats
-              </div>
-              <div style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, marginTop: 8, paddingTop: 8, borderTop: `1px solid ${BORDER}` }}>
-                {seatShare}% of {TOTAL_SEATS}
-              </div>
+              </span>
+              <span style={{ fontSize: 12.5, fontWeight: 700, color: INK }}>
+                {seats === 1 ? 'seat' : 'seats'}
+              </span>
+              <span style={{ fontSize: 12.5, color: SECONDARY }}>
+                · {seatShare}% of {TOTAL_SEATS}
+              </span>
             </div>
           </div>
         </div>
