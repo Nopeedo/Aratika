@@ -1,5 +1,5 @@
 /**
- * MilestoneCard / NextDeadlineCard — a single electoral date, as its own card.
+ * MilestoneCard — a single, NAMED electoral date, as its own card.
  *
  * Split out of key-dates.tsx by request, to move to the very top of the
  * Election Centre — under the headline, before the countdown — once it
@@ -9,17 +9,21 @@
  * fact itself: a date, what it means, and how many days there are to it.
  *
  * The constants live here and KeyDates imports them, rather than each file
- * keeping its own copy, so "Enrol by here, no special vote" cannot say one
- * thing on a card and something else in the full grid four screens later
- * (§1.3, one thing in one place).
+ * keeping its own copy, so "Last day to enrol without a special vote" cannot
+ * say one thing on a card and something else in the full grid four screens
+ * later (§1.3, one thing in one place).
  *
- * TWO CARDS, ONE RENDERER. NextDeadlineCard picks whichever milestone the
- * reader hasn't already missed; MilestoneCard renders one NAMED milestone
- * regardless of today's date, for a card that should always show a specific
- * date rather than "whatever's next" — advance voting opening, by request,
- * stacked above the dynamic one. Same shape, same source, so the two cards
- * can never disagree about when advance voting opens even though one of
- * them states it unconditionally and the other only in passing.
+ * THREE CARDS, ONE COMPONENT, ALL FIXED. There used to be a dynamic
+ * NextDeadlineCard — "whichever milestone hasn't passed yet" — with one
+ * fixed card under it. That worked with two cards, but broke as soon as a
+ * third was added: the dynamic card would show Writ Day until 4 Oct, then
+ * automatically swap to show 25 Oct, which is the exact date the new fixed
+ * card underneath it was ALSO showing — so from 5 Oct onward the same
+ * milestone would have appeared twice in the same stack. Three named cards
+ * (see command-hero.tsx) can't collide with each other the way one dynamic
+ * and one fixed eventually would have. Removed with it: nextMilestone() and
+ * NextDeadlineCard, which nothing else in the codebase used once this
+ * changed.
  */
 
 import { ArrowUpRight } from 'lucide-react'
@@ -68,21 +72,15 @@ export const LABELS: Record<string, string> = {
  *  "Enrol or check your details" on the advance-voting card answered a
  *  question the card wasn't asking. Same destination, vote.nz, which
  *  covers both. */
+// Short: at ~135px of usable width inside a two-per-row card, "Enrol or
+// check your details" ran the button off the card's own right edge and
+// past the page edge. "Enrol or check your details" is still what the (i)
+// and KeyDates say in full; this is the version that fits a 160px card.
 const CTA: Record<string, string> = {
-  'writ-day-2026': 'Enrol or check your details',
-  'enrolment-closes-2026': 'Enrol or check your details',
-  'advance-voting-2026': 'Find a voting place',
-  'election-day-2026': 'Find a voting place',
-}
-
-export function nextMilestone(today: string): ElectoralMilestone | undefined {
-  const items = SHOWN
-    .map((id) => ELECTORAL_CALENDAR.find((m) => m.id === id))
-    .filter((m): m is ElectoralMilestone => Boolean(m))
-  // The next one the reader has not already missed. Falls back to the last
-  // item (election day) once every milestone is past, so the card never goes
-  // blank on election night itself.
-  return items.find((m) => m.date >= today) ?? items[items.length - 1]
+  'writ-day-2026': 'Enrol now',
+  'enrolment-closes-2026': 'Enrol now',
+  'advance-voting-2026': 'Find a place',
+  'election-day-2026': 'Find a place',
 }
 
 /** One named milestone, regardless of today's date. */
@@ -92,13 +90,6 @@ export function MilestoneCard({ milestoneId, today }: { milestoneId: string; tod
   return <DateCard milestone={m} today={today} />
 }
 
-/** Whichever milestone the reader hasn't already missed. */
-export function NextDeadlineCard({ today }: { today: string }) {
-  const next = nextMilestone(today)
-  if (!next) return null
-  return <DateCard milestone={next} today={today} />
-}
-
 function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; today: string }) {
   const critical = m.id === CRITICAL
   const tone = critical ? CRITICAL_RED : INK
@@ -106,42 +97,44 @@ function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; toda
   const days = daysUntil(today, m.date)
 
   return (
+    // Column, not the previous row. Two per row at 375px gives each card
+    // about 160px, and the old row (44px day figure, 20px title, a button,
+    // side by side with an 8px gap) does not fit inside that — it does not
+    // wrap cleanly either, because the day figure's own minimum width alone
+    // is close to half the column. Measured: the row version overflowed the
+    // second column off the right edge of a 375px phone. A column stacks
+    // instead of trying to fit sideways, and every size below is picked to
+    // still read clearly at a ~160px card rather than a ~340px one.
     <div style={{
-      border: `1px solid ${critical ? '#f3c6bd' : BORDER}`, borderRadius: 16,
+      border: `1px solid ${critical ? '#f3c6bd' : BORDER}`, borderRadius: 14,
       background: critical ? '#fff5f2' : '#fff',
       borderTop: `3px solid ${tone}`,
-      padding: '18px 20px', boxShadow: '0 2px 8px rgba(42,18,6,.05)',
-      display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+      padding: '13px 14px', boxShadow: '0 2px 8px rgba(42,18,6,.05)',
+      display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0,
     }}>
-      {/* Day figure, with "N days away" now underneath it rather than
-          under the title — the two numbers (the date, and the countdown to
-          it) belong together; the title is a label for the date, not for
-          the countdown. */}
-      <div style={{ display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-          <span style={{ fontSize: 44, fontWeight: 800, color: tone, fontFamily: MANROPE, lineHeight: 1, letterSpacing: '-.02em', fontVariantNumeric: 'tabular-nums' }}>{day}</span>
-          <span style={{ fontSize: 17, fontWeight: 800, color: tone, fontFamily: MANROPE }}>{month}</span>
-        </div>
-        <div style={{ fontSize: 12.5, fontWeight: 700, color: critical ? CRITICAL_RED : SECONDARY, fontFamily: MANROPE, marginTop: 4, whiteSpace: 'nowrap' }}>
-          {days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : days > 0 ? `${days} days away` : 'Already open'}
-        </div>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+        <span style={{ fontSize: 30, fontWeight: 800, color: tone, fontFamily: MANROPE, lineHeight: 1, letterSpacing: '-.02em', fontVariantNumeric: 'tabular-nums' }}>{day}</span>
+        <span style={{ fontSize: 13, fontWeight: 800, color: tone, fontFamily: MANROPE }}>{month}</span>
       </div>
-      {/* Bigger — was 16px, a size below its own card's day figure and its
-          own button's label; it's the thing the card is actually about. */}
-      <div style={{ flex: 1, minWidth: 160, fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, color: critical ? CRITICAL_RED : SECONDARY, fontFamily: MANROPE }}>
+        {days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : days > 0 ? `${days} days away` : 'Already open'}
+      </div>
+      <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.3, marginTop: 2 }}>
         {LABELS[m.id] ?? m.label}
       </div>
       {/* §3.1. The link is the hit area, the span is the button.
-          marginLeft: auto pushes it to the row's right edge, and still to
-          the right edge of its OWN line if the row wraps on a narrow phone —
-          it was left-aligned under the title there before. */}
+          Full width now, not alignSelf: flex-end shrink-to-fit — even the
+          shortened CTA text left the button narrower than the card at some
+          widths and wider than it at others (below), and a button that is
+          sometimes the wrong width either wastes room or clips. Full width
+          is right at every column width this card actually renders at. */}
       <a href="https://vote.nz" target="_blank" rel="noopener noreferrer"
-         style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0 -8px auto', textDecoration: 'none', flexShrink: 0 }}>
+         style={{ display: 'block', padding: '4px 0', margin: '2px 0 -4px', textDecoration: 'none' }}>
         <span style={{
-          display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800,
-          color: '#fff', background: JADE, borderRadius: 999, padding: '9px 16px', fontFamily: MANROPE, whiteSpace: 'nowrap',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, fontSize: 11, fontWeight: 800,
+          color: '#fff', background: JADE, borderRadius: 999, padding: '7px 11px', fontFamily: MANROPE, whiteSpace: 'nowrap',
         }}>
-          {CTA[m.id] ?? 'Find out more'} <ArrowUpRight style={{ width: 13, height: 13 }} />
+          {CTA[m.id] ?? 'Find out more'} <ArrowUpRight style={{ width: 11, height: 11, flexShrink: 0 }} />
         </span>
       </a>
     </div>

@@ -36,7 +36,7 @@
 
 import { useEffect, useState } from 'react'
 import { ELECTION_SECTIONS, HERO_JUMP_ID } from '@/constants/election-sections'
-import { MilestoneCard, NextDeadlineCard } from './next-deadline-card'
+import { MilestoneCard } from './next-deadline-card'
 import { MANROPE } from '@/constants/theme'
 
 // Shared with the homepage flip counter (days-flip-countdown.tsx) so the two
@@ -84,15 +84,30 @@ export function CommandHero({ today }: { today: string }) {
           2026 general election
         </h1>
 
-        {/* Two cards below the title, before the countdown, in DATE order:
-            whichever deadline hasn't passed yet first (currently 4 Oct,
-            enrolment), then the fixed advance-voting milestone (26 Oct)
-            underneath — was the other way round, which put the later date
-            above the earlier one. See next-deadline-card.tsx for why the
-            reasoning and the full timetable stay in KeyDates further down
-            rather than being duplicated here. */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
-          <NextDeadlineCard today={today} />
+        {/* Three cards below the title, before the countdown, in DATE order:
+            4 Oct (Writ Day), 25 Oct (the actual enrolment deadline), 26 Oct
+            (advance voting opens).
+
+            ALL THREE FIXED, not one dynamic "whichever's next" plus two
+            fixed. That was the shape until the 25 Oct card was added: the
+            dynamic card would have shown Writ Day until 4 Oct, then swapped
+            to show 25 Oct — the exact date the new fixed card underneath
+            was also showing, so from 5 Oct onward the same milestone would
+            have appeared twice in a row. Three named cards can't collide
+            with each other the way one dynamic and one fixed eventually
+            would. See next-deadline-card.tsx for why the reasoning and the
+            full timetable stay in KeyDates further down rather than being
+            duplicated here.
+
+            TWO PER ROW, by request — a grid rather than the single column
+            above. DateCard's own internal layout still wraps at any width
+            (day figure, then title, then the right-aligned button, each
+            dropping to its own line if the one before it didn't leave room),
+            which is what keeps a ~160px-wide column at 375px legible rather
+            than clipping. */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
+          <MilestoneCard milestoneId="writ-day-2026" today={today} />
+          <MilestoneCard milestoneId="enrolment-closes-2026" today={today} />
           <MilestoneCard milestoneId="advance-voting-2026" today={today} />
         </div>
 
