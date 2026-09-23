@@ -27,6 +27,7 @@ import { PartyLegislativeRecord } from '@/components/parties/legislative-record'
 import { PartyPolicyExplorer } from '@/components/parties/party-policy-explorer'
 import { PARTY_POLICY_ANCHOR } from '@/components/policy/back-to-party'
 import { PartySwitcher } from '@/components/parties/party-switcher'
+import { CollapsibleCard } from '@/components/parties/collapsible-card'
 import { isLightHex } from '@/components/homepage/battleground-card'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { allDeepDivePaths } from '@/constants/policy-deep-dives'
@@ -99,19 +100,9 @@ function Card({ children, accent, style, className, id }: { children: React.Reac
   )
 }
 
-/** The heading icon carries the party's colour in a soft chip — the one visual
- *  thread that makes each party's page feel like that party's, rather than the
- *  same jade template with a different name at the top. */
-function SectionHeading({ icon: Icon, title, accent = JADE }: { icon: React.ElementType; title: string; accent?: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-      <span style={{ width: 28, height: 28, borderRadius: 9, background: tint(accent, 0.12), display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-        <Icon style={{ width: 15, height: 15, color: accent }} />
-      </span>
-      <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>{title}</h2>
-    </div>
-  )
-}
+/* SectionHeading lived here. Every section that used it is a
+   CollapsibleCard now, which draws its own header row: same icon chip, same
+   16px title, plus the chevron. */
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -353,28 +344,28 @@ export default async function PartyProfilePage(
         {/* ── Main column ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-          {/* Overview */}
-          <Card accent={party.color}>
-            <SectionHeading icon={Landmark} title="Overview" accent={party.color} />
+          {/* Overview, History and Core values are closed rectangles now:
+              five open cards put two and a half phone screens of prose in
+              front of "Where they stand", which is what a reader came for.
+              Closed, they are a menu of what this party's page holds. */}
+          <CollapsibleCard title="Overview" icon={<Landmark style={{ width: 15, height: 15 }} />} accent={party.color}>
             <p style={{ fontSize: 14.5, color: '#3b3229', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
               {party.overview}
             </p>
-          </Card>
+          </CollapsibleCard>
 
           {/* History */}
-          <Card accent={party.color}>
-            <SectionHeading icon={ScrollText} title="History" accent={party.color} />
+          <CollapsibleCard title="History" icon={<ScrollText style={{ width: 15, height: 15 }} />} accent={party.color}>
             <p style={{ fontSize: 14.5, color: '#3b3229', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
               {party.history}
             </p>
             <div style={{ marginTop: 14, fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, fontStyle: 'italic' }}>
               {party.founded_note}
             </div>
-          </Card>
+          </CollapsibleCard>
 
           {/* Core values */}
-          <Card accent={party.color}>
-            <SectionHeading icon={CheckCircle2} title="Core values" accent={party.color} />
+          <CollapsibleCard title="Core values" icon={<CheckCircle2 style={{ width: 15, height: 15 }} />} accent={party.color}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {party.coreValues.map((v) => (
                 <div key={v} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
@@ -383,7 +374,7 @@ export default async function PartyProfilePage(
                 </div>
               ))}
             </div>
-          </Card>
+          </CollapsibleCard>
 
           {/* Key policy areas */}
           {/* Where /compare's job now lives. The old card listed this party's
@@ -393,8 +384,8 @@ export default async function PartyProfilePage(
           {/* Anchor for the return trip from the policy hub — see BackToParty.
               scrollMarginTop clears the sticky navbar, so landing here shows the
               heading rather than putting it behind the bar. */}
-          <Card accent={party.color} className="ap-stand" id={PARTY_POLICY_ANCHOR} style={{ scrollMarginTop: 84 }}>
-            <SectionHeading icon={Star} title="Where they stand" accent={party.color} />
+          <CollapsibleCard title="Where they stand" icon={<Star style={{ width: 15, height: 15 }} />} accent={party.color}
+            className="ap-stand" id={PARTY_POLICY_ANCHOR} style={{ scrollMarginTop: 84 }}>
             <PartyPolicyExplorer
               partySlug={slug}
               partyName={party.name}
@@ -402,7 +393,7 @@ export default async function PartyProfilePage(
               positions={partyPositions}
               deepDiveTopics={diveTopics}
             />
-          </Card>
+          </CollapsibleCard>
 
           {/* Legislative record this term */}
           <PartyLegislativeRecord party={slug as PartySlug} partyName={party.name} />
