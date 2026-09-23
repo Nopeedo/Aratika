@@ -124,7 +124,12 @@ function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; toda
       background: critical ? '#fff5f2' : '#fff',
       borderTop: `3px solid ${tone}`,
       padding: '13px 14px', boxShadow: '0 2px 8px rgba(42,18,6,.05)',
-      display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0,
+      // height: 100% — the grid stretches items to the row's tallest card by
+      // default, but that stretch was landing on the CARD's own height, not
+      // reaching the button inside it, so "Election day" (short) and "Last
+      // day to enrol without a special vote" (long) were equal-height cards
+      // with their buttons sitting at two different heights within them.
+      display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0, height: '100%',
     }}>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
         <span style={{ fontSize: 30, fontWeight: 800, color: tone, fontFamily: MANROPE, lineHeight: 1, letterSpacing: '-.02em', fontVariantNumeric: 'tabular-nums' }}>{day}</span>
@@ -138,7 +143,7 @@ function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; toda
       <div style={{ fontSize: 11, fontWeight: 500, color: critical ? CRITICAL_RED : TERTIARY, fontFamily: MANROPE }}>
         {days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : days > 0 ? `${days} days away` : 'Already open'}
       </div>
-      <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.3, marginTop: 2 }}>
+      <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.3, marginTop: 2, marginBottom: 6 }}>
         {LABELS[m.id] ?? m.label}
       </div>
       {/* The window a milestone is open, when it has one — election day's
@@ -162,7 +167,7 @@ function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; toda
           button that's sometimes the wrong width either wastes room or
           clips. */}
       <a href="https://vote.nz" target="_blank" rel="noopener noreferrer"
-         style={{ display: 'block', padding: '4px 0', margin: '2px 0 -4px', textDecoration: 'none' }}>
+         style={{ display: 'block', padding: '4px 0', margin: 'auto 0 -4px', textDecoration: 'none' }}>
         <span style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, fontSize: 11.5, fontWeight: 800,
           color: JADE, background: 'transparent', border: `1.5px solid ${JADE}`, borderRadius: 999,

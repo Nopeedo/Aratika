@@ -84,12 +84,25 @@ export function CommandHero({ today }: { today: string }) {
           2026 general election
         </h1>
 
-        {/* Four cards below the title, before the countdown, in DATE order:
-            4 Oct (Writ Day), 25 Oct (the actual enrolment deadline), 26 Oct
-            (advance voting opens), 7 Nov (election day itself, with the
-            voting-hours timeNote — see next-deadline-card.tsx's DateCard).
-            Four fills the grid evenly at two per row; three left the last
-            one alone on its own row.
+        {/* One tile, above the date cards now (was below them). The label
+            does the job the deleted date line was doing badly: it says what
+            the number counts to without restating 7 November, which the
+            cards below own. */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
+          <div style={{ textAlign: 'center' }}>
+            <Tile text={days === null ? '––' : String(days)} />
+            <div style={{ fontSize: 'clamp(10px,1.3vw,12px)', fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: WARM, fontFamily: MANROPE, marginTop: 9 }}>
+              days until election day
+            </div>
+          </div>
+        </div>
+
+        {/* Four cards below the countdown, before the jump nav, in DATE
+            order: 4 Oct (Writ Day), 25 Oct (the actual enrolment deadline),
+            26 Oct (advance voting opens), 7 Nov (election day itself, with
+            the voting-hours timeNote — see next-deadline-card.tsx's
+            DateCard). Four fills the grid evenly at two per row; three left
+            the last one alone on its own row.
 
             ALL FOUR FIXED, not one dynamic "whichever's next" plus the rest.
             That was the shape until the 25 Oct card was added: the dynamic
@@ -108,23 +121,11 @@ export function CommandHero({ today }: { today: string }) {
             dropping to its own line if the one before it didn't leave room),
             which is what keeps a ~160px-wide column at 375px legible rather
             than clipping. */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 'clamp(20px, 3.4vh, 30px)' }}>
           <MilestoneCard milestoneId="writ-day-2026" today={today} />
           <MilestoneCard milestoneId="enrolment-closes-2026" today={today} />
           <MilestoneCard milestoneId="advance-voting-2026" today={today} />
           <MilestoneCard milestoneId="election-day-2026" today={today} />
-        </div>
-
-        {/* One tile. The label does the job the deleted date line was doing
-            badly: it says what the number counts to without restating
-            7 November, which the strip immediately below owns. */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(20px, 3.4vh, 30px)' }}>
-          <div style={{ textAlign: 'center' }}>
-            <Tile text={days === null ? '––' : String(days)} />
-            <div style={{ fontSize: 'clamp(10px,1.3vw,12px)', fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: WARM, fontFamily: MANROPE, marginTop: 9 }}>
-              days until election day
-            </div>
-          </div>
         </div>
 
         {/* Jump nav — a light text-link row now, not six equal §2.2 pills.
