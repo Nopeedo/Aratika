@@ -511,9 +511,12 @@ function BillsRow({ p }: { p: TileParty }) {
               the House" — which is Parliament's own phrase for "currently in
               the system" and left the reader to work out whose bills these
               were. Everything counted below was introduced by this party's
-              ministers or its MPs, so "put forward" is true of all three
-              figures. Short enough to stay on one or two lines at 20px, where
-              "has put to the House" ran to three for every party. What that means for a GOVERNING party — that the
+              ministers or its MPs. "Introduced" rather than "drawn and
+              introduced": only MEMBERS' bills come out of the ballot, and for
+              a governing party most of this figure is government bills, which
+              are never drawn — National's 216 is 198 ministerial. Introduced
+              is the one word true of all three kinds. The ballot, and the
+              drawing, is the line underneath. What that means for a GOVERNING party — that the
               government's programme is attributed to the minister's party
               rather than owned by it — is in the (i) beside this.
 
@@ -521,7 +524,7 @@ function BillsRow({ p }: { p: TileParty }) {
               are peer blocks in one column, and at 13px against 20px this one
               read as a caption on the seats block rather than its own thing. */}
           <div style={{ flex: 1, minWidth: 0, fontSize: 20, fontWeight: 800, letterSpacing: 0, textTransform: 'uppercase', color: INK, fontFamily: MANROPE, textAlign: 'center', lineHeight: 1.15 }}>
-            Bills put forward by {p.name}
+            Bills introduced by {p.name}
           </div>
           <BillsInfoButton accent={accent} governing={!!p.governing} slug={p.slug} />
         </div>
@@ -544,7 +547,7 @@ function BillsRow({ p }: { p: TileParty }) {
         <div style={{ fontSize: 14, fontWeight: 700, color: SUB, fontFamily: MANROPE, marginTop: 10, lineHeight: 1.4 }}>
           {[
             none ? null : b.passed === 0 ? 'none yet law' : `${b.passed} now law`,
-            b.ballot > 0 ? `${b.ballot} waiting in the ballot` : null,
+            b.ballot > 0 ? `${b.ballot} waiting to be drawn` : null,
           ].filter(Boolean).join(' · ') || 'None before the House this term.'}
         </div>
 

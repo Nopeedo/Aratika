@@ -134,27 +134,29 @@ export function PartyElectorates() {
           colors={colors}
           party={slug}
         />
-      </div>
 
-      {/* Under BOTH boxes, since it covers both: a small outlined chip rather
-          than a filled signpost — several solid signs stacked down one page
-          make each of them count for less. */}
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 14 }}>
-        <Link
-          href={`/mps?party=${slug}`}
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: 6,
-            padding: '5px 10px', borderRadius: 999,
-            border: `1.5px solid ${accent}`, color: accent, background: 'transparent',
-            fontSize: 11.5, fontWeight: 800, fontFamily: MANROPE,
-            textDecoration: 'none', whiteSpace: 'nowrap',
-            transition: 'border-color .25s ease-in-out, color .25s ease-in-out',
-          }}
-        >
-          <MapPin style={{ width: 12, height: 12, flexShrink: 0 }} />
-          All {names.short} MPs
-          <ArrowRight style={{ width: 13, height: 13, flexShrink: 0 }} strokeWidth={3} />
-        </Link>
+        {/* Inside the container and spanning both columns: it is the way out
+            of this caucus list, so it belongs with the list rather than
+            floating under the box it refers to. A small outlined chip rather
+            than a filled signpost — several solid signs stacked down one page
+            make each of them count for less. */}
+        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+          <Link
+            href={`/mps?party=${slug}`}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '5px 10px', borderRadius: 999,
+              border: `1.5px solid ${accent}`, color: accent, background: 'transparent',
+              fontSize: 11.5, fontWeight: 800, fontFamily: MANROPE,
+              textDecoration: 'none', whiteSpace: 'nowrap',
+              transition: 'border-color .25s ease-in-out, color .25s ease-in-out',
+            }}
+          >
+            <MapPin style={{ width: 12, height: 12, flexShrink: 0 }} />
+            All {names.short} MPs
+            <ArrowRight style={{ width: 13, height: 13, flexShrink: 0 }} strokeWidth={3} />
+          </Link>
+        </div>
       </div>
 
       {preview && <MPPreview slug={preview} onClose={() => setPreview(null)} />}
