@@ -81,7 +81,7 @@ export function CommandHero({ today }: { today: string }) {
             the section headings below it (§4's peer-heading rule, extended
             to page titles rather than just section ones). */}
         <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: ESPRESSO, margin: '0 0 18px' }}>
-          2026 general election
+          2026 General Election
         </h1>
 
         {/* One tile, above the date cards now (was below them), with the
