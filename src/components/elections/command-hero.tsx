@@ -36,7 +36,7 @@
 
 import { useEffect, useState } from 'react'
 import { ELECTION_SECTIONS, HERO_JUMP_ID } from '@/constants/election-sections'
-import { JADE, JADE_DARK, MANROPE } from '@/constants/theme'
+import { MANROPE } from '@/constants/theme'
 
 // Shared with the homepage flip counter (days-flip-countdown.tsx) so the two
 // counters read as the same object.
@@ -65,18 +65,12 @@ export function CommandHero() {
     // hero — the same seam bug already fixed once on the homepage.
     <section style={{ position: 'relative' }}>
       <div style={{ position: 'relative', maxWidth: 1080, margin: '0 auto', padding: 'clamp(18px, 3vh, 26px) clamp(18px, 5vw, 40px) clamp(24px, 4vh, 36px)' }}>
-        {/* Live eyebrow. The "All elections" back link sat here too, top-left
-            against the eyebrow top-right — this is the 2026 Election Centre's
-            own landing point, not a step in a flow with a page above it to
-            back out to, so a back link here had nowhere useful to return the
-            reader to. BackLink import stays on other pages that are one step
-            of a real sequence (an election year page reached FROM /elections). */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'clamp(14px, 3vh, 26px)' }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 12, fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: JADE_DARK, fontFamily: MANROPE }}>
-            <span className="live-dot" style={{ width: 8, height: 8, borderRadius: '50%', background: JADE, display: 'inline-block' }} />
-            Election Centre
-          </span>
-        </div>
+        {/* The "ELECTION CENTRE" eyebrow and the "All elections" back link
+            that sat above it are both gone now. The eyebrow named the page
+            a reader already knows they're on — nothing above it says
+            anything else — and once the back link went (this page has
+            nowhere to back out to) it was standing there alone with nothing
+            to sit against. The headline is the first thing in the hero now. */}
 
         {/* Headline — sized and placed like the policy comparison page's own
             h1 ("Party Policy Comparison"): left-aligned, clamp(28px, 7vw,
