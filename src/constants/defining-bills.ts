@@ -13,7 +13,7 @@
  *  - Statuses are to a Jan 2026 knowledge cutoff — verify anything later.
  */
 
-import type { PolicyTopic } from '@/types'
+import type { PartySlug, PolicyTopic } from '@/types'
 
 export interface DefiningBill {
   slug: string               // /bills/[slug] — its own breakdown page
@@ -23,6 +23,15 @@ export interface DefiningBill {
   statusKind: 'law' | 'defeated' | 'in-progress'
   why: string
   champion: string
+  /**
+   * The party tagged on the bill's tile. The party of the MINISTER or member
+   * in charge — the same rule the tracker uses to attribute a bill, and the
+   * same one the homepage bills block explains in its (i): a government bill
+   * is attributed to the minister's party rather than owned by it. Set
+   * explicitly per bill rather than parsed out of `champion`, which is prose
+   * and names every party in a coalition.
+   */
+  party: PartySlug
   topic?: PolicyTopic        // links to /policies/[topic] — only where a clean match exists
   source: { label: string; url: string }
 
@@ -55,6 +64,7 @@ const PARL = { label: 'parliament.nz, Bills & laws', url: 'https://www.parliamen
 export const DEFINING_BILLS: DefiningBill[] = [
   {
     slug: 'treaty-principles-bill',
+    party: 'act',
     title: 'Treaty Principles Bill',
     what: 'Proposed to define the principles of the Treaty of Waitangi in legislation.',
     status: 'Defeated at second reading (April 2025)',
@@ -104,6 +114,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'three-strikes-sentencing',
+    party: 'national',
     title: 'Three Strikes sentencing legislation',
     what: 'Reinstates a regime of escalating penalties for repeat serious violent and sexual offending.',
     status: 'Now law (in force June 2025)',
@@ -138,6 +149,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'gangs-act-2024',
+    party: 'national',
     title: 'Gangs Act 2024',
     what: 'Bans gang insignia in public places and gives police new dispersal and consorting powers.',
     status: 'Now law (in force Nov 2024)',
@@ -170,6 +182,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'fast-track-approvals-act-2024',
+    party: 'national',
     title: 'Fast-track Approvals Act 2024',
     what: 'Creates a one-stop fast-track consenting pathway for nationally and regionally significant projects.',
     status: 'Now law (2024)',
@@ -202,6 +215,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'resource-management-reform',
+    party: 'national',
     title: 'Replacing the Resource Management Act (RMA)',
     what: 'Repeals and replaces the RMA with new resource-management legislation governing how land, housing and the environment are managed.',
     status: 'In progress (before select committee)',
@@ -234,6 +248,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'local-water-done-well',
+    party: 'national',
     title: 'Local Water Done Well (Three Waters repeal)',
     what: 'Repealed the previous government’s Three Waters / Affordable Water reforms and replaced them with a council-led model.',
     status: 'Now law (2024–25)',
@@ -266,6 +281,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'pae-ora-maori-health-authority',
+    party: 'national',
     title: 'Pae Ora (Māori Health Authority) amendment',
     what: 'Disestablished Te Aka Whai Ora, the Māori Health Authority.',
     status: 'Now law (2024)',
@@ -298,6 +314,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'smokefree-environments-repeal',
+    party: 'nzfirst',
     title: 'Smokefree environments repeal',
     what: 'Repealed the previous government’s smokefree measures (denicotinisation and the smokefree-generation ban).',
     status: 'Now law (2024)',

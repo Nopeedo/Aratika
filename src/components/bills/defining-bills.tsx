@@ -20,6 +20,7 @@ import { Fragment, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Check, ChevronDown, X } from 'lucide-react'
 import { DEFINING_BILLS, DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
+import { PARTY_COLORS, PARTY_NAMES } from '@/constants/parties'
 import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { INK, MANROPE } from '@/constants/theme'
 
@@ -186,7 +187,19 @@ export function DefiningBills() {
                   the detail is showing, which is the same tap that closes it. */}
               <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: st.fg, fontFamily: MANROPE, marginBottom: 2 }}>{st.label}</span>
+                  {/* Status left, party right, on one row above the title: the
+                      two things a reader sorts these by. The party is the one
+                      in CHARGE of the bill — see the note on `party` in
+                      defining-bills.ts. */}
+                  <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, marginBottom: 2 }}>
+                    <span style={{ fontSize: 9.5, fontWeight: 800, color: st.fg, fontFamily: MANROPE }}>{st.label}</span>
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0,
+                      fontSize: 9, fontWeight: 800, color: PARTY_COLORS[b.party]?.text ?? INK,
+                      background: PARTY_COLORS[b.party]?.bg ?? 'transparent',
+                      borderRadius: 999, padding: '2px 6px', fontFamily: MANROPE, whiteSpace: 'nowrap',
+                    }}>{PARTY_NAMES[b.party]?.short ?? b.party}</span>
+                  </span>
                   <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{b.title}</span>
                 </span>
                 <ChevronDown
