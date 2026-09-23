@@ -207,6 +207,13 @@ export default async function PartyProfilePage(
                   Government" set the 16-character threshold over there, and
                   "Te Pāti Māori" and "Outdoors & Freedom" are why it is
                   needed here. */}
+              {/* Track sits beside the name, not down in the link row: it
+                  acts on the party, which is what the pill names, and three
+                  buttons below made it the third of three unrelated things
+                  (their site, parliament.nz, and following them here).
+                  wrap so it drops under the pill rather than squeezing it on
+                  a narrow phone. */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 8 }}>
               <h2 style={{
                 display: 'inline-flex', alignItems: 'center', gap: 12,
                 padding: '8px 20px 8px 17px', borderRadius: 999,
@@ -215,7 +222,7 @@ export default async function PartyProfilePage(
                 fontSize: party.name.length > 16 ? 'clamp(17px, 4.9vw, 30px)' : 'clamp(24px, 6.5vw, 34px)',
                 fontWeight: 800, letterSpacing: '-.02em',
                 color: readableOnWhite(party.color),
-                fontFamily: MANROPE, lineHeight: 1.15, margin: '0 0 8px',
+                fontFamily: MANROPE, lineHeight: 1.15, margin: 0,
                 maxWidth: '100%', whiteSpace: 'nowrap',
               }}>
                 <span aria-hidden style={{
@@ -224,6 +231,11 @@ export default async function PartyProfilePage(
                 }} />
                 {party.name}
               </h2>
+                <BookmarkButton entity={{
+                  kind: 'party', refId: slug, label: party.name,
+                  sublabel: 'Political party', href: `/parties/${slug}`, accent: party.color,
+                }} />
+              </div>
               <div style={{ fontSize: 15, fontWeight: 500, color: TERTIARY, fontFamily: MANROPE, marginBottom: 16 }}>
                 {party.fullName}
               </div>
@@ -301,10 +313,7 @@ export default async function PartyProfilePage(
                 <a href={party.parliamentUrl} target="_blank" rel="noopener noreferrer" style={btnSecondary}>
                   parliament.nz <ArrowUpRight style={{ width: 14, height: 14 }} />
                 </a>
-                <BookmarkButton entity={{
-                  kind: 'party', refId: slug, label: party.name,
-                  sublabel: 'Political party', href: `/parties/${slug}`, accent: party.color,
-                }} />
+                {/* Track moved up beside the name. */}
               </div>
             </div>
 
