@@ -311,29 +311,9 @@ export default async function PartyProfilePage(
               </div>
             </div>
 
-            {/* Right: the seat figure, on one line.
-                It was a 150x156 square with a 54px numeral, a 2px border of
-                the party's colour and a drop shadow, which on a phone was a
-                block the width of the column between the party's links and
-                everything the page had to say about them. A number that is
-                0 for eleven of the seventeen parties does not earn that.
-                Reads as a sentence now: 15 seats, 12.2% of 123. */}
-            <div style={{
-              display: 'inline-flex', alignItems: 'baseline', gap: 7, flexWrap: 'wrap',
-              background: tint(party.color, 0.10), border: `1px solid ${tint(party.color, 0.45)}`,
-              borderRadius: 999, padding: '5px 14px',
-              alignSelf: 'flex-start', fontFamily: MANROPE,
-            }}>
-              <span style={{ fontSize: 19, fontWeight: 700, letterSpacing: '-.02em', color: INK, fontFamily: DISPLAY, lineHeight: 1 }}>
-                {seats}
-              </span>
-              <span style={{ fontSize: 12.5, fontWeight: 700, color: INK }}>
-                {seats === 1 ? 'seat' : 'seats'}
-              </span>
-              <span style={{ fontSize: 12.5, color: SECONDARY }}>
-                · {seatShare}% of {TOTAL_SEATS}
-              </span>
-            </div>
+            {/* The seat count was a pill here. It is the headline stat of the
+                2023 election section now, which is where the rest of the seat
+                numbers live; in the header it was a fact with no company. */}
           </div>
         </div>
       </div>
@@ -405,6 +385,23 @@ export default async function PartyProfilePage(
             partyName={party.name}
             glance={
               <div style={{ marginBottom: 18 }}>
+                {/* The headline: what the election gave them, in one figure,
+                    the way the record's own stats below read. */}
+                <div style={{
+                  display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'wrap',
+                  background: tint(party.color, 0.10), border: `1px solid ${tint(party.color, 0.45)}`,
+                  borderRadius: 12, padding: '12px 14px', marginBottom: 14,
+                }}>
+                  <span style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: DISPLAY, lineHeight: 1 }}>
+                    {seats}
+                  </span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: INK, fontFamily: MANROPE }}>
+                    {seats === 1 ? 'seat' : 'seats'} won
+                  </span>
+                  <span style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>
+                    · {seatShare}% of {TOTAL_SEATS}
+                  </span>
+                </div>
                 {/* How the seats were won, before the numbers that describe
                     them — electorate vs list is the one thing about a party's
                     seats that a row of digits doesn't show. */}
