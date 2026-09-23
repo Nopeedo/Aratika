@@ -89,16 +89,8 @@ function mpSlugForName(name: string): string | null {
 
 /** Outlined in the party's own colour. A neutral 1px hairline on a textured
  *  background reads as no edge at all — the cards dissolved into the weave. */
-function Card({ children, accent, style, className, id }: { children: React.ReactNode; accent?: string; style?: React.CSSProperties; className?: string; id?: string }) {
-  return (
-    <div id={id} className={className} style={{
-      background: '#ffffff', border: `2px solid ${accent ? tint(accent, 0.45) : BORDER}`, borderRadius: 18,
-      padding: '22px 24px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)', ...style,
-    }}>
-      {children}
-    </div>
-  )
-}
+/* Card lived here: the white, party-bordered frame every section used. They
+   are all CollapsibleCards now, which draw the same frame themselves. */
 
 /* SectionHeading lived here. Every section that used it is a
    CollapsibleCard now, which draws its own header row: same icon chip, same
@@ -319,7 +311,7 @@ export default async function PartyProfilePage(
       </div>
 
       {/* ═══════════════ Body ═══════════════ */}
-      <div className="detail-two-col ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 64px' }}>
+      <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 64px' }}>
 
         {/* ── Main column ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
@@ -425,28 +417,31 @@ export default async function PartyProfilePage(
                 <GlanceRow label="Electorate seats" value={String(party.electorateSeats)} />
                 <GlanceRow label="List seats"       value={String(party.listSeats)} />
                 <GlanceRow label="Share of House"   value={`${seatShare}%`} last />
+
+                {/* Leadership, in from the sidebar. Who leads the party is
+                    read alongside how many seats they lead, not in a column
+                    beside it that a phone drops to the bottom of the page
+                    anyway. */}
+                <div style={{ marginTop: 16, paddingTop: 14, borderTop: `1px solid ${BORDER}` }}>
+                  <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 14 }}>
+                    Leadership
+                  </div>
+                  <LeaderRow name={party.leader} title={party.leaderTitle} party={slug as PartySlug} photo={leaderSlug ? MP_PROFILES[leaderSlug].photo : party.leaderPhoto} href={leaderSlug ? `/mps/${leaderSlug}` : null} />
+                  {party.coLeader && (
+                    <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
+                      <LeaderRow name={party.coLeader} title={party.coLeaderTitle ?? 'Co-leader'} party={slug as PartySlug} photo={coLeaderSlug ? MP_PROFILES[coLeaderSlug].photo : undefined} href={coLeaderSlug ? `/mps/${coLeaderSlug}` : null} />
+                    </div>
+                  )}
+                </div>
               </div>
             }
           />
         </div>
 
-        {/* ── Sidebar ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-
-          {/* Leadership */}
-          <Card accent={party.color} style={{ padding: '20px 22px' }}>
-            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 14 }}>
-              Leadership
-            </div>
-            <LeaderRow name={party.leader} title={party.leaderTitle} party={slug as PartySlug} photo={leaderSlug ? MP_PROFILES[leaderSlug].photo : party.leaderPhoto} href={leaderSlug ? `/mps/${leaderSlug}` : null} />
-            {party.coLeader && (
-              <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
-                <LeaderRow name={party.coLeader} title={party.coLeaderTitle ?? 'Co-leader'} party={slug as PartySlug} photo={coLeaderSlug ? MP_PROFILES[coLeaderSlug].photo : undefined} href={coLeaderSlug ? `/mps/${coLeaderSlug}` : null} />
-              </div>
-            )}
-          </Card>
-
-        </div>
+        {/* The sidebar is gone. It held "At a glance" and Leadership, both of
+            which are now inside the 2023 election section; on a phone the
+            column dropped to the bottom of the page anyway, so its contents
+            were read last rather than beside anything. */}
       </div>
 
       {/* ═══════════════ Latest coverage ═══════════════ */}
