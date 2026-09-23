@@ -10,7 +10,9 @@ import { getApprovedBills } from '@/lib/bills/live'
 import { LegislationBrowser } from '@/components/bills/legislation-browser'
 import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
-export const dynamic = 'force-dynamic'
+// Revalidated, not force-dynamic.
+// Editor-approved bills, same as /bills.
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Legislation, made readable',

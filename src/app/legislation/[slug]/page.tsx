@@ -12,7 +12,9 @@ import { BackLink } from '@/components/ui/back-link'
 import { buildStancesByTopic } from '@/lib/positions/stances-by-topic'
 import { BORDER, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
-export const dynamic = 'force-dynamic'
+// Revalidated, not force-dynamic.
+// Editor-approved bills, same as /bills.
+export const revalidate = 60
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params

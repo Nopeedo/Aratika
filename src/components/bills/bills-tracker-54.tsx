@@ -11,6 +11,7 @@
  */
 
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { track } from '@vercel/analytics'
 import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, ChevronDown, ExternalLink, PenLine, SlidersHorizontal } from 'lucide-react'
@@ -80,7 +81,17 @@ const PAGE_SIZE = 24
 const byDateDesc = (a: Bill54, b: Bill54) => (b.date || '').localeCompare(a.date || '')
 const DEFAULT_ORDER = [...BILLS_54].sort(byDateDesc)
 
-export function BillsTracker54({ readerSlugs = {}, readerSummaries = {}, memberParty = {}, initialParty, initialBill, initialTopic }: { readerSlugs?: Record<string, string>; readerSummaries?: Record<string, string>; memberParty?: Record<string, string>; initialParty?: string; initialBill?: string; initialTopic?: string }) {
+export function BillsTracker54({ readerSlugs = {}, readerSummaries = {}, memberParty = {} }: { readerSlugs?: Record<string, string>; readerSummaries?: Record<string, string>; memberParty?: Record<string, string> }) {
+  // ?party= / ?bill= / ?topic= are read HERE rather than handed down from the
+  // page. Awaiting searchParams in the server component made /bills dynamic,
+  // so every visitor paid a full render (2.1-2.9s to first byte, the slowest
+  // route on the site) to answer a question only this client component asks.
+  // The page is prerendered and revalidated now; the deep links behave the
+  // same. Needs the <Suspense> boundary around this component in page.tsx.
+  const searchParams = useSearchParams()
+  const initialParty = searchParams.get('party') ?? undefined
+  const initialBill = searchParams.get('bill') ?? undefined
+  const initialTopic = searchParams.get('topic') ?? undefined
   const [q, setQ] = useState('')
   // One breakdown open at a time, held here rather than per card: two panels
   // open in one grid pushed the row they share apart.

@@ -4,7 +4,6 @@
  * read of approved only), so nothing un-reviewed ever reaches the public.
  */
 
-import { createClient } from '@/lib/supabase/server'
 import { publicClient } from '@/lib/supabase/public'
 import { billSlugFromLink, normBillTitle } from './slug'
 
@@ -75,7 +74,12 @@ function toLiveBill(r: Row): LiveBill | null {
 
 /** Approved, enriched legislation (has a summary + policy breakdown). */
 export async function getApprovedBills(): Promise<LiveBill[]> {
-  const supabase = await createClient()
+  // publicClient, not the cookie-bound server client. This reads approved
+  // public content and never needed a session, and touching cookies opts the
+  // calling route out of static rendering entirely — which is what kept
+  // /bills and /legislation rendering per request (2.1-2.9s to first byte).
+  // News already reads the same table this way.
+  const supabase = publicClient()
   const { data } = await supabase
     .from('content_items')
     .select('id, title, summary, data')
@@ -129,7 +133,7 @@ export async function getApprovedBillBySlug(slug: string): Promise<LiveBill | nu
   const bill = all.find((b) => b.slug === slug)
   if (!bill) return null
   // Load the heavy full text only for the single bill being read.
-  const supabase = await createClient()
+  const supabase = publicClient()
   const { data } = await supabase.from('content_items').select('full_text').eq('id', bill.id).maybeSingle()
   return { ...bill, fullText: (data?.full_text as string | null) ?? null }
 }

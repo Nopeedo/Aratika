@@ -21,7 +21,9 @@ import { getDeepDives } from '@/constants/policy-deep-dives'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
-export const dynamic = 'force-dynamic'
+// Revalidated, not force-dynamic.
+// Editor-approved positions, matching the topic page above it.
+export const revalidate = 60
 
 export async function generateMetadata({ params }: { params: Promise<{ topic: string; party: string }> }): Promise<Metadata> {
   const { topic, party } = await params

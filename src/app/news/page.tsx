@@ -13,7 +13,10 @@ import { getVideos, getInterviewVideos } from '@/lib/news/videos'
 import { NewsFeed } from '@/components/news/news-feed'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
-export const dynamic = 'force-dynamic'
+// Revalidated, not force-dynamic.
+// The feed is polled from the sources on a schedule, so a per-request render was
+// rebuilding the same page for every visitor.
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Latest election news',

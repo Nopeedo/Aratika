@@ -13,7 +13,9 @@ import { CoverageMatrix } from '@/components/policy/coverage-matrix'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
-export const dynamic = 'force-dynamic'
+// Revalidated, not force-dynamic.
+// Editor-approved positions, the same data /policies/[topic] serves prerendered.
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Compare the parties',

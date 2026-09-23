@@ -9,6 +9,7 @@
  * readerSlugs, which is what that fetch now feeds) and from /legislation.
  */
 
+import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { ExternalLink, Landmark } from 'lucide-react'
 import { BillsTracker54 } from '@/components/bills/bills-tracker-54'
@@ -20,7 +21,10 @@ import { getApprovedBills } from '@/lib/bills/live'
 import { memberPartyMap } from '@/lib/bills/member-party'
 import { INK, JADE, JADE_DARK, MANROPE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
-export const dynamic = 'force-dynamic'
+// Revalidated, not force-dynamic.
+// The approved bills come from Supabase; 60s is the same freshness /policies/[topic]
+// already ships with, and it takes this page off a 2.9s per-request render.
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: 'Bills Tracker',
@@ -33,8 +37,10 @@ export const metadata: Metadata = {
  *  over the last 12% so the footer notes are not sitting in colour. */
 const BILLS_WASH = 'linear-gradient(to bottom, rgba(0,0,0,.13) 0%, rgba(0,0,0,.13) 82%, rgba(0,0,0,0) 97%)'
 
-export default async function BillsPage({ searchParams }: { searchParams: Promise<{ party?: string; bill?: string; topic?: string }> }) {
-  const { party: initialParty, bill: initialBill, topic: initialTopic } = await searchParams
+// No searchParams here. Awaiting them made the whole route dynamic, and the
+// only consumer of ?party= / ?bill= / ?topic= is the client tracker, which
+// reads them itself now.
+export default async function BillsPage() {
   const readable = await getApprovedBills()
   // Map each bill title → its reader slug, so the full tracker can link rows that
   // have a published breakdown through to /legislation/[slug].
@@ -122,7 +128,11 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
           </div>
         </div>
 
-        <BillsTracker54 readerSlugs={readerSlugs} readerSummaries={readerSummaries} memberParty={memberParty} initialParty={initialParty} initialBill={initialBill} initialTopic={initialTopic} />
+        {/* Suspense because the tracker calls useSearchParams: without a
+            boundary that opts the whole route out of static rendering again. */}
+        <Suspense fallback={null}>
+          <BillsTracker54 readerSlugs={readerSlugs} readerSummaries={readerSummaries} memberParty={memberParty} />
+        </Suspense>
 
         {/* The other half of what backbenchers are doing: bills lodged and
             waiting on a draw. Below the tracker because they are not in it —

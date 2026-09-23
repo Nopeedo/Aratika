@@ -26,7 +26,9 @@ import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { SITE } from '@/constants/site'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
-export const dynamic = 'force-dynamic'
+// Revalidated, not force-dynamic.
+// Editor-approved deep dives, matching the topic page above it.
+export const revalidate = 60
 
 type Params = Promise<{ topic: string; party: string; dive: string }>
 
