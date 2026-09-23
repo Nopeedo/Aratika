@@ -12,7 +12,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
   ArrowRight, ArrowUpRight, Calendar, Landmark,
-  ScrollText, Star, ExternalLink, Globe, CheckCircle2,
+  ScrollText, Star, Globe, CheckCircle2,
 } from 'lucide-react'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES } from '@/constants/parties-data'
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'

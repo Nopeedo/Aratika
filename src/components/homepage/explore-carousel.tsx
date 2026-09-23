@@ -88,7 +88,7 @@ const GROUPS: { label: string; items: Feature[] }[] = [
   {
     label: 'Keep up, and have your say',
     items: [
-      { feature: 'elections', title: 'Election Centre', desc: 'Polls, seat projection & live results on the night', href: '/elections/2026', Icon: BarChart3, tint: '#eef4ff' },
+      { feature: 'elections', title: '2026 Election', desc: 'Polls, seat projection & live results on the night', href: '/elections/2026', Icon: BarChart3, tint: '#eef4ff' },
       { feature: 'polls', title: 'Public polls', desc: 'What the polls are saying', href: '/polls', Icon: TrendingUp, tint: '#fef2f2' },
       { feature: 'parliament', title: 'Parliament now', desc: 'Seats, cabinet and the current snapshot', href: '/parliament', Icon: Landmark, tint: '#f5f3ff' },
       { feature: 'dashboard', title: 'Track what matters', desc: 'Follow the parties & MPs you care about', href: '/command-centre', Icon: LayoutDashboard, tint: '#f0fdfa' },

@@ -49,10 +49,18 @@ export function Navbar() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
-  // Close mobile menu on route change
-  React.useEffect(() => {
+  /* Close the mobile menu on route change.
+     Adjusted during render rather than in an effect. As an effect this ran
+     setState synchronously on every pathname change, which React warns about
+     because it commits a render and then immediately schedules another
+     (react-hooks/set-state-in-effect). Comparing against the path the menu was
+     opened at does the same job in one pass: React restarts this render
+     before touching the DOM, so the menu never paints over the new page. */
+  const [openedAt, setOpenedAt] = React.useState(pathname)
+  if (mobileOpen && openedAt !== pathname) {
     setMobileOpen(false)
-  }, [pathname])
+    setOpenedAt(pathname)
+  }
 
   /* A scroll-anchoring guard lived here: overflow-anchor: none for the life of
      the open menu, because the panel used to sit in the header's flow and
@@ -149,7 +157,7 @@ export function Navbar() {
           {/* Mobile Menu Toggle */}
           <button
             className="xl:hidden flex items-center justify-center size-9 rounded-md text-muted hover:text-foreground hover:bg-surface transition-colors"
-            onClick={() => setMobileOpen((o) => !o)}
+            onClick={() => { setOpenedAt(pathname); setMobileOpen((o) => !o) }}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
           >

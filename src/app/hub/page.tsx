@@ -120,7 +120,7 @@ export default async function HubPage() {
     { href: '/guide', title: 'Get ready to vote', desc: 'Enrol, and how your two votes work.', Icon: Vote, tint: '#ecfeff', ink: '#0e7490' },
   ]
   const election: Tile[] = [
-    { href: '/elections/2026', title: 'Election Centre', desc: 'Polls, projection and live results on the night.', Icon: BarChart3, tint: '#eff4ff', ink: '#1d4ed8', stat: leaderLabel },
+    { href: '/elections/2026', title: '2026 Election', desc: 'Polls, projection and live results on the night.', Icon: BarChart3, tint: '#eff4ff', ink: '#1d4ed8', stat: leaderLabel },
     { href: '/policies', title: 'Compare parties', desc: 'Every party, side by side on the issues.', Icon: Scale, tint: '#f5f3ff', ink: '#6d28d9' },
     { href: '/battlegrounds', title: 'Battlegrounds', desc: 'The marginal seats to watch.', Icon: Swords, tint: '#fff1f1', ink: '#b91c1c', stat: `${ultra} ultra-marginal` },
     { href: '/bills', title: 'The Record', desc: 'Bills and what this Parliament has done.', Icon: FileText, tint: '#fdf3ff', ink: '#a21caf', stat: submissions > 0 ? `${submissions} open for submissions` : undefined },

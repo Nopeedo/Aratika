@@ -30,7 +30,7 @@ import { NAV_PREV_KEY } from './nav-history'
  *  /parties/national would misdescribe where it goes. "Back to parties" reads
  *  correctly whether you came from the index or a single party. */
 const KNOWN: { prefix: string; label: string }[] = [
-  { prefix: '/elections/2026', label: 'Election Centre' },
+  { prefix: '/elections/2026', label: 'the 2026 election' },
   { prefix: '/battlegrounds',  label: 'Battlegrounds' },
   { prefix: '/compare',        label: 'Compare parties' },
   { prefix: '/policies',       label: 'the issues' },
