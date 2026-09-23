@@ -38,7 +38,7 @@ section 4 answers.
 
 *1:00–1:12 · Don't add to it.*
 
-> It's called Politika. It's a free website that shows you what every party stands for, and where that information came from.
+> It's called Politika, and it's free.
 
 ### 4 · How the comparison works
 
@@ -68,9 +68,9 @@ section 4 answers.
 
 *2:10–2:25 · Let the last line sit. Don't talk over the end.*
 
-> The election is Saturday the 7th of November.
+> The election is Saturday the 7th of November. It'll be my first one.
 >
-> Have a look before then. Come away a little bit wiser — and vote with confidence, whoever you vote for.
+> Have a look before then, and go in knowing what you're voting for.
 >
 > The link's in my bio, on Instagram and Facebook. It's politika.nz.
 >
@@ -117,3 +117,51 @@ Three things changed from the raw recording, and they are the reusable part:
    than a feature list.
 3. **"Work in progress" moved to near the end.** Leading with it undercut
    everything after; after the demo it reads as honesty instead of an apology.
+
+---
+
+## Feedback on this draft
+
+### What is working
+
+- **"I'm thirty years old, and I've never voted. Not once."** The best thing in
+  the script by a distance. It is rare, it takes something to say publicly, and
+  it means you are not lecturing anyone. Every viewer who has never voted has
+  just found the one person talking about this who is not above them.
+- **The two problems.** "You've got to go to their website, every party, one at
+  a time" is concrete and true. Most sites in this space describe a vague
+  problem. You describe a task you actually failed at.
+- **"If we don't have a party's position on something yet, the page says so."**
+  Quietly the most trust-building line in the script, and it costs three seconds.
+
+### Applied
+
+- **The close now returns to the opening.** "It'll be my first one" turns the
+  video into a loop instead of a list. Before, the never-voted line was handed
+  to the audience in the first fifteen seconds and then dropped.
+- **Section 3 cut to "It's called Politika, and it's free."** It was defining
+  the site, then section 4 defined it again with more detail.
+
+### Your call
+
+- **Section 5 is a shrug.** "There's other tools in there too, have a look
+  around" costs ten seconds and gives nobody a reason to do anything. Either cut
+  it, which loses nothing, or name one thing. The bills tracker is the strongest
+  candidate: "what they've actually done, not what they say" is a different
+  promise from the rest of the video.
+- **There is no ask.** "Have a look" is weak for a launch video. Two stronger
+  options, pick one, not both: "go find the issue you care about most and start
+  there" is better for the viewer; "send it to someone who's not voting" is
+  better for turnout, which is the point of the site.
+- **"Work in progress" is the one moment that gives someone a reason not to
+  bother.** It is honest, and everything else in the script earns trust by being
+  specific rather than by apologising. If it stays, make it forward-facing: "I'm
+  still adding to it" rather than "there's gaps I'm still filling". Same fact,
+  opposite feeling.
+
+### One risk
+
+The date locks the video to this election. The original recording said this
+should be here for the next ones too, and as written section 7 is unusable after
+7 November. Record an alternative take of that block alone, "there's an election
+coming" instead of the date, and there is an evergreen cut of the same video.
