@@ -314,13 +314,16 @@ export default async function PartyProfilePage(
       <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 64px' }}>
 
         {/* ── Main column ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        {/* 10px between the rectangles, not 20: closed, they are rows of one
+            list rather than five separate cards, and at 20 the column read as
+            things that had drifted apart. */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
 
           {/* Overview, History and Core values are closed rectangles now:
               five open cards put two and a half phone screens of prose in
               front of "Where they stand", which is what a reader came for.
               Closed, they are a menu of what this party's page holds. */}
-          <CollapsibleCard title="Overview" icon={<Landmark style={{ width: 15, height: 15 }} />} accent={party.color}>
+          <CollapsibleCard title="Overview" icon={<Landmark style={{ width: 15, height: 15 }} />} accent={party.color} defaultOpen>
             <p style={{ fontSize: 14.5, color: '#3b3229', fontFamily: MANROPE, lineHeight: 1.7, margin: 0 }}>
               {party.overview}
             </p>

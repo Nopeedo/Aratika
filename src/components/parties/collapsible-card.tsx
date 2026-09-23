@@ -42,7 +42,9 @@ export function CollapsibleCard({ title, icon, accent, children, defaultOpen = f
   icon: React.ReactNode
   accent: string
   children: React.ReactNode
-  /** Open on load. Used for nothing yet; the page opens closed by request. */
+  /** Open on load. Overview uses it: a page that is nothing but five closed
+   *  rectangles gives a reader no reason to open any of them, so the first
+   *  one shows what the rest are like. */
   defaultOpen?: boolean
   id?: string
   className?: string
@@ -53,7 +55,7 @@ export function CollapsibleCard({ title, icon, accent, children, defaultOpen = f
   return (
     <div id={id} className={className} data-open={open ? '1' : '0'} style={{
       background: '#ffffff', border: `2px solid ${tint(accent, 0.45)}`, borderRadius: 18,
-      padding: '14px 18px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)',
+      padding: '9px 14px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)',
       ...style,
     }}>
       <button
@@ -66,7 +68,7 @@ export function CollapsibleCard({ title, icon, accent, children, defaultOpen = f
         }}
       >
         <span style={{
-          width: 28, height: 28, borderRadius: 9, background: tint(accent, 0.12),
+          width: 26, height: 26, borderRadius: 8, background: tint(accent, 0.12),
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           flexShrink: 0, color: accent,
         }}>
