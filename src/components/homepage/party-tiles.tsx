@@ -504,7 +504,10 @@ function BillsRow({ p }: { p: TileParty }) {
             top-right corner carrying the process explanation that used to run
             as body copy underneath. */}
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 12 }}>
-          <div style={{ flex: 1, minWidth: 0, fontSize: 13, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: '#000', fontFamily: MANROPE, textAlign: 'center', paddingLeft: 26 }}>
+          {/* Same size and spacing as "Seats in Parliament" above it: the two
+              are peer blocks in one column, and at 13px against 20px this one
+              read as a caption on the seats block rather than its own thing. */}
+          <div style={{ flex: 1, minWidth: 0, fontSize: 20, fontWeight: 800, letterSpacing: '.02em', textTransform: 'uppercase', color: INK, fontFamily: MANROPE, textAlign: 'center', paddingLeft: 26, lineHeight: 1.15 }}>
             Bills before the House
           </div>
           <BillsInfoButton accent={accent} governing={!!p.governing} slug={p.slug} />
@@ -709,28 +712,32 @@ function SeatsRow({ p }: { p: TileParty }) {
   const govPartners = govParties.filter((slug) => slug !== p.slug).map((slug) => PARTY_NAMES[slug].short).join(' and ')
   const labelRef = useRef<HTMLSpanElement>(null)
   const lineRef = useRef<HTMLSpanElement>(null)
-  const [size, setSize] = useState(17)
+
   // Width of "Seats in Parliament", so the lines under it can be held
   // NARROWER than the label — they are supporting detail and shouldn't
   // out-measure the thing they support. They wrap inside it instead.
   const [labelW, setLabelW] = useState<number | null>(null)
 
-  // Fit the vote line to the width of "Seats in Parliament" above it. A
-  // clamp() can't do this: the line ends in the party's NAME, so its natural
-  // width swings from "ACT" to "Te Pāti Māori" and only one of them would
-  // land on the label's width. Measured at a fixed base size and scaled, so
-  // the two lines stay the same width at every breakpoint. The label is what
-  // sets the column's width, so scaling the line to it can't feed back.
+  /**
+   * Measure "Seats in Parliament" so the lines under it can be held to its
+   * width. They are supporting detail and shouldn't out-measure the thing
+   * they support.
+   *
+   * This used to SCALE the vote line to that width, which is why switching
+   * parties changed its size: the line ends in the party's name, so its
+   * natural width swings from "ACT" to "Te Pāti Māori", and every one of
+   * them was wider than the label — so the fit only ever shrank, never grew.
+   * Green landed at 16.5px and Te Pāti Māori at 13.7px, and a reader tabbing
+   * between tiles watched the same sentence resize under them. One readable
+   * size that WRAPS inside the label's width says the same thing and holds
+   * still.
+   */
   useLayoutEffect(() => {
-    const label = labelRef.current, line = lineRef.current
-    if (!label || !line) return
+    const label = labelRef.current
+    if (!label) return
     const fit = () => {
       const want = label.getBoundingClientRect().width
-      if (!want) return
-      setLabelW(want)
-      line.style.fontSize = '20px'
-      const natural = line.getBoundingClientRect().width
-      if (natural > 0) setSize(Math.min(26, Math.max(12, (20 * want) / natural)))
+      if (want) setLabelW(want)
     }
     fit()
     window.addEventListener('resize', fit)
@@ -758,7 +765,7 @@ function SeatsRow({ p }: { p: TileParty }) {
           Strictly it is the party vote; "voters chose" is accurate about who
           without making the reader learn the mechanism first. */}
       {votePct != null && (
-        <span ref={lineRef} style={{ fontSize: size, fontWeight: 800, color: seatColor(p.color), marginTop: 5, lineHeight: 1.25, whiteSpace: 'nowrap', fontFamily: MANROPE }}>
+        <span ref={lineRef} style={{ fontSize: 17, fontWeight: 800, color: seatColor(p.color), marginTop: 5, lineHeight: 1.3, maxWidth: labelW ?? undefined, textAlign: 'center', fontFamily: MANROPE }}>
           {/* The figure carries a white BRUSH underline: a filled stroke that
               swells in the middle and tapers at both ends, the way a loaded
               brush leaves the paper — not a hairline rule. */}
