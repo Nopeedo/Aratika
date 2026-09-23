@@ -55,13 +55,7 @@ export function VideoSection({ videos, hideHeading = false, heading, blurb }: {
 
   return (
     <section style={{ marginBottom: 30 }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: hideHeading ? 'flex-end' : 'space-between', gap: 12, marginBottom: 4 }}>
-        {!hideHeading && <h2 style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>{heading ?? 'Leaders & the press'}</h2>}
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button onClick={() => scroll(-1)} aria-label="Scroll left" style={arrowBtn}><ChevronLeft style={{ width: 18, height: 18 }} /></button>
-          <button onClick={() => scroll(1)} aria-label="Scroll right" style={arrowBtn}><ChevronRight style={{ width: 18, height: 18 }} /></button>
-        </div>
-      </div>
+      {!hideHeading && <h2 style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>{heading ?? 'Leaders & the press'}</h2>}
       {!hideHeading && <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 12px' }}>{blurb ?? 'Press standups, leader updates and debates, straight from official channels.'}</p>}
 
       {/* party filter */}
@@ -70,6 +64,16 @@ export function VideoSection({ videos, hideHeading = false, heading, blurb }: {
         {partyKeys.map((p) => (
           <FChip key={p} label={`${PARTY_NAMES[p as PartySlug]?.short ?? p} (${counts[p]})`} dot={PARTY_COLORS[p as PartySlug]?.bg} active={party === p} onClick={() => setParty(party === p ? 'all' : p)} />
         ))}
+      </div>
+
+      {/* Scroll arrows — were up beside the heading, separated from the rail
+          they control by the whole filter-chip block. Moved to sit directly
+          above the rail instead, by request, which also reads better in
+          general: the control is now next to the thing it scrolls rather
+          than a section-length scroll away from it. */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginBottom: 8 }}>
+        <button onClick={() => scroll(-1)} aria-label="Scroll left" style={arrowBtn}><ChevronLeft style={{ width: 18, height: 18 }} /></button>
+        <button onClick={() => scroll(1)} aria-label="Scroll right" style={arrowBtn}><ChevronRight style={{ width: 18, height: 18 }} /></button>
       </div>
 
       <div ref={ref} className="vid-rail" style={{ display: 'flex', gap: 14, overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: 8 }}>
