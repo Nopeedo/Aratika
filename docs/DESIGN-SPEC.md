@@ -457,10 +457,14 @@ the same three groups and the same counts, over one §2.3 grid.
 ```
 pills   All · Governing · Opposition · No seats, neutral, lit = #efece5 on INK
         tapping the lit one clears back to All
-grid    repeat(auto-fit, minmax(min(150px, 100%), 1fr)), gap 8 → 2 columns at 375px
+grid    ≤767px  repeat(auto-fit, minmax(min(150px, 100%), 1fr)), gap 8 → 2 columns at 375px
+        ≥768px  repeat(auto-fit, minmax(290px, 1fr)), gap 10 → 3 columns at 1008px
 card    radius 11 · padding 8px 10px 9px · party light fill · 2px party border
-        name 13px 800, clamped to a FIXED two lines (height 32)
+        name 13px 800, clamped to a FIXED two lines (height 32) on a phone,
+        ONE line (16) above the breakpoint, where the card is wide enough
         seats 20px 800 + 11px label, or "No seats yet"
+        ≤767px  name over seats, 165x83
+        ≥768px  one row, name left, seats hard right, 331x47
 ```
 
 **The pills are one neutral treatment, not a colour per group.** Party colour
@@ -471,6 +475,23 @@ and a reading of the politics this site does not make.
 **The name box is a fixed two lines** for the §2.8 reason: "Outdoors & Freedom"
 wraps where "ACT" does not, so the card beside it came out 7px shorter and the
 grid staggered down the page. 83px every card, measured.
+
+**The desktop card is a ROW, and that is not the same card stretched.** At
+minmax(150px) a 1008px column gives six 161px tracks, so a wide screen got MORE
+cards rather than BIGGER ones and the phone card sat in a row of six. Widening
+the track alone is only half the answer: a 246px card holding a name over a
+count uses its left half and leaves the right half empty, which is the phone
+layout with room around it. At 290px the two facts fit one line, the name takes
+what it needs and the count sits hard right, and the card is 47px instead of 83.
+The reserve is still FIXED, just a different number per breakpoint.
+
+Two measured traps in doing it. The name only fits one line if it HAS the room:
+at a 200px track, "Outdoors & Freedom" needed 115px and had exactly 115, so it
+wrapped inside a one-line box and clipped. And `.pd-id` reserves the avatar's
+24px whether or not there is an avatar: only six of seventeen leaders have a
+photograph, and because grid items stretch to their row, a row containing none
+of them came out 41px against 47px. That stagger appears BETWEEN rows, not
+within one, so it only showed at two columns and not at three.
 
 **Avatars are photographs only.** Eleven of the seventeen leaders have no photo
 on file, and the initials fallback filled the grid with two-letter discs that
