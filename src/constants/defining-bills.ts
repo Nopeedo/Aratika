@@ -24,6 +24,14 @@ export interface DefiningBill {
   why: string
   champion: string
   /**
+   * The member in charge, in Parliament's own "Surname, [Hon] First" form, so
+   * the panel reads the same as a tracker breakdown. Set only where this
+   * bill's `champion` text names an individual: the Treaty Principles Bill's
+   * says "Championed by ACT" and names nobody, so it carries the party alone
+   * rather than a name this file cannot evidence.
+   */
+  member?: string
+  /**
    * The party tagged on the bill's tile. The party of the MINISTER or member
    * in charge — the same rule the tracker uses to attribute a bill, and the
    * same one the homepage bills block explains in its (i): a government bill
@@ -111,6 +119,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'three-strikes-sentencing',
+    member: 'Goldsmith, Hon Paul',
     party: 'national',
     title: 'Three Strikes sentencing legislation',
     what: 'Reinstates a regime of escalating penalties for repeat serious violent and sexual offending.',
@@ -146,6 +155,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'gangs-act-2024',
+    member: 'Goldsmith, Hon Paul',
     party: 'national',
     title: 'Gangs Act 2024',
     what: 'Bans gang insignia in public places and gives police new dispersal and consorting powers.',
@@ -179,6 +189,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'fast-track-approvals-act-2024',
+    member: 'Bishop, Hon Chris',
     party: 'national',
     title: 'Fast-track Approvals Act 2024',
     what: 'Creates a one-stop fast-track consenting pathway for nationally and regionally significant projects.',
@@ -212,6 +223,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'resource-management-reform',
+    member: 'Bishop, Hon Chris',
     party: 'national',
     title: 'Replacing the Resource Management Act (RMA)',
     what: 'Repeals and replaces the RMA with new resource-management legislation governing how land, housing and the environment are managed.',
@@ -245,6 +257,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'local-water-done-well',
+    member: 'Brown, Hon Simeon',
     party: 'national',
     title: 'Local Water Done Well (Three Waters repeal)',
     what: 'Repealed the previous government’s Three Waters / Affordable Water reforms and replaced them with a council-led model.',
@@ -278,6 +291,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'pae-ora-maori-health-authority',
+    member: 'Reti, Hon Dr Shane',
     party: 'national',
     title: 'Pae Ora (Māori Health Authority) amendment',
     what: 'Disestablished Te Aka Whai Ora, the Māori Health Authority.',
@@ -311,6 +325,7 @@ export const DEFINING_BILLS: DefiningBill[] = [
   },
   {
     slug: 'smokefree-environments-repeal',
+    member: 'Costello, Hon Casey',
     party: 'nzfirst',
     title: 'Smokefree environments repeal',
     what: 'Repealed the previous government’s smokefree measures (denicotinisation and the smokefree-generation ban).',

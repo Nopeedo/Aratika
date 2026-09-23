@@ -367,7 +367,7 @@ function BillPanel({ bill, onClose }: { bill: DefiningBill; onClose: () => void 
           arrangement, for the same reason: it was the loudest thing in the
           panel for a link most readers will not take. */}
       <p className="bill-panel-what" style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>
-        {bill.what}{' '}
+        {gist(bill.what)}{' '}
         <Link
           href={`/bills/${bill.slug}`}
           style={{ display: 'inline-flex', alignItems: 'baseline', gap: 3, fontSize: 12.5, fontWeight: 800, color: st.fg, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}
@@ -384,7 +384,7 @@ function BillPanel({ bill, onClose }: { bill: DefiningBill; onClose: () => void 
           belongs to, which the tile above already tags. */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 16 }}>
         <div style={{ fontSize: 12.5, color: MUTED, fontFamily: MANROPE, display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-          <span>In charge:</span>
+          <span>In charge:{bill.member ? <> <b style={{ color: '#3f444c' }}>{bill.member}</b></> : null}</span>
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800,
             color: '#3f444c', background: '#fff', border: `1px solid ${LINE}`,
@@ -402,38 +402,12 @@ function BillPanel({ bill, onClose }: { bill: DefiningBill; onClose: () => void 
         )}
       </div>
 
-      {/* Dated milestones — extra data these eight carry, in the same label
-          style as everything above. */}
-      {bill.timeline && bill.timeline.length > 0 && (
-        <>
-          <p className="bill-panel-label" style={{ ...labelStyle, marginTop: 18 }}>How it progressed</p>
-          <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {bill.timeline.slice(0, 4).map((t, i) => (
-              <li key={i} className="bill-tl-row">
-                <span className="bill-tl-dot" style={{ width: 8, height: 8, borderRadius: '50%', background: st.bar }} />
-                <span className="bill-tl-date" style={{ fontSize: 12, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{t.date}</span>
-                <span className="bill-tl-event" style={{ fontSize: 13, color: MUTED, fontFamily: MANROPE, lineHeight: 1.5 }}>{t.event}</span>
-              </li>
-            ))}
-          </ol>
-          {bill.timeline.length > 4 && (
-            <p style={{ fontSize: 12, color: '#8a8f86', fontFamily: MANROPE, margin: '10px 0 0' }}>
-              +{bill.timeline.length - 4} more in the full breakdown
-            </p>
-          )}
-        </>
-      )}
-
-      <div className="bill-panel-foot" style={{ marginTop: 16, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))', gap: 14 }}>
-        <div>
-          <p className="bill-panel-label" style={{ ...labelStyle, marginBottom: 6 }}>Why it matters</p>
-          <p style={{ fontSize: 13, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.why}</p>
-        </div>
-        <div>
-          <p className="bill-panel-label" style={{ ...labelStyle, marginBottom: 6 }}>Where it came from</p>
-          <p style={{ fontSize: 13, color: MUTED, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{bill.champion}</p>
-        </div>
-      </div>
+      {/* "How it progressed", "Why it matters" and "Where it came from" are
+          gone from this panel by request: it now carries exactly what a
+          tracker breakdown carries and nothing else, so the two lists on this
+          page open into the same thing. None of it is lost — the dated
+          timeline and both write-ups are on the bill's own breakdown page,
+          which the summary above links to. */}
 
       {/* The source, where the tracker puts its official-page link: anything
           here can be checked at source rather than taken on trust. */}
@@ -520,6 +494,23 @@ function useProgress(dur: number) {
     return () => clearInterval(id)
   }, [dur])
   return p
+}
+
+/**
+ * The first two sentences of a summary, as the gist — the same function the
+ * tracker's breakdown uses, so a panel opened from either list trims its text
+ * the same way. Cuts on sentence boundaries rather than a character count, so
+ * it never ends mid-clause, and only adds an ellipsis when something was
+ * actually left out. Abbreviations ending in a full stop would fool a naive
+ * split, so the common ones are stepped over first.
+ */
+function gist(text: string, sentences = 2): string {
+  const MARK = '\u0001'
+  const parts = text
+    .replace(/\b(Hon|Dr|Mr|Mrs|Ms|No|Inc|Ltd)\./g, `$1${MARK}`)
+    .split(/(?<=[.!?])\s+/)
+  const taken = parts.slice(0, sentences).join(' ').split(MARK).join('.').trim()
+  return parts.length > sentences ? `${taken.replace(/[.!?]+$/, '')}…` : taken
 }
 
 const labelStyle: React.CSSProperties = { fontSize: 11, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: MUTED, fontFamily: MANROPE, margin: '0 0 16px' }
