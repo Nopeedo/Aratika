@@ -231,6 +231,40 @@ export function SeatChamber({
     ? `A seat estimate from the poll averages as at ${asAt}. Polls are not a result.`
     : `Under MMP the biggest party doesn’t automatically govern. A bloc needs ${majority} of ${total}. Tap parties to build one.`
 
+  /**
+   * A tap anywhere in the chamber selects the party holding the seat NEAREST
+   * to it — the dots are ~6px across at this size, which is a third of a
+   * finger, so hit-testing the dot alone meant most taps landed on nothing.
+   *
+   * Nearest-seat rather than a bigger invisible circle per dot: overlapping
+   * hit areas would resolve by paint order, so whichever dot happened to be
+   * drawn last would win a tap that was plainly closer to its neighbour.
+   * Distance is honest about which seat you meant.
+   *
+   * Capped at four dot-radii so a tap in the empty middle of the arch, or
+   * outside it, does nothing rather than selecting whatever is least far.
+   */
+  const svgRef = React.useRef<SVGSVGElement>(null)
+  const pickNearestSeat = (e: React.MouseEvent<SVGSVGElement>) => {
+    const svg = svgRef.current
+    if (!svg || !onPickParty) return
+    const ctm = svg.getScreenCTM()
+    if (!ctm) return
+    const pt = svg.createSVGPoint()
+    pt.x = e.clientX
+    pt.y = e.clientY
+    const { x, y } = pt.matrixTransform(ctm.inverse())
+    let best: { party: string; d: number } | null = null
+    geo.seats.forEach((seat, i) => {
+      const party = seatParties[i]
+      if (!party) return
+      const d = Math.hypot(seat.x - x, seat.y - y)
+      if (!best || d < best.d) best = { party, d }
+    })
+    const hit = best as { party: string; d: number } | null
+    if (hit && hit.d <= geo.dotR * 4) onPickParty(hit.party)
+  }
+
   return (
     <div>
       {!home && (
@@ -294,7 +328,12 @@ export function SeatChamber({
 
           {/* Chart */}
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <svg viewBox={home ? dome.viewBox : `0 0 ${geo.width} ${geo.height}`} style={{ width: '100%', maxWidth: 460 }} role="img"
+            <svg
+              ref={svgRef}
+              onClick={onPickParty ? pickNearestSeat : undefined}
+              viewBox={home ? dome.viewBox : `0 0 ${geo.width} ${geo.height}`}
+              style={{ width: '100%', maxWidth: 460, cursor: onPickParty ? 'pointer' : undefined }}
+              role="img"
               aria-label={mode === 'build' ? `${chosenSeats} of ${total} seats selected` : `Seat distribution, ${total} seats`}>
               {/* The frame, drawn first so the seats sit on it. */}
               {home && (
@@ -319,9 +358,12 @@ export function SeatChamber({
                 const dim = !!highlight && party !== highlight
                 const fill = party && lit ? PARTY_COLORS[party].bg : EMPTY
                 const rim = party && lit ? rimColor(PARTY_COLORS[party].bg) : undefined
-                // A seat is tappable when someone is listening and the seat
-                // belongs to a party — the empty ones are not a choice.
-                const pick = onPickParty && party ? () => onPickParty(party) : undefined
+                // The dot itself carries no handler: the SVG picks the NEAREST
+                // seat to wherever you tapped (see pickNearestSeat), so the
+                // space between dots belongs to its closest seat rather than
+                // to nothing. At this size a dot is about 6px across, which is
+                // a third of a finger.
+                const pick = onPickParty && party ? true : undefined
                 return (
                   <circle
                     key={i}
@@ -335,8 +377,7 @@ export function SeatChamber({
                     stroke={rim}
                     strokeWidth={rim ? 1 : undefined}
                     opacity={dim ? 0.38 : 1}
-                    onClick={pick}
-                    style={{ transition: 'fill .25s ease, opacity .3s ease-in-out', cursor: pick ? 'pointer' : undefined }}
+                    style={{ transition: 'fill .25s ease, opacity .3s ease-in-out' }}
                   >
                     {/* The party's name on hover/long-press. The dots are not
                         keyboard targets: the tiles above are the same choice
