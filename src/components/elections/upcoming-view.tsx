@@ -146,7 +146,10 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       <CommandHero />
       <SectionRail />
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
+      {/* 1080 to match /bills and /parties. This page was the narrowest
+           content column on the site at 1000, which is not a difference a
+           reader can attribute to anything. */}
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(34px, 5vh, 48px)' }}>
 
           {/* ── WHEN — first, because it is the only section with a deadline ────
@@ -205,6 +208,17 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                 flex gap. §8, "see the edges dont align": measure the two
                 things rather than nudging one. compass-cta.tsx is shared with
                 the homepage, so the cancellation lives here rather than there. */}
+            {/* The card carries its own section padding, so it is cancelled
+                 here rather than doubled, on both axes, which lands the card
+                 exactly on the column's edges.
+
+                 It only works because the column above is 1080, the same
+                 maxWidth compass-cta sets for itself. At the old 1000 the same
+                 cancellation pulled the card 36px PAST each edge and it was the
+                 one block on the page wider than the page; cancelling the
+                 vertical only then left it 72px NARROWER than the tiles above
+                 it, which read as an accident in the other direction. Change
+                 one of these two numbers and you have to change the other. */}
             <div style={{ margin: 'calc(-1 * clamp(40px, 7vw, 72px)) calc(-1 * clamp(18px, 5vw, 36px))' }}>
               <CompassCta />
             </div>
@@ -216,7 +230,14 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               it still said "each tile fills" for a component that has not been
               tiles since parties-contesting.tsx was rewritten to rows. */}
           <section id="parties" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Who’s standing" title="Every party you can vote for" accent={ACCENT.parties}
+            {/* The heading used to read "Every party you can vote for", which
+                 describes the LIST and says nothing about the bars and the
+                 percentages that are the bulk of what is under it. A reader
+                 met six rows of numbers with no statement anywhere above them
+                 of what the numbers were. The eyebrow still carries who is on
+                 the list; the heading now carries what is being measured
+                 (§1.7 plain words, §4 name the year). */}
+            <ZoneHead eyebrow="Who’s standing" title="Where the parties are polling for 2026" accent={ACCENT.parties}
               infoLabel="Which parties are listed and where the figures come from">
               <InfoHeading accent={ACCENT.parties}>Who is on this list</InfoHeading>
               <InfoText>

@@ -88,11 +88,18 @@ export function TwoVotes() {
 
   return (
     <div>
-      {/* §2.3's grid, verbatim from defining-bills.tsx: tiles wrap, they do not
-          scroll sideways, and the panel opens directly beneath the tapped tile
-          spanning every column so the row breaks there rather than at the foot
-          of the grid (§2.4). */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))', gap: 8 }}>
+      {/* §2.3's grid, with ONE change from defining-bills.tsx: auto-FIT, not
+          auto-fill. The difference only shows when a grid holds fewer tiles
+          than its row has room for, which is this grid and not that one.
+          auto-fill keeps the empty tracks, so at 928px these two 150px tiles
+          sat in the first two of six and left 560px of nothing beside them:
+          right on a phone, where two tracks is the whole row, and visibly
+          lopsided on a desktop. auto-fit collapses the empties so the two
+          share the row at any width.
+
+          The panel still opens directly beneath the tapped tile, spanning
+          every column, so the row breaks there and not at the foot (§2.4). */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 8 }}>
         {VOTES.map((v) => {
           const on = v.key === active
           return (

@@ -85,8 +85,11 @@ export function ClosestRaces({ races, year }: { races: ClosestRace[]; year: numb
     <div>
       {/* §2.3's grid, verbatim: two columns at 375px, tiles wrap rather than
           scroll sideways, and the panel spans every column so the row breaks at
-          the tapped tile instead of at the foot of the grid. */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))', gap: 8 }}>
+          the tapped tile instead of at the foot of the grid.
+
+          auto-FIT, not auto-fill: five tiles in a six-track row left one
+          dead track hanging off the end at desktop widths. */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 8 }}>
         {races.map((r) => {
           const on = r.slug === active
           const ink = tierInk(r.tierColor)

@@ -162,8 +162,10 @@ title          12.5px 800 INK, line-height 1.25
 chevron        absolute bottom: 7 right: 8, rotates 180° when open
 ```
 
-Tiles wrap in a grid (`repeat(auto-fill, minmax(min(150px, 100%), 1fr))`, gap
-8), they do not scroll sideways. A tile is ~51px closed.
+Tiles wrap in a grid (`repeat(auto-FIT, minmax(min(150px, 100%), 1fr))`, gap
+8), they do not scroll sideways. A tile is ~51px closed. See §5.18 for why it
+is auto-fit and not auto-fill; every grid in this document was written
+auto-fill and every one of them was wrong at a desktop width.
 
 **Tag and chevron are absolutely positioned on purpose.** In the flex row the
 tag sat 35px in, because that row also has to clear the chevron's padding, so
@@ -455,7 +457,7 @@ the same three groups and the same counts, over one §2.3 grid.
 ```
 pills   All · Governing · Opposition · No seats, neutral, lit = #efece5 on INK
         tapping the lit one clears back to All
-grid    repeat(auto-fill, minmax(min(150px, 100%), 1fr)), gap 8 → 2 columns at 375px
+grid    repeat(auto-fit, minmax(min(150px, 100%), 1fr)), gap 8 → 2 columns at 375px
 card    radius 11 · padding 8px 10px 9px · party light fill · 2px party border
         name 13px 800, clamped to a FIXED two lines (height 32)
         seats 20px 800 + 11px label, or "No seats yet"
@@ -700,6 +702,27 @@ deleting a block, check each fact in it against the thing you believe duplicates
 it, FIELD BY FIELD, not block by block. A block that restates four facts and
 adds a fifth looks exactly like a block that restates five.
 
+**5.18 `auto-fill` holds empty tracks open; `auto-fit` collapses them.** The two
+are identical while the tiles outnumber the tracks, which is every grid in this
+document at 375px and most of them at 1280. They diverge exactly where a grid
+holds FEWER tiles than its row has room for, and the result is a row half full
+with the tiles jammed left. Measured at 1440: /parties filtered to Governing,
+three tiles in six tracks, **50%** of the row; /learn filtered to Making law,
+two tiles in four tracks, **49%**; the Election Centre's two vote tiles, two in
+six, **37%**; closest races, five in six. Every one of those looked correct on a
+phone, because two tracks is the whole row there, which is how the whole set
+shipped. `auto-fit` everywhere; there is no case in this codebase that wants the
+empty track. Symptom: a filtered list that hugs the left edge with nothing
+beside it, and only on a wide screen.
+
+**5.19 A page composed at 375px has to be looked at at 1920.** The pass that
+produced §3.3's numbers was measured at 375 and spot-checked at 1280, and both
+of those hid §5.18 and a card that was 72px wider than every other block on its
+page. A block that is full-bleed on a phone is a block of some other width on a
+desktop, and which one is a decision, not a consequence. Check three widths:
+375, 1280, and 1920. At 1920 the test is whether every block on the page starts
+and ends on the same two vertical lines.
+
 ---
 
 ## 6. Applying this to the next page
@@ -718,6 +741,10 @@ A checklist, in the order that worked:
    If it has a status, it uses §2.2. If it has stages, §2.5.
 6. **Measure on a 375px phone.** Row heights, one-line fits, tap targets. Every
    number in §3.3 came from measuring, not from taste.
+6b. **Then measure at 1920.** Do every block start and end on the same two
+   vertical lines? Does every grid still fill its row with its smallest filter
+   applied (§5.18)? A phone-first page is not finished until it has been seen
+   wide (§5.19).
 7. **Check the claims.** Anything stated as a figure needs a source you can put
    under it, or it does not ship.
 

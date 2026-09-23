@@ -87,11 +87,13 @@ export interface HubModule {
 const HUB_CSS = `
 .learn-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(150px, 100%), 1fr));
+  /* auto-FIT, not auto-fill: "Making law" is two modules, and auto-fill held
+       four tracks open, so the filtered hub was half an empty row on a desktop. */
+  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
   gap: 8px;
 }
 @media (min-width: 700px) {
-  .learn-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+  .learn-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
 }
 .learn-card { transition: box-shadow .15s, transform .15s; }
 .learn-card:hover { box-shadow: 0 6px 20px rgba(42,18,6,.13); transform: translateY(-2px); }

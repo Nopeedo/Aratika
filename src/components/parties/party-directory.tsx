@@ -17,8 +17,11 @@
  * "Opposition" a red would be both a second colour system and a reading of the
  * politics the site does not make.
  *
- * Tiles are the §2.3 grid, `repeat(auto-fill, minmax(min(150px, 100%), 1fr))`
- * at gap 8, which is two columns on a 375px phone.
+ * Tiles are the §2.3 grid, `repeat(auto-fit, minmax(min(150px, 100%), 1fr))`
+ * at gap 8, which is two columns on a 375px phone. auto-FIT, not auto-fill:
+ * a pill narrowing the list to three parties left three empty tracks and a
+ * row half full on a desktop. The two behave identically once the tiles
+ * outnumber the tracks, which is why the All view never showed it.
  */
 
 import { useMemo, useState } from 'react'
@@ -77,7 +80,7 @@ export function PartyDirectory({ parties }: { parties: DirectoryParty[] }) {
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))',
         gap: 8,
       }}>
         {shown.map((p) => <PartyCard key={p.slug} party={p} />)}
