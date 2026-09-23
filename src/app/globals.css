@@ -551,12 +551,20 @@ a, button, [role='button'], summary {
   }
   .topic-switcher .ap-chip span,
   .status-pill { font-size: 11.5px !important; }
-  /* The bills row holds four pills and has to keep them on ONE line at 375px:
-     at the shared size they need 322px of a 297px row. Two pixels of padding
-     and the two gaps buy the 25px back. Scoped to this row on purpose — the
+  /* The bills row holds four pills and has to keep them on ONE line at 375px.
+     nowrap states that outright rather than relying on them happening to fit:
+     "Not passed" is two characters wider than the "Defeated" this row was
+     first measured against, and it tipped over onto a second line. The pills
+     shrink to suit instead. Scoped to this row on purpose — the topic
      switcher it copies has a row to itself and does not need the squeeze. */
-  .bills-status-row { gap: 4px !important; }
-  .bills-status-row .status-pill { padding: 4px 6px !important; gap: 4px !important; }
+  .bills-status-row { gap: 4px !important; flex-wrap: nowrap !important; }
+  .bills-status-row .status-pill {
+    padding: 4px 5px !important;
+    gap: 3px !important;
+    font-size: 10.5px !important;
+    white-space: nowrap;
+  }
+  .bills-status-row .status-pill span { font-size: 10px !important; }
   .topic-switcher .ap-chip svg  { width: 12px !important; height: 12px !important; }
   .status-pill span { font-size: 10.5px !important; }
 }

@@ -48,10 +48,17 @@ function margin(electorate?: string): number {
 
 interface Card { slug: string; name: string; photo?: string; sub: string }
 
-/** Height of a column's scrolling row area. Fixed, so every party's box is
- *  the same size and the tile cycle can't move the page. Four rows at the
- *  44px row pitch, plus a few pixels so the fifth peeks. */
-const ROWS_H = 188
+/**
+ * Height of a column's row area: EXACTLY four rows (44px card + 5px gap,
+ * with no trailing gap), fixed so every party's box is the same size and the
+ * tile cycle can't move the page.
+ *
+ * Exactly four, not four-and-a-sliver: a list of four or fewer then ends flush
+ * with the bottom edge, so it gets no fade and no arrows — there is nothing
+ * below to point at. A fifth row is what makes them appear.
+ */
+const CARD_H = 44, ROW_GAP = 5
+const ROWS_H = 4 * CARD_H + 3 * ROW_GAP
 
 /** The bare up/down chevron under a column — a tap target, not a button
  *  with chrome: the fade beside it is what says there is more. */
@@ -252,7 +259,7 @@ function Column({ label, count, empty, rows, accent, colors, party, onPick }: {
           // overflow is set in CSS, not here: on a phone the list must NOT
           // scroll under a finger (see globals.css). An inline style would
           // outrank the media query.
-          style={{ display: 'flex', flexDirection: 'column', gap: 5, height: '100%' }}
+          style={{ display: 'flex', flexDirection: 'column', gap: ROW_GAP, height: '100%' }}
         >
           {rows.map((c) => (
             // A button, not a link: tapping shows a preview over the page
@@ -263,7 +270,11 @@ function Column({ label, count, empty, rows, accent, colors, party, onPick }: {
               type="button"
               onClick={() => onPick(c.slug)}
               style={{
+                // Fixed height: ROWS_H is four of these plus their gaps, so a
+                // list of four ends flush with the bottom edge and shows no
+                // fade. A card that grew by a pixel would break that.
                 display: 'flex', alignItems: 'center', gap: 7, minWidth: 0, width: '100%',
+                height: CARD_H, boxSizing: 'border-box',
                 border: '1px solid #00000014', background: '#fff', borderRadius: 9,
                 padding: '4px 8px 4px 4px', textAlign: 'left', cursor: 'pointer',
                 font: 'inherit', flexShrink: 0,

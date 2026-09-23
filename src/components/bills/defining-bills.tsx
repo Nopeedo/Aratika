@@ -39,7 +39,9 @@ function hexToRgba(hex: string, alpha: number): string {
 
 const STATUS: Record<DefiningBill['statusKind'], { label: string; fg: string; bg: string; bar: string }> = {
   law:           { label: 'Now law',     fg: '#166638', bg: '#e0f3e7', bar: ACCENT },
-  defeated:      { label: 'Defeated',    fg: '#a3251f', bg: '#f8e4e2', bar: '#c23b3b' },
+  // "Not passed", not "Defeated": plain, and true however the bill failed —
+  // voted down, or simply never got through before the term ran out.
+  defeated:      { label: 'Not passed',  fg: '#a3251f', bg: '#f8e4e2', bar: '#c23b3b' },
   'in-progress': { label: 'In progress', fg: '#92400e', bg: '#f8ecd4', bar: '#c07a12' },
 }
 

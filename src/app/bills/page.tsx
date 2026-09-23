@@ -39,7 +39,16 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
   // have a published breakdown through to /legislation/[slug].
   const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
   const readerSlugs: Record<string, string> = {}
-  for (const b of readable) readerSlugs[norm(b.title)] = b.slug
+  // …and its summary, so the tracker's breakdown can say what a bill DOES
+  // rather than only what kind of bill it is. Only the bills with a published
+  // breakdown have one: the Parliament API the other 200-odd come from
+  // carries a title and a stage, no description, and inventing one for them
+  // would be worse than saying nothing.
+  const readerSummaries: Record<string, string> = {}
+  for (const b of readable) {
+    readerSlugs[norm(b.title)] = b.slug
+    if (b.summary) readerSummaries[norm(b.title)] = b.summary
+  }
 
   // Member name → party, so the tracker can filter bills by the party of the
   // MP/minister in charge (deep-linkable via /bills?party=<slug>). Built server
@@ -112,7 +121,7 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
           </div>
         </div>
 
-        <BillsTracker54 readerSlugs={readerSlugs} memberParty={memberParty} initialParty={initialParty} initialBill={initialBill} initialTopic={initialTopic} />
+        <BillsTracker54 readerSlugs={readerSlugs} readerSummaries={readerSummaries} memberParty={memberParty} initialParty={initialParty} initialBill={initialBill} initialTopic={initialTopic} />
 
         <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 18 }}>
           Source: {BILLS_54_META.sourceLabel}, 54th Parliament, as at {BILLS_54_META.asOf}.{' '}

@@ -10,17 +10,18 @@
  * the carousel.
  */
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { track } from '@vercel/analytics'
-import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, ChevronDown, ExternalLink, PenLine, SlidersHorizontal } from 'lucide-react'
+import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, Check, ChevronDown, ExternalLink, PenLine, SlidersHorizontal } from 'lucide-react'
 import { BILLS_54, BILL_CATEGORIES, BILLS_54_META, type Bill54 } from '@/constants/bills-54'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { normMemberName } from '@/lib/bills/normalize-member'
 import { billsForTopic } from '@/lib/bills/by-topic'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
+import { TopicChip } from '@/components/homepage/topic-chip'
 import type { PartySlug, PolicyTopic } from '@/types'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
 const normName = normMemberName
@@ -32,10 +33,43 @@ const TYPE_STYLE: Record<string, { fg: string; bg: string }> = {
   Private: { fg: '#6b7078', bg: '#f1f1ef' },
 }
 
-function statusStyle(s: string): { fg: string; bg: string; label: string } {
-  if (s === 'Royal Assent') return { fg: '#065f46', bg: '#d1fae5', label: 'Passed into law' }
-  if (s === 'Select Committee') return { fg: '#1e40af', bg: '#eef4ff', label: 'Select committee' }
-  return { fg: '#92400e', bg: '#fff7e6', label: s }
+/* TYPE_MEANS lived here — a sentence explaining what a government / member's
+   / local / private bill is. Dropped with the line that used it: it was the
+   same words on every card of that type and never about the bill in front of
+   the reader. The bills page's own intro is where the mechanism belongs. */
+
+const CATEGORY_TOPIC: Record<string, string> = {
+  'Crime & justice': 'crime-justice',
+  'Economy & tax': 'economy',
+  'Education': 'education',
+  'Environment & climate': 'environment',
+  'Health': 'health',
+  'Housing & tenancy': 'housing',
+  'Treaty & Māori': 'treaty-maori-affairs',
+  'Local government & democracy': 'democracy-government',
+}
+
+/* statusStyle() lived here: it coloured the stage pill ("Select committee",
+   "Third Reading") on each card. The journey strip states the stage now, in
+   milestones rather than in Parliament's own vocabulary, so the pill and its
+   palette are gone. */
+
+/**
+ * The three outcomes a reader actually sorts bills into, and the colours the
+ * "most debated" tiles above already use for them. The tracker's own status
+ * is the parliamentary STAGE ("Second Reading", "Committee of whole House"),
+ * which is six different words for the same one fact: it hasn't finished yet.
+ */
+const KIND = {
+  law: { label: 'Now law', fg: '#166638', bg: '#e0f3e7', bar: '#2f8f5b' },
+  defeated: { label: 'Not passed', fg: '#a3251f', bg: '#f8e4e2', bar: '#c23b3b' },
+  progress: { label: 'In progress', fg: '#92400e', bg: '#f8ecd4', bar: '#c07a12' },
+} as const
+
+function statusKind(s: string): keyof typeof KIND {
+  if (s === 'Royal Assent') return 'law'
+  if (/defeat|not passed|negativ|withdraw|lapse/i.test(s)) return 'defeated'
+  return 'progress'
 }
 
 const PAGE_SIZE = 24
@@ -45,8 +79,11 @@ const PAGE_SIZE = 24
 const byDateDesc = (a: Bill54, b: Bill54) => (b.date || '').localeCompare(a.date || '')
 const DEFAULT_ORDER = [...BILLS_54].sort(byDateDesc)
 
-export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialParty, initialBill, initialTopic }: { readerSlugs?: Record<string, string>; memberParty?: Record<string, string>; initialParty?: string; initialBill?: string; initialTopic?: string }) {
+export function BillsTracker54({ readerSlugs = {}, readerSummaries = {}, memberParty = {}, initialParty, initialBill, initialTopic }: { readerSlugs?: Record<string, string>; readerSummaries?: Record<string, string>; memberParty?: Record<string, string>; initialParty?: string; initialBill?: string; initialTopic?: string }) {
   const [q, setQ] = useState('')
+  // One breakdown open at a time, held here rather than per card: two panels
+  // open in one grid pushed the row they share apart.
+  const [openBill, setOpenBill] = useState<string | null>(null)
   const [cat, setCat] = useState('All')
   /**
    * Arriving from a policy topic (/bills?topic=immigration). NOT the category
@@ -300,8 +337,36 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
       ) : (
         <>
           <div ref={resultsRef} style={{ scrollMarginTop: 80 }} />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(330px, 100%), 1fr))', gap: 12 }}>
-            {pageItems.map((b) => <BillCard key={b.slug + b.number} b={b} readerSlug={readerSlugs[normTitle(b.title)]} submissionsOpen={isOpen(b)} party={partyOf(b.member)} focused={b.slug === initialBill} />)}
+          {/* The same grid the "most debated" tiles use — small columns, tight
+              gap — now that a collapsed card is a title and a label rather
+              than a block of detail. */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(200px, 100%), 1fr))', gap: 8, alignItems: 'start' }}>
+            {pageItems.map((b) => (
+              <Fragment key={b.slug + b.number}>
+                <BillCard
+                  b={b}
+                  open={openBill === b.slug}
+                  onToggle={() => setOpenBill(openBill === b.slug ? null : b.slug)}
+                  focused={b.slug === initialBill}
+                />
+                {/* The breakdown opens directly under the tile that was tapped
+                    and spans every column, so on a wide screen it is not a
+                    sliver in one of them — the same arrangement the "most
+                    debated" grid above uses. */}
+                {openBill === b.slug && (
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <BillBreakdown
+                      b={b}
+                      readerSlug={readerSlugs[normTitle(b.title)]}
+                      summary={readerSummaries[normTitle(b.title)]}
+                      submissionsOpen={isOpen(b)}
+                      party={partyOf(b.member)}
+                      onClose={() => setOpenBill(null)}
+                    />
+                  </div>
+                )}
+              </Fragment>
+            ))}
           </div>
           {pageCount > 1 && <Pager current={current} pageCount={pageCount} goTo={goTo} />}
         </>
@@ -313,45 +378,127 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
 /** Card is a <div>, not one big <Link>: it now carries several distinct
  *  destinations (our breakdown, the official page, the submission call), and
  *  anchors can't legally nest inside one another. */
-function BillCard({ b, readerSlug, submissionsOpen, party, focused }: { b: Bill54; readerSlug?: string; submissionsOpen?: boolean; party?: string; focused?: boolean }) {
-  const ts = TYPE_STYLE[b.type] ?? TYPE_STYLE.Private
-  const ss = statusStyle(b.status)
-  // Washed in the party colour of the member in charge, matching the party
-  // tiles, the MP directory and the battleground cards. Bills with no named
-  // member (or an unmapped one) keep the plain card.
-  const col = party && PARTY_COLORS[party as PartySlug] ? PARTY_COLORS[party as PartySlug] : null
-  const cardStyle: React.CSSProperties = {
-    // The open-for-submissions signal used to be this border. It now lives only
-    // in the blue "You can have your say" panel inside the card, which states
-    // the closing date — a stronger signal than a border tint anyway.
-    border: `2px solid ${col ? col.bg : submissionsOpen ? '#bfd4fe' : BORDER}`,
-    borderRadius: 14, padding: '15px 16px',
-    background: col ? col.light : '#fff', display: 'flex', flexDirection: 'column', height: '100%',
-    // The deep-linked card: a jade ring, so it stands out from the other 23 on
-    // the page. Colour only — the border is already spoken for by the party.
-    ...(focused ? { boxShadow: `0 0 0 3px ${JADE}`, scrollMarginTop: 96 } : {}),
-  }
+/**
+ * One bill in the results grid: the outcome as a label, the title, a chevron.
+ *
+ * A card used to carry everything at once — three tags, the member, the
+ * committee, sometimes a submissions panel and two links. Twenty-four of those
+ * is a wall, and the thing a reader scans for is the title. The detail lives
+ * in the breakdown that opens under the row (BillBreakdown).
+ */
+function BillCard({ b, open, onToggle, focused }: { b: Bill54; open: boolean; onToggle: () => void; focused?: boolean }) {
+  const kind = KIND[statusKind(b.status)]
   return (
-    <div id={`bill-${b.slug}`} className="party-card" style={cardStyle}>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 9 }}>
-        <span style={{ fontSize: 10.5, fontWeight: 800, color: ts.fg, background: ts.bg, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{b.type}</span>
-        <span style={{ fontSize: 10.5, fontWeight: 800, color: ss.fg, background: ss.bg, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{ss.label}</span>
-        <span style={{ fontSize: 10.5, fontWeight: 700, color: SECONDARY, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999, padding: '2px 9px', fontFamily: MANROPE }}>{b.category}</span>
+    <div id={`bill-${b.slug}`} className="party-card" style={{
+      border: `${open ? 3 : 2}px solid ${open ? kind.fg : kind.bar}`, borderRadius: 11,
+      background: kind.bg, display: 'flex', flexDirection: 'column', height: '100%',
+      transition: 'border-color .2s ease, border-width .2s ease',
+      ...(focused ? { boxShadow: `0 0 0 3px ${JADE}`, scrollMarginTop: 96 } : {}),
+    }}>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={open}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 8, width: '100%', textAlign: 'left',
+          background: 'none', border: 'none', padding: '7px 10px 8px', cursor: 'pointer', font: 'inherit',
+        }}
+      >
+        <span style={{ flex: 1, minWidth: 0 }}>
+          <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: kind.fg, fontFamily: MANROPE, marginBottom: 2 }}>
+            {kind.label}
+          </span>
+          <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{b.title}</span>
+        </span>
+        <ChevronDown
+          style={{ width: 15, height: 15, flexShrink: 0, color: kind.fg, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease' }}
+          strokeWidth={3}
+        />
+      </button>
+    </div>
+  )
+}
+
+/**
+ * The breakdown, in the same shape the "most debated" panel uses: the outcome
+ * badge, the title, the journey through Parliament, then the specifics.
+ *
+ * The journey is derived from the bill's STAGE rather than from a hand-written
+ * timeline — the tracker holds 285 bills and none of them has one. The stages
+ * Parliament reports are themselves the milestones, so a bill at "Committee of
+ * whole House" has necessarily been through its first reading and select
+ * committee, and the strip can say so honestly without inventing dates.
+ */
+const JOURNEY = ['Introduced', 'First reading', 'Select committee', 'Second reading', 'Third reading'] as const
+/** How far a bill's reported stage places it along JOURNEY. */
+function reachedIndex(status: string): number {
+  const s = status.toLowerCase()
+  if (s.includes('royal assent')) return JOURNEY.length
+  if (s.includes('third')) return 4
+  if (s.includes('committee of whole')) return 4
+  if (s.includes('second')) return 3
+  if (s.includes('select committee')) return 2
+  if (s.includes('first')) return 1
+  return 0
+}
+
+function BillBreakdown({ b, readerSlug, summary, submissionsOpen, party, onClose }: {
+  b: Bill54
+  readerSlug?: string
+  /** Our own plain-language summary, where the bill has a published
+   *  breakdown. Most bills have none — see bills/page.tsx. */
+  summary?: string
+  submissionsOpen?: boolean
+  party?: string
+  onClose: () => void
+}) {
+  const ts = TYPE_STYLE[b.type] ?? TYPE_STYLE.Private
+  const kind = KIND[statusKind(b.status)]
+  const topicKey = CATEGORY_TOPIC[b.category]
+  const reached = reachedIndex(b.status)
+  const nodes = [...JOURNEY.map((label, i) => ({ label, done: i < reached })), { label: kind.label, done: reached >= JOURNEY.length }]
+
+  return (
+    <div style={{
+      background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16,
+      padding: 'clamp(14px, 2.5vw, 20px)', marginTop: 2,
+      boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 20px 40px -34px rgba(0,0,0,.4)',
+    }}>
+      {/* Badge left, close right — the tile that opened this is above, but a
+          reader who has scrolled the panel should not have to go back up. */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: kind.fg, background: kind.bg, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
+          {kind.label}
+        </span>
+        <button type="button" onClick={onClose} aria-label="Close this bill" style={{ background: 'none', border: 'none', padding: 6, margin: -6, cursor: 'pointer', color: SECONDARY, display: 'inline-flex', flexShrink: 0 }}>
+          <X style={{ width: 17, height: 17 }} />
+        </button>
       </div>
 
-      {readerSlug ? (
-        <Link href={`/legislation/${readerSlug}`} style={{ fontSize: 14.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35, marginBottom: 8, textDecoration: 'none' }}>{b.title}</Link>
-      ) : (
-        <div style={{ fontSize: 14.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35, marginBottom: 8 }}>{b.title}</div>
-      )}
+      <h3 style={{ fontSize: 'clamp(17px, 2.6vw, 21px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '11px 0 8px', lineHeight: 1.2 }}>{b.title}</h3>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      {/* What the bill DOES, where we have written it up. The sentence that
+          stood here explained what a "government bill" is, which is the same
+          words on 196 of these cards and never about the bill in front of the
+          reader. Bills without a published breakdown say nothing rather than
+          something generic. */}
+      {summary && (
+        // TWO SENTENCES, not the whole summary: these run to a dozen lines on
+        // a phone, which is a page of reading before the reader has decided
+        // they care. The rest is on the breakdown the button below opens.
+        <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>{gist(summary)}</p>
+      )}
+      {/* The policy area as the SAME chip the policy pages use, so a reader
+          who has met it there recognises it here. */}
+      <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.07em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, margin: '0 0 9px' }}>
+        Its journey through Parliament
+      </p>
+      <BillJourney nodes={nodes} accent={kind.fg} />
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 16 }}>
         {b.member && (
-          <div style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+          <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
             <span>In charge: <b style={{ color: '#3f444c' }}>{b.member}</b></span>
-            {/* Which party the member in charge sits for — the same mapping the
-                party filter uses, so a reader can see whose bill it is without
-                having to recognise every MP by name. */}
             {party && PARTY_NAMES[party as PartySlug] && (
               <span style={{
                 display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 800,
@@ -364,20 +511,30 @@ function BillCard({ b, readerSlug, submissionsOpen, party, focused }: { b: Bill5
             )}
           </div>
         )}
-        {b.committee && <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE }}>{b.committee} committee</div>}
+        {b.committee && <div style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>{b.committee} committee</div>}
+
+        {/* The policy area, under the people rather than under the title: it
+            is the least specific thing here, and the chip is the same one the
+            policy comparison page uses (className carries its compact size). */}
+        <div className="topic-switcher" style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
+          <span style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>Area:</span>
+          {topicKey
+            ? <TopicChip topicKey={topicKey} active={false} href={`/policies/${topicKey}`} />
+            : <span style={{ fontSize: 11.5, fontWeight: 800, color: INK, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 999, padding: '4px 9px', fontFamily: MANROPE }}>{b.category}</span>}
+        </div>
       </div>
 
       {/* Have your say — only while submissions are genuinely open. */}
       {submissionsOpen && (
-        <div style={{ marginTop: 10, background: '#eef4ff', border: '1px solid #bfd4fe', borderRadius: 10, padding: '9px 11px' }}>
+        <div style={{ marginTop: 12, background: '#eef4ff', border: '1px solid #bfd4fe', borderRadius: 10, padding: '9px 11px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE }}>
             <PenLine style={{ width: 13, height: 13 }} /> You can have your say on this bill
           </div>
           <div style={{ fontSize: 11.5, color: '#1e40af', fontFamily: MANROPE, marginTop: 3 }}>
             Submissions close {fmtDate(b.submissionsClose)}
           </div>
-          {/* The strongest outcome we can evidence: not that someone read about a
-              bill, but that they went on to have their say. Bill slug only. */}
+          {/* The strongest outcome we can evidence: not that someone read about
+              a bill, but that they went on to have their say. */}
           <a href={b.officialUrl} target="_blank" rel="noopener noreferrer"
              onClick={() => track('submission_click', { bill: b.slug })}
              style={{ display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 6, fontSize: 12, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE, textDecoration: 'none' }}>
@@ -386,19 +543,117 @@ function BillCard({ b, readerSlug, submissionsOpen, party, focused }: { b: Bill5
         </div>
       )}
 
-      <div style={{ marginTop: 'auto', paddingTop: 10, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', marginTop: 14 }}>
         {readerSlug && (
-          <Link href={`/legislation/${readerSlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-            Read the breakdown <ArrowRight style={{ width: 13, height: 13 }} />
+          <Link
+            href={`/legislation/${readerSlug}`}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '9px 14px', borderRadius: 10,
+              background: kind.fg, color: '#fff',
+              fontSize: 13, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none',
+            }}
+          >
+            Read the full breakdown <ArrowRight style={{ width: 14, height: 14 }} strokeWidth={3} />
           </Link>
         )}
         {/* Every bill links to its exact page on Parliament's site, so any claim
             here can be checked at source rather than taken on trust. */}
         <a href={b.officialUrl} target="_blank" rel="noopener noreferrer"
-           style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
+           style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
           Official page <ExternalLink style={{ width: 11, height: 11 }} />
         </a>
       </div>
+    </div>
+  )
+}
+
+/**
+ * The first two sentences of a summary, as the gist.
+ *
+ * Cuts on sentence boundaries rather than a character count, so it never ends
+ * mid-clause, and only adds an ellipsis when something was actually left out.
+ * Abbreviations ending in a full stop would fool a naive split, so the common
+ * ones are stepped over first.
+ */
+function gist(text: string, sentences = 2): string {
+  const MARK = '\u0001'
+  const parts = text
+    .replace(/\b(Hon|Dr|Mr|Mrs|Ms|No|Inc|Ltd)\./g, `$1${MARK}`)
+    .split(/(?<=[.!?])\s+/)
+  const taken = parts.slice(0, sentences).join(' ').split(MARK).join('.').trim()
+  return parts.length > sentences ? `${taken.replace(/[.!?]+$/, '')}…` : taken
+}
+
+/**
+ * The progress strip: a rail that STAYS PUT, and the stages travelling across
+ * it until they settle on where the bill has got to.
+ *
+ * The rail and its filled portion are drawn on the outer box, so they never
+ * move; the steps live on a track inside it that slides right to left. That
+ * is the whole point of the animation — a line that scrolled with the steps
+ * read as the page moving, where a line that holds still reads as the bill
+ * travelling along it.
+ *
+ * A fixed window rather than the full width: six stages across a desktop fit
+ * with room to spare, so there was nothing to travel and the animation only
+ * existed on a phone.
+ */
+const STEP_W = 84
+const WINDOW_STEPS = 3.5
+
+function BillJourney({ nodes, accent }: { nodes: { label: string; done: boolean }[]; accent: string }) {
+  const lastDone = nodes.reduce((n, x, i) => (x.done ? i : n), -1)
+  // Where the track ends up: the current stage sitting just left of centre,
+  // clamped so it never runs past either end of the strip.
+  const restAt = Math.min(
+    Math.max(0, (lastDone - 1) * STEP_W),
+    Math.max(0, nodes.length * STEP_W - WINDOW_STEPS * STEP_W),
+  )
+  const [shift, setShift] = useState(0)
+
+  useEffect(() => {
+    const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (still) { setShift(restAt); return }
+    setShift(0)
+    const t = setTimeout(() => setShift(restAt), 380)
+    return () => clearTimeout(t)
+  }, [restAt])
+
+  // How much of the rail is filled: the stages behind the current one, as a
+  // share of the window the reader can see.
+  const filled = Math.min(1, Math.max(0, ((lastDone * STEP_W) - shift + STEP_W / 2) / (WINDOW_STEPS * STEP_W)))
+
+  return (
+    <div style={{ position: 'relative', width: '100%', maxWidth: WINDOW_STEPS * STEP_W, overflow: 'hidden' }}>
+      {/* The rail. Fixed to the box, not to the steps. */}
+      <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, top: 10, height: 2, background: BORDER }} />
+      <span aria-hidden style={{ position: 'absolute', left: 0, top: 10, height: 2, background: accent, width: `${filled * 100}%`, transition: 'width .55s cubic-bezier(.3,.8,.3,1)' }} />
+
+      <div style={{
+        display: 'flex', width: nodes.length * STEP_W,
+        transform: `translateX(${-shift}px)`,
+        transition: 'transform .55s cubic-bezier(.3,.8,.3,1)',
+      }}>
+        {nodes.map((node) => (
+          <span key={node.label} style={{ position: 'relative', width: STEP_W, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <span style={{
+              width: 20, height: 20, borderRadius: '50%', flexShrink: 0,
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              background: node.done ? accent : '#fff', border: `2px solid ${node.done ? accent : BORDER}`,
+            }}>
+              {node.done && <Check style={{ width: 11, height: 11, color: '#fff' }} strokeWidth={3} />}
+            </span>
+            <span style={{ fontSize: 9.5, fontWeight: 700, color: node.done ? INK : TERTIARY, fontFamily: MANROPE, textAlign: 'center', lineHeight: 1.2 }}>
+              {node.label}
+            </span>
+          </span>
+        ))}
+      </div>
+
+      {/* Feathers the steps out at the right edge, so they read as continuing
+          past the window rather than being cut off. */}
+      <span aria-hidden style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 26, pointerEvents: 'none', background: 'linear-gradient(to left, #fff, #fff0)' }} />
     </div>
   )
 }
