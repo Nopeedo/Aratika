@@ -13,8 +13,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import {
-  ChevronDown, ChevronLeft, ArrowRight, X, ExternalLink, Quote,
-  Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
+  ChevronLeft, ArrowRight, X, ExternalLink, Quote, Home, Heart, Leaf, GraduationCap, Scale, Globe, Landmark, Wind, TrendingUp, Users,
 } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { TOPIC_ICONS } from '@/constants/policy-topic-icons'
@@ -471,19 +470,6 @@ function FirstLineBold({ text, style }: { text: string; style: React.CSSProperti
   )
 }
 
-/** Party colours are chosen to work as big fills, not as small text. ACT's
- *  yellow on a white panel is effectively invisible at 12px, so anything too
- *  light gets scaled down to a readable version of the same hue rather than
- *  swapped for a different colour. Dark party colours pass through untouched. */
-function readableOnWhite(hex: string): string {
-  const m = hex.replace('#', '')
-  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
-  const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
-  if (lum <= 0.5) return hex
-  const k = 0.42 / lum
-  const hx = (v: number) => Math.max(0, Math.min(255, Math.round(v * k))).toString(16).padStart(2, '0')
-  return `#${hx(r)}${hx(g)}${hx(b)}`
-}
 
 /** A tappable title that expands downward to reveal its content — the "what
  *  they'll do" / "how this affects you" breakdown inside an open issue panel.
@@ -507,53 +493,6 @@ function readableOnWhite(hex: string): string {
  *
  *  Connected to its proposal by the rule down the left of the opened detail, so
  *  it's clear the points belong to the line above and not to the panel. */
-/**
- * MoreDetail — the party's own cited words, expanded in place.
- *
- * Grid-rows expander — see the note below on why it's rendered conditionally.
- */
-function MoreDetail({ excerpts, accent }: { excerpts: string[]; accent: string }) {
-  const [open, setOpen] = useState(false)
-  const tone = readableOnWhite(accent)
-  return (
-    <div style={{ marginTop: 14 }}>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        style={{
-          display: 'inline-flex', alignItems: 'center', gap: 6, background: 'none', border: 'none',
-          padding: 0, cursor: 'pointer', fontFamily: MANROPE, fontSize: 15.5, fontWeight: 800, color: tone,
-        }}
-      >
-        {open ? 'Less detail' : 'More detail'}
-        <ChevronDown style={{ width: 15, height: 15, flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .25s ease' }} />
-      </button>
-      {/* Rendered conditionally, NOT the grid-template-rows 0fr/1fr transition
-          a grid-rows expander would use. That trick animates height only where
-          `1fr` has a definite size to resolve against; inside this focused card
-          it resolved to 0px, so the panel reported aria-expanded="true" while
-          staying visually shut with 258px of content clipped behind
-          overflow:hidden. It read as working in a text probe, because
-          innerText still sees clipped text — it was only measuring the
-          computed rows that showed it. */}
-      {open && (
-        <div>
-          <div style={{ margin: '12px 0 0', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>
-              In their own words
-            </div>
-            {excerpts.map((q, i) => (
-              <blockquote key={i} style={{
-                margin: 0, paddingLeft: 14, borderLeft: `3px solid ${accent}`,
-                fontSize: 16, color: INK, fontFamily: MANROPE, lineHeight: 1.5, fontStyle: 'italic',
-              }}>&ldquo;{q}&rdquo;</blockquote>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
 
 /** The chosen party's stance on the open topic. Sits directly in the panel —
  *  no nested card of its own, since the panel already carries the party's
@@ -665,28 +604,14 @@ function FocusedCard({ slug, pos, topicLabel }: {
           never said it, so it doesn't belong on a panel that's meant to be
           their claim and nothing else. */}
 
-      {/* "More detail" expands HERE. It navigated to /policies/[topic]/[party]
-          for a while, which fixed the honesty problem the accordion had — a
-          button named for the whole breakdown that opened a slice of it — but
-          created a worse one: it threw a reader off the page they were
-          comparing on, with no way back, onto a page carrying much of what they
-          had just read.
+      {/* "More detail" — the party's own cited excerpts, expanded in place —
+          is gone from every panel by request. The excerpts are still on the
+          full page below, which now names the party and the topic so it is
+          clear what it opens. */}
 
-          The name is what makes inline honest. "More detail" promises a bit
-          more, and a bit more is what it gives: the party's own cited words,
-          which is the one substantial thing this panel does not already show.
-          The full page is still one tap away underneath, for anyone who wants
-          the proposals, the impact read and the source in one place.
-
-          Excerpts, not our summary: they are transcribed from the party's
-          document rather than written by us, so expanding adds the party's
-          voice rather than more of ours. 106 of 113 positions carry them. */}
-      {pos && pos.excerpts.length > 0 && (
-        <MoreDetail excerpts={pos.excerpts} accent={topicHex} />
-      )}
-
-      {/* The full page, demoted to a quiet link. Still reachable, no longer the
-          only way to see more. */}
+      {/* The full page, a quiet link — and the ONLY way to more now that the
+          inline expander has gone, so it says whose stance and on what rather
+          than just naming the topic. */}
       {pos && (
         <Link
           href={`/policies/${pos.topic}/${slug}`}
@@ -696,7 +621,7 @@ function FocusedCard({ slug, pos, topicLabel }: {
             textDecoration: 'none', fontFamily: MANROPE,
           }}
         >
-          Full page on {topicLabel.toLowerCase()} <ArrowRight style={{ width: 14, height: 14 }} />
+          Full page on {party.name}&rsquo;s stance on {topicLabel} <ArrowRight style={{ width: 14, height: 14, flexShrink: 0 }} />
         </Link>
       )}
 

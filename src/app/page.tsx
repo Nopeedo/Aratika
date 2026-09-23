@@ -22,7 +22,6 @@ import { PartyTilesSection, PartyNewsSection, PartySeatsSection, PartyBillsSecti
 // import { PartyStanceSection } from '@/components/homepage/party-tiles-section' // hidden — see below
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 // import { ThisTerm } from '@/components/homepage/this-term' // hidden — see below
-import { CompassCta } from '@/components/compass/compass-cta'
 // import { WhatsMoved } from '@/components/homepage/whats-moved' // hidden — see below
 // import { CredibilityStrip } from '@/components/homepage/credibility-strip' // hidden — see below
 import { ParliamentNow } from '@/components/homepage/parliament-now'
@@ -150,13 +149,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         {/* ── Everything else, in one carousel of links ── */}
         <ExploreCarousel />
 
-        {/* The compass. It has moved three times by request — mid, top, last,
-            and now second-to-last — and this is still a defensible home: the
-            reader who gets this far has seen the parties, the policies and the
-            map, and "find where you stand" is the natural next step for exactly
-            that person. It still rides the Election Centre's how-your-vote-works
-            section for everyone else. */}
-        <CompassCta />
+        {/* The compass card is off the front page by request — it moved four
+            times before this and is now gone from here entirely. The card
+            itself is untouched and still rides the Election Centre's
+            how-your-vote-works section, and /start is still linked from the
+            footer. */}
 
         {/* "Find your MP" is off the front page by request. The lookup is
             untouched at /map, and the menu links to it (Electorate map); this

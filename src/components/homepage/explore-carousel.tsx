@@ -68,10 +68,13 @@ const GROUPS: { label: string; items: Feature[] }[] = [
       // registered parties with no seats, who have nowhere else on the
       // homepage to be found.
       { feature: 'parties', title: 'Party profiles', desc: 'Every party contesting 2026, in Parliament and outside it', href: '/parties', Icon: Users, tint: '#eef2ff' },
-      { feature: 'onboarding', title: 'Find what matters to you', desc: 'Twelve questions, and where you stand', href: '/start', Icon: Compass, tint: '#f2fbf6' },
       // What they have actually put before the House, next to what they say
-      // they stand for: a bill is a promise a party has had to act on.
+      // they stand for: a bill is a promise a party has had to act on. Above
+      // the questionnaire by request — it sits with the two comparison tools
+      // it belongs with, and the questionnaire asks something of the reader
+      // where the other three just show them something.
       { feature: 'bills', title: 'All bills directory', desc: 'Every bill this term, and where it has got to', href: '/bills', Icon: FileText, tint: '#fdf4ff' },
+      { feature: 'onboarding', title: 'Find what matters to you', desc: 'Twelve questions, and where you stand', href: '/start', Icon: Compass, tint: '#f2fbf6' },
     ],
   },
   {
