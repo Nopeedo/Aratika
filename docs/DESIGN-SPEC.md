@@ -198,6 +198,127 @@ section**, one per section at most. Several stacked down a page make each one
 count for less — which is why the bills block's way out became a small outlined
 chip *inside* its box instead.
 
+### 2.7 Chamber arch — `src/components/elections/seat-chamber.tsx` (`home`)
+
+The 2023 chamber as a band that follows the seating, used on the homepage
+above the selected party's seat count. It replaced a plain rounded rectangle
+around the semicircle, which left a wedge of empty box in each top corner and
+read as a chart in a card rather than as the room.
+
+The band is derived from the seat positions, never hand drawn, so it keeps an
+equal margin at every point as the chart scales:
+
+```
+GAP 16 (clearance from the outermost and innermost dots) · CORNER 10 · STROKE 4
+R  = max(distance from centre) + dotR + GAP        outer edge
+Ri = max(CORNER * 2, min(distance) - dotR - GAP)   inner edge
+bottom = cy + dotR + GAP                           the flat foot
+```
+
+The `home` variant also drops the tabs, the eyebrow and the chamber total
+(`marginTop: 28` instead), because the number under the arch is the selected
+party's, not the House's.
+
+**Seat dots get a rim.** `rimColor()` returns the same hue darkened (factor
+0.55 when luminance > 0.6, else 0.7) and returns nothing below 0.18 luminance.
+Without it ACT's yellow vanished into the page; with a rim on NZ First's near
+black it would have been invisible anyway, and a lighter one reads as a halo.
+Unselected parties sit at `opacity 0.38`. 0.18 was the first value and the
+faded parties stopped reading as seats at all.
+
+Tapping the space around a dot picks that party, not just the dot itself.
+
+### 2.8 Caucus box — `src/components/homepage/party-electorates.tsx`
+
+The selected party's MPs, split by how they got in. It replaced a single line
+of statistics ("2 electorate, 9 list"), which stated the mechanism and named
+nobody.
+
+```
+container  2px party border · party light fill · radius 14 · padding 12px 10px
+           grid 1fr 1fr, gap 10
+heading    11.5px 800 .04em uppercase black, height 2.5em, line-clamp 2,
+           1.5px rule in {party}55, padding-bottom 6, margin-bottom 7
+row        44px fixed · gap 5 · radius 9 · 1px #00000014 on white
+           xs avatar · name 12px 800 · sub 10.5px SECONDARY, both ellipsised
+rails      ROWS_H = 4 * 44 + 3 * 5 = 191px, FIXED
+chevrons   24px, bare, no chrome, disabled colour #00000026
+```
+
+Four reasons the numbers are what they are:
+
+- **The height is fixed, not capped.** A party with six MPs made a shorter box
+  than one with forty, and the tile cycle turns every few seconds, so the page
+  moved under the reader while they were using it.
+- **Exactly four rows, not four and a sliver.** A list of four then ends flush
+  with the bottom edge, gets no fade and no arrows, and there is nothing below
+  to point at. A fifth row is what makes them appear. The first attempt assumed
+  a 39px card against an actual 44, so a four MP list overflowed by 20px and
+  showed a fade for a row that was not there.
+- **The headings are a fixed two lines.** "3 won a local seat" takes one line
+  and "12 came off the party list" takes two, so a minimum height left one
+  column's rule 7px above the other's.
+- **Fade at the bottom only.** A fade under the heading read as the column
+  being cut off rather than scrolled.
+
+Headings are counts in plain words, "2 won a local seat" and "9 came off the
+party list", not "electorate" and "list", which mean nothing to a reader who
+has not been taught MMP. Electorate MPs are ordered by 2023 winning margin,
+widest first, and the margin itself is not shown: "+23,376" beside a name read
+as a score.
+
+### 2.9 Preview over the page — `src/components/homepage/mp-preview.tsx`
+
+Tapping a row opens the MP over the page instead of leaving it. Navigating to
+the profile was a page change to answer "who is that?", and then a trip back to
+the party being read about.
+
+```
+scrim   rgba(12,14,18,.6) + 3px blur · panel min(420px, 100%) · max-height 86vh
+panel   radius 16 · 2px party border · header on the party's light fill
+bio     trimmed at 320 chars
+facts   label 96px column, 12px 800 uppercase TERTIARY · value 13.5px 800
+foot    party-filled "{First}'s full profile", then parliament.nz as a quiet link
+```
+
+Escape, the ×, or the scrim closes it, and the body scroll is locked while it
+is open. It renders only the fields the record actually holds: most MPs are a
+name, a party, a role and an electorate, and nothing is invented to fill the
+panel out.
+
+### 2.10 Grouped signposts — `src/components/homepage/explore-carousel.tsx`
+
+The way to every other page. It replaced a horizontal rail of description
+cards, which on a phone showed one and a half cards and hid the other twelve
+behind a swipe.
+
+```
+heading  clamp(28px,5.5vw,32px) 800, on a radial wash of the current party's
+         colour at 0.2, fading to 0 at 70%
+group    label 12px 800 .08em uppercase #5b6067
+items    §2.6 signposts, ONE PER ROW, gap 8, each with a 24px tinted circle
+         holding its own 14px icon
+frame    18px above the heading, 22px under it, gutter clamp(18px, 5vw, 36px)
+```
+
+Four groups, named for what the reader is trying to do rather than what kind
+of page it is: Work out your vote, Where you live, Keep up and have your say,
+New to this. Fourteen signposts in one column is a list to be got through; the
+same fourteen under four short headings is four short decisions.
+
+Two things were tried and reverted. **Two columns:** the tapered end eats into
+the label, so the longer names wrapped to two lines and the points ran at the
+gap between the columns. **A rule across the top:** it read as the page ending
+rather than a section starting, so the heading and the space above it do that
+job, as everywhere else on the page. 18px of air above the heading, not 48: the
+section before already carries 26px under its last signpost.
+
+**§2.6 says one signpost per section at most, and this section is fourteen of
+them.** That holds where a signpost is the way out of a block of content. Here
+the signposts are the content, and there is nothing else in the section for
+them to out-shout.
+
+
 ---
 
 ## 3. Mobile rules
@@ -232,6 +353,9 @@ the page never received any of it.
 | Bill card (featured) | ~800px | fits one screen |
 | Bills stat row | ~330px of cards | **73px** of text |
 | "Filtered by" pills | 44px | **28px** |
+| Caucus rail, per party | 6 to 40+ MPs tall | **191px fixed**, 4 rows, paged |
+| Homepage bills block | 3 lines of detail | **1 line**, "152 now law · 21 waiting to be drawn" |
+| Bills total | 3 columns of figures | **one 132px circle**, the rest beside it |
 
 **3.4 Fit-to-width beats shrink-to-fit.** The seats line was scaled to match the
 heading's width; because it ends in the party's name its natural width swings
@@ -298,6 +422,41 @@ Reach for `tr th.my-class` rather than `!important` roulette.
 **5.6 Backticks inside a template-literal CSS block** end the literal. Use
 quotes in those comments.
 
+**5.7 A state change above the fold scrolls the page.** Tapping a party tile
+for the first time jumped the reader about 850px. Selecting a party changed the
+height of blocks ABOVE the viewport, and the browser's scroll anchoring then
+"held position" against the wrong element. Symptom: the jump happens on the
+FIRST tap only, because after that the heights are already settled. Fixed by
+pinning the scroll for 700ms inside `select()` in `party-cycle.tsx`: record
+`scrollY`, restore it on every frame that drifts by more than 1px, and release
+early on the reader's own `wheel`, `touchmove` or `keydown`. Restoring without
+the release traps a reader who scrolls immediately after tapping.
+
+**5.8 `position: fixed` bubbles drift on scroll.** Fixed positioning centred
+the (i) bubble on the screen and then left it there while the page moved
+underneath, so it came unstuck from the (i) that opened it. Use `position:
+absolute` with a measured offset instead: `window.innerWidth / 2 - width / 2 -
+wrapper.getBoundingClientRect().left`, recomputed on resize. Centred on the
+viewport, anchored to the page.
+
+**5.9 `clip-path` cuts CSS borders.** A border on a clipped shape is drawn and
+then sliced off at the tapered end, and `box-shadow` is drawn for the unclipped
+rectangle. Use `filter: drop-shadow(...)` for the shadow, and for an outline
+nest two clipped elements: the outer one in the border colour with 2px of
+padding, the inner one in the fill.
+
+**5.10 A percentage margin resolves against the container's width.** The
+homepage seat count is pulled up into the arch's opening with
+`marginTop: '-13%'` rather than a pixel value, so it tracks the chart as the
+chart scales. A fixed offset was right at one width and wrong at every other.
+
+**5.11 An inner scroll area eats a phone swipe.** The caucus rails scroll, so a
+finger starting on a row scrolled the rail instead of the page and the reader
+was stuck in a 191px window. On phones `overflow-y` is turned off in
+`globals.css` (`.mp-rail`, under 767px) and the chevrons are the only way to
+page. That has to be CSS: an inline `overflow` would outrank the media query.
+
+
 ---
 
 ## 6. Applying this to the next page
@@ -331,6 +490,23 @@ A checklist, in the order that worked:
 - The Treaty Principles figures come back only with a citation each: the Justice
   Committee report for the submissions count and the share opposed, Hansard for
   the vote.
+- `homepage/seats-info-button.tsx` is a third copy of the (i) pattern, and it
+  closes on an OUTSIDE TAP, which §2.1 rules out for exactly the reason given
+  there. Its sections are short enough that nobody has been shut out
+  mid-sentence yet. Fold it into `ui/info-button.tsx` with the other two and
+  the divergence goes with it.
+- `bills-info-button.tsx` still carries `aria-label="What bills before the
+  House means"`. The visible copy stopped saying "before the House" when §1.7
+  was applied; the label did not follow it.
+- The electorate and list seat split is no longer shown anywhere. The numbers
+  are still in `elections-data` (`electorateSeats` / `listSeats`). It is the
+  clearest illustration of MMP there is and belongs on the Election Centre,
+  where the mechanism is the subject, not on the front page.
+- The homepage seat count is the OFFICIAL 2023 result, while `MP_PROFILES`
+  holds the current caucus. National reads 48 in the arch and 49 in the
+  directory, because the Port Waikato by-election added a seat in November
+  2023. The (i) explains it. Nothing reconciles it.
+
 
 ---
 
@@ -456,3 +632,65 @@ label that could be read as the opposite of what it means.
 
 **When the reader asks "where did this come from?", the answer is a design
 problem, not a support question.**
+
+### Compose for the phone, not for the pane
+
+> "it seems you've not followed my instructions for mobile format so everything
+> you see when tab responsive in preview should be for mobile" / "in terms of
+> composing"
+> "why is it liike this then??" / "when i tap mobile on preview"
+> "each of these should be on their own row"
+> "these should be more compact meaning dont waste space"
+
+The preview pane at 375x812 is **the canvas**, not a check at the end. A layout
+composed wide and then made to survive a phone is a different layout from one
+composed on the phone, and the difference shows in what gets its own row.
+
+### Make the explanation match what it explains
+
+> "11.6% of the party vote does that mean?"
+> "11.6% of the party vote I don't think that is clear enough for the everyday
+> user to understand what that means. Can you instead change this to something
+> easier to understand? 11.6% of what? Give me some examples."
+> "so they originally won 49?"
+> "Why does Nationals not add up to 48? It adds up to 49?"
+> "2 electorate · 9 list I don't get this."
+
+Four questions about one block of numbers, and none of them was about the
+design. "11.6% of the party vote" is correct and assumes the reader knows MMP
+has two votes; "11.6% of voters chose National" is accurate about WHO without
+making them learn the mechanism first. The 48 against 49 turned out to be a
+real inconsistency in the data, not a misreading. "I don't get this" on the
+electorate and list split ended with the split being removed: a fact nobody
+asked for, explaining a mechanism that is not what the front page is for.
+
+### Match a thing that already exists
+
+> "make the border same as first section style"
+> "It needs to perfectly match the dome with exact margin"
+> "Full 2023 results should match same as this and put it under the box below"
+> "make this asame as see nz first bills style button"
+> "the lie under heading should always align"
+> "make the outline border of these smaller in weight, same as the outline of
+> the seats diagram"
+> "see the edges dont align butttons with trianglees always on margin same place"
+
+"Perfectly" and "exact" are literal. The arch was redrawn from the seat
+coordinates rather than fitted by eye, and the signposts were pulled out to the
+page gutter with a negative margin
+(`marginLeft: 'calc(-1 * clamp(18px, 5vw, 36px))'`) so every one of them starts
+on the same vertical line. **When a margin is described as wrong, measure the
+two things rather than adjusting one until it looks right.**
+
+### Reverting is part of the instruction
+
+> "lets add gradient at end to fade the arrow end of the button as a test"
+> "fade to o at end of arrow buttons"
+> "actually nah go back"
+> "where you gradient the end off firt"
+> "CREATE TWO COLUMNS remove the arrow and the triangle ends" / "go back to the
+> triangles" / "dont make it two column"
+
+Two of these ended back at an earlier version and one ended part way: the
+signposts kept the gradient at 35% and did not keep the fade to nothing. Keep
+each step recoverable, and read "as a test" as meaning exactly that.
