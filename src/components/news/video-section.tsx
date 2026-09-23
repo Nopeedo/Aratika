@@ -141,11 +141,21 @@ export function VideoSection({ videos, hideHeading = false, heading, blurb }: {
 
 const arrowBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: 999, border: `1px solid ${BORDER}`, background: '#fff', color: INK, cursor: 'pointer' }
 
+/**
+ * §3.1's trap, found here: a bare `<button>` with 6px 12px padding, which
+ * globals.css inflates to a 44px-tall tap target on a phone. "All" — short
+ * enough that the inflated box came out roughly square — rendered as a
+ * near-circle instead of a pill, and every other chip stood noticeably
+ * taller and chunkier than the site's other §2.2 pill rows. The button is
+ * the hit area now; the span is the pill.
+ */
 function FChip({ label, active, onClick, dot }: { label: string; active: boolean; onClick: () => void; dot?: string }) {
   return (
-    <button onClick={onClick} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 700, fontFamily: MANROPE, padding: '6px 12px', borderRadius: 999, cursor: 'pointer', color: active ? '#fff' : INK, background: active ? INK : '#fff', border: `1px solid ${active ? INK : BORDER}` }}>
-      {dot && <span style={{ width: 8, height: 8, borderRadius: '50%', background: dot, display: 'inline-block' }} />}
-      {label}
+    <button onClick={onClick} style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 700, fontFamily: MANROPE, padding: '5px 11px', borderRadius: 999, color: active ? '#fff' : INK, background: active ? INK : '#fff', border: `1px solid ${active ? INK : BORDER}`, whiteSpace: 'nowrap' }}>
+        {dot && <span style={{ width: 8, height: 8, borderRadius: '50%', background: dot, display: 'inline-block', flexShrink: 0 }} />}
+        {label}
+      </span>
     </button>
   )
 }

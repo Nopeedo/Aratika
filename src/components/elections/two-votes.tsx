@@ -38,7 +38,7 @@
  * that does not exist.
  */
 
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { ChevronDown, Landmark, MapPin, X } from 'lucide-react'
 import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
@@ -97,60 +97,74 @@ export function TwoVotes() {
           lopsided on a desktop. auto-fit collapses the empties so the two
           share the row at any width.
 
-          The panel still opens directly beneath the tapped tile, spanning
-          every column, so the row breaks there and not at the foot (§2.4). */}
+          The panel opens beneath BOTH tiles now, spanning every column,
+          whichever tile was tapped — found broken: with the panel rendered
+          as the tapped tile's own next sibling (both in one .map, panel
+          right after its button), tapping the FIRST tile put a full-width
+          panel between it and the second tile, and CSS Grid auto-placement
+          then started the second tile on a new row of its own rather than
+          leaving it beside the first — it dropped BELOW the panel instead
+          of staying above it with its neighbour. Tapping the second tile
+          never showed the bug, because both tiles were already placed
+          before its panel existed. Both buttons render first now, in a
+          fixed order the active panel can't insert into, and the panel is
+          the grid's last child — the row breaks after both tiles, not
+          wherever the tapped one happened to be (§2.4). */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 8 }}>
         {VOTES.map((v) => {
           const on = v.key === active
           return (
-            <Fragment key={v.key}>
-              <button
-                onClick={() => setActive(on ? null : v.key)}
-                aria-expanded={on}
+            <button
+              key={v.key}
+              onClick={() => setActive(on ? null : v.key)}
+              aria-expanded={on}
+              style={{
+                textAlign: 'left', cursor: 'pointer', position: 'relative',
+                background: v.light, borderRadius: 11, padding: '7px 26px 20px 10px',
+                borderStyle: 'solid', borderWidth: on ? 3 : 2, borderColor: v.accent,
+                transition: 'border-width .2s ease', fontFamily: MANROPE,
+              }}
+            >
+              <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: v.accent, fontFamily: MANROPE, marginBottom: 2 }}>
+                {v.badge ?? 'One local MP'}
+              </span>
+              <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{v.title}</span>
+              <ChevronDown
                 style={{
-                  textAlign: 'left', cursor: 'pointer', position: 'relative',
-                  background: v.light, borderRadius: 11, padding: '7px 26px 20px 10px',
-                  borderStyle: 'solid', borderWidth: on ? 3 : 2, borderColor: v.accent,
-                  transition: 'border-width .2s ease', fontFamily: MANROPE,
+                  position: 'absolute', right: 8, bottom: 7, width: 15, height: 15, color: v.accent,
+                  transform: on ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease',
                 }}
-              >
-                <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: v.accent, fontFamily: MANROPE, marginBottom: 2 }}>
-                  {v.badge ?? 'One local MP'}
-                </span>
-                <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{v.title}</span>
-                <ChevronDown
-                  style={{
-                    position: 'absolute', right: 8, bottom: 7, width: 15, height: 15, color: v.accent,
-                    transform: on ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease',
-                  }}
-                  strokeWidth={3}
-                />
-              </button>
-
-              {on && (
-                <div style={{ gridColumn: '1 / -1' }}>
-                  <div style={{
-                    background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16,
-                    padding: 'clamp(14px, 2.5vw, 20px)', marginTop: 2,
-                    boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 20px 40px -34px rgba(0,0,0,.4)',
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: v.accent, background: v.light, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
-                        {v.key === 'party' ? <Landmark style={{ width: 12, height: 12 }} /> : <MapPin style={{ width: 12, height: 12 }} />}
-                        {v.badge ?? 'One local MP'}
-                      </span>
-                      <button type="button" onClick={() => setActive(null)} aria-label={`Close ${v.title}`} style={{ background: 'none', border: 'none', padding: 6, margin: -6, cursor: 'pointer', color: SECONDARY, display: 'inline-flex', flexShrink: 0 }}>
-                        <X style={{ width: 17, height: 17 }} />
-                      </button>
-                    </div>
-                    <h3 style={{ fontSize: 'clamp(17px, 2.6vw, 21px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '11px 0 8px', lineHeight: 1.2 }}>{v.title}</h3>
-                    <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{v.body}</p>
-                  </div>
-                </div>
-              )}
-            </Fragment>
+                strokeWidth={3}
+              />
+            </button>
           )
         })}
+
+        {(() => {
+          const v = VOTES.find((x) => x.key === active)
+          if (!v) return null
+          return (
+            <div style={{ gridColumn: '1 / -1' }}>
+              <div style={{
+                background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16,
+                padding: 'clamp(14px, 2.5vw, 20px)', marginTop: 2,
+                boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 20px 40px -34px rgba(0,0,0,.4)',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: v.accent, background: v.light, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
+                    {v.key === 'party' ? <Landmark style={{ width: 12, height: 12 }} /> : <MapPin style={{ width: 12, height: 12 }} />}
+                    {v.badge ?? 'One local MP'}
+                  </span>
+                  <button type="button" onClick={() => setActive(null)} aria-label={`Close ${v.title}`} style={{ background: 'none', border: 'none', padding: 6, margin: -6, cursor: 'pointer', color: SECONDARY, display: 'inline-flex', flexShrink: 0 }}>
+                    <X style={{ width: 17, height: 17 }} />
+                  </button>
+                </div>
+                <h3 style={{ fontSize: 'clamp(17px, 2.6vw, 21px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '11px 0 8px', lineHeight: 1.2 }}>{v.title}</h3>
+                <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{v.body}</p>
+              </div>
+            </div>
+          )
+        })()}
       </div>
     </div>
   )

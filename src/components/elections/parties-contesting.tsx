@@ -320,41 +320,14 @@ export function PartiesContesting({ pop, asAt }: {
         </div>
       )}
 
-      {/* The threshold explained ONCE for the whole list, instead of once per
-          group as it was, and instead of the "5%" label repeated on all
-          seventeen tiles before that. This is the only place the mark is
-          DRAWN, so the legend is load-bearing here: it names a line the reader
-          can see. The #parties (i) used to restate it about 100px above, which
-          is the same fact twice in one section (§1.3), and now points here
-          instead. The party-vote card in "How your vote works" still states the
-          rule, deliberately: that section is teaching what the party vote does,
-          not how to read a chart, and a reader who never opens this section
-          would otherwise never meet the threshold at all.
-
-          The date sits with it: it is the date these seventeen bars are true
-          of, and it was printed on the poll card and on the chamber and not
-          here, which is where the bars are (§4). */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12, fontSize: 11, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.45 }}>
-        <span aria-hidden style={{ width: 22, flexShrink: 0, borderTop: `1.5px dashed ${hexToRgba(INK, 0.32)}` }} />
-        <span>
-          5%, the party vote needed to enter Parliament without winning an electorate
-          {asAt ? <> &middot; poll of polls as at {asAt}</> : null}
-        </span>
-      </div>
-
-      {/* The parties no pollster reports on its own. Said ONCE, over all of
-          them, rather than as six consecutive rows each reading "Not reported
-          separately" — which said the same sentence six times and made that
-          part of the list look like filler. They keep their row, their colour
-          and their link: they are on the ballot on the same terms as everyone
-          above, and the only thing they are missing is a number somebody else
-          chose not to publish. The "Not polled" pill is how you see which. */}
-      {notPolled.length > 0 && (
-        <p style={{ fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, margin: '8px 0 0', lineHeight: 1.5 }}>
-          Pollsters don&rsquo;t report {notPolled.length} of these parties separately, they&rsquo;re inside the
-          &ldquo;Others&rdquo; figure, so those rows show no number rather than a zero.
-        </p>
-      )}
+      {/* The threshold legend, and the "pollsters don't report N of these
+          separately" note, both lived here as always-visible text — moved
+          behind the section's own (i), by request (§1.2: explanation goes
+          behind the (i), not in the body). The dashed TICK on each bar
+          (.pc-tick, below) still draws; only its caption moved. The (i) is
+          the ZoneHead's, in upcoming-view.tsx — "Reading the bars" now
+          states the 5% threshold directly, and "What a poll is not"
+          already covered the Others/not-polled explanation. */}
     </div>
   )
 }

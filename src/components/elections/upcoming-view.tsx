@@ -64,7 +64,6 @@ import { ClosestRaces, type ClosestRace } from './closest-races'
 import { VideoSection } from '@/components/news/video-section'
 import { ZoneHead } from './zone-head'
 import { InfoHeading, InfoText } from '@/components/ui/info-button'
-import { SignShape } from '@/components/ui/sign-link'
 import { WOVEN_PAGE } from '@/constants/theme'
 import { PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
@@ -197,8 +196,8 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               </InfoText>
               <InfoHeading accent={ACCENT.parties}>Reading the bars</InfoHeading>
               <InfoText>
-                Every bar is drawn on the same axis, so the lengths can be compared directly. What the dashed line is
-                for is written under the bars themselves, where the line is.
+                Every bar is drawn on the same axis, so the lengths can be compared directly. The dashed line marks
+                5%, the share of the party vote a party needs to enter Parliament without winning an electorate.
               </InfoText>
               <InfoHeading accent={ACCENT.parties}>What a poll is not</InfoHeading>
               <InfoText>
@@ -295,17 +294,8 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               </InfoText>
             </ZoneHead>
             <ClosestRaces races={races} year={base.year} />
-            {/* §2.6, one per section: the map WAS this block, 520px of Leaflet
-                plus a 420px "Tap a seat" panel, arriving open. It is a
-                destination now, and the sign is pulled out to the page gutter
-                so it starts on the same vertical line as every other signpost
-                on the site (§8, "buttons with triangles always on margin same
-                place"). */}
-            <div style={{ marginTop: 18, marginLeft: 'calc(-1 * clamp(18px, 5vw, 36px))' }}>
-              <SignShape href="/battlegrounds" color={ACCENT.seat} fg="#fff">
-                All 72 seats on the map
-              </SignShape>
-            </div>
+            {/* The "All 72 seats on the map" signpost to /battlegrounds
+                removed by request. */}
           </section>
 
           {/* ── LEADERS & THE PRESS ──────────────────────────────────────────

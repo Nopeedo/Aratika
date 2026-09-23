@@ -64,8 +64,14 @@ export interface SeatEntry { slug: PartySlug; seats: number; pct?: number }
 
 type Mode = 'elected' | 'polls' | 'build'
 
+// "As elected" removed by request: the actual 2023 result read as a
+// prediction sitting beside "If polls held" and "Who could govern", which
+// are genuinely projections. It isn't one — it's the certified result — so
+// it's demoted to the "Full {year} results" link below rather than a tab
+// that implies it's the same kind of thing as the two that are. Mode
+// 'elected' stays in the type: the homepage variant (`home`) still opens on
+// it and never shows tabs at all, so it needed no tab to remove.
 const TABS: { key: Mode; label: string }[] = [
-  { key: 'elected', label: 'As elected' },
   { key: 'polls', label: 'If polls held' },
   // §1.7: "bloc" is Parliament's word, and this tab said "Build a bloc"
   // while the heading it produced said "Build a majority" — two names for one
@@ -157,7 +163,10 @@ export function SeatChamber({
    */
   pickScrollsToIdPrefix?: string
 }) {
-  const [mode, setMode] = React.useState<Mode>('elected')
+  // Election Centre opens on 'polls' now — its own tab for the real 2023
+  // result is gone (see TABS above). The homepage variant is untouched: it
+  // never shows tabs, so it still opens on and stays on 'elected'.
+  const [mode, setMode] = React.useState<Mode>(home ? 'elected' : 'polls')
   const [picked, setPicked] = React.useState<Set<PartySlug>>(new Set())
 
   const electedByParty = React.useMemo(
@@ -401,8 +410,13 @@ export function SeatChamber({
       )}
       <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 8px', maxWidth: 580, lineHeight: 1.55 }}>{sub}</p>
       {/* The homepage puts this link below the numbers instead, as a signpost
-          (see ParliamentNow) — the same shape the policy section closes with. */}
-      {mode === 'elected' && !home && (
+          (see ParliamentNow) — the same shape the policy section closes with.
+          Used to gate on mode === 'elected', which was fine while that mode
+          was a tab a reader could land on; now it never is on this page (see
+          TABS above), so gating on it would have hidden this link
+          permanently. Just !home now — the real result is reachable from
+          every tab, not only one that no longer exists. */}
+      {!home && (
         <Link href={`/elections/${electedSlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
           Full {electedYear} results <ArrowRight style={{ width: 14, height: 14 }} />
         </Link>
