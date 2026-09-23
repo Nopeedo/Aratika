@@ -84,11 +84,17 @@ export async function PartyCoverage({ slug, colour }: { slug: string; colour: st
                 label was naming what was already obvious. "On video" stays,
                 because the thumbnails below it need telling apart. */}
             {news.length === 0 ? <Empty what="news" /> : (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {news.map((n, i) => (
+              /* One card per story, not five rows split by hairlines. Every
+                 headline here is a separate thing from a separate outlet, and
+                 a rule between two two-line headlines is not enough to say so
+                 — a reader scanning fast reads the block as one list of
+                 sentences. Same white-on-tinted-border frame as the sections
+                 above, one step smaller. */
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {news.map((n) => (
                   <a key={n.id} href={n.link} target="_blank" rel="noopener noreferrer" style={{
-                    display: 'block', textDecoration: 'none', padding: '11px 0',
-                    borderTop: i === 0 ? 'none' : `1px solid ${BORDER}`,
+                    display: 'block', textDecoration: 'none', padding: '11px 13px',
+                    background: '#fff', border: `1px solid ${tint(colour, 0.35)}`, borderRadius: 12,
                   }}>
                     <span style={{ display: 'block', fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, lineHeight: 1.35 }}>
                       {n.title}
