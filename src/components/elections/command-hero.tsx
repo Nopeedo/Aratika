@@ -34,7 +34,6 @@
  * to, and as the strip's "Election day" tile. The strip keeps it.
  */
 
-import { BackLink } from '@/components/ui/back-link'
 import { useEffect, useState } from 'react'
 import { ELECTION_SECTIONS, HERO_JUMP_ID } from '@/constants/election-sections'
 import { JADE, JADE_DARK, MANROPE } from '@/constants/theme'
@@ -66,19 +65,28 @@ export function CommandHero() {
     // hero — the same seam bug already fixed once on the homepage.
     <section style={{ position: 'relative' }}>
       <div style={{ position: 'relative', maxWidth: 1080, margin: '0 auto', padding: 'clamp(18px, 3vh, 26px) clamp(18px, 5vw, 40px) clamp(24px, 4vh, 36px)' }}>
-        {/* Top row — back link + live eyebrow */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 'clamp(14px, 3vh, 26px)' }}>
-          <BackLink fallbackHref="/elections" label="All elections"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700, color: WARM, textDecoration: 'none', fontFamily: MANROPE }} />
+        {/* Live eyebrow. The "All elections" back link sat here too, top-left
+            against the eyebrow top-right — this is the 2026 Election Centre's
+            own landing point, not a step in a flow with a page above it to
+            back out to, so a back link here had nowhere useful to return the
+            reader to. BackLink import stays on other pages that are one step
+            of a real sequence (an election year page reached FROM /elections). */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'clamp(14px, 3vh, 26px)' }}>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 12, fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: JADE_DARK, fontFamily: MANROPE }}>
             <span className="live-dot" style={{ width: 8, height: 8, borderRadius: '50%', background: JADE, display: 'inline-block' }} />
             Election Centre
           </span>
         </div>
 
-        {/* Headline */}
-        <h1 style={{ fontSize: 'clamp(27px, 4.6vw, 46px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.05, fontFamily: MANROPE, color: ESPRESSO, margin: '0 0 clamp(16px, 3vh, 24px)', textAlign: 'center' }}>
-          The 2026 General Election
+        {/* Headline — sized and placed like the policy comparison page's own
+            h1 ("Party Policy Comparison"): left-aligned, clamp(28px, 7vw,
+            36px), 18px under it. Was centred at up to 46px, its own one-off
+            treatment; this page's title now reads at the same weight as
+            every other page's, rather than announcing itself louder than
+            the section headings below it (§4's peer-heading rule, extended
+            to page titles rather than just section ones). */}
+        <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: ESPRESSO, margin: '0 0 18px' }}>
+          2026 general election
         </h1>
 
         {/* One tile. The label does the job the deleted date line was doing
