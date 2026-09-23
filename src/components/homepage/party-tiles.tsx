@@ -290,7 +290,11 @@ export function PartyBillsSummary({ parties }: { parties: TileParty[] }) {
 
   return (
     <section style={{ background: 'transparent' }}>
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 32px' }}>
+      {/* Pulled up 12px: the MP list above closes with its own bottom margin,
+          which left 24px of air over this heading — a bigger gap than the one
+          inside the block it heads. Taken from this side because the margin
+          belongs to another component. */}
+      <div style={{ maxWidth: 760, margin: '-12px auto 0', padding: '0 clamp(18px, 5vw, 36px) 32px' }}>
         <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
           <BillsRow p={p} />
         </div>
