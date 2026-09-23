@@ -448,6 +448,13 @@ account and the thing they came for without tapping twice.
 
 ### 2.14 Directory pills over a grid — `src/components/parties/party-directory.tsx`
 
+> **Retired 24 Sep 2026.** `/parties` is a redirect to `/parties/national` now
+> (§2.15–2.16): the directory was a menu of seventeen tiles that each said a
+> name and a seat count, so it stood between the reader and the pages they
+> wanted. The component is intact and the pattern below still holds wherever a
+> grid needs grouping — it is just not on this route any more. `PartySwitcher`
+> took over its one unique job, reaching the eleven parties with no seats.
+
 `/parties` had three stacked sections, Governing Coalition, Opposition, and Also
 contesting 2026, each with a heading and a count chip. That is a filter the
 reader operates by scrolling: the eleven parties without seats sat past six
@@ -510,6 +517,79 @@ House-wide split is stated once now, in the bar above the grid.
 
 ---
 
+### 2.15 Collapsible section — `src/components/parties/collapsible-card.tsx`
+
+A page section as a closed rectangle that opens when tapped. `/parties/[slug]`
+was five open cards in a column: about two and a half phone screens of prose
+standing in front of the positions, which is what a reader came for. Closed,
+the same five are a menu of what the page holds.
+
+```
+frame    #fff · 2px solid tint(accent, .45) · radius 18
+         padding 9px 14px · shadow 0 1px 2px rgba(42,18,6,.04),
+                                   0 8px 20px -12px rgba(42,18,6,.14)
+header   the whole row is the button: padding 0, margin 0, background none,
+         border none — the card supplies the padding (§3.1)
+         icon chip 26x26 · radius 8 · tint(accent, .12) · glyph 15px in accent
+         title 16px/800 INK · chevron 18px in accent, rotate(180deg) when open
+body     rendered only while open, marginTop 14
+column   gap 10 between cards, not 20: closed they are rows of one list
+```
+
+**The icon crosses the server boundary as an element, not a component.** A
+lucide function cannot be passed as a prop to a client component; `<Landmark
+style={{ width: 15, height: 15 }} />` can.
+
+**One section starts open.** Five closed rectangles give a reader nothing to
+read and no reason to open any of them, so the first shows what the rest are
+like (`defaultOpen` on Overview).
+
+**A section that is one of five looks like one of five in both states.** A
+phone rule used to strip this frame from "Where they stand" — written when that
+card was always open, where losing the border bought ~48px of width for the
+chip grid. Scoping the rule to the open state was not enough: a section that
+loses its container the moment you open it reads as a different kind of thing.
+The rule is gone; the chips take the narrower measure.
+
+### 2.16 Identity header — `src/app/parties/[slug]/page.tsx`
+
+What a profile page leads with. Built from parts that already existed rather
+than new ones, so the page reads as the same system as `/policies/[topic]`.
+
+```
+title     the page's name ("Party Profiles"), clamp(26px, 7vw, 40px)/800
+subject   the party AS A PILL, the §2 object /policies/[topic] uses for its
+          issue: inline-flex · radius 999 · 3px solid tint(colour, .55)
+          background #fff · padding 8px 20px 8px 17px · whiteSpace nowrap
+          colour readableOnWhite(party.colour), NOT INK
+          12px dot in party colour where the topic pill has its icon
+          name > 16 chars → clamp(17px, 4.9vw, 30px), else clamp(24px, 6.5vw, 34px)
+row       pill + Track side by side, gap 10, flexWrap — a long name keeps its
+          line and Track drops under it
+status    tint(colour, .12) fill · 1px solid tint(colour, .35) · 3px 11px
+          text readableOnWhite(colour) — never a solid block of party colour
+```
+
+**The subject takes the party's colour; the chip beside it does not.** The name
+was the same brown-black on all seventeen parties, on a page whose only other
+colour is a 12% wash. Once the name is green, a solid green chip under it is
+two things shouting the same colour, so the chip goes quiet (§1.6).
+
+**`readableOnWhite` — `src/lib/color.ts`.** Darkens only the colours that need
+it, hue untouched, so ACT stays ACT instead of going grey. It had been copied
+by hand into two files before the third use moved it here.
+
+**A number is not a headline unless it is about something.** The seat count was
+a 150x156 card with a 54px numeral and a drop shadow, sitting between the
+party's links and everything the page had to say — a figure that reads **0** on
+eleven of the seventeen parties. It is the first stat inside the 2023 election
+section now, where the electorate/list split and the rows that describe it
+live, and the header keeps nothing that has no company.
+
+**The sidebar is gone.** It held "At a glance" and Leadership; on a phone the
+column dropped below everything, so its contents were read last rather than
+beside anything. Both moved into the section they belong to, at every width.
+
 ## 3. Mobile rules
 
 **3.1 The 44px tap-target trap.** `globals.css` gives every `<button>` a 44px
@@ -557,6 +637,13 @@ the page never received any of it.
 | /parties tile | 176px, 1 per row | **83px, 2 per row** |
 | Election Centre, Key Dates on arrival | 4 cards, ~145px, equal weight | **1 card**, the next live deadline, rest behind a tap |
 | Election Centre, hero jump nav | 6 pills, ~40px row | **5 text links**, Key Dates dropped (it is the next section) |
+| Party page, whole page | 8,514px, 10.5 screens | **1,906px, 2.3 screens** at 375px, closed |
+| Party page, "Where they stand" | 2,997px, expanded on arrival | **a closed rectangle** like the other four |
+| Party page, switcher before the name | 311px | one row shorter, pills at phone size (§3.3) |
+| Party page, seat figure | 150x156 card, 54px numeral | **one line** inside the 2023 election section |
+| Party switcher pills | 5px 11px, 12.5px, dot 8 | **4px 9px, 11.5px, dot 7**, gap 4 |
+| Party switcher, "Contesting 2026" | 6 rows | **5 rows**, party name 2 rows higher |
+| News list | hairline rules between rows | **one card each**, gap 8 |
 
 **3.4 Fit-to-width beats shrink-to-fit.** The seats line was scaled to match the
 heading's width; because it ends in the party's name its natural width swings
@@ -769,6 +856,44 @@ version of the request that doesn't.
 
 ---
 
+### A rule written for an always-open thing outlives the always-open thing
+
+`.ap-stand` stripped the card chrome from "Where they stand" on phones, which
+bought ~48px of width for its chip grid. The section became collapsible and the
+rule stayed, so the card had a frame until you opened it and then lost one.
+Narrowing the rule to the open state was the same bug with better aim. **When a
+component's behaviour changes, re-read the CSS that was written for the old
+behaviour — the reason it existed may have gone.**
+
+### Reading the request in a server component costs the whole route
+
+Not a design rule, but it shaped a day's work and will happen again. In the App
+Router, `await searchParams`, `cookies()`, or any Supabase client that touches
+cookies opts a route out of static rendering entirely, whatever `revalidate`
+says. Measured on production: prerendered routes answer in ~0.2s, the rest in
+1.3-2.9s.
+
+- `/bills` awaited `searchParams` for `?party=`; the client tracker reads the
+  query itself now, behind `<Suspense>`.
+- `getApprovedBills` used the cookie-bound server client for public content;
+  `lib/supabase/public.ts` exists precisely for this and says so.
+- The homepage called `getSession()` to redirect signed-in visitors, so every
+  visitor to the page campaign traffic lands on paid for it. That moved to
+  `proxy.ts`.
+
+**Next 16 renamed middleware to proxy, and this repo has `src/proxy.ts`.**
+Adding a `src/middleware.ts` beside it makes *every route on the site* 404 with
+the reason only in the dev log.
+
+### A loading bar is not a loading time
+
+Reported as "why am I waiting, is it the animation?" — it was not.
+`RouteProgress` starts on the click and finishes 160ms after the route commits,
+with no minimum. But a route with no `loading.tsx` leaves the PREVIOUS page on
+screen for the whole wait, so the bar is the only thing moving and the click
+reads as having missed. **Every slow route needs a `loading.tsx`**; there is a
+root one now for anything without its own.
+
 ## 6. Applying this to the next page
 
 A checklist, in the order that worked:
@@ -863,9 +988,15 @@ A checklist, in the order that worked:
   `TileGroupHeading`. Left in the tree rather than deleted while other sessions
   are working in it, which means an orphan that looks like §2.3 is sitting there
   to be picked up by mistake.
-- `/parties/[slug]` is untouched. Measured at 375x812 before anything: 8514px,
-  10.5 screens; the party switcher takes 311px before the party's own name;
-  "Where they stand" is 2997px and arrives expanded, against §1.1.
+- ~~`/parties/[slug]` is untouched.~~ **Done 24 Sep 2026** (§2.15–2.16). The
+  8514px / 10.5 screens measured here is now 1906px / 2.3 screens closed; the
+  switcher's 311px came down with the phone-size pills (§3.3); "Where they
+  stand" was 2997px and expanded on arrival against §1.1, and is a closed
+  rectangle like the other four.
+- `src/components/parties/party-directory.tsx` joins `party-tile.tsx` as an
+  orphan: `/parties` is a redirect now, so nothing imports it. Same reasoning —
+  left in the tree while other sessions are working nearby, and worth deleting
+  together once they are done.
 
 
 ---
@@ -1121,3 +1252,69 @@ that directly — §6's checklist doesn't have a step for it. Worth adding one
 next time this file gets a real edit: after §6.5 ("match the shapes"), ask
 what a first-time reader's ONE most useful action is, and check that the page
 gets them there before it shows them anything else.
+
+### Land them on the thing, not on a list of things
+
+> "this page i want replaced...instead have it default to the nationals page
+> https://politika.nz/parties/national"
+> "but change the slug to match this"
+
+An index whose every row says only a name and a count is a menu in front of the
+pages people actually want. `/parties` redirects to the first party now, and
+the switcher already on that page carries all seventeen. The second message
+matters as much as the first: a redirect, so the address bar shows the party
+being read, not a rewrite that keeps the old URL.
+
+### Match a thing that already exists, again
+
+> "Can we put that title of the party behind, in front of a white pill, like
+> how you've done it on the party policy comparisons with the issues, but
+> instead it's the party name?"
+
+Not "make it a pill" — make it *that* pill. The answer was to copy the numbers
+out of `/policies/[topic]`'s heading, including its rule that names over 16
+characters take a smaller size, and change only what a party has that a topic
+does not (a colour dot instead of an icon).
+
+### Fold it up
+
+> "Let's compact all of these sections in a rectangle of the same style as the
+> containers. For example, 'Overview' will only read 'Overview', and then when
+> you tap into it, it expands the boxes."
+> "have overview already open"
+> "gaps too big"
+
+Three messages, one idea arriving in stages: fold the page into a list, then
+give the list something to read, then make it look like a list instead of five
+drifting cards. The second and third were not corrections — they were the parts
+of the idea that only become visible once the first is built.
+
+### Say why it is one thing and not another
+
+> "All of these should be clearly separate things, so put some sort of
+> background behind each of these."
+
+Five headlines split by hairlines read as one list of sentences, because most
+of them run to two lines and a thin rule between two blocks of text is just
+more text. A background is what says "separate thing".
+
+### Not everything needs to survive the move
+
+> "Remove 'founded' and instead put the same box and information into the
+> Legislative Record this term, and change the Legislative Record this term to
+> 2023 election."
+
+Moving a block is a chance to drop the row that never belonged in it. Founded
+was the one line in "At a glance" with nothing to do with 2023.
+
+### Ask what you are actually waiting for
+
+> "how can I speed up loading time?"
+> "Okay so why am I waiting? Am I waiting for the animation and loading?
+> There's an animated loading bar at the top. Does it wait every time?"
+
+The second question is the one that found the answer. It was not the animation
+— but asking made the difference between "the site is slow" and a measurement
+showing prerendered routes at 0.2s and the rest at 1.3-2.9s, which named the
+cause exactly. **Measure the live site before changing anything**; the fix was
+six lines of config, not a rewrite.
