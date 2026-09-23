@@ -93,31 +93,28 @@ export function CommandHero() {
           </div>
         </div>
 
-        {/* Jump nav — §2.2 pills, in ONE neutral treatment.
-            They wore a pale section tint and a 2px section-coloured border, six
-            hues in one row, which is a second colour system on a page where
-            colour already means party (the bars in #parties) and status (the
-            red enrolment deadline). §1.6 allows colour one meaning at a time,
-            and §2.14's reasoning applies verbatim. The per-section ink stays on
-            the floating rail, where a dot is the only signal there is.
+        {/* Jump nav — a light text-link row now, not six equal §2.2 pills.
+            Six identically-weighted pills put "Key dates" — the one section
+            with a deadline — beside "Leaders & the press" as if a reader
+            should weigh them the same. Key Dates is also the very next thing
+            on the page, so a pill pointing at it here was pointing one
+            scroll away: dropped from this row, the section itself is the
+            answer. The other five stay, small and quiet, so the hero's own
+            weight goes to the headline and the count above rather than to
+            a second navigation system competing with it.
 
-            §3.1: these are <a>, so globals.css's 44px <button> minimum never
-            reached them and they stood at 38px. The link is the hit area, the
-            span inside is the pill — 28px to look at, 44px to hit.
-
-            The sections come from ELECTION_SECTIONS, shared with the floating
-            rail, so a chip can't outlive the section it points at the way
-            #parliament did. The id is what the rail watches: it shows itself
-            only once these chips have scrolled out of view. */}
-        <div id={HERO_JUMP_ID} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 8 }}>
-          {ELECTION_SECTIONS.map((j) => (
-            <a key={j.id} href={`#${j.id}`} style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', textDecoration: 'none' }}>
-              <span className="status-pill" style={{
-                display: 'inline-flex', alignItems: 'center', borderRadius: 999,
-                background: '#fff', border: '2px solid rgba(42,18,6,.18)',
-                color: ESPRESSO, fontFamily: MANROPE, fontWeight: 800, whiteSpace: 'nowrap',
-              }}>{j.label}</span>
-            </a>
+            §3.1: still <a>, so globals.css's 44px <button> minimum is
+            cancelled the same way — the link is the hit area, the text is
+            the control. */}
+        <div id={HERO_JUMP_ID} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '4px 14px' }}>
+          {ELECTION_SECTIONS.filter((j) => j.id !== 'key-dates').map((j, i, arr) => (
+            <span key={j.id} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px 14px' }}>
+              <a href={`#${j.id}`} style={{
+                display: 'inline-flex', padding: '10px 0', margin: '-10px 0', textDecoration: 'none',
+                fontSize: 12.5, fontWeight: 700, color: WARM, fontFamily: MANROPE, whiteSpace: 'nowrap',
+              }}>{j.label}</a>
+              {i < arr.length - 1 && <span aria-hidden style={{ color: 'rgba(42,18,6,.25)', fontSize: 12 }}>·</span>}
+            </span>
           ))}
         </div>
       </div>

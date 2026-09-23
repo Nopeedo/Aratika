@@ -67,6 +67,7 @@ import { ZoneHead } from './zone-head'
 import { InfoHeading, InfoText } from '@/components/ui/info-button'
 import { SignShape } from '@/components/ui/sign-link'
 import { WOVEN_PAGE } from '@/constants/theme'
+import { PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
 
 // Warm palette carried over from the homepage/hub so the Election Centre reads
@@ -229,6 +230,20 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               the list comes from and when it changes: three (i) sections, and
               it still said "each tile fills" for a component that has not been
               tiles since parties-contesting.tsx was rewritten to rows. */}
+          {/* Wrapped in a wash of the poll leader's own colour — the first
+              real colour break on the page below the hero, and it is not a
+              decoration picked to break up the cream: it is the fact the
+              section states (who is ahead) drawn as the section's own
+              ground, the same move §1.6 makes everywhere else on the site
+              ("a block takes the colour of whatever it is about"). A flat
+              wash rather than a border or a tint on the bars themselves,
+              because those already carry every party's colour and a second
+              use of the same colours for a different purpose (rank vs
+              identity) would be the §1.6 violation the rule exists to catch. */}
+          <div style={{
+            background: `linear-gradient(180deg, ${PARTY_COLORS[pop[0]?.slug ?? 'national'].light} 0%, rgba(255,255,255,0) 100%)`,
+            margin: '0 calc(-1 * clamp(18px, 5vw, 36px))', padding: '20px clamp(18px, 5vw, 36px) 0', borderRadius: 20,
+          }}>
           <section id="parties" style={{ scrollMarginTop: 80 }}>
             {/* The heading used to read "Every party you can vote for", which
                  describes the LIST and says nothing about the bars and the
@@ -279,6 +294,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               />
             </div>
           </section>
+          </div>
 
           {/* ── THE SEATS — one chamber, three ways to read it ───────────────── */}
           {/* Was two sections ~1600px apart, both drawing the same hemicycle:
