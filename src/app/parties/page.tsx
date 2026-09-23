@@ -18,7 +18,7 @@ import type { PartySlug } from '@/types'
 import { INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
-  title: 'Political Parties',
+  title: 'Party Profiles',
   description:
     'Every registered party contesting the 2026 New Zealand election, in the 54th ' +
     'Parliament and outside it. Seat counts, leadership, and where each one stands on every issue.',
@@ -77,7 +77,7 @@ export default function PartiesPage() {
             it is beside a heading and not a pill (§2.1). */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
           <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.1 }}>
-            Political Parties
+            Party Profiles
           </h1>
           <InfoButton accent={JADE} label="How this list is put together" size={24}>
             <InfoHeading accent={JADE}>Who is on this list</InfoHeading>
