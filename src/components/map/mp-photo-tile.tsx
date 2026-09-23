@@ -34,7 +34,13 @@ export function MpPhotoTile({ name, party, mp, caption, fill }: {
   const pc = party ? PARTY_COLORS[party] : null
 
   const inner = (
-    <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 190, background: pc ? pc.light : '#eef1f4' }}>
+    /* 150, not 190. A hard minimum inside a flex column that can be shorter
+       than it pushes the tile past the parent's 14px radius and clips a face at
+       the corner: the stacked phone panel is 460px and the card above it about
+       230px, so at 190 the photo took every pixel that was left and then some.
+       Still a floor, because a photo squeezed to 40px is worse than a tall
+       column, just a floor the column can actually hold. */
+    <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: 150, background: pc ? pc.light : '#eef1f4' }}>
       {mp?.photo ? (
         <Image src={mp.photo} alt={name} fill unoptimized style={{ objectFit: 'cover', objectPosition: '50% 22%' }} />
       ) : (

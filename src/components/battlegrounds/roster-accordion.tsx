@@ -1,10 +1,25 @@
 'use client'
 
 /**
- * RosterAccordion — the "war room" roster: each combatant (the defending MP,
- * each confirmed challenger) is a collapsed dossier row you tap to expand into
- * their full profile. Keeps the page short by default while all the real,
- * sourced depth (bio, record, questions, policies) stays one tap away.
+ * RosterAccordion — who is standing here: the sitting MP and each confirmed
+ * candidate, as a row you tap to open their full record. Keeps the page short
+ * while all the real, sourced depth (bio, record, questions, policies) stays
+ * one tap away.
+ *
+ * NOTHING IS OPEN ON ARRIVAL (§1.1), which is the largest single change on this
+ * page. The sitting MP's record — bio, portfolios, committees, three bill
+ * lists, a written-questions count, four minister bars and a nested list of
+ * recent questions and replies — used to be expanded before the reader had
+ * chosen anything, which is §1.1's debated-bills case at several times the
+ * height, and it also made every candidate below it read as a footnote to the
+ * incumbent. The scroll anchor below is still right when a tall open row
+ * CLOSES; it is simply no longer load-bearing.
+ *
+ * The poll bar went with it (§1.8). A percentage beside a named candidate's
+ * photograph, with a filled bar in their party's colour, is a claim about a
+ * real person, and the page's own standfirst called it "illustrative only. No
+ * verified electorate-level polling exists". A disclaimer forty words above
+ * does not undo a bar.
  */
 
 import { useLayoutEffect, useRef, useState } from 'react'
@@ -33,23 +48,22 @@ export interface RosterItem {
    * different party than the majority beneath it was won for.
    */
   note?: string
-  /** Illustrative-only poll standing (0-100) — see Candidate2026.pollPct. Omit unless mock/sourced. */
-  pollPct?: number
   body: React.ReactNode
 }
 
 export function RosterAccordion({ items, defaultOpenKey }: { items: RosterItem[]; defaultOpenKey?: string }) {
-  const [openKey, setOpenKey] = useState<string | null>(defaultOpenKey ?? items[0]?.key ?? null)
+  // Closed unless the CALLER names a row (§1.1). It used to fall back to
+  // `items[0]`, the sitting MP, whose record is the tallest thing on the page.
+  const [openKey, setOpenKey] = useState<string | null>(defaultOpenKey ?? null)
 
   // Keep the row you tapped where it is on screen.
   //
-  // Opening one row closes the previous one, and the first row — the incumbent,
-  // whose dossier is the tallest — is open by default. So tapping a challenger
-  // below it deletes a screen or more of content ABOVE the tap. The browser
-  // holds scrollTop while the document shrinks under it, which throws the page
-  // down and, near the end, clamps it to the new bottom: you land past the row
-  // you opened and have to scroll back up to read it. Worst on a phone, where
-  // the dossier is tallest relative to the viewport.
+  // Opening one row closes the previous one, so tapping a row below an open one
+  // deletes a screen or more of content ABOVE the tap. The browser holds
+  // scrollTop while the document shrinks under it, which throws the page down
+  // and, near the end, clamps it to the new bottom: you land past the row you
+  // opened and have to scroll back up to read it. Worst on a phone, where an
+  // open record is tallest relative to the viewport.
   //
   // Measure the tapped header before the state change, then put it back at the
   // same offset after layout. useLayoutEffect, not useEffect: this has to run
@@ -111,14 +125,6 @@ export function RosterAccordion({ items, defaultOpenKey }: { items: RosterItem[]
                 <div style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, marginTop: 1 }}>{item.subtitle}</div>
                 {item.note && (
                   <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 3, lineHeight: 1.4 }}>{item.note}</div>
-                )}
-                {item.pollPct != null && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, maxWidth: 220 }}>
-                    <div style={{ flex: 1, height: 5, background: '#e9e7e2', borderRadius: 3, overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${item.pollPct}%`, background: item.color, borderRadius: 3 }} />
-                    </div>
-                    <span style={{ fontSize: 11.5, fontWeight: 800, color: INK, fontFamily: MANROPE, flexShrink: 0 }}>{item.pollPct}%</span>
-                  </div>
                 )}
               </div>
               <ChevronDown style={{ width: 17, height: 17, color: SECONDARY, flexShrink: 0, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .15s' }} />

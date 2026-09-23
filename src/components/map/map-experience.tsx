@@ -13,14 +13,18 @@
 
 import * as React from 'react'
 import dynamic from 'next/dynamic'
-import { Search, Layers, Loader2, MapPinOff, ShieldCheck } from 'lucide-react'
+import { Search, Loader2, MapPinOff } from 'lucide-react'
 import type { Feature, FeatureCollection } from 'geojson'
 import { ElectoratePanel } from './electorate-panel'
 import { ElectorateTiles } from './electorate-tiles'
+import { RollPills } from './roll-pills'
 import {
-  electorateNameFromProps, normalizeElectorateKey,
+  ELECTORATES, electorateNameFromProps, getElectorate, normalizeElectorateKey,
 } from '@/constants/electorates-data'
+import { MP_PROFILES } from '@/constants/mps-data'
+import { toSlug } from '@/lib/utils/format'
 import { PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
+import type { PartySlug } from '@/types'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { MAP_LEGEND_CSS } from '@/components/map/legend-css'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
@@ -81,6 +85,48 @@ async function geocodeNZ(q: string): Promise<{ pt: LngLat; label: string } | nul
   if (!arr.length) return null
   return { pt: [parseFloat(arr[0].lon), parseFloat(arr[0].lat)], label: arr[0].display_name?.split(',')[0] ?? q }
 }
+
+/**
+ * Fill each seat in the party its MP is in NOW, not the party that won it in
+ * 2023.
+ *
+ * ElectorateMap's default is `info.party`, the 2023 winner, and two sitting MPs
+ * have left the party they won for: Te Tai Tokerau and Te Tai Tonga rendered
+ * and labelled Te Pāti Māori under a legend headed "Held by", while /mps and
+ * /battlegrounds both say Independent. One fact, two answers, about two named
+ * people (§1.3, §1.8). Passed as `colorOf` rather than changed in
+ * electorate-map.tsx, which has a third caller.
+ */
+function sittingParty(info: { mpSlug?: string; mpName?: string; party: PartySlug | null }): PartySlug | null {
+  const slug = info.mpSlug ?? (info.mpName ? toSlug(info.mpName) : undefined)
+  return (slug ? MP_PROFILES[slug]?.party : undefined) ?? info.party
+}
+
+function sittingPartyColor(name: string): string | null {
+  const info = getElectorate(name)
+  if (!info) return null
+  const party = sittingParty(info)
+  return party ? PARTY_COLORS[party].bg : null
+}
+
+/**
+ * The legend lists the parties actually ON the map, derived, not PARTY_ORDER.
+ *
+ * PARTY_ORDER is the six parliamentary parties and the map now fills by sitting
+ * member, so the two Independent-held seats were drawn in a colour the key did
+ * not name (§1.5). Deriving it also means the key cannot go stale the next time
+ * an MP crosses the floor.
+ */
+const LEGEND_PARTIES: PartySlug[] = (() => {
+  const present = new Set<PartySlug>()
+  for (const info of Object.values(ELECTORATES)) {
+    const p = sittingParty(info)
+    if (p) present.add(p)
+  }
+  const ordered = PARTY_ORDER.filter((p) => present.has(p))
+  const rest = [...present].filter((p) => !ordered.includes(p)).sort()
+  return [...ordered, ...rest]
+})()
 
 export function MapExperience({ initialSearch, embedded = false }: { initialSearch?: string; embedded?: boolean }) {
   const [layer, setLayer]           = React.useState<LayerType>('general')
@@ -170,36 +216,28 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
 
   const selectedKey = selected ? normalizeElectorateKey(selected) : null
 
-  const mapHeight = embedded ? 'clamp(560px, 76vh, 740px)' : 'clamp(600px, 82vh, 840px)'
+  /**
+   * One height, and the same one /battlegrounds uses (§1.4): the same map was
+   * 585px on a phone here and 440px there.
+   *
+   * 460px on a phone, not 585. The toolbar above it is 151px, so at 585 the
+   * panel's first line landed 736px down an 812px screen: a tap on the map
+   * produced no visible change, because the answer was below the fold. On a
+   * desktop the panel sits BESIDE the map, so height costs nothing there and
+   * the map keeps its room.
+   */
+  const mapHeight = embedded ? 'clamp(560px, 76vh, 740px)' : 'clamp(520px, 70vh, 700px)'
 
   return (
-    <div style={embedded ? { padding: 0 } : { maxWidth: 1280, margin: '0 auto', padding: '20px clamp(14px, 4vw, 24px) 48px' }}>
+    <div style={embedded ? { padding: 0 } : { maxWidth: 1280, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 48px' }}>
 
       {/* Toolbar */}
       <div className="map-toolbar" style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', marginBottom: 16 }}>
-        {/* Layer toggle */}
-        <div style={{ display: 'inline-flex', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 3 }}>
-          {(['general', 'maori'] as LayerType[]).map((l) => (
-            <button
-              key={l}
-              onClick={() => setLayer(l)}
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 6,
-                padding: '7px 14px', borderRadius: 8, border: 'none', cursor: 'pointer',
-                fontSize: 13, fontWeight: 700, fontFamily: MANROPE,
-                background: layer === l ? '#ffffff' : 'transparent',
-                color: layer === l ? INK : TERTIARY,
-                boxShadow: layer === l ? '0 1px 3px rgba(12,14,18,.08)' : 'none',
-              }}
-            >
-              <Layers style={{ width: 14, height: 14 }} />
-              <span style={{ whiteSpace: 'nowrap' }}>
-                {l === 'general' ? 'General' : 'Māori'}
-                <span className="map-toggle-word"> electorates</span>
-              </span>
-            </button>
-          ))}
-        </div>
+        {/* The hand-rolled segmented toggle that stood here is <RollPills>,
+            shared with /battlegrounds, which had a byte-identical copy of it
+            (§1.3). It is §2.2 now, and §3.1 gave back the 16px the 44px
+            tap-target minimum was silently adding to a 30px control. */}
+        <RollPills value={layer} onChange={setLayer} />
 
         {/* Search */}
         <form className="map-search" onSubmit={handleSearch} style={{ flex: 1, minWidth: 220, maxWidth: 380 }}>
@@ -218,24 +256,33 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
           </div>
         </form>
 
-        {/* Official data badge */}
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11.5, fontWeight: 600, color: '#1E40AF', background: '#EFF6FF', border: '1px solid #BFDBFE', borderRadius: 999, padding: '5px 11px', fontFamily: MANROPE }}>
-          <ShieldCheck style={{ width: 13, height: 13 }} />
-          Boundaries: Stats NZ (2020)
-        </div>
+        {/* The "Boundaries: Stats NZ (2020)" badge is gone. The same fact was
+            on this screen four times: in the divider above, in the standfirst
+            above that, here, and in the Leaflet attribution inside the map,
+            which is the one that is legally required. It is now one dated
+            source line under the title (§1.3). */}
       </div>
 
-      {/* Search feedback (address not found / outside layer) */}
+      {/* Search feedback (address not found / outside layer). Kept: it is the
+          only place the page admits a failure (§1.5), restyled to the §2.4
+          container's radius and border weight so it stops being the one amber
+          box with its own geometry. */}
       {searchMsg && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14, padding: '10px 14px', borderRadius: 10, background: '#fffbeb', border: '1px solid #fde68a', fontSize: 13, color: '#92400e', fontFamily: MANROPE, lineHeight: 1.5 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14, padding: '12px 14px', borderRadius: 16, background: '#fffbeb', border: '1px solid #fde68a', fontSize: 13, color: '#92400e', fontFamily: MANROPE, lineHeight: 1.5 }}>
           <MapPinOff style={{ width: 15, height: 15, flexShrink: 0 }} />
           {searchMsg}
         </div>
       )}
 
       {/* Map + panel grid. Embedded: map left (portrait), stacked tiles fill the right column. */}
+      {/* `.map-page-grid`, not `.map-grid`. `.map-grid` was an undeclared
+          GLOBAL class written from TWO components' own <style> blocks, this one
+          (five rules) and battlegrounds-map.tsx (three, on one line), and
+          whichever mounted last won. That is §5.15 with the polarity reversed:
+          the rules did ship with a component, just not always with THE
+          component. Both are scoped to their own class now. */}
       <div
-        className={embedded ? 'map-embed-split' : 'map-grid'}
+        className={embedded ? 'map-embed-split' : 'map-page-grid'}
         style={embedded ? undefined : { display: 'grid', gridTemplateColumns: '1fr 360px', gap: 16, alignItems: 'stretch' }}
       >
 
@@ -248,7 +295,7 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
         }}>
           {status === 'loading' && <MapLoading />}
           {status === 'ready' && data && (
-            <ElectorateMap data={data} selectedKey={selectedKey} onSelect={setSelected} />
+            <ElectorateMap data={data} selectedKey={selectedKey} onSelect={setSelected} colorOf={sittingPartyColor} />
           )}
           {(status === 'missing' || status === 'error') && <MapMissing layer={layer} error={status === 'error'} />}
 
@@ -266,7 +313,7 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
                 Held by
               </div>
               <div className="map-legend-items">
-                {PARTY_ORDER.map((slug) => (
+                {LEGEND_PARTIES.map((slug) => (
                   <div key={slug} className="map-legend-row" style={{ display: 'flex', alignItems: 'center', color: SECONDARY, fontFamily: MANROPE }}>
                     <span className="map-legend-dot" style={{ borderRadius: 3, background: PARTY_COLORS[slug].bg, flexShrink: 0 }} />
                     {PARTY_PROFILES[slug].name}
@@ -295,7 +342,12 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
             )}
           </div>
         ) : (
-          <div style={{ height: 'clamp(600px, 82vh, 840px)', borderRadius: 18, overflow: 'auto', border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
+          /* `overflow` is set in the style block below, not inline: an inline
+             value outranks a media query, and between 761px and 880px this
+             wrapper was `height: clamp(...)` with `overflow: auto`, so a finger
+             starting on the MP card scrolled the panel instead of the page
+             (§5.11, the .mp-rail case). */
+          <div className="map-page-panel" style={{ height: 'clamp(520px, 70vh, 700px)', borderRadius: 18, border: `1px solid ${BORDER}`, boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
             <ElectoratePanel electorateName={selected} />
           </div>
         )}
@@ -303,6 +355,7 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
 
       {/* Responsive: stack panel under map on narrow screens, tighten the toolbar for mobile. */}
       <style>{`
+        .map-page-panel { overflow: auto; }
         .map-embed-split { display: grid; grid-template-columns: 1fr minmax(260px, 330px); gap: 14px; align-items: stretch; }
         @media (max-width: 760px) {
           .map-embed-split { grid-template-columns: 1fr; }
@@ -312,10 +365,16 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
         @media (max-width: 880px) {
           .map-toolbar { flex-direction: column; align-items: stretch; }
           .map-search { max-width: none !important; width: 100%; }
-          .map-grid { grid-template-columns: 1fr !important; }
-          .map-grid > div { height: auto !important; }
-          .map-grid > div:first-child { height: min(72vh, 600px) !important; }
-          .map-grid > div:last-child { height: auto !important; min-height: 440px; }
+          .map-page-grid { grid-template-columns: 1fr !important; }
+          .map-page-grid > div { height: auto !important; }
+          /* 460px, the same number /battlegrounds uses. At 585 the panel's
+             first line sat 736px down an 812px screen, so a tap on the map
+             changed nothing the reader could see. */
+          .map-page-grid > div:first-child { height: 460px !important; }
+          /* The empty panel reserved 440px, 54% of a phone screen, to say "tap
+             the map". 150px is a prompt; the 290px it gives back is what lets
+             the ANSWER land above the fold after a tap. */
+          .map-page-panel { height: auto !important; min-height: 150px; overflow: visible; }
         }
       `}</style>
     </div>
@@ -348,13 +407,11 @@ function MapMissing({ layer, error }: { layer: LayerType; error: boolean }) {
             ? 'The boundary file failed to load. Please try again shortly.'
             : 'The official Stats NZ general-electorate boundaries haven’t been added yet. They render here automatically once the verified 2020 GeoJSON is in place.'}
         </p>
-        {!error && layer === 'general' && (
-          <p style={{ fontSize: 12.5, color: JADE, fontWeight: 700, fontFamily: MANROPE, marginTop: 14, lineHeight: 1.5 }}>
-            Want to see the map working now? Switch to{' '}
-            <span style={{ textDecoration: 'underline' }}>Māori electorates</span>{' '}
-            above for a live preview.
-          </p>
-        )}
+        {/* The "switch to Māori electorates above for a live preview" line went
+            (§6.1): both boundary files are in public/data, so this branch
+            cannot fire, and if it ever did it would send a reader looking for
+            their general seat to a roll they are not on. The sentence above
+            stays, because §1.5 wants the gap named. */}
       </div>
     </div>
   )

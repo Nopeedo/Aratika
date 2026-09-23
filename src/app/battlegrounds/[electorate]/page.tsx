@@ -19,8 +19,9 @@ import { MP_MEMBERS_BILLS } from '@/constants/mps-members-bills'
 import { MP_PASSED_BILLS, MP_GOV_BILLS, BILL_ACTIVITY_META } from '@/constants/mps-bill-activity'
 import { MP_WRITTEN_QUESTIONS, WRITTEN_QUESTIONS_META } from '@/constants/mps-written-questions'
 import { Avatar } from '@/components/ui/avatar'
-import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
-import { WarRoomHero } from '@/components/battlegrounds/war-room-hero'
+import { TrackWithAccount } from '@/components/bookmarks/track-with-account'
+import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
+import { SeatHero } from '@/components/battlegrounds/seat-hero'
 import { RosterAccordion, type RosterItem } from '@/components/battlegrounds/roster-accordion'
 import { ElectorateNews } from '@/components/battlegrounds/electorate-news'
 import type { PartySlug } from '@/types'
@@ -60,7 +61,7 @@ export async function generateMetadata({ params }: { params: Promise<{ electorat
   const { electorate } = await params
   const info = getElectorateBySlug(electorate)
   if (!info) return { title: 'Electorate not found' }
-  return { title: `${info.name} battleground`, description: `The contest for ${info.name}: the 2023 result, the incumbent, and the 2026 candidates as they're confirmed.` }
+  return { title: `${info.name}: seat to watch`, description: `The contest for ${info.name}: the 2023 result, the sitting MP, and the 2026 candidates as they're confirmed.` }
 }
 
 export default async function BattlePage({ params }: { params: Promise<{ electorate: string }> }) {
@@ -127,8 +128,8 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   const hasBillActivity = passedBills.length > 0 || govBills.length > 0 || proposedBills.length > 0
   const firstName = mp?.name.split(' ')[0] ?? (info.mpName ? info.mpName.split(' ')[0] : 'The incumbent')
 
-  // The defender's full dossier — everything specific to the sitting MP, shown
-  // when their roster row is expanded.
+  // The sitting MP's full record — everything specific to them, shown when
+  // their row is opened. Closed on arrival now (§1.1).
   const defenderBody = (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 22, paddingTop: 16 }}>
       <div>
@@ -212,19 +213,29 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
         const maxM = topMinisters[0]?.count ?? 1
         return (
           <div>
-            <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 10 }}>Written questions to Ministers this term</div>
-
-            {/* Collapsed by default: on a phone this explainer + the Q&A list pushed
-                the challengers ~3,700px down the page — the contest a first-time
-                visitor came for was buried under the incumbent's paperwork. */}
-            <details style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, marginBottom: 16, padding: '11px 13px' }}>
-              <summary style={{ fontSize: 12.5, fontWeight: 700, color: INK, fontFamily: MANROPE, cursor: 'pointer' }}>
-                What is this, and why does it matter to you?
-              </summary>
-              <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '8px 0 0', lineHeight: 1.55 }}>
-                Any MP can put a written question to a Minister, demanding information on the record. The Minister must reply, usually within days. It costs nothing and needs no debate, which makes it the main day-to-day tool MPs use to hold the government to account between bills. It matters most for opposition MPs, who can't pass laws but can still force information into the open. Which Ministers an MP questions most, below, is a numbers-based picture of what they watch on your behalf, and it's worth comparing against what they say they prioritise.
-              </p>
-            </details>
+            {/* The five-sentence explainer that sat here inside a <details> is
+                the (i) (§2.1). §2.1 exists precisely so a fourth hand-rolled
+                disclosure does not get built; a <details> styled as a card was
+                a fifth pattern for the same job. */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 10 }}>
+              <span style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Written questions to Ministers this term</span>
+              <InfoButton accent={JADE} label="What a written question is" size={24}>
+                <InfoHeading accent={JADE}>What a written question is</InfoHeading>
+                <InfoText>
+                  Any MP can put a written question to a Minister, demanding information on the
+                  record. The Minister must reply, usually within days. It costs nothing and needs
+                  no debate, which makes it the main day-to-day tool MPs use to hold the government
+                  to account between bills.
+                </InfoText>
+                <InfoHeading accent={JADE}>Why it matters</InfoHeading>
+                <InfoText>
+                  It matters most for opposition MPs, who cannot pass laws but can still force
+                  information into the open. Which Ministers an MP questions most is a
+                  numbers-based picture of what they watch on your behalf, and it is worth
+                  comparing against what they say they prioritise.
+                </InfoText>
+              </InfoButton>
+            </div>
 
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 18 }}>
               <span style={{ fontSize: 30, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1 }}>{wq.count.toLocaleString('en-NZ')}</span>
@@ -287,19 +298,16 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
     </div>
   )
 
-  // Each confirmed challenger's dossier, in the same roster shape as the defender.
-  // The candidate with the highest illustrative poll standing (or simply the first
-  // listed, if none has one) is treated as "the" rival shown in the hero gauge.
-  const leadChallenger = standing.length > 0
-    ? [...standing].sort((a, b) => (b.pollPct ?? 0) - (a.pollPct ?? 0))[0]
-    : undefined
-  const challengerColor = leadChallenger
-    ? (leadChallenger.party === 'independent' ? '#6B7280' : PARTY_COLORS[leadChallenger.party].bg)
-    : TERTIARY
-  const hasPollData = candidates.some((c) => c.pollPct != null)
-  const defenderPollPct = hasPollData
-    ? Math.max(0, 100 - candidates.reduce((n, c) => n + (c.pollPct ?? 0), 0))
-    : undefined
+  // Each confirmed candidate's record, in the same roster shape as the sitting
+  // MP. The first listed is named in the hero's flip sentence as the side votes
+  // would have to switch TO.
+  //
+  // It used to be "the candidate with the highest illustrative poll standing",
+  // and `defenderPollPct` used to be 100 minus the sum of those. Both are gone
+  // with the bars they fed (§1.8): pollPct is the field the page's own copy
+  // called illustrative, so ranking by it, and deriving a figure from it, were
+  // two more unsourced claims about named people.
+  const leadChallenger = standing[0]
 
   // A challenger's party may be one this site profiles but that PARTY_COLORS
   // and PARTY_NAMES do not carry — those two maps hold only the six in
@@ -332,14 +340,15 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
       avatarParty: sittingParty ?? undefined,
       avatarPhoto: mp?.photo,
       title: mp?.name ?? info.mpName ?? 'Result pending',
-      subtitle: `${sittingParty ? PARTY_NAMES[sittingParty].full : 'Unverified'} · Defending`,
+      // §1.7: "Defending" and "Challenging" are the military frame. The
+      // badge says which one this row is; the subtitle says which party.
+      subtitle: sittingParty ? PARTY_NAMES[sittingParty].full : 'Party not on record',
       // Stated, not silently corrected. The 2023 party is why this seat has the
       // margin it has, so dropping it would leave the marginality unexplained.
       note: switchedParty && wonForParty
         ? `Won this seat for ${PARTY_NAMES[wonForParty].full} in 2023, now sitting as ${PARTY_NAMES[sittingParty!].full.toLowerCase() === 'independent' ? 'an independent' : PARTY_NAMES[sittingParty!].full}.`
         : undefined,
-      badge: 'Incumbent',
-      pollPct: defenderPollPct,
+      badge: 'Sitting MP',
       body: defenderBody,
     },
     ...(standing.length === 0
@@ -371,9 +380,8 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             avatarParty: c.party === 'independent' ? undefined : c.party,
             avatarPhoto: c.mpSlug ? MP_PROFILES[c.mpSlug]?.photo : undefined,
             title: c.name,
-            subtitle: `${partyLabel(c.party)} · ${isOut ? 'Withdrew' : 'Challenging'}`,
-            badge: isOut ? 'Withdrew' : c.incumbent ? 'Incumbent' : undefined,
-            pollPct: c.pollPct,
+            subtitle: `${partyLabel(c.party)} · ${isOut ? 'Withdrew' : 'Standing in 2026'}`,
+            badge: isOut ? 'Withdrew' : c.incumbent ? 'Sitting MP' : undefined,
             body: (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 16 }}>
                 {/* Leads the panel when they are out. Everything below it — the
@@ -500,62 +508,101 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
     // One continuous woven texture behind hero and body, painted once here so the
     // tiling doesn't restart and leave a seam under the hero.
     <div style={WOVEN_PAGE}>
-      <WarRoomHero
+      <SeatHero
         electorateName={info.name}
         regionLine={`${info.type === 'maori' ? 'Māori electorate' : 'General electorate'}${info.region ? ` · ${info.region}` : ''}`}
-        tierKey={tier.key}
         tierLabel={tier.label}
         tierColor={tier.color}
         majority={info.majority}
-        incumbentColor={incumbentColor}
         incumbentName={mp?.name ?? info.mpName ?? 'the incumbent'}
-        incumbentSub={sittingParty ? PARTY_NAMES[sittingParty].short : 'Unverified'}
-        incumbentParty={sittingParty ?? undefined}
-        incumbentPhoto={mp?.photo}
         challengerLabel={leadChallenger ? (leadChallenger.party === 'independent' ? 'an independent' : PARTY_NAMES[leadChallenger.party].short) : 'a challenger'}
-        challengerColor={challengerColor}
-        challengerName={leadChallenger?.name}
-        challengerParty={leadChallenger && leadChallenger.party !== 'independent' ? leadChallenger.party : undefined}
-        challengerPhoto={leadChallenger?.mpSlug ? MP_PROFILES[leadChallenger.mpSlug]?.photo : undefined}
         /* Track sits in the hero's title row, not floating above the content.
            Follows this seat into the Command Centre alongside tracked MPs,
-           parties and bills. */
-        action={<BookmarkButton entity={{
-          // 'battleground', not 'electorate'. Both maps used to save the same
-          // kind with the same ref_id, and the table is unique on
-          // (user_id, kind, ref_id) — so following your seat on the map and
-          // following a race here were one row overwriting the other.
-          kind: 'battleground',
-          refId: info.name,
-          label: info.name,
-          sublabel: `${tier.label} battleground${info.party ? ` · ${mp?.name ?? info.mpName}` : ''}`,
-          href: `/battlegrounds/${electorate}`,
-          accent: incumbentColor,
-        }} />}
+           parties and bills.
+
+           TrackWithAccount, not BookmarkButton: §2.13's shape (5px 10px, radius
+           9, 12.5px/700, a 13px glyph) rather than the LARGE pill variant, which
+           put a 16px/800 full-width control in a title row. The account
+           mechanism is the same either way — BookmarkButton routes to the same
+           dialog — so only the shape was wrong. */
+        action={<TrackWithAccount
+          entity={{
+            // 'battleground', not 'electorate'. Both maps used to save the same
+            // kind with the same ref_id, and the table is unique on
+            // (user_id, kind, ref_id) — so following your seat on the map and
+            // following a race here were one row overwriting the other.
+            kind: 'battleground',
+            refId: info.name,
+            label: info.name,
+            sublabel: `${tier.label} in 2023${info.party ? ` · ${mp?.name ?? info.mpName}` : ''}`,
+            href: `/battlegrounds/${electorate}`,
+            accent: incumbentColor,
+          }}
+          label="Track this seat"
+          savedLabel="Tracking"
+          accent={incumbentColor}
+        />}
       />
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* 1080, matching the hero above it and /bills, /parties and
+          /elections. It was 1000 here and 1000 in the hero, so the page was
+          internally consistent and 80px narrower than everything else. */}
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '28px clamp(18px, 5vw, 36px) 64px', display: 'flex', flexDirection: 'column', gap: 24 }}>
 
         {/* In the news — real coverage naming this seat or its MP, from the same feed as /news */}
         <section style={sectionCard}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>In the news</h2>
-          <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px' }}>Coverage naming {info.name} or {firstName}, from our tracked feeds.</p>
+          {/* 24px, matching the peer sections on /bills. These two were 18px
+              against a 34px h1, which reads as a caption on the hero (§4). */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+            <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>In the news</h2>
+            <InfoButton accent={JADE} label="Where this coverage comes from" size={24}>
+              <InfoHeading accent={JADE}>Where this coverage comes from</InfoHeading>
+              <InfoText>
+                Articles from the news feeds this site tracks, filtered to ones naming {info.name} or
+                {' '}{firstName}. It is the same feed as the news page, not a search of the whole web.
+              </InfoText>
+              <InfoHeading accent={JADE}>Why a seat can have nothing here</InfoHeading>
+              <InfoText>
+                Most electorates are not written about by name between elections. An empty list
+                means no tracked outlet has named this seat recently, not that nothing is
+                happening in it.
+              </InfoText>
+            </InfoButton>
+          </div>
           <ElectorateNews electorateName={info.name} />
         </section>
 
-        {/* The roster — tap a combatant to expand their full dossier */}
+        {/* Who is standing — tap a row to open their full record */}
         <section style={sectionCard}>
-          <h2 style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>The roster</h2>
-          <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px' }}>
-            The defender's record, and who's confirmed to challenge them in 2026.
-            {hasPollData && <> Poll standing shown is illustrative only. No verified electorate-level polling exists for this preview.</>}
-          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+            {/* "Who is standing here", not "The roster" (§1.7). The standfirst
+                under it is the (i); its second sentence went entirely with the
+                poll bars it was excusing (§1.8). */}
+            <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>Who is standing here</h2>
+            <InfoButton accent={JADE} label="Who appears in this list" size={24}>
+              <InfoHeading accent={JADE}>Who appears in this list</InfoHeading>
+              <InfoText>
+                The sitting MP, then every candidate a party has officially confirmed for 2026.
+                Tap a name to open their record. Nobody is added on a rumour, so the list fills
+                up through the campaign as parties select.
+              </InfoText>
+              <InfoHeading accent={JADE}>Candidates who pull out</InfoHeading>
+              <InfoText>
+                They stay on the page, marked as withdrawn and dated, rather than quietly
+                disappearing. A reader who saw a name here last month should be able to find out
+                what happened to it.
+              </InfoText>
+            </InfoButton>
+          </div>
           <RosterAccordion items={rosterItems} />
         </section>
 
         {/* Links + source */}
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <Link href="/battlegrounds" style={pill(true)}><MapPin style={ic} /> Battlegrounds map</Link>
+          {/* One name for the page, matching the back link at the top and the
+              nav (§1.7): this said "Battlegrounds map" while the hero said
+              "All battlegrounds". */}
+          <Link href="/battlegrounds" style={pill(true)}><MapPin style={ic} /> Seats to watch</Link>
           <Link href="/elections/2026" style={pill(false)}>2026 election <ArrowRight style={ic} /></Link>
         </div>
         <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 14, display: 'flex', gap: 10, alignItems: 'flex-start' }}>

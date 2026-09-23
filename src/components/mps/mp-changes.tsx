@@ -44,9 +44,13 @@ export function MpChanges({ slug, changes }: { slug: string; changes: StatChange
   if (fresh.length === 0) return null
 
   return (
+    /* §2.4's container geometry, so this sits in the same system as the cards
+       under it: radius 16 and the panel shadow, rather than a radius-12 box
+       with no shadow that read as a different kind of object. */
     <div style={{
-      border: `1px solid ${JADE}`, borderRadius: 12, background: '#f0fbf5',
-      padding: '12px 14px', marginBottom: 16,
+      border: `1px solid ${JADE}`, borderRadius: 16, background: '#f0fbf5',
+      padding: '12px 14px',
+      boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 20px 40px -34px rgba(0,0,0,.4)',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
         <TrendingUp style={{ width: 14, height: 14, color: JADE }} />

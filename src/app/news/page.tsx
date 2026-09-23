@@ -1,17 +1,32 @@
 /**
  * /news ("Latest") — the live political-news feed for the 2026 election.
- * Aggregates headlines from credible NZ outlets' own RSS feeds (RNZ, Beehive,
- * NZ Herald, Stuff, Newsroom), tagged by party/issue. We link out to every
- * original article — we never republish their content.
+ * Aggregates headlines from NZ outlets' own RSS feeds (RNZ, Beehive, NZ Herald,
+ * Stuff, Newsroom), tagged by party/issue. We link out to every original
+ * article — we never republish their content.
+ *
+ * Redesigned against docs/DESIGN-SPEC.md, 24 September 2026. The shell lost:
+ *  - the standfirst, four lines saying the page is a news feed above a news
+ *    feed, with "tap any story to read it at the source" explaining a thing
+ *    that is visibly a link (§6.1)
+ *  - the transparency footer, 200-odd px of explanation sitting three screens
+ *    BELOW the pills it explains, and the five-outlet link row inside it, which
+ *    were five more links to places every single row already links to (§1.3)
+ * Both are behind the (i) beside the title now (§1.2), except the outlet names,
+ * which are the one visible source line the page keeps (bills/page.tsx:132).
+ *
+ * The h1's clamp was inert: 4.5vw is 16.9px at 375px, so it always rendered at
+ * its 30px floor. /bills uses clamp(26px, 7vw, 40px), where the vw term
+ * actually scales (§3.4).
  */
 
 import type { Metadata } from 'next'
-import { ExternalLink, Newspaper } from 'lucide-react'
+import { Newspaper } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { getNews } from '@/lib/news/live'
 import { getVideos, getInterviewVideos } from '@/lib/news/videos'
 import { NewsFeed } from '@/components/news/news-feed'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { AboutNews, OUTLET_NAMES } from '@/components/news/about-news'
+import { BORDER, INK, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 // Revalidated, not force-dynamic.
 // The feed is polled from the sources on a schedule, so a per-request render was
@@ -23,13 +38,11 @@ export const metadata: Metadata = {
   description: 'Live New Zealand political news for the 2026 election, tagged by party and issue, from RNZ, the Beehive, NZ Herald, Stuff and Newsroom.',
 }
 
-const SOURCES = [
-  { name: 'RNZ', url: 'https://www.rnz.co.nz/news/political' },
-  { name: 'The Beehive', url: 'https://www.beehive.govt.nz' },
-  { name: 'NZ Herald', url: 'https://www.nzherald.co.nz/nz/politics/' },
-  { name: 'Stuff', url: 'https://www.stuff.co.nz/national/politics' },
-  { name: 'Newsroom', url: 'https://www.newsroom.co.nz' },
-]
+/** 1080, the content column /bills, /parties, /elections and /budget use, so
+ *  every block on the site starts and ends on the same two vertical lines at
+ *  1920 (§5.19). This page was 920 and sat 160px narrower than its neighbours;
+ *  the story rows grow into the extra width rather than multiplying (§2.14). */
+const COL = 1080
 
 export default async function NewsPage() {
   const [items, videos, interviews] = await Promise.all([getNews(), getVideos(), getInterviewVideos()])
@@ -37,18 +50,22 @@ export default async function NewsPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 920, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
-          <div style={{ marginBottom: 12 }}><SectionDivider type="official" label="Live from credible NZ sources" /></div>
-          <h1 style={{ fontSize: 'clamp(30px, 4.5vw, 44px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.08 }}>
-            The Latest
-          </h1>
-          <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '10px 0 0', maxWidth: 660, lineHeight: 1.55 }}>
-            Track the 2026 campaign as it happens, every party, every issue. Aggregated from credible NZ newsrooms and official sources; tap any story to read it at the source.
-          </p>
+        <div style={{ maxWidth: COL, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
+          {/* "credible" came out of the label: it is an editorial judgement
+              worn as a property of the sources, with no test the reader can
+              check (§1.8). What the page can say is where the stories are
+              from, which it now does on the source line below. */}
+          <div style={{ marginBottom: 12 }}><SectionDivider type="official" label="Live from NZ newsrooms" /></div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.08 }}>
+              The Latest
+            </h1>
+            <AboutNews />
+          </div>
         </div>
       </div>
 
-      <div style={{ maxWidth: 920, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px) 64px' }}>
+      <div style={{ maxWidth: COL, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px) 64px' }}>
         {items.length > 0 ? (
           <NewsFeed items={items} videos={videos} interviews={interviews} />
         ) : (
@@ -59,23 +76,15 @@ export default async function NewsPage() {
           </div>
         )}
 
-        {/* Transparency footer */}
-        <div style={{ marginTop: 32, padding: '16px 18px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14 }}>
-          <div style={{ fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 6 }}>How this works</div>
-          <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>
-            Politika aggregates headlines from credible outlets’ own news feeds and links straight to the original, we don’t republish articles. Party and issue tags are applied automatically, using the same rules for every registered party, and we never rank or rate them.
-          </p>
-          <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 10px' }}>
-            One thing to read this feed with: <b style={{ color: INK }}>how much coverage each party gets reflects how much the news media write about them, not an editorial choice by us.</b> Larger parties are written about more often. One of our sources is also the Beehive, the Government’s own release feed, which naturally carries more from whichever parties are in government.
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
-            {SOURCES.map((s) => (
-              <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-                {s.name} <ExternalLink style={{ width: 11, height: 11 }} />
-              </a>
-            ))}
-          </div>
-        </div>
+        {/* ONE 11.5px TERTIARY line, the shape /bills closes with. The rest of
+            what the footer card said is in the (i) beside the title. Not links:
+            every row on this page carries its outlet as a badge and a "Read at
+            {outlet}" link already (§1.3). */}
+        <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '26px 0 0', lineHeight: 1.6 }}>
+          Stories from {OUTLET_NAMES.slice(0, -1).join(', ')} and{' '}
+          {OUTLET_NAMES[OUTLET_NAMES.length - 1]}, read from their own news
+          feeds and linked at the source. We never republish articles.
+        </p>
       </div>
     </div>
   )

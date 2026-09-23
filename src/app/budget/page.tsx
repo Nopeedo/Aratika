@@ -6,22 +6,35 @@
  *    The page says so plainly and attributes every figure to The Treasury.
  *  - Figures are presented neutrally; no causation is claimed; the macro outlook
  *    is kept qualitative where Treasury published it qualitatively.
+ *
+ * Redesigned against docs/DESIGN-SPEC.md, 24 September 2026. What the shell
+ * lost, and where each piece went:
+ *  - the standfirst (§6.1, "the homepage lost three standfirsts") → the h1 (i),
+ *    with the delivery date kept as the /bills eyebrow line under the title
+ *  - the "this is the Government's Budget, not a party's" callout, 321px of
+ *    orientation between the reader and the money → the same (i) (§1.2)
+ *  - the outlook's forecast caveat, the in-context baseline box and the tag
+ *    legend → the (i) beside the heading each one qualifies
+ *  - the source footer's five lines of licensing prose → the (i), leaving the
+ *    ONE dated 11.5px line /bills closes with (bills/page.tsx:132)
+ *  - eleven always-expanded sector cards printing 51 funding lines on arrival
+ *    → §2.3 tiles that open a §2.4 panel (§1.1), in budget-sectors.tsx
+ *  - six different box treatments doing the job of "a card" → two, the tile and
+ *    the panel (§1.4: extra data is allowed, extra design is not)
+ *  - three cross-link cards, two of which landed in the same product → two §2.6
+ *    signposts
+ * The delivery date was stated three times on this page; it is stated once now.
  */
 
 import type { Metadata } from 'next'
-import * as React from 'react'
-import Link from 'next/link'
-import {
-  HeartPulse, GraduationCap, Scale, Construction, Home, Fuel, Shield, Zap,
-  Landmark, PiggyBank, Boxes, ExternalLink, Info, TrendingUp, Wallet, ArrowRight,
-} from 'lucide-react'
+import { ExternalLink, Landmark, Scale, ClipboardCheck } from 'lucide-react'
 import { SectionDivider } from '@/components/ui/section-divider'
-import {
-  BUDGET_META, BUDGET_THEMES, BUDGET_OUTLOOK, BUDGET_SECTORS, KIND_LABEL,
-  type BudgetKind,
-} from '@/constants/budget-2026'
-import { BUDGET_BASELINE } from '@/constants/budget-links'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
+import { SignShape } from '@/components/ui/sign-link'
+import { AboutBudget, AboutOutlook, AboutSectors, AboutThemes } from '@/components/budget/about-budget'
+import { BudgetSectors, BudgetOutlook } from '@/components/budget/budget-sectors'
+import { BudgetThemes } from '@/components/budget/budget-themes'
+import { BUDGET_META } from '@/constants/budget-2026'
+import { BORDER, INK, JADE, JADE_DARK, MANROPE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Budget 2026: what the Government is spending',
@@ -29,199 +42,118 @@ export const metadata: Metadata = {
     'A plain-English, non-partisan breakdown of New Zealand’s Budget 2026: where the money goes by sector, key initiatives and the fiscal outlook. Sourced from The Treasury.',
 }
 
-const SECTOR_ICON: Record<string, React.ComponentType<{ style?: React.CSSProperties }>> = {
-  health: HeartPulse, education: GraduationCap, 'law-order': Scale,
-  infrastructure: Construction, 'housing-welfare': Home, 'cost-of-living': Fuel,
-  defence: Shield, energy: Zap, revenue: Landmark, savings: PiggyBank, other: Boxes,
-}
-
-const KIND_COLOR: Record<BudgetKind, { bg: string; fg: string }> = {
-  operating: { bg: '#ecfdf5', fg: '#1F8A4C' },
-  capital: { bg: '#eef4ff', fg: '#2563eb' },
-  saving: { bg: '#fef3e7', fg: '#b45309' },
-  mixed: { bg: '#f3effe', fg: '#7c3aed' },
-}
+/** 1080, the content column /bills, /parties and /elections use, so every block
+ *  on the site starts and ends on the same two vertical lines at 1920 (§5.19).
+ *  This page was 1100 and sat 20px wider than its neighbours. */
+const COL = 1080
 
 export default function BudgetPage() {
   return (
     <div style={WOVEN_PAGE}>
       {/* ── Header ────────────────────────────────────────────── */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
+        <div style={{ maxWidth: COL, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
           <div style={{ marginBottom: 12 }}>
             <SectionDivider type="official" label="Official: The Treasury" />
           </div>
-          <h1 style={{ fontSize: 'clamp(30px, 5vw, 46px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.08 }}>
-            Budget {BUDGET_META.year}: where the money goes
-          </h1>
-          <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: '10px 0 0', maxWidth: 680, lineHeight: 1.55 }}>
-            Delivered {BUDGET_META.deliveredOn}. A plain-English, non-partisan breakdown of what the
-            Government is spending, by sector, with every figure taken from The Treasury.
-          </p>
-        </div>
-      </div>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px) 72px' }}>
-        {/* ── "What this is" credibility callout ──────────────── */}
-        <div style={{ display: 'flex', gap: 12, padding: '16px 18px', background: '#f8fafc', border: `1px solid ${BORDER}`, borderRadius: 14, marginBottom: 30 }}>
-          <Info style={{ width: 19, height: 19, color: JADE, flexShrink: 0, marginTop: 2 }} />
-          <div style={{ fontSize: 13.5, lineHeight: 1.6, color: '#3f444c', fontFamily: MANROPE }}>
-            <strong style={{ color: INK }}>This is the Government’s Budget, not a party’s.</strong>{' '}
-            The Budget is an official document published by The Treasury and presented by the {BUDGET_META.financeMinister}.
-            It was delivered by the {BUDGET_META.governmentLabel}. We present the figures neutrally and don’t take a side on them.
-            <span style={{ display: 'block', marginTop: 6, color: SECONDARY, fontSize: 12.5 }}>
-              {BUDGET_META.fundingNote}
+          {/* §3.4: clamp(30px, 5vw, 46px) never fired on a phone — 5vw is
+              18.75px at 375, so the h1 rendered at its 30px floor and
+              "Budget 2026: where the money goes" wrapped to two 32px lines.
+              /bills uses clamp(26px, 7vw, 40px), where 7vw is 26.25px at 375
+              and the clamp actually scales. Matched. */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.08 }}>
+              Budget {BUDGET_META.year}: where the money goes
+            </h1>
+            <AboutBudget />
+          </div>
+
+          {/* The /bills eyebrow (bills/page.tsx:96). It dates the whole page,
+              which is why that line lives under the title there. */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10 }}>
+            <Landmark style={{ width: 16, height: 16, color: JADE_DARK }} />
+            <span style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE_DARK, fontFamily: MANROPE }}>
+              Delivered {BUDGET_META.deliveredOn}
             </span>
           </div>
         </div>
+      </div>
 
+      <div style={{ maxWidth: COL, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px) 72px' }}>
         {/* ── What it says it does (themes) ───────────────────── */}
-        <h2 style={sectionH2()}>What Budget {BUDGET_META.year} sets out to do</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))', gap: 12, marginBottom: 40 }}>
-          {BUDGET_THEMES.map((t, i) => (
-            <div key={i} style={{ display: 'flex', gap: 12, padding: '14px 16px', border: `1px solid ${BORDER}`, borderRadius: 12 }}>
-              <span style={{ width: 24, height: 24, borderRadius: 7, background: '#ecfdf5', color: JADE, fontWeight: 800, fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontFamily: MANROPE }}>{i + 1}</span>
-              <span style={{ fontSize: 13.5, lineHeight: 1.5, color: '#3f444c', fontFamily: MANROPE }}>{t}</span>
-            </div>
-          ))}
+        <SectionHead>
+          <h2 style={h2}>What Budget {BUDGET_META.year} sets out to do</h2>
+          <AboutThemes />
+        </SectionHead>
+        <div style={{ marginBottom: 40 }}>
+          <BudgetThemes />
         </div>
 
         {/* ── Outlook ─────────────────────────────────────────── */}
-        <h2 style={sectionH2()}>The outlook</h2>
-        <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px', maxWidth: 680 }}>
-          Treasury publishes these as forecasts. We quote them as stated and don’t add precise figures
-          beyond what Treasury put in words on its summary.
-        </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(300px, 100%), 1fr))', gap: 14, marginBottom: 42 }}>
-          {[
-            { ...BUDGET_OUTLOOK.economic, icon: TrendingUp },
-            { ...BUDGET_OUTLOOK.fiscal, icon: Wallet },
-          ].map((o) => (
-            <div key={o.title} style={{ padding: '18px 20px', border: `1px solid ${BORDER}`, borderRadius: 14 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 8 }}>
-                <o.icon style={{ width: 18, height: 18, color: JADE }} />
-                <span style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{o.title}</span>
-              </div>
-              <p style={{ fontSize: 13.5, lineHeight: 1.6, color: '#3f444c', fontFamily: MANROPE, margin: '0 0 10px' }}>{o.summary}</p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                {o.indicators.map((ind) => (
-                  <span key={ind} style={{ fontSize: 11.5, fontWeight: 600, color: SECONDARY, background: '#f4f4f2', borderRadius: 6, padding: '3px 8px', fontFamily: MANROPE }}>{ind}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* ── In context (what's already in place) ────────────── */}
-        <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px', marginBottom: 42, background: '#f8fafc' }}>
-          <div style={{ fontSize: 14.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 8 }}>
-            In context, what’s already in place
-          </div>
-          <ul style={{ margin: 0, padding: '0 0 0 18px', display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {BUDGET_BASELINE.points.map((pt, i) => (
-              <li key={i} style={{ fontSize: 13, color: '#3f444c', fontFamily: MANROPE, lineHeight: 1.55 }}>{pt}</li>
-            ))}
-          </ul>
-          <p style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, margin: '10px 0 0', lineHeight: 1.5 }}>
-            New Budget funding (below) is mostly money added <em>on top of</em> existing spending. Read it against this baseline.
-          </p>
-          <a href={BUDGET_BASELINE.source.url} target="_blank" rel="noopener noreferrer" style={{ ...verifyLink(), marginTop: 8 }}>
-            {BUDGET_BASELINE.source.label} <ExternalLink style={{ width: 13, height: 13 }} />
-          </a>
+        <SectionHead>
+          <h2 style={h2}>The outlook</h2>
+          <AboutOutlook />
+        </SectionHead>
+        <div style={{ marginBottom: 42 }}>
+          <BudgetOutlook />
         </div>
 
         {/* ── Sector breakdown ────────────────────────────────── */}
-        <h2 style={sectionH2()}>Where the money goes</h2>
-        <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 18px', maxWidth: 680 }}>
-          New funding by area. Each figure is tagged{' '}
-          <Chip k="operating" /> <Chip k="capital" /> <Chip k="saving" /> so you can see what’s ongoing
-          spending, one-off investment, or a saving.
-        </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(330px, 100%), 1fr))', gap: 16 }}>
-          {BUDGET_SECTORS.map((s) => {
-            const Icon = SECTOR_ICON[s.key] ?? Boxes
-            return (
-              <div key={s.key} style={{ border: `1px solid ${BORDER}`, borderRadius: 16, padding: '18px 20px', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 11, marginBottom: 4 }}>
-                  <span style={{ width: 38, height: 38, borderRadius: 11, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Icon style={{ width: 19, height: 19, color: JADE }} />
-                  </span>
-                  <div>
-                    <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15 }}>{s.label}</div>
-                    <div style={{ fontSize: 12.5, fontWeight: 700, color: JADE, fontFamily: MANROPE }}>{s.headline}</div>
-                  </div>
-                </div>
-                <p style={{ fontSize: 12.5, lineHeight: 1.5, color: SECONDARY, fontFamily: MANROPE, margin: '6px 0 12px' }}>{s.blurb}</p>
-                <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 9 }}>
-                  {s.items.map((it, i) => (
-                    <li key={i} style={{ display: 'flex', gap: 9, alignItems: 'baseline' }}>
-                      {it.amount && (
-                        <span style={{ fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap', flexShrink: 0, minWidth: 64 }}>{it.amount}</span>
-                      )}
-                      <span style={{ fontSize: 12.5, lineHeight: 1.5, color: '#3f444c', fontFamily: MANROPE }}>
-                        {it.text}
-                        {it.kind && (
-                          <span style={{ marginLeft: 6, fontSize: 10, fontWeight: 700, color: KIND_COLOR[it.kind].fg, background: KIND_COLOR[it.kind].bg, borderRadius: 5, padding: '1px 6px', whiteSpace: 'nowrap' }}>{KIND_LABEL[it.kind]}</span>
-                        )}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          })}
-        </div>
+        <SectionHead>
+          <h2 style={h2}>Where the money goes</h2>
+          <AboutSectors />
+        </SectionHead>
+        <BudgetSectors />
 
         {/* ── Election context / cross-links ──────────────────── */}
-        <h2 style={{ ...sectionH2(), marginTop: 48 }}>Put it in context</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 12 }}>
-          <CrossLink href="/policies/economy" title="Compare party economic policy" body="See how each party’s stated economy and tax policy stacks up against what’s actually budgeted." />
-          <CrossLink href="/policies" title="Compare all parties" body="Where every party stands across health, education, housing, crime and the rest, side by side." />
-          <CrossLink href="/record" title="Were the promises funded?" body="Track the government’s promises against the record (private accountability deep-dive)." />
+        {/* §2.6 signposts, one per row, pulled out to the page gutter so all of
+            them start on the same vertical line as each other rather than on
+            the text column's inset edge (§8, "see the edges dont align").
+
+            Two, not three. "Compare all parties" pointed at /policies, which
+            redirects into the topic pages the first signpost already lands in:
+            two links into one product from one block (§1.3). Nothing is lost,
+            /policies/economy carries the reader into the same comparison. */}
+        <h2 style={{ ...h2, marginTop: 48, marginBottom: 14 }}>Put it in context</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8, marginLeft: 'calc(-1 * clamp(18px, 5vw, 36px))' }}>
+          <SignShape href="/policies/economy" color={JADE} fg="#fff" icon={<Scale style={{ width: 16, height: 16 }} />}>
+            Compare party economic policy
+          </SignShape>
+          <SignShape href="/record" color={JADE_DARK} fg="#fff" icon={<ClipboardCheck style={{ width: 16, height: 16 }} />}>
+            Were the promises funded?
+          </SignShape>
         </div>
 
-        {/* ── Source footer ───────────────────────────────────── */}
-        <div style={{ marginTop: 44, padding: '18px 20px', background: '#f8fafc', border: `1px solid ${BORDER}`, borderRadius: 14 }}>
-          <div style={{ fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 6 }}>Source</div>
-          <p style={{ fontSize: 12.5, lineHeight: 1.6, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 10px' }}>
-            All figures from {BUDGET_META.sourceLabel}, Budget {BUDGET_META.year} (delivered {BUDGET_META.deliveredOn}).
-            Politika summarises the official material and does not reproduce it in full. Always verify against the original.
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
-            <a href={BUDGET_META.sourceUrl} target="_blank" rel="noopener noreferrer" style={verifyLink()}>
-              Budget at a Glance <ExternalLink style={{ width: 13, height: 13 }} />
-            </a>
-            <a href={BUDGET_META.fiscalDataUrl} target="_blank" rel="noopener noreferrer" style={verifyLink()}>
-              Treasury fiscal data <ExternalLink style={{ width: 13, height: 13 }} />
-            </a>
-          </div>
-        </div>
+        {/* ── Source line ─────────────────────────────────────── */}
+        {/* ONE 11.5px TERTIARY line, the shape /bills closes with. The five
+            lines of licensing prose that stood here are in the h1's (i): they
+            explain, they do not inform (§1.2). */}
+        <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, margin: '34px 0 0', lineHeight: 1.6 }}>
+          Source: {BUDGET_META.sourceLabel}, Budget {BUDGET_META.year}, delivered {BUDGET_META.deliveredOn}.{' '}
+          <a href={BUDGET_META.sourceUrl} target="_blank" rel="noopener noreferrer" style={sourceLink}>
+            Budget at a Glance <ExternalLink style={{ width: 11, height: 11, display: 'inline' }} />
+          </a>{' '}
+          <a href={BUDGET_META.fiscalDataUrl} target="_blank" rel="noopener noreferrer" style={sourceLink}>
+            Treasury fiscal data <ExternalLink style={{ width: 11, height: 11, display: 'inline' }} />
+          </a>
+        </p>
       </div>
     </div>
   )
 }
 
-function sectionH2(): React.CSSProperties {
-  return { fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 14px', letterSpacing: '-.01em' }
-}
-function verifyLink(): React.CSSProperties {
-  return { display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }
+/** Heading and its (i) on one row, the /bills arrangement. */
+function SectionHead({ children }: { children: React.ReactNode }) {
+  return <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>{children}</div>
 }
 
-function Chip({ k }: { k: BudgetKind }) {
-  return (
-    <span style={{ fontSize: 10, fontWeight: 700, color: KIND_COLOR[k].fg, background: KIND_COLOR[k].bg, borderRadius: 5, padding: '1px 6px' }}>{KIND_LABEL[k]}</span>
-  )
+/* 24px, the literal values at bills/page.tsx:120 and defining-bills.tsx:107.
+   All four headings on this page were 19px under a 30px h1, so the page had no
+   heading level at all and every section read as a caption (§4, "headings match
+   their peers"). */
+const h2: React.CSSProperties = {
+  fontSize: 24, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0, letterSpacing: '-.025em',
 }
 
-function CrossLink({ href, title, body }: { href: string; title: string; body: string }) {
-  return (
-    <Link href={href} style={{ textDecoration: 'none', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px', display: 'block' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 5 }}>
-        <span style={{ fontSize: 14.5, fontWeight: 800, color: INK, fontFamily: MANROPE }}>{title}</span>
-        <ArrowRight style={{ width: 16, height: 16, color: JADE, flexShrink: 0 }} />
-      </div>
-      <p style={{ fontSize: 12.5, lineHeight: 1.5, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>{body}</p>
-    </Link>
-  )
-}
+const sourceLink: React.CSSProperties = { color: JADE, fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap' }

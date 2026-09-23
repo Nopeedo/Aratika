@@ -18,14 +18,26 @@ export const BUDGET_META = {
   year: 2026,
   title: 'Budget 2026',
   deliveredOn: '28 May 2026',
+  /**
+   * NOT RENDERED. This holds a job title where a person's name belongs, so
+   * "presented by the Minister of Finance" read as an unfilled placeholder
+   * (§4, "name the party and the year"). The clause came off /budget rather
+   * than guessing at a name: an unverified name on a page whose whole argument
+   * is that every line is sourced is the one mistake this page cannot make
+   * (§1.8). Put the real name here and the clause can go back.
+   */
   financeMinister: 'Minister of Finance',
   governmentLabel: 'National-led coalition government (National, ACT, NZ First)',
   sourceLabel: 'The Treasury: Budget at a Glance',
   sourceUrl: 'https://www.budget.govt.nz/budget/2026/at-a-glance/index.htm',
   fiscalDataUrl: 'https://www.budget.govt.nz/budget/2026/data-library.htm',
-  // Treasury's own measurement note — essential for reading the figures correctly.
+  /* Treasury's own measurement note — essential for reading the figures
+     correctly, which is why it survived the callout that was cut and now sits
+     in the (i) beside the page title (§1.2).
+     Plainer words (§1.7): "total operating expenditure over the forecast
+     period" is Treasury's phrase, not a reader's. */
   fundingNote:
-    "Unless otherwise stated, funding refers to total operating expenditure over the forecast period (the four years to 2029/30). Capital funding is a one-off sum.",
+    'Unless a line says otherwise, a funding figure is money committed over the four years to mid-2030. A capital figure is a one-off sum.',
 }
 
 /** The eight things the Budget says it does (Treasury "Budget 2026 package"). */
@@ -54,10 +66,24 @@ export const BUDGET_OUTLOOK = {
   },
   fiscal: {
     title: 'Fiscal outlook',
+    /* Plainer words (§1.7): "OBEGAL, excluding ACC" is Treasury's accounting
+       term, and it was doing the work of "the Government's operating balance"
+       in the one sentence a reader has to understand. The acronym is kept in
+       the indicator below and explained in the page's (i), so nothing is lost
+       (§5.17) and the sentence is readable. */
     summary:
-      'Treasury forecasts the operating balance (OBEGAL, excluding ACC) returning to surplus in 2028/29, with net core Crown debt peaking and then declining as a share of GDP.',
-    indicators: ['Operating balance (OBEGAL, excl. ACC)', 'Net core Crown debt'],
+      'Treasury forecasts the Government’s operating balance returning to surplus in 2028/29, with net core Crown debt peaking and then declining as a share of the economy.',
+    indicators: ['Operating balance (OBEGAL, excluding ACC)', 'Net core Crown debt'],
   },
+}
+
+/** What a reader can check the outlook against. Treasury publishes the forecast
+ *  NUMBERS in the Budget Economic and Fiscal Update and the data library, not as
+ *  text on the at-a-glance page these summaries come from, so the outlook panel
+ *  points at the data rather than at the summary (§1.8). */
+export const OUTLOOK_SOURCE = {
+  label: 'Treasury fiscal data',
+  url: 'https://www.budget.govt.nz/budget/2026/data-library.htm',
 }
 
 export type BudgetKind = 'operating' | 'capital' | 'saving' | 'mixed'
@@ -71,9 +97,46 @@ export interface BudgetItem {
 export interface BudgetSector {
   key: string
   label: string
-  headline: string
+  /**
+   * The tile's headline number, on its own, so it can be set on a baseline at
+   * 20px (phone) / 24px (desktop) the way the party and MP directory cards set
+   * a seat count (§2.14). It replaced a single `headline` string like
+   * "$131m teaching + $470m capital", which could not be sized as a figure and
+   * wrapped to three lines in a 150px tile.
+   *
+   * It is always a figure Treasury states, copied verbatim, never a total we
+   * added up: summing a sector's lines would invent a number the Budget does
+   * not publish (§1.8). Where the sector has no single headline amount, this
+   * is the COUNT of its funding lines and `figureNote` says so.
+   */
+  figure: string
+  /** True when `figure` is a COUNT of funding lines because Treasury publishes
+   *  no single headline amount for this area. The panel says so outright, so a
+   *  "4" can never be read as four billion (§1.5). */
+  figureIsCount?: boolean
+  /** The rest of the old headline, in plain words. Two lines, reserved. */
+  figureNote: string
   blurb: string
   items: BudgetItem[]
+  /**
+   * Where this sector's figures can be checked (§1.8). Until this pass every
+   * one of the 51 dollar figures on the page was covered by a single link in
+   * the page footer, which is the construction that got three Treaty
+   * Principles figures pulled: a page-level link evidences the page, not the
+   * line. The link now sits in the panel with the lines it evidences.
+   *
+   * KNOWN GAP, deliberately not papered over: these all point at Treasury's
+   * at-a-glance index, because the per-sector at-a-glance URLs have not been
+   * checked against the live site from here. A guessed deep link is worse than
+   * an honest shallow one. Verify each and narrow it.
+   */
+  source: { label: string; url: string }
+}
+
+/** The one source every sector currently carries. See `source` above. */
+const AT_A_GLANCE = {
+  label: 'Treasury: Budget at a Glance',
+  url: 'https://www.budget.govt.nz/budget/2026/at-a-glance/index.htm',
 }
 
 /** Every figure verbatim from the Treasury at-a-glance sector pages. */
@@ -81,7 +144,9 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'health',
     label: 'Health',
-    headline: '+$5.5b operating',
+    figure: '+$5.5b',
+    figureNote: 'more for health services, ongoing',
+    source: AT_A_GLANCE,
     blurb: 'New funding to support access to timely, quality healthcare.',
     items: [
       { amount: '$5.5b', kind: 'operating', text: 'Increase in funding for frontline health services.' },
@@ -96,7 +161,9 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'education',
     label: 'Education',
-    headline: '$131m teaching + $470m capital',
+    figure: '$131m',
+    figureNote: 'for teaching, plus $470m one-off',
+    source: AT_A_GLANCE,
     blurb: 'Supports lifting achievement, and reinvests savings from ending final-year Fees Free into trades and vocational education.',
     items: [
       { amount: '$131m', kind: 'operating', text: 'Strengthen teaching and learning in reading, writing and maths.' },
@@ -112,7 +179,9 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'law-order',
     label: 'Law & order',
-    headline: '$503m Corrections + $50m Police',
+    figure: '$503m',
+    figureNote: 'for Corrections, plus $50m for Police',
+    source: AT_A_GLANCE,
     blurb: 'New funding aimed at reducing crime and community safety.',
     items: [
       { amount: '$503m', kind: 'operating', text: 'Frontline Corrections services, including resources to manage prison growth.' },
@@ -125,8 +194,17 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'infrastructure',
     label: 'Infrastructure',
-    headline: '$1.8b expressway + $1.2b rail',
-    blurb: 'Funding to build or enable infrastructure. New spending sits on top of an existing pipeline, around $60 billion is expected to be spent over the next four years.',
+    figure: '$1.8b',
+    figureNote: 'for the expressway, plus $1.2b for rail',
+    source: AT_A_GLANCE,
+    /* The "around $60 billion over the next four years" clause came off here.
+       It is not a Budget 2026 figure, it is the size of the existing pipeline,
+       and BUDGET_BASELINE in budget-links.ts states it already WITH the
+       Treasury taxpayers-money link under it. Two statements of one number
+       ~4,000px apart, one sourced and one not (§1.3), so the unsourced copy
+       went and the evidenced one stayed (§5.17: checked field by field, the
+       baseline bullet carries every word of this clause). */
+    blurb: 'Funding to build or enable infrastructure, on top of the existing pipeline.',
     items: [
       { amount: '$1.8b', kind: 'capital', text: 'Build the Cambridge to Piarere Expressway (a Road of National Significance).' },
       { amount: '$705m + $477m', kind: 'mixed', text: 'Renew and upgrade the rail network ($705m capital, $477m operating).' },
@@ -138,8 +216,16 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'housing-welfare',
     label: 'Social housing & welfare',
-    headline: 'Up to 2,250 social houses',
-    blurb: 'Changes to the social housing and welfare systems, described by Treasury as improving "fairness and sustainability".',
+    figure: 'Up to 2,250',
+    figureNote: 'more social houses',
+    source: AT_A_GLANCE,
+    /* Was: 'described by Treasury as improving "fairness and sustainability"'.
+       The quotation marks claimed verbatim Treasury wording that the page
+       cannot point at a line for (§1.8, and the July 2026 position audit's
+       quote-integrity finding: our summaries held up, our quoted phrases were
+       paraphrases). Reported speech keeps the fact, that Treasury frames the
+       changes this way, without claiming the words. */
+    blurb: 'Changes to the social housing and welfare systems, which Treasury frames as improving fairness and sustainability.',
     items: [
       { amount: '$69m', kind: 'operating', text: 'Fund up to 2,250 additional social houses.' },
       { kind: 'mixed', text: 'A fiscally neutral package: increase the Accommodation Supplement for private renters, and increase income-related rents for people in social housing.' },
@@ -151,7 +237,9 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'cost-of-living',
     label: 'Cost of living (fuel response)',
-    headline: '$50/week In-Work Tax Credit boost',
+    figure: '$50',
+    figureNote: 'a week more, In-Work Tax Credit',
+    source: AT_A_GLANCE,
     blurb: 'Temporary, targeted support for households and services facing sustained fuel-price increases.',
     items: [
       { amount: '$373m', kind: 'operating', text: 'A $50-per-week increase to the In-Work Tax Credit for up to a year, to help working families with fuel costs.' },
@@ -164,7 +252,9 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'defence',
     label: 'Defence & foreign affairs',
-    headline: '$2.3b capital + $1.2b operating',
+    figure: '$2.3b',
+    figureNote: 'one-off, plus $1.2b ongoing',
+    source: AT_A_GLANCE,
     blurb: 'Investment in defence and intelligence capabilities, and promoting New Zealand’s interests overseas.',
     items: [
       { amount: '$2.3b + $1.2b', kind: 'mixed', text: 'Defence and intelligence capabilities ($2.3b capital, $1.2b operating).' },
@@ -176,7 +266,10 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'energy',
     label: 'Energy security',
-    headline: 'Generation + gas transition',
+    figure: '2',
+    figureIsCount: true,
+    figureNote: 'funding lines',
+    source: AT_A_GLANCE,
     blurb: 'Investments to support New Zealand’s energy security.',
     items: [
       { kind: 'capital', text: 'Capital investment in Genesis Energy to accelerate new generation and firming capacity.' },
@@ -186,7 +279,10 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'revenue',
     label: 'Revenue & tax',
-    headline: 'New bank levy; FBT simplified',
+    figure: '4',
+    figureIsCount: true,
+    figureNote: 'tax changes',
+    source: AT_A_GLANCE,
     blurb: 'Tax measures to reduce compliance costs, maintain integrity, and retain capital and talent.',
     items: [
       { kind: 'operating', text: 'A new prudential levy on banks and other financial institutions, to help cover the cost of Reserve Bank regulation and supervision.' },
@@ -198,7 +294,9 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'savings',
     label: 'Savings & reprioritisation',
-    headline: '$424m + $2b in savings',
+    figure: '$424m',
+    figureNote: 'reprioritised, plus $2b from baselines',
+    source: AT_A_GLANCE,
     blurb: 'Savings from agencies, redirected to frontline services or used to reduce future spending.',
     items: [
       { amount: '$424m', kind: 'saving', text: 'Savings reprioritised to frontline services.' },
@@ -208,7 +306,10 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   {
     key: 'other',
     label: 'Other initiatives',
-    headline: 'Children, conservation & ID',
+    figure: '4',
+    figureIsCount: true,
+    figureNote: 'other initiatives',
+    source: AT_A_GLANCE,
     blurb: 'Other initiatives to improve public services, reprioritise funding and meet commitments.',
     items: [
       { amount: '$184m', kind: 'operating', text: 'Additional for Oranga Tamariki to protect and support children.' },
@@ -219,9 +320,37 @@ export const BUDGET_SECTORS: BudgetSector[] = [
   },
 ]
 
+/**
+ * §1.7, "plain words, not Parliament's" — which applies to Treasury's too.
+ * "Operating" and "Capital" are the accounting terms; what a reader wants to
+ * know is whether the money keeps coming or arrives once. These labels are the
+ * pills over the sector grid, so the distinction is taught by operating the
+ * control rather than by the legend paragraph that used to sit above it.
+ */
 export const KIND_LABEL: Record<BudgetKind, string> = {
-  operating: 'Operating',
-  capital: 'Capital (one-off)',
+  operating: 'Ongoing',
+  capital: 'One-off',
   saving: 'Saving',
-  mixed: 'Operating + capital',
+  mixed: 'Ongoing + one-off',
+}
+
+/** Colour per kind. One meaning only (§1.6): it is on the filter pills and on
+ *  the dot beside each funding line, and nowhere else. The sector tiles are
+ *  deliberately NOT coloured by kind — the modal kind of a sector's lines says
+ *  nothing about where its dollars went. */
+export const KIND_COLOR: Record<BudgetKind, { bg: string; fg: string }> = {
+  operating: { bg: '#ecfdf5', fg: '#1F8A4C' },
+  capital: { bg: '#eef4ff', fg: '#2563eb' },
+  saving: { bg: '#fef3e7', fg: '#b45309' },
+  mixed: { bg: '#f3effe', fg: '#7c3aed' },
+}
+
+/** Pill order over the grid: everything, then the two kinds of spending, then
+ *  what was saved. A `mixed` line is both ongoing AND one-off, so it counts in
+ *  both, which is what the Budget says it is. */
+export function matchesKind(item: BudgetItem, kind: BudgetKind | null): boolean {
+  if (!kind) return true
+  if (item.kind === kind) return true
+  if (item.kind === 'mixed') return kind === 'operating' || kind === 'capital'
+  return false
 }

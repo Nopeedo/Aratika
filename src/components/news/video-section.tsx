@@ -5,6 +5,26 @@
  * videos (press standups, leader updates, debates) filterable by party. Clicking
  * opens a privacy-enhanced (youtube-nocookie) pop-up player — we embed, we don't
  * rehost. See src/lib/news/videos.ts.
+ *
+ * Redesigned 24 September 2026 against docs/DESIGN-SPEC.md. PUBLIC PROPS ARE
+ * UNCHANGED (`videos`, `hideHeading`, `heading`, `blurb`), because the Election
+ * Centre renders this with hideHeading and the dashboard renders it with the
+ * defaults. What changed inside it:
+ *
+ *  - FChip was a byte-for-byte copy of NewsFeed's Chip: same 6px/12px padding,
+ *    same 12.5px/700 type, same black INK fill when active. Both are now the
+ *    shared .status-pill (§2.2) in the §3.1 hit-area wrapper, and a party pill
+ *    takes the party's OWN colour, because filling it solid black was a second
+ *    colour system on a rail whose whole subject is party colour (§1.6).
+ *  - The pills and the arrows were bare <button>s, so
+ *    `button { min-height: 44px }` inflated each of them to 44px on a phone for
+ *    a control styled 28 and 32 (§3.1).
+ *  - The arrows nudged a fixed 300px. They step a measured page now (§3.5).
+ *  - The card width was inline (`flex: 0 0 286px`), so no media query could
+ *    reach it and it took 85% of a 375px phone for one card (§3.2). It is a
+ *    class now, and it GROWS with the rail instead of staying a phone card in a
+ *    desktop column: clamp(240px, (100% - 28px) / 3, 380px) is three whole
+ *    cards in a 1008px content column and one and a half on a phone (§2.14).
  */
 
 import { useRef, useState, useEffect } from 'react'
@@ -12,7 +32,7 @@ import { Play, X, ChevronLeft, ChevronRight, Vote } from 'lucide-react'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
 import type { VideoItem } from '@/lib/news/videos'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -51,34 +71,53 @@ export function VideoSection({ videos, hideHeading = false, heading, blurb }: {
   for (const v of videos) for (const p of v.parties) counts[p] = (counts[p] || 0) + 1
   const partyKeys = Object.keys(counts).sort((a, b) => counts[b] - counts[a])
   const shown = videos.filter((v) => party === 'all' || v.parties.includes(party))
-  const scroll = (dir: number) => ref.current?.scrollBy({ left: dir * 300, behavior: 'smooth' })
+  /* §3.5: step a MEASURED page rather than a fixed 300px nudge, which was one
+     and a bit cards at every width and landed mid-card on a desktop. */
+  const scroll = (dir: number) => {
+    const el = ref.current
+    if (!el) return
+    el.scrollBy({ left: dir * Math.max(200, el.clientWidth - 24), behavior: 'smooth' })
+  }
 
   return (
     <section style={{ marginBottom: 30 }}>
-      {!hideHeading && <h2 style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>{heading ?? 'Leaders & the press'}</h2>}
+      {/* Shipped with the component and mounted on every render, not inside a
+          branch: §3.2's exact failure was a phone block mounted in one branch,
+          so the tallest card on the page never received any of it. */}
+      <style dangerouslySetInnerHTML={{ __html: VID_CSS }} />
+
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: hideHeading ? 'flex-end' : 'space-between', gap: 12, marginBottom: 4 }}>
+        {/* 24px, the size /bills, /budget and the stories heading above use for a
+            peer section. At 19px under a 30px h1 it read as a caption (§4). */}
+        {!hideHeading && <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>{heading ?? 'Leaders & the press'}</h2>}
+        <div style={{ display: 'flex', gap: 8 }}>
+          <Arrow label="Scroll left" onClick={() => scroll(-1)}><ChevronLeft style={{ width: 18, height: 18 }} /></Arrow>
+          <Arrow label="Scroll right" onClick={() => scroll(1)}><ChevronRight style={{ width: 18, height: 18 }} /></Arrow>
+        </div>
+      </div>
       {!hideHeading && <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 12px' }}>{blurb ?? 'Press standups, leader updates and debates, straight from official channels.'}</p>}
 
-      {/* party filter */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginBottom: 14 }}>
-        <FChip label="All" active={party === 'all'} onClick={() => setParty('all')} />
+      {/* Party filter. §2.2 pills in the §3.1 wrapper, and the count moved
+          OUT of the label and into the pill, where the rest of the site puts
+          it: "National (7)" inside a pill is a count wearing brackets. */}
+      <div className="vid-pills" style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
+        <FChip label="All" count={videos.length} active={party === 'all'} hue={INK} fill="#efece5" onClick={() => setParty('all')} />
         {partyKeys.map((p) => (
-          <FChip key={p} label={`${PARTY_NAMES[p as PartySlug]?.short ?? p} (${counts[p]})`} dot={PARTY_COLORS[p as PartySlug]?.bg} active={party === p} onClick={() => setParty(party === p ? 'all' : p)} />
+          <FChip
+            key={p}
+            label={PARTY_NAMES[p as PartySlug]?.short ?? p}
+            count={counts[p]}
+            active={party === p}
+            hue={PARTY_COLORS[p as PartySlug]?.bg ?? INK}
+            fill={PARTY_COLORS[p as PartySlug]?.bg ?? '#efece5'}
+            onClick={() => setParty(party === p ? 'all' : p)}
+          />
         ))}
-      </div>
-
-      {/* Scroll arrows — were up beside the heading, separated from the rail
-          they control by the whole filter-chip block. Moved to sit directly
-          above the rail instead, by request, which also reads better in
-          general: the control is now next to the thing it scrolls rather
-          than a section-length scroll away from it. */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginBottom: 8 }}>
-        <button onClick={() => scroll(-1)} aria-label="Scroll left" style={arrowBtn}><ChevronLeft style={{ width: 18, height: 18 }} /></button>
-        <button onClick={() => scroll(1)} aria-label="Scroll right" style={arrowBtn}><ChevronRight style={{ width: 18, height: 18 }} /></button>
       </div>
 
       <div ref={ref} className="vid-rail" style={{ display: 'flex', gap: 14, overflowX: 'auto', scrollSnapType: 'x mandatory', paddingBottom: 8 }}>
         {shown.map((v) => (
-          <button key={v.id} onClick={() => setOpen(v)} className="story-card" style={{ flex: '0 0 286px', width: 286, scrollSnapAlign: 'start', textAlign: 'left', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, overflow: 'hidden', cursor: 'pointer', padding: 0, fontFamily: MANROPE }}>
+          <button key={v.id} onClick={() => setOpen(v)} className="story-card vid-card" style={{ scrollSnapAlign: 'start', textAlign: 'left', background: '#fff', border: `1px solid ${BORDER}`, overflow: 'hidden', cursor: 'pointer', padding: 0, fontFamily: MANROPE }}>
             <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', background: '#000' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={v.thumbnail} alt="" loading="lazy" referrerPolicy="no-referrer" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -93,7 +132,7 @@ export function VideoSection({ videos, hideHeading = false, heading, blurb }: {
                 </span>
               )}
             </div>
-            <div style={{ padding: '11px 13px' }}>
+            <div className="vid-body">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 5 }}>
                 {/* The outlet is load-bearing on an interview card, not decoration:
                     the viewer is watching a politician answer questions, and who
@@ -101,10 +140,13 @@ export function VideoSection({ videos, hideHeading = false, heading, blurb }: {
                     it is the whole disclosure — an earlier "IND" badge tried to
                     say more than that and could not survive a tier holding both
                     Q+A and a two-person podcast. */}
-                <span style={{ fontSize: 11, fontWeight: 800, color: SECONDARY, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{v.source}</span>
-                {v.pubDate && <span style={{ fontSize: 11, fontWeight: 600, color: TERTIARY }}>{fmtDate(v.pubDate)}</span>}
+                <span className="vid-src" style={{ fontWeight: 800, color: SECONDARY, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{v.source}</span>
+                {v.pubDate && <span className="vid-date" style={{ fontWeight: 600, color: TERTIARY }}>{fmtDate(v.pubDate)}</span>}
               </div>
-              <div style={{ fontSize: 13.5, fontWeight: 700, color: INK, lineHeight: 1.35, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{v.title}</div>
+              {/* A FIXED two lines. The rail is a flex row, so a card whose
+                  title runs to one line used to sit shorter than the card
+                  beside it and the row's baseline ragged (§2.14). */}
+              <div className="vid-title" style={{ fontWeight: 700, color: INK, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{v.title}</div>
               {v.parties.length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 8 }}>
                   {v.parties.map((p) => (
@@ -143,23 +185,103 @@ export function VideoSection({ videos, hideHeading = false, heading, blurb }: {
   )
 }
 
-const arrowBtn: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: 999, border: `1px solid ${BORDER}`, background: '#fff', color: INK, cursor: 'pointer' }
-
-/**
- * §3.1's trap, found here: a bare `<button>` with 6px 12px padding, which
- * globals.css inflates to a 44px-tall tap target on a phone. "All" — short
- * enough that the inflated box came out roughly square — rendered as a
- * near-circle instead of a pill, and every other chip stood noticeably
- * taller and chunkier than the site's other §2.2 pill rows. The button is
- * the hit area now; the span is the pill.
- */
-function FChip({ label, active, onClick, dot }: { label: string; active: boolean; onClick: () => void; dot?: string }) {
+/** §3.1: the button is the 44px hit area, the span is the 32px control. The
+ *  pad is vertical ONLY, taken straight back off as margin — padding all four
+ *  sides makes the invisible box overhang its row horizontally, which is how a
+ *  hit area makes a container scrollable (§5.13). */
+function Arrow({ label, onClick, children }: { label: string; onClick: () => void; children: React.ReactNode }) {
   return (
-    <button onClick={onClick} style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}>
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, fontWeight: 700, fontFamily: MANROPE, padding: '5px 11px', borderRadius: 999, color: active ? '#fff' : INK, background: active ? INK : '#fff', border: `1px solid ${active ? INK : BORDER}`, whiteSpace: 'nowrap' }}>
-        {dot && <span style={{ width: 8, height: 8, borderRadius: '50%', background: dot, display: 'inline-block', flexShrink: 0 }} />}
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      style={{ display: 'inline-flex', padding: '6px 0', margin: '-6px 0', background: 'none', border: 'none', cursor: 'pointer', minHeight: 0 }}
+    >
+      <span style={{
+        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+        width: 32, height: 32, borderRadius: 999,
+        border: `1px solid ${BORDER}`, background: '#fff', color: INK,
+      }}>{children}</span>
+    </button>
+  )
+}
+
+/** §2.2 pill in the §3.1 wrapper. A party pill takes the party's own colour
+ *  (ballot-bills.tsx:163): 2px party border always, party fill when lit, the
+ *  count inside at .75 opacity. */
+function FChip({ label, count, active, hue, fill, onClick }: {
+  label: string
+  count: number
+  active: boolean
+  hue: string
+  fill: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={active}
+      style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}
+    >
+      <span
+        className="status-pill"
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6, borderRadius: 999,
+          background: active ? fill : '#fff',
+          border: `2px solid ${hue}`,
+          color: INK, fontFamily: MANROPE, fontWeight: 800,
+          transition: 'background-color .2s ease, border-color .2s ease',
+        }}
+      >
         {label}
+        <span style={{ fontWeight: 700, opacity: .75 }}>{count}</span>
       </span>
     </button>
   )
 }
+
+/* THE DESKTOP RULE, on a rail (§2.14, §5.19). The card was `flex: 0 0 286px`
+   inline, which is 85% of a 375px phone for ONE card, and still 286px in a
+   1008px desktop column: a phone card in a row of three with the page's
+   margins doing the rest. A flex-basis of clamp(240px, (100% - 28px) / 3,
+   380px) is measured against the rail itself, so the card GROWS with its
+   container to three whole cards at 1008px and falls back to a readable 240px
+   in a narrow one, with no breakpoint needed for the width at all.
+
+   The type and padding step up at 768 the way the tile grids do, and the title
+   reserve is restated there, because two lines of 15px is 41px where two lines
+   of 13.5px was 37.
+
+   Sizes are in a class rather than inline for §2.15's second reason too:
+   globals.css rewrites an inline font-size:11px to 12.5px on a phone, so a
+   height computed from an inline label is wrong on the device it was computed
+   for. */
+const VID_CSS = `
+.vid-card {
+  /* Longhands, not the flex shorthand: a clamp()/calc() flex-basis inside the
+     shorthand is the kind of value an older parser drops on the floor, taking
+     flex-grow and flex-shrink with it. */
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: clamp(240px, calc((100% - 28px) / 3), 380px);
+  border-radius: 14px;
+}
+.vid-body { padding: 11px 13px; }
+.vid-src, .vid-date { font-size: 11px; }
+.vid-title {
+  height: 37px; font-size: 13.5px; line-height: 1.35;
+}
+@media (min-width: 768px) {
+  .vid-card { border-radius: 16px; }
+  .vid-body { padding: 13px 15px; }
+  .vid-src, .vid-date { font-size: 12px; }
+  .vid-title { height: 41px; font-size: 15px; }
+}
+@media (max-width: 767px) {
+  /* §2.2's lesson: take the space between the pills before the size of them.
+     Scoped to this row, never to the shared .status-pill rule. */
+  .vid-pills { gap: 5px !important; }
+  .vid-pills .status-pill { padding: 5px 8px !important; font-size: 12px !important; white-space: nowrap; }
+  .vid-pills .status-pill span { font-size: 10.5px !important; }
+}
+`

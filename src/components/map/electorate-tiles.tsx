@@ -14,6 +14,7 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { formatNumber, toSlug } from '@/lib/utils/format'
 import { MpPhotoTile } from './mp-photo-tile'
+import { MetaRow } from './map-states'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
 
 export function ElectorateTiles({ name }: { name: string }) {
@@ -36,9 +37,12 @@ export function ElectorateTiles({ name }: { name: string }) {
           <MapPin style={{ width: 16, height: 16, color: JADE }} />{name}
         </h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <Row label="Electorate MP" value={info.mpName ?? ''} />
-          <Row label="Party" value={party ? PARTY_NAMES[party].short : ''} color={party ? PARTY_COLORS[party].bg : undefined} />
-          {info.majority != null && <Row label="2023 majority" value={formatNumber(info.majority)} />}
+          {/* Labelled 2023, because `info.party` is the party that WON the
+              seat in 2023 and two sitting MPs have left theirs since. The map
+              panel makes the same distinction the same way. */}
+          <MetaRow label="Won in 2023" value={info.mpName ?? 'Not on record'} />
+          <MetaRow label="Party then" value={party ? PARTY_NAMES[party].short : 'Not on record'} color={party ? PARTY_COLORS[party].bg : undefined} />
+          {info.majority != null && <MetaRow label="2023 majority" value={formatNumber(info.majority)} />}
         </div>
         {slug && mp && (
           <Link href={`/mps/${slug}`} style={{ marginTop: 12, textDecoration: 'none' }}>
@@ -51,17 +55,6 @@ export function ElectorateTiles({ name }: { name: string }) {
 
       {/* Tile 2 — the incumbent, fills the rest of the column */}
       <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={party} mp={mp} caption="Your electorate MP" fill />
-    </div>
-  )
-}
-
-function Row({ label, value, color }: { label: string; value: string; color?: string }) {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${BORDER}`, paddingBottom: 8 }}>
-      <span style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>{label}</span>
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE }}>
-        {color && <span style={{ width: 10, height: 10, borderRadius: '50%', background: color }} />}{value}
-      </span>
     </div>
   )
 }

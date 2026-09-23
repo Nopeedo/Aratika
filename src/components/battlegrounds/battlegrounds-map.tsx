@@ -4,52 +4,95 @@
  * BattlegroundsMap — the electorate map recoloured by 2023 marginality.
  *
  * Māori and general electorates overlap geographically (same land, different
- * roll), so — like the main map — we show ONE roll at a time via a toggle.
+ * roll), so, like the main map, we show ONE roll at a time via <RollPills>.
  * Each seat is coloured by how close its 2023 contest was and links to its
- * battle page.
+ * seat page.
+ *
+ * What came out of this file, all of it duplication (§1.3):
+ *
+ * - The roll toggle, which was byte-identical to map-experience.tsx's. Both are
+ *   the shared §2.2 <RollPills> now.
+ * - `Row`, byte-identical to the one in map/electorate-tiles.tsx. It is
+ *   `MetaRow` in map/map-states.tsx.
+ * - `Loading`, identical to map-experience.tsx's but for a 28px spinner against
+ *   a 30px one. `MapLoading`, same file.
+ * - The empty-state prompt, which this file built as `promptCol` and then
+ *   re-inlined a second time 90 lines later for the standalone branch: two
+ *   copies to keep in step for one empty state.
+ * - The `embedded` prop and its whole branch. The Election Centre used to
+ *   render <BattlegroundsMap embedded />; that call site was removed, and
+ *   `grep -rn "BattlegroundsMap" src` now finds only /battlegrounds. A second
+ *   layout with no caller is a second layout to keep correct.
+ * - The `.map-grid` rule, an undeclared GLOBAL class this file wrote three
+ *   rules for while map-experience.tsx wrote five. Whichever mounted last won.
+ *   Scoped to `.bg-map-grid` here (§3.2, §5.15).
  */
 
 import * as React from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { Loader2, ArrowRight, ShieldCheck, MapPinOff, Layers } from 'lucide-react'
+import { ArrowRight, ShieldCheck } from 'lucide-react'
 import type { FeatureCollection } from 'geojson'
-import { normalizeElectorateKey, getElectorate } from '@/constants/electorates-data'
+import { normalizeElectorateKey, getElectorate, type ElectorateInfo } from '@/constants/electorates-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { toSlug } from '@/lib/utils/format'
 import { MpPhotoTile } from '@/components/map/mp-photo-tile'
-import { MARGIN_TIERS, classifyMargin, marginColorByName } from '@/lib/battlegrounds'
+import { RollPills, type Roll } from '@/components/map/roll-pills'
+import { MapLoading, MapUnavailable, MetaRow } from '@/components/map/map-states'
+import { MARGIN_TIERS, UNKNOWN_TIER, classifyMargin, marginColorByName, type MarginTier } from '@/lib/battlegrounds'
 import { MAP_LEGEND_CSS } from '@/components/map/legend-css'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
-type Layer = 'general' | 'maori'
-const PATHS: Record<Layer, string> = {
+const PATHS: Record<Roll, string> = {
   general: '/data/general-electorates-2020.geojson',
   maori: '/data/maori-electorates-2020.geojson',
 }
 
-const ElectorateMap = dynamic(() => import('@/components/map/electorate-map'), { ssr: false, loading: () => <Loading /> })
+/** The red the page's hero and its closest tier already use. */
+const ACCENT = '#dc2626'
 
+const ElectorateMap = dynamic(() => import('@/components/map/electorate-map'), { ssr: false, loading: () => <MapLoading /> })
 
-export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
-  const [layer, setLayer] = React.useState<Layer>('general')
-  const [sets, setSets] = React.useState<Record<Layer, FeatureCollection | null>>({ general: null, maori: null })
+export function BattlegroundsMap() {
+  const [layer, setLayer] = React.useState<Roll>('general')
+  const [sets, setSets] = React.useState<Record<Roll, FeatureCollection | null>>({ general: null, maori: null })
   const [status, setStatus] = React.useState<'loading' | 'ready' | 'error'>('loading')
   const [selected, setSelected] = React.useState<string | null>(null)
 
+  /**
+   * The active roll first, the other one once it is drawn. This used to
+   * Promise.all both files on mount: 463KB before the map could paint, on a
+   * page where the general roll alone is 388KB of it and most readers never
+   * switch. Both are cached in `sets`, so a switch back is free.
+   */
   React.useEffect(() => {
     let cancelled = false
-    Promise.all([
-      fetch(PATHS.general).then((r) => (r.ok ? r.json() : null)).catch(() => null),
-      fetch(PATHS.maori).then((r) => (r.ok ? r.json() : null)).catch(() => null),
-    ]).then(([g, m]) => {
-      if (cancelled) return
-      setSets({ general: g, maori: m })
-      setStatus(g || m ? 'ready' : 'error')
-    })
+    if (sets[layer]) { setStatus('ready'); return }
+    fetch(PATHS[layer])
+      .then((r) => (r.ok ? r.json() : null))
+      .catch(() => null)
+      .then((json: FeatureCollection | null) => {
+        if (cancelled) return
+        setSets((prev) => ({ ...prev, [layer]: json }))
+        setStatus(json ? 'ready' : 'error')
+      })
     return () => { cancelled = true }
-  }, [])
+  }, [layer]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Prefetch the other roll once the first one has drawn, so a switch is
+  // instant without costing the first paint. A plain timer rather than
+  // requestIdleCallback: Safari still does not ship it.
+  React.useEffect(() => {
+    if (status !== 'ready') return
+    const other: Roll = layer === 'general' ? 'maori' : 'general'
+    if (sets[other]) return
+    const id = window.setTimeout(() => {
+      fetch(PATHS[other]).then((r) => (r.ok ? r.json() : null)).catch(() => null)
+        .then((json: FeatureCollection | null) => { if (json) setSets((prev) => ({ ...prev, [other]: json })) })
+    }, 1200)
+    return () => window.clearTimeout(id)
+  }, [status, layer]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const data = sets[layer]
   const selectedKey = selected ? normalizeElectorateKey(selected) : null
@@ -60,8 +103,7 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
   const mpSlug = info?.mpSlug ?? (info?.mpName ? toSlug(info.mpName) : undefined)
   const mp = mpSlug ? MP_PROFILES[mpSlug] ?? null : null
 
-  const switchLayer = (l: Layer) => { setLayer(l); setSelected(null) }
-  const mapHeight = embedded ? 'clamp(560px, 76vh, 740px)' : 600
+  const switchLayer = (l: Roll) => { setLayer(l); setSelected(null); setStatus(sets[l] ? 'ready' : 'loading') }
 
   // On narrow screens the panel stacks BELOW the map, so a tap can look like
   // nothing happened. Scroll the selected MP panel into view when a seat is picked.
@@ -73,86 +115,25 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
     }
   }, [selected])
 
-  // Shared bits so the embedded (stacked) and standalone (side-by-side) layouts match.
-  const infoTile = info ? (
-    <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: 16, display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
-      {tier && <span style={{ alignSelf: 'flex-start', fontSize: 11, fontWeight: 800, color: '#fff', background: tier.color, borderRadius: 999, padding: '3px 10px', marginBottom: 10 }}>{tier.label}</span>}
-      <h3 style={{ fontSize: 19, fontWeight: 800, color: INK, margin: '0 0 2px' }}>{selected}</h3>
-      <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14 }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <Row label="2023 winner" value={info.mpName ?? ''} />
-        <Row label="Party" value={info.party ? PARTY_NAMES[info.party].short : ''} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
-        <Row label="Majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : ''} />
-      </div>
-      <Link href={`/battlegrounds/${selectedKey}`} style={{ marginTop: 12, textDecoration: 'none' }}>
-        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px', color: '#fff', fontSize: 14, fontWeight: 800 }}>View this battle <ArrowRight style={{ width: 15, height: 15 }} /></span>
-      </Link>
-    </div>
-  ) : null
-  const promptCol = (
-    <div style={{ height: '100%', minHeight: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', border: `1px solid ${BORDER}`, borderRadius: 14, background: SURFACE, padding: 24, color: TERTIARY, fontFamily: MANROPE }}>
-      <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
-      <div style={{ fontSize: 14, fontWeight: 700, color: SECONDARY }}>Tap a seat</div>
-      <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests, the seats most likely to change hands.</div>
-    </div>
-  )
-
   return (
     <div>
-      {/* Toggle */}
-      <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 14, flexWrap: 'wrap' }}>
-        <div style={{ display: 'inline-flex', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, padding: 3 }}>
-          {(['general', 'maori'] as Layer[]).map((l) => (
-            <button key={l} onClick={() => switchLayer(l)} style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: 'none', cursor: 'pointer',
-              fontSize: 13, fontWeight: 700, fontFamily: MANROPE,
-              background: layer === l ? '#fff' : 'transparent', color: layer === l ? INK : TERTIARY,
-              boxShadow: layer === l ? '0 1px 3px rgba(12,14,18,.08)' : 'none',
-            }}>
-              <Layers style={{ width: 14, height: 14 }} />
-              <span style={{ whiteSpace: 'nowrap' }}>
-                {l === 'general' ? 'General' : 'Māori'}
-                <span className="map-toggle-word"> electorates</span>
-              </span>
-            </button>
-          ))}
-        </div>
-        <span style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>
-          The two rolls cover the same land, so view one at a time.
-        </span>
+      <style dangerouslySetInnerHTML={{ __html: GRID_CSS }} />
+
+      {/* The caption that stood beside this row ("The two rolls cover the same
+          land, so view one at a time") is inside <RollPills>'s own (i), where
+          /map gets it too. The same control was explained on one page and left
+          bare on the other (§1.2, §1.4). */}
+      <div style={{ marginBottom: 14 }}>
+        <RollPills value={layer} onChange={switchLayer} accent={ACCENT} />
       </div>
 
-      {embedded && (
-        <style>{`
-          .bg-embed-split { display: grid; grid-template-columns: 1fr minmax(260px, 330px); gap: 14px; align-items: stretch; }
-          @media (max-width: 760px) {
-            .bg-embed-split { grid-template-columns: 1fr; }
-            .bg-embed-split > div:first-child { height: min(70vh, 520px) !important; }
-            .bg-embed-split > div:last-child { min-height: 420px; }
-          }
-        `}</style>
-      )}
-      <div
-        className={embedded ? 'bg-embed-split' : 'map-grid'}
-        style={embedded ? undefined : { display: 'grid', gridTemplateColumns: '1fr 340px', gap: 16, alignItems: 'stretch' }}
-      >
+      <div className="bg-map-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 16, alignItems: 'stretch' }}>
         {/* Map. translateZ(0) isolates it on its own GPU layer so Leaflet's off-screen
             zoom-proxy can't smear/ghost adjacent content while the page scrolls. */}
-        <div style={{ position: 'relative', height: mapHeight, borderRadius: 18, overflow: 'hidden', border: `1px solid ${BORDER}`, background: '#eaf2f7', transform: 'translateZ(0)', isolation: 'isolate' }}>
-          {status === 'loading' && <Loading />}
+        <div className="bg-map-box" style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', border: `1px solid ${BORDER}`, background: '#eaf2f7', transform: 'translateZ(0)', isolation: 'isolate' }}>
+          {status === 'loading' && <MapLoading />}
           {status === 'ready' && data && <ElectorateMap key={layer} data={data} selectedKey={selectedKey} onSelect={setSelected} colorOf={marginColorByName} />}
-          {status === 'ready' && !data && (
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', justifyContent: 'center', color: TERTIARY }}>
-              <MapPinOff style={{ width: 26, height: 26 }} />
-              <span style={{ fontSize: 13, fontFamily: MANROPE }}>{layer === 'maori' ? 'Māori' : 'General'} boundaries not available.</span>
-            </div>
-          )}
-          {status === 'error' && (
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', justifyContent: 'center', color: TERTIARY }}>
-              <MapPinOff style={{ width: 26, height: 26 }} />
-              <span style={{ fontSize: 13, fontFamily: MANROPE }}>Boundary data could not be loaded.</span>
-            </div>
-          )}
+          {status === 'error' && <MapUnavailable message={`${layer === 'maori' ? 'Māori' : 'General'} boundaries could not be loaded.`} />}
 
           {/* Legend. left/bottom live in MAP_LEGEND_CSS so the media query can
               clear the Leaflet attribution strip; inline values would beat it. */}
@@ -166,66 +147,105 @@ export function BattlegroundsMap({ embedded = false }: { embedded?: boolean }) {
                     <span className="map-legend-dot" style={{ borderRadius: 3, background: t.color, flexShrink: 0 }} />{t.label}
                   </div>
                 ))}
+                {/* Two seats are drawn in #d8d5cf on this map and the key said
+                    nothing about them, while /map's key has had a "Data
+                    pending" row all along (§1.4, §1.5). */}
+                <div className="map-legend-row map-legend-note" style={{ display: 'flex', alignItems: 'center', color: TERTIARY, fontFamily: MANROPE, borderTop: `1px solid ${BORDER}` }}>
+                  <span className="map-legend-dot" style={{ borderRadius: 3, background: UNKNOWN_TIER.color, flexShrink: 0 }} />{UNKNOWN_TIER.label}
+                </div>
               </div>
             </div>
           )}
         </div>
 
-        {/* Panel. Embedded: right column, tiles stacked to fill it. Standalone: bordered card. */}
-        {embedded ? (
-          <div ref={panelRef} style={{ height: '100%', minHeight: 0, fontFamily: MANROPE }}>
-            {!selected ? promptCol : info ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0 }}>
-                {infoTile}
-                <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" fill />
-              </div>
-            ) : (
-              <p style={{ fontSize: 13, color: SECONDARY }}>Result data pending for this seat.</p>
-            )}
-          </div>
-        ) : (
-          <div ref={panelRef} style={{ height: 600, borderRadius: 18, border: `1px solid ${BORDER}`, background: '#fff', padding: 20, overflow: 'hidden' }}>
-            {!selected ? (
-              <div style={{ height: '100%', minHeight: 260, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: TERTIARY, fontFamily: MANROPE }}>
-                <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
-                <div style={{ fontSize: 14, fontWeight: 700, color: SECONDARY }}>Tap a seat</div>
-                <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 220 }}>Hotter colours are the closest 2023 contests, the seats most likely to change hands.</div>
-              </div>
-            ) : info ? (
-              // Stack info tile above the photo — a 340px column is too narrow for
-              // two side-by-side tiles (the photo used to overflow the card).
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0, fontFamily: MANROPE }}>
-                {infoTile}
-                <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" fill />
-              </div>
-            ) : (
-              <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE }}>Result data pending for this seat.</p>
-            )}
-          </div>
-        )}
+        {/* Panel. One implementation: the prompt and the selection were built
+            twice in this file, once for a branch that no longer exists. */}
+        <div ref={panelRef} className="bg-map-panel" style={{ fontFamily: MANROPE, minHeight: 0 }}>
+          {!selected ? (
+            <Prompt />
+          ) : info && tier ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0 }}>
+              <SeatCard name={selected} slug={selectedKey ?? ''} info={info} tier={tier} />
+              <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" fill />
+            </div>
+          ) : (
+            /* §1.5, and the true gap named. The old copy said "MP data pending
+               … once verified against the Electoral Commission's official 2023
+               results", which promises verification work that is already done:
+               every row in electorates-data is `verified: true`. This branch
+               only fires when a GeoJSON name does not normalise onto a record. */
+            <Prompt message="We could not match this boundary to an electorate record." />
+          )}
+        </div>
       </div>
-
-      <style>{`@media (max-width: 880px){ .map-grid{ grid-template-columns:1fr !important } .map-grid > div{ height:auto !important } .map-grid > div:first-child{ height:440px !important } }`}</style>
     </div>
   )
 }
 
-function Row({ label, value, color }: { label: string; value: string; color?: string }) {
+/** §2.4's container and row order, at the size a 340px column allows. */
+function SeatCard({ name, slug, info, tier }: {
+  name: string
+  slug: string
+  info: ElectorateInfo
+  tier: MarginTier
+}) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${BORDER}`, paddingBottom: 8 }}>
-      <span style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE }}>{label}</span>
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE }}>
-        {color && <span style={{ width: 10, height: 10, borderRadius: '50%', background: color }} />}{value}
-      </span>
+    <div style={{
+      border: `1px solid ${BORDER}`, borderRadius: 16, padding: 'clamp(14px, 2.5vw, 20px)',
+      boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 20px 40px -34px rgba(0,0,0,.4)',
+      display: 'flex', flexDirection: 'column', flexShrink: 0, background: '#fff',
+    }}>
+      <span style={{ alignSelf: 'flex-start', fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: tier.fg, background: tier.light, border: `1px solid ${tier.color}`, borderRadius: 999, padding: '3px 10px', marginBottom: 10, fontFamily: MANROPE }}>{tier.label}</span>
+      <h3 style={{ fontSize: 'clamp(17px, 2.6vw, 21px)', fontWeight: 800, color: INK, margin: '0 0 2px', fontFamily: MANROPE }}>{name}</h3>
+      <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14, fontFamily: MANROPE }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {/* Two labels because there are two facts. The pages used four names
+            for one field ("Electorate MP", "2023 winner", "Your electorate MP",
+            "Electorate MP · 2023 result") and got the distinction wrong twice:
+            `info.party` is who WON in 2023, and two MPs have changed party
+            since. Here the label says 2023, so the value is right. */}
+        <MetaRow label="Won in 2023" value={info.mpName ?? 'Not on record'} />
+        <MetaRow label="Party then" value={info.party ? PARTY_NAMES[info.party].short : 'Not on record'} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
+        <MetaRow label="2023 majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : 'Not on record'} />
+      </div>
+      <Link href={`/battlegrounds/${slug}`} style={{ marginTop: 12, textDecoration: 'none' }}>
+        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px', color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: MANROPE }}>Open this seat <ArrowRight style={{ width: 15, height: 15 }} /></span>
+      </Link>
+      {/* §4: the numbers above age, so the panel says where they came from. */}
+      <p style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, margin: '10px 0 0' }}>Electoral Commission 2023 official results</p>
     </div>
   )
 }
 
-function Loading() {
+/** One prompt, used by the empty state and the unmatched-boundary state.
+ *  It reserved 300px before, which is a third of a phone screen spent telling
+ *  the reader to do the thing they can already see. A prompt is a prompt. */
+function Prompt({ message }: { message?: string }) {
   return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', justifyContent: 'center', color: TERTIARY, background: '#eaf2f7' }}>
-      <Loader2 className="live-dot" style={{ width: 28, height: 28, color: JADE }} />
-      <span style={{ fontSize: 13, fontWeight: 600, fontFamily: MANROPE }}>Loading map…</span>
+    <div className="bg-map-prompt" style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', border: `1px solid ${BORDER}`, borderRadius: 16, background: SURFACE, padding: 20, color: TERTIARY, fontFamily: MANROPE }}>
+      <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
+      <div style={{ fontSize: 14, fontWeight: 700, color: SECONDARY }}>{message ? 'No record for this boundary' : 'Tap a seat'}</div>
+      {/* What the colours mean is said once, in the (i) beside the page title.
+          It was on this screen three times: here, in the second copy of this
+          same prompt, and in the hero standfirst (§1.3). */}
+      <div style={{ fontSize: 12.5, marginTop: 4, maxWidth: 240, lineHeight: 1.5 }}>{message ?? 'Every seat opens its own page.'}</div>
     </div>
   )
 }
+
+/* Scoped to this component (§3.2). The heights match /map's exactly, because
+   it is the same map: 460px on a phone, where a taller one pushed the answer
+   below the fold, and clamp(520px, 70vh, 700px) above 880px, where the panel
+   sits beside it and height costs nothing. It used to be 600px here and
+   clamp(600px, 82vh, 840px) there, overridden to 440px and 585px on phones
+   (§1.4). */
+const GRID_CSS = `
+.bg-map-box { height: clamp(520px, 70vh, 700px); }
+.bg-map-panel { height: clamp(520px, 70vh, 700px); }
+@media (max-width: 880px) {
+  .bg-map-grid { grid-template-columns: 1fr !important; }
+  .bg-map-box { height: 460px; }
+  .bg-map-panel { height: auto; }
+  .bg-map-prompt { min-height: 150px; }
+}
+`
