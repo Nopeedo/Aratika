@@ -2,23 +2,23 @@
 export const BILLS_54_TOPIC_COUNTS: Record<string, { passed: number; active: number }> = {
   "economy": {
     "passed": 41,
-    "active": 11
+    "active": 12
   },
   "housing": {
     "passed": 9,
     "active": 6
   },
   "health": {
-    "passed": 12,
-    "active": 9
+    "passed": 14,
+    "active": 7
   },
   "education": {
     "passed": 5,
     "active": 1
   },
   "climate": {
-    "passed": 31,
-    "active": 8
+    "passed": 33,
+    "active": 6
   },
   "crime-justice": {
     "passed": 18,
