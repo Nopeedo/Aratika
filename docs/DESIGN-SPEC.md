@@ -14,6 +14,25 @@ Nothing below has been applied to: `/parties`, `/parties/[slug]`, `/mps`,
 `/mps/[slug]`, `/map`, `/battlegrounds`, `/elections/2026`, `/learn`,
 `/budget`, `/news`. Those are the work.
 
+### Extending this document
+
+More than one session works on this site at once, so append rather than
+rewrite:
+
+- **A new reusable component** → a numbered sub-section in §2, with its real
+  numbers copied from the source, not from memory, and one sentence on what it
+  replaced.
+- **A measurement that changed** → the table in §3.3.
+- **A mechanism bug you fixed** → §5, with the symptom first, so the next
+  person recognises it before they understand it.
+- **A request that taught something** → §8, verbatim, under the heading it
+  belongs to.
+- **Something knowingly left undone** → §7.
+
+Do not restate a rule that is already in §1; add the *case* to the section it
+belongs in and let §1 stay short. If a rule in §1 turns out to be wrong,
+change it and say in the commit message what it used to say.
+
 ---
 
 ## 1. The principles
