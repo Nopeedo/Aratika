@@ -10,9 +10,10 @@ down, what the launch phases are. This file is narrower and more literal: the
 rules, the numbers, and the mistakes already paid for.
 
 Everything below was applied to `/` (homepage), `/bills`, `/policies/[topic]`,
-and the directory half of `/parties` (§2.14). Nothing below has been applied to:
-`/parties/[slug]`, `/mps`, `/mps/[slug]`, `/map`, `/battlegrounds`,
-`/elections/2026`, `/learn`, `/budget`, `/news`. Those are the work.
+the directory half of `/parties` (§2.14), and, on 23 September,
+`/elections/2026` and `/learn` (both tiers). Nothing below has been applied to:
+`/parties/[slug]`, `/mps`, `/mps/[slug]`, `/map`, `/battlegrounds`, `/budget`,
+`/news`. Those are the work.
 
 ### Extending this document
 
@@ -513,6 +514,12 @@ the page never received any of it.
 | Bill card (featured) | ~800px | fits one screen |
 | Bills stat row | ~330px of cards | **73px** of text |
 | "Filtered by" pills | 44px | **28px** |
+| Election Centre, whole page | 8,955px, 11.0 screens | **4,764px, 5.9 screens** |
+| Election Centre, desktop | 6,251px, 6.9 screens | **3,590px, 4.0 screens** |
+| Election Centre, closest races | 1,083px of 5 full-width cards | **~265px**, §2.3 tiles two up |
+| Election Centre, countdown row | 299px of a 339px row | **days only**, one tile |
+| Learn hub | 2,748px, 3.4 screens | **1,906px, 2.3 screens** |
+| Learn module (MMP, beginner) | 3,970px, 4.9 screens | **3,195px, 3.9 screens** |
 | Caucus rail, per party | 6 to 40+ MPs tall | **191px fixed**, 4 rows, paged |
 | Homepage bills block | 3 lines of detail | **1 line**, "152 now law · 21 waiting to be drawn" |
 | Bills total | 3 columns of figures | **one 132px circle**, the rest beside it |
@@ -670,6 +677,29 @@ accident, because both components are on the page. Anywhere else the journey
 renders at desktop sizes. This is §3.2 in its other form: shipping the CSS with
 A component is not the same as shipping it with THE component.
 
+**5.16 A fixed inline size opts a control OUT of the 44px minimum.** §3.1 is
+written against the symptom of a control INFLATED to 44px by
+`button { min-height: 44px }`. The obvious cure for that, an inline
+`minHeight: size`, is the same bug pointing the other way: an inline style beats
+a stylesheet rule, so `ui/info-button.tsx` rendered a 24px circle as a 24px
+target, on every page of the site, for as long as it has existed. Symptom: a
+control that looks right and is exactly as tall as its glyph. The cure is §3.1's
+own pattern, and it must be applied VERTICALLY ONLY. Padding all four sides also
+reaches 44px, and then the box overhangs its row horizontally, which is §5.13
+(an invisible hit area making a container scrollable) and which put the (i)'s
+hit box over the pill beside it. Height is the binding constraint; a round
+control is already wider than it is tall against a 44px floor.
+
+**5.17 Cutting a duplicate can take the one fact it did not duplicate.** The
+Election Centre's hero subline restated the enrolment date, the advance-voting
+window and the source, all of which the Key Dates strip carries from the same
+file, so it was cut as a textbook §1.3 duplicate. It was also the only thing
+that rendered `endDate`: the strip's tile says "Advance voting opens" and stops.
+6 November was stated nowhere on the site until a review caught it. Before
+deleting a block, check each fact in it against the thing you believe duplicates
+it, FIELD BY FIELD, not block by block. A block that restates four facts and
+adds a fifth looks exactly like a block that restates five.
+
 ---
 
 ## 6. Applying this to the next page
@@ -694,7 +724,26 @@ A checklist, in the order that worked:
 ## 7. Open, and deliberately not done
 
 - `topic-info-button.tsx` and `bills-info-button.tsx` still hold their own
-  copies of the (i) pattern; fold them into `ui/info-button.tsx`.
+  copies of the (i) pattern; fold them into `ui/info-button.tsx`. They did not
+  get §5.16's hit-area fix, because it was made in the shared component only, so
+  the (i) on /policies/[topic] is still a 26px target.
+- `learn/reveal-cards.tsx` has zero importers since /learn moved to
+  `module-reveal-cards.tsx`. Second instance of the trap this section already
+  records for `party-tile.tsx`: delete it before something imports it by name.
+- The (i)'s 44px hit box overlaps an adjacent control by 12x3px on
+  /elections/2026 and 26x12px on the homepage's caucus box. Inherent to §3.1
+  wherever two controls sit within 10px of each other, and a 24px target is the
+  worse trade, so it stays. Recorded so it is not rediscovered as a bug.
+- `src/lib/learn/xp.ts` still computes `xp`, `level`, `xpIntoLevel` and
+  `xpForLevel`. Nothing renders them since the hub card took over from the
+  progress banner.
+- The Election Centre's `section-rail.tsx` and `policy/floating-topic-pill.tsx`
+  are still two floating section navigators. Both are `position: fixed`, both
+  track scroll, both expand into a stack. One §1.4 component, not two.
+- KeyDates is not the §2.5 journey strip. The prerequisite landed (the strip
+  ships its own CSS and takes `progress`), but a statutory timetable is a
+  sequence of deadlines rather than stages a thing passes through, and the tiles
+  carry a date each that beads cannot.
 - ~200 of the 285 tracked bills have no summary. The machinery exists
   (`scripts/enrich-bills.mjs` — Claude grounded only in the official bill text,
   then an editor approves); it has not been run across the backlog.
