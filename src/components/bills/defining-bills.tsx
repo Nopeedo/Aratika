@@ -501,14 +501,9 @@ const TIMELINE_CSS = `
   .bill-panel-foot { margin-top: 14px !important; padding-top: 12px !important; gap: 12px !important; }
   .bill-panel-foot p:last-child { font-size: 12.5px !important; line-height: 1.5 !important; }
   .bill-panel-more { margin-top: 14px !important; font-size: 12.5px !important; }
-  .bill-journey-node { gap: 6px !important; }
-  .bill-journey-bead { width: 18px !important; height: 18px !important; }
-  .bill-journey-bead svg { width: 9px !important; height: 9px !important; }
-  .bill-journey-label { font-size: 9.5px !important; max-width: 8ch !important; }
-  /* The rail is positioned against the bead's centre, so it moves with it:
-     half of 18 is 9, not 11. */
-  .bill-journey-rail { left: 9px !important; right: 9px !important; top: 8px !important; }
-  .bill-journey-fill { left: 9px !important; top: 8px !important; width: calc((100% - 18px) * var(--bill-journey-p, 0)) !important; }
+  /* The journey strip's phone sizing moved into bill-journey.tsx, which is
+     where it belongs: it worked here only because both components happen to be
+     on this page (§5.15). */
 }
 
 .bill-tl-row { display: flex; gap: 11px; align-items: flex-start; }
