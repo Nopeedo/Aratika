@@ -107,8 +107,18 @@ export function PollSnapshot({
                 <thead>
                   <tr>
                     <th style={thLeft}>Poll</th>
+                    {/* thCell is nowrap, which every other party name here is
+                        short enough to want — TOP's is spelled out sitewide
+                        now (24 characters, "The Opportunities Party"), and
+                        nowrap on that alone was pushing the table from ~540px
+                        to 807px inside a ~300px card. This one header wraps
+                        instead, at a width picked to still read on two lines
+                        rather than fight the other six columns for space. The
+                        rest of the table still scrolls (§3.5's documented
+                        compromise above) — this just stops one column from
+                        being the reason it scrolls twice as far. */}
                     {pollParties.map((slug) => (
-                      <th key={slug} style={thCell}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><span style={{ width: 8, height: 8, borderRadius: 2, background: PARTY_COLORS[slug].bg }} />{PARTY_NAMES[slug].short}</span></th>
+                      <th key={slug} style={{ ...thCell, whiteSpace: 'normal', maxWidth: 70, lineHeight: 1.25 }}><span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}><span style={{ width: 8, height: 8, borderRadius: 2, background: PARTY_COLORS[slug].bg, flexShrink: 0 }} />{PARTY_NAMES[slug].short}</span></th>
                     ))}
                   </tr>
                 </thead>

@@ -29,16 +29,13 @@
  * anyone who wants to see every date at once. Nothing here duplicates the
  * card above; this section IS what "Show all key dates" opens into.
  *
- * IT TAKES THE SHARED ZoneHead, at the shared peer heading size. The title
- * was 15px: the block that decides whether a reader gets to vote had the
- * smallest heading on the site, which reads as a caption on the sections
- * around it (§4).
- *
- * The paragraph that used to sit under that heading is behind the (i). It
- * explained what the strip shows: the card at the top of the page already
- * says "Last day to enrol" in red, with a big day figure and days-remaining,
- * against a date. §1.2's test is whether a reader who has been here before
- * would skip it, and they would.
+ * NO HEADING HERE ANY MORE — "Key dates" / "Dates that decide whether you
+ * can vote", and the (i) beside it, both removed by request. The (i)'s
+ * content (why 2026 changed the enrolment rules) moved up to the hero,
+ * next to the countdown — see command-hero.tsx. This section is now just
+ * the toggle and, once opened, the full timetable; the four cards above it
+ * on the page already carry each date's own label, so a heading naming the
+ * section again was the fourth place "key dates" was said on one screen.
  *
  * Its phone layout ships here too. `.keydates-row` lived 600 lines away in
  * globals.css, where a rule for one component on one page had to fight inline
@@ -51,8 +48,6 @@
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { ELECTORAL_CALENDAR, ELECTORAL_SOURCE, type ElectoralMilestone } from '@/constants/electoral-calendar'
-import { InfoHeading, InfoText } from '@/components/ui/info-button'
-import { ZoneHead } from './zone-head'
 import { CRITICAL, CRITICAL_RED, LABELS, SHOWN, fmt } from './next-deadline-card'
 import { INK, SECONDARY, TERTIARY, BORDER, MANROPE } from '@/constants/theme'
 
@@ -65,25 +60,6 @@ export function KeyDates({ today }: { today: string }) {
   return (
     <section id="key-dates" style={{ scrollMarginTop: 80 }}>
       <style dangerouslySetInnerHTML={{ __html: KEYDATES_CSS }} />
-
-      <ZoneHead eyebrow="Key dates" title="Dates that decide whether you can vote" accent={CRITICAL_RED}
-        infoLabel="What changed about enrolling in 2026">
-        <InfoHeading accent={CRITICAL_RED}>You have to be enrolled</InfoHeading>
-        <InfoText>
-          You must be enrolled to vote, and 2026 changed when. Enrolment closes before advance voting opens, unlike
-          2023: you cannot enrol once advance voting starts, or on election day.
-        </InfoText>
-        <InfoHeading accent={CRITICAL_RED}>What Writ Day means for you</InfoHeading>
-        <InfoText>
-          Enrol by Writ Day and voting is straightforward. Enrol after it and you cast a special vote, which still
-          counts but takes longer to process.
-        </InfoText>
-        <InfoHeading accent={CRITICAL_RED}>Where these dates come from</InfoHeading>
-        <InfoText>
-          The {ELECTORAL_SOURCE.name}. The same file drives our reminders, so a date cannot say one thing here and
-          another in a notification.
-        </InfoText>
-      </ZoneHead>
 
       <button
         type="button"

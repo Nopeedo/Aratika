@@ -321,8 +321,11 @@ export const PARTY_PROFILES: Record<PartySlug, PartyProfile> = {
 
   top: {
     slug:          'top',
-    name:          'TOP',
-    fullName:      'The Opportunity Party',
+    // Spelled out rather than the acronym, by request — matches
+    // PARTY_NAMES.top in constants/parties.ts, which the site's compact
+    // labels (tiles, chips, bars) read instead of this field.
+    name:          'The Opportunities Party',
+    fullName:      'The Opportunities Party',
     founded:       2016,
     color:         '#00E5CC',
     textColor:     '#06302c',

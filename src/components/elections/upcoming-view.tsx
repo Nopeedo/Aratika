@@ -56,7 +56,6 @@ import {
 import { getPolls } from '@/lib/polls/live'
 import { longDate, milestone } from '@/constants/electoral-calendar'
 import { CommandHero } from './command-hero'
-import { KeyDates } from './key-dates'
 import { PollSnapshot } from './poll-snapshot'
 import { SeatChamber } from './seat-chamber'
 import { TwoVotes } from './two-votes'
@@ -157,17 +156,14 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(34px, 5vh, 48px)' }}>
 
-          {/* ── WHEN — first, because it is the only section with a deadline ────
-              Everything else on this page can be read the day before the
-              election and still be useful. This one cannot: enrolment closes
-              25 October, thirteen days early, and a reader who arrives on
-              26 October has already lost the choice no matter how well they
-              understand MMP. Knowledge keeps; a closed roll doesn't.
-
-              It also now carries the enrolment link and the "you must be
-              enrolled" line, so it is the whole of what someone has to DO —
-              which belongs above what they need to know. */}
-          <KeyDates today={today} />
+          {/* KeyDates (§ "Show all key dates" → the full 4-date timetable)
+              removed by request. It had become pure duplication: the hero
+              now carries four cards, one per milestone in KeyDates' own
+              SHOWN list (Writ Day, the enrolment deadline, advance voting,
+              election day), each already showing its date, its label and
+              its own explanation. The toggle was a second way to see
+              exactly those four facts a few hundred pixels below the first.
+              Component stays in the repo, demoted rather than deleted. */}
 
           {/* ── EVERY PARTY YOU CAN VOTE FOR — moved above "How your vote
               works" by request; was second, is first among these two now.

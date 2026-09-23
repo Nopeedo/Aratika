@@ -57,10 +57,13 @@ export function ZoneHead({ eyebrow, title, accent, infoLabel, note, children }: 
   /** The (i)'s fill and heading colour — the section's own ink, because a block
    *  takes the colour of whatever it is about (§1.6). */
   accent: string
-  /** Accessible name for the (i). Says what the bubble answers, not "info". */
-  infoLabel: string
+  /** Accessible name for the (i). Says what the bubble answers, not "info".
+   *  Optional: KeyDates' (i) moved up to the hero by request, so this
+   *  section's own ZoneHead call carries no infoLabel/children and renders
+   *  no (i) here at all — the content didn't get duplicated, it moved. */
+  infoLabel?: string
   note?: string
-  children: ReactNode
+  children?: ReactNode
 }) {
   return (
     <div style={{ marginBottom: 14 }}>
@@ -69,7 +72,7 @@ export function ZoneHead({ eyebrow, title, accent, infoLabel, note, children }: 
         <h2 style={{ fontSize: PEER_HEADING, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.15 }}>{title}</h2>
         {/* size 24 rather than the default 26: §2.1's "24 beside a smaller
             heading", and these headings are 22px on a phone. */}
-        <InfoButton accent={accent} label={infoLabel} size={24}>{children}</InfoButton>
+        {infoLabel && children && <InfoButton accent={accent} label={infoLabel} size={24}>{children}</InfoButton>}
       </div>
       {note && <p style={{ fontSize: 'clamp(12px, 3.4vw, 12.5px)', color: SECONDARY, fontFamily: MANROPE, margin: '7px 0 0', lineHeight: 1.5 }}>{note}</p>}
     </div>

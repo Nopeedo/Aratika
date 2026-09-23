@@ -35,8 +35,9 @@
  */
 
 import { useEffect, useState } from 'react'
-import { ELECTION_SECTIONS, HERO_JUMP_ID } from '@/constants/election-sections'
-import { MilestoneCard } from './next-deadline-card'
+import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
+import { ELECTORAL_SOURCE } from '@/constants/electoral-calendar'
+import { MilestoneCard, CRITICAL_RED } from './next-deadline-card'
 import { MANROPE } from '@/constants/theme'
 
 // Shared with the homepage flip counter (days-flip-countdown.tsx) so the two
@@ -89,12 +90,40 @@ export function CommandHero({ today }: { today: string }) {
             sized to reach roughly the tile's own height rather than sitting
             as a small caption under it. The label does the job the deleted
             date line was doing badly: it says what the number counts to
-            without restating 7 November, which the cards below own. */}
+            without restating 7 November, which the cards below own.
+
+            The (i) moved up here from KeyDates' own heading, by request —
+            that heading is gone now (see key-dates.tsx), and its content
+            (why 2026 changed the enrolment rules) didn't get dropped, it
+            moved to sit beside the first thing on the page a reader would
+            actually wonder about it next to. CRITICAL_RED, the same accent
+            the content had at its old spot — a block takes the colour of
+            what it's about (§1.6), and this is still about the enrolment
+            deadline. */}
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 16, marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
           <Tile text={days === null ? '––' : String(days)} />
-          <div style={{ display: 'flex', flexDirection: 'column', fontSize: 'clamp(15px, 3.6vw, 21px)', fontWeight: 800, letterSpacing: '.02em', lineHeight: 1.2, textTransform: 'uppercase', color: WARM, fontFamily: MANROPE }}>
-            <span>Days until</span>
-            <span>election day</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', fontSize: 'clamp(15px, 3.6vw, 21px)', fontWeight: 800, letterSpacing: '.02em', lineHeight: 1.2, textTransform: 'uppercase', color: WARM, fontFamily: MANROPE }}>
+              <span>Days until</span>
+              <span>election day</span>
+            </div>
+            <InfoButton accent={CRITICAL_RED} label="What changed about enrolling in 2026" size={24}>
+              <InfoHeading accent={CRITICAL_RED}>You have to be enrolled</InfoHeading>
+              <InfoText>
+                You must be enrolled to vote, and 2026 changed when. Enrolment closes before advance voting opens,
+                unlike 2023: you cannot enrol once advance voting starts, or on election day.
+              </InfoText>
+              <InfoHeading accent={CRITICAL_RED}>What Writ Day means for you</InfoHeading>
+              <InfoText>
+                Enrol by Writ Day and voting is straightforward. Enrol after it and you cast a special vote, which
+                still counts but takes longer to process.
+              </InfoText>
+              <InfoHeading accent={CRITICAL_RED}>Where these dates come from</InfoHeading>
+              <InfoText>
+                The {ELECTORAL_SOURCE.name}. The same file drives our reminders, so a date cannot say one thing here
+                and another in a notification.
+              </InfoText>
+            </InfoButton>
           </div>
         </div>
 
@@ -129,30 +158,10 @@ export function CommandHero({ today }: { today: string }) {
           <MilestoneCard milestoneId="election-day-2026" today={today} />
         </div>
 
-        {/* Jump nav — a light text-link row now, not six equal §2.2 pills.
-            Six identically-weighted pills put "Key dates" — the one section
-            with a deadline — beside "Leaders & the press" as if a reader
-            should weigh them the same. Key Dates is also the very next thing
-            on the page, so a pill pointing at it here was pointing one
-            scroll away: dropped from this row, the section itself is the
-            answer. The other five stay, small and quiet, so the hero's own
-            weight goes to the headline and the count above rather than to
-            a second navigation system competing with it.
-
-            §3.1: still <a>, so globals.css's 44px <button> minimum is
-            cancelled the same way — the link is the hit area, the text is
-            the control. */}
-        <div id={HERO_JUMP_ID} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '4px 14px' }}>
-          {ELECTION_SECTIONS.filter((j) => j.id !== 'key-dates').map((j, i, arr) => (
-            <span key={j.id} style={{ display: 'inline-flex', alignItems: 'center', gap: '4px 14px' }}>
-              <a href={`#${j.id}`} style={{
-                display: 'inline-flex', padding: '10px 0', margin: '-10px 0', textDecoration: 'none',
-                fontSize: 12.5, fontWeight: 700, color: WARM, fontFamily: MANROPE, whiteSpace: 'nowrap',
-              }}>{j.label}</a>
-              {i < arr.length - 1 && <span aria-hidden style={{ color: 'rgba(42,18,6,.25)', fontSize: 12 }}>·</span>}
-            </span>
-          ))}
-        </div>
+        {/* Jump nav lived here — a light text-link row (Every party, How
+            your vote works, Parliament now, Closest races, Leaders & the
+            press) — removed by request. Nothing replaced it: the hero ends
+            at the date cards now. */}
       </div>
     </section>
   )

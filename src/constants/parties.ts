@@ -9,7 +9,11 @@ export const PARTY_NAMES: Record<PartySlug, { short: string; full: string }> = {
   green:    { short: 'Green',    full: 'Green Party of Aotearoa New Zealand' },
   nzfirst:  { short: 'NZ First', full: 'New Zealand First' },
   tpm:      { short: 'Te Pāti Māori', full: 'Te Pāti Māori' },
-  top:      { short: 'TOP', full: 'The Opportunity Party' },
+  // By request: TOP is spelled out everywhere on the site now rather than
+  // shown as the acronym, so short and full are the same string. Also fixes
+  // "The Opportunity Party" to "The Opportunities Party" (plural) — the
+  // party's actual registered name, found wrong while making this change.
+  top:      { short: 'The Opportunities Party', full: 'The Opportunities Party' },
   'womens-rights': { short: 'Women’s Rights', full: 'The New Zealand Women’s Rights Party' },
   // Names exactly as they sit on the Electoral Commission register, because
   // that is what appears on the ballot paper.
