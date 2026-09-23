@@ -411,17 +411,20 @@ function BillCard({ b, open, onToggle, focused, party }: { b: Bill54; open: bool
               header the debated-bills tiles carry, so the two lists read as
               one thing. The party is whoever is in charge of the bill, from
               the member-party map the filters already use. */}
-          <span style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 6, marginBottom: 2 }}>
-            <span style={{ fontSize: 9.5, fontWeight: 800, color: kind.fg, fontFamily: MANROPE }}>{kind.label}</span>
-            {party && (
+          <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: kind.fg, fontFamily: MANROPE, marginBottom: 2 }}>{kind.label}</span>
+          {party && (
+            /* Absolute, hard against the tile's own right edge. In the flex
+               row it was 35px in, because the row also has to clear the
+               chevron's padding — so the tag sat short of the corner it is
+               meant to occupy. */
               <span style={{
+                position: 'absolute', top: 7, right: 8,
                 display: 'inline-flex', alignItems: 'center', flexShrink: 0,
                 fontSize: 9, fontWeight: 800, color: PARTY_COLORS[party as PartySlug]?.text ?? INK,
                 background: PARTY_COLORS[party as PartySlug]?.bg ?? 'transparent',
                 borderRadius: 999, padding: '2px 6px', fontFamily: MANROPE, whiteSpace: 'nowrap',
               }}>{PARTY_NAMES[party as PartySlug]?.short ?? party}</span>
-            )}
-          </span>
+          )}
           <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{b.title}</span>
         </span>
         {/* Bottom-right, not beside the title: the tag owns the top-right
