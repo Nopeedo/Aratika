@@ -58,6 +58,11 @@ function Row({ label, parties, current }: { label: string; parties: PartySlug[];
               key={p}
               href={`/parties/${p}`}
               aria-current={active ? 'page' : undefined}
+              // ps-chip: the hook for the phone-size rule in globals.css, the
+              // same compaction the topic switcher and status pills get
+              // (§3.3). Inline styles here would beat a media query, so the
+              // small end has to live in the stylesheet.
+              className="ps-chip"
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: 6,
                 fontSize: 12.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none',
@@ -67,7 +72,7 @@ function Row({ label, parties, current }: { label: string; parties: PartySlug[];
                 border: `1px solid ${active ? (col?.bg ?? INK) : BORDER}`,
               }}
             >
-              <span style={{ width: 8, height: 8, borderRadius: '50%', background: active ? 'rgba(255,255,255,.85)' : (col?.bg ?? TERTIARY), flexShrink: 0 }} />
+              <span className="ps-dot" style={{ width: 8, height: 8, borderRadius: '50%', background: active ? 'rgba(255,255,255,.85)' : (col?.bg ?? TERTIARY), flexShrink: 0 }} />
               {PARTY_NAMES[p]?.short ?? prof.name}
             </Link>
           )

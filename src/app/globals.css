@@ -542,6 +542,18 @@ a, button, [role='button'], summary {
    rather than eight. Two levels of specificity above the mobile .ap-chip
    rule so it wins there too. */
 @media (max-width: 767px) {
+  /* The party switcher on /parties/[slug] carries seventeen of these, which
+     is the longest pill row on the site: at the desktop size they ran to
+     eight rows before the party's own name appeared. Same numbers as the
+     topic switcher beside it, so the two read as one control. Its colour
+     dot comes down with them. */
+  .ps-chip {
+    padding: 4px 9px !important;
+    gap: 4px !important;
+    font-size: 11.5px !important;
+  }
+  .ps-dot { width: 7px !important; height: 7px !important; }
+
   .topic-switcher { gap: 5px !important; }
   .topic-switcher .ap-chip,
   .status-pill {
