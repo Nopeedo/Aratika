@@ -311,7 +311,10 @@ export default async function PartyProfilePage(
       </div>
 
       {/* ═══════════════ Body ═══════════════ */}
-      <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 64px' }}>
+      {/* 12px at the foot, not 64: the coverage band that follows carries its
+          own top padding, and the two stacked left the page's last rectangle
+          floating clear of everything. */}
+      <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 12px' }}>
 
         {/* ── Main column ── */}
         {/* 10px between the rectangles, not 20: closed, they are rows of one

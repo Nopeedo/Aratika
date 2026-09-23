@@ -60,7 +60,7 @@ export async function PartyCoverage({ slug, colour }: { slug: string; colour: st
 
   return (
     <div style={{ borderTop: `1px solid ${BORDER}` }}>
-      <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '30px clamp(18px, 5vw, 36px) 36px' }}>
+      <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 36px' }}>
 
         {/* A section heading, not a card title. This is the last band of the
             page and the only part of it that is not the party's own material,
