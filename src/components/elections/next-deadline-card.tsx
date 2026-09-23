@@ -26,7 +26,7 @@
  * changed.
  */
 
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight, MapPin, UserCheck } from 'lucide-react'
 import { ELECTORAL_CALENDAR, daysUntil, type ElectoralMilestone } from '@/constants/electoral-calendar'
 import { INK, SECONDARY, TERTIARY, BORDER, MANROPE, JADE } from '@/constants/theme'
 
@@ -83,6 +83,17 @@ const CTA: Record<string, string> = {
   'election-day-2026': 'Find a place',
 }
 
+/** The leading icon, matching CTA one for one — an enrolment button gets a
+ *  person-check, a voting-place button gets a pin, the same way the bills
+ *  button this style is copied from leads with a scroll icon rather than a
+ *  generic one. */
+const ICON: Record<string, typeof UserCheck> = {
+  'writ-day-2026': UserCheck,
+  'enrolment-closes-2026': UserCheck,
+  'advance-voting-2026': MapPin,
+  'election-day-2026': MapPin,
+}
+
 /** One named milestone, regardless of today's date. */
 export function MilestoneCard({ milestoneId, today }: { milestoneId: string; today: string }) {
   const m = ELECTORAL_CALENDAR.find((x) => x.id === milestoneId)
@@ -95,6 +106,9 @@ function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; toda
   const tone = critical ? CRITICAL_RED : INK
   const { day, month } = fmt(m.date)
   const days = daysUntil(today, m.date)
+  // Capitalised local so JSX renders it as a component rather than an
+  // html tag named after the variable.
+  const Icon = ICON[m.id] ?? UserCheck
 
   return (
     // Column, not the previous row. Two per row at 375px gives each card
@@ -139,18 +153,23 @@ function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; toda
         </div>
       )}
       {/* §3.1. The link is the hit area, the span is the button.
-          Full width now, not alignSelf: flex-end shrink-to-fit — even the
-          shortened CTA text left the button narrower than the card at some
-          widths and wider than it at others (below), and a button that is
-          sometimes the wrong width either wastes room or clips. Full width
-          is right at every column width this card actually renders at. */}
+          Outlined now, matching the homepage's "See {party}'s N bills"
+          button (party-tiles.tsx BillsRow) — transparent fill, a coloured
+          border and text, an icon that names the action on the left and an
+          arrow on the right, rather than a solid JADE fill. Full width
+          still: even the shortened CTA text left a shrink-to-fit button
+          narrower than the card at some widths and wider at others, and a
+          button that's sometimes the wrong width either wastes room or
+          clips. */}
       <a href="https://vote.nz" target="_blank" rel="noopener noreferrer"
          style={{ display: 'block', padding: '4px 0', margin: '2px 0 -4px', textDecoration: 'none' }}>
         <span style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, fontSize: 11, fontWeight: 800,
-          color: '#fff', background: JADE, borderRadius: 999, padding: '7px 11px', fontFamily: MANROPE, whiteSpace: 'nowrap',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5, fontSize: 11.5, fontWeight: 800,
+          color: JADE, background: 'transparent', border: `1.5px solid ${JADE}`, borderRadius: 999,
+          padding: '7px 11px', fontFamily: MANROPE, whiteSpace: 'nowrap',
         }}>
-          {CTA[m.id] ?? 'Find out more'} <ArrowUpRight style={{ width: 11, height: 11, flexShrink: 0 }} />
+          <Icon style={{ width: 12, height: 12, flexShrink: 0 }} />
+          {CTA[m.id] ?? 'Find out more'} <ArrowRight style={{ width: 13, height: 13, flexShrink: 0 }} strokeWidth={3} />
         </span>
       </a>
     </div>
