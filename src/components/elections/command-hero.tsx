@@ -84,19 +84,22 @@ export function CommandHero({ today }: { today: string }) {
           2026 general election
         </h1>
 
-        {/* Three cards below the title, before the countdown, in DATE order:
+        {/* Four cards below the title, before the countdown, in DATE order:
             4 Oct (Writ Day), 25 Oct (the actual enrolment deadline), 26 Oct
-            (advance voting opens).
+            (advance voting opens), 7 Nov (election day itself, with the
+            voting-hours timeNote — see next-deadline-card.tsx's DateCard).
+            Four fills the grid evenly at two per row; three left the last
+            one alone on its own row.
 
-            ALL THREE FIXED, not one dynamic "whichever's next" plus two
-            fixed. That was the shape until the 25 Oct card was added: the
-            dynamic card would have shown Writ Day until 4 Oct, then swapped
-            to show 25 Oct — the exact date the new fixed card underneath
-            was also showing, so from 5 Oct onward the same milestone would
-            have appeared twice in a row. Three named cards can't collide
-            with each other the way one dynamic and one fixed eventually
-            would. See next-deadline-card.tsx for why the reasoning and the
-            full timetable stay in KeyDates further down rather than being
+            ALL FOUR FIXED, not one dynamic "whichever's next" plus the rest.
+            That was the shape until the 25 Oct card was added: the dynamic
+            card would have shown Writ Day until 4 Oct, then swapped to show
+            25 Oct — the exact date the fixed card underneath was also
+            showing, so from 5 Oct onward the same milestone would have
+            appeared twice in the stack. Named cards can't collide with each
+            other the way one dynamic and the rest fixed eventually would.
+            See next-deadline-card.tsx for why the reasoning and the full
+            timetable stay in KeyDates further down rather than being
             duplicated here.
 
             TWO PER ROW, by request — a grid rather than the single column
@@ -109,6 +112,7 @@ export function CommandHero({ today }: { today: string }) {
           <MilestoneCard milestoneId="writ-day-2026" today={today} />
           <MilestoneCard milestoneId="enrolment-closes-2026" today={today} />
           <MilestoneCard milestoneId="advance-voting-2026" today={today} />
+          <MilestoneCard milestoneId="election-day-2026" today={today} />
         </div>
 
         {/* One tile. The label does the job the deleted date line was doing

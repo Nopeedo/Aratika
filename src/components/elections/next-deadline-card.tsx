@@ -127,6 +127,17 @@ function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; toda
       <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.3, marginTop: 2 }}>
         {LABELS[m.id] ?? m.label}
       </div>
+      {/* The window a milestone is open, when it has one — election day's
+          "voting places open 9.00am to 7.00pm" is data on the milestone
+          (timeNote), not copy specific to this card, so it renders for
+          whichever milestone actually carries it rather than being typed
+          in here. Same TERTIARY as the days-away line: supporting detail,
+          not the headline the title above it already is. */}
+      {m.timeNote && (
+        <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.4 }}>
+          {m.timeNote}
+        </div>
+      )}
       {/* §3.1. The link is the hit area, the span is the button.
           Full width now, not alignSelf: flex-end shrink-to-fit — even the
           shortened CTA text left the button narrower than the card at some
