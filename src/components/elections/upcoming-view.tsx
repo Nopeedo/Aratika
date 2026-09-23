@@ -220,7 +220,22 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                  vertical only then left it 72px NARROWER than the tiles above
                  it, which read as an accident in the other direction. Change
                  one of these two numbers and you have to change the other. */}
-            <div style={{ margin: 'calc(-1 * clamp(40px, 7vw, 72px)) calc(-1 * clamp(18px, 5vw, 36px))' }}>
+            <div style={{
+              // Cancelling the card's own vertical padding OUTRIGHT left it
+              // butted against the tiles above with no gap at all, while the
+              // heading above those tiles has 14px. Cancel all of it but 14,
+              // so the card is separated from the tiles by the section's own
+              // rhythm rather than by however much padding the card happens
+              // to carry.
+              marginTop: 'calc(14px - clamp(40px, 7vw, 72px))',
+              // The bottom stays fully cancelled: the space to the NEXT
+              // section is the column's flex gap, and the card's padding on
+              // top of it would make this one section sit further from its
+              // neighbour than any other.
+              marginBottom: 'calc(-1 * clamp(40px, 7vw, 72px))',
+              marginLeft: 'calc(-1 * clamp(18px, 5vw, 36px))',
+              marginRight: 'calc(-1 * clamp(18px, 5vw, 36px))',
+            }}>
               <CompassCta />
             </div>
           </section>
