@@ -348,6 +348,7 @@ export function BillsTracker54({ readerSlugs = {}, readerSummaries = {}, memberP
                   open={openBill === b.slug}
                   onToggle={() => setOpenBill(openBill === b.slug ? null : b.slug)}
                   focused={b.slug === initialBill}
+                  party={partyOf(b.member)}
                 />
                 {/* The breakdown opens directly under the tile that was tapped
                     and spans every column, so on a wide screen it is not a
@@ -386,7 +387,7 @@ export function BillsTracker54({ readerSlugs = {}, readerSummaries = {}, memberP
  * is a wall, and the thing a reader scans for is the title. The detail lives
  * in the breakdown that opens under the row (BillBreakdown).
  */
-function BillCard({ b, open, onToggle, focused }: { b: Bill54; open: boolean; onToggle: () => void; focused?: boolean }) {
+function BillCard({ b, open, onToggle, focused, party }: { b: Bill54; open: boolean; onToggle: () => void; focused?: boolean; party?: string }) {
   const kind = KIND[statusKind(b.status)]
   return (
     <div id={`bill-${b.slug}`} className="party-card" style={{
@@ -400,13 +401,25 @@ function BillCard({ b, open, onToggle, focused }: { b: Bill54; open: boolean; on
         onClick={onToggle}
         aria-expanded={open}
         style={{
-          display: 'flex', alignItems: 'center', gap: 8, width: '100%', textAlign: 'left',
+          display: 'flex', alignItems: 'flex-start', gap: 8, width: '100%', textAlign: 'left',
           background: 'none', border: 'none', padding: '7px 10px 8px', cursor: 'pointer', font: 'inherit',
         }}
       >
         <span style={{ flex: 1, minWidth: 0 }}>
-          <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: kind.fg, fontFamily: MANROPE, marginBottom: 2 }}>
-            {kind.label}
+          {/* Status left, party right, on the row above the title — the same
+              header the debated-bills tiles carry, so the two lists read as
+              one thing. The party is whoever is in charge of the bill, from
+              the member-party map the filters already use. */}
+          <span style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 6, marginBottom: 2 }}>
+            <span style={{ fontSize: 9.5, fontWeight: 800, color: kind.fg, fontFamily: MANROPE }}>{kind.label}</span>
+            {party && (
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', flexShrink: 0,
+                fontSize: 9, fontWeight: 800, color: PARTY_COLORS[party as PartySlug]?.text ?? INK,
+                background: PARTY_COLORS[party as PartySlug]?.bg ?? 'transparent',
+                borderRadius: 999, padding: '2px 6px', fontFamily: MANROPE, whiteSpace: 'nowrap',
+              }}>{PARTY_NAMES[party as PartySlug]?.short ?? party}</span>
+            )}
           </span>
           <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{b.title}</span>
         </span>

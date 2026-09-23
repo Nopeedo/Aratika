@@ -185,13 +185,13 @@ export function DefiningBills() {
               {/* Chevron on every tile, so a tile reads as something that
                   opens before it has been tapped. It turns to point up once
                   the detail is showing, which is the same tap that closes it. */}
-              <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
                 <span style={{ flex: 1, minWidth: 0 }}>
                   {/* Status left, party right, on one row above the title: the
                       two things a reader sorts these by. The party is the one
                       in CHARGE of the bill — see the note on `party` in
                       defining-bills.ts. */}
-                  <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, marginBottom: 2 }}>
+                  <span style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 6, marginBottom: 2 }}>
                     <span style={{ fontSize: 9.5, fontWeight: 800, color: st.fg, fontFamily: MANROPE }}>{st.label}</span>
                     <span style={{
                       display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0,
