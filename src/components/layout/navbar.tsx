@@ -11,7 +11,6 @@ import { PREMIUM_ENABLED } from '@/constants/features'
 import { SITE } from '@/constants/site'
 import { useUser } from '@/hooks/use-user'
 import { createClient } from '@/lib/supabase/client'
-import { ExplainToggle } from '@/components/glossary/explain-toggle'
 import { LogoMark } from '@/components/brand/logo-mark'
 
 const NAV = visibleNav()
@@ -130,10 +129,8 @@ export function Navbar() {
             )}
           </nav>
 
-          {/* Desktop Auth Actions.
-              "Explain terms" was removed from this desktop row to reduce header
-              density; it remains in the mobile menu (below). Re-add <ExplainToggle />
-              here to restore it. */}
+          {/* Desktop Auth Actions. "Explain terms" is not here and no longer
+              in the mobile menu either. */}
           <div className="hidden xl:flex items-center gap-2">
             {isLoggedIn ? (
               <>
@@ -213,10 +210,11 @@ export function Navbar() {
             )}
           </nav>
 
-          {/* Mobile: explain-terms toggle */}
-          <div className="max-w-7xl mx-auto px-4 pb-2 pt-1">
-            <ExplainToggle className="w-full justify-start" />
-          </div>
+          {/* The "Explain terms" toggle was here. It is off the menu entirely
+              now, desktop and mobile both: the menu is a list of places to go,
+              and this was the one row in it that changed a setting instead.
+              The component is intact (glossary/explain-toggle.tsx) and the
+              glossary itself is still linked from the footer. */}
 
           {/* Mobile Auth */}
           <div className="max-w-7xl mx-auto px-4 pb-4 pt-2 border-t border-border flex flex-col gap-2">
