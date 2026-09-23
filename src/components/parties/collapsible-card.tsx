@@ -17,6 +17,10 @@
  * and a lucide function cannot cross the server boundary as a prop, but the
  * rendered <Landmark /> element can.
  *
+ * data-open is on the root so a stylesheet can treat the two states
+ * differently — see .ap-stand in globals.css, which drops this frame on phones
+ * but only once the section is open.
+ *
  * The button is the whole header row and carries no padding of its own — the
  * card supplies it — because the global `button { min-height: 44px }` mobile
  * rule inflates any small control that owns its own box (DESIGN-SPEC 3.1).
@@ -48,7 +52,7 @@ export function CollapsibleCard({ title, icon, accent, children, defaultOpen = f
   const [open, setOpen] = useState(defaultOpen)
 
   return (
-    <div id={id} className={className} style={{
+    <div id={id} className={className} data-open={open ? '1' : '0'} style={{
       background: '#ffffff', border: `2px solid ${tint(accent, 0.45)}`, borderRadius: 18,
       padding: '14px 18px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)',
       ...style,

@@ -495,8 +495,12 @@ a, button, [role='button'], summary {
      woven ground, the way the homepage picker does — that alone returns ~48px
      of horizontal space, which is the difference between one chip per row and
      two. The border and padding earn their place on desktop, where width is not
-     the constraint. */
-  .ap-stand {
+     the constraint.
+
+     Only once it is OPEN. Closed, it is one of four rectangles in a column and
+     has to look like the other three; the width it is buying back is width for
+     a chip grid that is not on screen yet. */
+  .ap-stand[data-open="1"] {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;

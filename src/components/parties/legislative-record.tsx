@@ -10,6 +10,7 @@ import { legislativeRecordFor } from '@/lib/parties/legislative-record'
 import { trackerBillCounts } from '@/lib/bills/member-party'
 import { PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
+import { CollapsibleCard } from '@/components/parties/collapsible-card'
 import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 // Which parties actually have bills before the House in the tracker — so we only
@@ -34,19 +35,16 @@ export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug;
   if (nothing) return null
   const trackerCount = TRACKER_COUNTS[party] ?? 0
   const hasTrackerBills = trackerCount > 0
-  // Party-colour outline, matching the cards either side of it on the page.
+  // CollapsibleCard draws the party-colour frame from this, matching the cards
+  // either side of it on the page.
   const accent = PARTY_COLORS[party]?.bg ?? JADE
-  const c = accent.replace('#', '')
-  const rgb = parseInt(c.length === 3 ? c.split('').map((x) => x + x).join('') : c, 16)
-  const outline = `rgba(${(rgb >> 16) & 255}, ${(rgb >> 8) & 255}, ${rgb & 255}, 0.45)`
 
   return (
-    <div style={{ background: '#fff', border: `2px solid ${outline}`, borderRadius: 18, padding: '22px 24px', boxShadow: '0 1px 2px rgba(42,18,6,.04), 0 8px 20px -12px rgba(42,18,6,.14)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 4 }}>
-        <Gavel style={{ width: 17, height: 17, color: accent }} />
-        <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: 0 }}>Legislative record this term</h2>
-      </div>
-      <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '0 0 14px' }}>54th Parliament · as at {r.asOf}</p>
+    // Closed by default like the four sections above it: this is the fifth
+    // rectangle in that column and has to behave as one. The dateline moves
+    // inside, since a closed card shows its title and nothing else.
+    <CollapsibleCard title="Legislative record this term" icon={<Gavel style={{ width: 15, height: 15 }} />} accent={accent}>
+      <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '-4px 0 14px' }}>54th Parliament · as at {r.asOf}</p>
 
       {r.governing ? (
         <>
@@ -103,6 +101,6 @@ export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug;
           Source: NZ Parliament, Bills <ExternalLink style={{ width: 12, height: 12 }} />
         </a>
       </div>
-    </div>
+    </CollapsibleCard>
   )
 }
