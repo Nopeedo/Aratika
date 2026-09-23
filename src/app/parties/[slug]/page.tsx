@@ -164,7 +164,10 @@ export default async function PartyProfilePage(
             as part of this page, and the page wash already carries the
             party's colour. */}
 
-        <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 36px' }}>
+        {/* 18px under the header, not 36: the band used to end on a
+            150px-tall seat card, which needed the air. It ends on a one-line
+            pill now, and 36 over the body's own 36 read as the page pausing. */}
+        <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 18px' }}>
 
           {/* The back link is gone. It said "All parties" and pointed at
               /parties, which redirects back to this page, and "Home" in its
@@ -345,7 +348,7 @@ export default async function PartyProfilePage(
       </div>
 
       {/* ═══════════════ Body ═══════════════ */}
-      <div className="detail-two-col ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '36px clamp(18px, 5vw, 36px) 64px' }}>
+      <div className="detail-two-col ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 64px' }}>
 
         {/* ── Main column ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
