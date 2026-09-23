@@ -11,6 +11,7 @@ import { PARTY_PROFILES } from '@/constants/parties-data'
 import { PARTY_COLORS } from '@/constants/parties'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { MP_PROFILES } from '@/constants/mps-data'
+import { legislativeRecordFor } from '@/lib/parties/legislative-record'
 import { trackerBills } from '@/lib/bills/member-party'
 import { getNewsForParty } from '@/lib/news/live'
 import { getVideosForParty } from '@/lib/news/videos'
@@ -121,7 +122,15 @@ const buildTileParties = cache(async function buildTileParties(): Promise<TilePa
       governing: prof.status === 'governing',
       // Counted here on the server, from the same BILLS_54 the tracker filters,
       // so the figure on the tile matches the list it links to.
-      bills: BILLS[slug] ?? { total: 0, government: 0, members: 0, other: 0, passed: 0 },
+      // The tracker figures, plus the BALLOT count — members' bills lodged by
+      // this party's MPs and waiting on the draw. Kept as its own number, not
+      // folded into the total: a proposed bill has not been introduced, so
+      // adding it would make the homepage figure disagree with the list the
+      // reader lands on in the tracker (see trackerBills' note).
+      bills: {
+        ...(BILLS[slug] ?? { total: 0, government: 0, members: 0, other: 0, passed: 0 }),
+        ballot: legislativeRecordFor(slug as PartySlug).membersInBallot,
+      },
       news: coverage[slug]?.news ?? [],
       videos: coverage[slug]?.videos ?? [],
       seats: prof.seats,

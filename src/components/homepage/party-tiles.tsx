@@ -43,8 +43,10 @@ export interface TileParty {
   role: string
   governing: boolean
   /** Bills before the House this term, counted from the same dataset /bills
-   *  filters — see lib/bills/member-party.ts. */
-  bills: { total: number; government: number; members: number; other: number; passed: number }
+   *  filters — see lib/bills/member-party.ts. `ballot` is separate: members'
+   *  bills this party's MPs have lodged and that are waiting on the draw, so
+   *  they are NOT before the House and are not in `total`. */
+  bills: { total: number; government: number; members: number; other: number; passed: number; ballot: number }
   /** Recent coverage naming this party, from the same ingest as /news. Fetched
    *  server-side for all six — see party-tiles-section.tsx. */
   news: { id: string; title: string; outlet: string; kind: string; link: string; pubDate: string | null }[]
@@ -537,6 +539,19 @@ function BillsRow({ p }: { p: TileParty }) {
             ...(b.other > 0 ? [`${b.other} local & private`] : []),
           ].join(' · ')}
         </div>
+
+        {/* The ballot, on its own line and outside the total. A proposed
+            members' bill has been lodged and is waiting on a draw — it has not
+            been introduced, so counting it as "put forward to the House" would
+            be wrong, and folding it into the total would put the homepage
+            figure at odds with the tracker list this block links to. It is
+            still worth seeing: it is what a party's backbenchers are trying
+            to get before the House. */}
+        {b.ballot > 0 && (
+          <div style={{ fontSize: 13, fontWeight: 700, color: SUB, fontFamily: MANROPE, marginTop: 4, lineHeight: 1.4 }}>
+            {b.ballot} more waiting in the members&rsquo; ballot
+          </div>
+        )}
       {/* Kept to one line at every width — the longer wording wrapped on a phone
           and put the shift straight back. */}
         <p style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, margin: 0 }}>
