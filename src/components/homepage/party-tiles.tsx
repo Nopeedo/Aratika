@@ -437,14 +437,6 @@ function Meta({ source, date, title }: { source: string; date: string | null; ti
   )
 }
 
-/** Reserved two lines, and capped at two. The minHeight alone still let a
- *  narrower viewport push a label onto a third line and move the page; the cap
- *  means the block is the same height at any width. Nothing truncates at 375px
- *  or above — below that, clipped text beats a page that jumps. */
-const clamp2: React.CSSProperties = {
-  display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
-}
-
 // Compact by design: these are a scan list, not a set of cards to dwell on.
 const rowStyle: React.CSSProperties = {
   display: 'flex', gap: 10, alignItems: 'center', textDecoration: 'none',
@@ -524,25 +516,26 @@ function BillsRow({ p }: { p: TileParty }) {
               are peer blocks in one column, and at 13px against 20px this one
               read as a caption on the seats block rather than its own thing. */}
           <div style={{ flex: 1, minWidth: 0, fontSize: 20, fontWeight: 800, letterSpacing: 0, textTransform: 'uppercase', color: INK, fontFamily: MANROPE, textAlign: 'center', lineHeight: 1.15 }}>
-            Bills {p.name} put forward
+            Bills put forward by {p.name}
           </div>
           <BillsInfoButton accent={accent} governing={!!p.governing} slug={p.slug} />
         </div>
-        {/* Columns size to the figures that EXIST rather than always being
-            three with blanks padding the row: on a phone that gave every stat
-            a third of the width whether or not anything was in the other two,
-            which squeezed "Government bills" to 60px and clipped it. auto-fit
-            keeps two per row at phone widths and puts all three on one line as
-            soon as there is room. */}
-        <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fit, minmax(min(92px, 100%), 1fr))`, gap: '14px 16px', justifyItems: 'center' }}>
+        {/* ONE running total, at the scale of the seat count above it, rather
+            than two or three columns of smaller figures. The heading names
+            what is being counted, so the number does not need a label of its
+            own; the split that was in those columns is the quiet line beneath,
+            where it reads as detail about the total rather than as three
+            separate scores. */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+          <ScrollText style={{ width: 52, height: 52, color: accent, flexShrink: 0 }} strokeWidth={1.6} />
+          <span style={{ fontSize: 72, fontWeight: 800, lineHeight: 1, color: accent, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>{b.total}</span>
+        </div>
+        <div style={{ fontSize: 13.5, fontWeight: 700, color: SUB, fontFamily: MANROPE, marginTop: 8, lineHeight: 1.4 }}>
           {[
-            // One word per label. The heading above already says these are
-            // bills, so repeating it in every column only made "Government
-            // bills" wrap to two lines in a 100px column.
-            ...(p.governing ? [<Stat key="gov" n={b.government} label="Government" sub="by their ministers" accent={accent} icon />] : []),
-            <Stat key="mem" n={b.members} label="Members" sub="by their MPs" accent={accent} icon />,
-            ...(b.other > 0 ? [<Stat key="oth" n={b.other} label={<>Local &amp; private</>} sub="one-off bills" accent={accent} icon />] : []),
-          ]}
+            ...(p.governing && b.government > 0 ? [`${b.government} by their ministers`] : []),
+            ...(b.members > 0 ? [`${b.members} by their MPs`] : []),
+            ...(b.other > 0 ? [`${b.other} local & private`] : []),
+          ].join(' · ')}
         </div>
       {/* Kept to one line at every width — the longer wording wrapped on a phone
           and put the shift straight back. */}
@@ -582,31 +575,6 @@ function BillsRow({ p }: { p: TileParty }) {
   )
 }
 
-/** Every tile the same height, whatever its label says.
- *  At 375px "Government bills / by their ministers" wrapped one line further
- *  than "Members' bills / by their MPs", so a governing party's bills block was
- *  20px taller and the page still moved as the cycle turned. Two lines are
- *  reserved for each, which is what the longest of them needs. */
-function Stat({ n, label, sub, accent, icon }: { n: number; label: React.ReactNode; sub: string; accent: string; icon?: boolean }) {
-  return (
-    // The reservation is on the tile, not on each line. Putting a two-line
-    // minHeight on the label opened a visible gap between it and the sublabel
-    // wherever the label only needed one line, which was every desktop width.
-    // Reserving the whole tile puts the slack under the last line instead,
-    // where nobody sees it.
-    <div style={{ minHeight: 96, minWidth: 0, textAlign: 'center' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
-        {icon && <ScrollText style={{ width: 24, height: 24, flexShrink: 0, color: accent }} strokeWidth={2.2} aria-hidden />}
-        <span style={{ fontSize: 34, fontWeight: 800, lineHeight: 1, color: accent, fontFamily: MANROPE }}>{n}</span>
-      </div>
-      {/* One line, shrunk to fit rather than wrapped: these sit in ~100px
-          columns on a phone and a label that wraps puts the sublabel under it
-          at a different height in each column. */}
-      <div style={{ fontSize: 'clamp(12px, 3.6vw, 13.5px)', fontWeight: 800, color: INK, fontFamily: MANROPE, marginTop: 5, lineHeight: 1.25, whiteSpace: 'nowrap' }}>{label}</div>
-      <div style={{ ...clamp2, fontSize: 'clamp(11.5px, 3.3vw, 12.5px)', color: SUB, fontFamily: MANROPE, marginTop: 1, lineHeight: 1.3 }}>{sub}</div>
-    </div>
-  )
-}
 
 /** Summary of Party Stance — every VERIFIED policy stance, sourced, in its own
  *  card. Deliberately a SEPARATE component from <PartyTiles> so it can be placed
