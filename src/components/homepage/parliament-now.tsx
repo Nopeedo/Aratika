@@ -59,6 +59,15 @@ export function ParliamentNow({ seats, bills }: { seats?: ReactNode; bills?: Rea
             the chart as it scales rather than drifting at one size. */}
         <div style={{ marginTop: '-13%' }}>{seats}</div>
 
+        {/* The way out sits with the numbers it belongs to — directly under
+            the seat count and the share of the vote — rather than at the foot
+            of the whole block, past the caucus and the bills. */}
+        <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 14 }}>
+          <SignLink href={`/elections/${base.slug}`} icon={<Landmark style={{ width: 14, height: 14, flexShrink: 0 }} />}>
+            Full {base.year} results
+          </SignLink>
+        </div>
+
         {/* What they did with those seats. Moved here from above the news so
             the term reads as one block: how many seats, how they won them,
             which side of the House they sit on, and what they put before it. */}
@@ -69,14 +78,6 @@ export function ParliamentNow({ seats, bills }: { seats?: ReactNode; bills?: Rea
 
         {bills}
 
-        {/* Out of the section the same way the policy section leaves: a
-            party-coloured signpost, under the numbers rather than up by the
-            heading. */}
-        <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 16 }}>
-          <SignLink href={`/elections/${base.slug}`} icon={<Landmark style={{ width: 14, height: 14, flexShrink: 0 }} />}>
-            Full {base.year} results
-          </SignLink>
-        </div>
       </div>
     </section>
   )

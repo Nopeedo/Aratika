@@ -16,7 +16,7 @@
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { MANROPE } from '@/constants/theme'
+import { MANROPE, tint } from '@/constants/theme'
 
 /** Depth of the pointed end. Right padding is this plus the normal inset, so
  *  the arrow sits inside the rectangle and the point extends past it. */
@@ -37,7 +37,12 @@ export function SignShape({ href, color, fg, icon, children }: {
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 8,
         padding: `9px ${SIGN_POINT + 12}px 9px 14px`,
-        background: color, color: fg,
+        // The fill fades toward the point, so the sign reads as travelling
+        // that way rather than as a solid slab that happens to be pointed.
+        // Held flat across the label, then falls away over the last third —
+        // to a wash of the colour, not to nothing, so the tip keeps its edge.
+        background: `linear-gradient(to right, ${color} 0%, ${color} 62%, ${tint(color, 0.35)} 100%)`,
+        color: fg,
         borderRadius: '12px 0 0 12px',
         clipPath: `polygon(0 0, calc(100% - ${SIGN_POINT}px) 0, 100% 50%, calc(100% - ${SIGN_POINT}px) 100%, 0 100%)`,
         filter: 'drop-shadow(0 2px 5px rgba(12,14,18,.18))',

@@ -22,7 +22,7 @@ import { billsForTopic } from '@/lib/bills/by-topic'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { TopicChip } from '@/components/homepage/topic-chip'
 import type { PartySlug, PolicyTopic } from '@/types'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const normTitle = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
 const normName = normMemberName
@@ -113,7 +113,6 @@ export function BillsTracker54({ readerSlugs = {}, readerSummaries = {}, memberP
   const resultsRef = useRef<HTMLDivElement>(null)
   const topRef = useRef<HTMLDivElement>(null)
   const partyOf = (m?: string | null) => (m ? memberParty[normName(m)] : undefined)
-  const partyColour = initialParty ? PARTY_COLORS[initialParty as PartySlug]?.bg ?? JADE : JADE
 
   // Deep-linked from a party profile: bring the filtered list into view instead
   // of leaving it two screens below the header and carousel. Runs once — later
@@ -190,12 +189,33 @@ export function BillsTracker54({ readerSlugs = {}, readerSummaries = {}, memberP
     ).sort(byDateDesc)
   }, [q, cat, type, status, party, memberParty, subsOnly, today, topicSlugs])
 
-  const active = cat !== 'All' || type !== 'All' || status !== 'All' || party !== 'All' || q !== '' || subsOnly
+  /* `active` lived here — "is anything filtered?" — for the Clear button in
+     the filter bar. activeFilters below answers the same question by listing
+     what is on, and is what the box under the bar renders. */
   /** How many of the SELECTS are narrowing the list. The search box is left
    *  out: it is visible in its own right, so counting it on the filters
    *  button would report something the button does not control. */
   const narrowed = [cat !== 'All', type !== 'All', status !== 'All', party !== 'All', subsOnly].filter(Boolean).length
   const reset = () => { setQ(''); setCat('All'); setType('All'); setStatus('All'); setParty('All'); setSubsOnly(false); setTopic(undefined) }
+
+  /**
+   * Every filter currently narrowing the list, each with the way to drop just
+   * that one. Named in the reader's words rather than the field's: "Green's
+   * bills", not "party: green".
+   */
+  const activeFilters: { key: string; label: string; clear: () => void }[] = [
+    ...(q ? [{ key: 'q', label: `“${q}”`, clear: () => setQ('') }] : []),
+    ...(party !== 'All' ? [{ key: 'party', label: `${PARTY_NAMES[party as PartySlug]?.short ?? party}’s bills`, clear: () => setParty('All') }] : []),
+    ...(topic && POLICY_TOPICS[topic as keyof typeof POLICY_TOPICS]
+      ? [{ key: 'topic', label: `${POLICY_TOPICS[topic as keyof typeof POLICY_TOPICS].label} bills`, clear: () => setTopic(undefined) }] : []),
+    ...(cat !== 'All' ? [{ key: 'cat', label: cat, clear: () => setCat('All') }] : []),
+    ...(type !== 'All' ? [{ key: 'type', label: `${type} bills`, clear: () => setType('All') }] : []),
+    ...(subsOnly ? [{ key: 'subs', label: OPEN_SUBS, clear: () => setSubsOnly(false) }] : []),
+    ...(status !== 'All' ? [{ key: 'status', label: status === 'Royal Assent' ? 'Passed into law' : status, clear: () => setStatus('All') }] : []),
+  ]
+  // The box takes the party's colour when a party is what's filtered, so
+  // arriving from a party profile still reads as being about them.
+  const bannerColour = party !== 'All' && PARTY_COLORS[party as PartySlug] ? PARTY_COLORS[party as PartySlug].bg : JADE
 
   // Narrowing the filters must not leave you stranded on a page that no longer
   // exists (e.g. on page 9 of 12, then filtering down to 30 results). Reset
@@ -221,34 +241,6 @@ export function BillsTracker54({ readerSlugs = {}, readerSummaries = {}, memberP
           top of a 3,400px page with the filter silently applied — it reads as the
           plain tracker. Say what's filtered, and scroll here on mount. */}
       <div ref={topRef} style={{ scrollMarginTop: 72 }} />
-      {initialParty && party === initialParty && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', background: '#fff', border: `2px solid ${partyColour}`, borderRadius: 14, padding: '12px 16px', marginBottom: 18 }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 9, fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>
-            <span style={{ width: 10, height: 10, borderRadius: 3, background: partyColour, flexShrink: 0 }} />
-            Showing {PARTY_NAMES[initialParty as PartySlug]?.short ?? initialParty}’s bills{filtered.length} of {stats.total}
-          </span>
-          <button onClick={reset} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '8px 12px', fontFamily: MANROPE, cursor: 'pointer' }}>
-            <X style={{ width: 13, height: 13 }} /> Show all bills
-          </button>
-        </div>
-      )}
-
-      {/* Arrived from a policy topic. Says so plainly and offers the way out,
-          because the topic filter is not one of the dropdowns below: a reader
-          who could not see why the list was short would have no control to
-          explain it. */}
-      {topic && POLICY_TOPICS[topic as keyof typeof POLICY_TOPICS] && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', background: '#fff', border: `2px solid ${JADE}`, borderRadius: 14, padding: '12px 16px', marginBottom: 18 }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 9, fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE }}>
-            <span style={{ width: 10, height: 10, borderRadius: 3, background: JADE, flexShrink: 0 }} />
-            Showing {POLICY_TOPICS[topic as keyof typeof POLICY_TOPICS].label.toLowerCase()} bills: {filtered.length} of {stats.total}
-          </span>
-          <button onClick={reset} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '8px 12px', fontFamily: MANROPE, cursor: 'pointer' }}>
-            <X style={{ width: 13, height: 13 }} /> Show all bills
-          </button>
-        </div>
-      )}
-
       {/* Layout for the two rows below lives in TRACKER_CSS, shipped with this
           component. Both need media queries — content-width chips and selects
           each took a row of their own on a phone, in five different widths —
@@ -304,7 +296,10 @@ export function BillsTracker54({ readerSlugs = {}, readerSummaries = {}, memberP
       {filtersOpen && (
       <div className="bills-filters" style={{ marginBottom: 10 }}>
         <Select value={cat} onChange={setCat} options={['All', ...BILL_CATEGORIES]} allLabel="All policy areas" />
-        <Select value={type} onChange={setType} options={['All', 'Government', "Member's", 'Local', 'Private']} allLabel="All types" />
+        {/* Party before type: whose bill it is is the question readers arrive
+            with (usually from a party profile); what KIND of bill it is is a
+            follow-up. */}
+        {parties.length > 0 && <Select value={party} onChange={setParty} options={['All', ...parties]} allLabel="All parties" fmt={(s) => PARTY_NAMES[s as PartySlug]?.short ?? s} />}
         {/* OPEN_SUBS is not a stage the bill data carries — it is the
             submissions-open window, which used to be a chip above. Folding it
             in here keeps that filter reachable now the figures are inert. */}
@@ -315,13 +310,65 @@ export function BillsTracker54({ readerSlugs = {}, readerSummaries = {}, memberP
           allLabel="All stages"
           fmt={(s) => (s === 'Royal Assent' ? 'Passed into law' : s)}
         />
-        {parties.length > 0 && <Select value={party} onChange={setParty} options={['All', ...parties]} allLabel="All parties" fmt={(s) => PARTY_NAMES[s as PartySlug]?.short ?? s} />}
-        {active && (
-          <button onClick={reset} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '9px 12px', fontFamily: MANROPE, cursor: 'pointer' }}>
-            <X style={{ width: 13, height: 13 }} /> Clear
-          </button>
-        )}
+        <Select value={type} onChange={setType} options={['All', 'Government', "Member's", 'Local', 'Private']} allLabel="All types" />
+        {/* No Clear here any more: the "Filtered by" box below lists what is
+            on and carries the one Clear, so the two are not a few pixels
+            apart saying the same thing. */}
       </div>
+      )}
+
+      {/* What is being filtered, said in one box under the controls that did
+          it. Two special-case banners used to live here — one for arriving
+          from a party profile, one for arriving from a policy topic — and
+          neither said anything when the reader set a filter themselves from
+          the selects a few pixels above. One box, every filter, each
+          removable on its own.
+
+          It sits UNDER the filters and above the count it qualifies: a reader
+          scrolling to the results passed the bar and reached a short list
+          with no idea why it was short. */}
+      {activeFilters.length > 0 && (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap',
+          background: '#fff', border: `2px solid ${bannerColour}`, borderRadius: 14,
+          padding: '10px 12px', marginBottom: 12,
+        }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE }}>
+            <span style={{ width: 10, height: 10, borderRadius: 3, background: bannerColour, flexShrink: 0 }} />
+            Filtered by
+          </span>
+          {activeFilters.map((f) => (
+            /* The BUTTON is only the tap target; the span inside is the pill.
+               globals.css gives every button a 44px minimum on a phone (a
+               deliberate tap-target rule), which turned a 22px pill into a
+               44px slab. Padding out and pulling the margin back keeps the
+               finger target and lets the pill be its own size. */
+            <button
+              key={f.key}
+              onClick={f.clear}
+              title={`Remove: ${f.label}`}
+              style={{
+                display: 'inline-flex', padding: '11px 0', margin: '-11px 0',
+                background: 'none', border: 'none', cursor: 'pointer',
+              }}
+            >
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: 5,
+                fontSize: 12, fontWeight: 800, color: INK,
+                background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 999,
+                padding: '4px 9px', fontFamily: MANROPE,
+              }}>
+                {f.label}
+                <X style={{ width: 12, height: 12, color: SECONDARY }} />
+              </span>
+            </button>
+          ))}
+          <button onClick={reset} style={{ display: 'inline-flex', marginLeft: 'auto', padding: '10px 0', margin: '-10px 0 -10px auto', background: 'none', border: 'none', cursor: 'pointer' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 700, color: SECONDARY, background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 10, padding: '5px 10px', fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
+              <X style={{ width: 13, height: 13 }} /> Clear
+            </span>
+          </button>
+        </div>
       )}
 
       <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, marginBottom: 10 }}>
@@ -525,8 +572,28 @@ function BillBreakdown({ b, readerSlug, summary, submissionsOpen, party, onClose
       {summary && (
         // TWO SENTENCES, not the whole summary: these run to a dozen lines on
         // a phone, which is a page of reading before the reader has decided
-        // they care. The rest is on the breakdown the button below opens.
-        <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>{gist(summary)}</p>
+        // they care. The rest is where the sentence itself points — a small
+        // link at the end of the trimmed text rather than a signpost of its
+        // own, which was the loudest thing in the panel for a link most
+        // readers will not take.
+        <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>
+          {gist(summary)}
+          {readerSlug && (
+            <>
+              {' '}
+              <Link
+                href={`/legislation/${readerSlug}`}
+                // New tab: the reader is part-way down a filtered list of 285
+                // bills, and coming back means finding their place again.
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'baseline', gap: 3, fontSize: 12.5, fontWeight: 800, color: kind.fg, fontFamily: MANROPE, textDecoration: 'none', whiteSpace: 'nowrap' }}
+              >
+                Read the full breakdown <ArrowRight style={{ width: 12, height: 12, alignSelf: 'center' }} strokeWidth={3} />
+              </Link>
+            </>
+          )}
+        </p>
       )}
       {/* Says the gap is coverage, not a broken panel. A bill has a summary
           once scripts/enrich-bills.mjs has run on it — Claude grounded only in
@@ -564,7 +631,11 @@ function BillBreakdown({ b, readerSlug, summary, submissionsOpen, party, onClose
             )}
           </div>
         )}
-        {b.committee && <div style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>{b.committee} committee</div>}
+        {/* The select committee's name ("Environment committee") was here.
+            Removed: it names a body the card never explains, and a reader who
+            does not already know what a select committee is learns nothing
+            from being told which one has the bill. The journey strip says the
+            bill is AT select committee, which is the part that matters. */}
 
         {/* The policy area, under the people rather than under the title: it
             is the least specific thing here, and the chip is the same one the
@@ -597,19 +668,6 @@ function BillBreakdown({ b, readerSlug, summary, submissionsOpen, party, onClose
       )}
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', marginTop: 14 }}>
-        {readerSlug && (
-          <Link
-            href={`/legislation/${readerSlug}`}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '9px 14px', borderRadius: 10,
-              background: kind.fg, color: '#fff',
-              fontSize: 13, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none',
-            }}
-          >
-            Read the full breakdown <ArrowRight style={{ width: 14, height: 14 }} strokeWidth={3} />
-          </Link>
-        )}
         {/* Every bill links to its exact page on Parliament's site, so any claim
             here can be checked at source rather than taken on trust. */}
         <a href={b.officialUrl} target="_blank" rel="noopener noreferrer"

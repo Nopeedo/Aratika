@@ -17,8 +17,9 @@ import { ArrowRight, Landmark, Newspaper, PlayCircle, ScrollText } from 'lucide-
 import { Avatar } from '@/components/ui/avatar'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
-import { PARTY_NAMES } from '@/constants/parties'
+import { PARTY_COLORS, PARTY_NAMES } from '@/constants/parties'
 import { BillsInfoButton } from '@/components/homepage/bills-info-button'
+import { SeatsInfoButton } from '@/components/homepage/seats-info-button'
 import { SignLink } from '@/components/homepage/compare-sign-link'
 import { VideoLightbox, type PlayingVideo } from '@/components/homepage/video-lightbox'
 import type { PartySlug } from '@/types'
@@ -293,7 +294,10 @@ export function PartyBillsSummary({ parties }: { parties: TileParty[] }) {
       {/* Clear air above the heading: this is a new block after the MP list,
           and the space is what says so. Added from this side because the
           margin under that list belongs to another component. */}
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 32px' }}>
+      {/* No bottom padding: the block ends on its signpost, and the section
+          around it already carries the space to whatever follows. 32px here
+          on top of that left the sign floating in the middle of a gap. */}
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 0' }}>
         <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
           <BillsRow p={p} />
         </div>
@@ -524,7 +528,7 @@ function BillsRow({ p }: { p: TileParty }) {
               are peer blocks in one column, and at 13px against 20px this one
               read as a caption on the seats block rather than its own thing. */}
           <div style={{ flex: 1, minWidth: 0, fontSize: 20, fontWeight: 800, letterSpacing: 0, textTransform: 'uppercase', color: INK, fontFamily: MANROPE, textAlign: 'center', lineHeight: 1.15 }}>
-            Bills introduced by {p.name}
+            Bills introduced by {p.name} this term
           </div>
           <BillsInfoButton accent={accent} governing={!!p.governing} slug={p.slug} />
         </div>
@@ -534,17 +538,36 @@ function BillsRow({ p }: { p: TileParty }) {
             own; the split that was in those columns is the quiet line beneath,
             where it reads as detail about the total rather than as three
             separate scores. */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
-          <ScrollText style={{ width: 52, height: 52, color: accent, flexShrink: 0 }} strokeWidth={1.6} />
-          <span style={{ fontSize: 72, fontWeight: 800, lineHeight: 1, color: accent, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>{b.total}</span>
-        </div>
+        {/* In a circle, framed like the MP container above it: the same 2px
+            party border on the same light fill, so the two blocks are
+            obviously the same kind of thing. A round frame rather than a
+            rounded rectangle because what is inside is a single figure, not a
+            list — the shape says "one number" before the number is read. */}
+        {/* The circle on the LEFT with everything that reads off it on the
+            right: the icon sits above the figure so the number is the centre
+            of its own frame rather than sharing the middle with a glyph, and
+            the line and the way through sit beside it instead of stacked
+            under it, which left the block a tall column of centred fragments. */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 4 }}>
+          <div style={{
+            display: 'inline-flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2,
+            width: 132, height: 132, flexShrink: 0, borderRadius: '50%',
+            border: `2px solid ${PARTY_COLORS[p.slug as keyof typeof PARTY_COLORS]?.bg ?? p.color}`,
+            background: PARTY_COLORS[p.slug as keyof typeof PARTY_COLORS]?.light ?? '#fff',
+            transition: 'border-color .25s ease-in-out, background-color .25s ease-in-out',
+          }}>
+            <ScrollText style={{ width: 28, height: 28, color: accent, flexShrink: 0 }} strokeWidth={1.6} />
+            <span style={{ fontSize: 52, fontWeight: 800, lineHeight: 1, color: accent, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>{b.total}</span>
+          </div>
+
+          <div style={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
         {/* One line under the total, not three. The ministers/MPs split and
             the ballot and the passed count were each true and each on their
             own row, which is three lines of small print under a figure that
             has already made the point. What a reader wants next is how many
             of them became law and how many are still queued, so that is what
             is left; the breakdown by who introduced them is in the (i). */}
-        <div style={{ fontSize: 14, fontWeight: 700, color: SUB, fontFamily: MANROPE, marginTop: 10, lineHeight: 1.4 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, color: SUB, fontFamily: MANROPE, lineHeight: 1.4 }}>
           {[
             none ? null : b.passed === 0 ? 'none yet law' : `${b.passed} now law`,
             b.ballot > 0 ? `${b.ballot} waiting to be drawn` : null,
@@ -556,7 +579,7 @@ function BillsRow({ p }: { p: TileParty }) {
             close with. Three solid party-coloured signs stacked down one page
             made each of them count for less, and this one is a footnote to
             the figures above it rather than the way out of a section. */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 12 }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 10 }}>
           <Link
             href={none ? '/bills' : `/bills?party=${p.slug}`}
             style={{
@@ -573,7 +596,23 @@ function BillsRow({ p }: { p: TileParty }) {
             {none ? 'Browse all bills' : `See ${p.name}\u2019s ${b.total} bills`}
             <ArrowRight style={{ width: 13, height: 13, flexShrink: 0 }} strokeWidth={3} />
           </Link>
+            </div>
+          </div>
         </div>
+      </div>
+
+      {/* Out of the section, the way the seats block leaves: the signpost the
+          policy and seats sections close with. The chip inside the box goes to
+          THIS party's bills; this goes to the tracker itself.
+
+          Pulled back out to the page gutter with a negative margin: this
+          block sits inside a container that carries its OWN 18px inset, which
+          left this sign standing a gutter further in than the four other
+          signposts on the page. They all start on the same line now. */}
+      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 14, marginLeft: 'calc(-1 * clamp(18px, 5vw, 36px))' }}>
+        <SignLink href="/bills" icon={<ScrollText style={{ width: 15, height: 15, flexShrink: 0 }} />}>
+          See all bills this term
+        </SignLink>
       </div>
     </div>
   )
@@ -745,7 +784,13 @@ function SeatsRow({ p }: { p: TileParty }) {
           heading says "as elected at the 2023 General Election", so the
           count is the number that belongs here. */}
       <span style={{ fontSize: 72, fontWeight: 800, lineHeight: 1, color: seatColor(p.color), fontFamily: MANROPE }}>{res?.seats ?? p.seats}</span>
-      <span ref={labelRef} style={{ fontSize: 20, fontWeight: 800, color: INK, textTransform: 'uppercase', letterSpacing: '.02em', lineHeight: 1.15, marginTop: 6, whiteSpace: 'nowrap', fontFamily: MANROPE }}>Seats in Parliament</span>
+      {/* Sized to the line under it — the two are a pair, and the label being
+          the smaller of them made the block look top-light. The (i) carries
+          what a seat IS, for a reader the number means nothing to. */}
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
+        <span ref={labelRef} style={{ fontSize: 23, fontWeight: 800, color: INK, textTransform: 'uppercase', letterSpacing: '.02em', lineHeight: 1.15, whiteSpace: 'nowrap', fontFamily: MANROPE }}>Seats in Parliament</span>
+        <SeatsInfoButton accent={seatColor(p.color)} party={p.name} slug={p.slug} />
+      </span>
       {/* What won those seats, rather than "as of 2023 election" — the date
           is already in the heading above. Phrased as a share of PEOPLE, not
           "of the party vote": that wording assumes the reader knows MMP has
@@ -753,7 +798,11 @@ function SeatsRow({ p }: { p: TileParty }) {
           Strictly it is the party vote; "voters chose" is accurate about who
           without making the reader learn the mechanism first. */}
       {votePct != null && (
-        <span ref={lineRef} style={{ fontSize: 17, fontWeight: 800, color: seatColor(p.color), marginTop: 5, lineHeight: 1.3, maxWidth: labelW ?? undefined, textAlign: 'center', fontFamily: MANROPE }}>
+        // Wider than the label and a size up: it was capped at the label's
+        // width, which broke "3.1% of voters chose Te Pāti Māori" across
+        // three lines in a column narrower than the text needed. The label is
+        // the quiet part here; this line is the fact.
+        <span ref={lineRef} style={{ fontSize: 19, fontWeight: 800, color: seatColor(p.color), marginTop: 6, lineHeight: 1.3, maxWidth: labelW ? labelW * 1.45 : undefined, textAlign: 'center', fontFamily: MANROPE }}>
           {/* The figure carries a white BRUSH underline: a filled stroke that
               swells in the middle and tapers at both ends, the way a loaded
               brush leaves the paper — not a hairline rule. */}

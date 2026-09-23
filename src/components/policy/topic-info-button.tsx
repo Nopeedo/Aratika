@@ -25,21 +25,30 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
 }) {
   const [open, setOpen] = useState(false)
   const bubble = useRef<HTMLDivElement>(null)
-  // How far left to shift the bubble so it stays inside the viewport. It is
-  // anchored to the button's left edge, and the button sits to the right of
-  // a wide pill — on a phone that puts most of a 340px bubble off-screen.
-  const [shift, setShift] = useState(0)
+  const wrap = useRef<HTMLDivElement>(null)
   const id = useId()
 
+  /**
+   * Centred on the VIEWPORT, but anchored to the PAGE.
+   *
+   * Fixed positioning centred it and then left it hanging there while the
+   * page scrolled underneath, so the bubble drifted away from the (i) that
+   * opened it. Absolute keeps it attached; the offset below is what centres
+   * it, measured from the wrapper out to the middle of the screen.
+   */
+  const [left, setLeft] = useState<number | null>(null)
   useLayoutEffect(() => {
-    if (!open || !bubble.current) return
-    // r already includes the current shift; back it out to get the natural spot.
-    const r = bubble.current.getBoundingClientRect()
-    const gutter = 18
-    const naturalLeft = r.left - shift
-    const over = (r.right - shift) - (window.innerWidth - gutter)
-    setShift(over > 0 ? -Math.min(over, naturalLeft - gutter) : 0)
-  }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (!open || !wrap.current) return
+    const place = () => {
+      const w = wrap.current
+      if (!w) return
+      const width = Math.min(340, window.innerWidth - 28)
+      setLeft(window.innerWidth / 2 - width / 2 - w.getBoundingClientRect().left)
+    }
+    place()
+    window.addEventListener('resize', place)
+    return () => window.removeEventListener('resize', place)
+  }, [open])
 
   /**
    * Escape closes it; the X closes it; tapping the (i) again closes it.
@@ -66,7 +75,7 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
   )
 
   return (
-    <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', alignSelf: 'center', flexShrink: 0 }}>
+    <div ref={wrap} style={{ position: 'relative', display: 'inline-flex', alignItems: 'center', alignSelf: 'center', flexShrink: 0 }}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -97,8 +106,8 @@ export function TopicInfoButton({ topicLabel, covers, accent }: {
           role="dialog"
           aria-label="What this covers"
           style={{
-            position: 'absolute', top: 'calc(100% + 10px)', left: shift, zIndex: 30,
-            width: 'min(340px, calc(100vw - 36px))',
+            position: 'absolute', top: 'calc(100% + 10px)', left: left ?? 0, zIndex: 30,
+            width: 'min(340px, calc(100vw - 28px))',
             background: '#fff', border: `1px solid ${BORDER}`, borderTop: `3px solid ${accent}`,
             borderRadius: 14, padding: '16px 36px 4px 18px',
             boxShadow: '0 4px 8px rgba(42,18,6,.06), 0 16px 32px -12px rgba(42,18,6,.22)',

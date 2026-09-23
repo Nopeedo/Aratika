@@ -5,12 +5,12 @@
  * beside the topic pill on /policies/[topic]: same ring, same bubble, same
  * "tap anywhere else to close" behaviour.
  *
- * It carries the explanation the box itself shouldn't: what a bill is, what
- * "before the House" means, why a governing party has hundreds and an
- * opposition party a handful, and why the government count is attributed to
- * the minister's party rather than owned by it. That last paragraph used to
- * sit under the figures as body copy — true, necessary, and four lines of
- * process explanation between the reader and the next thing.
+ * Two sections, not five. It answers only what the block above it actually
+ * raises: what the number counts, and why a governing party's is in the
+ * hundreds where an opposition party's is a handful. The stages of a bill,
+ * the ballot, and what "now law" means were each true and none of them were
+ * being asked — the block no longer mentions the House or the stages, and
+ * "30 now law" explains itself.
  */
 
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
@@ -31,19 +31,30 @@ export function BillsInfoButton({ accent, governing, slug }: {
   const { panelSlug, select } = usePartyCycle()
   const [open, setOpen] = useState(false)
   const bubble = useRef<HTMLDivElement>(null)
-  // The button sits in the box's top-right corner, so a 340px bubble anchored
-  // to it hangs off the right of a phone. Shift it back inside.
-  const [shift, setShift] = useState(0)
+  const wrap = useRef<HTMLDivElement>(null)
   const id = useId()
 
+  /**
+   * Centred on the VIEWPORT, but anchored to the PAGE.
+   *
+   * Fixed positioning centred it and then left it hanging there while the
+   * page scrolled underneath, so the bubble drifted away from the (i) that
+   * opened it. Absolute keeps it attached; the offset below is what centres
+   * it, measured from the wrapper out to the middle of the screen.
+   */
+  const [left, setLeft] = useState<number | null>(null)
   useLayoutEffect(() => {
-    if (!open || !bubble.current) return
-    const r = bubble.current.getBoundingClientRect()
-    const gutter = 18
-    const naturalRight = r.right - shift
-    const over = naturalRight - (window.innerWidth - gutter)
-    setShift(over > 0 ? -over : 0)
-  }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (!open || !wrap.current) return
+    const place = () => {
+      const w = wrap.current
+      if (!w) return
+      const width = Math.min(340, window.innerWidth - 28)
+      setLeft(window.innerWidth / 2 - width / 2 - w.getBoundingClientRect().left)
+    }
+    place()
+    window.addEventListener('resize', place)
+    return () => window.removeEventListener('resize', place)
+  }, [open])
 
   /**
    * Escape closes it; the X closes it; tapping the (i) again closes it.
@@ -70,7 +81,7 @@ export function BillsInfoButton({ accent, governing, slug }: {
   )
 
   return (
-    <div style={{ position: 'relative', display: 'inline-flex', flexShrink: 0 }}>
+    <div ref={wrap} style={{ position: 'relative', display: 'inline-flex', flexShrink: 0 }}>
       <button
         type="button"
         onClick={() => {
@@ -110,8 +121,11 @@ export function BillsInfoButton({ accent, governing, slug }: {
           role="dialog"
           aria-label="What bills before the House means"
           style={{
-            position: 'absolute', top: 'calc(100% + 10px)', right: shift, zIndex: 30,
-            width: 'min(340px, calc(100vw - 36px))',
+            // Centred on the PAGE, not hung off the button: anchored to the
+            // (i) it ran to the panel's right edge and left the copy sitting
+            // off-centre under a centred heading.
+            position: 'absolute', top: 'calc(100% + 10px)', left: left ?? 0, zIndex: 30,
+            width: 'min(340px, calc(100vw - 28px))',
             background: '#fff', border: `1px solid ${BORDER}`, borderTop: `3px solid ${accent}`,
             borderRadius: 14, padding: '16px 18px 4px', textAlign: 'left',
             boxShadow: '0 4px 8px rgba(42,18,6,.06), 0 16px 32px -12px rgba(42,18,6,.22)',
@@ -121,29 +135,21 @@ export function BillsInfoButton({ accent, governing, slug }: {
             <X style={{ width: 16, height: 16 }} />
           </button>
 
-          {h('Bills before the House')}
-          {p('A bill is a proposed law. It is introduced in Parliament, debated and voted on several times, and only becomes law if it passes every stage. "Before the House" means it has been introduced and is still somewhere in that process.')}
-
-          {h('Government bills')}
-          {p('Only ministers can introduce these, and they are the government’s programme for the term. Most of them pass, because the parties in government hold the numbers to vote them through.')}
-
-          {h('Members’ bills')}
-          {p('Any MP who is not a minister can put one forward, whichever party they are in. Far more are written than can be debated, so they go into a ballot and are drawn at random. Most never get pulled out.')}
+          {h('What this counts')}
+          {p('A bill is a proposed law. This is how many were introduced by this party since the 2023 election, whether they have passed, been voted down, or are still somewhere in the process.')}
 
           {governing ? (
             <>
-              {h('Whose bills are these?')}
-              {p('Government bills are the coalition’s programme, counted here by the party of the minister in charge. They are not that party’s alone: they were agreed by the parties in government together, and passed with their combined votes.')}
+              {h('Why the number is large')}
+              {p('A party in government supplies the ministers, and only ministers introduce government bills. Most of this figure is the coalition’s programme, counted here by the party of the minister in charge rather than owned by that party alone.')}
             </>
           ) : (
             <>
               {h('Why the number is small')}
-              {p('A party in opposition has no ministers, so it can introduce no government bills at all. Its MPs enter the members’ ballot like everyone else. A low count here is the position they are in, not a measure of how hard they work.')}
+              {p('A party in opposition has no ministers, so it can introduce no government bills at all. Its MPs put forward members’ bills instead, which go into a ballot and are drawn at random. A low count is the position they are in, not a measure of how hard they work.')}
             </>
           )}
 
-          {h('Now law')}
-          {p('The count of these bills that have been through every stage and been signed into law. The rest are still somewhere in the process, or were voted down.')}
         </div>
       )}
     </div>

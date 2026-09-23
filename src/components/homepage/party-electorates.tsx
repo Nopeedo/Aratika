@@ -23,6 +23,7 @@ import type { CSSProperties } from 'react'
 import { ArrowRight, ChevronDown, ChevronUp, MapPin } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { MP_PROFILES } from '@/constants/mps-data'
+import { SignLink } from '@/components/homepage/compare-sign-link'
 import { MPPreview } from '@/components/homepage/mp-preview'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import { ELECTORATES, normalizeElectorateKey } from '@/constants/electorates-data'
@@ -159,6 +160,14 @@ export function PartyElectorates() {
         </div>
       </div>
 
+      {/* Out of the block, matching the seats and bills sections: the chip
+          inside the box goes to THIS party's caucus, this goes to every MP. */}
+      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 14 }}>
+        <SignLink href="/mps" icon={<MapPin style={{ width: 15, height: 15, flexShrink: 0 }} />}>
+          Full MP directory
+        </SignLink>
+      </div>
+
       {preview && <MPPreview slug={preview} onClose={() => setPreview(null)} />}
     </div>
   )
@@ -235,10 +244,17 @@ function Column({ label, count, empty, rows, accent, colors, party, onPick }: {
           "list MP" mean nothing to someone who has not been taught MMP. */}
       {/* A rule under the heading, not a frame around the column: it separates
           the label from its rows without cutting the two halves apart. */}
+      {/* EXACTLY two lines, not a minimum: "3 won a local seat" takes one and
+          "12 came off the party list" takes two, so a minimum left one rule
+          7px above the other. Clamped as well as fixed, so a narrower column
+          can't push a heading to three lines and break the alignment the
+          other way. */}
       <div style={{
         fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase',
-        color: '#000', fontFamily: MANROPE, lineHeight: 1.25, minHeight: '2.5em',
+        color: '#000', fontFamily: MANROPE, lineHeight: 1.25, height: '2.5em',
+        display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
         borderBottom: `1.5px solid ${colors.bg}55`, paddingBottom: 6, marginBottom: 7,
+        boxSizing: 'content-box',
       }}>
         {count} {label}
       </div>
