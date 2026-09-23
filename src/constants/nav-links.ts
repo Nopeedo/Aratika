@@ -26,7 +26,9 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: 'Election Centre', href: '/elections/2026', description: 'Polls, seat projection, your electorate and live results on the night', feature: 'elections' },
+  // "2026 Election", not "Election Centre": the menu names the thing the
+  // reader is here for, not the name we gave the section that holds it.
+  { label: '2026 Election', href: '/elections/2026', description: 'Polls, seat projection, your electorate and live results on the night', feature: 'elections' },
   // "Your Vote" (/start, the personal compass) left the nav by request — the
   // pillar was one label among seven, and the compass now rides the two pages
   // everyone actually lands on instead: the homepage card moved above the
