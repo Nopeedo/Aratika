@@ -174,11 +174,11 @@ function PartyCard({ party: p }: { party: DirectoryParty }) {
       <span className="pd-seats" style={{ display: 'block', marginTop: 6 }}>
         {p.seats > 0 ? (
           <span style={{ display: 'inline-flex', alignItems: 'baseline', gap: 4 }}>
-            <span style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, letterSpacing: '-.02em', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{p.seats}</span>
-            <span style={{ fontSize: 11, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE }}>{p.seats === 1 ? 'seat' : 'seats'}</span>
+            <span className="pd-figure" style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, letterSpacing: '-.02em', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{p.seats}</span>
+            <span className="pd-label" style={{ fontSize: 11, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE }}>{p.seats === 1 ? 'seat' : 'seats'}</span>
           </span>
         ) : (
-          <span style={{ fontSize: 11, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.3 }}>No seats yet</span>
+          <span className="pd-label" style={{ fontSize: 11, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.3 }}>No seats yet</span>
         )}
       </span>
     </Link>
@@ -206,22 +206,37 @@ function PartyCard({ party: p }: { party: DirectoryParty }) {
 const GRID_CSS = `
 .pd-grid { grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); }
 @media (min-width: 768px) {
-  .pd-grid { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 10px; }
-  .pd-name { height: 16px !important; -webkit-line-clamp: 1 !important; }
-  /* One row, not two. A 246px card holding a name over a seat count used its
-     left half and left the right half empty, which is the same phone layout
-     stretched rather than a layout for the width. The name takes the room it
-     needs and the count sits hard right, so the card is as wide as it is and
-     22px shorter with it. */
-  .pd-card { display: flex !important; align-items: center; justify-content: space-between; gap: 10px; }
-  .pd-id { min-width: 0; flex: 1 1 auto; align-items: center !important; }
-  .pd-seats { margin-top: 0 !important; flex-shrink: 0; }
-  /* The identity row reserves the avatar's height whether or not there is
-     an avatar. Only six of the seventeen leaders have a photograph on
-     file, and a grid row containing none of them came out 41px against
-     the 46px of a row that did: the cards in a row stretch to their
-     row, so the stagger appeared between ROWS rather than within one,
-     which is why it only showed at two columns. */
-  .pd-id { min-height: 26px; }
+  /* The SAME card, bigger. The tile was the identical object at 375px and at
+     1920: minmax(150px) against a 1008px column gives six 161px tracks, so a
+     wide screen got MORE tiles rather than bigger ones, and a phone-sized card
+     sat in a row of six with the page's margins doing the rest.
+
+     230px is four columns at 1008, and everything inside steps up with it:
+     24px avatar to 32, 13px name to 15, the 20px figure to 24, the padding
+     from 8/10/9 to 11/13/12. It is a scale, not a re-layout: name over count,
+     the same proportions, the same two-line reserve. An earlier pass made the
+     desktop card a single ROW with the count hard right, which used the width
+     but turned a tile into a different object at the breakpoint.
+
+     The reserve stays FIXED and has to be restated here, because 2 lines of
+     15px is 36px where 2 lines of 13px was 32 (§2.14).
+
+     !important throughout: every value it overrides is an inline style on the
+     same element, and an inline style outranks a stylesheet rule (§3.2). */
+  .pd-grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+  .pd-card { padding: 11px 13px 12px !important; border-radius: 13px !important; }
+  .pd-name { height: 36px !important; font-size: 15px !important; }
+  .pd-id { gap: 9px !important; }
+  /* The avatar is sized by a class on the component, so it is scaled here
+     rather than by a prop: the card cannot know the viewport at render. */
+  .pd-id > span > span > div { width: 32px !important; height: 32px !important; }
+  /* Reserved, like the name box above it and for the same reason. The two
+     variants are not the same height: a 24px figure on a baseline makes
+     the block 28px, "No seats yet" at 12px makes it 24, and the cards came
+     out 99px and 95px. Grid items stretch to their ROW, so the 4px showed
+     between rows rather than inside one. */
+  .pd-seats { margin-top: 8px !important; height: 28px; display: flex; align-items: flex-end; }
+  .pd-seats .pd-figure { font-size: 24px !important; }
+  .pd-seats .pd-label { font-size: 12px !important; }
 }
 `

@@ -457,14 +457,13 @@ the same three groups and the same counts, over one §2.3 grid.
 ```
 pills   All · Governing · Opposition · No seats, neutral, lit = #efece5 on INK
         tapping the lit one clears back to All
-grid    ≤767px  repeat(auto-fit, minmax(min(150px, 100%), 1fr)), gap 8 → 2 columns at 375px
-        ≥768px  repeat(auto-fit, minmax(290px, 1fr)), gap 10 → 3 columns at 1008px
-card    radius 11 · padding 8px 10px 9px · party light fill · 2px party border
-        name 13px 800, clamped to a FIXED two lines (height 32) on a phone,
-        ONE line (16) above the breakpoint, where the card is wide enough
-        seats 20px 800 + 11px label, or "No seats yet"
-        ≤767px  name over seats, 165x83
-        ≥768px  one row, name left, seats hard right, 331x47
+grid    ≤767px  repeat(auto-fit, minmax(min(150px, 100%), 1fr)), gap 8 → 2 cols at 375px
+        ≥768px  repeat(auto-fit, minmax(230px, 1fr)), gap 10 → 4 cols at 1008px
+card    party light fill · 2px party border · name over seats at both sizes
+        ≤767px  radius 11 · padding 8/10/9 · avatar 24 · name 13px, FIXED
+                two lines (32) · figure 20px + 11px label · 165x83
+        ≥768px  radius 13 · padding 11/13/12 · avatar 32 · name 15px, FIXED
+                two lines (36) · figure 24px + 12px label · 246x99
 ```
 
 **The pills are one neutral treatment, not a colour per group.** Party colour
@@ -476,22 +475,28 @@ and a reading of the politics this site does not make.
 wraps where "ACT" does not, so the card beside it came out 7px shorter and the
 grid staggered down the page. 83px every card, measured.
 
-**The desktop card is a ROW, and that is not the same card stretched.** At
-minmax(150px) a 1008px column gives six 161px tracks, so a wide screen got MORE
-cards rather than BIGGER ones and the phone card sat in a row of six. Widening
-the track alone is only half the answer: a 246px card holding a name over a
-count uses its left half and leaves the right half empty, which is the phone
-layout with room around it. At 290px the two facts fit one line, the name takes
-what it needs and the count sits hard right, and the card is 47px instead of 83.
-The reserve is still FIXED, just a different number per breakpoint.
+**The desktop card is the SAME card, bigger.** At minmax(150px) a 1008px column
+gives six 161px tracks, so a wide screen got MORE cards rather than BIGGER ones,
+and the phone card sat in a row of six with the page's margins doing the rest.
+Raising the track to 230 and stepping everything inside it up with it, avatar
+24 to 32, name 13 to 15, figure 20 to 24, padding 8/10/9 to 11/13/12, gives four
+246x99 cards that are the phone card at scale.
 
-Two measured traps in doing it. The name only fits one line if it HAS the room:
-at a 200px track, "Outdoors & Freedom" needed 115px and had exactly 115, so it
-wrapped inside a one-line box and clipped. And `.pd-id` reserves the avatar's
-24px whether or not there is an avatar: only six of seventeen leaders have a
-photograph, and because grid items stretch to their row, a row containing none
-of them came out 41px against 47px. That stagger appears BETWEEN rows, not
-within one, so it only showed at two columns and not at three.
+**Scaling is not re-laying-out, and the difference is the whole of it.** The
+first attempt made the desktop card a single ROW, name left and count hard
+right, which used the width and read as a different object at the breakpoint.
+Rejected on sight, correctly: a tile that becomes a row is two designs, and the
+reader crossing 768px meets both.
+
+**Every reserved height has to be restated at the larger size, and there are
+more of them than you think.** Two lines of 15px is 36px where two lines of 13px
+was 32. The seats block is 28px where a 24px figure sits on a baseline and 24px
+where "No seats yet" does, so the cards came out 99 and 95. And `.pd-id` has to
+reserve the avatar's height whether or not there IS an avatar: only six of the
+seventeen leaders have a photograph on file. Each of those staggers appears
+BETWEEN grid rows rather than inside one, because grid items stretch to their
+row, which is why one of them only showed at two columns and not at three. If a
+height is fixed on a phone it is fixed at every width, at a different number.
 
 **Avatars are photographs only.** Eleven of the seventeen leaders have no photo
 on file, and the initials fallback filled the grid with two-letter discs that
