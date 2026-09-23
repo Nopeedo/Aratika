@@ -18,8 +18,7 @@
  * rendered <Landmark /> element can.
  *
  * data-open is on the root so a stylesheet can treat the two states
- * differently — see .ap-stand in globals.css, which drops this frame on phones
- * but only once the section is open.
+ * differently. Nothing uses it yet: the one rule that did, .ap-stand, is gone.
  *
  * The button is the whole header row and carries no padding of its own — the
  * card supplies it — because the global `button { min-height: 44px }` mobile

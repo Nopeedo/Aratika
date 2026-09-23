@@ -385,7 +385,7 @@ export default async function PartyProfilePage(
               scrollMarginTop clears the sticky navbar, so landing here shows the
               heading rather than putting it behind the bar. */}
           <CollapsibleCard title="Where they stand" icon={<Star style={{ width: 15, height: 15 }} />} accent={party.color}
-            className="ap-stand" id={PARTY_POLICY_ANCHOR} style={{ scrollMarginTop: 84 }}>
+            id={PARTY_POLICY_ANCHOR} style={{ scrollMarginTop: 84 }}>
             <PartyPolicyExplorer
               partySlug={slug}
               partyName={party.name}

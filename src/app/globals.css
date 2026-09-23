@@ -491,21 +491,12 @@ a, button, [role='button'], summary {
   .ap-chip span { font-size: 13px !important; }
   .ap-chip svg  { width: 14px !important; height: 14px !important; }
 
-  /* "Where they stand" drops its card chrome on phones and sits straight on the
-     woven ground, the way the homepage picker does — that alone returns ~48px
-     of horizontal space, which is the difference between one chip per row and
-     two. The border and padding earn their place on desktop, where width is not
-     the constraint.
-
-     Only once it is OPEN. Closed, it is one of four rectangles in a column and
-     has to look like the other three; the width it is buying back is width for
-     a chip grid that is not on screen yet. */
-  .ap-stand[data-open="1"] {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-  }
+  /* "Where they stand" used to drop its card chrome on phones and sit straight
+     on the woven ground, which bought ~48px of width for the chip grid. It is
+     one of five identical rectangles in a column now, and a section that loses
+     its container the moment you open it reads as a different kind of thing
+     from the four above it. It keeps the frame in both states; the chips take
+     the narrower measure. */
 }
 
 /* Topic switcher on /policies/[topic]: the homepage chips (same colours and
