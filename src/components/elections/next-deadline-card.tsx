@@ -108,21 +108,30 @@ function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; toda
       padding: '18px 20px', boxShadow: '0 2px 8px rgba(42,18,6,.05)',
       display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
     }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexShrink: 0 }}>
-        <span style={{ fontSize: 44, fontWeight: 800, color: tone, fontFamily: MANROPE, lineHeight: 1, letterSpacing: '-.02em', fontVariantNumeric: 'tabular-nums' }}>{day}</span>
-        <span style={{ fontSize: 17, fontWeight: 800, color: tone, fontFamily: MANROPE }}>{month}</span>
-      </div>
-      <div style={{ flex: 1, minWidth: 160 }}>
-        <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>
-          {LABELS[m.id] ?? m.label}
+      {/* Day figure, with "N days away" now underneath it rather than
+          under the title — the two numbers (the date, and the countdown to
+          it) belong together; the title is a label for the date, not for
+          the countdown. */}
+      <div style={{ display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+          <span style={{ fontSize: 44, fontWeight: 800, color: tone, fontFamily: MANROPE, lineHeight: 1, letterSpacing: '-.02em', fontVariantNumeric: 'tabular-nums' }}>{day}</span>
+          <span style={{ fontSize: 17, fontWeight: 800, color: tone, fontFamily: MANROPE }}>{month}</span>
         </div>
-        <div style={{ fontSize: 12.5, fontWeight: 700, color: critical ? CRITICAL_RED : SECONDARY, fontFamily: MANROPE, marginTop: 3 }}>
+        <div style={{ fontSize: 12.5, fontWeight: 700, color: critical ? CRITICAL_RED : SECONDARY, fontFamily: MANROPE, marginTop: 4, whiteSpace: 'nowrap' }}>
           {days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : days > 0 ? `${days} days away` : 'Already open'}
         </div>
       </div>
-      {/* §3.1. The link is the hit area, the span is the button. */}
+      {/* Bigger — was 16px, a size below its own card's day figure and its
+          own button's label; it's the thing the card is actually about. */}
+      <div style={{ flex: 1, minWidth: 160, fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>
+        {LABELS[m.id] ?? m.label}
+      </div>
+      {/* §3.1. The link is the hit area, the span is the button.
+          marginLeft: auto pushes it to the row's right edge, and still to
+          the right edge of its OWN line if the row wraps on a narrow phone —
+          it was left-aligned under the title there before. */}
       <a href="https://vote.nz" target="_blank" rel="noopener noreferrer"
-         style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', textDecoration: 'none', flexShrink: 0 }}>
+         style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0 -8px auto', textDecoration: 'none', flexShrink: 0 }}>
         <span style={{
           display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800,
           color: '#fff', background: JADE, borderRadius: 999, padding: '9px 16px', fontFamily: MANROPE, whiteSpace: 'nowrap',

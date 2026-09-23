@@ -84,17 +84,16 @@ export function CommandHero({ today }: { today: string }) {
           2026 general election
         </h1>
 
-        {/* Two cards below the title, before the countdown. The top one is a
-            NAMED milestone (advance voting opening) rather than "whatever's
-            next" — by request, so a reader sees when they can actually go
-            and vote even once enrolling is no longer the next thing to do.
-            The one below it stays dynamic: whichever deadline hasn't passed
-            yet. See next-deadline-card.tsx for why the reasoning and the
-            full timetable stay in KeyDates further down rather than being
-            duplicated here. */}
+        {/* Two cards below the title, before the countdown, in DATE order:
+            whichever deadline hasn't passed yet first (currently 4 Oct,
+            enrolment), then the fixed advance-voting milestone (26 Oct)
+            underneath — was the other way round, which put the later date
+            above the earlier one. See next-deadline-card.tsx for why the
+            reasoning and the full timetable stay in KeyDates further down
+            rather than being duplicated here. */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
-          <MilestoneCard milestoneId="advance-voting-2026" today={today} />
           <NextDeadlineCard today={today} />
+          <MilestoneCard milestoneId="advance-voting-2026" today={today} />
         </div>
 
         {/* One tile. The label does the job the deleted date line was doing
