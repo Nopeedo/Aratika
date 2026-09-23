@@ -9,10 +9,10 @@ whoever (or whatever) does the next page.
 down, what the launch phases are. This file is narrower and more literal: the
 rules, the numbers, and the mistakes already paid for.
 
-Everything below was applied to `/` (homepage), `/bills`, `/policies/[topic]`.
-Nothing below has been applied to: `/parties`, `/parties/[slug]`, `/mps`,
-`/mps/[slug]`, `/map`, `/battlegrounds`, `/elections/2026`, `/learn`,
-`/budget`, `/news`. Those are the work.
+Everything below was applied to `/` (homepage), `/bills`, `/policies/[topic]`,
+and the directory half of `/parties` (§2.14). Nothing below has been applied to:
+`/parties/[slug]`, `/mps`, `/mps/[slug]`, `/map`, `/battlegrounds`,
+`/elections/2026`, `/learn`, `/budget`, `/news`. Those are the work.
 
 ### Extending this document
 
@@ -119,6 +119,13 @@ scrolling, and a scroll whose finger lands anywhere but exactly inside the card
 counted as an outside tap and shut it mid-sentence. A thing you have to read is
 not a menu.
 
+**Why no ring at rest:** the first version carried a 1.5px ring in the accent
+colour all the time, on the reasoning that a control should look like a control.
+On screen it read as two concentric circles, the glyph's own and the border's,
+and at 26px there is not enough room between them for that to look deliberate.
+The fill on open carries the state instead, which is the only moment the state
+matters.
+
 ### 2.2 Pills — `.status-pill` / `.topic-switcher .ap-chip` in `globals.css`
 
 One rule set, shared, so the two rows cannot drift apart:
@@ -134,6 +141,14 @@ white fill, same hue at ~34% on the border. Tapping the lit one clears it. An
 
 Where four pills will not fit one line, squeeze that row only
 (`.bills-status-row` takes `6px 7px` / 12.5px), never the shared rule.
+
+The first attempt at that row shrank everything: the shared phone rule
+(`4px 9px` / 11.5px) still wrapped All, In progress, Now law and Not passed onto
+two lines at 375px, so the labels went down again from there. That fitted and
+was not readable. What actually bought the line was taking the HORIZONTAL
+padding out, 11px to 7px, and putting the type back UP to 12.5px with
+`white-space: nowrap`. The lesson generalises: when four things will not fit,
+take the space between them before you take the size of them.
 
 ### 2.3 Tile — the closed row in any list
 
@@ -152,6 +167,15 @@ Tiles wrap in a grid (`repeat(auto-fill, minmax(min(150px, 100%), 1fr))`, gap
 **Tag and chevron are absolutely positioned on purpose.** In the flex row the
 tag sat 35px in, because that row also has to clear the chevron's padding, so
 it never reached the corner it is meant to occupy.
+
+That took four commits, and the order is the reasoning. The party tag went on
+the debated list first, because that list is one party's bills often as not.
+Then on the tracker, because a reader moving between the two lists found the
+same tile answering "whose bill is this?" in one of them and not the other, and
+§1.4 says the same interaction produces the same shape. Then the chevron moved
+to the bottom-right corner, which was the move that actually freed the top-right
+for the tag. Only then could the tag be pinned there. Pinning it first would
+have put it under the chevron.
 
 ### 2.4 Expanded panel — the open state of any list
 
@@ -177,6 +201,14 @@ loudest thing in the panel for a link most readers will not take.
 (`gridColumn: 1 / -1`) so the row breaks at that tile — not at the foot of the
 grid.
 
+**Matching the frame is not matching.** The first pass copied the container, the
+radius, the shadow and the order of the rows, and it was still wrong: the two
+panels showed different THINGS in those rows. One carried a full summary, the
+other two sentences; one linked out from a signpost, the other inline. The
+second pass moved the content treatment across, `gist()` and all, and that is
+the one that landed. If the instruction is "make these match", copy the
+composition and not the box.
+
 ### 2.5 Journey strip — `src/components/bills/bill-journey.tsx`
 
 Beads on a rail that fills, over one eased 1500ms progress, so the rail reaches
@@ -189,7 +221,18 @@ bead 24px (18px ≤600px) · rail 2px · labels 10.5px (9.5px), max-width 8ch
 
 Labels must be short: at six stages the full names wrapped two lines each and
 the strip ran deeper than the summary above it. Use `Introduced · 1st ·
-Committee · 2nd · 3rd · {outcome}`.
+Committee · 2nd · 3rd · {outcome}`. The tracker's array is literally
+`['Introduced', '1st', 'Committee', '2nd', '3rd']` plus the outcome, and the
+first version of it read "First reading", "Select committee", "Second reading",
+"Third reading", which is what wrapped.
+
+**There were two of these before there was one.** The debated list and the
+tracker each had their own strip, and they animated differently: same idea, two
+easings, two ways of deciding when a bead was lit. Neither was wrong on its own
+page and the difference only showed when a reader met both, which is the
+argument in §1.4. The shared component fills off one 1500ms eased progress and
+derives the lit state from it (`p >= i / (n - 1)`), so the rail and the beads
+cannot drift apart, because they are the same number.
 
 ### 2.6 Signpost link — `src/components/ui/sign-link.tsx`
 
@@ -318,6 +361,123 @@ them.** That holds where a signpost is the way out of a block of content. Here
 the signposts are the content, and there is nothing else in the section for
 them to out-shout.
 
+### 2.11 Filters button — `bills-tracker-54.tsx`
+
+Search, policy area, party, type and stage sat open above the list, with a
+submissions toggle and a Clear under them. On a phone that was five full-height
+rows before the first result: most of a screen spent on questions the reader has
+not asked yet. All of it except search is behind one button now.
+
+```
+button   padding 10px 14px · radius 10 · 13.5px 700 · icon 15 · chevron 14
+at rest  1px BORDER on white, INK
+narrowed 1px JADE on #ecfdf5, JADE text, and the COUNT of active filters
+phone    .bills-filters becomes grid 1fr 1fr, gap 6; search spans both columns;
+         inputs and selects drop to 7px vertical padding and 13px;
+         Clear spans the row at 6px 12px
+```
+
+**Search stays outside the button.** It is the one control a reader arrives
+wanting, and it is also the only one whose state is visible without opening
+anything, since what you typed is sitting in it.
+
+**The closed button carries the count.** Without it, a reader who filters, then
+scrolls into the list, has no way to tell a short list from an empty subject
+except by scrolling back and opening the panel. `narrowed` counts the four
+selects plus the submissions toggle, and search is deliberately not counted
+because it is visible in its own right.
+
+### 2.12 Ballot rows — `src/components/bills/ballot-bills.tsx`
+
+The members' bills lodged in the ballot and waiting on a draw. All 72 of them
+(`MEMBERS_BILLS_META.total`, as at 24 June 2026) existed in the data and were
+shown nowhere, which is the question in §8 that found them.
+
+They are ROWS, not §2.3 tiles, and that is a deliberate divergence. A proposed
+members' bill has a title and an MP and nothing else: no stage, so the §2.5
+strip has nothing to draw; no bill number; and no page on parliament.nz to open.
+A tile that opens into a panel with one fact in it is a worse answer than a row.
+
+```
+VISIBLE = 8 rows, then "Show {hidden} more" / "Show fewer"
+filtered by party through the same §2.2 pills the tracker uses
+```
+
+**It is a section of its own rather than rows in the tracker.** Counting them in
+would make "of 285 bills" wrong, they cannot carry the stage filter, and they
+are not "before the House" in Parliament's own sense. They are also not "not
+passed": they are not yet drawn, which is neither. Keeping them adjacent but
+separate is what lets both counts stay true.
+
+### 2.13 Track control and the account dialog — `src/components/bookmarks/track-with-account.tsx`
+
+Tracking asks for an account, and asks on the page.
+
+```
+control  padding 5px 10px · radius 9 · 12.5px 700 · bookmark glyph 13px
+         at rest  white, 1px BORDER, SECONDARY text, accent on the glyph only
+         tracking #ecfdf5, 1px #a7f3d0, JADE
+hit area button padding 9, margin -9 (§3.1)
+dialog   scrim rgba(20,16,12,.42) · panel max-width 380 · radius 16
+         4px accent top border · max-height 88vh
+```
+
+**The sequence matters and there were four steps.** It started as an invitation
+card at the foot of the page with its own Track button, which meant two controls
+doing the same job (§1.3). Then the card's copy was general rather than about
+the topic you were reading, because an account follows parties and MPs too.
+Then the duplicate Track came out of the card. Then tracking stopped happening
+at all without an account, which is what made the dialog necessary rather than
+decorative.
+
+**Anonymous tracking was removed, not hidden.** `useBookmarks` used to save to
+`localStorage` when signed out, and sync up on sign-in. That felt free and
+promised something it could not keep: a track that lives in one browser cannot
+be told to anyone when a position changes, and it goes with the site data.
+`toggle()` now returns `{ needsAuth: true }` and writes nothing. Leftover
+localStorage from the old behaviour is not SHOWN while signed out, because a
+tick on a control that can notify nobody is the same lie, but it is still read
+on sign-in so nobody's old tracks are lost.
+
+**The tap is remembered.** The entity that raised the dialog is carried through
+the sign-up and toggled the moment a session exists, so the reader gets the
+account and the thing they came for without tapping twice.
+
+### 2.14 Directory pills over a grid — `src/components/parties/party-directory.tsx`
+
+`/parties` had three stacked sections, Governing Coalition, Opposition, and Also
+contesting 2026, each with a heading and a count chip. That is a filter the
+reader operates by scrolling: the eleven parties without seats sat past six
+full-height tiles, three screens down on a phone. One row of §2.2 pills carries
+the same three groups and the same counts, over one §2.3 grid.
+
+```
+pills   All · Governing · Opposition · No seats, neutral, lit = #efece5 on INK
+        tapping the lit one clears back to All
+grid    repeat(auto-fill, minmax(min(150px, 100%), 1fr)), gap 8 → 2 columns at 375px
+card    radius 11 · padding 8px 10px 9px · party light fill · 2px party border
+        name 13px 800, clamped to a FIXED two lines (height 32)
+        seats 20px 800 + 11px label, or "No seats yet"
+```
+
+**The pills are one neutral treatment, not a colour per group.** Party colour
+belongs to parties (§1.6) and it is live in the grid directly underneath.
+Giving Governing a green and Opposition a red would be a second colour system,
+and a reading of the politics this site does not make.
+
+**The name box is a fixed two lines** for the §2.8 reason: "Outdoors & Freedom"
+wraps where "ACT" does not, so the card beside it came out 7px shorter and the
+grid staggered down the page. 83px every card, measured.
+
+**Avatars are photographs only.** Eleven of the seventeen leaders have no photo
+on file, and the initials fallback filled the grid with two-letter discs that
+said nothing the name beside them did not.
+
+**What came off the tile:** the full registered name, which wrapped to two lines
+at 165px and is on the profile anyway, and the per-party "39.8% of the House"
+chip, which encoded the seat count a second time immediately beside it. The
+House-wide split is stated once now, in the bar above the grid.
+
 
 ---
 
@@ -356,6 +516,10 @@ the page never received any of it.
 | Caucus rail, per party | 6 to 40+ MPs tall | **191px fixed**, 4 rows, paged |
 | Homepage bills block | 3 lines of detail | **1 line**, "152 now law · 21 waiting to be drawn" |
 | Bills total | 3 columns of figures | **one 132px circle**, the rest beside it |
+| Bills filter bar | 5 controls always open | **1 button**, count on it when narrowed |
+| /parties page | 5484px, 6.8 screens | **2260px, 2.8 screens** |
+| /parties, first card | 688px down the page | **307px** |
+| /parties tile | 176px, 1 per row | **83px, 2 per row** |
 
 **3.4 Fit-to-width beats shrink-to-fit.** The seats line was scaled to match the
 heading's width; because it ends in the party's name its natural width swings
@@ -374,6 +538,14 @@ reaches ~50px *into* it, and sit "Show N more" on the fade. Name the number:
 "3 more" is a decision a reader can make, "more" is not. Anything the reader has
 opened stays visible even if it sits past the cut.
 
+The first mask was 46px and looked like no mask at all. The grid carries 34px of
+bottom padding while collapsed, which is the room the control sits in, so a 46px
+fade spent 34 of those 46 on empty space and the tiles still cut off square. The
+stops are measured from the bottom of the padded box, not from the last row:
+`#000` to `calc(100% - 86px)`, `rgba(0,0,0,.12)` at `calc(100% - 26px)`,
+transparent at `calc(100% - 10px)`. Symptom to recognise: a fade you can only
+see if you know it is there.
+
 ---
 
 ## 4. Copy rules
@@ -388,6 +560,12 @@ opened stays visible even if it sits past the cut.
   *code* — `name.split('—')[0]` became `split('')`, which splits into
   characters, so "Electoral Commission — 2026 timetable" rendered as "E". Never
   run a copy sweep across delimiters, regexes or generated data files.
+  A fourth turned up a day later on /parties, where `54th Parliament{TOTAL_SEATS}
+  seats total` had been `54th Parliament — {TOTAL_SEATS} seats total` and was
+  rendering as "54TH PARLIAMENT123 SEATS TOTAL". It survived because the sweep
+  ran over JSX text where the dash was the only separator between a label and an
+  interpolated value. After a sweep, grep the diff for a `}` or `{` sitting
+  directly against a word.
 - **Headings match their peers.** Two sections on one page are the same size
   (24px here); a smaller one reads as a caption on the larger.
 - **Say the date on anything that ages.** "as at 24 June 2026", plus a link to
@@ -456,6 +634,41 @@ was stuck in a 191px window. On phones `overflow-y` is turned off in
 `globals.css` (`.mp-rail`, under 767px) and the chevrons are the only way to
 page. That has to be CSS: an inline `overflow` would outrank the media query.
 
+**5.12 A thing that hides on scroll stays hidden after a jump.** Symptom: the
+floating topic pill disappeared correctly at the coverage table, then never came
+back for the rest of the session, including on the next topic. It was driven by
+a second IntersectionObserver watching the table. An observer reports CHANGES in
+intersection, and "above the viewport" and "below the viewport" are the same
+non-intersecting state: jump between them, which is what a topic switch landing
+at a new scroll position does, and no callback fires at all, so the flag keeps
+whatever it had. Reading `getBoundingClientRect().top <= innerHeight` on scroll
+always gives the right answer. rAF-throttled and `{ passive: true }`, and it
+measures once a frame at most. The observer on the header pill stayed, because
+that one only ever crosses.
+
+**5.13 An invisible hit area can make a container scrollable.** Symptom: a table
+that fits its box still shows a scrollbar and still swipes about 7px. The §3.1
+pattern pads a button out to 44px and pulls the margin back, which fixes the
+LAYOUT but not the scroll width: the padded box still overhangs, and a container
+with `overflow-x: auto` counts it. The pager sitting at the right edge of the
+coverage band overhung by 7px exactly. Fix is padding on the cell
+(`padding-right: 14px`) so the hit box ends inside the container, not a change
+to the button.
+
+**5.14 A `useMemo` filter needs every derived value in its deps.** Symptom: a
+filter clears in the UI, the banner goes, and the list stays filtered. The
+tracker's topic filter is a `Set` built in its own memo; the filtering memo used
+it but did not list it, so clearing the topic rebuilt the Set and never re-ran
+the filter. It is the ordinary exhaustive-deps warning, and it is worth naming
+because the symptom looks like a state bug rather than a dependency one.
+
+**5.15 A shared component's phone sizing can live in one caller.** Symptom: the
+same component is correctly sized on a phone on one page and desktop-sized on
+another. `bill-journey.tsx` ships no CSS of its own; the 18px bead and 9.5px
+label live in `defining-bills.tsx`'s style block. On /bills that works by
+accident, because both components are on the page. Anywhere else the journey
+renders at desktop sizes. This is §3.2 in its other form: shipping the CSS with
+A component is not the same as shipping it with THE component.
 
 ---
 
@@ -506,6 +719,33 @@ A checklist, in the order that worked:
   holds the current caucus. National reads 48 in the arch and 49 in the
   directory, because the Port Waikato by-election added a seat in November
   2023. The (i) explains it. Nothing reconciles it.
+- §2.12 diverges from §2.3 on purpose: the ballot bills are rows rather than
+  tiles, because a proposed members' bill has a title and an MP and nothing
+  else, so a tile that opens would open onto one fact. Recorded here rather
+  than loosened in §2.3, which still means tiles for anything with a status and
+  a detail to show.
+- `bill-journey.tsx` has no CSS of its own and gets its phone sizing from
+  `defining-bills.tsx` (see §5.15). Correct on /bills by accident, wrong
+  anywhere else the strip is used.
+- Economy on /policies/[topic] still takes the whole "Work & social" bill
+  category, which is employment, wages, ACC, welfare, superannuation, privacy
+  and consumer law. Immigration was narrowed to a title match for exactly this
+  reason and Economy was left, on the argument that employment and wages ARE
+  economic policy. Privacy and consumer credit are the ones that do not belong.
+- 98 of the 283 tracked bills are category "Other" and therefore appear under no
+  topic at all. The categoriser is a title keyword list in
+  `scripts/build-bills-54.mjs`, so fixing it is a data rebuild.
+- Where Supabase requires email confirmation, sign-up returns no session, so the
+  track a reader tapped cannot be saved yet. The dialog says so and asks them to
+  tap Track again after confirming. It is honest and it is still two steps.
+- `src/components/parties/party-tile.tsx` has no importers since §2.14 replaced
+  it. It holds `PartyTile`, `PartyTileGrid`, `PlainPartyTile` and
+  `TileGroupHeading`. Left in the tree rather than deleted while other sessions
+  are working in it, which means an orphan that looks like §2.3 is sitting there
+  to be picked up by mistake.
+- `/parties/[slug]` is untouched. Measured at 375x812 before anything: 8514px,
+  10.5 screens; the party switcher takes 311px before the party's own name;
+  "Where they stand" is 2997px and arrives expanded, against §1.1.
 
 
 ---
@@ -532,6 +772,13 @@ understanding what they are for.
 The instinct is consistently **fewer things, flatter**. When a group exists to
 name a grouping rather than a destination, dissolve it. When a line explains
 something visible directly below it, delete the line.
+
+Both nav groups went for the same reason, one after the other. "The Record" held
+Bills tracker, Budget 2026 and Parliament; "Your Electorate" held Electorate
+map, Battlegrounds and MPs directory. In both cases the label named the grouping
+and not the destinations, and every item inside cost an extra tap. Six pages
+that were two taps deep are one tap deep now. The test for a group: does its
+label name somewhere a reader could want to go? "The Record" does not.
 
 ### Put explanation behind an (i)
 
@@ -624,14 +871,54 @@ and go measure.**
 > "What does 'in progress' mean? Does that mean it's already passed but now
 > about to be applied?"
 
+> "How does this section relate to the different issues?"
+
 These are the most valuable messages in the whole day. Each exposed something
 the design was hiding: 72 ballot bills that existed in the data and were shown
 nowhere; three unsourced figures on the one bill whose subject is a single
 party; ~200 bills with no summary and no acknowledgement of it; and a status
 label that could be read as the opposite of what it means.
 
+The last one was asked about "What's been legislated this term" on a topic page
+and the honest answer was that it did not relate to the issue much at all. Bills
+were matched to topics through one broad keyword category each, so Immigration
+was showing all 16 bills in "Work & social", including holidays and consumer
+credit, under a sentence that read "this Parliament has 16 bills passed into
+law" on immigration. Three of them were immigration bills. That is a false
+claim, not a loose filter, and it only surfaced because somebody asked how the
+section worked.
+
 **When the reader asks "where did this come from?", the answer is a design
 problem, not a support question.**
+
+### Ask before you rebuild
+
+> "stop what are you redesigning??"
+
+Sent four commits into a redesign of /parties that had been asked for. The brief
+was real and the work was the work; what was missing was showing anything before
+doing all of it. A page that arrives finished cannot be steered, and the reader
+who asked for it has to either accept it or unpick it. Compose the first screen,
+show it, then carry on. Cheap to do, and it is the difference between a redesign
+and a surprise.
+
+### Tracking, and what a free thing is allowed to promise
+
+> "I need that when I tap "Track immigration changes" and I'm not logged in, or
+> for any sort of tracking when I'm not logged in, it always pulls up "Create a
+> free account." That doesn't move from the page. Does that make sense? When I
+> create that account, it automatically saves the track, and it has that track
+> with a tracking tick."
+> "Tracking should only happen if you have any cart." → "an account"
+> "instead of having this box specific to one issue, I want it to be more general"
+
+The first message is a complete specification, including the part that is easy
+to skip: the tick has to be on when they come back, without a second tap. The
+second one is a voice-to-text slip and the correction is one word, which is
+worth keeping because the rule it lands on is the strict one: not "prompt for an
+account", but "do not track at all without one". The anonymous localStorage path
+that existed was the comfortable answer and it was the wrong one, because a
+track that cannot notify anybody is not tracking.
 
 ### Compose for the phone, not for the pane
 
