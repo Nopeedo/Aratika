@@ -455,7 +455,11 @@ function BillCard({ b, open, onToggle, focused, party }: { b: Bill54; open: bool
  * whole House" has necessarily been through its first reading and select
  * committee, and the strip can say so honestly without inventing dates.
  */
-const JOURNEY = ['Introduced', 'First reading', 'Select committee', 'Second reading', 'Third reading'] as const
+/* Short labels on the strip: at six stages the full names ("First reading",
+   "Select committee") wrapped to two lines each on a phone and the strip ran
+   deeper than the summary above it. Every stage is still here — the ordinals
+   carry the readings and "Committee" is unambiguous next to them. */
+const JOURNEY = ['Introduced', '1st', 'Committee', '2nd', '3rd'] as const
 /** How far a bill's reported stage places it along JOURNEY. */
 function reachedIndex(status: string): number {
   const s = status.toLowerCase()
