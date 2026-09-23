@@ -14,6 +14,7 @@ import { ExternalLink, Landmark } from 'lucide-react'
 import { BillsTracker54 } from '@/components/bills/bills-tracker-54'
 import { DefiningBills } from '@/components/bills/defining-bills'
 import { AboutBillsTracker, AboutAllBills } from '@/components/bills/about-bills-tracker'
+import { BallotBills } from '@/components/bills/ballot-bills'
 import { BILLS_54_META } from '@/constants/bills-54'
 import { getApprovedBills } from '@/lib/bills/live'
 import { memberPartyMap } from '@/lib/bills/member-party'
@@ -122,6 +123,11 @@ export default async function BillsPage({ searchParams }: { searchParams: Promis
         </div>
 
         <BillsTracker54 readerSlugs={readerSlugs} readerSummaries={readerSummaries} memberParty={memberParty} initialParty={initialParty} initialBill={initialBill} initialTopic={initialTopic} />
+
+        {/* The other half of what backbenchers are doing: bills lodged and
+            waiting on a draw. Below the tracker because they are not in it —
+            they have not been introduced. */}
+        <BallotBills />
 
         <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 18 }}>
           Source: {BILLS_54_META.sourceLabel}, 54th Parliament, as at {BILLS_54_META.asOf}.{' '}
