@@ -1,18 +1,25 @@
 /**
- * NextDeadlineCard — the single next electoral deadline, as its own card.
+ * MilestoneCard / NextDeadlineCard — a single electoral date, as its own card.
  *
  * Split out of key-dates.tsx by request, to move to the very top of the
- * Election Centre — above the headline, the first thing on the page — once
- * it became clear this was the card people actually wanted to see first.
+ * Election Centre — under the headline, before the countdown — once it
+ * became clear this was the card people actually wanted to see first.
  * KeyDates (further down) keeps the reasoning, the source, and the full
  * four-date timetable behind "Show all key dates"; this file keeps only the
- * one fact everyone needs before anything else: the next date, and how many
- * days there are to it.
+ * fact itself: a date, what it means, and how many days there are to it.
  *
  * The constants live here and KeyDates imports them, rather than each file
  * keeping its own copy, so "Enrol by here, no special vote" cannot say one
- * thing on the card at the top of the page and something else in the full
- * grid four screens later (§1.3, one thing in one place).
+ * thing on a card and something else in the full grid four screens later
+ * (§1.3, one thing in one place).
+ *
+ * TWO CARDS, ONE RENDERER. NextDeadlineCard picks whichever milestone the
+ * reader hasn't already missed; MilestoneCard renders one NAMED milestone
+ * regardless of today's date, for a card that should always show a specific
+ * date rather than "whatever's next" — advance voting opening, by request,
+ * stacked above the dynamic one. Same shape, same source, so the two cards
+ * can never disagree about when advance voting opens even though one of
+ * them states it unconditionally and the other only in passing.
  */
 
 import { ArrowUpRight } from 'lucide-react'
@@ -51,6 +58,18 @@ export const LABELS: Record<string, string> = {
   'election-day-2026': 'Election day',
 }
 
+/** The button each card ends on. Enrolment milestones point at enrolling;
+ *  the two voting milestones point at finding a place to vote instead —
+ *  "Enrol or check your details" on the advance-voting card answered a
+ *  question the card wasn't asking. Same destination, vote.nz, which
+ *  covers both. */
+const CTA: Record<string, string> = {
+  'writ-day-2026': 'Enrol or check your details',
+  'enrolment-closes-2026': 'Enrol or check your details',
+  'advance-voting-2026': 'Find a voting place',
+  'election-day-2026': 'Find a voting place',
+}
+
 export function nextMilestone(today: string): ElectoralMilestone | undefined {
   const items = SHOWN
     .map((id) => ELECTORAL_CALENDAR.find((m) => m.id === id))
@@ -61,14 +80,25 @@ export function nextMilestone(today: string): ElectoralMilestone | undefined {
   return items.find((m) => m.date >= today) ?? items[items.length - 1]
 }
 
+/** One named milestone, regardless of today's date. */
+export function MilestoneCard({ milestoneId, today }: { milestoneId: string; today: string }) {
+  const m = ELECTORAL_CALENDAR.find((x) => x.id === milestoneId)
+  if (!m) return null
+  return <DateCard milestone={m} today={today} />
+}
+
+/** Whichever milestone the reader hasn't already missed. */
 export function NextDeadlineCard({ today }: { today: string }) {
   const next = nextMilestone(today)
   if (!next) return null
+  return <DateCard milestone={next} today={today} />
+}
 
-  const critical = next.id === CRITICAL
+function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; today: string }) {
+  const critical = m.id === CRITICAL
   const tone = critical ? CRITICAL_RED : INK
-  const { day, month } = fmt(next.date)
-  const days = daysUntil(today, next.date)
+  const { day, month } = fmt(m.date)
+  const days = daysUntil(today, m.date)
 
   return (
     <div style={{
@@ -84,10 +114,10 @@ export function NextDeadlineCard({ today }: { today: string }) {
       </div>
       <div style={{ flex: 1, minWidth: 160 }}>
         <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>
-          {LABELS[next.id] ?? next.label}
+          {LABELS[m.id] ?? m.label}
         </div>
         <div style={{ fontSize: 12.5, fontWeight: 700, color: critical ? CRITICAL_RED : SECONDARY, fontFamily: MANROPE, marginTop: 3 }}>
-          {days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : `${days} days away`}
+          {days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : days > 0 ? `${days} days away` : 'Already open'}
         </div>
       </div>
       {/* §3.1. The link is the hit area, the span is the button. */}
@@ -97,7 +127,7 @@ export function NextDeadlineCard({ today }: { today: string }) {
           display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800,
           color: '#fff', background: JADE, borderRadius: 999, padding: '9px 16px', fontFamily: MANROPE, whiteSpace: 'nowrap',
         }}>
-          Enrol or check your details <ArrowUpRight style={{ width: 13, height: 13 }} />
+          {CTA[m.id] ?? 'Find out more'} <ArrowUpRight style={{ width: 13, height: 13 }} />
         </span>
       </a>
     </div>

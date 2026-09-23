@@ -36,7 +36,7 @@
 
 import { useEffect, useState } from 'react'
 import { ELECTION_SECTIONS, HERO_JUMP_ID } from '@/constants/election-sections'
-import { NextDeadlineCard } from './next-deadline-card'
+import { MilestoneCard, NextDeadlineCard } from './next-deadline-card'
 import { MANROPE } from '@/constants/theme'
 
 // Shared with the homepage flip counter (days-flip-countdown.tsx) so the two
@@ -84,12 +84,16 @@ export function CommandHero({ today }: { today: string }) {
           2026 general election
         </h1>
 
-        {/* The single next-deadline card, below the title — the first thing
-            under the headline, before the countdown. See
-            next-deadline-card.tsx for why the reasoning and the full
-            timetable stay in KeyDates further down rather than being
+        {/* Two cards below the title, before the countdown. The top one is a
+            NAMED milestone (advance voting opening) rather than "whatever's
+            next" — by request, so a reader sees when they can actually go
+            and vote even once enrolling is no longer the next thing to do.
+            The one below it stays dynamic: whichever deadline hasn't passed
+            yet. See next-deadline-card.tsx for why the reasoning and the
+            full timetable stay in KeyDates further down rather than being
             duplicated here. */}
-        <div style={{ marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
+          <MilestoneCard milestoneId="advance-voting-2026" today={today} />
           <NextDeadlineCard today={today} />
         </div>
 
