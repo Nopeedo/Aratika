@@ -17,7 +17,7 @@ import { ArrowRight, Landmark, Newspaper, PlayCircle, ScrollText } from 'lucide-
 import { Avatar } from '@/components/ui/avatar'
 import { usePartyCycle } from '@/components/homepage/party-cycle'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
-import { PARTY_COLORS, PARTY_NAMES } from '@/constants/parties'
+import { PARTY_NAMES } from '@/constants/parties'
 import { BillsInfoButton } from '@/components/homepage/bills-info-button'
 import { SignLink } from '@/components/homepage/compare-sign-link'
 import { VideoLightbox, type PlayingVideo } from '@/components/homepage/video-lightbox'
@@ -492,16 +492,12 @@ function BillsRow({ p }: { p: TileParty }) {
           per party, which was the last 105px of page shift left after the empty
           state was squared away. A grid of three keeps one row for everyone, and
           the blanks are trailing so the real figures stay left-aligned. */}
-      {/* The figures sit in a framed rectangle, spanning the column, in the
-          same party-coloured frame the chamber arch above them wears — so the
-          two blocks read as one section rather than a chart and some loose
-          numbers. The "x of y are now law" line goes inside it: it is a fact
-          about these figures, not a note after them. */}
+      {/* No frame and no fill, by request: the figures sit straight on the
+          page's ground the way the rest of the homepage does. The heading,
+          the numbers and the "x of y are now law" line still group by
+          proximity, which is what the box was doing for them. */}
       <div style={{
-        border: `4px solid ${PARTY_COLORS[p.slug as keyof typeof PARTY_COLORS]?.bg ?? p.color}`,
-        background: PARTY_COLORS[p.slug as keyof typeof PARTY_COLORS]?.light ?? '#fff',
-        borderRadius: 16, padding: '16px 14px', marginBottom: 12,
-        transition: 'border-color .25s ease-in-out, background-color .25s ease-in-out',
+        padding: '4px 0 0', marginBottom: 12,
         textAlign: 'center',
       }}>
         {/* Heading inside the box now, in full black, with the (i) in the
