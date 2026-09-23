@@ -555,6 +555,8 @@ the page never received any of it.
 | /parties page | 5484px, 6.8 screens | **2260px, 2.8 screens** |
 | /parties, first card | 688px down the page | **307px** |
 | /parties tile | 176px, 1 per row | **83px, 2 per row** |
+| Election Centre, Key Dates on arrival | 4 cards, ~145px, equal weight | **1 card**, the next live deadline, rest behind a tap |
+| Election Centre, hero jump nav | 6 pills, ~40px row | **5 text links**, Key Dates dropped (it is the next section) |
 
 **3.4 Fit-to-width beats shrink-to-fit.** The seats line was scaled to match the
 heading's width; because it ends in the party's name its natural width swings
@@ -748,6 +750,22 @@ page. A block that is full-bleed on a phone is a block of some other width on a
 desktop, and which one is a decision, not a consequence. Check three widths:
 375, 1280, and 1920. At 1920 the test is whether every block on the page starts
 and ends on the same two vertical lines.
+
+**5.20 A prominent CTA and a duplicate deadline are the same request read two
+ways.** Asked to give the Election Centre's hero a strong single call to
+action, the obvious read was a card in the hero itself: "Enrolment closes
+25 Oct" with an enrol button. That is exactly the hero subline §1 of this file
+already records removing, because KeyDates — the very next section, no gap —
+states the same date from the same file. Adding it back to satisfy the CTA
+request would have restored the duplicate the earlier commit paid to remove.
+The request and the existing rule were not in conflict; the literal reading of
+the request was. Read as "the reader should meet one unmistakable deadline
+card early," not "put a date card in the hero," it resolves the same way §1.3
+already points: collapse KeyDates itself down to the one live milestone
+(§3.3's row below), so the section immediately under the hero *is* the CTA,
+and the hero's own job shrinks to getting out of its way. When a new request
+would recreate something already deleted for a stated reason, look for the
+version of the request that doesn't.
 
 ---
 
@@ -1083,3 +1101,23 @@ two things rather than adjusting one until it looks right.**
 Two of these ended back at an earlier version and one ended part way: the
 signposts kept the gradient at 35% and did not keep the fade to nothing. Keep
 each step recoverable, and read "as a test" as meaning exactly that.
+
+### A page that doesn't follow the redesign, even after it's been redesigned
+
+> "this page does not have flow nor follows design changes I want you to
+> discuss with me making this page way more user and flow easy including
+> sections design everything based of MD design lets talk"
+
+Said about the Election Centre, which had already had one redesign pass
+(§3.3's 11.0-to-5.9-screens row). The instinct to check was "what does the
+spec actually say I'm still missing," not "redo the page" — the page was
+observing §1.1 and §2.4 correctly throughout; what it was missing was closer
+to the surface: a hero with six equal-weight pills and no single next step, a
+Key Dates section that opened fully expanded against its own page's rule, and
+two screens of flat cream before any colour appears. **A page can follow every
+numbered rule in this file and still not have this file's flow**, because flow
+is about which section gets the reader's first tap, and no rule here states
+that directly — §6's checklist doesn't have a step for it. Worth adding one
+next time this file gets a real edit: after §6.5 ("match the shapes"), ask
+what a first-time reader's ONE most useful action is, and check that the page
+gets them there before it shows them anything else.
