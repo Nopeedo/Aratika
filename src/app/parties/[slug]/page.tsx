@@ -158,7 +158,10 @@ export default async function PartyProfilePage(
       {/* No background of its own — it sits on the page wash above, so there is
           no seam where the header ends. */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ height: 6, background: party.color }} />
+        {/* A 6px bar of the party's colour ran here, directly under the
+            navbar. It read as a rule across the top of the site rather than
+            as part of this page, and the page wash already carries the
+            party's colour. */}
 
         <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 36px' }}>
 
