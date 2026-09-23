@@ -3,8 +3,8 @@ import { isEnabled } from '@/constants/features'
 // ─── Primary navigation — election-first pillars ──────────────────────────────
 // The nav is deliberately lean: a voter should see the whole journey — compare
 // (Parties/Policies), locate (Your Electorate), hold to
-// account (The Record), stay current (Latest), and understand (Learn).
-// Grouped pillars open a dropdown of their sub-pages. Everything else (MPs
+// account (The Record), stay current (News/Video), and understand (Learn).
+// Every item is a direct link: the menu has no dropdowns left. Everything else (MPs
 // directory, policies-by-topic, glossary, take-action, dashboard) lives in the
 // footer or nested deeper — gated/demoted, never deleted.
 
@@ -59,13 +59,12 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Bills tracker', href: '/bills', description: 'Bills before the House: plain-language', feature: 'bills' },
   { label: 'Budget 2026', href: '/budget', description: 'Where the Government is spending', feature: 'budget' },
   { label: 'Parliament', href: '/parliament', description: 'Current seats, cabinet and snapshot', feature: 'parliament' },
-  {
-    label: 'Latest', description: 'Live election news & video', feature: 'news',
-    children: [
-      { label: 'News', href: '/news', description: 'Live election news: every party, every issue', feature: 'news' },
-      { label: 'Video', href: '/news#video', description: 'Leaders & the press', feature: 'news' },
-    ],
-  },
+  // "Latest" is gone as a group, the last one in the menu, for the same reason
+  // The Record and Your Electorate went: the label named the grouping rather
+  // than either destination, and both of them cost a tap behind a dropdown
+  // that held exactly two things.
+  { label: 'News', href: '/news', description: 'Live election news: every party, every issue', feature: 'news' },
+  { label: 'Video', href: '/news#video', description: 'Leaders & the press', feature: 'news' },
   { label: 'Learn', href: '/learn', description: 'How voting and Parliament work, beginner to expert', feature: 'learn' },
 ]
 
