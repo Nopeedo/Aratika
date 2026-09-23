@@ -89,7 +89,8 @@ export function ClosestRaces({ races, year }: { races: ClosestRace[]; year: numb
 
           auto-FIT, not auto-fill: five tiles in a six-track row left one
           dead track hanging off the end at desktop widths. */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 8 }}>
+      <style dangerouslySetInnerHTML={{ __html: GRID_CSS }} />
+      <div className="cr-grid" style={{ display: 'grid', gap: 8 }}>
         {races.map((r) => {
           const on = r.slug === active
           const ink = tierInk(r.tierColor)
@@ -227,3 +228,19 @@ function rankPhrase(n: number): string {
   const suffix = s[(v - 20) % 10] ?? s[v] ?? s[0]
   return ` the ${n}${suffix} closest result`
 }
+
+/* A stated column count, not auto-fit. The section is the five closest races
+   by name and the caller slices to five, so the count is known.
+
+   auto-fit was collapsing its empty sixth track correctly, right up until a
+   §2.4 panel opened: the panel spans 1 / -1, so every track is occupied, the
+   collapsed one comes back, and the five tiles snap from 195px to 161px while
+   the reader is looking at them. auto-fill does not have that failure and has
+   the other one, a dead track on the end of every row. Naming the count has
+   neither.
+
+   Two at 375px, which is what the phone already showed. */
+const GRID_CSS = `
+.cr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 768px) { .cr-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+`
