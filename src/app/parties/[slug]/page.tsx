@@ -194,16 +194,34 @@ export default async function PartyProfilePage(
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 28, flexWrap: 'wrap' }}>
             {/* Left: identity */}
             <div style={{ flex: 1, minWidth: 280 }}>
-              {/* The party's own colour, not INK: on a page whose only other
-                  colour is a 12% wash, the name was the one thing that could
-                  carry it and was the same brown-black on all seventeen.
-                  readableOnWhite darkens only the colours that need it, so
-                  ACT and TOP stay themselves rather than turning grey. */}
+              {/* The party as a pill, the same object the issue is on
+                  /policies/[topic]: white ground, a thick border of its own
+                  colour, a dot instead of that page's topic icon, and the
+                  name set in the colour rather than INK so Green reads as
+                  green. The switcher above picked it in a small pill; this is
+                  the large clone that says "this one", the same language the
+                  comparison page uses.
+
+                  Long names take a smaller size so the pill stays on one
+                  line at 375px instead of breaking in two: "Democracy &
+                  Government" set the 16-character threshold over there, and
+                  "Te Pāti Māori" and "Outdoors & Freedom" are why it is
+                  needed here. */}
               <h2 style={{
-                fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em',
+                display: 'inline-flex', alignItems: 'center', gap: 12,
+                padding: '8px 20px 8px 17px', borderRadius: 999,
+                border: `3px solid ${tint(party.color, 0.55)}`,
+                background: '#fff',
+                fontSize: party.name.length > 16 ? 'clamp(17px, 4.9vw, 30px)' : 'clamp(24px, 6.5vw, 34px)',
+                fontWeight: 800, letterSpacing: '-.02em',
                 color: readableOnWhite(party.color),
-                fontFamily: MANROPE, lineHeight: 1.05, margin: '0 0 4px',
+                fontFamily: MANROPE, lineHeight: 1.15, margin: '0 0 8px',
+                maxWidth: '100%', whiteSpace: 'nowrap',
               }}>
+                <span aria-hidden style={{
+                  width: 12, height: 12, borderRadius: '50%', flexShrink: 0,
+                  background: party.color,
+                }} />
                 {party.name}
               </h2>
               <div style={{ fontSize: 15, fontWeight: 500, color: TERTIARY, fontFamily: MANROPE, marginBottom: 16 }}>
