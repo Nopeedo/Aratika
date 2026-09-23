@@ -395,8 +395,42 @@ export default async function PartyProfilePage(
             />
           </CollapsibleCard>
 
-          {/* Legislative record this term */}
-          <PartyLegislativeRecord party={slug as PartySlug} partyName={party.name} />
+          {/* The 2023 election: how the seats were won, then what the party
+              has done with them. "At a glance" used to be a sidebar card of
+              its own, five rows and a bar; it is the same numbers, in the
+              section that is about the term those numbers bought. Founded is
+              gone from it, the one row that had nothing to do with 2023. */}
+          <PartyLegislativeRecord
+            party={slug as PartySlug}
+            partyName={party.name}
+            glance={
+              <div style={{ marginBottom: 18 }}>
+                {/* How the seats were won, before the numbers that describe
+                    them — electorate vs list is the one thing about a party's
+                    seats that a row of digits doesn't show. */}
+                {seats > 0 && (
+                  <div style={{ marginBottom: 14 }}>
+                    <div style={{ display: 'flex', height: 10, borderRadius: 999, overflow: 'hidden', background: tint(party.color, 0.12), marginBottom: 8 }}>
+                      {party.electorateSeats > 0 && <div style={{ width: `${(party.electorateSeats / seats) * 100}%`, background: party.color }} />}
+                      {party.listSeats > 0 && <div style={{ width: `${(party.listSeats / seats) * 100}%`, background: tint(party.color, 0.42) }} />}
+                    </div>
+                    <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                        <span style={{ width: 8, height: 8, borderRadius: 2, background: party.color }} /> {party.electorateSeats} electorate
+                      </span>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                        <span style={{ width: 8, height: 8, borderRadius: 2, background: tint(party.color, 0.42) }} /> {party.listSeats} list
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <GlanceRow label="Total seats"      value={String(seats)} />
+                <GlanceRow label="Electorate seats" value={String(party.electorateSeats)} />
+                <GlanceRow label="List seats"       value={String(party.listSeats)} />
+                <GlanceRow label="Share of House"   value={`${seatShare}%`} last />
+              </div>
+            }
+          />
         </div>
 
         {/* ── Sidebar ── */}
@@ -413,37 +447,6 @@ export default async function PartyProfilePage(
                 <LeaderRow name={party.coLeader} title={party.coLeaderTitle ?? 'Co-leader'} party={slug as PartySlug} photo={coLeaderSlug ? MP_PROFILES[coLeaderSlug].photo : undefined} href={coLeaderSlug ? `/mps/${coLeaderSlug}` : null} />
               </div>
             )}
-          </Card>
-
-          {/* At a glance */}
-          <Card accent={party.color} style={{ padding: '20px 22px' }}>
-            <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 8 }}>
-              At a glance
-            </div>
-            {/* How the seats were won, before the numbers that describe them —
-                electorate vs list is the one thing about a party's seats that a
-                row of digits doesn't show. */}
-            {seats > 0 && (
-              <div style={{ marginBottom: 14 }}>
-                <div style={{ display: 'flex', height: 10, borderRadius: 999, overflow: 'hidden', background: tint(party.color, 0.12), marginBottom: 8 }}>
-                  {party.electorateSeats > 0 && <div style={{ width: `${(party.electorateSeats / seats) * 100}%`, background: party.color }} />}
-                  {party.listSeats > 0 && <div style={{ width: `${(party.listSeats / seats) * 100}%`, background: tint(party.color, 0.42) }} />}
-                </div>
-                <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE }}>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                    <span style={{ width: 8, height: 8, borderRadius: 2, background: party.color }} /> {party.electorateSeats} electorate
-                  </span>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-                    <span style={{ width: 8, height: 8, borderRadius: 2, background: tint(party.color, 0.42) }} /> {party.listSeats} list
-                  </span>
-                </div>
-              </div>
-            )}
-            <GlanceRow label="Total seats"     value={String(seats)} />
-            <GlanceRow label="Electorate seats" value={String(party.electorateSeats)} />
-            <GlanceRow label="List seats"       value={String(party.listSeats)} />
-            <GlanceRow label="Share of House"   value={`${seatShare}%`} />
-            <GlanceRow label="Founded"          value={String(party.founded)} last />
           </Card>
 
         </div>

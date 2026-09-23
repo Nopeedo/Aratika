@@ -29,10 +29,19 @@ function Stat({ value, label, accent }: { value: number; label: string; accent?:
   )
 }
 
-export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug; partyName: string }) {
+export function PartyLegislativeRecord({ party, partyName, glance }: {
+  party: PartySlug
+  partyName: string
+  /** The seat breakdown, rendered by the page and shown above the record.
+   *  It was a sidebar card of its own until it moved in here. */
+  glance?: React.ReactNode
+}) {
   const r = legislativeRecordFor(party)
   const nothing = r.govBillsLed === 0 && r.membersInBallot === 0 && r.membersPassed === 0
-  if (nothing) return null
+  // The seat breakdown is worth a card on its own, so a party with no bills
+  // to its name still gets this section rather than losing its numbers with
+  // the record they were sitting above.
+  if (nothing && !glance) return null
   const trackerCount = TRACKER_COUNTS[party] ?? 0
   const hasTrackerBills = trackerCount > 0
   // CollapsibleCard draws the party-colour frame from this, matching the cards
@@ -43,8 +52,16 @@ export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug;
     // Closed by default like the four sections above it: this is the fifth
     // rectangle in that column and has to behave as one. The dateline moves
     // inside, since a closed card shows its title and nothing else.
-    <CollapsibleCard title="Legislative record this term" icon={<Gavel style={{ width: 15, height: 15 }} />} accent={accent}>
-      <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '-4px 0 14px' }}>54th Parliament · as at {r.asOf}</p>
+    <CollapsibleCard title="2023 election" icon={<Gavel style={{ width: 15, height: 15 }} />} accent={accent}>
+      {glance}
+      {/* The record keeps its own heading now that the card is named for the
+          election: two different things live in here, the seats won and what
+          was done with them. A party with no bills shows the seats alone. */}
+      {!nothing && (
+      <>
+      <p style={{ fontSize: 12.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, margin: '0 0 10px' }}>
+        Legislative record this term · 54th Parliament, as at {r.asOf}
+      </p>
 
       {r.governing ? (
         <>
@@ -101,6 +118,8 @@ export function PartyLegislativeRecord({ party, partyName }: { party: PartySlug;
           Source: NZ Parliament, Bills <ExternalLink style={{ width: 12, height: 12 }} />
         </a>
       </div>
+      </>
+      )}
     </CollapsibleCard>
   )
 }
