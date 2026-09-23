@@ -35,7 +35,10 @@ export const NAV_ITEMS: NavItem[] = [
   // policy grid, and the Election Centre carries the same card in its "how
   // your vote works" section. The page itself is untouched and stays linked
   // from the footer ("Find what matters to you").
-  { label: 'Parties', href: '/parties', description: 'Every party, their leaders and policies', feature: 'parties' },
+  // "Party Profiles", matching the h1 on the page it opens. A label that
+  // names a section rather than the destination makes the reader work out
+  // they have arrived in the right place.
+  { label: 'Party Profiles', href: '/parties', description: 'Every party, their leaders and policies', feature: 'parties' },
   // The policy hub reached the main nav late. It was linked only from the
   // footer and a few in-page cards, which is also where topic TRACKING lives —
   // the follow button for an issue is on /policies/[topic] and nowhere else. Two
