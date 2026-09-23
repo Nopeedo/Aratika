@@ -34,6 +34,8 @@ const KNOWN: { prefix: string; label: string }[] = [
   { prefix: '/battlegrounds',  label: 'Battlegrounds' },
   { prefix: '/compare',        label: 'Compare parties' },
   { prefix: '/policies',       label: 'the issues' },
+  // /parties itself redirects to the first party now, so this prefix only
+  // ever matches a real profile page, which is what the label already said.
   { prefix: '/parties',        label: 'parties' },
   { prefix: '/elections',      label: 'elections' },
   { prefix: '/dashboard',      label: 'your dashboard' },

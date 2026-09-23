@@ -82,7 +82,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // ── People & parties ──────────────────────────────────────────────────────
   if (isEnabled('parties')) {
-    entries.push(entry('/parties', 0.9, 'weekly'))
+    // /parties is not listed: it now redirects to the first party's profile,
+    // and a sitemap must not list a URL that redirects.
+    //   (was: entries.push(entry('/parties', 0.9, 'weekly')))
     for (const slug of [...PARTY_DIRECTORY_ORDER, ...PROFILED_MINOR_PARTIES]) {
       entries.push(entry(`/parties/${slug}`, 0.8, 'weekly'))
     }
