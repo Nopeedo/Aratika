@@ -99,7 +99,7 @@ function seatOrder(byParty: Record<string, number>): PartySlug[] {
 }
 
 export function SeatChamber({
-  elected, electedTotal, electedYear, electedSlug, projection, projectionTotal, asAt, home = false, heading, frameColor, frameLight, highlight,
+  elected, electedTotal, electedYear, electedSlug, projection, projectionTotal, asAt, home = false, heading, frameColor, frameLight, highlight, onPickParty,
 }: {
   elected: PartyResult[]
   electedTotal: number
@@ -125,6 +125,13 @@ export function SeatChamber({
   /** Light up only this party's seats; the rest fade back. Follows the
    *  homepage tiles, so the arch answers "which of these are theirs?". */
   highlight?: string
+  /**
+   * Makes the seats themselves a control: tapping any dot selects the party
+   * that holds it. Given only by the homepage, where a party selection
+   * already exists for the arch to follow — on the Election Centre the
+   * chamber is a chart and nothing listens to a pick.
+   */
+  onPickParty?: (slug: string) => void
 }) {
   const [mode, setMode] = React.useState<Mode>('elected')
   const [picked, setPicked] = React.useState<Set<PartySlug>>(new Set())
@@ -312,6 +319,9 @@ export function SeatChamber({
                 const dim = !!highlight && party !== highlight
                 const fill = party && lit ? PARTY_COLORS[party].bg : EMPTY
                 const rim = party && lit ? rimColor(PARTY_COLORS[party].bg) : undefined
+                // A seat is tappable when someone is listening and the seat
+                // belongs to a party — the empty ones are not a choice.
+                const pick = onPickParty && party ? () => onPickParty(party) : undefined
                 return (
                   <circle
                     key={i}
@@ -325,8 +335,15 @@ export function SeatChamber({
                     stroke={rim}
                     strokeWidth={rim ? 1 : undefined}
                     opacity={dim ? 0.38 : 1}
-                    style={{ transition: 'fill .25s ease, opacity .3s ease-in-out' }}
-                  />
+                    onClick={pick}
+                    style={{ transition: 'fill .25s ease, opacity .3s ease-in-out', cursor: pick ? 'pointer' : undefined }}
+                  >
+                    {/* The party's name on hover/long-press. The dots are not
+                        keyboard targets: the tiles above are the same choice
+                        as real buttons, so this adds a way in rather than
+                        being the only one. */}
+                    {pick && party && <title>{PARTY_NAMES[party as PartySlug]?.short ?? party}</title>}
+                  </circle>
                 )
               })}
               {/* The chamber total sits in the middle of the arc — but not on

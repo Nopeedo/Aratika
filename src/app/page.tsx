@@ -28,7 +28,7 @@ import { CompassCta } from '@/components/compass/compass-cta'
 // import { CredibilityStrip } from '@/components/homepage/credibility-strip' // hidden — see below
 import { ParliamentNow } from '@/components/homepage/parliament-now'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
-import { AlertsBanner } from '@/components/notifications/alerts-banner'
+// import { AlertsBanner } from '@/components/notifications/alerts-banner' // hidden — see below
 import { OpenLinksInNewTab } from '@/components/homepage/open-links-in-new-tab'
 import { createClient } from '@/lib/supabase/server'
 
@@ -140,18 +140,13 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             bring it back. */}
         {/* <CredibilityStrip /> */}
 
-        {/* Alerts / install prompt — down here, after the content has made its
-            case, not under the hero where it used to sit. Asking someone to
-            install on their first screen is asking before the site has shown
-            them anything; by the credibility strip they have scrolled the
-            tiles, the policy grid and the map, which is exactly the reader an
-            install is worth something to. Moving it is safe for the Android
-            install path: `beforeinstallprompt` needs its LISTENER mounted with
-            the page, and a component mounts on initial render wherever it sits
-            in the DOM — position was never the constraint. It still hides
-            itself when there is nothing to offer and remembers a dismissal,
-            and it stays reachable any time from Settings → Notifications. */}
-        <AlertsBanner />
+        {/* The alerts / install pill was here — it offered "Add Politika to
+            your Home Screen" (and "Install Politika" on Android). Removed from
+            the front page by request. The component is intact
+            (notifications/alerts-banner.tsx) and alerts are still reachable
+            from Settings → Notifications; uncomment the import and this line
+            to bring the pill back. */}
+        {/* <AlertsBanner /> */}
 
         {/* ── Everything else, in one carousel of links ── */}
         <ExploreCarousel />

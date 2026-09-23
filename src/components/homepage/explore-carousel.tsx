@@ -119,7 +119,10 @@ export function ExploreCarousel() {
     // page works. A hairline read as the page ENDING rather than a section
     // starting.
     <section style={{ background: 'transparent' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 22px' }}>
+      {/* 18px of air above the heading, not 48: the section before already
+          carries 26px of its own under its last signpost, so the two stacked
+          into a gap wide enough to read as the page having ended. */}
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '18px clamp(18px, 5vw, 36px) 22px' }}>
         {/* Header + desktop arrows */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
           <div>
