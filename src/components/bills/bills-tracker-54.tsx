@@ -13,7 +13,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { track } from '@vercel/analytics'
-import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, ExternalLink, PenLine } from 'lucide-react'
+import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, ChevronDown, ExternalLink, PenLine, SlidersHorizontal } from 'lucide-react'
 import { BILLS_54, BILL_CATEGORIES, BILLS_54_META, type Bill54 } from '@/constants/bills-54'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { normMemberName } from '@/lib/bills/normalize-member'
@@ -65,6 +65,10 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
   const [status, setStatus] = useState('All')
   const [party, setParty] = useState<string>(initialParty || 'All')
   const [subsOnly, setSubsOnly] = useState(false)
+  // The four selects start hidden. Most readers scroll or search; the ones who
+  // want to narrow by party or stage go looking for a control, and four
+  // dropdowns sitting open cost a third of a phone screen before a single bill.
+  const [filtersOpen, setFiltersOpen] = useState(false)
   // 270 bills rendered at once meant a reader had to scroll past all of them to
   // reach anything below, and every filter change re-rendered the lot.
   const [page, setPage] = useState(1)
@@ -149,6 +153,10 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
   }, [q, cat, type, status, party, memberParty, subsOnly, today, topicSlugs])
 
   const active = cat !== 'All' || type !== 'All' || status !== 'All' || party !== 'All' || q !== '' || subsOnly
+  /** How many of the SELECTS are narrowing the list. The search box is left
+   *  out: it is visible in its own right, so counting it on the filters
+   *  button would report something the button does not control. */
+  const narrowed = [cat !== 'All', type !== 'All', status !== 'All', party !== 'All', subsOnly].filter(Boolean).length
   const reset = () => { setQ(''); setCat('All'); setType('All'); setStatus('All'); setParty('All'); setSubsOnly(false); setTopic(undefined) }
 
   // Narrowing the filters must not leave you stranded on a page that no longer
@@ -215,7 +223,7 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
           saying something else. The selects do the filtering; this row says
           what is in the House. "Open for submissions" kept its filter, which
           only lived here — it is an option in the stage select now. */}
-      <div className="bills-stats" style={{ marginBottom: 18 }}>
+      <div className="bills-stats bills-tight" style={{ marginBottom: 12 }}>
         <Stat icon={Landmark} value={stats.total} label="Bills this term" />
         <Stat icon={BadgeCheck} value={stats.passed} label="Passed into law" />
         <Stat icon={Megaphone} value={stats.committee} label="At select committee" />
@@ -223,13 +231,40 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
         <Stat icon={Users} value={stats.members} label="Member’s bills" />
       </div>
 
-      {/* Filter bar */}
-      <div className="bills-filters" style={{ marginBottom: 16 }}>
+      {/* Search, then the filters behind a button. Search stays out: it is the
+          one control a reader reaches for without being prompted, and it is a
+          single field. */}
+      <div className="bills-filters" style={{ marginBottom: 10 }}>
         <div className="bills-search" style={{ position: 'relative' }}>
           <Search style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', width: 15, height: 15, color: TERTIARY }} />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search bills or MPs…"
             style={{ width: '100%', padding: '10px 12px 10px 34px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 14, fontFamily: MANROPE, color: INK, outline: 'none', background: '#fff' }} />
         </div>
+        {/* Carries the number of filters currently applied, so a reader who
+            has narrowed the list and scrolled away can see that from the
+            closed button rather than opening it to find out. */}
+        <button
+          onClick={() => setFiltersOpen((v) => !v)}
+          aria-expanded={filtersOpen}
+          className="bills-filter-toggle"
+          style={{
+            display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+            padding: '10px 14px', borderRadius: 10, cursor: 'pointer',
+            border: `1px solid ${narrowed > 0 ? JADE : BORDER}`,
+            background: narrowed > 0 ? '#ecfdf5' : '#fff',
+            color: narrowed > 0 ? JADE : INK,
+            fontFamily: MANROPE, fontSize: 13.5, fontWeight: 700,
+          }}
+        >
+          <SlidersHorizontal style={{ width: 15, height: 15 }} />
+          Filters
+          {narrowed > 0 && <span style={{ fontWeight: 800 }}>{narrowed}</span>}
+          <ChevronDown style={{ width: 14, height: 14, transform: filtersOpen ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease' }} />
+        </button>
+      </div>
+
+      {filtersOpen && (
+      <div className="bills-filters" style={{ marginBottom: 10 }}>
         <Select value={cat} onChange={setCat} options={['All', ...BILL_CATEGORIES]} allLabel="All policy areas" />
         <Select value={type} onChange={setType} options={['All', 'Government', "Member's", 'Local', 'Private']} allLabel="All types" />
         {/* OPEN_SUBS is not a stage the bill data carries — it is the
@@ -249,8 +284,9 @@ export function BillsTracker54({ readerSlugs = {}, memberParty = {}, initialPart
           </button>
         )}
       </div>
+      )}
 
-      <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, marginBottom: 14 }}>
+      <div style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, marginBottom: 10 }}>
         {filtered.length > 0
           ? <>Showing <b style={{ color: INK }}>{from + 1}–{Math.min(from + PAGE_SIZE, filtered.length)}</b> of {filtered.length}{filtered.length !== stats.total ? ` matching` : ''} bill{filtered.length === 1 ? '' : 's'}{cat !== 'All' ? ` in ${cat}` : ''}</>
           : <>No bills match those filters</>}
@@ -388,10 +424,18 @@ const TRACKER_CSS = `
   /* Still one wrapping line on a phone: they are five short facts now, not
      five tappable cards, so they no longer need a column each. */
   .bills-stats { gap: 5px 14px; }
-  .bills-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .bills-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .bills-search { grid-column: 1 / -1; min-width: 0; }
   .bills-select { max-width: none; width: 100%; min-width: 0; }
-  .bills-filters > button { grid-column: 1 / -1; justify-content: center; }
+  /* Shorter controls on a phone. The filter bar was five full-height rows
+     before the first result — most of a screen spent on things the reader has
+     not asked for yet. Trimmed to roughly two thirds of that, which still
+     clears the 40px a thumb needs. */
+  .bills-filters input,
+  .bills-filters .bills-select { padding-top: 7px !important; padding-bottom: 7px !important; font-size: 13px !important; }
+  /* Clear shares the last row with nothing else, so it can be a chip rather
+     than a full-width bar. */
+  .bills-filters > button { grid-column: 1 / -1; justify-content: center; padding: 6px 12px !important; }
 }
 `
 
