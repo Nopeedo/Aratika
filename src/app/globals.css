@@ -557,14 +557,20 @@ a, button, [role='button'], summary {
      first measured against, and it tipped over onto a second line. The pills
      shrink to suit instead. Scoped to this row on purpose — the topic
      switcher it copies has a row to itself and does not need the squeeze. */
-  .bills-status-row { gap: 4px !important; flex-wrap: nowrap !important; }
+  /* One line at 375px, by request. The four labels total 365px at 13px/12px
+     padding against 338px of row, so the padding comes down rather than the
+     text: 12.5px still reads as a control rather than a footnote, which was
+     the objection to shrinking the type to 10.5px. "Not passed" is the
+     binding label — it is wider than the "Defeated" it replaced, which is
+     what put this row onto two lines in the first place. */
+  .bills-status-row { gap: 4px !important; }
   .bills-status-row .status-pill {
-    padding: 4px 5px !important;
-    gap: 3px !important;
-    font-size: 10.5px !important;
+    padding: 6px 7px !important;
+    gap: 4px !important;
+    font-size: 12.5px !important;
     white-space: nowrap;
   }
-  .bills-status-row .status-pill span { font-size: 10px !important; }
+  .bills-status-row .status-pill span { font-size: 11px !important; }
   .topic-switcher .ap-chip svg  { width: 12px !important; height: 12px !important; }
   .status-pill span { font-size: 10.5px !important; }
 }
