@@ -110,7 +110,15 @@ export function TwoVotes() {
           fixed order the active panel can't insert into, and the panel is
           the grid's last child — the row breaks after both tiles, not
           wherever the tapped one happened to be (§2.4). */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 8 }}>
+      {/* Fixed two columns now, not auto-fit's minmax(150px, 1fr) — at 375px
+          the column available here is ~292px, and two 150px-minimum tracks
+          plus the gap (308px) don't fit, so auto-fit gave up and ran one
+          column, stacking both tiles full-width. Only two items ever render
+          here (unlike the grids elsewhere on the site that use auto-fit
+          because their item count varies), so a fixed 1fr 1fr is right: it
+          forces the row rather than waiting for room that never comes at
+          this width. */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
         {VOTES.map((v) => {
           const on = v.key === active
           return (
