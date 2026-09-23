@@ -144,7 +144,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
     // One continuous woven texture behind the whole page — hero included — so it
     // sits in the same world as the homepage and hub instead of on flat white.
     <div style={WOVEN_PAGE}>
-      <CommandHero />
+      <CommandHero today={today} />
       <SectionRail />
 
       {/* 1080 to match /bills and /parties. This page was the narrowest

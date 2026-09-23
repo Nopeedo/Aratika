@@ -1,7 +1,7 @@
 'use client'
 
 /**
- * KeyDates — the electoral timetable, directly under the hero.
+ * KeyDates — the reasoning and the full electoral timetable.
  *
  * This is the most consequential content on the site and it was a 12px line
  * under the countdown. Everything else here helps someone decide how to vote;
@@ -18,39 +18,27 @@
  * others, and the sequence is the point — enrolment closes BEFORE advance
  * voting opens, which is the bit that surprises people.
  *
- * This is now the only place on the Election Centre that carries the timetable
- * or an enrolment link. Two cards in the section above said the same things in
- * prose, with the dates typed in rather than read from the calendar file, so
- * the page could have shown one date in the strip and a different one four
- * paragraphs earlier. One source, one strip, one link. The hero's subline was
- * the third copy and has gone the same way.
- *
- * ONE CARD ON ARRIVAL, not four. This used to open as a 4-column grid — every
- * milestone, past and future, equally sized — which met the reader with a row
- * of numbers to parse before telling them the one thing that matters: what is
- * the NEXT deadline and how many days do they have. §1.1 closes everything
- * else on the site the same way (bill tiles, MP rows, Learn lessons); this
- * section was the one place still ignoring its own rule, on the page's most
- * consequential block. Now it opens on the next unmet milestone alone, sized
- * to be the loudest thing under the hero, with a "Show all key dates" tap for
- * the full sequence — which stays open once a reader asks for it, the whole
- * grid this file used to render outright.
- *
- * The hero's old six-pill jump row pointed here first because this is the only
- * section with a deadline; this card is now doing the job that pointer was
- * for, so the hero doesn't need to restate a date to make the same point.
+ * THE SINGLE-CARD SUMMARY MOVED OUT OF THIS SECTION, to the very top of the
+ * page — see next-deadline-card.tsx. It used to render here, directly under
+ * this section's own heading, and that was right for one redesign pass: it
+ * fixed a 4-column grid opening fully expanded on arrival (§1.1). But asked
+ * which single thing on the whole page mattered most, the answer was that
+ * card, not this section's position on the page — so it moved to sit above
+ * even the headline, and this section kept the parts that belong lower down:
+ * the reasoning behind the rule change (the (i)), and the full sequence for
+ * anyone who wants to see every date at once. Nothing here duplicates the
+ * card above; this section IS what "Show all key dates" opens into.
  *
  * IT TAKES THE SHARED ZoneHead, at the shared peer heading size. The title
  * was 15px: the block that decides whether a reader gets to vote had the
  * smallest heading on the site, which reads as a caption on the sections
- * around it (§4). It sits above the card rather than inside it, so the page's
- * rhythm is one thing — eyebrow, heading, (i), content — from top to bottom.
+ * around it (§4).
  *
- * The paragraph that sat under that heading is behind the (i). It explained
- * what the strip shows: the headline card already says "Last day to enrol"
- * in red, with a big day figure and days-remaining, against a date. §1.2's
- * test is whether a reader who has been here before would skip it, and they
- * would.
+ * The paragraph that used to sit under that heading is behind the (i). It
+ * explained what the strip shows: the card at the top of the page already
+ * says "Last day to enrol" in red, with a big day figure and days-remaining,
+ * against a date. §1.2's test is whether a reader who has been here before
+ * would skip it, and they would.
  *
  * Its phone layout ships here too. `.keydates-row` lived 600 lines away in
  * globals.css, where a rule for one component on one page had to fight inline
@@ -61,55 +49,18 @@
  */
 
 import { useState } from 'react'
-import { ArrowUpRight, ChevronDown } from 'lucide-react'
-import { ELECTORAL_CALENDAR, ELECTORAL_SOURCE, daysUntil, type ElectoralMilestone } from '@/constants/electoral-calendar'
+import { ChevronDown } from 'lucide-react'
+import { ELECTORAL_CALENDAR, ELECTORAL_SOURCE, type ElectoralMilestone } from '@/constants/electoral-calendar'
 import { InfoHeading, InfoText } from '@/components/ui/info-button'
 import { ZoneHead } from './zone-head'
-import { INK, SECONDARY, TERTIARY, BORDER, MANROPE, JADE } from '@/constants/theme'
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-/** The #key-dates ink from constants/election-sections.ts for the eyebrow's
- *  rail dot, and the CRITICAL red for the (i) — the bubble takes the colour of
- *  the thing it is about, and this strip is about a deadline (§1.6). */
-const CRITICAL_RED = '#b42318'
-
-function fmt(iso: string): { day: string; month: string } {
-  const d = new Date(`${iso}T00:00:00Z`)
-  return { day: String(d.getUTCDate()), month: MONTHS[d.getUTCMonth()] }
-}
-
-/**
- * The milestones a voter has to act on, in order. Administrative dates
- * (dissolution, nominations, return of the writ) are real but are not something
- * anyone has to do anything about, so they stay out of the strip.
- */
-const SHOWN = ['writ-day-2026', 'enrolment-closes-2026', 'advance-voting-2026', 'election-day-2026']
-
-/** The one that must not be missed — styled apart from the rest. */
-const CRITICAL = 'enrolment-closes-2026'
-
-/** Short enough to sit on one line in a two-column phone cell. The long form of
- *  the writ-day label, "Enrol by today to avoid a special vote", is the (i)'s
- *  job: it is good plain copy and it is an explanation, not a date. */
-const LABELS: Record<string, string> = {
-  'writ-day-2026': 'Enrol by here, no special vote',
-  'enrolment-closes-2026': 'Last day to enrol',
-  'advance-voting-2026': 'Advance voting opens',
-  'election-day-2026': 'Election day',
-}
+import { CRITICAL, CRITICAL_RED, LABELS, SHOWN, fmt } from './next-deadline-card'
+import { INK, SECONDARY, TERTIARY, BORDER, MANROPE } from '@/constants/theme'
 
 export function KeyDates({ today }: { today: string }) {
   const [showAll, setShowAll] = useState(false)
   const items = SHOWN
     .map((id) => ELECTORAL_CALENDAR.find((m) => m.id === id))
     .filter((m): m is ElectoralMilestone => Boolean(m))
-
-  // The next one the reader has not already missed. Falls back to the last
-  // item (election day) once every milestone is past, so the card never goes
-  // blank on election night itself.
-  const next = items.find((m) => m.date >= today) ?? items[items.length - 1]
-  const nextCritical = next?.id === CRITICAL
 
   return (
     <section id="key-dates" style={{ scrollMarginTop: 80 }}>
@@ -134,58 +85,12 @@ export function KeyDates({ today }: { today: string }) {
         </InfoText>
       </ZoneHead>
 
-      {/* The headline card. Red wash and a red top border ONLY when the next
-          milestone is the critical one (enrolment), so the strongest colour on
-          the page is reserved for the one date that costs someone their vote —
-          the writ-day and advance-voting cards get the same shape in a neutral
-          tone, because missing THEM is an inconvenience, not a disenfranchisement. */}
-      {next && (() => {
-        const { day, month } = fmt(next.date)
-        const days = daysUntil(today, next.date)
-        const tone = nextCritical ? CRITICAL_RED : INK
-        return (
-          <div style={{
-            border: `1px solid ${nextCritical ? '#f3c6bd' : BORDER}`, borderRadius: 16,
-            background: nextCritical ? '#fff5f2' : '#fff',
-            borderTop: `3px solid ${tone}`,
-            padding: '18px 20px', boxShadow: '0 2px 8px rgba(42,18,6,.05)',
-            display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexShrink: 0 }}>
-              <span style={{ fontSize: 44, fontWeight: 800, color: tone, fontFamily: MANROPE, lineHeight: 1, letterSpacing: '-.02em', fontVariantNumeric: 'tabular-nums' }}>{day}</span>
-              <span style={{ fontSize: 17, fontWeight: 800, color: tone, fontFamily: MANROPE }}>{month}</span>
-            </div>
-            <div style={{ flex: 1, minWidth: 160 }}>
-              <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>
-                {LABELS[next.id] ?? next.label}
-              </div>
-              <div style={{ fontSize: 12.5, fontWeight: 700, color: nextCritical ? CRITICAL_RED : SECONDARY, fontFamily: MANROPE, marginTop: 3 }}>
-                {days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : `${days} days away`}
-              </div>
-            </div>
-            {/* §3.1. The most consequential control on the site stood about
-                31px tall before: 7px of vertical padding on 12.5px type, on an
-                <a>, which globals.css's 44px <button> minimum never reaches.
-                The link is the hit area and the span is the button. */}
-            <a href="https://vote.nz" target="_blank" rel="noopener noreferrer"
-               style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', textDecoration: 'none', flexShrink: 0 }}>
-              <span style={{
-                display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12.5, fontWeight: 800,
-                color: '#fff', background: JADE, borderRadius: 999, padding: '9px 16px', fontFamily: MANROPE, whiteSpace: 'nowrap',
-              }}>
-                Enrol or check your details <ArrowUpRight style={{ width: 13, height: 13 }} />
-              </span>
-            </a>
-          </div>
-        )
-      })()}
-
       <button
         type="button"
         onClick={() => setShowAll((v) => !v)}
         aria-expanded={showAll}
         style={{
-          display: 'flex', alignItems: 'center', gap: 5, marginTop: 10, padding: '8px 2px', background: 'none', border: 'none',
+          display: 'flex', alignItems: 'center', gap: 5, padding: '8px 2px', background: 'none', border: 'none',
           fontSize: 12.5, fontWeight: 800, color: SECONDARY, fontFamily: MANROPE, cursor: 'pointer',
         }}
       >

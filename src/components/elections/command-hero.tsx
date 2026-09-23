@@ -36,6 +36,7 @@
 
 import { useEffect, useState } from 'react'
 import { ELECTION_SECTIONS, HERO_JUMP_ID } from '@/constants/election-sections'
+import { NextDeadlineCard } from './next-deadline-card'
 import { MANROPE } from '@/constants/theme'
 
 // Shared with the homepage flip counter (days-flip-countdown.tsx) so the two
@@ -46,7 +47,7 @@ const CARD_TOP = '#ffffff', CARD_BOT = '#f4f1ec', CARD_LINE = '#e6e2da'
 // Election day: Saturday 7 November 2026, local NZ (NZDT, UTC+13 in November).
 const TARGET = new Date('2026-11-07T00:00:00+13:00').getTime()
 
-export function CommandHero() {
+export function CommandHero({ today }: { today: string }) {
   // Computed on the client after mount to avoid hydration drift. Still an
   // interval rather than a one-shot: it has to roll over at NZ midnight for a
   // reader who leaves the page open, which is the only thing that can change.
@@ -70,7 +71,16 @@ export function CommandHero() {
             a reader already knows they're on — nothing above it says
             anything else — and once the back link went (this page has
             nowhere to back out to) it was standing there alone with nothing
-            to sit against. The headline is the first thing in the hero now. */}
+            to sit against. */}
+
+        {/* The single next-deadline card, moved up here from KeyDates by
+            request — it is now the first thing on the whole page, above
+            even the headline. See next-deadline-card.tsx for why the
+            reasoning and the full timetable stay in KeyDates further down
+            rather than being duplicated here. */}
+        <div style={{ marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
+          <NextDeadlineCard today={today} />
+        </div>
 
         {/* Headline — sized and placed like the policy comparison page's own
             h1 ("Party Policy Comparison"): left-aligned, clamp(28px, 7vw,
