@@ -7,6 +7,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { Search, MapPin, Landmark, ArrowRight } from 'lucide-react'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER } from '@/constants/parties-data'
@@ -31,7 +32,12 @@ const PARTY_CHIPS: (PartySlug | 'all')[] = ['all', ...PARTY_DIRECTORY_ORDER, 'in
  * stays out of the way: the chips remain fully interactive, so a reader who
  * arrives filtered can widen the list without going back.
  */
-export function MPsDirectory({ initialParty }: { initialParty?: string } = {}) {
+export function MPsDirectory() {
+  // ?party= is read here, not handed down from the page. Awaiting searchParams
+  // in the server component made /mps dynamic, so every visitor paid a full
+  // render to answer a question only this component asks. Same change /bills
+  // got; needs the <Suspense> boundary at the call site.
+  const initialParty = useSearchParams().get('party') ?? undefined
   const [query, setQuery]   = React.useState('')
   const [party, setParty]   = React.useState<PartySlug | 'all'>(
     initialParty && PARTY_CHIPS.includes(initialParty as PartySlug) ? (initialParty as PartySlug) : 'all',

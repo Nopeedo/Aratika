@@ -35,6 +35,38 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  /**
+   * Signed-in visitors get /hub instead of the landing page.
+   *
+   * This was a getSession() call inside app/page.tsx. Reading cookies in a
+   * server component opts the route out of static rendering, so EVERY visitor
+   * to the homepage — including the campaign traffic that lands there first —
+   * paid a per-request render (1.3-2.5s to first byte, never cached) so that
+   * the minority with an account could be redirected. Here it costs a cookie
+   * lookup on a request this proxy was already handling, and the landing page
+   * itself is prerendered and served from the CDN.
+   *
+   * Cookie presence, not a verified session: a routing decision, not an auth
+   * boundary, exactly as the getSession() it replaces was (getSession reads
+   * the local cookie with no network round trip and can't be trusted either).
+   * The worst a stale or forged cookie earns is a redirect to a page that then
+   * renders empty; every real auth check still calls getUser(). Supabase names
+   * these cookies sb-<project-ref>-auth-token, sometimes chunked with a .0/.1
+   * suffix, so match the shape rather than an exact name.
+   *
+   * ?full=1 — the hub's "view the full homepage" link — still shows the
+   * landing page, as it always did.
+   */
+  if (pathname === '/' && !searchParams.has('full')) {
+    const signedIn = request.cookies.getAll()
+      .some((c) => c.name.startsWith('sb-') && c.name.includes('auth-token') && !!c.value)
+    if (signedIn) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/hub'
+      return NextResponse.redirect(url)
+    }
+  }
+
   if (isPathBlocked(request.nextUrl.pathname)) {
     const url = request.nextUrl.clone()
     url.pathname = '/coming-soon'

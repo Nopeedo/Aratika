@@ -5,6 +5,7 @@
  * and name search. Individual profiles at /mps/[slug].
  */
 
+import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import { MPsDirectory } from '@/components/mps/mps-directory'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -17,10 +18,11 @@ export const metadata: Metadata = {
     'Search by name, or filter by party and electorate.',
 }
 
-export default async function MPsDirectoryPage({ searchParams }: { searchParams: Promise<{ party?: string }> }) {
-  // /mps?party=<slug> — the homepage's "See all N X MPs" link lands on that
-  // caucus already filtered. Same deep-link shape as /bills?party=.
-  const { party: initialParty } = await searchParams
+// /mps?party=<slug> — the homepage's "See all N X MPs" link lands on that
+// caucus already filtered. The directory reads the query itself, so this page
+// can be prerendered: awaiting searchParams here made it dynamic, and it was
+// answering per request at ~1.6s to first byte.
+export default function MPsDirectoryPage() {
 
   return (
     <div style={WOVEN_PAGE}>
@@ -43,7 +45,7 @@ export default async function MPsDirectoryPage({ searchParams }: { searchParams:
 
       {/* Directory */}
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '32px clamp(18px, 5vw, 36px) 64px' }}>
-        <MPsDirectory initialParty={initialParty} />
+        <Suspense fallback={null}><MPsDirectory /></Suspense>
       </div>
     </div>
   )
