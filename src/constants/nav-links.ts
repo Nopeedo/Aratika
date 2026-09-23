@@ -52,14 +52,15 @@ export const NAV_ITEMS: NavItem[] = [
       { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
     ],
   },
-  {
-    label: 'The Record', description: 'What this Parliament has actually done', feature: 'bills',
-    children: [
-      { label: 'Bills tracker', href: '/bills', description: 'Bills before the House: plain-language', feature: 'bills' },
-      { label: 'Budget 2026', href: '/budget', description: 'Where the Government is spending', feature: 'budget' },
-      { label: 'Parliament', href: '/parliament', description: 'Current seats, cabinet and snapshot', feature: 'parliament' },
-    ],
-  },
+  // "The Record" is gone as a group: it held three destinations that have
+  // nothing to do with each other beyond all being facts about this term, so
+  // the label explained the grouping rather than the pages, and every one of
+  // them cost a tap to reach. They stand on their own now, in the order a
+  // reader is likely to want them. Parliament comes out with the other two
+  // rather than being left without a home in the menu.
+  { label: 'Bills tracker', href: '/bills', description: 'Bills before the House: plain-language', feature: 'bills' },
+  { label: 'Budget 2026', href: '/budget', description: 'Where the Government is spending', feature: 'budget' },
+  { label: 'Parliament', href: '/parliament', description: 'Current seats, cabinet and snapshot', feature: 'parliament' },
   {
     label: 'Latest', description: 'Live election news & video', feature: 'news',
     children: [
