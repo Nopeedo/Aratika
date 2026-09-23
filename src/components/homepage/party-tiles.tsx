@@ -809,7 +809,6 @@ function SeatsRow({ p }: { p: TileParty }) {
     </div>
   )
 }
-
 /** Every VERIFIED policy stance, sourced — plus the footer links. Its own
  *  section below the (sticky) identity card, in normal document flow.
  *  Seats in Parliament lives outside, in its own standalone SeatsRow section. */

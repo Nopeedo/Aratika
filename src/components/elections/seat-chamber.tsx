@@ -277,7 +277,9 @@ export function SeatChamber({
           party panel's thick colour border on its light fill. Elsewhere it
           stays one plain card with the chart and numbers side by side. */}
       <div style={home
-        ? { marginTop: 14, display: 'flex', flexDirection: 'column', gap: 12 }
+        // A bit of air above the arch: it sat tight under the sub-line, and
+        // the dome's own top edge is the highest thing in the block.
+        ? { marginTop: 28, display: 'flex', flexDirection: 'column', gap: 12 }
         : { marginTop: 14, border: `1px solid ${BORDER}`, borderRadius: 18, background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)', padding: 16 }}>
         <div style={home
           ? { display: 'contents' }

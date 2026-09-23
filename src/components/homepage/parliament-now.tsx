@@ -24,6 +24,7 @@ import { PROJECTION_SEATS } from '@/constants/polls-data'
 import { SeatChamber } from '@/components/elections/seat-chamber'
 import { ParliamentHeading } from '@/components/homepage/parliament-heading'
 import { SignLink } from '@/components/homepage/compare-sign-link'
+import { PartyElectorates } from '@/components/homepage/party-electorates'
 import { Landmark } from 'lucide-react'
 import type { ReactNode } from 'react'
 
@@ -61,6 +62,11 @@ export function ParliamentNow({ seats, bills }: { seats?: ReactNode; bills?: Rea
         {/* What they did with those seats. Moved here from above the news so
             the term reads as one block: how many seats, how they won them,
             which side of the House they sit on, and what they put before it. */}
+        {/* Where those seats actually are — the four they hold by the widest
+            margin — read straight after the seat count and the side of the
+            House they sit on, and before what they have tabled. */}
+        <PartyElectorates />
+
         {bills}
 
         {/* Out of the section the same way the policy section leaves: a

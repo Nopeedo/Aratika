@@ -24,7 +24,7 @@ import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 // import { ThisTerm } from '@/components/homepage/this-term' // hidden — see below
 import { FindMyMpButton } from '@/components/homepage/find-my-mp-button'
 import { CompassCta } from '@/components/compass/compass-cta'
-import { WhatsMoved } from '@/components/homepage/whats-moved'
+// import { WhatsMoved } from '@/components/homepage/whats-moved' // hidden — see below
 // import { CredibilityStrip } from '@/components/homepage/credibility-strip' // hidden — see below
 import { ParliamentNow } from '@/components/homepage/parliament-now'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
@@ -128,14 +128,11 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             they hold and which side of the House they are on. */}
         <ParliamentNow seats={<PartySeatsSection />} bills={<PartyBillsSection />} />
 
-        {/* ── Latest: what has moved ──
-            New candidates and bill stage changes, each linking to where the
-            change lives. Sits after the news because it is the site's OWN
-            record of movement rather than someone else's reporting of it, and
-            before the credibility strip because "here is what changed this
-            week, with a link to check it" is itself the credibility argument.
-            Renders nothing when both windows are empty. */}
-        <WhatsMoved />
+        {/* "What's moved" — new candidates and bill stage changes — was
+            here. Removed from the front page by request. The component is
+            intact (whats-moved.tsx); uncomment the import and this line to
+            bring it back. */}
+        {/* <WhatsMoved /> */}
 
         {/* "The election at a glance" — the four stat tiles — was here.
             Removed from the front page by request. The component is intact

@@ -662,7 +662,21 @@ a, button, [role='button'], summary {
   .stack-row > .stack-tail { flex-basis: 100%; justify-content: flex-start; }
 }
 
-/* The MP rails on the homepage scroll sideways; the scrollbar itself is noise
-   inside a small framed box, and the arrow buttons are the visible control. */
-.mp-rail { scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+/* The MP lists in the caucus box. The scrollbar is noise inside a small
+   framed box, and the arrows are the visible control.
+
+   On a PHONE the list does not scroll under a finger at all: a scrollable
+   panel inside a scrolling page steals the swipe, so a reader trying to get
+   down the page gets four MPs instead. The arrows move it there, and they
+   still work on an overflow:hidden box because they set scrollTop directly.
+   On a pointer device the wheel is precise enough to be worth having. */
+.mp-rail {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
 .mp-rail::-webkit-scrollbar { display: none; }
+@media (max-width: 767px) {
+  .mp-rail { overflow-y: hidden; }
+}
