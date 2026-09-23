@@ -1,64 +1,149 @@
+'use client'
+
 /**
  * TwoVotes — the Election Centre's "how your vote works" explainer, replacing the
  * old head-to-head decide tool (that job now lives on /guide and /compare). This
  * is election-specific and strictly non-partisan: it explains the party vote vs
- * the electorate vote under MMP, then hands undecided readers off to the guide
- * or the comparison rather than steering them toward any party.
+ * the electorate vote under MMP and stops there. Sending an undecided reader
+ * somewhere is CompassCta's job, at the foot of the same section.
+ *
+ * CLOSED ON ARRIVAL. It used to render two always-open explainer cards, a
+ * neutral tip box and a hand-off row: 468px of prose that a reader who knows
+ * MMP skips in a second, which is the argument upcoming-view.tsx makes for
+ * putting this section SECOND and then contradicted by leaving it expanded.
+ * Two §2.3 tiles at about 51px each say what the section is; §2.4 panels say
+ * the rest once asked (§1.1).
+ *
+ * WHAT CAME OFF, and where each fact went:
+ *
+ *  - The "Neutral tip" box. "Most of your influence is in the party vote"
+ *    restated the party-vote card 150px above it, a card already carrying a
+ *    filled "Does the heavy lifting" badge and the sentence "This is the vote
+ *    that shapes who can form a government" (§1.3). The one thing worth
+ *    keeping from it was the /learn/mmp link, which the section's (i) carries.
+ *  - The "Still deciding who to give them to?" hand-off row. Two filled CTAs
+ *    sat ~250px above CompassCta, a full-bleed colour-cycling card whose whole
+ *    job is "Find where you stand": three decide-tool calls to action stacked
+ *    in one section, against §2.6's one signpost per section at most. The
+ *    pronoun had also drifted, "them" being two votes, three paragraphs and two
+ *    cards earlier. Its "Compare parties" link pointed at /policies, which
+ *    force-dynamic 307s to /policies/[first-topic].
+ *
+ * NOT to be confused with src/components/learn/two-votes.tsx, which is a
+ * different component with a different job (an illustrative ballot a reader
+ * fills in) and a different caller. The audit that led to this change recorded
+ * /learn as importing THIS file and it does not: the import there is relative
+ * and resolves inside components/learn. Checked before cutting anything, which
+ * is why the open cards are gone rather than kept behind a flag for a caller
+ * that does not exist.
  */
 
-import Link from 'next/link'
-import { ArrowRight, Landmark, MapPin, Info } from 'lucide-react'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
+import { Fragment, useState } from 'react'
+import { ChevronDown, Landmark, MapPin, X } from 'lucide-react'
+import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 
 // Warm palette, shared with the Election Centre page and the homepage, so the
 // explainer doesn't drop cold near-black text and a black CTA into a warm page.
 
+/** The two votes, as data, so the open cards and the closed tiles cannot drift
+ *  apart into two different accounts of MMP (§1.3). */
+const VOTES = [
+  {
+    key: 'party',
+    title: 'Your party vote',
+    badge: 'Does the heavy lifting',
+    accent: JADE,
+    light: '#ecfdf5',
+    /* "120 seats", not "~120". The page says 120 in two other places (the seat
+       projection's total and the majority arithmetic under the chamber) and a
+       tilde on one of the three invites the "why doesn't National add up to
+       48?" question §8 records being asked four times about one block of
+       numbers. 2023 returned 122 because of an overhang seat, which is a real
+       thing and belongs in the #seats (i), not in a one-line definition. */
+    body: (
+      <>
+        Decides the <b style={{ color: INK }}>share of Parliament&rsquo;s 120 seats</b> each party gets. This is the vote that
+        shapes who can form a government. A party needs 5% of the party vote, or to win an electorate, to get in.
+      </>
+    ),
+  },
+  {
+    key: 'electorate',
+    title: 'Your electorate vote',
+    badge: null,
+    accent: '#2563eb',
+    light: '#eff6ff',
+    body: (
+      <>
+        Picks the <b style={{ color: INK }}>one MP who represents your local area</b>, your electorate. There are 72
+        electorates, seven of them M&#257;ori electorates.
+      </>
+    ),
+  },
+] as const
+
 export function TwoVotes() {
+  // Nothing open on arrival (§1.1).
+  const [active, setActive] = useState<string | null>(null)
+
   return (
     <div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 14 }}>
-        {/* Party vote — the important one */}
-        <div style={{ position: 'relative', border: `1.5px solid ${JADE}`, borderRadius: 16, background: '#fff', padding: '20px 20px 18px', display: 'flex', flexDirection: 'column', gap: 9 }}>
-          <span style={{ position: 'absolute', top: 14, right: 14, fontSize: 10.5, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: '#fff', background: JADE, borderRadius: 999, padding: '3px 9px', fontFamily: MANROPE }}>Does the heavy lifting</span>
-          <div style={{ width: 42, height: 42, borderRadius: 12, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Landmark style={{ width: 21, height: 21, color: JADE }} />
-          </div>
-          <div style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Your party vote</div>
-          <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-            Decides the <b style={{ color: INK }}>share of Parliament’s ~120 seats</b> each party gets. This is the vote that shapes who can form a government. A party needs 5% of the party vote, or to win an electorate, to get in.
-          </p>
-        </div>
+      {/* §2.3's grid, verbatim from defining-bills.tsx: tiles wrap, they do not
+          scroll sideways, and the panel opens directly beneath the tapped tile
+          spanning every column so the row breaks there rather than at the foot
+          of the grid (§2.4). */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))', gap: 8 }}>
+        {VOTES.map((v) => {
+          const on = v.key === active
+          return (
+            <Fragment key={v.key}>
+              <button
+                onClick={() => setActive(on ? null : v.key)}
+                aria-expanded={on}
+                style={{
+                  textAlign: 'left', cursor: 'pointer', position: 'relative',
+                  background: v.light, borderRadius: 11, padding: '7px 26px 20px 10px',
+                  borderStyle: 'solid', borderWidth: on ? 3 : 2, borderColor: v.accent,
+                  transition: 'border-width .2s ease', fontFamily: MANROPE,
+                }}
+              >
+                <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: v.accent, fontFamily: MANROPE, marginBottom: 2 }}>
+                  {v.badge ?? 'One local MP'}
+                </span>
+                <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{v.title}</span>
+                <ChevronDown
+                  style={{
+                    position: 'absolute', right: 8, bottom: 7, width: 15, height: 15, color: v.accent,
+                    transform: on ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease',
+                  }}
+                  strokeWidth={3}
+                />
+              </button>
 
-        {/* Electorate vote */}
-        <div style={{ border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '20px 20px 18px', display: 'flex', flexDirection: 'column', gap: 9 }}>
-          <div style={{ width: 42, height: 42, borderRadius: 12, background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <MapPin style={{ width: 21, height: 21, color: '#2563eb' }} />
-          </div>
-          <div style={{ fontSize: 18, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Your electorate vote</div>
-          <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-            Picks the <b style={{ color: INK }}>one MP who represents your local area</b>, your electorate. There are 72 electorates, seven of them Māori electorates.
-          </p>
-        </div>
-      </div>
-
-      {/* Neutral tip */}
-      <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginTop: 14, padding: '12px 15px', background: '#f8fafc', border: `1px solid ${BORDER}`, borderRadius: 12 }}>
-        <Info style={{ width: 16, height: 16, color: JADE, flexShrink: 0, marginTop: 1 }} />
-        <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-          <b style={{ color: INK }}>Most of your influence is in the party vote.</b> It sets the overall balance of Parliament.{' '}
-          <Link href="/learn/mmp" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>How MMP works in full →</Link>
-        </p>
-      </div>
-
-      {/* Hand-off to the decide tools (no party steering here) */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginTop: 14 }}>
-        <span style={{ fontSize: 14.5, fontWeight: 700, color: INK, fontFamily: MANROPE }}>Still deciding who to give them to?</span>
-        <Link href="/guide" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 16px', borderRadius: 11, background: JADE, color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
-          Guide me <ArrowRight style={{ width: 15, height: 15 }} />
-        </Link>
-        <Link href="/policies" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '10px 16px', borderRadius: 11, background: '#fff', color: INK, border: `1px solid ${BORDER}`, fontSize: 14, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none' }}>
-          Compare parties <ArrowRight style={{ width: 15, height: 15 }} />
-        </Link>
+              {on && (
+                <div style={{ gridColumn: '1 / -1' }}>
+                  <div style={{
+                    background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16,
+                    padding: 'clamp(14px, 2.5vw, 20px)', marginTop: 2,
+                    boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 20px 40px -34px rgba(0,0,0,.4)',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: v.accent, background: v.light, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
+                        {v.key === 'party' ? <Landmark style={{ width: 12, height: 12 }} /> : <MapPin style={{ width: 12, height: 12 }} />}
+                        {v.badge ?? 'One local MP'}
+                      </span>
+                      <button type="button" onClick={() => setActive(null)} aria-label={`Close ${v.title}`} style={{ background: 'none', border: 'none', padding: 6, margin: -6, cursor: 'pointer', color: SECONDARY, display: 'inline-flex', flexShrink: 0 }}>
+                        <X style={{ width: 17, height: 17 }} />
+                      </button>
+                    </div>
+                    <h3 style={{ fontSize: 'clamp(17px, 2.6vw, 21px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '11px 0 8px', lineHeight: 1.2 }}>{v.title}</h3>
+                    <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>{v.body}</p>
+                  </div>
+                </div>
+              )}
+            </Fragment>
+          )
+        })}
       </div>
     </div>
   )

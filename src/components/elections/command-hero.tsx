@@ -10,60 +10,54 @@
  * cinematic band with gradient-filled digits, which read as a different product
  * the moment you arrived from the landing page.
  *
- * Keeps what worked: the live ticking clock and the jump-nav so the long page
- * below stays navigable. The stat row (majority seats / parties contesting /
- * poll leader) was removed once the party tiles carried all three lower down —
- * it was the same numbers twice, one screen apart. The jump chips now use the
- * same coloured-border language as the homepage policy chips and hub tiles.
+ * Keeps what worked: the days counter and the jump-nav so the long page below
+ * stays navigable. The stat row (majority seats / parties contesting / poll
+ * leader) was removed once the party tiles carried all three lower down — it
+ * was the same numbers twice, one screen apart.
+ *
+ * DAYS ONLY. It ran days : hrs : mins : secs, which is four tiles and three
+ * colons: 299px of a 339px row at 375px, pinned there by the tiles' own
+ * `clamp(56px, 12vw, 92px)` floor, so it could not shrink any further and
+ * overflowed below about 360px (§3.2 — a clamp floor makes a layout
+ * unresponsive). A live seconds digit to an election over a year out is also
+ * decoration that re-renders every 1000ms, and the homepage's own counter
+ * (days-flip-countdown.tsx) has always been days only. One tile, no overflow,
+ * same object on both pages.
+ *
+ * The enrolment/advance-voting subline under the tiles is gone with it (§1.3).
+ * It stated the enrolment close date, the advance-voting window and the source,
+ * and the KeyDates strip ~250px below states all three from the SAME
+ * electoral-calendar.json. upcoming-view.tsx records two cards already deleted
+ * for exactly this; the hero was doing it a third time. The standalone
+ * "Saturday 7 November 2026" line went for the same reason: the date was on
+ * this screen three times over, as that line, as the thing the countdown counts
+ * to, and as the strip's "Election day" tile. The strip keeps it.
  */
 
 import { BackLink } from '@/components/ui/back-link'
 import { useEffect, useState } from 'react'
-import { CalendarDays } from 'lucide-react'
 import { ELECTION_SECTIONS, HERO_JUMP_ID } from '@/constants/election-sections'
-import { ELECTORAL_SOURCE, longDate, milestone } from '@/constants/electoral-calendar'
 import { JADE, JADE_DARK, MANROPE } from '@/constants/theme'
 
 // Shared with the homepage flip counter (days-flip-countdown.tsx) so the two
 // counters read as the same object.
-const ESPRESSO = '#2A1206', WARM = '#5b3d2a', SUB = '#6b6157'
+const ESPRESSO = '#2A1206', WARM = '#5b3d2a'
 const CARD_TOP = '#ffffff', CARD_BOT = '#f4f1ec', CARD_LINE = '#e6e2da'
-
-// Dates for the subline, resolved once from the calendar file rather than
-// written into the sentence. `??` gives a stable fallback if an id is ever
-// renamed — the phrase drops out rather than rendering "undefined" to a reader
-// who came here for a deadline.
-const ENROLMENT_CLOSES = milestone('enrolment-closes-2026')?.date ?? ''
-const ADVANCE_START = milestone('advance-voting-2026')?.date ?? ''
-const ADVANCE_END = milestone('advance-voting-2026')?.endDate ?? ''
 
 // Election day: Saturday 7 November 2026, local NZ (NZDT, UTC+13 in November).
 const TARGET = new Date('2026-11-07T00:00:00+13:00').getTime()
 
-// Same palette family as the hub tiles / policy chips — deep 700-level inks.
-// Must track the sections that actually exist in UpcomingView — a chip pointing
-// at a removed anchor silently does nothing when tapped.
 export function CommandHero() {
-  // Live countdown — computed on the client after mount to avoid hydration drift.
-  const [t, setT] = useState<{ d: number; h: number; m: number; s: number } | null>(null)
+  // Computed on the client after mount to avoid hydration drift. Still an
+  // interval rather than a one-shot: it has to roll over at NZ midnight for a
+  // reader who leaves the page open, which is the only thing that can change.
+  const [days, setDays] = useState<number | null>(null)
   useEffect(() => {
-    const tick = () => {
-      const ms = Math.max(0, TARGET - Date.now())
-      setT({
-        d: Math.floor(ms / 86400000),
-        h: Math.floor((ms / 3600000) % 24),
-        m: Math.floor((ms / 60000) % 60),
-        s: Math.floor((ms / 1000) % 60),
-      })
-    }
+    const tick = () => setDays(Math.floor(Math.max(0, TARGET - Date.now()) / 86400000))
     tick()
-    const id = setInterval(tick, 1000)
+    const id = setInterval(tick, 60000)
     return () => clearInterval(id)
   }, [])
-
-  const units: [number | null, string][] = [
-    [t?.d ?? null, 'days'], [t?.h ?? null, 'hrs'], [t?.m ?? null, 'mins'], [t?.s ?? null, 'secs'],
-  ]
 
   return (
     // Deliberately transparent: the woven texture is painted once by the page
@@ -83,56 +77,47 @@ export function CommandHero() {
         </div>
 
         {/* Headline */}
-        <h1 style={{ fontSize: 'clamp(27px, 4.6vw, 46px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.05, fontFamily: MANROPE, color: ESPRESSO, margin: '0 0 6px', textAlign: 'center' }}>
+        <h1 style={{ fontSize: 'clamp(27px, 4.6vw, 46px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.05, fontFamily: MANROPE, color: ESPRESSO, margin: '0 0 clamp(16px, 3vh, 24px)', textAlign: 'center' }}>
           The 2026 General Election
         </h1>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, color: WARM, fontFamily: MANROPE, fontSize: 'clamp(13px,1.6vw,15px)', fontWeight: 700, marginBottom: 'clamp(18px, 3vh, 28px)' }}>
-          <CalendarDays style={{ width: 15, height: 15, color: JADE }} />
-          Saturday 7 November 2026
-        </div>
 
-        {/* Live countdown — flip-tile look shared with the homepage counter */}
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', gap: 'clamp(6px, 1.4vw, 14px)', marginBottom: 8 }}>
-          {units.map(([val, label], i) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'flex-start', gap: 'clamp(6px, 1.4vw, 14px)' }}>
-              <div style={{ textAlign: 'center' }}>
-                <Tile text={val === null ? '––' : i === 0 ? String(val) : String(val).padStart(2, '0')} />
-                <div style={{ fontSize: 'clamp(10px,1.3vw,12px)', fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: WARM, fontFamily: MANROPE, marginTop: 9 }}>{label}</div>
-              </div>
-              {i < units.length - 1 && (
-                <div aria-hidden style={{ fontWeight: 800, fontSize: 'clamp(24px, 5vw, 44px)', lineHeight: 1, color: 'rgba(42,18,6,.22)', marginTop: 'clamp(10px,2.4vw,22px)', fontFamily: MANROPE }}>:</div>
-              )}
+        {/* One tile. The label does the job the deleted date line was doing
+            badly: it says what the number counts to without restating
+            7 November, which the strip immediately below owns. */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'clamp(20px, 3.4vh, 30px)' }}>
+          <div style={{ textAlign: 'center' }}>
+            <Tile text={days === null ? '––' : String(days)} />
+            <div style={{ fontSize: 'clamp(10px,1.3vw,12px)', fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: WARM, fontFamily: MANROPE, marginTop: 9 }}>
+              days until election day
             </div>
-          ))}
+          </div>
         </div>
-        <p style={{ textAlign: 'center', fontSize: 12, color: SUB, fontFamily: MANROPE, margin: '4px 0 clamp(20px, 3.4vh, 30px)' }}>
-          {/* Read from electoral-calendar.json, which is transcribed from the
-              Commission's timetable and also drives the push reminders.
-              The comment here used to SAY the dates came from that file while
-              all four were typed into the sentence — including a 6 November the
-              file did not contain at all. A line that ends "Dates from the
-              Electoral Commission" has to be true of the code, not just of the
-              author's intention; now the same value cannot differ between the
-              hero, the key-dates strip and a notification. */}
-          Enrolment closes <b>{longDate(ENROLMENT_CLOSES)}</b>. New for 2026: you can’t enrol once advance voting starts.
-          {ADVANCE_START && ADVANCE_END && (
-            <> Advance voting runs <b>{longDate(ADVANCE_START)}</b> to <b>{longDate(ADVANCE_END)}</b>.</>
-          )}{' '}
-          Dates from the {ELECTORAL_SOURCE.name.split('\u2014')[0].trim()}.
-        </p>
 
-        {/* Jump nav — coloured chips, same language as the policy chips.
+        {/* Jump nav — §2.2 pills, in ONE neutral treatment.
+            They wore a pale section tint and a 2px section-coloured border, six
+            hues in one row, which is a second colour system on a page where
+            colour already means party (the bars in #parties) and status (the
+            red enrolment deadline). §1.6 allows colour one meaning at a time,
+            and §2.14's reasoning applies verbatim. The per-section ink stays on
+            the floating rail, where a dot is the only signal there is.
+
+            §3.1: these are <a>, so globals.css's 44px <button> minimum never
+            reached them and they stood at 38px. The link is the hit area, the
+            span inside is the pill — 28px to look at, 44px to hit.
+
             The sections come from ELECTION_SECTIONS, shared with the floating
             rail, so a chip can't outlive the section it points at the way
             #parliament did. The id is what the rail watches: it shows itself
             only once these chips have scrolled out of view. */}
-        <div id={HERO_JUMP_ID} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 9 }}>
+        <div id={HERO_JUMP_ID} style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 8 }}>
           {ELECTION_SECTIONS.map((j) => (
-            <a key={j.id} href={`#${j.id}`} className="party-card" style={{
-              display: 'inline-flex', alignItems: 'center', fontSize: 13.5, fontWeight: 800, fontFamily: MANROPE,
-              color: ESPRESSO, textDecoration: 'none', padding: '9px 16px', borderRadius: 999,
-              background: j.tint, border: `2px solid ${j.ink}`,
-            }}>{j.label}</a>
+            <a key={j.id} href={`#${j.id}`} style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', textDecoration: 'none' }}>
+              <span className="status-pill" style={{
+                display: 'inline-flex', alignItems: 'center', borderRadius: 999,
+                background: '#fff', border: '2px solid rgba(42,18,6,.18)',
+                color: ESPRESSO, fontFamily: MANROPE, fontWeight: 800, whiteSpace: 'nowrap',
+              }}>{j.label}</span>
+            </a>
           ))}
         </div>
       </div>
@@ -140,7 +125,7 @@ export function CommandHero() {
   )
 }
 
-/** One countdown digit-pair, drawn as the homepage's flip card at rest. */
+/** The days figure, drawn as the homepage's flip card at rest. */
 function Tile({ text }: { text: string }) {
   return (
     <div style={{

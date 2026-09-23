@@ -1,33 +1,58 @@
 /**
- * UpcomingView — the 2026 Election Centre. A warm command-centre hero, then the
- * body organised into zones with consistent headers (a jade eyebrow + title).
+ * UpcomingView — the 2026 Election Centre.
  *
- * Flow: the parties (fill tiles) → your electorate (closest races + marginality
- * map) → get ready (how your vote works) → debates & news → the Parliament
- * you're voting to change → election-night scaffold.
+ * Flow: when (the deadline) → how your vote works → who you can vote for →
+ * the Parliament you are changing → your own seat → the leaders.
  *
- * The tiles lead because they answer "who's standing and where do they sit?" —
- * the question someone arriving at an election page actually has first.
+ * COMPOSED AT 375px, not reduced to it. The page used to run 7,771px, about
+ * 9.6 screens on a phone, and roughly 70% of that was content nobody had asked
+ * to see: seventeen party rows, five full-height battleground cards, a 520px
+ * Leaflet map with a 420px "Tap a seat" panel under it, two prose explainer
+ * cards, five standfirsts and a scaffold card promising a feature that does not
+ * exist. §1.1 says a section opens showing what it IS, not its contents, and
+ * every block below now does.
  *
- * Deliberately shorter than it was. The poll-of-polls bar chart and the coalition
- * builder were removed once the party tiles started carrying the standings and
- * the 5% threshold — the tiles say the same thing in less space, and the page had
- * grown past six screens. The battlegrounds teaser and map were briefly removed
- * in that pass and reinstated — the closest races are the most election-relevant
- * thing on the page, and /battlegrounds is a destination rather than a substitute.
+ * WHAT CAME OFF THIS FILE, and why, so none of it comes back by accident:
+ *
+ *  - The BattlegroundsMap embed. 1,070px, the single largest saving on the
+ *    page. It arrived open, and a map is /battlegrounds' content rather than
+ *    this page's — so the five closest races are this section's content and one
+ *    §2.6 signpost is the way to the rest (§1.1, §2.6).
+ *  - The MapPin card explaining how to read that map. Seven lines saying red is
+ *    close and green is safe, above a map carrying its own margin legend. It
+ *    died with the map; the part that was about the five seats is in the (i).
+ *  - The election-night scaffold. §6.1: a promise about a feature that does not
+ *    exist yet, the Election Centre's version of the homepage install pill,
+ *    which was cut for exactly this.
+ *  - The page-foot "Enrolment & voting information: Electoral Commission"
+ *    link. A third link to the Commission (§1.3). KeyDates carries the vote.nz
+ *    enrol button and the timetable credit, and those are the two that do work.
+ *  - Five standfirsts totalling ~530px. Every one of them explained how to read
+ *    the block below it, where the data came from, or why the block exists,
+ *    which is the §1.2 test exactly: a returning reader skips all of it. They
+ *    are (i) bubbles on their headings now, and not one fact was dropped.
+ *
+ * The two "Enrol or check your details" / "Vote early or on the day" cards that
+ * sat here are also gone, and have been for longer. They restated the KeyDates
+ * strip a few hundred pixels below: one duplicated its "Check you're enrolled"
+ * link, the other spelled out in prose the same four dates the strip already
+ * shows, and did it with the dates HARDCODED, while the strip reads them from
+ * the Electoral Commission file. Two copies of a deadline, one sourced and one
+ * typed.
  */
 
-import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, Info, MapPin } from 'lucide-react'
 import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
+import { getBattlegrounds } from '@/lib/battlegrounds'
+import { MP_PROFILES } from '@/constants/mps-data'
 import {
   pollOfPolls, pollOfPollsOthers, seatProjection, pollsAsAt, POLL_PARTIES, PREFERRED_PM,
-  TURNOUT_2023, ENROLMENT_2023, ENROLMENT_LIVE_URL, POLLS_SOURCE,
+  TURNOUT_2023, ENROLMENT_2023, PARTICIPATION_SOURCE, POLLS_SOURCE,
   PROJECTION_SEATS,
 } from '@/constants/polls-data'
 import { getPolls } from '@/lib/polls/live'
+import { longDate, milestone } from '@/constants/electoral-calendar'
 import { CommandHero } from './command-hero'
 import { SectionRail } from './section-rail'
 import { KeyDates } from './key-dates'
@@ -36,28 +61,67 @@ import { SeatChamber } from './seat-chamber'
 import { TwoVotes } from './two-votes'
 import { CompassCta } from '@/components/compass/compass-cta'
 import { PartiesContesting } from './parties-contesting'
-import { BattlegroundsTeaser } from '@/components/homepage/battlegrounds-teaser'
-import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
+import { ClosestRaces, type ClosestRace } from './closest-races'
 import { VideoSection } from '@/components/news/video-section'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { ZoneHead } from './zone-head'
+import { InfoHeading, InfoText } from '@/components/ui/info-button'
+import { SignShape } from '@/components/ui/sign-link'
+import { WOVEN_PAGE } from '@/constants/theme'
+import type { PartySlug } from '@/types'
 
 // Warm palette carried over from the homepage/hub so the Election Centre reads
 // as the same product rather than a separate tool: espresso headings, warm body
 // greys, warm hairlines — replacing the cold #0c0e12/#6b7078/#e9e7e2 set.
 
-// Practical steps that sit alongside the "how your vote works" explainer.
-// tint/ink follow the homepage policy-chip language (deep 700-level borders).
-/* The two "Enrol or check your details" / "Vote early or on the day" cards
-   that sat here are gone. They restated the KeyDates strip a few hundred pixels
-   below: one duplicated its "Check you're enrolled" link, the other spelled out
-   in prose the same four dates the strip already shows as tiles — and did it
-   with the dates HARDCODED, while the strip reads them from the Electoral
-   Commission file. Two copies of a deadline, one sourced and one typed. */
+/** Per-section accent, for the (i) bubbles only. These are the same inks the
+ *  floating rail's dots use (constants/election-sections.ts); the (i) takes the
+ *  colour of the block it explains, which is §1.6's "a block takes the colour
+ *  of whatever it is about". They are NOT on the chips any more. */
+const ACCENT = {
+  vote: '#0e7490',
+  parties: '#6d28d9',
+  seat: '#be123c',
+  watch: '#b45309',
+} as const
+
+/** How many videos the rail holds. It was 18, showing 1.06 of them at 375px
+ *  with the other seventeen behind a swipe — the exact shape §2.10 records
+ *  being deleted from the homepage ("a horizontal rail of description cards,
+ *  which on a phone showed one and a half cards and hid the other twelve").
+ *  video-section.tsx has four callers and is not this page's to restyle, so the
+ *  fix from this side is to stop fetching a rail that deep and to name the
+ *  count under the heading. */
+const VIDEO_COUNT = 6
+
+/** The closest races, flattened to serialisable values here so the tiles stay a
+ *  client component without pulling ELECTORATES and MP_PROFILES into the
+ *  bundle. `unknown` tier and a missing majority are filtered out: a seat with
+ *  no verified 2023 margin cannot be called one of the closest. */
+function closestRaces(): ClosestRace[] {
+  return getBattlegrounds()
+    .filter((b) => b.tier.key !== 'unknown' && typeof b.info.majority === 'number')
+    .slice(0, 5)
+    .map((b, i) => {
+      const slug = b.info.mpSlug || Object.values(MP_PROFILES).find((mp) => mp.name === b.info.mpName)?.slug
+      return {
+        slug: b.slug,
+        name: b.info.name,
+        rank: i + 1,
+        tierLabel: b.tier.label,
+        tierColor: b.tier.color,
+        party: (b.info.party as PartySlug | null) ?? null,
+        mpName: b.info.mpName ?? null,
+        mpPhoto: slug ? MP_PROFILES[slug]?.photo : undefined,
+        majority: b.info.majority as number,
+        maori: b.info.type === 'maori',
+      }
+    })
+}
 
 export async function UpcomingView({ e }: { e: ElectionData }) {
   const base = BASELINE_ELECTION
-  const debates = await getDebateVideos(12)
-  const railVideos = debates.length > 0 ? debates : await getVideos(18)
+  const debates = await getDebateVideos(VIDEO_COUNT)
+  const railVideos = debates.length > 0 ? debates : await getVideos(VIDEO_COUNT)
   // Only a genuine debate clip may be called one.
   const hasRealDebates = debates.some((v) => v.debate)
   const polls = await getPolls()
@@ -67,11 +131,13 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   // POLLS_AS_AT constant — that read "9 July 2026" on 10 September while the
   // figures beside it were current to 3 September.
   const asAt = pollsAsAt(polls)
-  // No getAllApprovedPositions() here any more. The face-off was its only
-  // consumer, so with that gone the call was fetching every approved position
-  // in the database on every render of this page and using none of them.
   // NZ local date — the calendar's deadlines are NZ deadlines.
   const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })
+  const races = closestRaces()
+  // The date the party list stops changing. It was claimed in prose ("the final
+  // list is confirmed when nominations close") with no date against it, on a
+  // page that already reads the file the date is in.
+  const nominationsClose = milestone('nominations-close-2026')?.date
 
   return (
     // One continuous woven texture behind the whole page — hero included — so it
@@ -101,44 +167,96 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               polls, the seat projection and the electorate map, all of which
               are unreadable to someone who does not already know this. Second
               is right: a reader who knows MMP scrolls past it in a second, and
-              one who doesn't cannot reconstruct it from a hemicycle. */}
+              one who doesn't cannot reconstruct it from a hemicycle.
+
+              The tiles are what make "scrolls past it in a second" true. Open,
+              this block was 468px of prose that the argument above says most
+              readers skip, which is §1.1's whole point. */}
           <section id="your-vote" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Get ready to vote" title="How your vote works"
-              sub="You get two votes under MMP. Here’s what each one does." />
+            <ZoneHead eyebrow="Get ready to vote" title="How your vote works" accent={ACCENT.vote}
+              infoLabel="How MMP gives you two votes">
+              <InfoHeading accent={ACCENT.vote}>Two votes, two jobs</InfoHeading>
+              <InfoText>
+                Under MMP you cast two votes on the same paper. The party vote decides the share of Parliament&rsquo;s 120
+                seats each party gets, and it is where most of your influence is: it sets the overall balance. The
+                electorate vote picks the one MP for your local area.
+              </InfoText>
+              {/* The overhang is explained ONCE, in the (i) on the chamber
+                   that shows both numbers, where it derives them from the data
+                   instead of typing them. It was here as well, ~700px earlier,
+                   in the same sentences against hard-coded figures (§1.3). */}
+              <InfoText>
+                <a href="/learn/mmp" style={{ color: ACCENT.vote, fontWeight: 800, textDecoration: 'none' }}>How MMP works in full</a>
+              </InfoText>
+            </ZoneHead>
             <TwoVotes />
             {/* The personal compass, here as well as on the homepage — it left
                 the nav, and "which vote do I cast" is the question this section
                 exists to answer, so its answer-machine belongs at the end of
                 it. Same card as the homepage, deliberately: one object, seen
-                twice, reads as the same tool rather than two features. */}
-            <CompassCta />
+                twice, reads as the same tool rather than two features.
+
+                The negative margin cancels the card's OWN section gutter. It is
+                a <section> with clamp(40px,7vw,72px) / clamp(18px,5vw,36px) of
+                padding, nested inside this container which already applies
+                clamp(18px,5vw,36px) — so the card sat inset 37.5px from each
+                edge at 375px while every other block on this page sits at
+                18.75px, and added 80px of vertical padding on top of the 40px
+                flex gap. §8, "see the edges dont align": measure the two
+                things rather than nudging one. compass-cta.tsx is shared with
+                the homepage, so the cancellation lives here rather than there. */}
+            <div style={{ margin: 'calc(-1 * clamp(40px, 7vw, 72px)) calc(-1 * clamp(18px, 5vw, 36px))' }}>
+              <CompassCta />
+            </div>
           </section>
 
-          {/* ── PARTIES CONTESTING — the fill tiles carry the standings now ──── */}
+          {/* ── EVERY PARTY YOU CAN VOTE FOR ─────────────────────────────────
+              The standfirst that sat here explained how to read a chart, where
+              the list comes from and when it changes: three (i) sections, and
+              it still said "each tile fills" for a component that has not been
+              tiles since parties-contesting.tsx was rewritten to rows. */}
           <section id="parties" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Who’s standing" title="Parties contesting 2026"
-              sub="Every party registered with the Electoral Commission to contest the party vote, grouped by whether they hold seats now rather than ranked. Each tile fills to that party’s current poll-of-polls share, with the 5% threshold marked. The final list is confirmed when nominations close."
-              link={{ href: '/party-inclusion', label: 'Who’s included' }} />
-            <PartiesContesting pop={pop} />
-          </section>
-
-          {/* ── WHERE THEY STAND — the condensed poll of polls ────────────────
-              Built for this page ("PollSnapshot — the condensed poll-of-polls
-              for the Election Centre") and rendered nowhere until now. It
-              carries its own heading, so there is no ZoneHead here. */}
-          <section id="polling" style={{ scrollMarginTop: 80 }}>
-            <PollSnapshot
-              othersPct={pollOfPollsOthers(polls)}
-              pollCount={polls.length}
-              asAt={asAt}
-              pollParties={POLL_PARTIES}
-              polls={polls}
-              preferredPM={PREFERRED_PM}
-              turnout={TURNOUT_2023}
-              enrolment={ENROLMENT_2023}
-              enrolmentUrl={ENROLMENT_LIVE_URL}
-              pollsSource={POLLS_SOURCE}
-            />
+            <ZoneHead eyebrow="Who’s standing" title="Every party you can vote for" accent={ACCENT.parties}
+              infoLabel="Which parties are listed and where the figures come from">
+              <InfoHeading accent={ACCENT.parties}>Who is on this list</InfoHeading>
+              <InfoText>
+                Every party registered with the Electoral Commission to contest the party vote, by registration rather
+                than by polling. The parliamentary parties come first, in seat order, then the rest by their most recent
+                published figure. The final list is confirmed when nominations close
+                {nominationsClose ? `, ${longDate(nominationsClose)}` : ''}.{' '}
+                <a href="/party-inclusion" style={{ color: ACCENT.parties, fontWeight: 800, textDecoration: 'none' }}>How we decide who is included</a>
+              </InfoText>
+              <InfoHeading accent={ACCENT.parties}>Reading the bars</InfoHeading>
+              <InfoText>
+                Every bar is drawn on the same axis, so the lengths can be compared directly. What the dashed line is
+                for is written under the bars themselves, where the line is.
+              </InfoText>
+              <InfoHeading accent={ACCENT.parties}>What a poll is not</InfoHeading>
+              <InfoText>
+                Others is the smaller registered parties that pollsters group together and do not report individually, so
+                six parties here have no separate figure at all. That is a fact about polling coverage, not about the
+                party. Politika reports polls. It does not predict the result.
+              </InfoText>
+            </ZoneHead>
+            <PartiesContesting pop={pop} asAt={asAt} />
+            {/* §2.6's exception, and the same move the bills block made: the way
+                out of this block is a small outlined chip INSIDE it rather than
+                a signpost of its own, because the detail behind it belongs to
+                the bars directly above. */}
+            <div style={{ marginTop: 16 }}>
+              <PollSnapshot
+                othersPct={pollOfPollsOthers(polls)}
+                pollCount={polls.length}
+                asAt={asAt}
+                pollParties={POLL_PARTIES}
+                polls={polls}
+                preferredPM={PREFERRED_PM}
+                turnout={TURNOUT_2023}
+                enrolment={ENROLMENT_2023}
+                participationSource={PARTICIPATION_SOURCE}
+                pollsSource={POLLS_SOURCE}
+              />
+            </div>
           </section>
 
           {/* ── THE SEATS — one chamber, three ways to read it ───────────────── */}
@@ -156,106 +274,82 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               projection={projection}
               projectionTotal={PROJECTION_SEATS}
               asAt={asAt}
+              /* §1.4: the seat dots are a control on the homepage and were inert
+                 here. A string rather than a handler, because this is a server
+                 component and a function cannot cross that boundary — tapping a
+                 seat scrolls to that party's row in #parties, which is the pick
+                 this page has to offer. */
+              pickScrollsToIdPrefix="party-row-"
             />
           </section>
 
-          {/* The "Face them off" tool sat here — pick an issue, read two parties'
-              stances on a flip card, tap the one you agree with. Pulled out
-              because this page had grown to 17.6 screens on a phone and the
-              face-off was 2.1 of them. The component is still in the tree at
-              components/elections/policy-faceoff.tsx, unmounted, if it comes
-              back. Nothing linked to its #faceoff anchor. */}
-
-          {/* ── YOUR ELECTORATE — the closest races, then the marginality map ── */}
+          {/* ── CLOSEST RACES ───────────────────────────────────────────────── */}
           <section id="your-seat" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Your electorate" title="The seats to watch in 2026"
-              sub="Where 2023 was closest is where 2026 will likely be fought hardest. These were the five tightest results."
-              link={{ href: '/battlegrounds', label: 'All battlegrounds' }} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              {/* `embedded` drops the teaser's own eyebrow/title so this zone keeps
-                  one header, and strips its standalone section padding. */}
-              <BattlegroundsTeaser embedded />
-
-              {/* The cards and the map were stacked with nothing joining them, so
-                  the map read as a separate widget rather than the same five seats
-                  shown in context. This states that they share one scale. */}
-              <div style={{ display: 'flex', gap: 11, alignItems: 'flex-start', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 14, padding: '13px 16px' }}>
-                <MapPin style={{ width: 17, height: 17, color: '#dc2626', flexShrink: 0, marginTop: 2 }} />
-                <p style={{ fontSize: 13.5, color: '#3f372f', fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>
-                  <b style={{ color: INK }}>Those five are the red seats on the map below.</b> It shows all 72 electorates
-                  on the same scale, so the closer the 2023 result the hotter the colour, down to light green for the
-                  safest. Tap any seat for its contest, not just the closest ones.
-                </p>
-              </div>
-
-              <div style={{ border: `1px solid ${BORDER}`, borderRadius: 18, overflow: 'hidden', background: '#fff', boxShadow: '0 1px 2px rgba(42,18,6,.04)' }}>
-                <div style={{ padding: 18 }}>
-                  <BattlegroundsMap embedded />
-                </div>
-              </div>
+            <ZoneHead eyebrow="Your electorate" title="Closest races" accent={ACCENT.seat}
+              infoLabel="Why these five seats">
+              <InfoHeading accent={ACCENT.seat}>Why these five</InfoHeading>
+              <InfoText>
+                Where {base.year} was closest is where {e.year} will likely be fought hardest. These were the five
+                tightest results of the 72 electorates, by winning margin.
+              </InfoText>
+              <InfoHeading accent={ACCENT.seat}>What the labels mean</InfoHeading>
+              <InfoText>
+                Ultra-marginal is a {base.year} majority under 1,500 votes, marginal under 3,500, competitive under
+                7,000. Every other electorate is on the full map, coloured on the same scale, down to light green for the
+                safest.
+              </InfoText>
+            </ZoneHead>
+            <ClosestRaces races={races} year={base.year} />
+            {/* §2.6, one per section: the map WAS this block, 520px of Leaflet
+                plus a 420px "Tap a seat" panel, arriving open. It is a
+                destination now, and the sign is pulled out to the page gutter
+                so it starts on the same vertical line as every other signpost
+                on the site (§8, "buttons with triangles always on margin same
+                place"). */}
+            <div style={{ marginTop: 18, marginLeft: 'calc(-1 * clamp(18px, 5vw, 36px))' }}>
+              <SignShape href="/battlegrounds" color={ACCENT.seat} fg="#fff">
+                All 72 seats on the map
+              </SignShape>
             </div>
           </section>
 
-          {/* ── DEBATES / NEWS ───────────────────────────────────────────────── */}
+          {/* ── LEADERS & THE PRESS ──────────────────────────────────────────
+              The heading used to switch on `debates.length > 0`, but that list
+              is debate OR presser — and no video has ever carried the debate
+              flag (debate season is Sep–Oct), so the page promised "Debates &
+              leader interviews" while showing press standups. It is one heading
+              now, matching the jump chip that points at it (§4), and what is
+              actually in the rail is the line underneath. */}
           {railVideos.length > 0 && (
             <section id="debates" style={{ scrollMarginTop: 80 }}>
-              {/* Title reflects what's actually in the rail. It used to switch on
-                  `debates.length > 0`, but that list is debate OR presser — and no
-                  video has ever carried the debate flag (debate season is Sep–Oct),
-                  so the page promised "Debates & leader interviews" while showing
-                  press standups. */}
-              <ZoneHead eyebrow="Watch" title={hasRealDebates ? 'Debates & leader interviews' : 'Leaders & the press'}
-                sub={hasRealDebates
-                  ? 'Leaders in their own words. Debates and interviews as they’re published.'
-                  : 'Leaders in their own words. Press standups and campaign updates for now, with debates appearing here once they’re broadcast.'} />
+              <ZoneHead eyebrow="Watch" title="Leaders & the press" accent={ACCENT.watch}
+                infoLabel="What is in this rail and what is missing"
+                /* §1.5: say what is missing, in one line, rather than going
+                   silent or burying it. The why is behind the (i). */
+                note={hasRealDebates
+                  ? `The latest ${railVideos.length} clips, debates included.`
+                  : `The latest ${railVideos.length} clips. No debates broadcast yet.`}>
+                <InfoHeading accent={ACCENT.watch}>Leaders in their own words</InfoHeading>
+                <InfoText>
+                  Press standups and campaign updates, straight from the parties&rsquo; and broadcasters&rsquo; own
+                  channels, newest first.
+                </InfoText>
+                {!hasRealDebates && (
+                  <>
+                    <InfoHeading accent={ACCENT.watch}>Where the debates are</InfoHeading>
+                    <InfoText>
+                      The televised leaders&rsquo; debates are not scheduled until the campaign proper. They will appear
+                      in this rail once they are broadcast, alongside the standups.
+                    </InfoText>
+                  </>
+                )}
+              </ZoneHead>
               <VideoSection videos={railVideos} hideHeading />
             </section>
           )}
-
-          {/* The 2023 hemicycle used to live here, at the bottom of the page,
-              1600px below the coalition builder that drew the same chart from
-              poll estimates. Both are now tabs on #seats, above. */}
-
-          {/* Election-night scaffold */}
-          <div style={{ display: 'flex', gap: 10, padding: '16px 18px', background: SURFACE, border: `1px dashed ${TERTIARY}`, borderRadius: 14 }}>
-            <Info style={{ width: 17, height: 17, color: SECONDARY, flexShrink: 0, marginTop: 1 }} />
-            <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-              <b style={{ color: INK }}>On election night,</b> live results appear here as the Electoral Commission publishes them: party
-              vote, seats, the new hemicycle, and a side-by-side comparison against {base.year}.
-            </p>
-          </div>
-
-          {/* Source */}
-          <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 14 }}>
-            <a href={e.sourceUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none' }}>
-              Enrolment &amp; voting information: Electoral Commission (vote.nz) <ArrowUpRight style={{ width: 11, height: 11, display: 'inline', verticalAlign: '-1px' }} />
-            </a>
-          </div>
 
         </div>
       </div>
     </div>
   )
 }
-
-/** Consistent zone header — a jade eyebrow, a title, an optional one-liner, and an
- *  optional right-aligned link. Gives the long page a steady visual rhythm. */
-function ZoneHead({ eyebrow, title, sub, link }: {
-  eyebrow: string; title: string; sub?: string; link?: { href: string; label: string }
-}) {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 12, flexWrap: 'wrap', marginBottom: 16 }}>
-      <div style={{ minWidth: 0 }}>
-        <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 7 }}>{eyebrow}</div>
-        <h2 style={{ fontSize: 'clamp(21px, 3.6vw, 27px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.15 }}>{title}</h2>
-        {sub && <p style={{ fontSize: 14.5, color: SECONDARY, fontFamily: MANROPE, margin: '8px 0 0', lineHeight: 1.55, maxWidth: 660 }}>{sub}</p>}
-      </div>
-      {link && (
-        <Link href={link.href} style={{ ...cta, whiteSpace: 'nowrap', flexShrink: 0 }}>{link.label} <ArrowRight style={ic} /></Link>
-      )}
-    </div>
-  )
-}
-
-const ic: React.CSSProperties = { width: 14, height: 14 }
-const cta: React.CSSProperties = { display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }

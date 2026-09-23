@@ -40,26 +40,37 @@ export function SectionRail() {
   const [active, setActive] = React.useState<string | null>(null)
   const wrapRef = React.useRef<HTMLElement>(null)
 
-  // Appear only once the hero's own chips are gone.
-  React.useEffect(() => {
-    const hero = document.getElementById(HERO_JUMP_ID)
-    if (!hero) return
-    const io = new IntersectionObserver(
-      ([e]) => {
-        setVisible(!e.isIntersecting)
-        if (e.isIntersecting) setOpen(false)
-      },
-      { threshold: 0 },
-    )
-    io.observe(hero)
-    return () => io.disconnect()
-  }, [])
-
-  // Current section = the last one whose top has passed the offset.
+  /**
+   * ONE scroll read for both answers: am I visible, and which section is this.
+   *
+   * Visibility used to be a second IntersectionObserver on the hero's chip row,
+   * which is the §5.12 failure mode exactly, and on this page it is not
+   * theoretical: the chips it watches are jump links. Tap one, land four
+   * screens down, and the observer never fires — because an observer reports
+   * CHANGES in intersection, and "above the viewport" and "below the viewport"
+   * are the same non-intersecting state. Jump between them and no callback runs
+   * at all, so the flag keeps whatever it had and the rail stays hidden for the
+   * rest of the session. The symptom is "I used the nav once and then it
+   * disappeared", which reads as a broken rail rather than a missed callback.
+   *
+   * Reading `getBoundingClientRect().bottom > 0` on scroll always gives the
+   * right answer, whether the reader got there by scrolling or by jumping.
+   * rAF-throttled and passive, so it measures once a frame at most.
+   */
   React.useEffect(() => {
     let frame = 0
     const read = () => {
       frame = 0
+
+      // The chips are gone once their row's bottom edge is above the viewport.
+      const hero = document.getElementById(HERO_JUMP_ID)
+      const chipsGone = hero ? hero.getBoundingClientRect().bottom <= 0 : true
+      setVisible(chipsGone)
+      // Scrolling back up to the chips closes the rail: two navs open at once
+      // is one too many, and the reader has plainly stopped using this one.
+      if (!chipsGone) setOpen(false)
+
+      // Current section = the last one whose top has passed the offset.
       let current: string | null = null
       for (const s of ELECTION_SECTIONS) {
         const el = document.getElementById(s.id)
@@ -104,7 +115,10 @@ export function SectionRail() {
           position: fixed; z-index: 1200;
           right: calc(2px + env(safe-area-inset-right, 0px));
           top: 50%; transform: translateY(-50%);
-          display: flex; flex-direction: column; gap: 5px;
+          /* gap 0, not 5: the items carry their own 10px of vertical padding to
+             make a 44px hit area, so a gap on top of that would space the dots
+             54px apart for no reason. See .rail-item. */
+          display: flex; flex-direction: column; gap: 0;
           padding: 5px; border-radius: 999px;
           background: rgba(255,255,255,.92); border: 1px solid #e6e2da;
           box-shadow: 0 2px 10px rgba(42,18,6,.13);
@@ -134,10 +148,20 @@ export function SectionRail() {
           font-family: ${MANROPE}; font-size: 12.5px; font-weight: 800; color: ${ESPRESSO};
           white-space: nowrap; padding-right: 5px;
         }
-        /* The dots stay a comfortable tap target without the rail getting fat:
-           the hit area is padded, the painted dot is not. */
-        .rail-item { min-height: 24px; }
-        .rail[data-open='false'] .rail-item { justify-content: center; width: 20px; }
+        /* §3.1. The dot is 11px and the item was 20x24px, well under the 44px
+           minimum — and globals.css scopes that minimum to <button>, so an <a>
+           never receives it. The ironic tell: .rail-toggle IS a button, so the
+           control that REVEALS this list was already twice the size of anything
+           in it.
+
+           The hit area is padded and the painted dot is not, which is the
+           pattern used four times elsewhere. No negative margin here, unlike
+           the pill version: six of these stack vertically, and pulling the
+           margin back would overlap each item's hit area with its neighbour's
+           by 15px, so a tap in the overlap would go to whichever was painted
+           last rather than to the dot the finger was nearest. */
+        .rail-item { min-height: 24px; padding: 10px 0; }
+        .rail[data-open='false'] .rail-item { justify-content: center; width: 24px; }
 
         .rail-toggle {
           margin-top: 3px; padding-top: 6px; border-top: 1px solid #ece8e0;

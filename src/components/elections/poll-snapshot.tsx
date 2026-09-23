@@ -1,15 +1,35 @@
 'use client'
 
 /**
- * PollSnapshot — the condensed poll-of-polls for the Election Centre. Shows just
- * the party-vote averages with the 5% line by default; the full breakdown (every
- * poll behind the average, preferred PM, turnout) is tucked behind an expander so
- * it stops dominating the page. Every number stays sourced and labelled.
+ * PollSnapshot — the way into the numbers behind the party-vote bars.
+ *
+ * It is now one outlined chip and a panel that opens under it: §2.6's
+ * exception, the same move the bills block made, because the way out of a block
+ * whose subject is directly above it is a small chip INSIDE the box rather than
+ * a signpost of its own.
+ *
+ * WHAT IT USED TO BE, and why it is not: a 227px card with a 15px title, a
+ * metadata line, a four-sentence note and an expander. The note explained the
+ * 5% threshold, which was the THIRD statement of that rule within 400px (the
+ * bars draw the mark and label it, the chamber's caveat says it again, and
+ * two-votes says it in prose); it explained what "Others" means; and it said
+ * "Politika reports polls, it doesn't predict the result". All of that is worth
+ * saying and none of it needed a card: it is in the #parties (i) now, once, with
+ * the rest of the how-to-read-this material (§1.2, §1.3).
+ *
+ * The per-party bars went earlier, for the same kind of reason. They were drawn
+ * twice on this page: once as this card's compact list and again, immediately
+ * above, as the shared-axis rows in PartiesContesting — same parties, same
+ * colours, same order, same 5% marker. The rows carry more, so they stayed.
+ *
+ * What is behind the chip exists NOWHERE else on the site: the individual polls
+ * the average is built from with their fieldwork dates and links, the preferred
+ * PM readings, and the 2023 turnout and enrolment baseline. Deleting the card
+ * outright would have taken all of that with it to remove one duplicated chart.
  */
 
 import * as React from 'react'
-import Link from 'next/link'
-import { TrendingUp, ChevronDown, UserRound, Users2, ArrowUpRight } from 'lucide-react'
+import { ChevronDown, TrendingUp, UserRound, Users2, ArrowUpRight } from 'lucide-react'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
@@ -19,7 +39,7 @@ export interface PollRow { pollster: string; fieldwork: string; parties: Partial
 export interface PreferredPMData { asOf: string; pollster: string; candidates: { name: string; party: PartySlug; pct: number }[] }
 
 export function PollSnapshot({
-  othersPct, pollCount, asAt, pollParties, polls, preferredPM, turnout, enrolment, enrolmentUrl, pollsSource,
+  othersPct, pollCount, asAt, pollParties, polls, preferredPM, turnout, enrolment, participationSource, pollsSource,
 }: {
   othersPct: number | null
   pollCount: number
@@ -29,63 +49,60 @@ export function PollSnapshot({
   preferredPM: PreferredPMData
   turnout: number
   enrolment: number
-  enrolmentUrl: string
+  /**
+   * Where the 2023 turnout and enrolment figures come from.
+   *
+   * The only link beside those two numbers used to be ENROLMENT_LIVE_URL,
+   * labelled "Live enrolment stats", which is the CURRENT enrolment figure and
+   * not the source of either 2023 one — a link that looks like a citation and
+   * evidences nothing (§1.8). PARTICIPATION_SOURCE was already in polls-data.ts
+   * and was read only by the unmounted poll-tracker.tsx.
+   */
+  participationSource: string
   pollsSource: string
 }) {
   const [open, setOpen] = React.useState(false)
 
   return (
-    <div style={{ border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', overflow: 'hidden' }}>
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '15px 18px 4px' }}>
-        <TrendingUp style={{ width: 16, height: 16, color: JADE }} />
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 15, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Where these numbers come from</div>
-          <div style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>
-            Poll of polls · average party vote across {pollCount} polls · as at {asAt}
-            {othersPct != null && <> · Others {othersPct}%</>}
-          </div>
-        </div>
-      </div>
-
-      {/*
-        The per-party bars are gone from here.
-        They were drawn twice on this page: once as this card's compact list and
-        again, immediately above, as the shared-axis rows in PartiesContesting —
-        same parties, same colours, same order, same 5% marker. The rows carry
-        more (seats, sources, all seventeen contesting parties, a link into each
-        party page), so they are the ones that stay.
-
-        What this card keeps is everything that existed nowhere else: how many
-        polls the average is drawn from and when, the Others figure, the note
-        about what Others means and what a poll is not, and the detail behind
-        the expander — the individual polls, preferred PM, turnout and
-        enrolment. Deleting the card outright would have taken all of that with
-        it to remove one duplicated chart.
-      */}
-      <div style={{ padding: '4px 18px 16px' }}>
-        <div style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6 }}>
-          A party needs <b>5%</b> of the party vote, or one electorate, to enter Parliament. <b>Others</b> is the smaller
-          registered parties pollsters group together and don’t report individually. <Link href="/party-inclusion" style={{ color: JADE, fontWeight: 700, textDecoration: 'none' }}>See every contesting party</Link>. Politika reports polls. It doesn’t predict the result.
-        </div>
-      </div>
-
-      {/* Expander */}
+    <div>
+      {/* The chip. §3.1: the button is the hit area at 44px, the outlined pill
+          inside it is what you look at. */}
       <button
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, padding: '11px', border: 'none', borderTop: `1px solid ${BORDER}`, background: SURFACE, cursor: 'pointer', fontFamily: MANROPE, fontSize: 12.5, fontWeight: 800, color: JADE }}
+        style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}
       >
-        {open ? 'Hide the detail' : 'The polls behind this, preferred PM & turnout'}
-        <ChevronDown style={{ width: 15, height: 15, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} />
+        <span style={{
+          display: 'inline-flex', alignItems: 'center', gap: 7,
+          padding: '6px 13px', borderRadius: 999,
+          background: open ? '#ecfdf5' : '#fff', border: `1.5px solid ${open ? JADE : BORDER}`,
+          color: open ? JADE : INK, fontFamily: MANROPE, fontSize: 12.5, fontWeight: 800,
+          transition: 'background-color .2s ease, border-color .2s ease, color .2s ease',
+        }}>
+          <TrendingUp style={{ width: 14, height: 14 }} />
+          The polls behind this
+          <ChevronDown style={{ width: 14, height: 14, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} strokeWidth={3} />
+        </span>
       </button>
 
       {open && (
-        <div style={{ padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 20, borderTop: `1px solid ${BORDER}` }}>
+        <div style={{ marginTop: 10, border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 20 }}>
           {/* Individual polls */}
           <div>
-            <div style={{ fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 8 }}>The polls behind the average</div>
-            <div style={{ overflowX: 'auto' }}>
+            <div style={{ fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 2 }}>The polls behind the average</div>
+            <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginBottom: 8, lineHeight: 1.5 }}>
+              Poll of polls, an average of the latest poll from each company, as at {asAt}. It moves every time a new
+              poll is published.
+              {othersPct != null && <> Others sits at {othersPct}%.</>}
+            </div>
+            {/* §3.5's second-best answer. The table is 540px of eight columns
+                inside a 303px card and it carried overflowX with no fade and no
+                hint, so a reader saw four columns and no reason to think there
+                were more. `.scroll-x` and `.scroll-x-hint` are the shared pair
+                globals.css already provides for exactly this. Paging it the way
+                the coverage matrix pages topics is the spec's real answer and is
+                the better change when this block is next opened. */}
+            <div className="scroll-x" style={{ overflowX: 'auto', border: `1px solid ${BORDER}`, borderRadius: 13 }}>
               <table style={{ borderCollapse: 'collapse', width: '100%', minWidth: 540, fontFamily: MANROPE }}>
                 <thead>
                   <tr>
@@ -109,6 +126,9 @@ export function PollSnapshot({
                   ))}
                 </tbody>
               </table>
+            </div>
+            <div className="scroll-x-hint" style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, marginTop: 6 }}>
+              Swipe across for every party in each poll.
             </div>
           </div>
 
@@ -137,7 +157,7 @@ export function PollSnapshot({
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
                 <Users2 style={{ width: 15, height: 15, color: JADE }} />
-                <span style={{ fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Turnout & enrolment</span>
+                <span style={{ fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Turnout &amp; enrolment</span>
                 <span style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE }}>2023 baseline</span>
               </div>
               <div style={{ display: 'flex', gap: 18, marginBottom: 10 }}>
@@ -150,15 +170,18 @@ export function PollSnapshot({
                   <div style={{ fontSize: 11, color: SECONDARY, fontFamily: MANROPE, marginTop: 3 }}>Of eligible enrolled</div>
                 </div>
               </div>
-              <a href={enrolmentUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-                Live enrolment stats <ArrowUpRight style={{ width: 12, height: 12 }} />
+              <a href={participationSource} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
+                2023 turnout statistics <ArrowUpRight style={{ width: 12, height: 12 }} />
               </a>
             </div>
           </div>
 
+          {/* The separator here was missing, so this rendered as
+              "...published pollsaggregate ↗" — the same class of bug as the §4
+              em-dash sweep, a word sitting directly against a tag. */}
           <p style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-            Party-vote and preferred-PM figures compiled from published polls<a href={pollsSource} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>aggregate ↗</a>.
-            Poll-of-polls is a simple average of the latest poll from each company.
+            Party-vote and preferred-PM figures compiled from {pollCount} published polls.{' '}
+            <a href={pollsSource} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>The aggregate <ArrowUpRight style={{ width: 10, height: 10, display: 'inline', verticalAlign: '-1px' }} /></a>
           </p>
         </div>
       )}

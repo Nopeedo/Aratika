@@ -29,9 +29,11 @@
  */
 
 import * as React from 'react'
-import { Landmark, Check, Info, ArrowRight } from 'lucide-react'
+import { Landmark, Check, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { hemicycle } from '@/lib/mmp'
+import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
+import { PEER_HEADING } from './zone-head'
 import { PARTY_COLORS, PARTY_NAMES } from '@/constants/parties'
 import { SPECTRUM_ORDER, type PartyResult } from '@/constants/elections-data'
 import type { PartySlug } from '@/types'
@@ -52,6 +54,9 @@ function rimColor(hex: string): string | undefined {
 }
 
 const EMPTY = '#e4e3de'
+/** The #seats ink from constants/election-sections.ts, for the (i) beside the
+ *  heading: a block takes the colour of whatever it is about (§1.6). */
+const SEATS_ACCENT = '#1d4ed8'
 const RIGHT_BLOC: PartySlug[] = ['national', 'act', 'nzfirst']
 const LEFT_BLOC: PartySlug[] = ['labour', 'green', 'tpm']
 
@@ -62,7 +67,10 @@ type Mode = 'elected' | 'polls' | 'build'
 const TABS: { key: Mode; label: string }[] = [
   { key: 'elected', label: 'As elected' },
   { key: 'polls', label: 'If polls held' },
-  { key: 'build', label: 'Build a bloc' },
+  // §1.7: "bloc" is Parliament's word, and this tab said "Build a bloc"
+  // while the heading it produced said "Build a majority" — two names for one
+  // thing, neither of them a question a reader has. Both are the question now.
+  { key: 'build', label: 'Who could govern' },
 ]
 
 /**
@@ -99,7 +107,7 @@ function seatOrder(byParty: Record<string, number>): PartySlug[] {
 }
 
 export function SeatChamber({
-  elected, electedTotal, electedYear, electedSlug, projection, projectionTotal, asAt, home = false, heading, frameColor, frameLight, highlight, onPickParty,
+  elected, electedTotal, electedYear, electedSlug, projection, projectionTotal, asAt, home = false, heading, frameColor, frameLight, highlight, onPickParty, pickScrollsToIdPrefix,
 }: {
   elected: PartyResult[]
   electedTotal: number
@@ -132,6 +140,22 @@ export function SeatChamber({
    * chamber is a chart and nothing listens to a pick.
    */
   onPickParty?: (slug: string) => void
+  /**
+   * The same thing for a caller that cannot pass a function.
+   *
+   * §1.4 says the same interaction produces the same shape, and the seats were
+   * a control on the homepage and inert on the Election Centre — the dots
+   * looked identical and one of them did nothing. The Election Centre is a
+   * server component, so a handler cannot cross that boundary; a prefix can.
+   * Given one, tapping a seat navigates to `{prefix}{slug}`, which on that page
+   * is the party's own row in the list below.
+   *
+   * It sets the HASH rather than calling scrollIntoView, for two reasons: the
+   * row's `scroll-margin-top` is honoured by fragment navigation and not by a
+   * bare scroll, and `:target` lights the row for a moment so the reader can
+   * see which of seventeen they were sent to.
+   */
+  pickScrollsToIdPrefix?: string
 }) {
   const [mode, setMode] = React.useState<Mode>('elected')
   const [picked, setPicked] = React.useState<Set<PartySlug>>(new Set())
@@ -216,19 +240,26 @@ export function SeatChamber({
   // The big number under the chart: seats chosen while building, the chamber
   // size otherwise.
   const bigNumber = mode === 'build' ? chosenSeats : total
-  const caption = mode === 'build' ? `of ${total} · ${majority} to govern` : `seats · ${majority} for a majority`
+  const caption = mode === 'build' ? `of ${total}, ${majority} to govern` : `seats, ${majority} for a majority`
 
-  const title = mode === 'elected' ? `The Parliament you’re voting to change`
+  /* The elected tab's heading is "Parliament now" on the Election Centre, which
+     is the jump chip that points at it, verbatim (§4). It used to read "The
+     Parliament you're voting to change" while the chip said "The seats", one
+     chip away from another that said "Your seat" — two labels a reader could
+     not tell apart, neither naming where it went. The homepage is untouched:
+     it passes `heading` (ParliamentHeading), so `title` never renders there. */
+  const title = mode === 'elected' ? 'Parliament now'
     : mode === 'polls' ? 'If the polls held today'
-    : 'Build a majority'
+    : 'Who could govern'
+  /* One sub-line, the same on both variants now. The Election Centre used to
+     carry an extra sentence here about party membership changing since 2023;
+     that is an explanation of how to read the chart rather than a fact about
+     it, so it is in the (i) beside the heading (§1.2). The homepage's string
+     is unchanged, which is the point: the two variants no longer differ. */
   const sub = mode === 'elected'
-    // On the homepage the line is trimmed to the fact itself; the Election
-    // Centre keeps the membership-changes caveat, where the detail belongs.
-    ? home
-      ? `As elected at the ${electedYear} General Election.`
-      : `As elected at the ${electedYear} General Election. It doesn’t reflect any changes in party membership since.`
+    ? `As elected at the ${electedYear} General Election.`
     : mode === 'polls'
-    ? `A seat estimate from the poll averages as at ${asAt}. Polls are not a result.`
+    ? `A seat estimate from the poll of polls as at ${asAt}. Polls are not a result.`
     : `Under MMP the biggest party doesn’t automatically govern. A bloc needs ${majority} of ${total}. Tap parties to build one.`
 
   /**
@@ -245,9 +276,24 @@ export function SeatChamber({
    * outside it, does nothing rather than selecting whatever is least far.
    */
   const svgRef = React.useRef<SVGSVGElement>(null)
+  /* One handler, whichever way the caller asked for it. Everything below reads
+     `pick`, so the dots cannot end up tappable in one mode and inert in the
+     other. */
+  const pick = React.useMemo(() => {
+    if (onPickParty) return onPickParty
+    if (!pickScrollsToIdPrefix) return undefined
+    return (slug: string) => {
+      // The row may be folded away (the list shows six until asked for more),
+      // and a tap that silently does nothing is the thing §1.5 rules out — so
+      // fall back to the section itself, which is where the row lives.
+      const id = document.getElementById(`${pickScrollsToIdPrefix}${slug}`) ? `${pickScrollsToIdPrefix}${slug}` : 'parties'
+      window.location.hash = id
+    }
+  }, [onPickParty, pickScrollsToIdPrefix])
+
   const pickNearestSeat = (e: React.MouseEvent<SVGSVGElement>) => {
     const svg = svgRef.current
-    if (!svg || !onPickParty) return
+    if (!svg || !pick) return
     const ctm = svg.getScreenCTM()
     if (!ctm) return
     const pt = svg.createSVGPoint()
@@ -262,7 +308,7 @@ export function SeatChamber({
       if (!best || d < best.d) best = { party, d }
     })
     const hit = best as { party: string; d: number } | null
-    if (hit && hit.d <= geo.dotR * 4) onPickParty(hit.party)
+    if (hit && hit.d <= geo.dotR * 4) pick(hit.party)
   }
 
   return (
@@ -273,11 +319,23 @@ export function SeatChamber({
       </div>
       )}
 
-      {/* Three equal columns rather than a wrapping pill row: at 343px a row of
-          pills either wraps unevenly or scrolls sideways, and a toggle you have
-          to scroll to see the third option of is a toggle with two options. */}
+      {/* §2.2 pills, the same control as the bills status row and the party
+          directory's groups, in one neutral treatment (lit = #efece5 on INK).
+
+          It was a three-column segmented toggle in its own bordered tray: a
+          fourth pill system on a page that had four already, and 68px of a
+          phone screen once globals.css inflated the buttons to 44px. A §2.2 row
+          at the phone size is about 40px. No count on these: a count belongs on
+          a pill that filters a list, and these three are one chart read three
+          ways. Tapping the lit one does NOT clear, because unlike a filter
+          there is no "no mode" to clear back to.
+
+          §3.1: the button is the hit area, the span is the pill.
+
+          The whole block is inside {!home && ...}, so the homepage renders none
+          of it (§2.7). */}
       {!home && (
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 4, background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 12, padding: 4, marginBottom: 14 }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
         {TABS.map((t) => {
           const on = mode === t.key
           return (
@@ -285,22 +343,61 @@ export function SeatChamber({
               key={t.key}
               onClick={() => setMode(t.key)}
               aria-pressed={on}
-              style={{
-                padding: '9px 6px', borderRadius: 9, border: 'none', cursor: 'pointer',
-                fontFamily: MANROPE, fontSize: 13, fontWeight: 800, lineHeight: 1.2,
-                background: on ? '#fff' : 'transparent', color: on ? INK : TERTIARY,
-                boxShadow: on ? '0 1px 3px rgba(12,14,18,.10)' : 'none',
-              }}
+              style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}
             >
-              {t.label}
+              <span
+                className="status-pill"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', borderRadius: 999,
+                  background: on ? '#efece5' : '#fff',
+                  border: `2px solid ${on ? INK : BORDER}`,
+                  color: INK, fontFamily: MANROPE, fontWeight: 800, whiteSpace: 'nowrap',
+                  transition: 'background-color .2s ease, border-color .2s ease',
+                }}
+              >
+                {t.label}
+              </span>
             </button>
           )
         })}
       </div>
       )}
 
+      {/* The homepage supplies `heading`, so everything in the else branch, the
+          shared peer size and the (i) beside it, is Election Centre only. This h2
+          was clamp(20px, 4.4vw, 26px) beside a zone header at
+          clamp(21px, 3.6vw, 27px) and a 15px KeyDates title, so four peer
+          sections on one page ran at four different sizes (§4). */}
       {heading ?? (
-        <h2 style={{ fontSize: home ? 'clamp(28px,5.5vw,32px)' : 'clamp(20px, 4.4vw, 26px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: '0 0 5px' }}>{title}</h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '0 0 5px' }}>
+          <h2 style={{ fontSize: PEER_HEADING, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.15 }}>{title}</h2>
+          <InfoButton accent={SEATS_ACCENT} label="How to read this chamber" size={24}>
+            <InfoHeading accent={SEATS_ACCENT}>What the {electedYear} chart shows</InfoHeading>
+            <InfoText>
+              The House as the {electedYear} General Election returned it. It doesn&rsquo;t reflect any changes in party
+              membership since, and at least one MP has changed party, so this is what the election produced rather than
+              who sits where today.
+            </InfoText>
+            <InfoHeading accent={SEATS_ACCENT}>Why {electedTotal} seats and not {projectionTotal}</InfoHeading>
+            <InfoText>
+              Parliament is {projectionTotal} seats under normal conditions. {electedYear} returned {electedTotal},
+              because a party won more electorates than its party vote entitled it to. The extra seats are called an
+              overhang and they last the term.
+            </InfoText>
+            <InfoHeading accent={SEATS_ACCENT}>The seat estimate</InfoHeading>
+            <InfoText>
+              An estimate, not a prediction. Seats are a Sainte-Lagu&euml; calculation, the formula the Electoral
+              Commission uses to turn party-vote shares into seats, run over the current poll averages. The real result
+              depends on the vote, on electorate wins, and on each poll&rsquo;s margin of error. Which parties would
+              actually work together is their decision, not ours.
+            </InfoText>
+            <InfoText>
+              Only parties polling at or above the 5% threshold, or holding an electorate seat, can be given projected
+              seats. Other registered parties are contesting but don&rsquo;t yet register enough in polling to model,
+              which isn&rsquo;t a judgement on their standing.
+            </InfoText>
+          </InfoButton>
+        </div>
       )}
       <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 8px', maxWidth: 580, lineHeight: 1.55 }}>{sub}</p>
       {/* The homepage puts this link below the numbers instead, as a signpost
@@ -326,13 +423,18 @@ export function SeatChamber({
           ? { display: 'contents' }
           : { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(260px, 100%), 1fr))', gap: 18, alignItems: 'center' }}>
 
-          {/* Chart */}
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          {/* Chart. The column direction is for the number that now sits under
+              it in the DOM (see below) and is gated on !home for that reason:
+              the homepage has no second child here, and leaving its wrapper
+              exactly as it was means no homepage pixel can move (§2.7). */}
+          <div style={home
+            ? { display: 'flex', justifyContent: 'center' }
+            : { display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <svg
               ref={svgRef}
-              onClick={onPickParty ? pickNearestSeat : undefined}
+              onClick={pick ? pickNearestSeat : undefined}
               viewBox={home ? dome.viewBox : `0 0 ${geo.width} ${geo.height}`}
-              style={{ width: '100%', maxWidth: 460, cursor: onPickParty ? 'pointer' : undefined }}
+              style={{ width: '100%', maxWidth: 460, cursor: pick ? 'pointer' : undefined }}
               role="img"
               aria-label={mode === 'build' ? `${chosenSeats} of ${total} seats selected` : `Seat distribution, ${total} seats`}>
               {/* The frame, drawn first so the seats sit on it. */}
@@ -363,7 +465,7 @@ export function SeatChamber({
                 // space between dots belongs to its closest seat rather than
                 // to nothing. At this size a dot is about 6px across, which is
                 // a third of a finger.
-                const pick = onPickParty && party ? true : undefined
+                const named = pick && party ? true : undefined
                 return (
                   <circle
                     key={i}
@@ -383,16 +485,38 @@ export function SeatChamber({
                         keyboard targets: the tiles above are the same choice
                         as real buttons, so this adds a way in rather than
                         being the only one. */}
-                    {pick && party && <title>{PARTY_NAMES[party as PartySlug]?.short ?? party}</title>}
+                    {named && party && <title>{PARTY_NAMES[party as PartySlug]?.short ?? party}</title>}
                   </circle>
                 )
               })}
-              {/* The chamber total sits in the middle of the arc — but not on
-                  the homepage, where the number under the dome is the selected
-                  party's seat count and two figures there read as one. */}
-              {!home && <text x={geo.width / 2} y={geo.height - 30} textAnchor="middle" style={{ fontFamily: MANROPE, fontWeight: 800, fontSize: 31, fill: mode === 'build' && hasMajority ? JADE : INK }}>{bigNumber}</text>}
-              {!home && <text x={geo.width / 2} y={geo.height - 13} textAnchor="middle" style={{ fontFamily: MANROPE, fontWeight: 600, fontSize: 12, fill: TERTIARY }}>{caption}</text>}
             </svg>
+
+            {/*
+              THE NUMBER IS DOM TEXT, NOT SVG TEXT.
+
+              It used to be two <text> nodes inside the chart, at fontSize 31 and
+              12 in SVG user units. The viewBox is 0 0 548 288 and on the
+              Election Centre the chart column is minmax(min(260px, 100%), 1fr)
+              inside a 303px card with 16px of padding, so the SVG renders about
+              271px wide: a scale of 0.4945. The 31 came out at 15.3px and the 12
+              at 5.9px. "seats, {majority} for a majority" was unreadable on
+              every phone made.
+
+              This is §3.2 in its SVG form: an inline value that no media query
+              can reach, because it is not a CSS pixel at all. The homepage
+              variant already puts its number in the DOM for the same reason,
+              which is why only the !home branch was wrong.
+
+              Sitting under the chart rather than in the arc's opening also
+              stops it colliding with the innermost seat row, which is what
+              pinned it to those two y offsets in the first place.
+            */}
+            {!home && (
+              <div style={{ textAlign: 'center', marginTop: -6 }}>
+                <div style={{ fontFamily: MANROPE, fontWeight: 800, fontSize: 31, lineHeight: 1.05, letterSpacing: '-.02em', color: mode === 'build' && hasMajority ? JADE : INK }}>{bigNumber}</div>
+                <div style={{ fontFamily: MANROPE, fontWeight: 600, fontSize: 12, color: TERTIARY, marginTop: 2 }}>{caption}</div>
+              </div>
+            )}
           </div>
 
           {/* Numbers. Not on the homepage: the party's own seat count sits
@@ -458,19 +582,16 @@ export function SeatChamber({
         </div>
       </div>
 
-      {/* Only the two tabs built on poll estimates carry the caveat. Showing it
-          against the 2023 result would attach a warning to a published figure. */}
-      {mode !== 'elected' && (
-        <div style={{ display: 'flex', gap: 8, marginTop: 12, padding: '10px 12px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10 }}>
-          <Info style={{ width: 15, height: 15, color: SECONDARY, flexShrink: 0, marginTop: 1 }} />
-          <p style={{ fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.55 }}>
-            An estimate, not a prediction. Seats are a Sainte-Laguë calculation from current poll averages; the real result depends on the
-            vote, electorate wins and each poll’s margin of error.{mode === 'build' && ' Which parties would actually work together is their decision, not ours.'}{' '}
-            Only parties polling at or above the <b>5%</b> threshold (or holding an electorate seat) can be projected seats. Other registered
-            parties are contesting but don’t yet register enough in polling to model, which isn’t a judgement on their standing.
-          </p>
-        </div>
-      )}
+      {/* The 90px "an estimate, not a prediction" card that sat here is in the
+          (i) beside the heading. Every word of it survives: the Sainte-Laguë
+          method, now glossed rather than left as a term (§1.7), the margin of
+          error, whose decision a coalition is, and the threshold rule. It is an
+          explanation of how to read a chart, which is §1.2's definition of a
+          bubble, and the sub-line under the polls tab still says outright that
+          polls are not a result, where a reader cannot miss it.
+
+          The home variant never rendered this branch, so no homepage pixel
+          moves (§2.7). */}
     </div>
   )
 }

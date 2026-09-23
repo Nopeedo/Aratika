@@ -11,14 +11,30 @@
  * Order here IS the order on the page. If a section moves in
  * components/elections/upcoming-view.tsx, move it here too — the rail highlights
  * by scroll position, so a list out of order shows the wrong section as current.
+ *
+ * LABELS ARE THE HEADINGS THEY JUMP TO (§1.7, §4). They used to be their own
+ * vocabulary: "Your seat" landed on "The seats to watch in 2026" and sat one
+ * chip away from "The seats", which landed on "The Parliament you're voting to
+ * change" — two chips a reader could not tell apart, neither of them naming
+ * where it went. Each label below is now the heading verbatim, or its opening
+ * words where the heading runs long. Changing one means changing the other.
  */
 
 export interface ElectionSection {
   /** Matches the `id` on the <section> in upcoming-view.tsx. */
   id: string
   label: string
-  /** Pale fill and the deep 700-level ink used for border, dot and text. */
-  tint: string
+  /**
+   * The dot colour on the floating rail, and nothing else.
+   *
+   * There used to be a `tint` beside this and the hero chips wore both: a pale
+   * fill and a 2px section-coloured border, six different hues in one row. That
+   * is a second colour system on a page where colour already means party (the
+   * bars in #parties) and status (the red enrolment deadline), which §1.6 rules
+   * out — so the chips are one neutral §2.2 treatment now. The rail keeps the
+   * per-section ink because there the dot is the ONLY signal: collapsed, six
+   * identical grey dots say nothing about which one you are on.
+   */
   ink: string
 }
 
@@ -27,12 +43,12 @@ export const ELECTION_SECTIONS: ElectionSection[] = [
   // 11px the two reds are ~20 degrees of hue apart, which is not a difference
   // you can read in a dot. Green sits ~50 degrees off the cyan next to it, and
   // matches the enrol button this section owns.
-  { id: 'key-dates', label: 'Key dates', tint: '#ecfdf3', ink: '#15803d' },
-  { id: 'your-vote', label: 'Your vote', tint: '#ecfeff', ink: '#0e7490' },
-  { id: 'parties', label: 'The parties', tint: '#f5f3ff', ink: '#6d28d9' },
-  { id: 'seats', label: 'The seats', tint: '#eff4ff', ink: '#1d4ed8' },
-  { id: 'your-seat', label: 'Your seat', tint: '#fef1f2', ink: '#be123c' },
-  { id: 'debates', label: 'Watch', tint: '#fffbeb', ink: '#b45309' },
+  { id: 'key-dates', label: 'Key dates', ink: '#15803d' },
+  { id: 'your-vote', label: 'How your vote works', ink: '#0e7490' },
+  { id: 'parties', label: 'Every party', ink: '#6d28d9' },
+  { id: 'seats', label: 'Parliament now', ink: '#1d4ed8' },
+  { id: 'your-seat', label: 'Closest races', ink: '#be123c' },
+  { id: 'debates', label: 'Leaders & the press', ink: '#b45309' },
 ]
 
 /** The hero's chip row carries this id so the rail can watch it and only appear

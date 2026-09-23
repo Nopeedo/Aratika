@@ -1,6 +1,8 @@
+'use client'
+
 /**
  * PartiesContesting — every registered party contesting the party vote, one to a
- * row, all on a shared bar axis with the 5% threshold drawn once down the group.
+ * row, all on a shared bar axis with the 5% threshold drawn once under the list.
  *
  * This was a grid of tiles, each filling like a glass to that party's share.
  * The trouble was that each tile filled its OWN box from its own floor, so
@@ -14,12 +16,22 @@
  * The whole row is the link to that party's page. That was the tiles' main job
  * and it had to survive the change.
  *
+ * ONE LIST, §2.2 PILLS OVER IT. It used to be two headed groups plus a third
+ * sub-block of leftovers: "In Parliament", "Also registered to contest", and
+ * "Pollsters don't report these 6 separately" with six pc-chips under it. That
+ * is the filter-the-reader-operates-by-scrolling that §2.14 deleted from
+ * /parties, and the pc-chip was a fourth card shape on a page that already had
+ * three. One row of pills carries the same three groups and the same counts
+ * over one list, and the labels are /parties' labels exactly — "No seats yet",
+ * not "Also registered to contest", because a reader moving between the two
+ * pages should not have to learn the Commission's vocabulary twice (§1.7, §4).
+ *
  * Every registered party appears, grouped by whether they hold seats now — see
  * /party-inclusion.
  *
- * ORDER. The parliamentary group stays in seat order — a fact about the House
- * that exists. The contesting group is ordered by the most recent published
- * figure for each party.
+ * ORDER. The parliamentary parties stay in seat order and stay first — a fact
+ * about the House that exists. The rest are ordered by the most recent
+ * published figure for each party.
  * This section used to be alphabetical on the reasoning that any ordering by
  * support is a ranking, which left TOP on 6.1% below ALCP and Alliance — an
  * ordering that is neutral in construction but misleading to read, since the
@@ -27,9 +39,9 @@
  *
  * The six parties pollsters do not break out separately have no reading to
  * order by, so they keep the alphabetical order among themselves and sit last,
- * with the group's note saying that means unmeasured rather than zero. Ordering
- * them by their occasional footnote figures would rank them on numbers the
- * fill bars deliberately refuse to draw. The wording on /party-inclusion was
+ * with a note under the list saying that means unmeasured rather than zero.
+ * Ordering them by their occasional footnote figures would rank them on numbers
+ * the fill bars deliberately refuse to draw. The wording on /party-inclusion was
  * changed with this — it promised alphabetical order, and a promise the site
  * does not keep is worse than either ordering.
  *
@@ -44,18 +56,18 @@
  * inside the track, or say plainly that there isn't one.
  */
 
+import { useState } from 'react'
 import Link from 'next/link'
+import { ChevronDown } from 'lucide-react'
 import { PARTY_COLORS, PARTY_NAMES, CURRENT_SEATS, PARLIAMENTARY_PARTIES, NON_PARLIAMENTARY_CONTESTING } from '@/constants/parties'
 import { MINOR_PARTY_READINGS } from '@/constants/polls-history'
 import type { PartySlug } from '@/types'
 import { MANROPE, INK, SECONDARY, TERTIARY, BORDER } from '@/constants/theme'
 
-const WARM = '#5b3d2a', LINE = '#e9e4db'
-
 /**
  * The bar scale. FULL_AT is the width a bar reaches at 100%, THRESHOLD is where
  * the 5% mark sits inside every track — identical on every row, which is what
- * lets the marks join into one line down the group.
+ * lets the marks join into one line down the list.
  */
 const FULL_AT = 35
 const THRESHOLD = 5
@@ -64,6 +76,19 @@ const THRESHOLD = 5
 const fillPct = (pct: number) => Math.max(1.5, (Math.min(pct, FULL_AT) / FULL_AT) * 100)
 /** Where the 5% line sits in that zone — identical on every tile. */
 const THRESH_PCT = (THRESHOLD / FULL_AT) * 100
+
+/** Rows shown before the rest are folded away (§3.6). Six rather than five,
+ *  because six IS the parliamentary group: the cut lands exactly where the
+ *  reader's own mental line is, rather than one row inside it. */
+const VISIBLE = 6
+
+/** §3.6's mask, stops copied verbatim from defining-bills.tsx. The fade has to
+ *  reach up INTO the last row to be visible at all: the list carries 34px of
+ *  bottom padding for the control to sit in, so a 46px fade spent almost all of
+ *  itself on empty space and the rows cut off square. */
+const FOLD_MASK = 'linear-gradient(to bottom, #000 0%, #000 calc(100% - 86px), rgba(0,0,0,.12) calc(100% - 26px), transparent calc(100% - 10px))'
+
+type Group = 'all' | 'parliament' | 'no-seats' | 'not-polled'
 
 /** Fade a party's own colour to a tint. The gauge is drawn in the party's colour
  *  at low alpha over paper, so one helper covers every party without needing a
@@ -81,15 +106,15 @@ function fmtDate(iso: string): string {
 }
 
 /**
- * Orders the contesting group by the most recent published figure for each
- * party: the poll-of-polls share where a party is polled individually, and
+ * Orders the non-parliamentary parties by the most recent published figure for
+ * each: the poll-of-polls share where a party is polled individually, and
  * otherwise the last itemised reading a pollster published for it.
  *
- * NOT used for the parliamentary group, which stays in seat order. Seats held
+ * NOT used for the parliamentary parties, which stay in seat order. Seats held
  * is a fact about the Parliament that exists; poll share is a projection about
  * the one that might. Sorting that group by polling put Labour above National
  * on a page describing the current House, which is a different claim than the
- * one the group heading makes.
+ * one the list makes.
  *
  * Parties pollsters never break out have no figure to order by, so they keep
  * their incoming alphabetical order and sit last. A missing reading is not a
@@ -118,11 +143,44 @@ function hasAnyFigure(slug: PartySlug, pctBySlug: Map<PartySlug, number>): boole
   return pctBySlug.has(slug) || MINOR_PARTY_READINGS[slug] !== undefined
 }
 
-export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number }[] }) {
+export function PartiesContesting({ pop, asAt }: {
+  pop: { slug: PartySlug; pct: number }[]
+  /** The date the averages are current to. It used to be printed twice
+   *  elsewhere and nowhere here, which is where the seventeen bars actually
+   *  are. §4: say the date on anything that ages. */
+  asAt?: string
+}) {
   const pctBySlug = new Map(pop.map((p) => [p.slug, p.pct]))
+  const [group, setGroup] = useState<Group>('all')
+  const [showAll, setShowAll] = useState(false)
+
+  const ordered: PartySlug[] = [
+    ...PARLIAMENTARY_PARTIES,
+    ...orderByMeasure(NON_PARLIAMENTARY_CONTESTING, pctBySlug),
+  ]
+  const notPolled = ordered.filter((s) => !hasAnyFigure(s, pctBySlug))
+
+  const inGroup = (slug: PartySlug): boolean => {
+    if (group === 'all') return true
+    if (group === 'parliament') return PARLIAMENTARY_PARTIES.includes(slug)
+    if (group === 'no-seats') return !PARLIAMENTARY_PARTIES.includes(slug)
+    return !hasAnyFigure(slug, pctBySlug)
+  }
+
+  const matching = ordered.filter(inGroup)
+  const hidden = Math.max(0, matching.length - VISIBLE)
+  const collapsed = !showAll && hidden > 0
+  const shown = collapsed ? matching.slice(0, VISIBLE) : matching
+
+  const counts: Record<Group, number> = {
+    all: ordered.length,
+    parliament: PARLIAMENTARY_PARTIES.length,
+    'no-seats': NON_PARLIAMENTARY_CONTESTING.length,
+    'not-polled': notPolled.length,
+  }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+    <div>
       {/*
         Two sizes, one layout: the name and value columns narrow on a phone so
         the bar keeps as much of the width as possible, and the full party name
@@ -140,16 +198,20 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
            Fixed name and value columns, identical on every row, are what make
            the tracks align; the 5% mark then sits at the same offset inside
            every track, and each mark overhangs the row gap so the segments meet
-           and read as one line down the group. */
+           and read as one line down the list. */
         .pc-rows { --pc-name: 152px; --pc-val: 66px; display: flex; flex-direction: column; }
         .pc-row {
           display: grid; grid-template-columns: var(--pc-name) 1fr var(--pc-val);
           align-items: center; gap: 12px; padding: 6px 8px; margin: 0 -8px;
           border-radius: 9px; text-decoration: none; position: relative;
           transition: background-color .12s ease;
+          scroll-margin-top: 88px;
         }
         .pc-row:hover { background: rgba(42,18,6,.04); }
         .pc-row:focus-visible { outline: 2px solid #2A1206; outline-offset: 1px; }
+        /* Landed on from a seat tap in the chamber above: the row lights for a
+           moment so the reader can see which of seventeen they were sent to. */
+        .pc-row:target { background: rgba(42,18,6,.07); }
         /* One line on a desktop. "Outdoors & Freedom" wrapped at 116px and that
            single row stood 60px against everyone else's 43, breaking the rhythm
            the shared axis depends on. Measured rather than guessed: the longest
@@ -167,16 +229,6 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
         .pc-tick { position: absolute; top: -9px; bottom: -9px; width: 0; }
         .pc-val { font-size: 15px; font-weight: 800; display: block; text-align: right;
           font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
-        .pc-cap { font-size: 10.5px; font-weight: 700; line-height: 1.3; display: block; text-align: right; }
-        .pc-chip {
-          display: inline-flex; flex-direction: column; gap: 1px; text-decoration: none;
-          padding: 7px 11px; border-radius: 8px; border: 1px solid ;
-          border-left-width: 3px; line-height: 1.25; transition: background-color .12s ease;
-        }
-        .pc-chip:focus-visible { outline: 2px solid #2A1206; outline-offset: 1px; }
-        .pc-chip > span:first-child { font-size: 13.5px; }
-        .pc-chip-full { font-size: 10.5px; font-weight: 500; }
-        @media (max-width: 560px) { .pc-chip-full { display: none; } }
         .pc-inline { position: absolute; left: 10px; right: 6px; top: 0; bottom: 0; display: flex;
           align-items: center; font-size: 11px; font-weight: 600; white-space: nowrap;
           overflow: hidden; text-overflow: ellipsis; }
@@ -193,74 +245,154 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
           .pc-inline { font-size: 10px; left: 8px; }
         }
       `}</style>
-      {[
-        // The full name is shown where the short one isn't the name people
-        // know. "National", "Labour" and "Green" identify themselves; "ALCP",
-        // "Vision NZ" and "TOP" don't.
-        { label: 'In Parliament', parties: PARLIAMENTARY_PARTIES, showFullName: false, byMeasure: false },
-        { label: 'Also registered to contest', parties: NON_PARLIAMENTARY_CONTESTING, showFullName: true, byMeasure: true },
-      ].map((grp) => (
-        <div key={grp.label}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 11 }}>
-            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: WARM, fontFamily: MANROPE }}>{grp.label}</span>
-            <span style={{ flex: 1, height: 1, background: LINE }} />
-          </div>
-          <div className="pc-rows">
-            {/* Parties with a figure of any kind get a row. The ones with none
-                are pulled out below, because six consecutive rows each reading
-                "Not reported separately, counted in pollsters' Others" said the
-                same sentence six times and made the group look like filler. The
-                sentence is true and worth saying — once, as the heading over
-                the parties it applies to. */}
-            {(grp.byMeasure ? orderByMeasure(grp.parties, pctBySlug) : grp.parties)
-              .filter((slug) => !grp.byMeasure || hasAnyFigure(slug, pctBySlug))
-              .map((slug) => (
-                <Row key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} showFullName={grp.showFullName} />
-              ))}
-          </div>
-          {/* The threshold explained once per group, instead of a "5%" label
-              repeated on all seventeen tiles. */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, fontSize: 11, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE }}>
-            <span aria-hidden style={{ width: 22, flexShrink: 0, borderTop: `1.5px dashed ${hexToRgba(INK, 0.32)}` }} />
-            <span>5%, the party vote needed to enter Parliament without winning an electorate</span>
-          </div>
 
-          {/* The parties no pollster reports on its own. Said once, over all of
-              them, and they keep their colour and their link — they are on the
-              ballot on the same terms as everyone above, and the only thing
-              they are missing is a number somebody else chose not to publish. */}
-          {grp.byMeasure && (() => {
-            const unreported = grp.parties.filter((slug) => !hasAnyFigure(slug, pctBySlug))
-            if (unreported.length === 0) return null
-            return (
-              <div style={{ marginTop: 18, paddingTop: 14, borderTop: `1px solid ${LINE}` }}>
-                <div style={{ fontSize: 11.5, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 10, lineHeight: 1.5 }}>
-                  Pollsters don&rsquo;t report these {unreported.length} separately, they&rsquo;re inside the &ldquo;Others&rdquo; figure
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                  {unreported.map((slug) => (
-                    <Link
-                      key={slug}
-                      href={`/parties/${slug}`}
-                      className="pc-chip"
-                      style={{ borderLeft: `3px solid ${PARTY_COLORS[slug].bg}`, background: hexToRgba(PARTY_COLORS[slug].bg, 0.07) }}
-                    >
-                      <span style={{ fontWeight: 800, color: INK, fontFamily: MANROPE }}>{PARTY_NAMES[slug].short}</span>
-                      <span className="pc-chip-full" style={{ color: TERTIARY, fontFamily: MANROPE }}>{PARTY_NAMES[slug].full}</span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )
-          })()}
+      {/* §2.2 pills, in ONE neutral treatment, exactly as §2.14 has them on
+          /parties: lit is #efece5 on INK, tapping the lit one clears back to
+          All, and All leads the row carrying the total. Not a colour per group
+          — party colour belongs to parties and it is live in the bars directly
+          underneath (§1.6). */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+        {([
+          ['all', 'All'],
+          ['parliament', 'In Parliament'],
+          ['no-seats', 'No seats yet'],
+          ['not-polled', 'Not polled'],
+        ] as [Group, string][]).map(([key, label]) => (
+          <FilterPill
+            key={key}
+            label={label}
+            count={counts[key]}
+            on={group === key}
+            onClick={() => { setGroup(group === key ? 'all' : key); setShowAll(false) }}
+          />
+        ))}
+      </div>
+
+      <div style={{ position: 'relative' }}>
+        <div
+          className="pc-rows"
+          style={{
+            paddingBottom: collapsed ? 34 : 0,
+            ...(collapsed ? { WebkitMaskImage: FOLD_MASK, maskImage: FOLD_MASK } : null),
+          }}
+        >
+          {shown.map((slug) => (
+            <Row key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} />
+          ))}
         </div>
-      ))}
+
+        {/* Names the number. "11 more" is a decision a reader can make, "more"
+            is not. While collapsed it sits ON the fade, where the fade is
+            already saying "this continues". */}
+        {collapsed && (
+          <button
+            onClick={() => setShowAll(true)}
+            aria-expanded={false}
+            style={{
+              position: 'absolute', left: '50%', bottom: 0, transform: 'translateX(-50%)',
+              display: 'inline-flex', alignItems: 'center', gap: 5,
+              padding: '6px 12px', borderRadius: 999,
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontFamily: MANROPE, fontSize: 12, fontWeight: 800, color: INK,
+            }}
+          >
+            Show {hidden} more
+            <ChevronDown style={{ width: 15, height: 15 }} strokeWidth={3} />
+          </button>
+        )}
+      </div>
+
+      {hidden > 0 && !collapsed && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
+          <button
+            onClick={() => setShowAll(false)}
+            aria-expanded
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 5,
+              padding: '8px 12px', margin: '-4px 0',
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontFamily: MANROPE, fontSize: 12, fontWeight: 800, color: INK,
+            }}
+          >
+            Show fewer
+            <ChevronDown style={{ width: 15, height: 15, transform: 'rotate(180deg)' }} strokeWidth={3} />
+          </button>
+        </div>
+      )}
+
+      {/* The threshold explained ONCE for the whole list, instead of once per
+          group as it was, and instead of the "5%" label repeated on all
+          seventeen tiles before that. This is the only place the mark is
+          DRAWN, so the legend is load-bearing here: it names a line the reader
+          can see. The #parties (i) used to restate it about 100px above, which
+          is the same fact twice in one section (§1.3), and now points here
+          instead. The party-vote card in "How your vote works" still states the
+          rule, deliberately: that section is teaching what the party vote does,
+          not how to read a chart, and a reader who never opens this section
+          would otherwise never meet the threshold at all.
+
+          The date sits with it: it is the date these seventeen bars are true
+          of, and it was printed on the poll card and on the chamber and not
+          here, which is where the bars are (§4). */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12, fontSize: 11, fontWeight: 600, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.45 }}>
+        <span aria-hidden style={{ width: 22, flexShrink: 0, borderTop: `1.5px dashed ${hexToRgba(INK, 0.32)}` }} />
+        <span>
+          5%, the party vote needed to enter Parliament without winning an electorate
+          {asAt ? <> &middot; poll of polls as at {asAt}</> : null}
+        </span>
+      </div>
+
+      {/* The parties no pollster reports on its own. Said ONCE, over all of
+          them, rather than as six consecutive rows each reading "Not reported
+          separately" — which said the same sentence six times and made that
+          part of the list look like filler. They keep their row, their colour
+          and their link: they are on the ballot on the same terms as everyone
+          above, and the only thing they are missing is a number somebody else
+          chose not to publish. The "Not polled" pill is how you see which. */}
+      {notPolled.length > 0 && (
+        <p style={{ fontSize: 11.5, color: SECONDARY, fontFamily: MANROPE, margin: '8px 0 0', lineHeight: 1.5 }}>
+          Pollsters don&rsquo;t report {notPolled.length} of these parties separately, they&rsquo;re inside the
+          &ldquo;Others&rdquo; figure, so those rows show no number rather than a zero.
+        </p>
+      )}
     </div>
   )
 }
 
+/** §2.2 / §3.1: the button is the 44px hit area, the span is the 28px pill.
+ *  Copied from party-directory.tsx rather than re-derived, so the two rows
+ *  cannot drift apart. */
+function FilterPill({ label, count, on, onClick }: {
+  label: string
+  count: number
+  on: boolean
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-pressed={on}
+      style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}
+    >
+      <span
+        className="status-pill"
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6, borderRadius: 999,
+          background: on ? '#efece5' : '#fff',
+          border: `2px solid ${on ? INK : BORDER}`,
+          color: INK, fontFamily: MANROPE, fontWeight: 800,
+          transition: 'background-color .2s ease, border-color .2s ease',
+        }}
+      >
+        {label}
+        <span style={{ fontWeight: 700, opacity: .75 }}>{count}</span>
+      </span>
+    </button>
+  )
+}
+
 /**
- * One party, one row, on the axis its whole group shares.
+ * One party, one row, on the axis the whole list shares.
  *
  * The ROW is the link, not just the name. The tiles this replaces were each a
  * Link, and a reader tapping a party to read about them is the main thing this
@@ -271,8 +403,10 @@ export function PartiesContesting({ pop }: { pop: { slug: PartySlug; pct: number
  * caption separating "poll of polls" from a party that is in via electorates,
  * the last itemised reading for a party pollsters only footnote, and the plain
  * statement for one they do not report at all. What has gone is the empty space.
+ *
+ * The id is what a seat tap in the chamber above scrolls to (§1.4).
  */
-function Row({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null; showFullName: boolean }) {
+function Row({ slug, pct }: { slug: PartySlug; pct: number | null }) {
   const colour = PARTY_COLORS[slug].bg
   const names = PARTY_NAMES[slug]
   const seats = CURRENT_SEATS[slug]
@@ -282,17 +416,22 @@ function Row({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null;
   const tint = (a: number) => hexToRgba(colour, a)
 
   return (
-    <Link href={`/parties/${slug}`} className="pc-row" aria-label={`${names.full}: open party page`}>
+    <Link href={`/parties/${slug}`} id={`party-row-${slug}`} className="pc-row" aria-label={`${names.full}: open party page`}>
       {/* Name and its metadata together. Seats and the in-via-electorates note
           used to sit under the figure on the right, where "via electorates"
           wrapped to two lines and made Te Pāti Māori's row taller than every
-          other one. They are facts about the party, so they belong beside it. */}
+          other one. They are facts about the party, so they belong beside it.
+
+          The full name shows for a party with no seats: "National", "Labour"
+          and "Green" identify themselves, "ALCP", "Vision NZ" and "TOP" don't.
+          It used to be a per-group flag; with one list, having seats IS the
+          condition, which is what the flag meant anyway. */}
       <span style={{ minWidth: 0 }}>
         <span className="pc-nm" style={{ color: INK, fontFamily: MANROPE }}>{names.short}</span>
         <span className="pc-fl" style={{ color: TERTIARY, fontFamily: MANROPE }}>
           {seats > 0
             ? `${seats} seats${belowThreshold ? ', via electorates' : ''}`
-            : showFullName ? names.full : ''}
+            : names.full}
         </span>
       </span>
 
@@ -306,8 +445,7 @@ function Row({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null;
         {/* No bar, because an irregular footnote figure is not measured to the
             standard the bars are drawn to — see the note at the top of this
             file. The figure and who published it, without the "Last measured"
-            prefix that repeated down the group. Parties with no figure at all
-            are not rows; they are listed once under the group. */}
+            prefix that repeated down the list. */}
         {!polled && reading && (
           <span className="pc-inline" style={{ color: SECONDARY, fontFamily: MANROPE }}>
             <b style={{ color: INK, marginRight: 4 }}>{reading.pct}%</b> {reading.pollster}, {fmtDate(reading.date)}
@@ -316,11 +454,11 @@ function Row({ slug, pct, showFullName }: { slug: PartySlug; pct: number | null;
       </span>
 
       {/* Just the figure. One line for every party, so every row is the same
-          height and the bars keep a steady rhythm down the group. */}
+          height and the bars keep a steady rhythm down the list. */}
       <span>
         {polled
           ? <span className="pc-val" style={{ color: INK, fontFamily: MANROPE }}>{pct.toFixed(1)}%</span>
-          : <span className="pc-val" style={{ color: TERTIARY, fontFamily: MANROPE, fontWeight: 700 }}>&mdash;</span>}
+          : <span className="pc-val" style={{ color: TERTIARY, fontFamily: MANROPE, fontWeight: 700 }}>&ndash;</span>}
       </span>
     </Link>
   )
