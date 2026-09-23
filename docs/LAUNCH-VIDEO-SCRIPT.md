@@ -74,7 +74,7 @@ section 4 answers.
 >
 > The link's in my bio, on Instagram and Facebook. It's politika.nz.
 >
-> This one's for us. Ngā mihi.
+> This is for us whanau. Ngā mihi.
 
 ---
 
