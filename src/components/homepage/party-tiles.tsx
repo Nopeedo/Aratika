@@ -535,35 +535,18 @@ function BillsRow({ p }: { p: TileParty }) {
           <ScrollText style={{ width: 52, height: 52, color: accent, flexShrink: 0 }} strokeWidth={1.6} />
           <span style={{ fontSize: 72, fontWeight: 800, lineHeight: 1, color: accent, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>{b.total}</span>
         </div>
-        <div style={{ fontSize: 13.5, fontWeight: 700, color: SUB, fontFamily: MANROPE, marginTop: 8, lineHeight: 1.4 }}>
+        {/* One line under the total, not three. The ministers/MPs split and
+            the ballot and the passed count were each true and each on their
+            own row, which is three lines of small print under a figure that
+            has already made the point. What a reader wants next is how many
+            of them became law and how many are still queued, so that is what
+            is left; the breakdown by who introduced them is in the (i). */}
+        <div style={{ fontSize: 14, fontWeight: 700, color: SUB, fontFamily: MANROPE, marginTop: 10, lineHeight: 1.4 }}>
           {[
-            ...(p.governing && b.government > 0 ? [`${b.government} by their ministers`] : []),
-            ...(b.members > 0 ? [`${b.members} by their MPs`] : []),
-            ...(b.other > 0 ? [`${b.other} local & private`] : []),
-          ].join(' · ')}
+            none ? null : b.passed === 0 ? 'none yet law' : `${b.passed} now law`,
+            b.ballot > 0 ? `${b.ballot} waiting in the ballot` : null,
+          ].filter(Boolean).join(' · ') || 'None before the House this term.'}
         </div>
-
-        {/* The ballot, on its own line and outside the total. A proposed
-            members' bill has been lodged and is waiting on a draw — it has not
-            been introduced, so counting it as "put forward to the House" would
-            be wrong, and folding it into the total would put the homepage
-            figure at odds with the tracker list this block links to. It is
-            still worth seeing: it is what a party's backbenchers are trying
-            to get before the House. */}
-        {b.ballot > 0 && (
-          <div style={{ fontSize: 13, fontWeight: 700, color: SUB, fontFamily: MANROPE, marginTop: 4, lineHeight: 1.4 }}>
-            {b.ballot} more waiting in the members&rsquo; ballot
-          </div>
-        )}
-      {/* Kept to one line at every width — the longer wording wrapped on a phone
-          and put the shift straight back. */}
-        <p style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, margin: 0 }}>
-          {none
-            ? 'None before the House this term.'
-            : b.passed === 0
-              ? 'None have passed into law yet.'
-              : `${b.passed} of the ${b.total} ${b.passed === 1 ? 'is' : 'are'} now law.`}
-        </p>
 
         {/* The way out sits INSIDE the box now, and quietly: a small outlined
             chip rather than the filled signpost the policy and seats sections
