@@ -39,15 +39,18 @@ export function PartyPolicyExplorer({ partySlug, partyName, accent, positions, d
   deepDiveTopics: string[]
 }) {
   const byTopic = new Map(positions.map((p) => [p.topic, p]))
-  // Open on the first topic we actually hold something for, so the panel never
-  // greets a reader with an empty state when there is material to show.
-  const firstWithData = POLICY_TOPIC_ORDER.find((t) => byTopic.has(t)) ?? POLICY_TOPIC_ORDER[0]
-  const [topic, setTopic] = useState<string>(firstWithData)
+  // Nothing selected to begin with. This used to open on the first topic we
+  // held something for, which meant the party page always carried one issue's
+  // full panel — several hundred words and a Plain/Detailed control — chosen
+  // by list order rather than by the reader. It pushed everything below it
+  // down and answered a question nobody had asked. Closed, the control is a
+  // row of chips; the panel is what a tap buys you.
+  const [topic, setTopic] = useState<string | null>(null)
 
   const covered = POLICY_TOPIC_ORDER.filter((t) => byTopic.has(t)).length
-  const pos = byTopic.get(topic)
-  const meta = POLICY_TOPICS[topic as PolicyTopic]
-  const hasDive = deepDiveTopics.includes(topic)
+  const pos = topic ? byTopic.get(topic) : undefined
+  const meta = topic ? POLICY_TOPICS[topic as PolicyTopic] : null
+  const hasDive = !!topic && deepDiveTopics.includes(topic)
 
   return (
     <div>
@@ -62,7 +65,9 @@ export function PartyPolicyExplorer({ partySlug, partyName, accent, positions, d
             <TopicChip
               topicKey={key}
               active={topic === key}
-              onClick={() => setTopic(key)}
+              // Tapping the open one closes it, so the reader can put the
+              // panel away again without picking something else.
+              onClick={() => setTopic((c) => (c === key ? null : key))}
               // Dim the ones we hold nothing for. Still tappable — the panel
               // then says plainly that nothing is recorded, which is the honest
               // answer and better than a chip that does nothing.
@@ -72,6 +77,7 @@ export function PartyPolicyExplorer({ partySlug, partyName, accent, positions, d
         ))}
       </div>
 
+      {topic && meta && (
       <div style={{ border: `1px solid ${BORDER}`, borderTop: `4px solid ${accent}`, borderRadius: 16, padding: '20px 22px', background: '#fff' }}>
         <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.09em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 12 }}>
           {partyName} on {meta.label}
@@ -100,6 +106,7 @@ export function PartyPolicyExplorer({ partySlug, partyName, accent, positions, d
           </Link>
         </div>
       </div>
+      )}
     </div>
   )
 }

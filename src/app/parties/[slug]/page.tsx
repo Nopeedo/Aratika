@@ -18,6 +18,7 @@ import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES } from '@
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { PartySlug } from '@/types'
+import { readableOnWhite } from '@/lib/color'
 import { PartyCoverage } from '@/components/parties/party-coverage'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
@@ -193,8 +194,14 @@ export default async function PartyProfilePage(
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 28, flexWrap: 'wrap' }}>
             {/* Left: identity */}
             <div style={{ flex: 1, minWidth: 280 }}>
+              {/* The party's own colour, not INK: on a page whose only other
+                  colour is a 12% wash, the name was the one thing that could
+                  carry it and was the same brown-black on all seventeen.
+                  readableOnWhite darkens only the colours that need it, so
+                  ACT and TOP stay themselves rather than turning grey. */}
               <h2 style={{
-                fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK,
+                fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em',
+                color: readableOnWhite(party.color),
                 fontFamily: MANROPE, lineHeight: 1.05, margin: '0 0 4px',
               }}>
                 {party.name}
@@ -205,11 +212,18 @@ export default async function PartyProfilePage(
 
               {/* Status chips */}
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 18 }}>
+                {/* Tinted, not solid. A filled block of the party's colour
+                    beside a heading in the same colour made the chip compete
+                    with the name for the eye, and "Opposition" is a fact
+                    about the party, not the headline. Same treatment as the
+                    two chips beside it: light ground, coloured text, hairline
+                    border. */}
                 <span style={{
                   display: 'inline-flex', alignItems: 'center', gap: 6,
                   fontSize: 12, fontWeight: 700,
-                  background: party.color, color: party.textColor,
-                  borderRadius: 999, padding: '4px 12px', fontFamily: MANROPE,
+                  background: tint(party.color, 0.12), color: readableOnWhite(party.color),
+                  border: `1px solid ${tint(party.color, 0.35)}`,
+                  borderRadius: 999, padding: '3px 11px', fontFamily: MANROPE,
                 }}>
                   {status === 'governing' ? 'Governing' : status === 'opposition' ? 'Opposition' : 'Not in Parliament'}
                 </span>

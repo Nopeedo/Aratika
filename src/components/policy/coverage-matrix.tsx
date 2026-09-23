@@ -26,20 +26,8 @@ import { PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES, PARTY_PROFILES } from '@
 import { PARTY_NAMES } from '@/constants/parties'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
+import { readableOnWhite } from '@/lib/color'
 import { BORDER, INK, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
-
-/** The party colour, darkened only as far as it must be to read as text on
- *  white. Same function as the issue panels use: luminance over 0.5 is scaled
- *  down, hue untouched, so ACT stays recognisably ACT instead of going grey. */
-function readableOnWhite(hex: string): string {
-  const m = hex.replace('#', '')
-  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
-  const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
-  if (lum <= 0.5) return hex
-  const k = 0.42 / lum
-  const hx = (v: number) => Math.max(0, Math.min(255, Math.round(v * k))).toString(16).padStart(2, '0')
-  return `#${hx(r)}${hx(g)}${hx(b)}`
-}
 
 /** Width of the sticky party column, shared by the header cell, the CSS and
  *  the fit calculation, so the three cannot drift apart. */
