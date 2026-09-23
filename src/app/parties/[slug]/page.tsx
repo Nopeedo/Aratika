@@ -19,7 +19,6 @@ import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { PartySlug } from '@/types'
 import { PartyCoverage } from '@/components/parties/party-coverage'
-import { BackLink } from '@/components/ui/back-link'
 import { Avatar } from '@/components/ui/avatar'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
@@ -163,23 +162,19 @@ export default async function PartyProfilePage(
 
         <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 36px' }}>
 
-          {/* Falls back to the homepage, not /parties: the directory is a
-              redirect to this page now, so "All parties" led in a circle for
-              anyone arriving cold. The switcher below is the way to the
-              others. */}
-          <BackLink fallbackHref="/" label="Home" style={{
-            display: 'inline-flex', alignItems: 'center', gap: 5,
-            fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none',
-            fontFamily: MANROPE, marginBottom: 16,
-          }} />
+          {/* The back link is gone. It said "All parties" and pointed at
+              /parties, which redirects back to this page, and "Home" in its
+              place was a second route to something the navbar already owns.
+              The title leads the page instead. */}
 
           {/* The page title, carried over from the directory this page
               replaced. It is the h1 now and the party name below is an h2:
               the page is Party Profiles, and National is the profile open
-              inside it. Sized a step under the party name on purpose, so the
-              party a reader came for is still the biggest thing on screen. */}
+              inside it. Same size as it had on the page it replaced, the
+              directory's own title, clamp(26px, 7vw, 40px), which is also
+              what the party name below uses. */}
           <h1 style={{
-            fontSize: 'clamp(19px, 4.4vw, 24px)', fontWeight: 800, letterSpacing: '-.01em',
+            fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em',
             color: INK, fontFamily: MANROPE, lineHeight: 1.1, margin: '0 0 14px',
           }}>
             Party Profiles
