@@ -265,7 +265,10 @@ export function PartySeatsSummary({ parties }: { parties: TileParty[] }) {
 
   return (
     <section style={{ background: 'transparent' }}>
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 32px' }}>
+      {/* 10px, not 32, at the foot: the MP list that follows opens with "Tap
+          an MP", which belongs to the seat count above it — a section-sized
+          gap between them read as a break between two unrelated things. */}
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 10px' }}>
         <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
           <SeatsRow p={p} />
         </div>

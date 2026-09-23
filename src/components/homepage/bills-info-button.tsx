@@ -89,7 +89,7 @@ export function BillsInfoButton({ accent, governing, slug }: {
           // around it made two concentric circles at 26px. The ring (and the
           // fill) come back only while it is open, to show it is the thing
           // the bubble belongs to.
-          width: 34, height: 34, minWidth: 34, minHeight: 34, borderRadius: '50%', padding: 0, cursor: 'pointer',
+          width: 26, height: 26, minWidth: 26, minHeight: 26, borderRadius: '50%', padding: 0, cursor: 'pointer',
           display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
           background: open ? accent : 'transparent',
           border: open ? `1.5px solid ${accent}` : '1.5px solid transparent',
@@ -97,7 +97,10 @@ export function BillsInfoButton({ accent, governing, slug }: {
           transition: 'background .15s ease, border-color .15s ease, color .15s ease',
         }}
       >
-        <Info style={{ width: 30, height: 30 }} strokeWidth={2} />
+        {/* 15px in a 26px box, the same as every other (i) on the site. It was
+            a 30px glyph in a 34px box here — nearly twice the area, which read
+            as a different control rather than the same one. */}
+        <Info style={{ width: 15, height: 15 }} strokeWidth={2.25} />
       </button>
 
       {open && (
