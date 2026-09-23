@@ -54,28 +54,15 @@ export function Navbar() {
     setMobileOpen(false)
   }, [pathname])
 
-  /**
-   * Scroll anchoring off while the menu is open.
-   *
-   * The panel lives inside the sticky header, so opening it makes the header
-   * tall and closing it makes it short again. The browser answers each of
-   * those by scrolling the page to hold the content still — which is right
-   * for a reader staying put, and wrong the moment they tap a link: the App
-   * Router puts the new route at scroll 0, the panel then unmounts, and the
-   * compensation for that pushes them 64px down, arriving with the page
-   * heading tucked under the navbar.
-   *
-   * Turning anchoring off for the life of the open menu removes the
-   * compensation rather than racing it — a scrollTo afterwards has to land
-   * after an adjustment the browser has not necessarily made yet.
-   */
-  React.useEffect(() => {
-    if (!mobileOpen) return
-    const root = document.documentElement
-    const prev = root.style.overflowAnchor
-    root.style.overflowAnchor = 'none'
-    return () => { root.style.overflowAnchor = prev }
-  }, [mobileOpen])
+  /* A scroll-anchoring guard lived here: overflow-anchor: none for the life of
+     the open menu, because the panel used to sit in the header's flow and
+     change its height. It could not work. The menu closes ON pathname change,
+     so the guard was lifted in the same commit that unmounted the panel, which
+     is the exact moment the compensation it was suppressing happens. Measured
+     on a 375x667 phone: tap a menu item at scroll 1600 and the new page
+     arrives at 662, which is the panel's own height to the pixel. The panel is
+     a fixed overlay now, the header stays 64px through the whole interaction,
+     and there is no height change left to compensate for. */
 
   // Live auth state from Supabase
   const { user, isPremium } = useUser()
@@ -90,15 +77,20 @@ export function Navbar() {
     item.children ? item.children.some((c) => isActive(c.href)) : isActive(item.href)
 
   return (
+    <>
     <header className="sticky top-0 z-50 w-full bg-white/30 backdrop-blur-md relative">
       {/* Bottom fade — extends the header's own translucency a little further down
           into the page, so it blends smoothly into the white wash behind the party
           tiles below instead of ending on a hard edge. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-0 right-0 top-full h-16"
-        style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.65), rgba(255,255,255,0))', zIndex: 60 }}
-      />
+      {/* Not while the menu is open: it sits above the panel and washed the
+          first row of links out. */}
+      {!mobileOpen && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-0 right-0 top-full h-16"
+          style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.65), rgba(255,255,255,0))', zIndex: 60 }}
+        />
+      )}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
@@ -166,91 +158,99 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="xl:hidden border-t border-border bg-background">
-          <nav className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
-            {/* Home — pinned above everything else as the way back to the front
-                landing page. Points at /?full=1, NOT /: a returning visitor
-                hitting / is redirected to /hub (see app/page.tsx), so without
-                the flag this button would quietly land them somewhere else and
-                read as broken. Closes the menu explicitly too — the usual
-                close-on-route-change only watches pathname, which doesn't
-                change when you're already on the landing page. */}
-            <Link
-              href="/?full=1"
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                'block px-3 py-2.5 rounded-md text-sm font-semibold transition-colors',
-                pathname === '/' ? 'text-brand-jade bg-brand-jade-subtle' : 'text-foreground hover:bg-surface',
-              )}
-            >
-              Home page
-            </Link>
-
-            {NAV.map((item) =>
-              item.children ? (
-                <MobileGroup key={item.label} item={item} isActive={isActive} />
-              ) : (
-                <Link
-                  key={item.href}
-                  href={item.href!}
-                  className={cn(
-                    'block px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
-                    isActive(item.href)
-                      ? 'text-brand-jade bg-brand-jade-subtle'
-                      : 'text-foreground hover:bg-surface',
-                  )}
-                >
-                  {item.label}
-                </Link>
-              ),
-            )}
-          </nav>
-
-          {/* The "Explain terms" toggle was here. It is off the menu entirely
-              now, desktop and mobile both: the menu is a list of places to go,
-              and this was the one row in it that changed a setting instead.
-              The component is intact (glossary/explain-toggle.tsx) and the
-              glossary itself is still linked from the footer. */}
-
-          {/* Mobile Auth */}
-          <div className="max-w-7xl mx-auto px-4 pb-4 pt-2 border-t border-border flex flex-col gap-2">
-            {isLoggedIn ? (
-              <>
-                {PREMIUM_ENABLED && !isPremium && (
-                  <Button variant="premium" asChild>
-                    <Link href="/subscription">
-                      <Crown className="size-4" />
-                      Upgrade to Premium, $20/month
-                    </Link>
-                  </Button>
-                )}
-                <Button variant="outline" asChild>
-                  <Link href="/dashboard">My Dashboard</Link>
-                </Button>
-                {/* The desktop avatar menu has carried Settings since the page
-                    was built; this drawer never did, so on a phone — the one
-                    place notification setup actually lives — Settings was
-                    unreachable except by typing the URL. */}
-                <Button variant="outline" asChild>
-                  <Link href="/settings">Settings</Link>
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button variant="primary" asChild>
-                  <Link href="/register">Sign up free</Link>
-                </Button>
-                <Button variant="secondary" asChild>
-                  <Link href="/login">Log in</Link>
-                </Button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </header>
+
+    {/* Mobile Menu.
+        FIXED, under the 64px bar and down to the bottom of the screen, with
+        its own scrolling. In the header's flow it did two things wrong: it
+        made the header taller than the viewport, so on a 667px phone the
+        last rows (Learn, and both auth buttons) sat below the fold of a
+        sticky element and could not be scrolled to at all; and every open
+        and close moved the page under the reader. */}
+    {mobileOpen && (
+      <div className="xl:hidden fixed left-0 right-0 top-16 bottom-0 z-40 overflow-y-auto overscroll-contain border-t border-border bg-background">
+        <nav className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
+          {/* Home — pinned above everything else as the way back to the front
+              landing page. Points at /?full=1, NOT /: a returning visitor
+              hitting / is redirected to /hub (see app/page.tsx), so without
+              the flag this button would quietly land them somewhere else and
+              read as broken. Closes the menu explicitly too — the usual
+              close-on-route-change only watches pathname, which doesn't
+              change when you're already on the landing page. */}
+          <Link
+            href="/?full=1"
+            onClick={() => setMobileOpen(false)}
+            className={cn(
+              'block px-3 py-2.5 rounded-md text-sm font-semibold transition-colors',
+              pathname === '/' ? 'text-brand-jade bg-brand-jade-subtle' : 'text-foreground hover:bg-surface',
+            )}
+          >
+            Home page
+          </Link>
+
+          {NAV.map((item) =>
+            item.children ? (
+              <MobileGroup key={item.label} item={item} isActive={isActive} />
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href!}
+                className={cn(
+                  'block px-3 py-2.5 rounded-md text-sm font-medium transition-colors',
+                  isActive(item.href)
+                    ? 'text-brand-jade bg-brand-jade-subtle'
+                    : 'text-foreground hover:bg-surface',
+                )}
+              >
+                {item.label}
+              </Link>
+            ),
+          )}
+        </nav>
+
+        {/* The "Explain terms" toggle was here. It is off the menu entirely
+            now, desktop and mobile both: the menu is a list of places to go,
+            and this was the one row in it that changed a setting instead.
+            The component is intact (glossary/explain-toggle.tsx) and the
+            glossary itself is still linked from the footer. */}
+
+        {/* Mobile Auth */}
+        <div className="max-w-7xl mx-auto px-4 pb-4 pt-2 border-t border-border flex flex-col gap-2">
+          {isLoggedIn ? (
+            <>
+              {PREMIUM_ENABLED && !isPremium && (
+                <Button variant="premium" asChild>
+                  <Link href="/subscription">
+                    <Crown className="size-4" />
+                    Upgrade to Premium, $20/month
+                  </Link>
+                </Button>
+              )}
+              <Button variant="outline" asChild>
+                <Link href="/dashboard">My Dashboard</Link>
+              </Button>
+              {/* The desktop avatar menu has carried Settings since the page
+                  was built; this drawer never did, so on a phone — the one
+                  place notification setup actually lives — Settings was
+                  unreachable except by typing the URL. */}
+              <Button variant="outline" asChild>
+                <Link href="/settings">Settings</Link>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="primary" asChild>
+                <Link href="/register">Sign up free</Link>
+              </Button>
+              <Button variant="secondary" asChild>
+                <Link href="/login">Log in</Link>
+              </Button>
+            </>
+          )}
+        </div>
+      </div>
+    )}
+    </>
   )
 }
 
