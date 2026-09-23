@@ -52,7 +52,12 @@ export const CRITICAL = 'enrolment-closes-2026'
  *  the writ-day label, "Enrol by today to avoid a special vote", is the (i)'s
  *  job in KeyDates: it is good plain copy and it is an explanation, not a date. */
 export const LABELS: Record<string, string> = {
-  'writ-day-2026': 'Enrol by here, no special vote',
+  // Was "Enrol by here, no special vote" — "by here" read as a typo rather
+  // than "by this date", and the sentence never said what happens if you
+  // miss it. Rewritten to say the deadline AND its consequence in one
+  // clause, and to stay distinct from enrolment-closes-2026's "Last day to
+  // enrol" below it rather than colliding with it.
+  'writ-day-2026': 'Last day to enrol without a special vote',
   'enrolment-closes-2026': 'Last day to enrol',
   'advance-voting-2026': 'Advance voting opens',
   'election-day-2026': 'Election day',
