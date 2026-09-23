@@ -13,9 +13,10 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { track } from '@vercel/analytics'
-import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, Check, ChevronDown, ExternalLink, PenLine, SlidersHorizontal } from 'lucide-react'
+import { Search, Landmark, Users, BadgeCheck, Megaphone, X, ArrowRight, ChevronDown, ExternalLink, PenLine, SlidersHorizontal } from 'lucide-react'
 import { BILLS_54, BILL_CATEGORIES, BILLS_54_META, type Bill54 } from '@/constants/bills-54'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
+import { Journey, type JourneyNode } from '@/components/bills/bill-journey'
 import { normMemberName } from '@/lib/bills/normalize-member'
 import { billsForTopic } from '@/lib/bills/by-topic'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
@@ -481,7 +482,17 @@ function BillBreakdown({ b, readerSlug, summary, submissionsOpen, party, onClose
   const kind = KIND[statusKind(b.status)]
   const topicKey = CATEGORY_TOPIC[b.category]
   const reached = reachedIndex(b.status)
-  const nodes = [...JOURNEY.map((label, i) => ({ label, done: i < reached })), { label: kind.label, done: reached >= JOURNEY.length }]
+  // Shaped for the shared Journey: every stage is done or still to come, and
+  // the outcome node is the only one that can be a stop (a bill that did not
+  // get past where it is).
+  const outcomeDone = reached >= JOURNEY.length
+  const nodes: JourneyNode[] = [
+    ...JOURNEY.map((label, i) => ({ label, state: (i < reached ? 'done' : 'current') as JourneyNode['state'] })),
+    {
+      label: kind.label,
+      state: statusKind(b.status) === 'defeated' ? 'stop' : outcomeDone ? 'done' : 'current',
+    },
+  ]
 
   return (
     <div style={{
@@ -518,7 +529,7 @@ function BillBreakdown({ b, readerSlug, summary, submissionsOpen, party, onClose
       <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.07em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, margin: '0 0 9px' }}>
         Its journey through Parliament
       </p>
-      <BillJourney nodes={nodes} accent={kind.fg} />
+      <Journey nodes={nodes} />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4, marginTop: 16 }}>
         {b.member && (
@@ -610,78 +621,6 @@ function gist(text: string, sentences = 2): string {
   return parts.length > sentences ? `${taken.replace(/[.!?]+$/, '')}…` : taken
 }
 
-/**
- * The progress strip: a rail that STAYS PUT, and the stages travelling across
- * it until they settle on where the bill has got to.
- *
- * The rail and its filled portion are drawn on the outer box, so they never
- * move; the steps live on a track inside it that slides right to left. That
- * is the whole point of the animation — a line that scrolled with the steps
- * read as the page moving, where a line that holds still reads as the bill
- * travelling along it.
- *
- * A fixed window rather than the full width: six stages across a desktop fit
- * with room to spare, so there was nothing to travel and the animation only
- * existed on a phone.
- */
-const STEP_W = 84
-const WINDOW_STEPS = 3.5
-
-function BillJourney({ nodes, accent }: { nodes: { label: string; done: boolean }[]; accent: string }) {
-  const lastDone = nodes.reduce((n, x, i) => (x.done ? i : n), -1)
-  // Where the track ends up: the current stage sitting just left of centre,
-  // clamped so it never runs past either end of the strip.
-  const restAt = Math.min(
-    Math.max(0, (lastDone - 1) * STEP_W),
-    Math.max(0, nodes.length * STEP_W - WINDOW_STEPS * STEP_W),
-  )
-  const [shift, setShift] = useState(0)
-
-  useEffect(() => {
-    const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    if (still) { setShift(restAt); return }
-    setShift(0)
-    const t = setTimeout(() => setShift(restAt), 380)
-    return () => clearTimeout(t)
-  }, [restAt])
-
-  // How much of the rail is filled: the stages behind the current one, as a
-  // share of the window the reader can see.
-  const filled = Math.min(1, Math.max(0, ((lastDone * STEP_W) - shift + STEP_W / 2) / (WINDOW_STEPS * STEP_W)))
-
-  return (
-    <div style={{ position: 'relative', width: '100%', maxWidth: WINDOW_STEPS * STEP_W, overflow: 'hidden' }}>
-      {/* The rail. Fixed to the box, not to the steps. */}
-      <span aria-hidden style={{ position: 'absolute', left: 0, right: 0, top: 10, height: 2, background: BORDER }} />
-      <span aria-hidden style={{ position: 'absolute', left: 0, top: 10, height: 2, background: accent, width: `${filled * 100}%`, transition: 'width .55s cubic-bezier(.3,.8,.3,1)' }} />
-
-      <div style={{
-        display: 'flex', width: nodes.length * STEP_W,
-        transform: `translateX(${-shift}px)`,
-        transition: 'transform .55s cubic-bezier(.3,.8,.3,1)',
-      }}>
-        {nodes.map((node) => (
-          <span key={node.label} style={{ position: 'relative', width: STEP_W, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-            <span style={{
-              width: 20, height: 20, borderRadius: '50%', flexShrink: 0,
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              background: node.done ? accent : '#fff', border: `2px solid ${node.done ? accent : BORDER}`,
-            }}>
-              {node.done && <Check style={{ width: 11, height: 11, color: '#fff' }} strokeWidth={3} />}
-            </span>
-            <span style={{ fontSize: 9.5, fontWeight: 700, color: node.done ? INK : TERTIARY, fontFamily: MANROPE, textAlign: 'center', lineHeight: 1.2 }}>
-              {node.label}
-            </span>
-          </span>
-        ))}
-      </div>
-
-      {/* Feathers the steps out at the right edge, so they read as continuing
-          past the window rather than being cut off. */}
-      <span aria-hidden style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 26, pointerEvents: 'none', background: 'linear-gradient(to left, #fff, #fff0)' }} />
-    </div>
-  )
-}
 
 /** "13 August 2026" — plain and unambiguous; ISO dates read as jargon. */
 function fmtDate(iso?: string | null) {
