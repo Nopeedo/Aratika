@@ -1,8 +1,10 @@
 /**
  * UpcomingView — the 2026 Election Centre.
  *
- * Flow: when (the deadline) → how your vote works → who you can vote for →
- * the Parliament you are changing → your own seat → the leaders.
+ * Flow: when (the deadline) → who you can vote for → how your vote works →
+ * the Parliament you are changing → your own seat → the leaders. "Who you
+ * can vote for" and "how your vote works" swapped by request; every other
+ * section kept its place.
  *
  * COMPOSED AT 375px, not reduced to it. The page used to run 7,771px, about
  * 9.6 screens on a phone, and roughly 70% of that was content nobody had asked
@@ -54,12 +56,10 @@ import {
 import { getPolls } from '@/lib/polls/live'
 import { longDate, milestone } from '@/constants/electoral-calendar'
 import { CommandHero } from './command-hero'
-import { SectionRail } from './section-rail'
 import { KeyDates } from './key-dates'
 import { PollSnapshot } from './poll-snapshot'
 import { SeatChamber } from './seat-chamber'
 import { TwoVotes } from './two-votes'
-import { CompassCta } from '@/components/compass/compass-cta'
 import { PartiesContesting } from './parties-contesting'
 import { ClosestRaces, type ClosestRace } from './closest-races'
 import { VideoSection } from '@/components/news/video-section'
@@ -74,10 +74,12 @@ import type { PartySlug } from '@/types'
 // as the same product rather than a separate tool: espresso headings, warm body
 // greys, warm hairlines — replacing the cold #0c0e12/#6b7078/#e9e7e2 set.
 
-/** Per-section accent, for the (i) bubbles only. These are the same inks the
- *  floating rail's dots use (constants/election-sections.ts); the (i) takes the
- *  colour of the block it explains, which is §1.6's "a block takes the colour
- *  of whatever it is about". They are NOT on the chips any more. */
+/** Per-section accent, for the (i) bubbles only — the (i) takes the colour of
+ *  the block it explains, which is §1.6's "a block takes the colour of
+ *  whatever it is about". Was also the floating rail's dot colour
+ *  (constants/election-sections.ts still carries `ink` for that), before the
+ *  rail was removed by request; ELECTION_SECTIONS stays as the one list of
+ *  sections in page order for the hero's jump-nav link row. */
 const ACCENT = {
   vote: '#0e7490',
   parties: '#6d28d9',
@@ -145,7 +147,9 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
     // sits in the same world as the homepage and hub instead of on flat white.
     <div style={WOVEN_PAGE}>
       <CommandHero today={today} />
-      <SectionRail />
+      {/* SectionRail — the floating vertical dot menu, one dot per section
+          with a chevron to collapse — removed by request. Component stays
+          in the repo (demoted, not deleted) rather than deleted outright. */}
 
       {/* 1080 to match /bills and /parties. This page was the narrowest
            content column on the site at 1000, which is not a difference a
@@ -165,96 +169,14 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               which belongs above what they need to know. */}
           <KeyDates today={today} />
 
-          {/* ── HOW YOUR VOTE WORKS — the primer everything below assumes ───────
-              Two votes, what each one does, and why the party vote decides the
-              shape of Parliament. It used to sit second-to-last, under the
-              polls, the seat projection and the electorate map, all of which
-              are unreadable to someone who does not already know this. Second
-              is right: a reader who knows MMP scrolls past it in a second, and
-              one who doesn't cannot reconstruct it from a hemicycle.
-
-              The tiles are what make "scrolls past it in a second" true. Open,
-              this block was 468px of prose that the argument above says most
-              readers skip, which is §1.1's whole point. */}
-          <section id="your-vote" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Get ready to vote" title="How your vote works" accent={ACCENT.vote}
-              infoLabel="How MMP gives you two votes">
-              <InfoHeading accent={ACCENT.vote}>Two votes, two jobs</InfoHeading>
-              <InfoText>
-                Under MMP you cast two votes on the same paper. The party vote decides the share of Parliament&rsquo;s 120
-                seats each party gets, and it is where most of your influence is: it sets the overall balance. The
-                electorate vote picks the one MP for your local area.
-              </InfoText>
-              {/* The overhang is explained ONCE, in the (i) on the chamber
-                   that shows both numbers, where it derives them from the data
-                   instead of typing them. It was here as well, ~700px earlier,
-                   in the same sentences against hard-coded figures (§1.3). */}
-              <InfoText>
-                <a href="/learn/mmp" style={{ color: ACCENT.vote, fontWeight: 800, textDecoration: 'none' }}>How MMP works in full</a>
-              </InfoText>
-            </ZoneHead>
-            <TwoVotes />
-            {/* The personal compass, here as well as on the homepage — it left
-                the nav, and "which vote do I cast" is the question this section
-                exists to answer, so its answer-machine belongs at the end of
-                it. Same card as the homepage, deliberately: one object, seen
-                twice, reads as the same tool rather than two features.
-
-                The negative margin cancels the card's OWN section gutter. It is
-                a <section> with clamp(40px,7vw,72px) / clamp(18px,5vw,36px) of
-                padding, nested inside this container which already applies
-                clamp(18px,5vw,36px) — so the card sat inset 37.5px from each
-                edge at 375px while every other block on this page sits at
-                18.75px, and added 80px of vertical padding on top of the 40px
-                flex gap. §8, "see the edges dont align": measure the two
-                things rather than nudging one. compass-cta.tsx is shared with
-                the homepage, so the cancellation lives here rather than there. */}
-            {/* The card carries its own section padding, so it is cancelled
-                 here rather than doubled, on both axes, which lands the card
-                 exactly on the column's edges.
-
-                 It only works because the column above is 1080, the same
-                 maxWidth compass-cta sets for itself. At the old 1000 the same
-                 cancellation pulled the card 36px PAST each edge and it was the
-                 one block on the page wider than the page; cancelling the
-                 vertical only then left it 72px NARROWER than the tiles above
-                 it, which read as an accident in the other direction. Change
-                 one of these two numbers and you have to change the other. */}
-            <div style={{
-              // Cancelling the card's own vertical padding OUTRIGHT left it
-              // butted against the tiles above with no gap at all, while the
-              // heading above those tiles has 14px. Cancel all of it but 14,
-              // so the card is separated from the tiles by the section's own
-              // rhythm rather than by however much padding the card happens
-              // to carry.
-              marginTop: 'calc(14px - clamp(40px, 7vw, 72px))',
-              // The bottom stays fully cancelled: the space to the NEXT
-              // section is the column's flex gap, and the card's padding on
-              // top of it would make this one section sit further from its
-              // neighbour than any other.
-              marginBottom: 'calc(-1 * clamp(40px, 7vw, 72px))',
-              marginLeft: 'calc(-1 * clamp(18px, 5vw, 36px))',
-              marginRight: 'calc(-1 * clamp(18px, 5vw, 36px))',
-            }}>
-              <CompassCta />
-            </div>
-          </section>
-
-          {/* ── EVERY PARTY YOU CAN VOTE FOR ─────────────────────────────────
-              The standfirst that sat here explained how to read a chart, where
-              the list comes from and when it changes: three (i) sections, and
-              it still said "each tile fills" for a component that has not been
-              tiles since parties-contesting.tsx was rewritten to rows. */}
-          {/* Wrapped in a wash of the poll leader's own colour — the first
+          {/* ── EVERY PARTY YOU CAN VOTE FOR — moved above "How your vote
+              works" by request; was second, is first among these two now.
+              Wrapped in a wash of the poll leader's own colour — the first
               real colour break on the page below the hero, and it is not a
               decoration picked to break up the cream: it is the fact the
               section states (who is ahead) drawn as the section's own
               ground, the same move §1.6 makes everywhere else on the site
-              ("a block takes the colour of whatever it is about"). A flat
-              wash rather than a border or a tint on the bars themselves,
-              because those already carry every party's colour and a second
-              use of the same colours for a different purpose (rank vs
-              identity) would be the §1.6 violation the rule exists to catch. */}
+              ("a block takes the colour of whatever it is about"). */}
           <div style={{
             background: `linear-gradient(180deg, ${PARTY_COLORS[pop[0]?.slug ?? 'national'].light} 0%, rgba(255,255,255,0) 100%)`,
             margin: '0 calc(-1 * clamp(18px, 5vw, 36px))', padding: '20px clamp(18px, 5vw, 36px) 0', borderRadius: 20,
@@ -310,6 +232,31 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             </div>
           </section>
           </div>
+
+          {/* ── HOW YOUR VOTE WORKS — second now, was first. Two votes, what
+              each one does, and why the party vote decides the shape of
+              Parliament: the primer the parties section above just assumed.
+              Compass CTA ("Find where you stand") removed from the foot of
+              this section by request; the homepage still carries it. */}
+          <section id="your-vote" style={{ scrollMarginTop: 80 }}>
+            <ZoneHead eyebrow="Get ready to vote" title="How your vote works" accent={ACCENT.vote}
+              infoLabel="How MMP gives you two votes">
+              <InfoHeading accent={ACCENT.vote}>Two votes, two jobs</InfoHeading>
+              <InfoText>
+                Under MMP you cast two votes on the same paper. The party vote decides the share of Parliament&rsquo;s 120
+                seats each party gets, and it is where most of your influence is: it sets the overall balance. The
+                electorate vote picks the one MP for your local area.
+              </InfoText>
+              {/* The overhang is explained ONCE, in the (i) on the chamber
+                   that shows both numbers, where it derives them from the data
+                   instead of typing them. It was here as well, ~700px earlier,
+                   in the same sentences against hard-coded figures (§1.3). */}
+              <InfoText>
+                <a href="/learn/mmp" style={{ color: ACCENT.vote, fontWeight: 800, textDecoration: 'none' }}>How MMP works in full</a>
+              </InfoText>
+            </ZoneHead>
+            <TwoVotes />
+          </section>
 
           {/* ── THE SEATS — one chamber, three ways to read it ───────────────── */}
           {/* Was two sections ~1600px apart, both drawing the same hemicycle:

@@ -44,8 +44,8 @@ export const ELECTION_SECTIONS: ElectionSection[] = [
   // you can read in a dot. Green sits ~50 degrees off the cyan next to it, and
   // matches the enrol button this section owns.
   { id: 'key-dates', label: 'Key dates', ink: '#15803d' },
-  { id: 'your-vote', label: 'How your vote works', ink: '#0e7490' },
   { id: 'parties', label: 'Every party', ink: '#6d28d9' },
+  { id: 'your-vote', label: 'How your vote works', ink: '#0e7490' },
   { id: 'seats', label: 'Parliament now', ink: '#1d4ed8' },
   { id: 'your-seat', label: 'Closest races', ink: '#be123c' },
   { id: 'debates', label: 'Leaders & the press', ink: '#b45309' },
