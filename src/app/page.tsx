@@ -22,7 +22,6 @@ import { PartyTilesSection, PartyNewsSection, PartySeatsSection, PartyBillsSecti
 // import { PartyStanceSection } from '@/components/homepage/party-tiles-section' // hidden — see below
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 // import { ThisTerm } from '@/components/homepage/this-term' // hidden — see below
-import { FindMyMpButton } from '@/components/homepage/find-my-mp-button'
 import { CompassCta } from '@/components/compass/compass-cta'
 // import { WhatsMoved } from '@/components/homepage/whats-moved' // hidden — see below
 // import { CredibilityStrip } from '@/components/homepage/credibility-strip' // hidden — see below
@@ -159,15 +158,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
             section for everyone else. */}
         <CompassCta />
 
-        {/* "Find your MP" closes the page — a single button, moved here from
-            above the credibility strip by request.
-            It was CORE 3 — a full section with a live map — but it is a SEARCH,
-            not a comparison: you already know your address, and the answer is
-            one lookup rather than something to read. Last is the right place
-            for a lookup: it is the one thing on this page a reader does once
-            and then leaves, so it belongs after everything they might read.
-            The full map is untouched at /map; this is the door to it. */}
-        <FindMyMpButton />
+        {/* "Find your MP" is off the front page by request. The lookup is
+            untouched at /map, and the menu links to it (Electorate map); this
+            was a door to it, not the thing itself. */}
 
       </HomeBackground>
     </PartyCycleProvider>

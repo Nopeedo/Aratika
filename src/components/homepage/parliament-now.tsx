@@ -29,17 +29,21 @@ import { Landmark } from 'lucide-react'
 import type { ReactNode } from 'react'
 
 export function ParliamentNow({ seats, bills }: { seats?: ReactNode; bills?: ReactNode }) {
-  const { panelSlug } = usePartyCycle()
+  const { panelSlug, select } = usePartyCycle()
   const pc = panelSlug ? PARTY_COLORS[panelSlug as PartySlug] : null
   const base = BASELINE_ELECTION
   if (!base.results || !base.totalSeats) return null
   return (
     <section style={{ background: 'transparent' }}>
       <div style={{ maxWidth: 1180, margin: '0 auto', padding: '26px clamp(18px, 5vw, 36px)' }}>
+        {/* onPickParty: tapping a seat picks its party, the same as tapping
+            its tile. The arch already answers "which of these are theirs?",
+            so it should answer "show me them" too. */}
         <SeatChamber
           home
           heading={<ParliamentHeading />}
           highlight={panelSlug ?? undefined}
+          onPickParty={select}
           frameColor={pc?.bg}
           frameLight={pc?.light}
           elected={base.results}
