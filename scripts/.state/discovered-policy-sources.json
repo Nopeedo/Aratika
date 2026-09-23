@@ -847,7 +847,7 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Alliance Full Employment, 35-Hour Week and Workers' Rights Policy"
+        "title": "Alliance Full Employment and 35-Hour Week Workers' Rights Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
@@ -863,19 +863,31 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Alliance Tax Plan: First $20,000 Income Tax-Free, Funded by Wealth Tax"
+        "title": "Alliance Tax Plan: First $20,000 Income Tax-Free"
       }
     ],
     "health": [
       {
         "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
-        "title": "Alliance Free GP, Dental, Optical and Audiology Health Policy"
+        "title": "Alliance Free Community Healthcare Policy"
+      }
+    ],
+    "environment": [
+      {
+        "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
+        "title": "Alliance Environment and Just Transition Policy"
       }
     ],
     "crime-justice": [
       {
         "url": "https://allianceparty.nz/alliance-justice-policy-three-strikes-into-treatment/",
         "title": "Alliance Justice Policy: Three Strikes and into Treatment"
+      }
+    ],
+    "housing": [
+      {
+        "url": "https://allianceparty.nz/the-right-to-a-roof-alliance-housing-policy/",
+        "title": "Alliance Right to a Roof Housing Policy"
       }
     ]
   },
@@ -960,8 +972,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-22",
+    "lastRun": "2026-09-23",
     "parties": 14,
-    "policyPages": 198
+    "policyPages": 200
   }
 }
