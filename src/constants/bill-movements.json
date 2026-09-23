@@ -1,5 +1,54 @@
 [
   {
+    "slug": "planning-bill",
+    "title": "Planning Bill",
+    "from": "Third Reading",
+    "to": "Royal Assent",
+    "date": "2026-09-24"
+  },
+  {
+    "slug": "healthy-futures-pae-ora-3-day-postnatal-stay-amendment-bill",
+    "title": "Healthy Futures (Pae Ora) (3-Day Postnatal Stay) Amendment Bill",
+    "from": "Third Reading",
+    "to": "Royal Assent",
+    "date": "2026-09-24"
+  },
+  {
+    "slug": "secondary-legislation-confirmation-bill-no-4",
+    "title": "Secondary Legislation Confirmation Bill (No 4)",
+    "from": "Second Reading",
+    "to": "Royal Assent",
+    "date": "2026-09-24"
+  },
+  {
+    "slug": "agricultural-compounds-and-veterinary-medicines-amendment-bill",
+    "title": "Agricultural Compounds and Veterinary Medicines Amendment Bill",
+    "from": "Third Reading",
+    "to": "Royal Assent",
+    "date": "2026-09-24"
+  },
+  {
+    "slug": "natural-environment-bill",
+    "title": "Natural Environment Bill",
+    "from": "Third Reading",
+    "to": "Royal Assent",
+    "date": "2026-09-24"
+  },
+  {
+    "slug": "military-decorations-and-distinctive-badges-modernisation-amendment-bill",
+    "title": "Military Decorations and Distinctive Badges (Modernisation) Amendment Bill",
+    "from": "Select Committee",
+    "to": "Second Reading",
+    "date": "2026-09-24"
+  },
+  {
+    "slug": "r-kohu-wharekauri-shared-redress-bill",
+    "title": "Rēkohu Wharekauri Shared Redress Bill",
+    "from": "First Reading",
+    "to": "Select Committee",
+    "date": "2026-09-24"
+  },
+  {
     "slug": "ng-ti-mutunga-o-wharekauri-claims-settlement-bill",
     "title": "Ngāti Mutunga o Wharekauri Claims Settlement Bill",
     "from": "First Reading",
