@@ -503,12 +503,25 @@ function BillsRow({ p }: { p: TileParty }) {
         {/* Heading inside the box now, in full black, with the (i) in the
             top-right corner carrying the process explanation that used to run
             as body copy underneath. */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 12 }}>
-          {/* Same size and spacing as "Seats in Parliament" above it: the two
+        {/* The heading no longer reserves 26px on the left to balance the (i):
+            the longest party name needed that width more than the row needed
+            to be symmetrical. */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 6, marginBottom: 12 }}>
+          {/* Names the party and says what it did, rather than "Bills before
+              the House" — which is Parliament's own phrase for "currently in
+              the system" and left the reader to work out whose bills these
+              were. Everything counted below was introduced by this party's
+              ministers or its MPs, so "put forward" is true of all three
+              figures. Short enough to stay on one or two lines at 20px, where
+              "has put to the House" ran to three for every party. What that means for a GOVERNING party — that the
+              government's programme is attributed to the minister's party
+              rather than owned by it — is in the (i) beside this.
+
+              Same size and spacing as "Seats in Parliament" above it: the two
               are peer blocks in one column, and at 13px against 20px this one
               read as a caption on the seats block rather than its own thing. */}
-          <div style={{ flex: 1, minWidth: 0, fontSize: 20, fontWeight: 800, letterSpacing: '.02em', textTransform: 'uppercase', color: INK, fontFamily: MANROPE, textAlign: 'center', paddingLeft: 26, lineHeight: 1.15 }}>
-            Bills before the House
+          <div style={{ flex: 1, minWidth: 0, fontSize: 20, fontWeight: 800, letterSpacing: 0, textTransform: 'uppercase', color: INK, fontFamily: MANROPE, textAlign: 'center', lineHeight: 1.15 }}>
+            Bills {p.name} put forward
           </div>
           <BillsInfoButton accent={accent} governing={!!p.governing} slug={p.slug} />
         </div>
