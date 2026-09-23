@@ -73,15 +73,6 @@ export function CommandHero({ today }: { today: string }) {
             nowhere to back out to) it was standing there alone with nothing
             to sit against. */}
 
-        {/* The single next-deadline card, moved up here from KeyDates by
-            request — it is now the first thing on the whole page, above
-            even the headline. See next-deadline-card.tsx for why the
-            reasoning and the full timetable stay in KeyDates further down
-            rather than being duplicated here. */}
-        <div style={{ marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
-          <NextDeadlineCard today={today} />
-        </div>
-
         {/* Headline — sized and placed like the policy comparison page's own
             h1 ("Party Policy Comparison"): left-aligned, clamp(28px, 7vw,
             36px), 18px under it. Was centred at up to 46px, its own one-off
@@ -92,6 +83,15 @@ export function CommandHero({ today }: { today: string }) {
         <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: ESPRESSO, margin: '0 0 18px' }}>
           2026 general election
         </h1>
+
+        {/* The single next-deadline card, below the title — the first thing
+            under the headline, before the countdown. See
+            next-deadline-card.tsx for why the reasoning and the full
+            timetable stay in KeyDates further down rather than being
+            duplicated here. */}
+        <div style={{ marginBottom: 'clamp(20px, 3.4vh, 28px)' }}>
+          <NextDeadlineCard today={today} />
+        </div>
 
         {/* One tile. The label does the job the deleted date line was doing
             badly: it says what the number counts to without restating
