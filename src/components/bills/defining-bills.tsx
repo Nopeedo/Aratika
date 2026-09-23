@@ -150,8 +150,12 @@ export function DefiningBills() {
       <div style={{ position: 'relative' }}>
       <div
         style={{
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(150px, 100%), 1fr))',
-          gap: 8, alignItems: 'start',
+          // ONE PER ROW on a phone, two-up only once there is room for a
+          // 260px column. At 375px the two-column version gave each tile
+          // about 150px, so most titles broke over three or four lines and
+          // the tiles stopped being scannable — the point of the block.
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(260px, 100%), 1fr))',
+          gap: 8, alignItems: 'stretch',
           // Fades the last visible row out rather than cutting it off square,
           // so the list reads as continuing rather than ending. The extra
           // bottom padding while collapsed is the room the control sits in.
@@ -358,20 +362,20 @@ function BillPanel({ bill, onClose }: { bill: DefiningBill; onClose: () => void 
       <p className="bill-panel-label" style={labelStyle}>Its journey through Parliament</p>
       <Journey nodes={f ? f.journey : deriveJourney(bill)} />
 
-      {f ? (
-        <>
-          <div className="bill-panel-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(140px, 100%), 1fr))', gap: 14, marginTop: 26, paddingTop: 22, borderTop: `1px solid ${LINE}` }}>
-            {f.stats.map((s, i) => (
-              <div key={i}>
-                <div className="bill-panel-stat-n" style={{ fontSize: 25, fontWeight: 800, letterSpacing: '-.02em', color: ACCENT_DK, fontFamily: MANROPE, fontVariantNumeric: 'tabular-nums' }}>
-                  {typeof s.to === 'number' ? <CountUp to={s.to} suffix={s.suffix ?? ''} /> : s.text}
-                </div>
-                <div className="bill-panel-stat-l" style={{ fontSize: 12, color: MUTED, fontFamily: MANROPE, lineHeight: 1.4, marginTop: 3 }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </>
-      ) : bill.timeline && bill.timeline.length > 0 ? (
+      {/* The featured bill's headline figures are gone until they are sourced:
+          "300,000+ submissions, a national record", "90% of submissions
+          opposed" and the 112-11 vote were hand-written into the data, and the
+          bill's three sources are page-level links that do not evidence any of
+          them directly. On the one bill whose subject is a single party, and
+          where every figure cuts the same way, that is not a standard this
+          site holds elsewhere — the policy panels only quote text a script has
+          checked is verbatim. The dated timeline below says the same things
+          with dates against them, including the second-reading defeat.
+
+          To bring them back: cite each figure (the Justice Committee report
+          for the submissions count and the share opposed, Hansard for the
+          vote) and show the citation under the numbers. */}
+      {bill.timeline && bill.timeline.length > 0 ? (
         <>
           <p className="bill-panel-label" style={{ ...labelStyle, marginTop: 20 }}>How it progressed</p>
           {/* The date sits in a fixed 108px column beside the event. On a phone
@@ -472,10 +476,6 @@ function Journey({ nodes }: { nodes: NonNullable<DefiningBill['featured']>['jour
   )
 }
 
-function CountUp({ to, suffix }: { to: number; suffix: string }) {
-  const p = useProgress(1300)
-  return <>{Math.round(to * p).toLocaleString('en-NZ')}{suffix}</>
-}
 
 /** Eased 0→1 progress over `dur` ms. Time-based (not step count), so it always
  *  reaches 1 even when the tab is backgrounded and timers are throttled. */

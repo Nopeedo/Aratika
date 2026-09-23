@@ -49,7 +49,9 @@ export interface DefiningBill {
   featured?: {
     tagline: string
     journey: { label: string; state: 'done' | 'stop' | 'current' }[]
-    stats: { to?: number; suffix?: string; text?: string; label: string }[]
+    /* `stats` (hand-written headline figures) was removed: the bill's sources
+       are page-level links that evidence none of them directly. Re-add it with
+       a citation per figure, not before. */
   }
 }
 
@@ -104,11 +106,6 @@ export const DEFINING_BILLS: DefiningBill[] = [
         { label: 'First reading', state: 'done' },
         { label: 'Select committee', state: 'done' },
         { label: 'Defeated', state: 'stop' },
-      ],
-      stats: [
-        { to: 300000, suffix: '+', label: 'public submissions, a national record' },
-        { to: 90, suffix: '%', label: 'of submissions opposed' },
-        { text: '112–11', label: 'vote against, at second reading' },
       ],
     },
   },
