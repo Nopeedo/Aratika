@@ -528,6 +528,19 @@ function BillBreakdown({ b, readerSlug, summary, submissionsOpen, party, onClose
         // they care. The rest is on the breakdown the button below opens.
         <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }}>{gist(summary)}</p>
       )}
+      {/* Says the gap is coverage, not a broken panel. A bill has a summary
+          once scripts/enrich-bills.mjs has run on it — Claude grounded only in
+          the official bill text — and an editor has approved the result; most
+          of the 285 have not been through that yet. Naming it is better than a
+          silent gap, and better than the generic sentence that used to stand
+          here, which described what a government bill IS on 196 cards. */}
+      {!summary && (
+        <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 12px' }}>
+          We haven&rsquo;t written a plain-language summary for this bill yet. The
+          official page below is the source.
+        </p>
+      )}
+
       {/* The policy area as the SAME chip the policy pages use, so a reader
           who has met it there recognises it here. */}
       <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.07em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, margin: '0 0 9px' }}>
