@@ -28,7 +28,7 @@
 
 import { ArrowUpRight } from 'lucide-react'
 import { ELECTORAL_CALENDAR, daysUntil, type ElectoralMilestone } from '@/constants/electoral-calendar'
-import { INK, SECONDARY, BORDER, MANROPE, JADE } from '@/constants/theme'
+import { INK, SECONDARY, TERTIARY, BORDER, MANROPE, JADE } from '@/constants/theme'
 
 export const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -116,7 +116,12 @@ function DateCard({ milestone: m, today }: { milestone: ElectoralMilestone; toda
         <span style={{ fontSize: 30, fontWeight: 800, color: tone, fontFamily: MANROPE, lineHeight: 1, letterSpacing: '-.02em', fontVariantNumeric: 'tabular-nums' }}>{day}</span>
         <span style={{ fontSize: 13, fontWeight: 800, color: tone, fontFamily: MANROPE }}>{month}</span>
       </div>
-      <div style={{ fontSize: 11, fontWeight: 700, color: critical ? CRITICAL_RED : SECONDARY, fontFamily: MANROPE }}>
+      {/* Softer than the rest of the card on purpose — it's the least
+          important number here, and at 700-weight SECONDARY it was reading
+          as loud as the day figure right above it. TERTIARY, 500-weight;
+          stays critical-red on the one card where missing the date matters
+          most, just no longer bold. */}
+      <div style={{ fontSize: 11, fontWeight: 500, color: critical ? CRITICAL_RED : TERTIARY, fontFamily: MANROPE }}>
         {days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : days > 0 ? `${days} days away` : 'Already open'}
       </div>
       <div style={{ fontSize: 14, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.3, marginTop: 2 }}>
