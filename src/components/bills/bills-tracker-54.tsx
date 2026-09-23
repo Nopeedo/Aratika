@@ -401,8 +401,9 @@ function BillCard({ b, open, onToggle, focused, party }: { b: Bill54; open: bool
         onClick={onToggle}
         aria-expanded={open}
         style={{
+          position: 'relative',
           display: 'flex', alignItems: 'flex-start', gap: 8, width: '100%', textAlign: 'left',
-          background: 'none', border: 'none', padding: '7px 10px 8px', cursor: 'pointer', font: 'inherit',
+          background: 'none', border: 'none', padding: '7px 26px 20px 10px', cursor: 'pointer', font: 'inherit',
         }}
       >
         <span style={{ flex: 1, minWidth: 0 }}>
@@ -423,8 +424,16 @@ function BillCard({ b, open, onToggle, focused, party }: { b: Bill54; open: bool
           </span>
           <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{b.title}</span>
         </span>
+        {/* Bottom-right, not beside the title: the tag owns the top-right
+            corner now, and a chevron centred against a two-line title floated
+            in the middle of the tile. Absolute so it cannot push the title
+            narrower as the corner it sits in changes height. */}
         <ChevronDown
-          style={{ width: 15, height: 15, flexShrink: 0, color: kind.fg, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease' }}
+          style={{
+            position: 'absolute', right: 8, bottom: 7,
+            width: 15, height: 15, flexShrink: 0, color: kind.fg,
+            transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease',
+          }}
           strokeWidth={3}
         />
       </button>

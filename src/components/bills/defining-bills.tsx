@@ -174,7 +174,8 @@ export function DefiningBills() {
               aria-expanded={on}
               style={{
                 textAlign: 'left', cursor: 'pointer',
-                background: st.bg, borderRadius: 11, padding: '7px 10px 8px',
+                position: 'relative',
+                background: st.bg, borderRadius: 11, padding: '7px 26px 20px 10px',
                 borderStyle: 'solid',
                 borderWidth: on ? 3 : 2,
                 borderColor: on ? st.fg : st.bar,
@@ -202,8 +203,11 @@ export function DefiningBills() {
                   </span>
                   <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{b.title}</span>
                 </span>
+                {/* Bottom-right corner — see the matching note in the tracker
+                    tile. The tag holds the top-right. */}
                 <ChevronDown
                   style={{
+                    position: 'absolute', right: 8, bottom: 7,
                     width: 15, height: 15, flexShrink: 0, color: st.fg,
                     transform: on ? 'rotate(180deg)' : 'none',
                     transition: 'transform .2s ease',
