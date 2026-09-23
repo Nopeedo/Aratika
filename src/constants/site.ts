@@ -14,16 +14,27 @@ export const SITE = {
   // empty profile is a weak signal, so leave TikTok/Facebook/YouTube commented
   // out until there's something on them.
   socials: [
-    // RENAME TODO — these are still the Arapono-era handles. Instagram lets an
-    // account change its username in place, so the profile (and followers)
-    // carry over; only the URL changes. Update the two entries below once the
-    // new handles are secured, and check docs/email-signature.html too. A
-    // guessed handle here would link the whole site to a stranger's account.
-    { label: 'Instagram', url: 'https://www.instagram.com/arapononz/' },
-    // The canonical profile URL, resolved from a facebook.com/share/ short
-    // link before adding — share links redirect and can rotate, so the footer
-    // carries the address they point AT, verified live 28 Aug 2026.
-    { label: 'Facebook', url: 'https://www.facebook.com/people/Arapono-Arapono/pfbid0239fo87kAKYeU8SkAQExLZGjSwTfEgVeADcfPr5BDjAm6M1zNAgXkAprLLvKoRFwbl/' },
+    // Verified live, 24 Sep 2026, by loading each profile in a real browser and
+    // reading the name off it. Not by status code: Instagram answers 200 for a
+    // handle that does not exist, so `arapononz`, `politikanz` and `politika.nz`
+    // all looked alike from curl. The page title is the thing that differs
+    // ("Politika.nz (@politika.nz)" against "Profile isn't available").
+    //
+    // A guessed handle here would link the whole site to a stranger's account,
+    // and these URLs are also the `sameAs` in the Organization schema, which is
+    // how Google associates the brand.
+    { label: 'Instagram', url: 'https://www.instagram.com/politika.nz/' },
+    // STILL THE OLD NAME. Checked 24 Sep 2026: this page loads publicly and
+    // renders as "Arapono Arapono", so unlike Instagram it has not been
+    // renamed. facebook.com/politika.nz and /politikanz both come back "This
+    // content isn't available", and the same browser reads this page fine
+    // without logging in, so those are not login walls, they are absent pages.
+    // Left pointing at the real page rather than at a guess: a dead social link
+    // in the footer is also a dead `sameAs` in the schema.
+    //
+    // The pfbid form now redirects to a stable numeric id, so that is what the
+    // footer carries; pfbid tokens rotate.
+    { label: 'Facebook', url: 'https://www.facebook.com/people/Arapono-Arapono/61592825727986/' },
     // { label: 'TikTok', url: 'https://www.tiktok.com/@…' },
     // { label: 'YouTube', url: 'https://www.youtube.com/@…' },
   ] as { label: string; url: string }[],
