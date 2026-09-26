@@ -85,7 +85,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Hamish_Campbell"
   },
   "kahurangi-carter": {
-    "bio": "Kahurangi \"Kahu\" Carter is a New Zealand politician, representing the Green Party of Aotearoa New Zealand as a Member of Parliament since the 2023 New Zealand general election.",
+    "bio": "Kahurangi Carter is a New Zealand politician, representing the Green Party of Aotearoa New Zealand as a Member of Parliament since the 2023 New Zealand general election.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Kahurangi_Carter"
   },
   "carlos-cheung": {
