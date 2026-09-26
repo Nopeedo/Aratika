@@ -112,6 +112,11 @@ function seatOrder(byParty: Record<string, number>): PartySlug[] {
   return arr
 }
 
+/** The chart's width cap. Exported because the homepage pulls its seat count
+ *  up INTO the arch by a fraction of this, and a second copy of the number
+ *  in that file is a number that can drift from this one (§5.4). */
+export const CHAMBER_MAX_W = 460
+
 export function SeatChamber({
   elected, electedTotal, electedYear, electedSlug, projection, projectionTotal, asAt, home = false, heading, frameColor, frameLight, highlight, onPickParty, pickScrollsToIdPrefix,
 }: {
@@ -448,7 +453,7 @@ export function SeatChamber({
               ref={svgRef}
               onClick={pick ? pickNearestSeat : undefined}
               viewBox={home ? dome.viewBox : `0 0 ${geo.width} ${geo.height}`}
-              style={{ width: '100%', maxWidth: 460, cursor: pick ? 'pointer' : undefined }}
+              style={{ width: '100%', maxWidth: CHAMBER_MAX_W, cursor: pick ? 'pointer' : undefined }}
               role="img"
               aria-label={mode === 'build' ? `${chosenSeats} of ${total} seats selected` : `Seat distribution, ${total} seats`}>
               {/* The frame, drawn first so the seats sit on it. */}

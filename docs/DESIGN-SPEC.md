@@ -747,10 +747,24 @@ rectangle. Use `filter: drop-shadow(...)` for the shadow, and for an outline
 nest two clipped elements: the outer one in the border colour with 2px of
 padding, the inner one in the fill.
 
-**5.10 A percentage margin resolves against the container's width.** The
-homepage seat count is pulled up into the arch's opening with
-`marginTop: '-13%'` rather than a pixel value, so it tracks the chart as the
-chart scales. A fixed offset was right at one width and wrong at every other.
+**5.10 A percentage margin resolves against the container's width, which is
+not always the box you meant.** The homepage seat count is pulled up into the
+arch's opening by a fraction rather than a pixel value, so it tracks the chart
+as the chart scales; a fixed offset was right at one width and wrong at every
+other. But `-13%` resolves against the CONTAINER, and that container is 1180
+wide while the chart stops growing at 460. Above about 900px the pull-up kept
+increasing after the chart had stopped, reaching -144px of lift over a 251px
+chart, and "SEATS IN PARLIAMENT" and the party-vote line ran straight through
+the bottom row of dots: 50px of overlap at 1295 and 1920, 14px at 900, clear
+below 768. Desktop only, which is why it survived a phone-first pass.
+
+Name the box in the value: `calc(-0.13 * min(100%, 460px))`, where 460 is the
+chart's own `maxWidth`, exported as `CHAMBER_MAX_W` so the two cannot drift
+(§5.4). `min(100%, cap)` IS the width of anything sized `width: 100%; max-width:
+cap` in the same column, so the fraction now tracks the thing it is supposed to
+track at every viewport, and the phone is untouched (-43.9px at 375, the same
+number the plain percentage gave). Symptom to recognise: an overlap that grows
+as the window widens and disappears on a phone.
 
 **5.11 An inner scroll area eats a phone swipe.** The caucus rails scroll, so a
 finger starting on a row scrolled the rail instead of the page and the reader

@@ -21,7 +21,7 @@ import { PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { PROJECTION_SEATS } from '@/constants/polls-data'
-import { SeatChamber } from '@/components/elections/seat-chamber'
+import { SeatChamber, CHAMBER_MAX_W } from '@/components/elections/seat-chamber'
 import { ParliamentHeading } from '@/components/homepage/parliament-heading'
 import { SignLink } from '@/components/homepage/compare-sign-link'
 import { PartyElectorates } from '@/components/homepage/party-electorates'
@@ -59,9 +59,25 @@ export function ParliamentNow({ seats, bills }: { seats?: ReactNode; bills?: Rea
             from page.tsx because it is a server component (it reads the tile
             data) and this one is a client component. */}
         {/* The seat count rides UP into the arch's opening; the label and
-            the party vote fall below it. A percentage offset, so it tracks
-            the chart as it scales rather than drifting at one size. */}
-        <div style={{ marginTop: '-13%' }}>{seats}</div>
+            the party vote fall below it. A fraction of the CHART's width, so
+            it tracks the chart as it scales rather than drifting at one size.
+            
+            It was a plain -13%, which resolves against THIS container, and
+            this container is 1180 wide while the chart stops growing at 460.
+            So above about 900px the pull-up kept increasing after the chart
+            had stopped: -144px of lift over a 251px-tall chart, which put
+            "SEATS IN PARLIAMENT" and the party-vote line straight through the
+            bottom row of dots. Measured: 50px of overlap at 1295 and 1920,
+            14px at 900, clear below 768, which is why it only showed on a
+            desktop.
+            
+            `min(100%, CHAMBER_MAX_W)` IS the chart's width at every viewport:
+            the chart is `width: 100%, maxWidth: 460` in the same column. The
+            fraction is unchanged, so the phone is untouched (-43.9px at 375,
+            exactly as before) and the desktop settles at -59.8px instead of
+            -144. This is §5.10 with the box named: a percentage margin is
+            right here, but only against the box it is supposed to track. */}
+        <div style={{ marginTop: `calc(-0.13 * min(100%, ${CHAMBER_MAX_W}px))` }}>{seats}</div>
 
         {/* The way out sits with the numbers it belongs to — directly under
             the seat count and the share of the vote — rather than at the foot
