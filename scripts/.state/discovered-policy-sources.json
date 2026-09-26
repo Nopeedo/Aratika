@@ -423,7 +423,7 @@
     "crime-justice": [
       {
         "url": "https://www.act.org.nz/policies/law-and-order",
-        "title": "ACT Law and Order Policy"
+        "title": "ACT Law & Order Policy"
       }
     ],
     "health": [
@@ -919,25 +919,29 @@
     "democracy-government": [
       {
         "url": "https://womensrightsparty.nz/our-priorities/",
-        "title": "Women's Rights Party priorities: sex-based rights and women's freedoms"
+        "title": "Women's Rights Party Priorities"
+      },
+      {
+        "url": "https://womensrightsparty.nz/policy-proposal/advocating-for-women/",
+        "title": "Advocating for Women's Sex-Based Rights"
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/human-rights-act/",
-        "title": "Human Rights Act – Gender Identity Opposition"
+        "title": "Oppose Gender Identity in Human Rights Act"
       }
     ],
     "health": [
       {
         "url": "https://womensrightsparty.nz/policy-proposal/conversion-practices/",
-        "title": "Conversion Practices Legislation Reform"
+        "title": "Remove Gender Identity from Conversion Practices Legislation"
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/puberty-blockers-hormones-and-surgery/",
-        "title": "Ban on puberty blockers and cross-sex hormones for under-18s"
+        "title": "Ban on Puberty Blockers and Cross-Sex Hormones for Minors"
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/working-for-families-reform/",
-        "title": "Caring for Mothers and Children – Income and Maternity Support"
+        "title": "Working for Families reform and support for mothers and children"
       }
     ],
     "education": [
@@ -953,39 +957,39 @@
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/prostitution/",
-        "title": "Prostitution Reform – Equality Model"
+        "title": "Prostitution Reform — Nordic Model"
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/rough-sex-murder-defence/",
-        "title": "Oppose Rough Sex Murder Defence"
+        "title": "Ban Rough Sex Murder Defence"
       }
     ],
     "environment": [
       {
         "url": "https://womensrightsparty.nz/policy-proposal/environmental/",
-        "title": "Environmental Policy and Women's Voices"
+        "title": "Environmental Policy — Right to Clean Natural Environment"
       }
     ],
     "foreign-policy": [
       {
         "url": "https://womensrightsparty.nz/policy-proposal/international/",
-        "title": "International Women's Rights Position"
+        "title": "International Policy on Women's Rights in Conflict"
       }
     ],
     "economy": [
       {
         "url": "https://womensrightsparty.nz/policy-proposal/financial-stability-for-women-in-older-age/",
-        "title": "Financial Stability for Older Women"
+        "title": "Financial stability for older women"
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/pay-equity/",
-        "title": "Pay Equity for Women"
+        "title": "Pay equity for women workers"
       }
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-25",
+    "lastRun": "2026-09-26",
     "parties": 14,
-    "policyPages": 203
+    "policyPages": 204
   }
 }
