@@ -315,7 +315,7 @@
     "education": [
       {
         "url": "https://www.national.org.nz/education",
-        "title": "National's Teaching the Basics Brilliantly Education Policy"
+        "title": "Teaching the Basics Brilliantly Education Policy"
       }
     ]
   },
@@ -332,6 +332,10 @@
       {
         "url": "https://www.labour.org.nz/capitalgainstax",
         "title": "Labour Capital Gains Tax Policy"
+      },
+      {
+        "url": "https://www.labour.org.nz/cutting-student-debt",
+        "title": "Labour's Student Debt Cut Policy"
       },
       {
         "url": "https://www.labour.org.nz/fairer-grocery-prices",
@@ -807,18 +811,6 @@
       }
     ]
   },
-  "conservative": {
-    "democracy-government": [
-      {
-        "url": "https://www.conservatives.nz/policy",
-        "title": "Conservative NZ Policy Overview - Smaller Government and Family Values"
-      },
-      {
-        "url": "https://www.conservatives.nz/principles",
-        "title": "Conservative NZ Core Principles"
-      }
-    ]
-  },
   "vision-nz": {
     "democracy-government": [
       {
@@ -851,7 +843,7 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Full Employment and 35-Hour Week Workers Rights Policy"
+        "title": "Full employment and 35-hour working week policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
@@ -863,7 +855,7 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-rebuild-universal-social-security/",
-        "title": "Plan to Rebuild Universal Social Security"
+        "title": "Universal Social Security Welfare Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-retirement-aged-care-kiwisaver-policy/",
@@ -875,13 +867,13 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Tax Plan: First $20,000 Income Tax-Free Funded by Wealth Tax"
+        "title": "Tax-free threshold and wealth tax plan"
       }
     ],
     "health": [
       {
         "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
-        "title": "Health Policy: Free GP, Dental, Optical and Audiology Services"
+        "title": "Free Community Healthcare Policy"
       }
     ],
     "environment": [
@@ -900,6 +892,12 @@
       {
         "url": "https://allianceparty.nz/the-right-to-a-roof-alliance-housing-policy/",
         "title": "The Right to a Roof: Housing Policy"
+      }
+    ],
+    "democracy-government": [
+      {
+        "url": "https://allianceparty.nz/alliance-te-tiriti-democracy-constitutional-policy/",
+        "title": "Te Tiriti, Democracy and Constitutional Policy"
       }
     ]
   },
@@ -988,8 +986,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-26",
-    "parties": 14,
+    "lastRun": "2026-09-27",
+    "parties": 13,
     "policyPages": 204
   }
 }
