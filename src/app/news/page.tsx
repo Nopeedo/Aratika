@@ -25,7 +25,8 @@ import { SectionDivider } from '@/components/ui/section-divider'
 import { getNews } from '@/lib/news/live'
 import { getVideos, getInterviewVideos } from '@/lib/news/videos'
 import { NewsFeed } from '@/components/news/news-feed'
-import { AboutNews, OUTLET_NAMES } from '@/components/news/about-news'
+import { AboutNews } from '@/components/news/about-news'
+import { OUTLET_NAMES } from '@/constants/news-outlets'
 import { BORDER, INK, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 // Revalidated, not force-dynamic.

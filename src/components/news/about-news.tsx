@@ -18,11 +18,12 @@
 
 import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { JADE_DARK } from '@/constants/theme'
+/* Plain data, deliberately not declared in this file: a server component
+   importing it from here would get a client reference, not the array. */
+import { OUTLET_NAMES } from '@/constants/news-outlets'
 
 const ACCENT = JADE_DARK
 
-/** The outlets this feed reads. Named, not linked: see the note at the top. */
-export const OUTLET_NAMES = ['RNZ', 'the Beehive', 'NZ Herald', 'Stuff', 'Newsroom']
 
 export function AboutNews() {
   return (
