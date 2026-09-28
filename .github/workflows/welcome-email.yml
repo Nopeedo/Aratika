@@ -1,0 +1,75 @@
+name: Welcome email
+
+# Sends the one-off welcome to accounts that have confirmed their email and
+# never been welcomed. See scripts/welcome-email.mjs for the guards; the short
+# version is: confirmed accounts only, an age cap so a first run cannot greet
+# people who signed up months ago, and a batch cap so a signup spike does not
+# become an unbounded send.
+#
+# Every three hours rather than daily. A welcome that arrives a day after
+# signing up has missed the moment the person was actually interested, and the
+# run costs one query when there is nobody waiting.
+#
+# No permissions block and no commit step: this workflow writes nothing to the
+# repo. Dedup lives in notification_prefs.welcome_sent_at, because this repo is
+# public and a committed file listing accounts is a list of the site's users.
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'List who would get it, send nothing'
+        type: boolean
+        default: false
+      backfill:
+        description: 'Ignore the age cap (greets every never-welcomed account)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: welcome-email
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+
+      - name: Send welcome emails
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ZOHO_SMTP_USER: ${{ secrets.ZOHO_SMTP_USER }}
+          ZOHO_SMTP_PASS: ${{ secrets.ZOHO_SMTP_PASS }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+        run: |
+          # Without SMTP credentials the script would report "nothing sent" and
+          # exit clean, which is indistinguishable from "nobody to welcome" —
+          # the failure mode this project keeps getting bitten by. Fail instead.
+          if [ -z "$ZOHO_SMTP_USER" ] || [ -z "$ZOHO_SMTP_PASS" ]; then
+            echo "::error::ZOHO_SMTP_USER / ZOHO_SMTP_PASS not set — welcome emails cannot be delivered."
+            exit 1
+          fi
+          ARGS=""
+          [ "${{ inputs.backfill }}" = "true" ] && ARGS="$ARGS --backfill"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "Dry run requested — sending nothing."
+          else
+            ARGS="$ARGS --send"
+          fi
+          node scripts/welcome-email.mjs $ARGS | tee /tmp/welcome.log
+          {
+            echo '## Welcome email'
+            echo ''
+            echo '```'
+            tail -40 /tmp/welcome.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
