@@ -239,7 +239,7 @@
       },
       {
         "url": "https://www.national.org.nz/policies/build-the-future",
-        "title": "Easier Building Consent System for Commercial Buildings"
+        "title": "Easier Commercial Building Consents"
       },
       {
         "url": "https://www.national.org.nz/policies/grocery-competition",
@@ -267,7 +267,7 @@
       },
       {
         "url": "https://www.national.org.nz/policies/responsibility-rules",
-        "title": "National's Budget Responsibility Rules"
+        "title": "Budget Responsibility Rules"
       },
       {
         "url": "https://www.national.org.nz/policies/solar",
@@ -277,7 +277,7 @@
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "Widening Access to 5% First Home Deposits"
+        "title": "5% First Home Deposits via First Home Loan"
       }
     ],
     "foreign-policy": [
@@ -300,6 +300,10 @@
       {
         "url": "https://www.national.org.nz/policies/consent-laws",
         "title": "Modernise Sexual Consent Laws"
+      },
+      {
+        "url": "https://www.national.org.nz/policies/fix-fire-and-emergency",
+        "title": "Plan to Fix Fire and Emergency New Zealand"
       },
       {
         "url": "https://www.national.org.nz/policies/tougher-sentences",
@@ -421,7 +425,7 @@
     "economy": [
       {
         "url": "https://www.act.org.nz/policies/economy",
-        "title": "ACT Economy and Cost of Living Policy"
+        "title": "ACT Economy & Cost of Living Policy"
       }
     ],
     "crime-justice": [
@@ -839,65 +843,71 @@
     "economy": [
       {
         "url": "https://allianceparty.nz/alliance-52-weeks-paid-parental-leave-gender-equality/",
-        "title": "52 Weeks Paid Parental Leave and Gender Equality Policy"
+        "title": "Alliance 52 Weeks Paid Parental Leave and Gender Equality Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Full employment and 35-hour working week policy"
+        "title": "Full employment and 35-hour working week"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
-        "title": "National Transport Strategy"
+        "title": "Alliance National Transport Strategy"
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-eliminate-child-poverty/",
-        "title": "Plan to Eliminate Child Poverty"
+        "title": "Alliance Plan to Eliminate Child Poverty"
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-rebuild-universal-social-security/",
-        "title": "Universal Social Security Welfare Policy"
+        "title": "Alliance Universal Social Security Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-retirement-aged-care-kiwisaver-policy/",
-        "title": "Retirement, Aged Care and KiwiSaver Policy"
+        "title": "Alliance Retirement, Aged Care and KiwiSaver Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-small-business-local-enterprise-cooperatives/",
-        "title": "Small Business, Local Enterprise and Cooperatives Policy"
+        "title": "Alliance Small Business, Local Enterprise and Cooperatives Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Tax-free threshold and wealth tax plan"
+        "title": "First $20,000 income tax-free, funded by wealth tax"
       }
     ],
     "health": [
       {
         "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
-        "title": "Free Community Healthcare Policy"
+        "title": "Free GP, dental, optical and audiology services"
       }
     ],
     "environment": [
       {
         "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
-        "title": "Environment, Climate and Sustainable Economy Policy"
+        "title": "Just Transition: environment and sustainable economy policy"
       }
     ],
     "crime-justice": [
       {
         "url": "https://allianceparty.nz/alliance-justice-policy-three-strikes-into-treatment/",
-        "title": "Justice Policy: Three Strikes and into Treatment"
+        "title": "Alliance Justice Policy: Three Strikes and into Treatment"
       }
     ],
     "housing": [
       {
         "url": "https://allianceparty.nz/the-right-to-a-roof-alliance-housing-policy/",
-        "title": "The Right to a Roof: Housing Policy"
+        "title": "Alliance Housing Policy: The Right to a Roof"
       }
     ],
     "democracy-government": [
       {
         "url": "https://allianceparty.nz/alliance-te-tiriti-democracy-constitutional-policy/",
-        "title": "Te Tiriti, Democracy and Constitutional Policy"
+        "title": "Alliance Te Tiriti, Democracy and Constitutional Policy"
+      }
+    ],
+    "foreign-policy": [
+      {
+        "url": "https://allianceparty.nz/open-not-owned-alliance-trade-policy/",
+        "title": "Alliance Trade Policy: Open, Not Owned"
       }
     ]
   },
@@ -986,8 +996,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-27",
+    "lastRun": "2026-09-29",
     "parties": 13,
-    "policyPages": 204
+    "policyPages": 206
   }
 }
