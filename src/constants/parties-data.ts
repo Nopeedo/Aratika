@@ -691,3 +691,25 @@ export const PROFILED_MINOR_PARTIES: PartySlug[] = [
   'womens-rights', 'animal-justice', 'alcp', 'conservative', 'nz-outdoors', 'vision-nz',
   'alliance', 'free-palestine', 'nz-loyal', 'te-tai-tokerau-party',
 ]
+
+/**
+ * The eyebrow over the leader row, from the DATA rather than from an assumption.
+ *
+ * It read `coLeader ? 'Co-leaders' : leaderTitle`, which is true of the five
+ * parties whose two leaders are both titled "Co-leader" and false of the two
+ * whose second person is a DEPUTY: Vision NZ (Hannah Tamaki, Leader / Heker
+ * Robertson, Deputy Leader) and NZ Loyal (Kelvyn Alp, Leader / John Alcock,
+ * Deputy Leader). Both shipped calling a deputy a co-leader, which is a
+ * factual error about four named people. The titles were in the data the whole
+ * time; the old glance block was the only place they were printed, so deleting
+ * it as a duplicate took the one fact it did not duplicate (§5.17).
+ *
+ * Same pair, same title: pluralise it. Different titles: say both.
+ */
+export function leadershipLabel(leaderTitle?: string, coLeaderTitle?: string): string {
+  const a = (leaderTitle || 'Leader').trim()
+  if (!coLeaderTitle) return a
+  const b = coLeaderTitle.trim()
+  if (a.toLowerCase() === b.toLowerCase()) return a.endsWith('s') ? a : `${a}s`
+  return `${a} & ${b}`
+}

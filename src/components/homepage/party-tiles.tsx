@@ -11,6 +11,7 @@
  */
 
 import * as React from 'react'
+import { leadershipLabel } from '@/constants/parties-data'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Landmark, Newspaper, PlayCircle, ScrollText } from 'lucide-react'
@@ -39,6 +40,10 @@ export interface TileParty {
   /** Green and Te Pāti Māori have co-leaders. Neither is "the" leader, so both
    *  are shown side by side rather than one being promoted over the other. */
   coLeader?: string
+  /** Their actual title. Not every second name is a CO-leader: Vision NZ and
+   *  NZ Loyal pair a Leader with a Deputy Leader, and the row used to call
+   *  both of those people co-leaders. */
+  coLeaderTitle?: string
   coLeaderPhoto?: string
   coLeaderHref?: string | null
   role: string
@@ -717,7 +722,7 @@ function PanelHeader({ p }: { p: TileParty }) {
           </div>
           {/* Pluralised, so a co-led party never reads as having one leader. */}
           <div style={{ fontSize: 12.5, fontWeight: 600, color: SUB, marginTop: 2, lineHeight: 1.3, fontFamily: MANROPE }}>
-            {p.coLeader ? 'Co-leaders' : p.leaderTitle}
+            {leadershipLabel(p.leaderTitle, p.coLeader ? p.coLeaderTitle : undefined)}
           </div>
         </span>
       </div>

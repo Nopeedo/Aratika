@@ -14,7 +14,7 @@ import {
   ArrowUpRight, Landmark,
   ScrollText, Star, Globe, CheckCircle2,
 } from 'lucide-react'
-import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES } from '@/constants/parties-data'
+import { PARTY_PROFILES, PARTY_DIRECTORY_ORDER, PROFILED_MINOR_PARTIES, leadershipLabel } from '@/constants/parties-data'
 import { CURRENT_SEATS, TOTAL_SEATS, PARTY_STATUS } from '@/constants/parties'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
@@ -318,7 +318,7 @@ export default async function PartyProfilePage(
                 </div>
                 <div style={{ minWidth: 0 }}>
                   <div className="pp-leader-title" style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>
-                    {party.coLeader ? 'Co-leaders' : party.leaderTitle}
+                    {leadershipLabel(party.leaderTitle, party.coLeader ? party.coLeaderTitle : undefined)}
                   </div>
                   <div className="pp-leader-name" style={{ fontSize: 15.5, fontWeight: 800, color: INK, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.25 }}>
                     {leaderSlug ? (

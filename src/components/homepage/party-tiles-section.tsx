@@ -116,6 +116,7 @@ const buildTileParties = cache(async function buildTileParties(): Promise<TilePa
       leaderPhoto: leaderSlug ? MP_PROFILES[leaderSlug].photo : prof.leaderPhoto,
       leaderHref: leaderSlug ? `/mps/${leaderSlug}` : null,
       coLeader: prof.coLeader,
+      coLeaderTitle: prof.coLeaderTitle,
       coLeaderPhoto: coLeaderSlug ? MP_PROFILES[coLeaderSlug].photo : undefined,
       coLeaderHref: coLeaderSlug ? `/mps/${coLeaderSlug}` : null,
       role: prof.status === 'governing' ? 'In government' : 'In opposition',
