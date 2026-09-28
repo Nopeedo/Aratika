@@ -11,7 +11,7 @@
  */
 
 import dotenv from 'dotenv'
-import { readFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { sb, emailUser, userEmailMap } from './lib/notify.mjs'
@@ -24,6 +24,15 @@ dotenv.config({ path: join(root, '.env.local') })
 const SELF = (process.argv.find((a) => a.startsWith('--self')) || '').split('=')[1]
   || (process.argv.includes('--self') ? process.argv[process.argv.indexOf('--self') + 1] : null)
 const LIVE = process.argv.includes('--send') || !!SELF
+// --preview <file> renders the first recipient's email to disk and stops. A dry
+// run only ever logged subject lines, so the one thing you cannot do while
+// designing an email — look at it — needed a real send to a test address.
+const PREVIEW = (() => {
+  const eq = process.argv.find((a) => a.startsWith('--preview='))
+  if (eq) return eq.slice('--preview='.length)
+  const i = process.argv.indexOf('--preview')
+  return i >= 0 ? process.argv[i + 1] : null
+})()
 const SITE = (process.env.NEXT_PUBLIC_APP_URL || 'https://politika.nz').replace(/\/$/, '')
 const lc = (v) => String(v || '').toLowerCase()
 
@@ -149,6 +158,12 @@ for (const userId of recipientIds) {
     // things in it — /command-centre is the public page explaining the feature.
     unsubscribeUrl: await unsubUrl(userId), manageUrl: `${SITE}/dashboard`,
   })
+  if (PREVIEW) {
+    writeFileSync(PREVIEW, html)
+    console.log(`Subject: ${subject}`)
+    console.log(`Preview written to ${PREVIEW} (${tracked.items.length} tracked item(s) for this recipient)`)
+    process.exit(0)
+  }
   const to = emails.get(userId)
   if (!to) continue
   if (!LIVE) { console.log(`  ${to} — "${subject}" (${tracked.items.length} tracked)`); continue }
