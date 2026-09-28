@@ -61,6 +61,7 @@ export function SeatHero({
 
   return (
     <div>
+      <style dangerouslySetInnerHTML={{ __html: HERO_CSS }} />
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 28px' }}>
         {/* One name for the page it goes back to, matching the title, the
             metadata and the nav (§1.7). It said "All battlegrounds" here and
@@ -72,20 +73,20 @@ export function SeatHero({
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: tierColor }} />
-              <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: tierColor, fontFamily: MANROPE }}>{tierLabel} in 2023</span>
+              <span className="sh-tier" style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', color: tierColor, fontFamily: MANROPE }}>{tierLabel} in 2023</span>
             </div>
             <h1 style={{ fontSize: 'clamp(24px, 7vw, 34px)', fontWeight: 800, letterSpacing: '-.02em', color: ESPRESSO, fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.05 }}>{electorateName}</h1>
-            <p style={{ fontSize: 14, color: SUB, fontFamily: MANROPE, margin: 0 }}>{regionLine}</p>
+            <p className="sh-region" style={{ fontSize: 14, color: SUB, fontFamily: MANROPE, margin: 0 }}>{regionLine}</p>
           </div>
           {action}
         </div>
 
         {majority != null && swing != null && (
           <div style={{ background: '#fff', border: `1px solid ${LINE}`, borderRadius: 14, padding: '14px 18px', boxShadow: '0 1px 2px rgba(42,18,6,.05)' }}>
-            <div style={{ fontSize: 10.5, fontWeight: 800, color: SUB, textTransform: 'uppercase', letterSpacing: '.04em', fontFamily: MANROPE, marginBottom: 8 }}>
+            <div className="sh-label" style={{ fontSize: 10.5, fontWeight: 800, color: SUB, textTransform: 'uppercase', letterSpacing: '.04em', fontFamily: MANROPE, marginBottom: 8 }}>
               What it takes to flip this seat
             </div>
-            <p style={{ fontSize: 13.5, color: BODY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
+            <p className="sh-body" style={{ fontSize: 13.5, color: BODY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
               {incumbentName} won by <b style={{ color: ESPRESSO }}>{majority.toLocaleString('en-NZ')}</b> votes in 2023. <b style={{ color: ESPRESSO }}>{swing.toLocaleString('en-NZ')}</b> {swing === 1 ? 'voter' : 'voters'} switching to {challengerLabel} would have flipped {electorateName}.
             </p>
             <p style={{ fontSize: 11, color: SUB, fontFamily: MANROPE, margin: '8px 0 0' }}>
@@ -97,3 +98,16 @@ export function SeatHero({
     </div>
   )
 }
+
+/* The desktop step this file never had. Composed at 375px and rendered
+   unchanged at 1920: a 10.5px label and a 13.5px paragraph inside a hero that
+   had grown to the full column. Scaled, not re-laid-out (§2.14), at the site's
+   768px breakpoint. !important because it overrides inline styles (§3.2). */
+const HERO_CSS = `
+@media (min-width: 768px) {
+  .sh-tier { font-size: 12px !important; }
+  .sh-region { font-size: 15.5px !important; }
+  .sh-label { font-size: 11.5px !important; }
+  .sh-body { font-size: 15px !important; }
+}
+`

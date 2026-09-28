@@ -14,6 +14,7 @@
 import * as React from 'react'
 import dynamic from 'next/dynamic'
 import { Search, Loader2, MapPinOff } from 'lucide-react'
+import { MapLoading } from '@/components/map/map-states'
 import type { Feature, FeatureCollection } from 'geojson'
 import { ElectoratePanel } from './electorate-panel'
 import { ElectorateTiles } from './electorate-tiles'
@@ -382,15 +383,6 @@ export function MapExperience({ initialSearch, embedded = false }: { initialSear
 }
 
 // ─── States ───────────────────────────────────────────────────────────────────
-
-function MapLoading() {
-  return (
-    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, color: TERTIARY, zIndex: 1100, background: '#eaf2f7' }}>
-      <Loader2 className="live-dot" style={{ width: 30, height: 30, color: JADE }} />
-      <span style={{ fontSize: 13, fontWeight: 600, fontFamily: MANROPE }}>Loading map…</span>
-    </div>
-  )
-}
 
 function MapMissing({ layer, error }: { layer: LayerType; error: boolean }) {
   return (

@@ -43,6 +43,7 @@ export function ElectoratePanel({ electorateName }: { electorateName: string | n
   if (!electorateName) {
     return (
       <div style={panelWrap}>
+        <style dangerouslySetInnerHTML={{ __html: PANEL_CSS }} />
         <div style={{ textAlign: 'center', padding: '32px 24px', color: TERTIARY }}>
           <MousePointerClick style={{ width: 32, height: 32, margin: '0 auto 12px', color: '#cbd0d6' }} />
           <p style={{ fontSize: 15, fontWeight: 700, color: INK, fontFamily: MANROPE, margin: 0 }}>
@@ -70,10 +71,14 @@ export function ElectoratePanel({ electorateName }: { electorateName: string | n
 
   return (
     <div style={panelWrap}>
+      {/* Mounted in BOTH branches. §3.2: the bills panel's phone sizing was
+          mounted inside one branch and the tallest card on the page never
+          received any of it. */}
+      <style dangerouslySetInnerHTML={{ __html: PANEL_CSS }} />
 
       {/* 1. Badge left, and the §2.13 Track control right, in the title row —
              not a second full-width button stacked under the way out. */}
-      <div style={{ padding: '16px 20px 14px', borderBottom: `1px solid ${BORDER}` }}>
+      <div className="ep-head" style={{ padding: '16px 20px 14px', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, marginBottom: 7 }}>
           <span style={{
             fontSize: 10.5, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase',
@@ -108,11 +113,11 @@ export function ElectoratePanel({ electorateName }: { electorateName: string | n
       </div>
 
       {hasHolder && sitting && info ? (
-        <div style={{ padding: '16px 20px 20px' }}>
+        <div className="ep-body" style={{ padding: '16px 20px 20px' }}>
           {/* 4. Label. "Sitting MP", not "Electorate MP · 2023 result": the
                  block below it is about who represents this seat today, and
                  the 2023 result is a separate row with its own label. */}
-          <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.07em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 11 }}>
+          <div className="ep-label" style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.07em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 11 }}>
             Sitting MP
           </div>
 
@@ -127,7 +132,7 @@ export function ElectoratePanel({ electorateName }: { electorateName: string | n
                       {mp.title}
                     </div>
                   )}
-                  <div style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15 }}>
+                  <div className="ep-name" style={{ fontSize: 17, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.15 }}>
                     {info.mpName}
                   </div>
                   <span style={{
@@ -152,7 +157,7 @@ export function ElectoratePanel({ electorateName }: { electorateName: string | n
           {switched && wonFor && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 12px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 10, marginBottom: 8 }}>
               <Info style={{ width: 14, height: 14, color: TERTIARY, flexShrink: 0 }} />
-              <span style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.45 }}>
+              <span className="ep-sub" style={{ fontSize: 12, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.45 }}>
                 Won this seat for {wonFor.name} in 2023.
               </span>
             </div>
@@ -218,3 +223,25 @@ const panelWrap: React.CSSProperties = {
   display: 'flex', flexDirection: 'column', height: '100%',
   background: '#ffffff',
 }
+
+/* The desktop step this file never had. Every size in it was composed at 375px
+   and rendered unchanged at 1920, where the panel sits beside a map that has
+   grown to fill the column: an 11px label and a 12px body against a 17px name,
+   in a box roughly twice the width it was designed in.
+
+   Scaled, not re-laid-out (§2.14): the order, the proportions and the reserved
+   heights are the phone's, one step larger. 768px to match every other
+   breakpoint on the site, so crossing it is one change of scale.
+
+   !important because the values it overrides are inline styles on the same
+   elements (§3.2). */
+const PANEL_CSS = `
+@media (min-width: 768px) {
+  .ep-head { padding: 20px 24px 17px !important; }
+  .ep-body { padding: 20px 24px 24px !important; }
+  .ep-eyebrow { font-size: 11.5px !important; }
+  .ep-label { font-size: 12px !important; }
+  .ep-name { font-size: 20px !important; }
+  .ep-sub { font-size: 13px !important; }
+}
+`
