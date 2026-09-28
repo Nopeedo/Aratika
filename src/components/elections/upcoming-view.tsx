@@ -54,6 +54,7 @@ import {
   PROJECTION_SEATS,
 } from '@/constants/polls-data'
 import { getPolls } from '@/lib/polls/live'
+import { getApprovedCandidatesBySlug } from '@/lib/candidates/live'
 import { longDate, milestone } from '@/constants/electoral-calendar'
 import { CommandHero } from './command-hero'
 import { PollSnapshot } from './poll-snapshot'
@@ -61,6 +62,7 @@ import { SeatChamber } from './seat-chamber'
 import { TwoVotes } from './two-votes'
 import { PartiesContesting } from './parties-contesting'
 import { ClosestRaces, type ClosestRace } from './closest-races'
+import { SeatMapSection } from './seat-map-section'
 import { VideoSection } from '@/components/news/video-section'
 import { ZoneHead } from './zone-head'
 import { InfoHeading, InfoText } from '@/components/ui/info-button'
@@ -126,6 +128,10 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   // Only a genuine debate clip may be called one.
   const hasRealDebates = debates.some((v) => v.debate)
   const polls = await getPolls()
+  // One read for all 72 seats. The map is a client component and cannot await,
+  // and fetching per seat would mean 72 identical reads of the same table.
+  // 59 of 72 electorates have candidates; the seat card handles the other 13.
+  const candidatesBySlug = await getApprovedCandidatesBySlug()
   const pop = pollOfPolls(polls)
   const projection = seatProjection(polls)
   // Derived from the polls actually being averaged, not the hand-maintained
@@ -294,8 +300,14 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               </InfoText>
             </ZoneHead>
             <ClosestRaces races={races} year={base.year} />
-            {/* The "All 72 seats on the map" signpost to /battlegrounds
-                removed by request. */}
+            {/* The map, back — but closed. It was cut from here at 1,070px as
+                the page's single largest saving, and that decision was right
+                for a map that arrived open. Closed it is one ~70px row, and the
+                height is spent only by a reader who taps it. See
+                seat-map-section.tsx for the full reasoning. */}
+            <div style={{ marginTop: 14 }}>
+              <SeatMapSection candidatesBySlug={candidatesBySlug} />
+            </div>
           </section>
 
           {/* ── LEADERS & THE PRESS ──────────────────────────────────────────

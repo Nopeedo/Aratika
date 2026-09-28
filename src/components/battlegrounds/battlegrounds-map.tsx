@@ -35,6 +35,7 @@ import { ArrowRight, ShieldCheck } from 'lucide-react'
 import type { FeatureCollection } from 'geojson'
 import { normalizeElectorateKey, getElectorate, type ElectorateInfo } from '@/constants/electorates-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
+import type { Candidate2026 } from '@/constants/candidates-2026'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { toSlug } from '@/lib/utils/format'
 import { MpPhotoTile } from '@/components/map/mp-photo-tile'
@@ -54,7 +55,7 @@ const ACCENT = '#dc2626'
 
 const ElectorateMap = dynamic(() => import('@/components/map/electorate-map'), { ssr: false, loading: () => <MapLoading /> })
 
-export function BattlegroundsMap() {
+export function BattlegroundsMap({ candidatesBySlug }: { candidatesBySlug?: Record<string, Candidate2026[]> } = {}) {
   const [layer, setLayer] = React.useState<Roll>('general')
   const [sets, setSets] = React.useState<Record<Roll, FeatureCollection | null>>({ general: null, maori: null })
   const [status, setStatus] = React.useState<'loading' | 'ready' | 'error'>('loading')
@@ -165,7 +166,7 @@ export function BattlegroundsMap() {
             <Prompt />
           ) : info && tier ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0 }}>
-              <SeatCard name={selected} slug={selectedKey ?? ''} info={info} tier={tier} />
+              <SeatCard name={selected} slug={selectedKey ?? ''} info={info} tier={tier} candidates={selectedKey ? candidatesBySlug?.[selectedKey] : undefined} />
               <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" fill />
             </div>
           ) : (
@@ -182,12 +183,64 @@ export function BattlegroundsMap() {
   )
 }
 
+/**
+ * Who is standing in 2026, under who won in 2023.
+ *
+ * The three rows above this say what HAPPENED. A reader deciding whether a seat
+ * matters wants to know who is contesting it NOW, and until this block the only
+ * way to find out was to open the seat page.
+ *
+ * `candidates` being undefined and being empty mean different things and must
+ * not render the same. 361 approved candidates cover 59 of 72 electorates, so
+ * for thirteen seats we hold nothing — and a heading over an empty list reads
+ * as "nobody is standing", which is false and the worse of the two errors.
+ */
+function Challengers({ candidates }: { candidates?: Candidate2026[] }) {
+  if (!candidates?.length) {
+    return (
+      <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
+        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Standing in 2026</div>
+        <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '6px 0 0', lineHeight: 1.5 }}>
+          None recorded yet. Nominations close 16 October — we add candidates as they are announced.
+        </p>
+      </div>
+    )
+  }
+  // Withdrawn candidates stay visible and marked, per the field's note in
+  // candidates-2026.ts: quietly dropping one rewrites the record of a contest.
+  return (
+    <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
+      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 8 }}>
+        Standing in 2026 · {candidates.length}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {candidates.map((c) => {
+          const colour = c.party !== 'independent' ? PARTY_COLORS[c.party]?.bg : TERTIARY
+          return (
+            <div key={c.key ?? c.name} style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+              <span style={{ width: 9, height: 9, borderRadius: 3, background: colour, flexShrink: 0 }} />
+              <span style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {c.name}
+                {c.withdrawn ? <span style={{ fontWeight: 600, color: TERTIARY }}> · withdrawn</span> : null}
+              </span>
+              <span style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, marginLeft: 'auto', flexShrink: 0 }}>
+                {c.party === 'independent' ? 'Independent' : PARTY_NAMES[c.party]?.short ?? c.party}
+              </span>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 /** §2.4's container and row order, at the size a 340px column allows. */
-function SeatCard({ name, slug, info, tier }: {
+function SeatCard({ name, slug, info, tier, candidates }: {
   name: string
   slug: string
   info: ElectorateInfo
   tier: MarginTier
+  candidates?: Candidate2026[]
 }) {
   return (
     <div style={{
@@ -208,6 +261,7 @@ function SeatCard({ name, slug, info, tier }: {
         <MetaRow label="Party then" value={info.party ? PARTY_NAMES[info.party].short : 'Not on record'} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
         <MetaRow label="2023 majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : 'Not on record'} />
       </div>
+      <Challengers candidates={candidates} />
       <Link href={`/battlegrounds/${slug}`} style={{ marginTop: 12, textDecoration: 'none' }}>
         <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px', color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: MANROPE }}>Open this seat <ArrowRight style={{ width: 15, height: 15 }} /></span>
       </Link>

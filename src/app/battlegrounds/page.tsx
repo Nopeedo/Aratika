@@ -7,6 +7,7 @@ import type { Metadata } from 'next'
 import { ExternalLink, Swords } from 'lucide-react'
 import { getBattlegrounds, MARGIN_TIERS, UNKNOWN_TIER } from '@/lib/battlegrounds'
 import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
+import { getApprovedCandidatesBySlug } from '@/lib/candidates/live'
 import { BattlegroundsList } from '@/components/battlegrounds/battlegrounds-list'
 import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { INK, JADE, MANROPE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
@@ -24,7 +25,8 @@ export const metadata: Metadata = {
     'New Zealand’s most marginal electorates: the closest 2023 contests, and the seats most likely to change hands in 2026.',
 }
 
-export default function BattlegroundsHub() {
+export default async function BattlegroundsHub() {
+  const candidatesBySlug = await getApprovedCandidatesBySlug()
   const all = getBattlegrounds()
 
   return (
@@ -86,7 +88,7 @@ export default function BattlegroundsHub() {
       </div>
 
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 64px' }}>
-        <BattlegroundsMap />
+        <BattlegroundsMap candidatesBySlug={candidatesBySlug} />
 
         {/* The four margin tiers were stated three times within 200px of
             scroll: this map's legend, an inert row of dot-label-count chips,

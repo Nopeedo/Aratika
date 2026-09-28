@@ -13,7 +13,12 @@
  * PARTY_MAP learns their label.
  */
 
+import { unstable_cache } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+// publicClient, not the cookie-bound server client: approved candidates are
+// public content, and touching cookies would opt every consuming route out of
+// static rendering — the same reason bills/live.ts and news/live.ts read this way.
+import { publicClient } from '@/lib/supabase/public'
 import type { Candidate2026 } from '@/constants/candidates-2026'
 import { PARTY_NAMES } from '@/constants/parties'
 import { PARTY_PROFILES } from '@/constants/parties-data'
@@ -58,6 +63,54 @@ const isKnownParty = (p: unknown): p is PartySlug | 'independent' =>
 // MPs switching electorates). Matching them to their profile wires up the
 // freely-licensed portrait we already hold — the card renders it via mpSlug.
 const MP_BY_NAME = new Map(Object.values(MP_PROFILES).map((mp) => [mp.name.toLowerCase(), mp.slug]))
+
+/**
+ * Every approved candidate, grouped by electorate slug, in one read.
+ *
+ * getApprovedCandidates() below fetches the WHOLE candidate table and then
+ * filters it in JS for one seat — which is correct for a seat page and wrong
+ * for a map, where any of 72 seats can be opened. Calling it per seat would
+ * mean 72 identical reads of the same ~200 KB for one filter each.
+ *
+ * The map is a client component and cannot await anything, so this is read once
+ * on the server and handed down as a prop. Cached for a minute like the other
+ * public reads: candidates are approved by hand in /editor.
+ *
+ * NOT every seat is in the result. 361 approved candidates cover 59 of 72
+ * electorates, so a lookup returning undefined is the normal state for thirteen
+ * seats, and the caller has to say "none recorded yet" rather than render an
+ * empty list — an empty box reads as "nobody is standing", which is false.
+ */
+export const getApprovedCandidatesBySlug = unstable_cache(
+  async (): Promise<Record<string, Candidate2026[]>> => {
+    const supabase = publicClient()
+    const { data } = await supabase
+      .from('content_items')
+      .select('source_id, data')
+      .eq('type', 'candidate')
+      .eq('status', 'approved')
+    const out: Record<string, Candidate2026[]> = {}
+    for (const r of data ?? []) {
+      const d = r.data as CandidateRow
+      if (!d?.electorateSlug || typeof d.name !== 'string' || !isKnownParty(d.party)) continue
+      const mpSlug = MP_BY_NAME.get(d.name.toLowerCase())
+      ;(out[d.electorateSlug] ||= []).push({
+        name: d.name,
+        party: d.party,
+        confirmed: true,
+        ...(r.source_id ? { key: r.source_id as string } : {}),
+        ...(mpSlug ? { mpSlug } : {}),
+        ...(d.withdrawn?.date && d.withdrawn?.source
+          ? { withdrawn: { date: d.withdrawn.date, source: d.withdrawn.source } }
+          : {}),
+      })
+    }
+    for (const list of Object.values(out)) list.sort((a, b) => a.name.localeCompare(b.name))
+    return out
+  },
+  ['approved-candidates-by-slug'],
+  { revalidate: 60, tags: ['candidates'] },
+)
 
 export async function getApprovedCandidates(electorateSlug: string, opts?: { excludeName?: string }): Promise<Candidate2026[]> {
   const supabase = await createClient()
