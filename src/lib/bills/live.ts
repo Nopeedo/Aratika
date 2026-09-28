@@ -4,6 +4,7 @@
  * read of approved only), so nothing un-reviewed ever reaches the public.
  */
 
+import { unstable_cache } from 'next/cache'
 import { publicClient } from '@/lib/supabase/public'
 import { billSlugFromLink, normBillTitle } from './slug'
 
@@ -72,22 +73,47 @@ function toLiveBill(r: Row): LiveBill | null {
   }
 }
 
+/**
+ * The approved-legislation read, cached for a minute across every route.
+ *
+ * WHY THIS IS CACHED AND NOT JUST FAST
+ *
+ * This query returns ~1.3 MB. Uncached it ran once per render, and /legislation
+ * alone has ~290 slugs in the sitemap — so one crawler walking those pages cost
+ * roughly 374 MB of Supabase egress in a single pass, for content that changes
+ * a few times a day. The free tier allows 5 GB a month; the project reached
+ * 185% of it with six monthly active users and a 47 MB database, which is what
+ * a number like that looks like from the outside: not one heavy page, a cheap
+ * page multiplied by every URL and every crawl.
+ *
+ * At 60 seconds the same crawl costs one read. Bills are approved by hand in
+ * /editor, so a minute of lag is invisible — the same trade positions/live.ts
+ * and polls/live.ts already make.
+ */
+const readApprovedBills = unstable_cache(
+  async (): Promise<Row[]> => {
+    // publicClient, not the cookie-bound server client. This reads approved
+    // public content and never needed a session, and touching cookies opts the
+    // calling route out of static rendering entirely — which is what kept
+    // /bills and /legislation rendering per request (2.1-2.9s to first byte).
+    // News already reads the same table this way.
+    const supabase = publicClient()
+    const { data } = await supabase
+      .from('content_items')
+      .select('id, title, summary, data')
+      .eq('type', 'legislation')
+      .eq('status', 'approved')
+      .order('fetched_at', { ascending: false })
+      .limit(300)
+    return (data as Row[] | null) ?? []
+  },
+  ['approved-bills'],
+  { revalidate: 60, tags: ['bills'] },
+)
+
 /** Approved, enriched legislation (has a summary + policy breakdown). */
 export async function getApprovedBills(): Promise<LiveBill[]> {
-  // publicClient, not the cookie-bound server client. This reads approved
-  // public content and never needed a session, and touching cookies opts the
-  // calling route out of static rendering entirely — which is what kept
-  // /bills and /legislation rendering per request (2.1-2.9s to first byte).
-  // News already reads the same table this way.
-  const supabase = publicClient()
-  const { data } = await supabase
-    .from('content_items')
-    .select('id, title, summary, data')
-    .eq('type', 'legislation')
-    .eq('status', 'approved')
-    .order('fetched_at', { ascending: false })
-    .limit(300)
-  return (data as Row[] | null ?? [])
+  return (await readApprovedBills())
     .map(toLiveBill)
     .filter((b): b is LiveBill => !!b && !!b.summary && b.policyLinks.length >= 0)
 }
@@ -111,15 +137,13 @@ export async function getApprovedBills(): Promise<LiveBill[]> {
  */
 export async function getBillReaderSlugs(): Promise<Record<string, string>> {
   try {
-    const { data } = await publicClient()
-      .from('content_items')
-      .select('title, data')
-      .eq('type', 'legislation')
-      .eq('status', 'approved')
-      .limit(300)
+    // Reuses the cached read above rather than issuing a second 300-row query
+    // for a subset of the same columns. Three pages call this on most renders,
+    // so uncached it doubled the egress of the list it was derived from.
+    const data = await readApprovedBills()
     const map: Record<string, string> = {}
-    for (const r of (data as { title: string; data: { link?: string } | null }[] | null) ?? []) {
-      const slug = billSlugFromLink(r.data?.link)
+    for (const r of data) {
+      const slug = billSlugFromLink((r.data as { link?: string } | null)?.link)
       if (slug) map[normBillTitle(r.title)] = slug
     }
     return map

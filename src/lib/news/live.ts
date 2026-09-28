@@ -4,6 +4,7 @@
  * We only ever store/show headline + outlet + short feed snippet + link-out.
  */
 
+import { unstable_cache } from 'next/cache'
 import { publicClient } from '@/lib/supabase/public'
 import { MP_PROFILES } from '@/constants/mps-data'
 
@@ -67,16 +68,37 @@ function toItem(r: { id: string; title: string; summary: string | null; data: Re
   }
 }
 
+/**
+ * The news-list read, cached for a minute across every route that wants it.
+ *
+ * 150 rows is roughly 120 KB, and uncached that was paid again on every render
+ * of /news and the homepage. Small next to the legislation list, but the same
+ * shape of problem: a cheap query multiplied by traffic is what took this
+ * project to 185% of its 5 GB egress allowance on six active users. Keyed on
+ * the limit so the handful of distinct call sizes cache separately rather than
+ * fighting over one entry.
+ *
+ * Ingest runs four times a day, so a minute of lag is invisible.
+ */
+const readNews = unstable_cache(
+  async (limit: number) => {
+    const supabase = publicClient()
+    const { data } = await supabase
+      .from('content_items')
+      .select('id, title, summary, data, created_at')
+      .eq('type', 'news')
+      .eq('status', 'approved')
+      .order('created_at', { ascending: false })
+      .limit(limit)
+    return data ?? []
+  },
+  ['approved-news'],
+  { revalidate: 60, tags: ['news'] },
+)
+
 /** Newest-first political news. Sorted by published date (falls back to insert order). */
 export async function getNews(limit = 150): Promise<NewsItem[]> {
-  const supabase = publicClient()
-  const { data } = await supabase
-    .from('content_items')
-    .select('id, title, summary, data, created_at')
-    .eq('type', 'news')
-    .eq('status', 'approved')
-    .order('created_at', { ascending: false })
-    .limit(limit)
+  const data = await readNews(limit)
   const items = (data ?? []).map(toItem)
     // Election-focused: only show current affairs relevant to the 2026 vote.
     .filter((i) => i.electionRelevant)
