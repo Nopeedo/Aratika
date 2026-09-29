@@ -6,15 +6,19 @@
  * is for, then one white card holding the donation form: one-time only, the
  * donor types the amount (components/donate/donate-form.tsx).
  *
- * Onebyone takes the payment as the merchant, on Politika's behalf:
- * /api/donate/checkout asks Onebyone's server to open the Stripe checkout,
- * signed with DONATE_SHARED_SECRET. Until that is set in the environment the
- * form still shows, and its button says donations open soon.
+ * POLITIKA IS THE MERCHANT (29 Sep 2026). Onebyone Project used to take the
+ * payment on Politika's behalf, which is why this page once gated the form on
+ * DONATE_SHARED_SECRET — the secret used to sign requests to Onebyone's
+ * server. /api/donate/checkout now opens the Stripe session on Politika's own
+ * account and needs STRIPE_SECRET_KEY, so that is what the gate checks. Gating
+ * on the old secret meant the form could sit on "donations open soon" with
+ * Stripe fully configured, or offer a button whose route would 503.
  */
 
 import type { Metadata } from 'next'
 import { DonateForm } from '@/components/donate/donate-form'
 import { DONATIONS_ENABLED } from '@/constants/features'
+import { SITE } from '@/constants/site'
 import { BORDER, INK, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
@@ -28,7 +32,9 @@ export const dynamic = 'force-dynamic'
 const para: React.CSSProperties = { fontSize: 15, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }
 
 export default function DonatePage() {
-  const open = DONATIONS_ENABLED && Boolean(process.env.DONATE_SHARED_SECRET)
+  // Mirrors the guard in /api/donate/checkout. If these two ever disagree, the
+  // page and the route disagree about whether donations are open.
+  const open = DONATIONS_ENABLED && Boolean(process.env.STRIPE_SECRET_KEY)
 
   return (
     <div style={WOVEN_PAGE}>
@@ -67,6 +73,29 @@ export default function DonatePage() {
         <p style={{ ...para, margin: 0 }}>
           Every donation, big or small, helps keep the site online and free.
         </p>
+
+        {/* Who the money actually reaches, under "Why we ask for donations" by
+            request. Politika is not yet a registered company or a charity, so a
+            donation is a payment to a person, and the paragraphs above do not
+            say so: "the costs of running it" reads as hosting bills. Someone
+            giving money is entitled to know who receives it and that they get
+            nothing back for it, before they give rather than after — a donor
+            who works it out afterwards is the one who charges back. */}
+        <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, background: '#fff', padding: '16px 18px', marginTop: 20 }}>
+          <h3 style={{ fontSize: 15.5, fontWeight: 800, letterSpacing: '-.01em', fontFamily: MANROPE, color: INK, margin: '0 0 8px' }}>
+            Where your donation goes
+          </h3>
+          <p style={{ ...para, fontSize: 14, margin: '0 0 10px' }}>
+            Politika isn&rsquo;t a registered company or a charity yet. Donations are paid to {SITE.promoter.name}, who
+            builds and runs the site, and they go towards hosting and data and towards the time spent building Politika
+            and checking every figure against its source.
+          </p>
+          <p style={{ ...para, fontSize: 14, margin: 0 }}>
+            Because we aren&rsquo;t a registered charity, donations aren&rsquo;t tax-deductible and we can&rsquo;t issue
+            a tax receipt. A donation isn&rsquo;t a payment for anything: everything on Politika is free, and giving or
+            not giving changes nothing about what you can see.
+          </p>
+        </div>
 
       </div>
     </div>
