@@ -1,10 +1,10 @@
 /**
  * UpcomingView — the 2026 Election Centre.
  *
- * Flow: when (the deadline) → who you can vote for → how your vote works →
- * the Parliament you are changing → your own seat → the leaders. "Who you
- * can vote for" and "how your vote works" swapped by request; every other
- * section kept its place.
+ * Flow: when (the deadline) → how your vote works → who you can vote for →
+ * the Parliament you are changing → your own seat → the leaders. These first
+ * two swapped by request, then swapped back — this is the original order.
+ * Every other section has kept its place throughout.
  *
  * COMPOSED AT 375px, not reduced to it. The page used to run 7,771px, about
  * 9.6 screens on a phone, and roughly 70% of that was content nobody had asked
@@ -170,14 +170,41 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               exactly those four facts a few hundred pixels below the first.
               Component stays in the repo, demoted rather than deleted. */}
 
-          {/* ── EVERY PARTY YOU CAN VOTE FOR — moved above "How your vote
-              works" by request; was second, is first among these two now.
-              Wrapped in a wash of the poll leader's own colour — the first
-              real colour break on the page below the hero, and it is not a
-              decoration picked to break up the cream: it is the fact the
-              section states (who is ahead) drawn as the section's own
-              ground, the same move §1.6 makes everywhere else on the site
-              ("a block takes the colour of whatever it is about"). */}
+          {/* ── HOW YOUR VOTE WORKS — first again, directly under the date
+              cards, by request (it had briefly swapped with the parties
+              section below, then swapped back). Two votes, what each one
+              does, and why the party vote decides the shape of Parliament —
+              the primer the parties section below assumes. Compass CTA
+              ("Find where you stand") removed from the foot of this section
+              by request; the homepage still carries it. */}
+          <section id="your-vote" style={{ scrollMarginTop: 80 }}>
+            <ZoneHead eyebrow="Get ready to vote" title="How your vote works" accent={ACCENT.vote}
+              infoLabel="How MMP gives you two votes">
+              <InfoHeading accent={ACCENT.vote}>Two votes, two jobs</InfoHeading>
+              <InfoText>
+                Under MMP you cast two votes on the same paper. The party vote decides the share of Parliament&rsquo;s 120
+                seats each party gets, and it is where most of your influence is: it sets the overall balance. The
+                electorate vote picks the one MP for your local area.
+              </InfoText>
+              {/* The overhang is explained ONCE, in the (i) on the chamber
+                   that shows both numbers, where it derives them from the data
+                   instead of typing them. It was here as well, ~700px earlier,
+                   in the same sentences against hard-coded figures (§1.3). */}
+              <InfoText>
+                <a href="/learn/mmp" style={{ color: ACCENT.vote, fontWeight: 800, textDecoration: 'none' }}>How MMP works in full</a>
+              </InfoText>
+            </ZoneHead>
+            <TwoVotes />
+          </section>
+
+          {/* ── EVERY PARTY YOU CAN VOTE FOR — second again, under "How
+              your vote works". Wrapped in a wash of the poll leader's own
+              colour — the first real colour break on the page below the
+              hero, and it is not a decoration picked to break up the cream:
+              it is the fact the section states (who is ahead) drawn as the
+              section's own ground, the same move §1.6 makes everywhere else
+              on the site ("a block takes the colour of whatever it is
+              about"). */}
           <div style={{
             background: `linear-gradient(180deg, ${PARTY_COLORS[pop[0]?.slug ?? 'national'].light} 0%, rgba(255,255,255,0) 100%)`,
             margin: '0 calc(-1 * clamp(18px, 5vw, 36px))', padding: '20px clamp(18px, 5vw, 36px) 0', borderRadius: 20,
@@ -233,31 +260,6 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             </div>
           </section>
           </div>
-
-          {/* ── HOW YOUR VOTE WORKS — second now, was first. Two votes, what
-              each one does, and why the party vote decides the shape of
-              Parliament: the primer the parties section above just assumed.
-              Compass CTA ("Find where you stand") removed from the foot of
-              this section by request; the homepage still carries it. */}
-          <section id="your-vote" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Get ready to vote" title="How your vote works" accent={ACCENT.vote}
-              infoLabel="How MMP gives you two votes">
-              <InfoHeading accent={ACCENT.vote}>Two votes, two jobs</InfoHeading>
-              <InfoText>
-                Under MMP you cast two votes on the same paper. The party vote decides the share of Parliament&rsquo;s 120
-                seats each party gets, and it is where most of your influence is: it sets the overall balance. The
-                electorate vote picks the one MP for your local area.
-              </InfoText>
-              {/* The overhang is explained ONCE, in the (i) on the chamber
-                   that shows both numbers, where it derives them from the data
-                   instead of typing them. It was here as well, ~700px earlier,
-                   in the same sentences against hard-coded figures (§1.3). */}
-              <InfoText>
-                <a href="/learn/mmp" style={{ color: ACCENT.vote, fontWeight: 800, textDecoration: 'none' }}>How MMP works in full</a>
-              </InfoText>
-            </ZoneHead>
-            <TwoVotes />
-          </section>
 
           {/* ── THE SEATS — one chamber, three ways to read it ───────────────── */}
           {/* Was two sections ~1600px apart, both drawing the same hemicycle:
