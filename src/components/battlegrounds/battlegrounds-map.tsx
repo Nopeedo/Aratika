@@ -77,9 +77,9 @@ export type MapView = 'candidates' | 'margin'
  * view uses for "Result pending", and the legend names it plainly (§1.5).
  */
 const COUNT_TIERS: { key: string; label: string; min: number; color: string }[] = [
-  // Just the numbers, by request: the key's title ("2026 candidates") already
-  // says what's being counted, and "standing" on every row wrapped "7 or more
-  // standing" onto two lines on a phone.
+  // Just the numbers, by request: the key's title ("Number of candidates
+  // running") already says what's being counted, and "standing" on every row
+  // wrapped "7 or more standing" onto two lines on a phone.
   { key: 'many', label: '7 or more', min: 7, color: '#6e4220' },
   { key: 'mid',  label: '5–6',       min: 5, color: '#b07a45' },
   { key: 'few',  label: '1–4',       min: 1, color: '#d9b98f' },
@@ -221,7 +221,7 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
               the margin view now — by request it isn't on the map by default. */}
           {status === 'ready' && data && view === 'candidates' && (
             <div className="map-legend" style={{ position: 'absolute', zIndex: 1000, background: 'rgba(255,255,255,.95)', border: `1px solid ${BORDER}`, borderRadius: 12, boxShadow: '0 2px 8px rgba(12,14,18,.12)' }}>
-              <div className="map-legend-title" style={{ fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>2026 candidates</div>
+              <div className="map-legend-title" style={{ fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Number of candidates running</div>
               <div className="map-legend-items">
                 {COUNT_TIERS.map((t) => (
                   <div key={t.key} className="map-legend-row" style={{ display: 'flex', alignItems: 'center', color: SECONDARY, fontFamily: MANROPE }}>
