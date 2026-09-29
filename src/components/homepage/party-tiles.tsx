@@ -227,7 +227,10 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
       <div ref={tileRowRef} className="pt-dock" style={{
         position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 45,
       }}>
-        <div className="pt-dock-inner" style={{ maxWidth: 560, margin: '0 auto', padding: '10px clamp(18px, 5vw, 22px)' }}>
+        {/* No padding inline. An inline `padding` shorthand outranks every
+            longhand a media query can write, so each attempt to set it per
+            breakpoint silently lost. Both states live in the stylesheet. */}
+        <div className="pt-dock-inner" style={{ maxWidth: 560, margin: '0 auto' }}>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
             {parties.map((p) => {
               const on = p.slug === panelSlug
@@ -240,6 +243,7 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
                   aria-label={p.name + ': show snapshot'}
                   aria-expanded={on}
                   title={p.name}
+                  className="pt-tile"
                   style={{
                     // maxWidth caps the square on wide screens: at flex 1 across
                     // the old 760px container each tile ran to ~110px, which is a
@@ -289,9 +293,22 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
           this has to live in a stylesheet. */}
       <style>{`
         .pt-dock { background: #fff; border-top: 1px solid ${LINE}; box-shadow: 0 -6px 16px rgba(12,14,18,.08); }
+        .pt-dock-inner { padding: 10px clamp(18px, 5vw, 22px); }
         @media (min-width: 768px) {
-          .pt-dock { background: transparent; border-top: none; box-shadow: none; }
+          .pt-dock { background: transparent; border-top: none; box-shadow: none; display: flex; justify-content: center; }
+          /* fit-content + no side padding: the white ends exactly at the left
+             edge of the first tile and the right edge of the last, instead of
+             holding a margin of its own around a row that is already centred. */
+          /* The tiles take a definite width here so the white can be sized to
+             them. At flex-basis 0 they have no intrinsic width, so fit-content
+             measured the row as zero and the bar vanished. !important because
+             the flex shorthand is set inline, which a media query cannot
+             outrank (DESIGN-SPEC 3.2). */
+          .pt-tile { flex: 0 0 72px !important; }
           .pt-dock-inner {
+            width: fit-content;
+            max-width: 100%;
+            padding: 10px 0;
             background: #fff;
             border: 1px solid ${LINE};
             border-bottom: none;
