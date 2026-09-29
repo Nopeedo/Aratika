@@ -35,7 +35,7 @@
  * the empty tracks open and six cards sit in half a row at 1920.
  */
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { ChevronDown, Search } from 'lucide-react'
 import { MP_PROFILES, type MPProfile } from '@/constants/mps-data'
@@ -88,16 +88,46 @@ export function MPsDirectory() {
      searchParams in the server component made /mps dynamic, so every
      visitor paid a full render to answer a question only this component
      asks. Needs the <Suspense> boundary at the call site. */
-  const initialParty = useSearchParams().get('party') ?? undefined
-  const [query, setQuery] = useState('')
+  const params = useSearchParams()
+  const initialParty = params.get('party') ?? undefined
+  const initialRole = params.get('role')
+  const [query, setQuery] = useState(() => params.get('q') ?? '')
   const [party, setParty] = useState<PartySlug | 'all'>(
     initialParty && PARTY_PILLS.includes(initialParty as PartySlug) ? (initialParty as PartySlug) : 'all',
   )
-  const [role, setRole] = useState<Role>('all')
-  const [showAll, setShowAll] = useState(false)
+  const [role, setRole] = useState<Role>(initialRole === 'electorate' || initialRole === 'list' ? initialRole : 'all')
+  const [showAll, setShowAll] = useState(() => params.get('all') === '1')
   /** ONE preview for the whole list, not one per card: it locks
    *  `document.body.style.overflow`, and 122 of them would fight over it. */
-  const [preview, setPreview] = useState<string | null>(null)
+  const [preview, setPreview] = useState<string | null>(() => params.get('mp'))
+
+  /**
+   * Where you were in the list lives in the URL, so the back button brings it
+   * back. Tapping an MP through to their profile and pressing back used to
+   * return to the top of an unfiltered list with the preview shut, because
+   * this component remounts on a history pop and every useState above starts
+   * over. Restoring the filters is also what lets the browser's own scroll
+   * restore land in the right place: it cannot, if the list it measured is no
+   * longer the list on screen.
+   *
+   * replaceState, not push: these are filters, tapped and typed repeatedly,
+   * and a history entry each would bury the page the reader arrived from. The
+   * first run is skipped so a plain /mps visit keeps a clean URL, and
+   * history.state is passed through because Next's App Router keeps its own
+   * routing state there.
+   */
+  const mirrored = useRef(false)
+  useEffect(() => {
+    if (!mirrored.current) { mirrored.current = true; return }
+    const url = new URL(window.location.href)
+    const set = (k: string, v: string | null) => { if (v) url.searchParams.set(k, v); else url.searchParams.delete(k) }
+    set('party', party === 'all' ? null : party)
+    set('role', role === 'all' ? null : role)
+    set('q', query.trim() || null)
+    set('all', showAll ? '1' : null)
+    set('mp', preview)
+    window.history.replaceState(window.history.state, '', url)
+  }, [party, role, query, showAll, preview])
 
   // Search is applied before any count is taken, so a pill never promises rows
   // the search has already removed.

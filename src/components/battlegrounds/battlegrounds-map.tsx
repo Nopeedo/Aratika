@@ -125,6 +125,45 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin', onl
   const [selected, setSelected] = React.useState<string | null>(defaultSelected)
 
   /**
+   * The open area lives in the URL (?seat=…), so the back button remembers it.
+   *
+   * Tapping through to an MP or a seat page and then pressing back used to
+   * land on a closed panel: this component remounts on a history pop, and
+   * useState starts again from defaultSelected. Opening those links in a new
+   * tab would have hidden that rather than fixed it — back is still the
+   * gesture people use, and a new tab has no back button at all.
+   */
+  const SEAT_PARAM = 'seat'
+
+  /**
+   * Restored in an effect, not a lazy useState initialiser: this component is
+   * rendered on the server too, so reading window.location during render makes
+   * the first client render disagree with the server's HTML. That is a
+   * hydration mismatch, and this codebase has shipped two already.
+   */
+  React.useEffect(() => {
+    const seat = new URLSearchParams(window.location.search).get(SEAT_PARAM)
+    if (seat) setSelected(seat)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  /**
+   * Mirrored back out with replaceState rather than push. The map gets tapped
+   * many times in a row, and a history entry per tap would mean pressing back
+   * a dozen times to leave the page — the same trap from the other direction.
+   * The first run is skipped so an untouched map doesn't write its own default
+   * into the address bar. history.state is passed through because Next's App
+   * Router keeps its own routing state there.
+   */
+  const mirrored = React.useRef(false)
+  React.useEffect(() => {
+    if (!mirrored.current) { mirrored.current = true; return }
+    const url = new URL(window.location.href)
+    if (selected) url.searchParams.set(SEAT_PARAM, selected)
+    else url.searchParams.delete(SEAT_PARAM)
+    window.history.replaceState(window.history.state, '', url)
+  }, [selected])
+
+  /**
    * The active roll first, the other one once it is drawn. This used to
    * Promise.all both files on mount: 463KB before the map could paint, on a
    * page where the general roll alone is 388KB of it and most readers never
