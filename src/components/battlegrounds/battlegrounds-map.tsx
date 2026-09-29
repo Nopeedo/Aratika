@@ -175,15 +175,9 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin', onl
   }, [candidatesBySlug])
   const colorOf = view === 'margin' ? marginColorByName : candidateColorByName
 
-  // On narrow screens the panel stacks BELOW the map, so a tap can look like
-  // nothing happened. Scroll the selected MP panel into view when a seat is picked.
+  // No auto-scroll on a tap any more, by request: on a phone the page used to
+  // jump down to the panel under the map. The panel just opens in place.
   const panelRef = React.useRef<HTMLDivElement>(null)
-  React.useEffect(() => {
-    if (!selected || typeof window === 'undefined') return
-    if (window.matchMedia('(max-width: 880px)').matches) {
-      panelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
-  }, [selected])
 
   return (
     <div>
@@ -245,7 +239,9 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin', onl
                     <span className="map-legend-dot" style={{ borderRadius: 3, background: t.color, flexShrink: 0 }} />{t.label}
                   </div>
                 ))}
-                <div className="map-legend-row map-legend-note" style={{ display: 'flex', alignItems: 'center', color: TERTIARY, fontFamily: MANROPE, borderTop: `1px solid ${BORDER}` }}>
+                {/* In the grid with the tiers now, by request, with no rule
+                    above it: the key is two rows instead of four. */}
+                <div className="map-legend-row" style={{ display: 'flex', alignItems: 'center', color: TERTIARY, fontFamily: MANROPE, whiteSpace: 'nowrap' }}>
                   <span className="map-legend-dot" style={{ borderRadius: 3, background: NONE_YET.color, flexShrink: 0 }} />{NONE_YET.label}
                 </div>
               </div>
@@ -263,7 +259,7 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin', onl
                 {/* Two seats are drawn in #d8d5cf on this map and the key said
                     nothing about them, while /map's key has had a "Data
                     pending" row all along (§1.4, §1.5). */}
-                <div className="map-legend-row map-legend-note" style={{ display: 'flex', alignItems: 'center', color: TERTIARY, fontFamily: MANROPE, borderTop: `1px solid ${BORDER}` }}>
+                <div className="map-legend-row" style={{ display: 'flex', alignItems: 'center', color: TERTIARY, fontFamily: MANROPE }}>
                   <span className="map-legend-dot" style={{ borderRadius: 3, background: UNKNOWN_TIER.color, flexShrink: 0 }} />{UNKNOWN_TIER.label}
                 </div>
               </div>
@@ -416,9 +412,19 @@ function SeatCard({ name, slug, info, tier, mp, candidates, only2023 = false }: 
       boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 20px 40px -34px rgba(0,0,0,.4)',
       display: 'flex', flexDirection: 'column', flexShrink: 0, background: '#fff',
     }}>
-      <span style={{ alignSelf: 'flex-start', fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: tier.fg, background: tier.light, border: `1px solid ${tier.color}`, borderRadius: 999, padding: '3px 10px', marginBottom: 10, fontFamily: MANROPE }}>{tier.label}</span>
-      <h3 style={{ fontSize: 'clamp(17px, 2.6vw, 21px)', fontWeight: 800, color: INK, margin: '0 0 2px', fontFamily: MANROPE }}>{name}</h3>
-      <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14, fontFamily: MANROPE }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</div>
+      {/* The area's name as a big green pill, by request, so a tap lands on
+          an unmistakable answer to "which area is this?". Brand jade, the
+          logo's green. The margin badge moved down beside the electorate
+          type rather than sitting as a small pill on top of a big one. */}
+      <h3 style={{
+        alignSelf: 'flex-start', maxWidth: '100%', boxSizing: 'border-box',
+        fontSize: 'clamp(20px, 5.4vw, 24px)', fontWeight: 800, letterSpacing: '-.015em', lineHeight: 1.15,
+        color: '#fff', background: JADE, borderRadius: 999, padding: '10px 20px', margin: '0 0 10px', fontFamily: MANROPE,
+      }}>{name}</h3>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
+        <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: tier.fg, background: tier.light, border: `1px solid ${tier.color}`, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>{tier.label}</span>
+        <span style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</span>
+      </div>
 
       {!only2023 && <Candidates candidates={candidates} seatName={name} seatSlug={slug} />}
 
@@ -486,11 +492,12 @@ function Prompt({ message, empty = false }: { message?: string; empty?: boolean 
    clamp(600px, 82vh, 840px) there, overridden to 440px and 585px on phones
    (§1.4). */
 const GRID_CSS = `
-.bg-map-box { height: clamp(520px, 70vh, 700px); }
-.bg-map-panel { height: clamp(520px, 70vh, 700px); overflow-y: auto; }
+/* A little shorter, by request (was clamp(520px, 70vh, 700px), 460 on a phone). */
+.bg-map-box { height: clamp(480px, 64vh, 640px); }
+.bg-map-panel { height: clamp(480px, 64vh, 640px); overflow-y: auto; }
 @media (max-width: 880px) {
   .bg-map-grid { grid-template-columns: 1fr !important; }
-  .bg-map-box { height: 460px; }
+  .bg-map-box { height: 400px; }
   .bg-map-panel { height: auto; overflow-y: visible; }
   .bg-map-prompt { min-height: 150px; }
   .bg-map-prompt-empty { display: none !important; }
