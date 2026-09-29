@@ -206,7 +206,7 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
       {cur && (
         <section style={{ background: 'transparent', position: 'fixed', left: 0, right: 0, bottom: tileRowHeight, zIndex: 44, pointerEvents: 'none' }}>
           <div className="pt-tab-wrap" style={{ maxWidth: 760, margin: '0 auto', position: 'relative', height: 0 }}>
-            <div style={{
+            <div className="pt-tab" style={{
               position: 'absolute', bottom: 0, right: 0,
               width: tabWidth ?? undefined, textAlign: 'center', boxSizing: 'border-box',
               whiteSpace: 'nowrap', background: cur.color, borderRadius: '10px 10px 0 0',
@@ -240,7 +240,11 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
               return (
                 <button
                   key={p.slug}
-                  onClick={() => select(on ? null : p.slug)}
+                  // On desktop a tap always switches to that party. Toggling
+                  // the selected one back to null is phone behaviour, where the
+                  // tile opens and closes a panel; on desktop it just stopped
+                  // the page on nothing and left the cycle to pick it back up.
+                  onClick={() => select(on && window.matchMedia('(max-width: 767px)').matches ? null : p.slug)}
                   aria-label={p.name + ': show snapshot'}
                   aria-expanded={on}
                   title={p.name}
@@ -317,6 +321,12 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
              and padding cannot move it. 12px is the dock's own inset, which
              puts the tab's right edge on the last tile's right edge. */
           .pt-tab-wrap > div { right: 12px !important; }
+          /* The tab stays up the whole time on desktop, including while the
+             cycle rolls through the parties. It hides on a phone while the big
+             identity card is on screen, because there the two would be the same
+             name twice in one view; on desktop the dock is off in the corner
+             and the tab is the only thing naming what the colours mean. */
+          .pt-tab { opacity: 1 !important; }
           .pt-dock-inner {
             width: fit-content;
             max-width: 100%;
@@ -460,7 +470,7 @@ export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
 
   return (
     <section style={{ background: 'transparent' }}>
-      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
+      <div style={{ maxWidth: 1040, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
         <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
           <div style={{ marginBottom: 6, fontSize: 12.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: MUTE, fontFamily: MANROPE }}>
             Latest in media

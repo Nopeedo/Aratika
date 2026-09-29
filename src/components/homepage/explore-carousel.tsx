@@ -82,7 +82,7 @@ const GROUPS: { label: string; items: Feature[] }[] = [
     items: [
       { feature: 'map', title: 'Electorate map', desc: 'Find your electorate and your MP', href: '/map', Icon: Map, tint: '#ecfeff' },
       { feature: 'mps', title: 'MPs directory', desc: 'Every current MP, by name or electorate', href: '/mps', Icon: UserSquare2, tint: '#f0f9ff' },
-      { feature: 'battlegrounds', title: 'Battlegrounds', desc: 'The marginal seats that decide the election', href: '/battlegrounds', Icon: Swords, tint: '#fef2f2' },
+      { feature: 'battlegrounds', title: 'Live results 2026', desc: 'Election night results, electorate by electorate', href: '/battlegrounds', Icon: Swords, tint: '#fef2f2' },
     ],
   },
   {
@@ -125,7 +125,7 @@ export function ExploreCarousel() {
       {/* 18px of air above the heading, not 48: the section before already
           carries 26px of its own under its last signpost, so the two stacked
           into a gap wide enough to read as the page having ended. */}
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '18px clamp(18px, 5vw, 36px) 22px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '18px clamp(18px, 5vw, 36px) 22px' }}>
         {/* Header + desktop arrows */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
           <div>
@@ -159,7 +159,7 @@ export function ExploreCarousel() {
           swiping. These are the same destinations as one line apiece, in the
           shape the rest of the page uses for "this way out", with the tool's
           own icon in a circle at the head of each. */}
-      <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 48px', display: 'flex', flexDirection: 'column', gap: 22 }}>
+      <div style={{ maxWidth: 1040, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 48px', display: 'flex', flexDirection: 'column', gap: 22 }}>
         {groups.map((g) => (
           <div key={g.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
             <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: SUB, fontFamily: MANROPE }}>
