@@ -6,7 +6,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getElection, ELECTION_SLUGS } from '@/constants/elections-data'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { ResultsView } from '@/components/elections/results-view'
 import { UpcomingView } from '@/components/elections/upcoming-view'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
@@ -53,15 +52,9 @@ export default async function ElectionYearPage({ params }: { params: Promise<{ y
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 34px' }}>
           {/* The "All elections" back link is gone, by request, along with
               the /elections hub it pointed at (that route redirects to the
-              2026 Election Centre now). */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-            <SectionDivider type="official" label="General Election" />
-            <span style={{
-              fontSize: 11, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', fontFamily: MANROPE,
-              padding: '3px 10px', borderRadius: 999,
-              color: '#065f46', background: '#ecfdf5', border: '1px solid #a7f3d0',
-            }}>Final result</span>
-          </div>
+              2026 Election Centre now). The "General Election" and "Final
+              result" pills above the title went too, by request: the h1
+              already says both. */}
           <h1 style={{ fontSize: 'clamp(25px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.05 }}>
             {e.year} General Election
           </h1>
