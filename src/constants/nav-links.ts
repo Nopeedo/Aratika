@@ -52,6 +52,13 @@ export const NAV_ITEMS: NavItem[] = [
   // Straight under Policy Comparison, by request: what the parties say,
   // then what Parliament is actually passing.
   { label: 'Bills tracker', href: '/bills', description: 'Bills before the House: plain-language', feature: 'bills' },
+  // News and Video sit above MPs directory, by request.
+  // "Latest" is gone as a group, the last one in the menu, for the same reason
+  // The Record and Your Electorate went: the label named the grouping rather
+  // than either destination, and both of them cost a tap behind a dropdown
+  // that held exactly two things.
+  { label: 'News', href: '/news', description: 'Live election news: every party, every issue', feature: 'news' },
+  { label: 'Video', href: '/news#video', description: 'Leaders & the press', feature: 'news' },
   // Above Find your local MP, by request.
   { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
   // "Your Electorate" is gone as a group for the same reason The Record is:
@@ -71,12 +78,6 @@ export const NAV_ITEMS: NavItem[] = [
   // rather than being left without a home in the menu.
   { label: 'Budget 2026', href: '/budget', description: 'Where the Government is spending', feature: 'budget' },
   { label: 'Parliament', href: '/parliament', description: 'Current seats, cabinet and snapshot', feature: 'parliament' },
-  // "Latest" is gone as a group, the last one in the menu, for the same reason
-  // The Record and Your Electorate went: the label named the grouping rather
-  // than either destination, and both of them cost a tap behind a dropdown
-  // that held exactly two things.
-  { label: 'News', href: '/news', description: 'Live election news: every party, every issue', feature: 'news' },
-  { label: 'Video', href: '/news#video', description: 'Leaders & the press', feature: 'news' },
   { label: 'Learn', href: '/learn', description: 'How voting and Parliament work, beginner to expert', feature: 'learn' },
 ]
 
