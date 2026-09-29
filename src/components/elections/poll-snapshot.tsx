@@ -29,7 +29,7 @@
  */
 
 import * as React from 'react'
-import { ChevronDown, TrendingUp, UserRound, Users2, ArrowUpRight } from 'lucide-react'
+import { Info, X, UserRound, Users2, ArrowUpRight } from 'lucide-react'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import type { PartySlug } from '@/types'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
@@ -63,30 +63,73 @@ export function PollSnapshot({
 }) {
   const [open, setOpen] = React.useState(false)
 
+  // An overlay now, not an inline fold (by request): Escape closes it, and
+  // the page behind doesn't scroll while it's up — the same two behaviours
+  // the homepage's MP preview has, so the site's two overlays act alike.
+  React.useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    document.addEventListener('keydown', onKey)
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prev
+    }
+  }, [open])
+
   return (
     <div>
-      {/* The chip. §3.1: the button is the hit area at 44px, the outlined pill
-          inside it is what you look at. */}
+      {/* The chip. An (i) where the trend line was, and no chevron — by
+          request: it opens something in front of the page now rather than
+          unfolding below itself, so an arrow pointing down promised the
+          wrong thing. §3.1: the button is the 44px hit area, the outlined
+          pill inside it is what you look at. */}
       <button
-        onClick={() => setOpen((o) => !o)}
-        aria-expanded={open}
+        onClick={() => setOpen(true)}
+        aria-haspopup="dialog"
         style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}
       >
         <span style={{
           display: 'inline-flex', alignItems: 'center', gap: 7,
           padding: '6px 13px', borderRadius: 999,
-          background: open ? '#ecfdf5' : '#fff', border: `1.5px solid ${open ? JADE : BORDER}`,
-          color: open ? JADE : INK, fontFamily: MANROPE, fontSize: 12.5, fontWeight: 800,
-          transition: 'background-color .2s ease, border-color .2s ease, color .2s ease',
+          background: '#fff', border: `1.5px solid ${BORDER}`,
+          color: INK, fontFamily: MANROPE, fontSize: 12.5, fontWeight: 800,
         }}>
-          <TrendingUp style={{ width: 14, height: 14 }} />
+          <Info style={{ width: 15, height: 15 }} />
           Source of polls
-          <ChevronDown style={{ width: 14, height: 14, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} strokeWidth={3} />
         </span>
       </button>
 
       {open && (
-        <div style={{ marginTop: 10, border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Source of polls"
+          onClick={() => setOpen(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 80,
+            background: 'rgba(12,14,18,.6)', backdropFilter: 'blur(3px)', WebkitBackdropFilter: 'blur(3px)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 'clamp(12px, 4vw, 32px)',
+          }}
+        >
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            width: 'min(620px, 100%)', maxHeight: '86vh', overflowY: 'auto',
+            border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '16px 18px',
+            display: 'flex', flexDirection: 'column', gap: 20,
+            boxShadow: '0 24px 60px -12px rgba(12,14,18,.5)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, margin: '0 0 -8px' }}>
+            <span style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Source of polls</span>
+            <button type="button" onClick={() => setOpen(false)} aria-label="Close"
+              style={{ background: 'none', border: 'none', padding: 6, margin: -6, cursor: 'pointer', color: SECONDARY, display: 'inline-flex' }}>
+              <X style={{ width: 18, height: 18 }} />
+            </button>
+          </div>
           {/* Individual polls */}
           <div>
             <div style={{ fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 2 }}>The polls behind the average</div>
@@ -197,6 +240,7 @@ export function PollSnapshot({
             Party-vote and preferred-PM figures compiled from {pollCount} published polls.{' '}
             <a href={pollsSource} target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>The aggregate <ArrowUpRight style={{ width: 10, height: 10, display: 'inline', verticalAlign: '-1px' }} /></a>
           </p>
+        </div>
         </div>
       )}
     </div>
