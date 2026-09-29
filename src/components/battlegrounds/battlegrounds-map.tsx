@@ -77,9 +77,12 @@ export type MapView = 'candidates' | 'margin'
  * view uses for "Result pending", and the legend names it plainly (§1.5).
  */
 const COUNT_TIERS: { key: string; label: string; min: number; color: string }[] = [
-  { key: 'many', label: '7 or more standing', min: 7, color: '#6e4220' },
-  { key: 'mid',  label: '5–6 standing',       min: 5, color: '#b07a45' },
-  { key: 'few',  label: '1–4 standing',       min: 1, color: '#d9b98f' },
+  // Just the numbers, by request: the key's title ("2026 candidates") already
+  // says what's being counted, and "standing" on every row wrapped "7 or more
+  // standing" onto two lines on a phone.
+  { key: 'many', label: '7 or more', min: 7, color: '#6e4220' },
+  { key: 'mid',  label: '5–6',       min: 5, color: '#b07a45' },
+  { key: 'few',  label: '1–4',       min: 1, color: '#d9b98f' },
 ]
 const NONE_YET = { key: 'none', label: 'None announced yet', color: '#d8d5cf' }
 
