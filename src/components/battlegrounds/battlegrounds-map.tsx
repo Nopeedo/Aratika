@@ -31,7 +31,7 @@
 import * as React from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { ArrowRight, ShieldCheck } from 'lucide-react'
+import { ArrowRight, ChevronDown, ShieldCheck } from 'lucide-react'
 import type { FeatureCollection } from 'geojson'
 import { normalizeElectorateKey, getElectorate, ELECTORATES, type ElectorateInfo } from '@/constants/electorates-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
@@ -39,6 +39,8 @@ import type { Candidate2026 } from '@/constants/candidates-2026'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { toSlug } from '@/lib/utils/format'
 import { MpPhotoTile } from '@/components/map/mp-photo-tile'
+import { Avatar } from '@/components/ui/avatar'
+import { milestone, longDate } from '@/constants/electoral-calendar'
 import { RollPills, type Roll } from '@/components/map/roll-pills'
 import { MapLoading, MapUnavailable, MetaRow } from '@/components/map/map-states'
 import { MARGIN_TIERS, UNKNOWN_TIER, classifyMargin, marginColorByName, type MarginTier } from '@/lib/battlegrounds'
@@ -261,8 +263,9 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
             <Prompt />
           ) : info && tier ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0 }}>
-              <SeatCard name={selected} slug={selectedKey ?? ''} info={info} tier={tier} candidates={selectedKey ? candidatesBySlug?.[selectedKey] : undefined} />
-              <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" fill />
+              {/* key={selected}: the "Last election" reveal closes again when
+                  a different seat is tapped, rather than carrying over. */}
+              <SeatCard key={selected} name={selected} slug={selectedKey ?? ''} info={info} tier={tier} mp={mp} candidates={selectedKey ? candidatesBySlug?.[selectedKey] : undefined} />
             </div>
           ) : (
             /* §1.5, and the true gap named. The old copy said "MP data pending
@@ -279,47 +282,76 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
 }
 
 /**
- * Who is standing in 2026, under who won in 2023.
+ * Who is standing in 2026 — the lead of the panel now, by request.
  *
- * The three rows above this say what HAPPENED. A reader deciding whether a seat
- * matters wants to know who is contesting it NOW, and until this block the only
- * way to find out was to open the seat page.
+ * It sat UNDER the 2023 result as a plain name list. The panel's job on the
+ * Election Centre is "who can I vote for here", so the candidates come first
+ * and wear the homepage caucus box's row (party-electorates.tsx): a white
+ * card per person, face on the left, name over party, 44px tall, 5px apart,
+ * inside one light container with a counted heading and a rule under it.
+ * Same object, seen twice, reads as the same tool (§1.4).
  *
  * `candidates` being undefined and being empty mean different things and must
  * not render the same. 361 approved candidates cover 59 of 72 electorates, so
- * for thirteen seats we hold nothing — and a heading over an empty list reads
+ * for thirteen seats we hold nothing, and a heading over an empty list reads
  * as "nobody is standing", which is false and the worse of the two errors.
  */
-function Challengers({ candidates }: { candidates?: Candidate2026[] }) {
+function Candidates({ candidates }: { candidates?: Candidate2026[] }) {
+  // Withdrawn candidates stay visible and marked, per the field's note in
+  // candidates-2026.ts: quietly dropping one rewrites the record of a contest.
+  // They don't count towards the number in the heading, though: that number
+  // is who is standing, and it has to match the map's shading.
+  const standing = (candidates ?? []).filter((c) => !c.withdrawn).length
+
+  const heading = (
+    <div style={{
+      fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: INK,
+      fontFamily: MANROPE, lineHeight: 1.25, borderBottom: `1.5px solid ${BORDER}`, paddingBottom: 6, marginBottom: 8,
+    }}>
+      {candidates?.length ? `${standing} standing in 2026` : 'Standing in 2026'}
+    </div>
+  )
+
   if (!candidates?.length) {
+    // The date is read from the Commission's timetable, not typed. It was
+    // typed, as "16 October", and the timetable says 8 October — a closing
+    // date on a candidate list is exactly the fact this site can't get wrong.
+    const close = milestone('nominations-close-2026')?.date
     return (
-      <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
-        <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>Standing in 2026</div>
-        <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '6px 0 0', lineHeight: 1.5 }}>
-          None recorded yet. Nominations close 16 October — we add candidates as they are announced.
+      <div style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '12px 10px' }}>
+        {heading}
+        <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
+          None recorded yet.{close ? ` Nominations close ${longDate(close)}.` : ''} We add candidates as they are announced.
         </p>
       </div>
     )
   }
-  // Withdrawn candidates stay visible and marked, per the field's note in
-  // candidates-2026.ts: quietly dropping one rewrites the record of a contest.
+
   return (
-    <div style={{ marginTop: 14, paddingTop: 12, borderTop: `1px solid ${BORDER}` }}>
-      <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE, marginBottom: 8 }}>
-        Standing in 2026 · {candidates.length}
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+    <div style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '12px 10px' }}>
+      {heading}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
         {candidates.map((c) => {
-          const colour = c.party !== 'independent' ? PARTY_COLORS[c.party]?.bg : TERTIARY
+          const party = c.party !== 'independent' ? c.party : undefined
+          const photo = c.mpSlug ? MP_PROFILES[c.mpSlug]?.photo : undefined
+          const partyName = c.party === 'independent' ? 'Independent' : PARTY_NAMES[c.party]?.short ?? c.party
           return (
-            <div key={c.key ?? c.name} style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-              <span style={{ width: 9, height: 9, borderRadius: 3, background: colour, flexShrink: 0 }} />
-              <span style={{ fontSize: 13.5, fontWeight: 700, color: INK, fontFamily: MANROPE, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {c.name}
-                {c.withdrawn ? <span style={{ fontWeight: 600, color: TERTIARY }}> · withdrawn</span> : null}
-              </span>
-              <span style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE, marginLeft: 'auto', flexShrink: 0 }}>
-                {c.party === 'independent' ? 'Independent' : PARTY_NAMES[c.party]?.short ?? c.party}
+            <div key={c.key ?? c.name} style={{
+              display: 'flex', alignItems: 'center', gap: 7, minWidth: 0, height: 44, boxSizing: 'border-box',
+              border: '1px solid #00000014', background: '#fff', borderRadius: 9, padding: '4px 8px 4px 4px',
+              opacity: c.withdrawn ? 0.55 : 1,
+            }}>
+              <Avatar src={photo} name={c.name} party={party} size="xs" face />
+              <span style={{ minWidth: 0 }}>
+                <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {c.name}
+                </span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.25, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <span style={{ width: 7, height: 7, borderRadius: 2, background: party ? PARTY_COLORS[party].bg : TERTIARY, flexShrink: 0 }} />
+                  {partyName}
+                  {c.incumbent ? ' · sitting MP' : ''}
+                  {c.withdrawn ? ' · withdrawn' : ''}
+                </span>
               </span>
             </div>
           )
@@ -329,14 +361,25 @@ function Challengers({ candidates }: { candidates?: Candidate2026[] }) {
   )
 }
 
-/** §2.4's container and row order, at the size a 340px column allows. */
-function SeatCard({ name, slug, info, tier, candidates }: {
+/**
+ * §2.4's container, at the size a 340px column allows.
+ *
+ * Order, by request: the seat, who is standing, then the way to the seat
+ * page. What happened in 2023 — who won, their party then, the majority, and
+ * the 2023 MP's photo tile that used to sit under this card — is behind a
+ * "Last election" button between the two. It was the first thing the panel
+ * said, above the candidates, on a page whose reader is asking who they can
+ * vote for NOW.
+ */
+function SeatCard({ name, slug, info, tier, mp, candidates }: {
   name: string
   slug: string
   info: ElectorateInfo
   tier: MarginTier
+  mp: React.ComponentProps<typeof MpPhotoTile>['mp']
   candidates?: Candidate2026[]
 }) {
+  const [showLast, setShowLast] = React.useState(false)
   return (
     <div style={{
       border: `1px solid ${BORDER}`, borderRadius: 16, padding: 'clamp(14px, 2.5vw, 20px)',
@@ -346,22 +389,42 @@ function SeatCard({ name, slug, info, tier, candidates }: {
       <span style={{ alignSelf: 'flex-start', fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: tier.fg, background: tier.light, border: `1px solid ${tier.color}`, borderRadius: 999, padding: '3px 10px', marginBottom: 10, fontFamily: MANROPE }}>{tier.label}</span>
       <h3 style={{ fontSize: 'clamp(17px, 2.6vw, 21px)', fontWeight: 800, color: INK, margin: '0 0 2px', fontFamily: MANROPE }}>{name}</h3>
       <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14, fontFamily: MANROPE }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {/* Two labels because there are two facts. The pages used four names
-            for one field ("Electorate MP", "2023 winner", "Your electorate MP",
-            "Electorate MP · 2023 result") and got the distinction wrong twice:
-            `info.party` is who WON in 2023, and two MPs have changed party
-            since. Here the label says 2023, so the value is right. */}
-        <MetaRow label="Won in 2023" value={info.mpName ?? 'Not on record'} />
-        <MetaRow label="Party then" value={info.party ? PARTY_NAMES[info.party].short : 'Not on record'} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
-        <MetaRow label="2023 majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : 'Not on record'} />
-      </div>
-      <Challengers candidates={candidates} />
+
+      <Candidates candidates={candidates} />
+
+      {/* §3.1: the button is the 44px hit area. */}
+      <button
+        type="button"
+        onClick={() => setShowLast((v) => !v)}
+        aria-expanded={showLast}
+        style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%',
+          marginTop: 12, padding: '10px 2px', background: 'none', border: 'none', borderTop: `1px solid ${BORDER}`,
+          cursor: 'pointer', fontFamily: MANROPE, fontSize: 13, fontWeight: 800, color: INK,
+        }}
+      >
+        Last election
+        <ChevronDown style={{ width: 16, height: 16, color: SECONDARY, transform: showLast ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease' }} strokeWidth={2.5} />
+      </button>
+      {showLast && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 4 }}>
+          {/* Two labels because there are two facts. The pages used four names
+              for one field ("Electorate MP", "2023 winner", "Your electorate MP",
+              "Electorate MP · 2023 result") and got the distinction wrong twice:
+              `info.party` is who WON in 2023, and two MPs have changed party
+              since. Here the label says 2023, so the value is right. */}
+          <MetaRow label="Won in 2023" value={info.mpName ?? 'Not on record'} />
+          <MetaRow label="Party then" value={info.party ? PARTY_NAMES[info.party].short : 'Not on record'} color={info.party ? PARTY_COLORS[info.party].bg : undefined} />
+          <MetaRow label="2023 majority" value={info.majority != null ? info.majority.toLocaleString('en-NZ') : 'Not on record'} />
+          <MpPhotoTile name={info.mpName ?? 'To be confirmed'} party={info.party ?? undefined} mp={mp} caption="2023 MP" />
+          {/* §4: the numbers above age, so the panel says where they came from. */}
+          <p style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, margin: 0 }}>Electoral Commission 2023 official results</p>
+        </div>
+      )}
+
       <Link href={`/battlegrounds/${slug}`} style={{ marginTop: 12, textDecoration: 'none' }}>
         <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px', color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: MANROPE }}>Open this seat <ArrowRight style={{ width: 15, height: 15 }} /></span>
       </Link>
-      {/* §4: the numbers above age, so the panel says where they came from. */}
-      <p style={{ fontSize: 11, color: TERTIARY, fontFamily: MANROPE, margin: '10px 0 0' }}>Electoral Commission 2023 official results</p>
     </div>
   )
 }
@@ -390,11 +453,11 @@ function Prompt({ message }: { message?: string }) {
    (§1.4). */
 const GRID_CSS = `
 .bg-map-box { height: clamp(520px, 70vh, 700px); }
-.bg-map-panel { height: clamp(520px, 70vh, 700px); }
+.bg-map-panel { height: clamp(520px, 70vh, 700px); overflow-y: auto; }
 @media (max-width: 880px) {
   .bg-map-grid { grid-template-columns: 1fr !important; }
   .bg-map-box { height: 460px; }
-  .bg-map-panel { height: auto; }
+  .bg-map-panel { height: auto; overflow-y: visible; }
   .bg-map-prompt { min-height: 150px; }
 }
 `
