@@ -815,6 +815,14 @@
       }
     ]
   },
+  "conservative": {
+    "economy": [
+      {
+        "url": "https://www.conservatives.nz/policy",
+        "title": "Conservative Party Policies Overview"
+      }
+    ]
+  },
   "vision-nz": {
     "democracy-government": [
       {
@@ -996,8 +1004,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-29",
-    "parties": 13,
-    "policyPages": 206
+    "lastRun": "2026-09-30",
+    "parties": 14,
+    "policyPages": 207
   }
 }
