@@ -40,6 +40,47 @@ async function upsertFromSubscription(admin: AdminClient, sub: Stripe.Subscripti
   })
 }
 
+/**
+ * A completed donation → a row in public.donations.
+ *
+ * Politika became the merchant on 29 Sep 2026 (see api/donate/checkout). Before
+ * that, Onebyone Project's server took the payment and posted the result to
+ * /api/donate/notify; now the payment happens on our own account, so this is
+ * where the record comes from.
+ *
+ * Upsert on stripe_session_id with ignoreDuplicates, because Stripe retries a
+ * webhook it did not get a 2xx for and will happily deliver the same event
+ * twice. A donation recorded twice is a receipt sent twice, and a donor being
+ * thanked for money they gave once reads as being charged twice.
+ *
+ * paid_at comes from the event, not now(): a retry delivered an hour later must
+ * not claim the donation happened an hour late.
+ */
+async function recordDonation(admin: AdminClient, session: Stripe.Checkout.Session) {
+  const amount = session.amount_total
+  if (!amount || amount <= 0) {
+    console.error('[webhook] donation session with no amount', session.id)
+    return
+  }
+  const m = session.metadata ?? {}
+  const { error } = await admin.from('donations').upsert({
+    stripe_session_id: session.id,
+    reference: (m.reference as string) || `POL-${session.id.slice(-8).toUpperCase()}`,
+    amount_cents: amount,
+    currency: session.currency ?? 'nzd',
+    // customer_details is where Checkout puts what the donor actually typed;
+    // customer_email is only set when it was passed in beforehand, which it is
+    // not here, so reading that alone loses every address.
+    donor_email: session.customer_details?.email ?? session.customer_email ?? null,
+    donor_name: session.customer_details?.name ?? null,
+    email_updates: m.email_updates === 'true',
+    cover_fee: m.cover_fee === 'true',
+    paid_at: new Date((session.created ?? Math.floor(Date.now() / 1000)) * 1000).toISOString(),
+  }, { onConflict: 'stripe_session_id', ignoreDuplicates: true })
+
+  if (error) console.error('[webhook] donation insert failed', session.id, error.message)
+}
+
 export async function POST(req: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET
   const sig = req.headers.get('stripe-signature')
@@ -68,6 +109,8 @@ export async function POST(req: Request) {
             sub.metadata = { ...sub.metadata, user_id: session.client_reference_id }
           }
           await upsertFromSubscription(admin, sub)
+        } else if (session.metadata?.kind === 'donation') {
+          await recordDonation(admin, session)
         }
         break
       }

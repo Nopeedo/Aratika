@@ -1,8 +1,8 @@
 /**
  * donation-receipts.mjs — email a receipt for every donation that hasn't had one.
  *
- * Donations arrive in public.donations (migration 0020) from /api/donate/notify
- * when Onebyone Project, the merchant, reports a paid donation. This sends each
+ * Donations arrive in public.donations (migration 0020) from /api/stripe/webhook
+ * when Stripe reports a completed Checkout session. This sends each
  * one a receipt from hello@politika.nz through the same Zoho mailer as the
  * welcome email and newsletter (scripts/lib/notify.mjs), then stamps
  * receipt_sent_at so it never goes twice. Runs every 10 minutes from

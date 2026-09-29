@@ -1,26 +1,50 @@
 /**
  * POST /api/donate/checkout — starts a donation to Politika.
  *
- * Onebyone Project is the merchant, on Politika's behalf. Politika holds no
- * Onebyone or Stripe credentials: this asks Onebyone's server to open a
- * Stripe Checkout session (POST /api/v1/donations/politika) and hands the
- * browser the URL. The request is signed with DONATE_SHARED_SECRET (see
- * lib/donate/sign.ts); without it donations aren't open and this answers 503.
+ * POLITIKA IS THE MERCHANT. This used to hand the payment to Onebyone Project,
+ * which opened the Stripe session on its own account; Politika held no Stripe
+ * credentials and only redirected to the URL it was given. That worked, and it
+ * put "ONEBYONE" on the donor's card statement — a name they never chose to
+ * give money to, on a line they cannot ask us about. A donation that looks
+ * unrecognised is a donation that gets charged back.
  *
- * One-time and NZD only, by request. Onebyone's webhook records the payment
- * and sends it back to /api/donate/notify, which queues Politika's receipt.
+ * So the session is created here, on Politika's own Stripe account, and the
+ * statement line says POLITIKA.
+ *
+ * One-time and NZD only, by request. The payment is recorded by
+ * /api/stripe/webhook on checkout.session.completed, which writes the row in
+ * public.donations that scripts/donation-receipts.mjs then receipts.
  */
 
-import { donateSecret, sign } from '@/lib/donate/sign'
+import { getStripe } from '@/lib/stripe'
 import { DONATIONS_ENABLED } from '@/constants/features'
+import { SITE } from '@/constants/site'
 
 const MIN_CENTS = 100          // $1
 const MAX_CENTS = 1_000_000    // $10,000
-const ONEBYONE_API = (process.env.ONEBYONE_API_URL || 'https://onebyoneproject-api.fly.dev').replace(/\/$/, '')
+
+/**
+ * What the donor sees on their statement.
+ *
+ * Stripe prepends the account's own descriptor and appends this, so the
+ * ACCOUNT's descriptor has to say Politika too — that is a Stripe dashboard
+ * setting (Settings → Business → Public details), not something code can set.
+ * This suffix is the half that can be guaranteed from here; if the account is
+ * still registered under another trading name, the statement will carry that
+ * name first and this after it.
+ *
+ * Stripe rejects the characters < > \ ' " * and caps the suffix at 22.
+ */
+const STATEMENT_SUFFIX = 'POLITIKA DONATION'.slice(0, 22)
 
 export async function POST(request: Request) {
-  const secret = donateSecret()
-  if (!DONATIONS_ENABLED || !secret) return Response.json({ error: 'Donations are not open yet' }, { status: 503 })
+  if (!DONATIONS_ENABLED) return Response.json({ error: 'Donations are not open yet' }, { status: 503 })
+  if (!process.env.STRIPE_SECRET_KEY) {
+    // Explicit, not a generic 500: the only way this happens is a missing env
+    // var in the deployment, and "donations are not open" would hide it.
+    console.error('[donate] STRIPE_SECRET_KEY is not set')
+    return Response.json({ error: 'Donations are not open yet' }, { status: 503 })
+  }
 
   let body: { amountCents?: unknown; coverFee?: unknown; emailUpdates?: unknown }
   try {
@@ -28,36 +52,66 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ error: 'Bad request' }, { status: 400 })
   }
+
   const amount = typeof body.amountCents === 'number' ? Math.round(body.amountCents) : NaN
   if (!Number.isFinite(amount) || amount < MIN_CENTS || amount > MAX_CENTS) {
     return Response.json({ error: 'Choose an amount between $1 and $10,000' }, { status: 400 })
   }
+  const coverFee = body.coverFee === true
+  const emailUpdates = body.emailUpdates === true
 
-  // The donor's IP, so Onebyone rate-limits per donor rather than treating
-  // every Politika donor as one visitor (all requests come from this server).
-  const clientIp = (request.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || null
+  const site = (process.env.NEXT_PUBLIC_APP_URL || SITE.url).replace(/\/$/, '')
 
-  const raw = JSON.stringify({
-    amount,
-    marketing_opt_in: body.emailUpdates === true,
-    cover_fee: body.coverFee === true,
-    client_ip: clientIp,
-  })
-  const ts = String(Math.floor(Date.now() / 1000))
+  // A short human reference the donor can quote in an email. Generated before
+  // the session so it can go in metadata and on the receipt; the session id is
+  // the real key, this is only for people.
+  const reference = `POL-${Date.now().toString(36).toUpperCase().slice(-6)}`
 
   try {
-    const res = await fetch(`${ONEBYONE_API}/api/v1/donations/politika`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-politika-timestamp': ts, 'x-politika-signature': sign(raw, ts, secret) },
-      body: raw,
-      cache: 'no-store',
+    const session = await getStripe().checkout.sessions.create({
+      mode: 'payment',
+      currency: 'nzd',
+      line_items: [{
+        quantity: 1,
+        price_data: {
+          currency: 'nzd',
+          unit_amount: amount,
+          // No Stripe Price object: the amount is whatever the donor typed, so
+          // creating a Price per donation would litter the account.
+          product_data: {
+            name: 'Donation to Politika',
+            description: 'Keeps Politika free and independent. Not a payment for goods or services.',
+          },
+        },
+      }],
+      // Asked for, not inferred: the receipt needs somewhere to go, and the
+      // donations table's donor_email is what the receipt script reads.
+      customer_creation: 'always',
+      payment_intent_data: {
+        statement_descriptor_suffix: STATEMENT_SUFFIX,
+        description: `Politika donation ${reference}`,
+      },
+      // Read back by /api/stripe/webhook. Everything the donations row needs
+      // that Stripe does not carry natively lives here, because a webhook that
+      // has to call back into our own API to find out what a payment was for
+      // is a second thing that can fail.
+      metadata: {
+        kind: 'donation',
+        reference,
+        email_updates: String(emailUpdates),
+        cover_fee: String(coverFee),
+      },
+      success_url: `${site}/donate?done=1&ref=${reference}`,
+      cancel_url: `${site}/donate?cancelled=1`,
     })
-    const json = (await res.json().catch(() => ({}))) as { checkout_url?: string; detail?: string }
-    if (res.ok && json.checkout_url) return Response.json({ url: json.checkout_url })
-    console.error('[donate] onebyone refused', res.status, json.detail)
-    return Response.json({ error: 'Could not open checkout' }, { status: res.status === 429 ? 429 : 502 })
+
+    if (!session.url) {
+      console.error('[donate] stripe returned a session with no url', session.id)
+      return Response.json({ error: 'Could not open checkout' }, { status: 502 })
+    }
+    return Response.json({ url: session.url })
   } catch (e) {
-    console.error('[donate] onebyone unreachable', e)
+    console.error('[donate] stripe session failed', e instanceof Error ? e.message : e)
     return Response.json({ error: 'Could not open checkout' }, { status: 502 })
   }
 }

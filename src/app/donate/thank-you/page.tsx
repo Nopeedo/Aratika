@@ -2,9 +2,13 @@
  * /donate/thank-you — where Stripe Checkout returns a donor after paying.
  *
  * Nothing is looked up here. The payment is confirmed server to server:
- * Onebyone's webhook sends /api/donate/notify a signed note, which queues the
- * receipt (sent from hello@politika.nz by scripts/donation-receipts.mjs) and
- * the newsletter sign-up if it was ticked.
+ * Stripe posts checkout.session.completed to /api/stripe/webhook, which writes
+ * the row in public.donations that scripts/donation-receipts.mjs receipts from
+ * hello@politika.nz, and records the newsletter tick if it was ticked.
+ *
+ * (Until 29 Sep 2026 this went through Onebyone Project's server and
+ * /api/donate/notify. Politika is its own merchant now — see
+ * api/donate/checkout for why.)
  */
 
 import type { Metadata } from 'next'
