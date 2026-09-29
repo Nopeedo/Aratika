@@ -53,28 +53,34 @@ export default function LiveResultsPage() {
   const official = milestone('official-results-2026')
   const opens = electionDay ? fullDate(electionDay.date) : null
 
+  /* What the page is for. Inside the "Not open yet" card by request, so the
+     page reads as one block under its title; above the results once the
+     switch is on. */
+  const about = (
+    <>
+      <p style={{ fontSize: 14, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 8px' }}>
+        When voting closes on election night, this page shows the <b style={{ color: INK }}>preliminary results</b> as
+        the Electoral Commission releases them: who is leading in each of the 72 electorates, and how the party vote
+        is falling nationally. These are counted votes, updated through the night.
+      </p>
+      {official && (
+        <p style={{ fontSize: 13, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
+          Preliminary results can change. The official results, including special votes, are declared on{' '}
+          {longDate(official.date)}.
+        </p>
+      )}
+    </>
+  )
+
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: 'clamp(18px, 3vh, 26px) clamp(18px, 5vw, 36px) 64px' }}>
         {/* Title at the same size and position as the policy page's h1 and
             the Election Centre's — every page title on the site reads at one
             weight (§4). */}
-        <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: INK, margin: '0 0 12px' }}>
+        <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: INK, margin: '0 0 16px' }}>
           Live results 2026
         </h1>
-
-        {/* What the page is for. Always shown, switch on or off. */}
-        <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 8px', maxWidth: 640 }}>
-          When voting closes on election night, this page shows the <b style={{ color: INK }}>preliminary results</b> as
-          the Electoral Commission releases them: who is leading in each of the 72 electorates, and how the party vote
-          is falling nationally. These are counted votes, updated through the night.
-        </p>
-        {official && (
-          <p style={{ fontSize: 13.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 22px', maxWidth: 640 }}>
-            Preliminary results can change. The official results, including special votes, are declared on{' '}
-            {longDate(official.date)}.
-          </p>
-        )}
 
         {!LIVE_RESULTS_ENABLED ? (
           <div style={{
@@ -89,10 +95,11 @@ export default function LiveResultsPage() {
                   November 2026" read like a timestamp); the date follows. */}
               This page will be available on election day
             </div>
-            <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 14px' }}>
+            <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
               {opens && <><b style={{ color: INK }}>{opens}.</b>{' '}</>}
               {electionDay?.detail ?? 'Results are released from 7pm on election day.'}
             </p>
+            <div style={{ borderTop: `1px solid ${BORDER}`, margin: '14px 0', paddingTop: 14 }}>{about}</div>
             <Link href={`/elections/${YEAR}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
               Until then, the 2026 Election Centre <ArrowRight style={{ width: 14, height: 14 }} />
             </Link>
@@ -100,6 +107,8 @@ export default function LiveResultsPage() {
         ) : (
           /* The results area. No feed is connected yet, so it says that
              rather than showing anything that could be read as a result. */
+          <>
+          <div style={{ maxWidth: 640, marginBottom: 18 }}>{about}</div>
           <section aria-label="Preliminary results" style={{
             border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '18px 20px', maxWidth: 640,
           }}>
@@ -110,6 +119,7 @@ export default function LiveResultsPage() {
               Results will appear here as the Electoral Commission releases them.
             </p>
           </section>
+          </>
         )}
       </div>
     </div>
