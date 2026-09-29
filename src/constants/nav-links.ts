@@ -53,9 +53,11 @@ export const NAV_ITEMS: NavItem[] = [
   // the label named the grouping, not the destinations, and each of the three
   // cost a tap to reach through it.
   { label: 'Electorate map', href: '/map', description: 'Interactive map: find your MP', feature: 'map' },
-  // /battlegrounds is "Live results 2026" now (election-night results, hidden
-  // until LIVE_RESULTS_ENABLED is flipped). The label says what the page is.
-  { label: 'Live results 2026', href: '/battlegrounds', description: 'Election night results, electorate by electorate', feature: 'battlegrounds' },
+  // /battlegrounds is "Live results 2026" now (election-night results).
+  // feature 'live-results' keeps it out of the menu, the footer and the
+  // explore rail until LIVE_RESULTS_ENABLED is flipped, by request. The page
+  // still answers at its URL.
+  { label: 'Live results 2026', href: '/battlegrounds', description: 'Election night results, electorate by electorate', feature: 'live-results' },
   { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
   // "The Record" is gone as a group: it held three destinations that have
   // nothing to do with each other beyond all being facts about this term, so
@@ -107,7 +109,7 @@ export const FOOTER_LINKS: Record<'learn' | 'explore' | 'account' | 'legal', Foo
     // Was 'Elections' → /elections, a hub that's gone now. This keeps the
     // 2023 results reachable; 2026 is already in the main nav.
     { label: '2023 results', href: '/elections/2023', feature: 'elections' },
-    { label: 'Live results 2026', href: '/battlegrounds', feature: 'battlegrounds' },
+    { label: 'Live results 2026', href: '/battlegrounds', feature: 'live-results' },
     { label: 'Interactive Map', href: '/map', feature: 'map' },
     { label: 'MPs Directory', href: '/mps', feature: 'mps' },
     { label: 'Party Policies', href: '/policies', feature: 'policies' },

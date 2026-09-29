@@ -62,6 +62,9 @@ export const FEATURE_PHASE: Record<string, Phase> = {
 }
 
 export function isEnabled(feature: string): boolean {
+  // Not a phase: the Live results 2026 links (menu, footer, explore rail)
+  // follow the hand-flipped switch, so they appear the night it goes on.
+  if (feature === 'live-results') return LIVE_RESULTS_ENABLED
   const p = FEATURE_PHASE[feature]
   return p === undefined ? true : p <= LAUNCH_PHASE
 }
