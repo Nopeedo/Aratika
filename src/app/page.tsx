@@ -24,6 +24,7 @@ import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 // import { WhatsMoved } from '@/components/homepage/whats-moved' // hidden — see below
 // import { CredibilityStrip } from '@/components/homepage/credibility-strip' // hidden — see below
 import { ParliamentNow } from '@/components/homepage/parliament-now'
+import { EmailUpdates } from '@/components/homepage/email-updates'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 // import { AlertsBanner } from '@/components/notifications/alerts-banner' // hidden — see below
 import { OpenLinksInNewTab } from '@/components/homepage/open-links-in-new-tab'
@@ -110,6 +111,12 @@ export default function HomePage() {
             headline about a party reads better once you know how many seats
             they hold and which side of the House they are on. */}
         <ParliamentNow seats={<PartySeatsSection />} bills={<PartyBillsSection />} />
+
+        {/* ── The mailing list ──
+            Under the 2023-term section on purpose: by here a reader has seen
+            what the site holds, which is the only honest moment to ask for
+            their address. Signing up for mail, not for an account. */}
+        <EmailUpdates />
 
         {/* "What's moved" — new candidates and bill stage changes — was
             here. Removed from the front page by request. The component is
