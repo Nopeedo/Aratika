@@ -227,10 +227,11 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
       <div ref={tileRowRef} className="pt-dock" style={{
         position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 45,
       }}>
-        {/* No padding inline. An inline `padding` shorthand outranks every
-            longhand a media query can write, so each attempt to set it per
-            breakpoint silently lost. Both states live in the stylesheet. */}
-        <div className="pt-dock-inner" style={{ maxWidth: 560, margin: '0 auto' }}>
+        {/* Nothing inline that a breakpoint needs to change: an inline
+            `padding` shorthand outranks every longhand a media query can
+            write, and an auto margin beats the flex container's own
+            justify-content. Both cost a round of this. */}
+        <div className="pt-dock-inner" style={{ maxWidth: 560 }}>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
             {parties.map((p) => {
               const on = p.slug === panelSlug
@@ -293,12 +294,12 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
           this has to live in a stylesheet. */}
       <style>{`
         .pt-dock { background: #fff; border-top: 1px solid ${LINE}; box-shadow: 0 -6px 16px rgba(12,14,18,.08); }
-        .pt-dock-inner { padding: 10px clamp(18px, 5vw, 22px); }
+        .pt-dock-inner { margin: 0 auto; padding: 10px clamp(18px, 5vw, 22px); }
         @media (min-width: 768px) {
-          .pt-dock { background: transparent; border-top: none; box-shadow: none; display: flex; justify-content: center; }
-          /* fit-content + no side padding: the white ends exactly at the left
-             edge of the first tile and the right edge of the last, instead of
-             holding a margin of its own around a row that is already centred. */
+          /* Desktop only. The dock leaves the middle and sits in the bottom
+             right corner, out of the way of a page read left to right, and
+             stops being a band across the screen at all. */
+          .pt-dock { background: transparent; border-top: none; box-shadow: none; display: flex; justify-content: flex-end; }
           /* The tiles take a definite width here so the white can be sized to
              them. At flex-basis 0 they have no intrinsic width, so fit-content
              measured the row as zero and the bar vanished. !important because
@@ -308,12 +309,17 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
           .pt-dock-inner {
             width: fit-content;
             max-width: 100%;
-            padding: 10px 0;
+            margin: 0;
+            /* Even on all four sides: flush at the sides and 10px top and
+               bottom read as a bar the tiles had been dropped into rather
+               than a surface cut to them. */
+            padding: 12px;
             background: #fff;
             border: 1px solid ${LINE};
+            border-right: none;
             border-bottom: none;
-            border-radius: 16px 16px 0 0;
-            box-shadow: 0 -6px 16px rgba(12,14,18,.08);
+            border-radius: 16px 0 0 0;
+            box-shadow: -6px -6px 16px rgba(12,14,18,.08);
           }
         }
       `}</style>
