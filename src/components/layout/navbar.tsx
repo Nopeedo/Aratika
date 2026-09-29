@@ -147,6 +147,19 @@ export function Navbar() {
           {/* Desktop Auth Actions. "Explain terms" is not here and no longer
               in the mobile menu either. */}
           <div className="hidden xl:flex items-center gap-2">
+            {/* Donate, in the top bar by request, for everyone signed in or
+                not. Outlined so it doesn't compete with Sign up free. */}
+            <Link
+              href="/donate"
+              className={cn(
+                'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-semibold border-[1.5px] transition-colors',
+                pathname === '/donate'
+                  ? 'border-[#1F8A4C] bg-[#1F8A4C] text-white'
+                  : 'border-[#1F8A4C] text-[#1F8A4C] hover:bg-[#1F8A4C] hover:text-white',
+              )}
+            >
+              <Heart className="size-3.5" /> Donate
+            </Link>
             {isLoggedIn ? (
               <>
                 {PREMIUM_ENABLED && !isPremium && (
