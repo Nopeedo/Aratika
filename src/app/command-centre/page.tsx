@@ -22,6 +22,7 @@ import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { CommandCentreTryIt } from '@/components/command-centre/try-it'
 import type { BookmarkEntity } from '@/hooks/use-bookmarks'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export const metadata: Metadata = {
   title: 'Your Command Centre: track what matters',
@@ -103,6 +104,10 @@ export default async function CommandCentrePage() {
       {/* Hero */}
       <section style={{ background: '#fff', borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
+          {/* Not in the navbar, so the only way here is tapping in from
+              somewhere else — and with no browser chrome in the installed
+              app, no way out again. */}
+          <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 16 }} />
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 14 }}>
             <Target style={{ width: 15, height: 15 }} /> Your Command Centre
           </div>

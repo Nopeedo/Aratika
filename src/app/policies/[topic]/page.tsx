@@ -23,7 +23,8 @@ import { TopicBackground } from '@/components/policy/topic-background'
 import { TopicInfoButton } from '@/components/policy/topic-info-button'
 import { PolicyComparison } from '@/components/policy/policy-comparison'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
-import { INK, MANROPE } from '@/constants/theme'
+import { INK, MANROPE, SECONDARY } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 
 export function generateStaticParams() {
@@ -67,7 +68,17 @@ export default async function PolicyTopicPage(
           {/* Only renders when ?from= names a party — i.e. the reader came
               here from that party's own policy section and may want to go
               back. Suspense keeps this page static. */}
-          <div style={{ marginBottom: 14 }}><Suspense fallback={null}><BackToParty /></Suspense></div>
+          {/* BackToParty only renders when ?from= names a party, and the only
+              link that sets it is the one inside a party profile. Every other
+              way in — homepage policy cards, party tiles, the compass result,
+              the guide, MP profiles, the budget page, tracked items — left
+              this page with nothing to go back to. BackLink covers those.
+              fallbackHref is the homepage, not /policies, because /policies
+              redirects to the first topic and would land you back here. */}
+          <div style={{ marginBottom: 14, display: 'flex', alignItems: 'center', gap: 14 }}>
+            <Suspense fallback={null}><BackToParty /></Suspense>
+            <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE }} />
+          </div>
 
           {/* Page title. The topic used to be the h1, which read as if each
               issue were its own page; this IS the comparison page, and the

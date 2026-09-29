@@ -30,6 +30,9 @@ import { NAV_PREV_KEY } from './nav-history'
  *  /parties/national would misdescribe where it goes. "Back to parties" reads
  *  correctly whether you came from the index or a single party. */
 const KNOWN: { prefix: string; label: string }[] = [
+  // Only ever matches the homepage exactly: the startsWith arm below tests
+  // prefix + '/', which for this entry is '//', and nothing starts with that.
+  { prefix: '/',               label: 'the homepage' },
   { prefix: '/elections/2026', label: 'the 2026 election' },
   { prefix: '/battlegrounds',  label: 'Live results 2026' },
   { prefix: '/compare',        label: 'Compare parties' },

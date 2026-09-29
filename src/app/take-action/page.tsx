@@ -12,6 +12,7 @@ import {
 import { LETTER_TEMPLATES, LETTER_TEMPLATE_ORDER } from '@/constants/letter-templates'
 import { PREMIUM_ENABLED } from '@/constants/features'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export const metadata: Metadata = {
   title: 'Take Action: write to an MP or make a submission',
@@ -35,6 +36,9 @@ export default function TakeActionHub() {
       {/* Hero */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '46px clamp(18px, 5vw, 36px) 40px' }}>
+          {/* Not in the navbar either: reached from the explore rail and from
+              in-page prompts, so it needs its own way back. */}
+          <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 14 }} />
           <div style={{ marginBottom: PREMIUM_ENABLED ? 10 : 0, display: 'flex', alignItems: 'center', gap: 10 }}>
             {/* The kill switch in features.ts says that while PREMIUM_ENABLED is
                 false everything is free and every Premium prompt is hidden. This

@@ -33,6 +33,7 @@ import { isLightHex } from '@/components/homepage/battleground-card'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { allDeepDivePaths } from '@/constants/policy-deep-dives'
 import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 
@@ -162,10 +163,17 @@ export default async function PartyProfilePage(
             pill now, and 36 over the body's own 36 read as the page pausing. */}
         <div className="ap-col" style={{ maxWidth: 1080, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 18px' }}>
 
-          {/* The back link is gone. It said "All parties" and pointed at
-              /parties, which redirects back to this page, and "Home" in its
-              place was a second route to something the navbar already owns.
-              The title leads the page instead. */}
+          {/* A back link again, but not the one that was removed. That one was
+              hard-coded to /parties, which redirects straight back to this
+              page — so it returned you to where you already were. BackLink
+              goes to the page you actually came from, and falls back to the
+              homepage rather than to that loop.
+
+              It matters more than it looks: the manifest sets display
+              standalone, so installed to a phone there is no browser back
+              button at all, and this is a page people tap INTO from the
+              homepage tiles, the policy hub and MP profiles. */}
+          <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 14 }} />
 
           {/* The page title, carried over from the directory this page
               replaced. It is the h1 now and the party name below is an h2:

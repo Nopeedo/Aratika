@@ -7,6 +7,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Sparkles, ArrowRight, Vote, Map, Scale } from 'lucide-react'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export const metadata: Metadata = { title: 'Coming soon', robots: { index: false, follow: false } }
 
@@ -16,6 +17,14 @@ export default function ComingSoonPage() {
       <div style={{ maxWidth: 560, padding: '48px clamp(18px, 5vw, 36px)', textAlign: 'center' }}>
         <div style={{ width: 56, height: 56, borderRadius: 16, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
           <Sparkles style={{ width: 28, height: 28, color: JADE }} />
+        </div>
+        {/* Every gated route in GATED_ROUTES lands here via proxy.ts, so this
+            is a page people arrive at without choosing to. The four links
+            below all go onward; none goes back to whatever they tapped.
+            router.back() is safe here: proxy.ts issues an HTTP redirect, and
+            that leaves no history entry for the gated URL to bounce off. */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
+          <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE }} />
         </div>
         <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 12px' }}>Coming soon</h1>
         <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 26px' }}>
