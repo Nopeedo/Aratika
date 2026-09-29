@@ -4,10 +4,11 @@
  */
 
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, Landmark, MapPin, Info, Trophy } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Landmark, Info, Trophy } from 'lucide-react'
 import type { ElectionData } from '@/constants/elections-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import { SeatHemicycle } from './seat-hemicycle'
+import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/theme'
 
 const fmt = (n: number) => n.toLocaleString('en-NZ')
@@ -111,9 +112,23 @@ export function ResultsView({ e }: { e: ElectionData }) {
         </div>
       )}
 
+      {/* The electorate map, on the page, by request: it was a link out to
+          /map ("Electorate results on the map"). Same map as the 2026
+          Election Centre's, in its 2023-only form: shaded by the 2023
+          margin, and a tap shows who won. The electorate data behind it is
+          the 2023 result, so it only renders for 2023. */}
+      {e.slug === '2023' && (
+        <div>
+          <h2 style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px' }}>Electorate results</h2>
+          <p style={{ fontSize: 12.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 14px', lineHeight: 1.5 }}>
+            All 72 electorates, shaded by how close the race was. Tap an area on the map to see who won it.
+          </p>
+          <BattlegroundsMap only2023 />
+        </div>
+      )}
+
       {/* Explore */}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-        <Link href="/map" style={pill(true)}><MapPin style={ic} /> Electorate results on the map</Link>
         <Link href="/mps" style={pill(false)}><Landmark style={ic} /> The MPs elected</Link>
         <Link href="/parties" style={pill(false)}>Parties <ArrowRight style={ic} /></Link>
       </div>

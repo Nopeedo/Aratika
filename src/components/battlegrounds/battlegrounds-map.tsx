@@ -96,8 +96,15 @@ function countTier(n: number) {
   return COUNT_TIERS.find((t) => n >= t.min) ?? NONE_YET
 }
 
-export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
+export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin', only2023 = false }: {
   candidatesBySlug?: Record<string, Candidate2026[]>
+  /**
+   * The 2023 results page's copy of this map, by request: the same map, the
+   * same rolls and panel, but about 2023 and nothing else. No toggle to the
+   * candidates view, no 2026 candidate list, and the panel shows who won
+   * outright instead of behind "Last election".
+   */
+  only2023?: boolean
   /**
    * Which colouring the map opens on. /battlegrounds keeps 'margin' — that
    * page is about how close 2023 was. The Election Centre opens on
@@ -105,7 +112,7 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
    */
   defaultView?: MapView
 } = {}) {
-  const [view, setView] = React.useState<MapView>(defaultView)
+  const [view, setView] = React.useState<MapView>(only2023 ? 'margin' : defaultView)
   const [layer, setLayer] = React.useState<Roll>('general')
   const [sets, setSets] = React.useState<Record<Roll, FeatureCollection | null>>({ general: null, maori: null })
   const [status, setStatus] = React.useState<'loading' | 'ready' | 'error'>('loading')
@@ -205,7 +212,7 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
               view. Top-right because Leaflet's zoom sits top-left, the key
               bottom-left and the attribution bottom-right. zIndex 1000, the
               key's own, so Leaflet's panes (400-700) can't cover it. */}
-          {status === 'ready' && data && (
+          {status === 'ready' && data && !only2023 && (
             <button
               type="button"
               onClick={() => setView((v) => (v === 'candidates' ? 'margin' : 'candidates'))}
@@ -279,7 +286,7 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0 }}>
               {/* key={selected}: the "Last election" reveal closes again when
                   a different seat is tapped, rather than carrying over. */}
-              <SeatCard key={selected} name={selected} slug={selectedKey ?? ''} info={info} tier={tier} mp={mp} candidates={selectedKey ? candidatesBySlug?.[selectedKey] : undefined} />
+              <SeatCard key={selected} name={selected} slug={selectedKey ?? ''} info={info} tier={tier} mp={mp} candidates={selectedKey ? candidatesBySlug?.[selectedKey] : undefined} only2023={only2023} />
             </div>
           ) : (
             /* §1.5, and the true gap named. The old copy said "MP data pending
@@ -390,7 +397,8 @@ function Candidates({ candidates, seatName, seatSlug }: { candidates?: Candidate
  * said, above the candidates, on a page whose reader is asking who they can
  * vote for NOW.
  */
-function SeatCard({ name, slug, info, tier, mp, candidates }: {
+function SeatCard({ name, slug, info, tier, mp, candidates, only2023 = false }: {
+  only2023?: boolean
   name: string
   slug: string
   info: ElectorateInfo
@@ -399,6 +407,9 @@ function SeatCard({ name, slug, info, tier, mp, candidates }: {
   candidates?: Candidate2026[]
 }) {
   const [showLast, setShowLast] = React.useState(false)
+  // On the 2023 results page the 2023 facts ARE the card, so they're open
+  // and there's nothing to toggle.
+  const last = only2023 || showLast
   return (
     <div style={{
       border: `1px solid ${BORDER}`, borderRadius: 16, padding: 'clamp(14px, 2.5vw, 20px)',
@@ -409,10 +420,10 @@ function SeatCard({ name, slug, info, tier, mp, candidates }: {
       <h3 style={{ fontSize: 'clamp(17px, 2.6vw, 21px)', fontWeight: 800, color: INK, margin: '0 0 2px', fontFamily: MANROPE }}>{name}</h3>
       <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14, fontFamily: MANROPE }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</div>
 
-      <Candidates candidates={candidates} seatName={name} seatSlug={slug} />
+      {!only2023 && <Candidates candidates={candidates} seatName={name} seatSlug={slug} />}
 
       {/* §3.1: the button is the 44px hit area. */}
-      <button
+      {!only2023 && <button
         type="button"
         onClick={() => setShowLast((v) => !v)}
         aria-expanded={showLast}
@@ -424,8 +435,8 @@ function SeatCard({ name, slug, info, tier, mp, candidates }: {
       >
         Last election
         <ChevronDown style={{ width: 16, height: 16, color: SECONDARY, transform: showLast ? 'rotate(180deg)' : 'none', transition: 'transform .2s ease' }} strokeWidth={2.5} />
-      </button>
-      {showLast && (
+      </button>}
+      {last && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 4 }}>
           {/* Two labels because there are two facts. The pages used four names
               for one field ("Electorate MP", "2023 winner", "Your electorate MP",
@@ -441,9 +452,13 @@ function SeatCard({ name, slug, info, tier, mp, candidates }: {
         </div>
       )}
 
-      <Link href={`/battlegrounds/${slug}`} style={{ marginTop: 12, textDecoration: 'none' }}>
-        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px', color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: MANROPE }}>Open this seat <ArrowRight style={{ width: 15, height: 15 }} /></span>
-      </Link>
+      {/* The seat pages are about the 2026 race, so the 2023 copy of the
+          map doesn't send people there. */}
+      {!only2023 && (
+        <Link href={`/battlegrounds/${slug}`} style={{ marginTop: 12, textDecoration: 'none' }}>
+          <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px', color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: MANROPE }}>Open this seat <ArrowRight style={{ width: 15, height: 15 }} /></span>
+        </Link>
+      )}
     </div>
   )
 }
