@@ -49,6 +49,9 @@ export const NAV_ITEMS: NavItem[] = [
   // topic's comparison page, so the label now says what the destination
   // actually is rather than naming a section.
   { label: 'Policy Comparison', href: '/policies', description: 'Where the parties stand issue by issue, and follow the issues you care about', feature: 'policies' },
+  // Straight under Policy Comparison, by request: what the parties say,
+  // then what Parliament is actually passing.
+  { label: 'Bills tracker', href: '/bills', description: 'Bills before the House: plain-language', feature: 'bills' },
   // "Your Electorate" is gone as a group for the same reason The Record is:
   // the label named the grouping, not the destinations, and each of the three
   // cost a tap to reach through it.
@@ -65,7 +68,6 @@ export const NAV_ITEMS: NavItem[] = [
   // them cost a tap to reach. They stand on their own now, in the order a
   // reader is likely to want them. Parliament comes out with the other two
   // rather than being left without a home in the menu.
-  { label: 'Bills tracker', href: '/bills', description: 'Bills before the House: plain-language', feature: 'bills' },
   { label: 'Budget 2026', href: '/budget', description: 'Where the Government is spending', feature: 'budget' },
   { label: 'Parliament', href: '/parliament', description: 'Current seats, cabinet and snapshot', feature: 'parliament' },
   // "Latest" is gone as a group, the last one in the menu, for the same reason
