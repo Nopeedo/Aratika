@@ -302,11 +302,9 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               </InfoText>
             </ZoneHead>
             <ClosestRaces races={races} year={base.year} />
-            {/* The map, back — but closed. It was cut from here at 1,070px as
-                the page's single largest saving, and that decision was right
-                for a map that arrived open. Closed it is one ~70px row, and the
-                height is spent only by a reader who taps it. See
-                seat-map-section.tsx for the full reasoning. */}
+            {/* The map, no longer in its own closed accordion card — by
+                request, its heading, description and the map itself sit
+                directly on the page now. See seat-map-section.tsx. */}
             <div style={{ marginTop: 14 }}>
               <SeatMapSection candidatesBySlug={candidatesBySlug} />
             </div>
