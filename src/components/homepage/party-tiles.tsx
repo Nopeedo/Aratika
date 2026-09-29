@@ -205,7 +205,7 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
           shorter names just right-align within that same width. */}
       {cur && (
         <section style={{ background: 'transparent', position: 'fixed', left: 0, right: 0, bottom: tileRowHeight, zIndex: 44, pointerEvents: 'none' }}>
-          <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px)', position: 'relative', height: 0 }}>
+          <div className="pt-tab-wrap" style={{ maxWidth: 760, margin: '0 auto', position: 'relative', height: 0 }}>
             <div style={{
               position: 'absolute', bottom: 0, right: 0,
               width: tabWidth ?? undefined, textAlign: 'center', boxSizing: 'border-box',
@@ -295,6 +295,7 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
       <style>{`
         .pt-dock { background: #fff; border-top: 1px solid ${LINE}; box-shadow: 0 -6px 16px rgba(12,14,18,.08); }
         .pt-dock-inner { margin: 0 auto; padding: 10px clamp(18px, 5vw, 22px); }
+        .pt-tab-wrap { padding: 0 clamp(18px, 5vw, 36px); }
         @media (min-width: 768px) {
           /* Desktop only. The dock leaves the middle and sits in the bottom
              right corner, out of the way of a page read left to right, and
@@ -305,7 +306,17 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
              measured the row as zero and the bar vanished. !important because
              the flex shorthand is set inline, which a media query cannot
              outrank (DESIGN-SPEC 3.2). */
-          .pt-tile { flex: 0 0 72px !important; }
+          .pt-tile { flex: 0 0 40px !important; }
+          /* The name tab follows the dock into the corner: full width, then
+             right-padded by the dock's own 12px, so its right edge lines up
+             with the right edge of the last tile rather than with the middle
+             of the page the dock no longer sits in. */
+          .pt-tab-wrap { max-width: none !important; margin: 0 !important; padding: 0; }
+          /* right on the tab itself, not padding on its wrapper: the tab is
+             absolutely positioned, so it anchors to the wrapper's PADDING box
+             and padding cannot move it. 12px is the dock's own inset, which
+             puts the tab's right edge on the last tile's right edge. */
+          .pt-tab-wrap > div { right: 12px !important; }
           .pt-dock-inner {
             width: fit-content;
             max-width: 100%;
