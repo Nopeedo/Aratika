@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Link from 'next/link'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, Heart } from 'lucide-react'
 import { SITE } from '@/constants/site'
 import { FOOTER_LINKS } from '@/constants/nav-links'
 import { isEnabled } from '@/constants/features'
@@ -65,6 +65,27 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
+            )}
+
+            {/* Donate, by request. Hidden until SITE.donateUrl is set, so
+                there's never a button going nowhere. Opens in a new tab: the
+                payment page is Onebyone's, and the line under the button says
+                so, because a donor's card statement will say Onebyone and
+                they should know that before they pay. */}
+            {SITE.donateUrl && (
+              <div className="mt-5">
+                <a
+                  href={SITE.donateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1F8A4C] hover:bg-[#18703d] text-white text-sm font-semibold transition-colors"
+                >
+                  <Heart className="size-4" /> Donate to Politika
+                </a>
+                <p className="text-xs text-[#9a9186] mt-2 leading-relaxed">
+                  Payments are processed by Onebyone Project on Politika&rsquo;s behalf.
+                </p>
+              </div>
             )}
           </div>
 
