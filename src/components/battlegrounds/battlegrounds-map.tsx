@@ -33,7 +33,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { ArrowRight, ShieldCheck } from 'lucide-react'
 import type { FeatureCollection } from 'geojson'
-import { normalizeElectorateKey, getElectorate, type ElectorateInfo } from '@/constants/electorates-data'
+import { normalizeElectorateKey, getElectorate, ELECTORATES, type ElectorateInfo } from '@/constants/electorates-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
 import type { Candidate2026 } from '@/constants/candidates-2026'
 import { MP_PROFILES } from '@/constants/mps-data'
@@ -55,7 +55,48 @@ const ACCENT = '#dc2626'
 
 const ElectorateMap = dynamic(() => import('@/components/map/electorate-map'), { ssr: false, loading: () => <MapLoading /> })
 
-export function BattlegroundsMap({ candidatesBySlug }: { candidatesBySlug?: Record<string, Candidate2026[]> } = {}) {
+/** What the map is coloured by. */
+export type MapView = 'candidates' | 'margin'
+
+/**
+ * Tiers for the "who's standing" colouring, by how many 2026 candidates have
+ * been announced for the seat (withdrawn ones not counted — they aren't
+ * standing).
+ *
+ * Cut points from the real distribution, not picked round: when this was
+ * written 361 approved candidates covered 59 of 72 electorates, 2 to 16 a
+ * seat, median about 6. Four tiers split that into 13 / 13 / 25 / 21 seats.
+ *
+ * A warm sequential scale (tan to espresso), not a hue per tier: this is a
+ * quantity, and light-to-dark reads as "more" without a key. Brown is also the
+ * one family on this site that isn't a party colour (§1.6) — any blue would
+ * read as National, green as the Greens.
+ *
+ * "None announced yet" is a fact about OUR records, not about the seat —
+ * nominations are still open — so it wears the same neutral grey the margin
+ * view uses for "Result pending", and the legend names it plainly (§1.5).
+ */
+const COUNT_TIERS: { key: string; label: string; min: number; color: string }[] = [
+  { key: 'many', label: '7 or more standing', min: 7, color: '#6e4220' },
+  { key: 'mid',  label: '5–6 standing',       min: 5, color: '#b07a45' },
+  { key: 'few',  label: '1–4 standing',       min: 1, color: '#d9b98f' },
+]
+const NONE_YET = { key: 'none', label: 'None announced yet', color: '#d8d5cf' }
+
+function countTier(n: number) {
+  return COUNT_TIERS.find((t) => n >= t.min) ?? NONE_YET
+}
+
+export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
+  candidatesBySlug?: Record<string, Candidate2026[]>
+  /**
+   * Which colouring the map opens on. /battlegrounds keeps 'margin' — that
+   * page is about how close 2023 was. The Election Centre opens on
+   * 'candidates' by request, with a toggle to switch.
+   */
+  defaultView?: MapView
+} = {}) {
+  const [view, setView] = React.useState<MapView>(defaultView)
   const [layer, setLayer] = React.useState<Roll>('general')
   const [sets, setSets] = React.useState<Record<Roll, FeatureCollection | null>>({ general: null, maori: null })
   const [status, setStatus] = React.useState<'loading' | 'ready' | 'error'>('loading')
@@ -106,6 +147,18 @@ export function BattlegroundsMap({ candidatesBySlug }: { candidatesBySlug?: Reco
 
   const switchLayer = (l: Roll) => { setLayer(l); setSelected(null); setStatus(sets[l] ? 'ready' : 'loading') }
 
+  // Fill by announced-candidate count. Keyed the same way the panel looks
+  // candidates up (normalizeElectorateKey), so the colour and the list a tap
+  // opens can't disagree about a seat. A boundary with no electorate record
+  // returns null and gets the map's neutral fill, as in the margin view.
+  const candidateColorByName = React.useCallback((name: string): string | null => {
+    const key = normalizeElectorateKey(name)
+    if (!ELECTORATES[key]) return null
+    const n = (candidatesBySlug?.[key] ?? []).filter((c) => !c.withdrawn).length
+    return countTier(n).color
+  }, [candidatesBySlug])
+  const colorOf = view === 'margin' ? marginColorByName : candidateColorByName
+
   // On narrow screens the panel stacks BELOW the map, so a tap can look like
   // nothing happened. Scroll the selected MP panel into view when a seat is picked.
   const panelRef = React.useRef<HTMLDivElement>(null)
@@ -124,6 +177,28 @@ export function BattlegroundsMap({ candidatesBySlug }: { candidatesBySlug?: Reco
           land, so view one at a time") is inside <RollPills>'s own (i), where
           /map gets it too. The same control was explained on one page and left
           bare on the other (§1.2, §1.4). */}
+      {/* What the map is coloured by — by request, a toggle above the map.
+          Same §2.2 pill treatment as every other pill row on the site
+          (lit = #efece5 on INK), and the §3.1 hit-area/pill split. Its own
+          row, above the roll pills: they answer different questions (what
+          the colours mean vs which roll you're looking at). */}
+      <div role="group" aria-label="Colour the map by" style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
+        {([['candidates', 'Who’s standing'], ['margin', '2023 margin']] as [MapView, string][]).map(([key, label]) => {
+          const on = view === key
+          return (
+            <button key={key} type="button" onClick={() => setView(key)} aria-pressed={on}
+              style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}>
+              <span className="status-pill" style={{
+                display: 'inline-flex', alignItems: 'center', borderRadius: 999,
+                background: on ? '#efece5' : '#fff', border: `2px solid ${on ? INK : BORDER}`,
+                color: INK, fontFamily: MANROPE, fontWeight: 800, whiteSpace: 'nowrap',
+                transition: 'background-color .2s ease, border-color .2s ease',
+              }}>{label}</span>
+            </button>
+          )
+        })}
+      </div>
+
       <div style={{ marginBottom: 14 }}>
         <RollPills value={layer} onChange={switchLayer} accent={ACCENT} />
       </div>
@@ -133,13 +208,30 @@ export function BattlegroundsMap({ candidatesBySlug }: { candidatesBySlug?: Reco
             zoom-proxy can't smear/ghost adjacent content while the page scrolls. */}
         <div className="bg-map-box" style={{ position: 'relative', borderRadius: 18, overflow: 'hidden', border: `1px solid ${BORDER}`, background: '#eaf2f7', transform: 'translateZ(0)', isolation: 'isolate' }}>
           {status === 'loading' && <MapLoading />}
-          {status === 'ready' && data && <ElectorateMap key={layer} data={data} selectedKey={selectedKey} onSelect={setSelected} colorOf={marginColorByName} />}
+          {status === 'ready' && data && <ElectorateMap key={layer} data={data} selectedKey={selectedKey} onSelect={setSelected} colorOf={colorOf} colorKey={view} />}
           {status === 'error' && <MapUnavailable message={`${layer === 'maori' ? 'Māori' : 'General'} boundaries could not be loaded.`} />}
 
           {/* Legend. left/bottom live in MAP_LEGEND_CSS so the media query can
               clear the Leaflet attribution strip; inline values would beat it. */}
           <style dangerouslySetInnerHTML={{ __html: MAP_LEGEND_CSS }} />
-          {status === 'ready' && data && (
+          {/* The key follows the colouring. The "2023 margin" key only shows in
+              the margin view now — by request it isn't on the map by default. */}
+          {status === 'ready' && data && view === 'candidates' && (
+            <div className="map-legend" style={{ position: 'absolute', zIndex: 1000, background: 'rgba(255,255,255,.95)', border: `1px solid ${BORDER}`, borderRadius: 12, boxShadow: '0 2px 8px rgba(12,14,18,.12)' }}>
+              <div className="map-legend-title" style={{ fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>2026 candidates</div>
+              <div className="map-legend-items">
+                {COUNT_TIERS.map((t) => (
+                  <div key={t.key} className="map-legend-row" style={{ display: 'flex', alignItems: 'center', color: SECONDARY, fontFamily: MANROPE }}>
+                    <span className="map-legend-dot" style={{ borderRadius: 3, background: t.color, flexShrink: 0 }} />{t.label}
+                  </div>
+                ))}
+                <div className="map-legend-row map-legend-note" style={{ display: 'flex', alignItems: 'center', color: TERTIARY, fontFamily: MANROPE, borderTop: `1px solid ${BORDER}` }}>
+                  <span className="map-legend-dot" style={{ borderRadius: 3, background: NONE_YET.color, flexShrink: 0 }} />{NONE_YET.label}
+                </div>
+              </div>
+            </div>
+          )}
+          {status === 'ready' && data && view === 'margin' && (
             <div className="map-legend" style={{ position: 'absolute', zIndex: 1000, background: 'rgba(255,255,255,.95)', border: `1px solid ${BORDER}`, borderRadius: 12, boxShadow: '0 2px 8px rgba(12,14,18,.12)' }}>
               <div className="map-legend-title" style={{ fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: TERTIARY, fontFamily: MANROPE }}>2023 margin</div>
               <div className="map-legend-items">

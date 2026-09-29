@@ -16,7 +16,7 @@
  */
 
 import { useState } from 'react'
-import { SeatChamber, SeatModeTabs, type Mode, type SeatEntry } from './seat-chamber'
+import { SeatChamber, type Mode, type SeatEntry } from './seat-chamber'
 import type { PartyResult } from '@/constants/elections-data'
 
 export function SeatsWithTabs(props: {
@@ -29,13 +29,15 @@ export function SeatsWithTabs(props: {
   asAt: string
   pickScrollsToIdPrefix?: string
 }) {
+  // The pills (If polls held / Who could govern) were removed by request, so
+  // the chamber is fixed on the poll projection: there is no control left to
+  // change `mode`, and "Who could govern" is no longer reachable from this
+  // page. SeatModeTabs is still exported from seat-chamber.tsx if it's wanted
+  // back — render it here above the section, as it was.
   const [mode, setMode] = useState<Mode>('polls')
   return (
-    <>
-      <SeatModeTabs mode={mode} onChange={setMode} />
-      <section id="seats" style={{ scrollMarginTop: 80 }}>
-        <SeatChamber {...props} mode={mode} onModeChange={setMode} hideTabs />
-      </section>
-    </>
+    <section id="seats" style={{ scrollMarginTop: 80 }}>
+      <SeatChamber {...props} mode={mode} onModeChange={setMode} hideTabs />
+    </section>
   )
 }

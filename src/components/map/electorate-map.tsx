@@ -26,6 +26,14 @@ interface ElectorateMapProps {
   onSelect:    (name: string) => void
   /** Optional custom fill per electorate name (e.g. by marginality). Falls back to party colour. */
   colorOf?:    (name: string) => string | null
+  /**
+   * Changes when `colorOf` switches to a different colouring. The polygon
+   * layer is re-keyed on this so the new fills actually paint — react-leaflet
+   * applies `style` at creation, and a new function identity alone doesn't
+   * re-run it. Re-keys the GeoJSON layer only, not the map, so zoom and pan
+   * survive a switch. Callers with one fixed colouring can ignore it.
+   */
+  colorKey?:   string
   /** Zoom on scroll wheel. Off for inline embeds so the wheel scrolls the page, not the map. */
   scrollZoom?: boolean
   /**
@@ -61,7 +69,7 @@ function FitBounds() {
 
 const NEUTRAL_FILL = '#d8d5cf'   // electorate with no verified holder yet
 
-export default function ElectorateMap({ data, selectedKey, onSelect, colorOf, scrollZoom = true, fitToData = false }: ElectorateMapProps) {
+export default function ElectorateMap({ data, selectedKey, onSelect, colorOf, colorKey, scrollZoom = true, fitToData = false }: ElectorateMapProps) {
 
   // Style each electorate polygon by holding party (or custom colorOf) + selection state
   function styleFeature(feature?: Feature<Geometry>): PathOptions {
@@ -133,7 +141,7 @@ export default function ElectorateMap({ data, selectedKey, onSelect, colorOf, sc
       />
       {/* Re-key on selection so styles recompute */}
       <GeoJSON
-        key={`electorates-${colorOf ? 'm' : 'p'}-${selectedKey ?? 'none'}-${data.features.length}`}
+        key={`electorates-${colorOf ? 'm' : 'p'}-${colorKey ?? ''}-${selectedKey ?? 'none'}-${data.features.length}`}
         data={data}
         style={styleFeature as (f?: Feature) => PathOptions}
         onEachFeature={onEachFeature}

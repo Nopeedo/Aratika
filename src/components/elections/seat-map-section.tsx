@@ -38,13 +38,17 @@ export function SeatMapSection({ candidatesBySlug }: { candidatesBySlug?: Record
           next to it, which was sized for the old 15.5px caption. */}
       <div style={{ marginBottom: 12 }}>
         <h2 style={{ fontSize: PEER_HEADING, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.15 }}>The area you vote in</h2>
+        {/* "Shaded by how close 2023 was" stopped being true of the default
+            view when the map started opening on candidates — the sentence
+            now describes what's on screen, and the toggle above the map
+            names the other view itself. */}
         <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.45 }}>
-          All 72 electorates, shaded by how close 2023 was. Tap yours for who won it, who is standing now, and the full
-          breakdown. Tap an area on the map to see who is running for local MP.
+          All 72 electorates, shaded by how many candidates are standing. Tap an area on the map to see who is running
+          for local MP.
         </p>
       </div>
 
-      <BattlegroundsMap candidatesBySlug={candidatesBySlug} />
+      <BattlegroundsMap candidatesBySlug={candidatesBySlug} defaultView="candidates" />
     </div>
   )
 }
