@@ -513,7 +513,11 @@ function SeatCard({ name, slug, info, tier, mp, candidates, only2023 = false }: 
             padding: '10px 16px', fontSize: 13.5, fontWeight: 800, fontFamily: MANROPE, whiteSpace: 'nowrap',
           }}>
             <MapPin style={{ width: 14, height: 14, flexShrink: 0 }} />
-            Open this seat <ArrowRight style={{ width: 15, height: 15, flexShrink: 0 }} strokeWidth={3} />
+            {/* "More on {area}", by request: "Open this seat" didn't say
+                what opens. The name can be long (Taranaki-King Country), so
+                it truncates rather than pushing the arrow off the pill. */}
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>More on {name}</span>
+            <ArrowRight style={{ width: 15, height: 15, flexShrink: 0 }} strokeWidth={3} />
           </span>
         </Link>
       )}

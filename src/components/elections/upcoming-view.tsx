@@ -43,11 +43,10 @@
  * typed.
  */
 
+import Link from 'next/link'
 import type { ElectionData } from '@/constants/elections-data'
 import { BASELINE_ELECTION } from '@/constants/elections-data'
 import { getDebateVideos, getVideos } from '@/lib/news/videos'
-import { getBattlegrounds } from '@/lib/battlegrounds'
-import { MP_PROFILES } from '@/constants/mps-data'
 import {
   pollOfPolls, pollOfPollsOthers, seatProjection, pollsAsAt, POLL_PARTIES, PREFERRED_PM,
   TURNOUT_2023, ENROLMENT_2023, PARTICIPATION_SOURCE, POLLS_SOURCE,
@@ -61,14 +60,12 @@ import { PollSnapshot } from './poll-snapshot'
 import { SeatsWithTabs } from './seats-with-tabs'
 import { TwoVotes } from './two-votes'
 import { PartiesContesting } from './parties-contesting'
-import { ClosestRaces, type ClosestRace } from './closest-races'
 import { SeatMapSection } from './seat-map-section'
 import { VideoSection } from '@/components/news/video-section'
 import { ZoneHead } from './zone-head'
 import { InfoHeading, InfoText } from '@/components/ui/info-button'
 import { WOVEN_PAGE } from '@/constants/theme'
 import { PARTY_COLORS } from '@/constants/parties'
-import type { PartySlug } from '@/types'
 
 // Warm palette carried over from the homepage/hub so the Election Centre reads
 // as the same product rather than a separate tool: espresso headings, warm body
@@ -96,32 +93,9 @@ const ACCENT = {
  *  count under the heading. */
 const VIDEO_COUNT = 6
 
-/** The closest races, flattened to serialisable values here so the tiles stay a
- *  client component without pulling ELECTORATES and MP_PROFILES into the
- *  bundle. `unknown` tier and a missing majority are filtered out: a seat with
- *  no verified 2023 margin cannot be called one of the closest. */
-function closestRaces(): ClosestRace[] {
-  return getBattlegrounds()
-    .filter((b) => b.tier.key !== 'unknown' && typeof b.info.majority === 'number')
-    .slice(0, 5)
-    .map((b, i) => {
-      const slug = b.info.mpSlug || Object.values(MP_PROFILES).find((mp) => mp.name === b.info.mpName)?.slug
-      return {
-        slug: b.slug,
-        name: b.info.name,
-        rank: i + 1,
-        tierLabel: b.tier.label,
-        tierColor: b.tier.color,
-        party: (b.info.party as PartySlug | null) ?? null,
-        mpName: b.info.mpName ?? null,
-        mpPhoto: slug ? MP_PROFILES[slug]?.photo : undefined,
-        majority: b.info.majority as number,
-        maori: b.info.type === 'maori',
-      }
-    })
-}
-
-export async function UpcomingView({ e }: { e: ElectionData }) {
+// `e` is still passed by the route; nothing here reads it since Closest
+// races (the last thing to use e.year) came off the page.
+export async function UpcomingView(_props: { e: ElectionData }) {
   const base = BASELINE_ELECTION
   const debates = await getDebateVideos(VIDEO_COUNT)
   const railVideos = debates.length > 0 ? debates : await getVideos(VIDEO_COUNT)
@@ -140,7 +114,6 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
   const asAt = pollsAsAt(polls)
   // NZ local date — the calendar's deadlines are NZ deadlines.
   const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Pacific/Auckland' })
-  const races = closestRaces()
   // The date the party list stops changing. It was claimed in prose ("the final
   // list is confirmed when nominations close") with no date against it, on a
   // page that already reads the file the date is in.
@@ -189,7 +162,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               note={<>
                 You get two votes on the same paper: one for a party, which decides how many seats it gets, and one for
                 your local MP.{' '}
-                <a href="/learn/mmp" style={{ color: ACCENT.vote, fontWeight: 800, textDecoration: 'none', whiteSpace: 'nowrap' }}>How MMP works</a>
+                <Link href="/learn/mmp" style={{ color: ACCENT.vote, fontWeight: 800, textDecoration: 'none', whiteSpace: 'nowrap' }}>How MMP works</Link>
               </>} />
             <TwoVotes />
           </section>
@@ -287,7 +260,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
           </section>
           </div>
 
-          {/* ── CLOSEST RACES ───────────────────────────────────────────────── */}
+          {/* ── THE AREA YOU VOTE IN ───────────────────────────────────────── */}
           <section id="your-seat" style={{ scrollMarginTop: 80 }}>
             {/* The map, no longer in its own closed accordion card — by
                 request, its heading, description and the map itself sit
@@ -296,23 +269,10 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                 peer-sized heading ("The area you vote in"), so nothing here
                 is left without one. */}
             <SeatMapSection candidatesBySlug={candidatesBySlug} />
-            <div style={{ marginTop: 26 }}>
-              <ZoneHead eyebrow="Your electorate" title="Closest races" accent={ACCENT.seat}
-                infoLabel="Why these five seats">
-                <InfoHeading accent={ACCENT.seat}>Why these five</InfoHeading>
-                <InfoText>
-                  Where {base.year} was closest is where {e.year} will likely be fought hardest. These were the five
-                  tightest results of the 72 electorates, by winning margin.
-                </InfoText>
-                <InfoHeading accent={ACCENT.seat}>What the labels mean</InfoHeading>
-                <InfoText>
-                  Ultra-marginal is a {base.year} majority under 1,500 votes, marginal under 3,500, competitive under
-                  7,000. Every other electorate is on the full map, coloured on the same scale, down to light green for the
-                  safest.
-                </InfoText>
-              </ZoneHead>
-              <ClosestRaces races={races} year={base.year} />
-            </div>
+            {/* "Closest races" (the five tightest 2023 seats) is gone, by
+                request. The component is intact in closest-races.tsx; the
+                map above still shades every seat and its 2023 view shows
+                the margins. */}
           </section>
 
           {/* ── LEADERS & THE PRESS ──────────────────────────────────────────
