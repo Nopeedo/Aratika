@@ -55,7 +55,6 @@ const VOTES = [
     // "1." and "2." says the two happen on the same paper, in this order,
     // and "you vote for" is what a reader actually does at the ballot box.
     title: '1. You vote for a party',
-    badge: 'Does the heavy lifting',
     accent: JADE,
     light: '#ecfdf5',
     /* "120 seats", not "~120". The page says 120 in two other places (the seat
@@ -74,7 +73,6 @@ const VOTES = [
   {
     key: 'electorate',
     title: '2. You vote for your local MP',
-    badge: null,
     accent: '#2563eb',
     light: '#eff6ff',
     body: (
@@ -137,9 +135,9 @@ export function TwoVotes() {
                 transition: 'border-width .2s ease', fontFamily: MANROPE,
               }}
             >
-              <span style={{ display: 'block', fontSize: 9.5, fontWeight: 800, color: v.accent, fontFamily: MANROPE, marginBottom: 2 }}>
-                {v.badge ?? 'One local MP'}
-              </span>
+              {/* The small caption over each title ("Does the heavy lifting" /
+                  "One local MP") is gone, by request: the numbered titles say
+                  what each vote is on their own now. */}
               <span style={{ display: 'block', fontSize: 12.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.25 }}>{v.title}</span>
               <ChevronDown
                 style={{

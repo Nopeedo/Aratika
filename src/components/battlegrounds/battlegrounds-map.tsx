@@ -70,10 +70,13 @@ export type MapView = 'candidates' | 'margin'
  * written 361 approved candidates covered 59 of 72 electorates, 2 to 16 a
  * seat, median about 6. Four tiers split that into 13 / 13 / 25 / 21 seats.
  *
- * A warm sequential scale (tan to espresso), not a hue per tier: this is a
- * quantity, and light-to-dark reads as "more" without a key. Brown is also the
- * one family on this site that isn't a party colour (§1.6) — any blue would
- * read as National, green as the Greens.
+ * One hue, light to dark, not a hue per tier: this is a quantity, and
+ * light-to-dark reads as "more" without a key. The hue is the logo's own
+ * "tika" green (JADE, #1F8A4C), by request — the darkest tier IS that green,
+ * the lighter two are tints of it — so the map reads as the site's colour
+ * rather than a new one. It was a tan-to-espresso scale first, picked because
+ * brown is the one family that isn't a party's; JADE is also the Green
+ * Party's colour, so this trades that §1.6 separation for brand consistency.
  *
  * "None announced yet" is a fact about OUR records, not about the seat —
  * nominations are still open — so it wears the same neutral grey the margin
@@ -83,9 +86,9 @@ const COUNT_TIERS: { key: string; label: string; min: number; color: string }[] 
   // Just the numbers, by request: the key's title ("Number of candidates
   // running") already says what's being counted, and "standing" on every row
   // wrapped "7 or more standing" onto two lines on a phone.
-  { key: 'many', label: '7 or more', min: 7, color: '#6e4220' },
-  { key: 'mid',  label: '5–6',       min: 5, color: '#b07a45' },
-  { key: 'few',  label: '1–4',       min: 1, color: '#d9b98f' },
+  { key: 'many', label: '7 or more', min: 7, color: '#1F8A4C' },
+  { key: 'mid',  label: '5–6',       min: 5, color: '#6fb68a' },
+  { key: 'few',  label: '1–4',       min: 1, color: '#bfe0cb' },
 ]
 const NONE_YET = { key: 'none', label: 'None announced yet', color: '#d8d5cf' }
 
