@@ -13,6 +13,7 @@ import { NavHistory } from '@/components/ui/nav-history'
 import { RouteProgress } from '@/components/ui/route-progress'
 import { OrganizationSchema } from '@/components/seo/organization-schema'
 import { Analytics } from '@vercel/analytics/next'
+import { PageViewTracker } from '@/components/analytics/page-view-tracker'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { SITE } from '@/constants/site'
 import './globals.css'
@@ -139,6 +140,8 @@ export default function RootLayout({
         <SiteTail />
         <Footer />
         <Analytics />
+        {/* The admin's own page-view count, read on /editor/analytics. */}
+        <PageViewTracker />
         <SpeedInsights />
       </body>
     </html>

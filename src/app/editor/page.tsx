@@ -5,7 +5,7 @@
  */
 
 import Link from 'next/link'
-import { Lock, BarChart3 } from 'lucide-react'
+import { Lock, BarChart3, LineChart } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getEditor } from '@/lib/editor/auth'
 import { ReviewList, type PendingItem } from '@/components/editor/review-list'
@@ -28,6 +28,9 @@ export default async function EditorPage() {
           <div style={{ marginTop: 16 }}>
             <Link href="/editor/polls" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 15px', borderRadius: 10, border: `1px solid ${BORDER}`, background: '#fff', color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none' }}>
               <BarChart3 style={{ width: 15, height: 15, color: JADE }} /> Enter polls
+            </Link>
+            <Link href="/editor/analytics" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '9px 15px', borderRadius: 10, border: `1px solid ${BORDER}`, background: '#fff', color: INK, fontSize: 13.5, fontWeight: 700, fontFamily: MANROPE, textDecoration: 'none', marginLeft: 8 }}>
+              <LineChart style={{ width: 15, height: 15, color: JADE }} /> Site analytics
             </Link>
           </div>
         </div>
