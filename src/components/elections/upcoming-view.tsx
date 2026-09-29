@@ -239,7 +239,31 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                 party. Politika reports polls. It does not predict the result.
               </InfoText>
             </ZoneHead>
-            <PartiesContesting pop={pop} asAt={asAt} />
+            <PartiesContesting pop={pop} asAt={asAt}>
+            {/* ── THE SEATS — one chamber, three ways to read it ───────────────── */}
+            {/* Was two sections ~1600px apart, both drawing the same hemicycle:
+                the 2023 Parliament here, the coalition builder there. The reader's
+                questions run in sequence — what is there, what would the polls
+                make it, what could govern — so they are tabs on one chart now,
+                and comparing them is a tap instead of a scroll. */}
+            <section id="seats" style={{ scrollMarginTop: 80 }}>
+              <SeatChamber
+                elected={base.results!}
+                electedTotal={base.totalSeats!}
+                electedYear={base.year}
+                electedSlug={base.slug}
+                projection={projection}
+                projectionTotal={PROJECTION_SEATS}
+                asAt={asAt}
+                /* §1.4: the seat dots are a control on the homepage and were inert
+                   here. A string rather than a handler, because this is a server
+                   component and a function cannot cross that boundary — tapping a
+                   seat scrolls to that party's row in #parties, which is the pick
+                   this page has to offer. */
+                pickScrollsToIdPrefix="party-row-"
+              />
+            </section>
+            </PartiesContesting>
             {/* §2.6's exception, and the same move the bills block made: the way
                 out of this block is a small outlined chip INSIDE it rather than
                 a signpost of its own, because the detail behind it belongs to
@@ -260,30 +284,6 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
             </div>
           </section>
           </div>
-
-          {/* ── THE SEATS — one chamber, three ways to read it ───────────────── */}
-          {/* Was two sections ~1600px apart, both drawing the same hemicycle:
-              the 2023 Parliament here, the coalition builder there. The reader's
-              questions run in sequence — what is there, what would the polls
-              make it, what could govern — so they are tabs on one chart now,
-              and comparing them is a tap instead of a scroll. */}
-          <section id="seats" style={{ scrollMarginTop: 80 }}>
-            <SeatChamber
-              elected={base.results!}
-              electedTotal={base.totalSeats!}
-              electedYear={base.year}
-              electedSlug={base.slug}
-              projection={projection}
-              projectionTotal={PROJECTION_SEATS}
-              asAt={asAt}
-              /* §1.4: the seat dots are a control on the homepage and were inert
-                 here. A string rather than a handler, because this is a server
-                 component and a function cannot cross that boundary — tapping a
-                 seat scrolls to that party's row in #parties, which is the pick
-                 this page has to offer. */
-              pickScrollsToIdPrefix="party-row-"
-            />
-          </section>
 
           {/* ── CLOSEST RACES ───────────────────────────────────────────────── */}
           <section id="your-seat" style={{ scrollMarginTop: 80 }}>

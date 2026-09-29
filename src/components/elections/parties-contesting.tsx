@@ -56,7 +56,7 @@
  * inside the track, or say plainly that there isn't one.
  */
 
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { ChevronDown } from 'lucide-react'
 import { PARTY_COLORS, PARTY_NAMES, CURRENT_SEATS, PARLIAMENTARY_PARTIES, NON_PARLIAMENTARY_CONTESTING } from '@/constants/parties'
@@ -143,12 +143,22 @@ function hasAnyFigure(slug: PartySlug, pctBySlug: Map<PartySlug, number>): boole
   return pctBySlug.has(slug) || MINOR_PARTY_READINGS[slug] !== undefined
 }
 
-export function PartiesContesting({ pop, asAt }: {
+export function PartiesContesting({ pop, asAt, children }: {
   pop: { slug: PartySlug; pct: number }[]
   /** The date the averages are current to. It used to be printed twice
    *  elsewhere and nowhere here, which is where the seventeen bars actually
    *  are. §4: say the date on anything that ages. */
   asAt?: string
+  /**
+   * The seats section, by request — moved in here from its own standalone
+   * spot on the page, and gated on the SAME "Show N more" state this
+   * component already had, rather than always visible. Passed as children
+   * (not built here) because it needs props — elected results, the poll
+   * projection, asAt, pickScrollsToIdPrefix — that already live in
+   * upcoming-view.tsx and would otherwise have to be threaded through this
+   * component just to reach SeatChamber.
+   */
+  children?: ReactNode
 }) {
   const pctBySlug = new Map(pop.map((p) => [p.slug, p.pct]))
   const [group, setGroup] = useState<Group>('all')
@@ -328,6 +338,12 @@ export function PartiesContesting({ pop, asAt }: {
           the ZoneHead's, in upcoming-view.tsx — "Reading the bars" now
           states the 5% threshold directly, and "What a poll is not"
           already covered the Others/not-polled explanation. */}
+
+      {/* The seats section, revealed with everything else once the list is
+          expanded — !collapsed, not showAll, so it also shows when there
+          was nothing to fold in the first place (fewer than VISIBLE
+          parties matching the current filter). */}
+      {!collapsed && children}
     </div>
   )
 }

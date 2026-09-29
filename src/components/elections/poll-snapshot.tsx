@@ -90,9 +90,13 @@ export function PollSnapshot({
           {/* Individual polls */}
           <div>
             <div style={{ fontSize: 13, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 2 }}>The polls behind the average</div>
+            {/* Rewritten as a definition, by request: what the term "poll of
+                polls" actually means, stated once and plainly, rather than a
+                sentence that used the term without explaining it. */}
             <div style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginBottom: 8, lineHeight: 1.5 }}>
-              Poll of polls, an average of the latest poll from each company, as at {asAt}. It moves every time a new
-              poll is published.
+              <b style={{ color: SECONDARY }}>Poll of polls:</b> this site&rsquo;s own average of every pollster&rsquo;s
+              most recent survey, one figure per party, so no single company&rsquo;s result dominates the picture.
+              As at {asAt}, updated whenever a new poll is published.
               {othersPct != null && <> Others sits at {othersPct}%.</>}
             </div>
             {/* §3.5's second-best answer. The table is 540px of eight columns
