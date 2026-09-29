@@ -3,7 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu, X, ChevronDown, Map, User, LogOut, Crown, ListChecks, Settings } from 'lucide-react'
+import { Menu, X, ChevronDown, Map, User, LogOut, Crown, ListChecks, Settings, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { Button } from '@/components/ui/button'
 import { visibleNav, type NavItem } from '@/constants/nav-links'
@@ -218,6 +218,26 @@ export function Navbar() {
                 {item.label}
               </Link>
             ),
+          )}
+
+          {/* Donate, under Learn, by request: the footer's button, same rule.
+              Hidden until SITE.donateUrl is set; opens Onebyone's payment page
+              in a new tab, and says who processes it. */}
+          {SITE.donateUrl && (
+            <div className="px-3 pt-2 pb-1">
+              <a
+                href={SITE.donateUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1F8A4C] hover:bg-[#18703d] text-white text-sm font-semibold transition-colors"
+              >
+                <Heart className="size-4" /> Donate to Politika
+              </a>
+              <p className="text-xs text-[#9a9186] mt-2 leading-relaxed">
+                Payments are processed by Onebyone Project on Politika&rsquo;s behalf.
+              </p>
+            </div>
           )}
         </nav>
 
