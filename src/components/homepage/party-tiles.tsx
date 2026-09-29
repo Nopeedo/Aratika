@@ -332,7 +332,9 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
              breakpoint can only reach them with !important — the alternative
              was editing each call site and losing the phone sizes, which are
              right as they are. Roughly a fifth off the largest things. */
-          .hp-h2 { font-size: 23px !important; }
+          /* .hp-h2 (23px here) is gone, by request: it shrank only "What's
+             being reported on {party}" and "Explore Politika's tools", so
+             on desktop they sat at 23px between section titles at 32px. */
           .hp-partyname { font-size: 36px !important; }
           .hp-seatslabel { font-size: 17px !important; }
           .hp-blocklabel { font-size: 15px !important; }
