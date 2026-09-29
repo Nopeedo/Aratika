@@ -24,6 +24,7 @@ import { PARTY_PROFILES } from '@/constants/parties-data'
 import type { Bookmark as BookmarkType } from '@/hooks/use-bookmarks'
 import type { PartySlug } from '@/types'
 import { BORDER, INK, JADE, JADE_DARK, MANROPE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { isEnabled } from '@/constants/features'
 
 const ELECTION_DATE = new Date('2026-11-07T00:00:00+13:00') // Sat 7 Nov 2026, NZ
 
@@ -124,7 +125,8 @@ export default async function HubPage() {
     { href: '/policies', title: 'Compare parties', desc: 'Every party, side by side on the issues.', Icon: Scale, tint: '#f5f3ff', ink: '#6d28d9' },
     { href: '/elections/2026', title: 'Seats to watch', desc: 'The marginal seats, on the 2026 Election Centre map.', Icon: Swords, tint: '#fff1f1', ink: '#b91c1c', stat: `${ultra} ultra-marginal` },
     { href: '/bills', title: 'The Record', desc: 'Bills and what this Parliament has done.', Icon: FileText, tint: '#fdf3ff', ink: '#a21caf', stat: submissions > 0 ? `${submissions} open for submissions` : undefined },
-    { href: '/budget', title: 'Budget 2026', desc: 'Where the Government is spending.', Icon: Wallet, tint: '#fff6ed', ink: '#c2410c' },
+    // Budget 2026 is gated (features.ts), so its tile only shows when it's on.
+    ...(isEnabled('budget') ? [{ href: '/budget', title: 'Budget 2026', desc: 'Where the Government is spending.', Icon: Wallet, tint: '#fff6ed', ink: '#c2410c' }] : []),
     { href: '/news', title: 'Latest', desc: 'Election news and video.', Icon: Newspaper, tint: '#f0fdfa', ink: '#0f766e' },
     { href: '/learn', title: 'Learn the basics', desc: 'How voting and Parliament work.', Icon: GraduationCap, tint: '#fffbeb', ink: '#b45309' },
   ]

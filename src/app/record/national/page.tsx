@@ -24,6 +24,7 @@ import { BUDGET_META } from '@/constants/budget-2026'
 import { ECONOMIC_DATA, type EconSeries } from '@/constants/economic-data'
 import { IndicatorChart } from '@/components/record/indicator-chart'
 import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { isEnabled } from '@/constants/features'
 
 export const metadata: Metadata = {
   title: 'National: Accountability Record (private)',
@@ -211,9 +212,12 @@ export default async function NationalRecordPage() {
             })}
           </div>
 
-          <Link href="/budget" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, marginTop: 16, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-            Full Budget 2026 breakdown <ArrowUpRight style={{ width: 15, height: 15 }} />
-          </Link>
+          {/* /budget is gated (features.ts); no link to a page that isn't on. */}
+          {isEnabled('budget') && (
+            <Link href="/budget" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, marginTop: 16, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
+              Full Budget 2026 breakdown <ArrowUpRight style={{ width: 15, height: 15 }} />
+            </Link>
+          )}
         </div>
 
         {/* ── Priorities ── */}

@@ -36,7 +36,7 @@ export const LIVE_RESULTS_ENABLED = false
 export const FEATURE_PHASE: Record<string, Phase> = {
   // Phase 1 — Election Central (dashboard/command centre ships now as the centrepiece)
   elections: 1, battlegrounds: 1, map: 1, parties: 1, mps: 1, policies: 1,
-  compare: 1, budget: 1, learn: 1, onboarding: 1, glossary: 1, about: 1, contact: 1, account: 1,
+  compare: 1, learn: 1, onboarding: 1, glossary: 1, about: 1, contact: 1, account: 1,
   dashboard: 1,
   // Bills tracker + plain-language readers — published in Phase 1.
   bills: 1, legislation: 1,
@@ -57,6 +57,10 @@ export const FEATURE_PHASE: Record<string, Phase> = {
   'take-action': 1,
   // Phase 2 — Accountability
   parliament: 2, premium: 2,
+  // Budget 2026 — hidden and disabled by request (was Phase 1): out of the
+  // menu, footer and explore rail, and /budget goes to /coming-soon. Nothing
+  // on the page was removed; set this back to 1 to bring it back.
+  budget: 2,
   // Phase 3 — Engage & scale
   companion: 3, polls: 3,
 }
@@ -73,6 +77,7 @@ export function isEnabled(feature: string): boolean {
 // feature is gated. Auth/account/editor/onboarding routes are never listed here.
 export const GATED_ROUTES: { prefix: string; feature: string }[] = [
   { prefix: '/parliament', feature: 'parliament' },
+  { prefix: '/budget', feature: 'budget' },
   { prefix: '/bills', feature: 'bills' },
   { prefix: '/legislation', feature: 'legislation' },
   { prefix: '/take-action', feature: 'take-action' },
