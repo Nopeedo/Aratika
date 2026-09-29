@@ -6,13 +6,16 @@ import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X, ChevronDown, Map, User, LogOut, Crown, ListChecks, Settings, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
 import { Button } from '@/components/ui/button'
-import { visibleNav, type NavItem } from '@/constants/nav-links'
+import { visibleNav, desktopNav, type NavItem } from '@/constants/nav-links'
 import { PREMIUM_ENABLED } from '@/constants/features'
 import { SITE } from '@/constants/site'
 import { useUser } from '@/hooks/use-user'
 import { createClient } from '@/lib/supabase/client'
 
 const NAV = visibleNav()
+// The desktop bar: the same items, with MPs directory, Find your local MP
+// and Learn under "More" (nav-links.ts).
+const DESKTOP_NAV = desktopNav()
 const cleanHref = (href: string) => href.split('#')[0]
 
 // ─── Politika Logo ─────────────────────────────────────────────────────────────
@@ -107,7 +110,21 @@ export function Navbar() {
 
           {/* Desktop Nav */}
           <nav className="hidden xl:flex items-center gap-1" aria-label="Main navigation">
-            {NAV.map((item) =>
+            {/* Home first, by request: the same /?full=1 target as the phone
+                menu's "Home page" (a returning visitor on / is redirected to
+                /hub, so the flag keeps this a real way back to the front). */}
+            <Link
+              href="/?full=1"
+              className={cn(
+                'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                pathname === '/'
+                  ? 'text-brand-jade bg-brand-jade-subtle'
+                  : 'text-muted hover:text-foreground hover:bg-surface',
+              )}
+            >
+              Home
+            </Link>
+            {DESKTOP_NAV.map((item) =>
               item.children ? (
                 <DesktopGroup key={item.label} item={item} active={groupActive(item)} isActive={isActive} />
               ) : (

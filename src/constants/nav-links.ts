@@ -98,6 +98,29 @@ export function visibleNav(): NavItem[] {
   return out
 }
 
+/**
+ * The desktop bar's "More" dropdown, by request, so the bar isn't one long
+ * row: these three sit behind it, in this order. The phone menu is a list with
+ * room for everything and keeps them flat (visibleNav()).
+ */
+const DESKTOP_MORE_HREFS = ['/mps', '/map', '/learn']
+
+export function desktopNav(): NavItem[] {
+  const all = visibleNav()
+  const more = all.filter((i) => !i.children && i.href && DESKTOP_MORE_HREFS.includes(i.href))
+  const rest = all.filter((i) => !more.includes(i))
+  if (more.length === 0) return rest
+  return [
+    ...rest,
+    {
+      label: 'More',
+      description: 'MPs, your local MP and how Parliament works',
+      feature: 'more',
+      children: more.map((i) => ({ label: i.label, href: i.href!, description: i.description, feature: i.feature })),
+    },
+  ]
+}
+
 interface FooterLink { label: string; href: string; feature: string }
 
 // `learn` and `explore` are no longer rendered: the footer dropped both
