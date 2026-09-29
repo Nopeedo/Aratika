@@ -50,7 +50,11 @@ import { BORDER, INK, JADE, MANROPE, SECONDARY } from '@/constants/theme'
 const VOTES = [
   {
     key: 'party',
-    title: 'Your party vote',
+    // Numbered and phrased as an action, by request — was "Your party
+    // vote" / "Your electorate vote", a noun each with no sense of order.
+    // "1." and "2." says the two happen on the same paper, in this order,
+    // and "you vote for" is what a reader actually does at the ballot box.
+    title: '1. You vote for a party',
     badge: 'Does the heavy lifting',
     accent: JADE,
     light: '#ecfdf5',
@@ -69,7 +73,7 @@ const VOTES = [
   },
   {
     key: 'electorate',
-    title: 'Your electorate vote',
+    title: '2. You vote for your local MP',
     badge: null,
     accent: '#2563eb',
     light: '#eff6ff',
@@ -158,11 +162,10 @@ export function TwoVotes() {
                 padding: 'clamp(14px, 2.5vw, 20px)', marginTop: 2,
                 boxShadow: '0 1px 2px rgba(0,0,0,.03), 0 20px 40px -34px rgba(0,0,0,.4)',
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '.05em', color: v.accent, background: v.light, borderRadius: 999, padding: '4px 11px', fontFamily: MANROPE }}>
-                    {v.key === 'party' ? <Landmark style={{ width: 12, height: 12 }} /> : <MapPin style={{ width: 12, height: 12 }} />}
-                    {v.badge ?? 'One local MP'}
-                  </span>
+                {/* The badge pill ("Does the heavy lifting" / "One local MP")
+                    removed by request — the close button is the only thing
+                    on this row now. */}
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <button type="button" onClick={() => setActive(null)} aria-label={`Close ${v.title}`} style={{ background: 'none', border: 'none', padding: 6, margin: -6, cursor: 'pointer', color: SECONDARY, display: 'inline-flex', flexShrink: 0 }}>
                     <X style={{ width: 17, height: 17 }} />
                   </button>

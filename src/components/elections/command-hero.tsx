@@ -66,7 +66,7 @@ export function CommandHero({ today }: { today: string }) {
     // repeat-y copy would restart the tiling and leave a visible seam under the
     // hero — the same seam bug already fixed once on the homepage.
     <section style={{ position: 'relative' }}>
-      <div style={{ position: 'relative', maxWidth: 1080, margin: '0 auto', padding: 'clamp(18px, 3vh, 26px) clamp(18px, 5vw, 40px) clamp(24px, 4vh, 36px)' }}>
+      <div style={{ position: 'relative', maxWidth: 1080, margin: '0 auto', padding: 'clamp(18px, 3vh, 26px) clamp(18px, 5vw, 40px) clamp(10px, 1.6vh, 16px)' }}>
         {/* The "ELECTION CENTRE" eyebrow and the "All elections" back link
             that sat above it are both gone now. The eyebrow named the page
             a reader already knows they're on — nothing above it says

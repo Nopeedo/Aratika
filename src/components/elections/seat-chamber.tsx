@@ -29,8 +29,7 @@
  */
 
 import * as React from 'react'
-import { Landmark, Check, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
+import { Check } from 'lucide-react'
 import { hemicycle } from '@/lib/mmp'
 import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { PEER_HEADING } from './zone-head'
@@ -62,7 +61,7 @@ const LEFT_BLOC: PartySlug[] = ['labour', 'green', 'tpm']
 
 export interface SeatEntry { slug: PartySlug; seats: number; pct?: number }
 
-type Mode = 'elected' | 'polls' | 'build'
+export type Mode = 'elected' | 'polls' | 'build'
 
 // "As elected" removed by request: the actual 2023 result read as a
 // prediction sitting beside "If polls held" and "Who could govern", which
@@ -78,6 +77,45 @@ const TABS: { key: Mode; label: string }[] = [
   // thing, neither of them a question a reader has. Both are the question now.
   { key: 'build', label: 'Who could govern' },
 ]
+
+/**
+ * The same §2.2 pills SeatChamber draws internally, exported standalone for
+ * a caller that wants them somewhere else on the page — the Election Centre
+ * moved them up to sit right under the party list, above "THE SEATS" (now
+ * removed) and the chamber heading, rather than directly above the chamber.
+ * Pass `mode`/`onModeChange` straight through to SeatChamber alongside
+ * `hideTabs` so the two stay in sync and the tabs don't render twice.
+ */
+export function SeatModeTabs({ mode, onChange }: { mode: Mode; onChange: (m: Mode) => void }) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+      {TABS.map((t) => {
+        const on = mode === t.key
+        return (
+          <button
+            key={t.key}
+            onClick={() => onChange(t.key)}
+            aria-pressed={on}
+            style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}
+          >
+            <span
+              className="status-pill"
+              style={{
+                display: 'inline-flex', alignItems: 'center', borderRadius: 999,
+                background: on ? '#efece5' : '#fff',
+                border: `2px solid ${on ? INK : BORDER}`,
+                color: INK, fontFamily: MANROPE, fontWeight: 800, whiteSpace: 'nowrap',
+                transition: 'background-color .2s ease, border-color .2s ease',
+              }}
+            >
+              {t.label}
+            </span>
+          </button>
+        )
+      })}
+    </div>
+  )
+}
 
 /**
  * Seat index -> party, left→right along the political spectrum, so the chart
@@ -119,6 +157,7 @@ export const CHAMBER_MAX_W = 460
 
 export function SeatChamber({
   elected, electedTotal, electedYear, electedSlug, projection, projectionTotal, asAt, home = false, heading, frameColor, frameLight, highlight, onPickParty, pickScrollsToIdPrefix,
+  mode: modeProp, onModeChange, hideTabs,
 }: {
   elected: PartyResult[]
   electedTotal: number
@@ -167,11 +206,25 @@ export function SeatChamber({
    * see which of seventeen they were sent to.
    */
   pickScrollsToIdPrefix?: string
+  /**
+   * Controlled mode, for a caller that wants the §2.2 tabs somewhere OTHER
+   * than their usual spot directly above the heading — the Election Centre
+   * moved them up to sit right under the party list instead (see
+   * seats-with-tabs.tsx). Passing `mode` here makes this component read the
+   * caller's state instead of its own; pass `hideTabs` too so the two tab
+   * rows don't both render. Uncontrolled (neither prop given) behaves exactly
+   * as before — internal state, tabs drawn here.
+   */
+  mode?: Mode
+  onModeChange?: (m: Mode) => void
+  hideTabs?: boolean
 }) {
   // Election Centre opens on 'polls' now — its own tab for the real 2023
   // result is gone (see TABS above). The homepage variant is untouched: it
   // never shows tabs, so it still opens on and stays on 'elected'.
-  const [mode, setMode] = React.useState<Mode>(home ? 'elected' : 'polls')
+  const [modeState, setModeState] = React.useState<Mode>(home ? 'elected' : 'polls')
+  const mode = modeProp ?? modeState
+  const setMode = onModeChange ?? setModeState
   const [picked, setPicked] = React.useState<Set<PartySlug>>(new Set())
 
   const electedByParty = React.useMemo(
@@ -327,11 +380,7 @@ export function SeatChamber({
 
   return (
     <div>
-      {!home && (
-      <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 9 }}>
-        <Landmark style={{ width: 14, height: 14 }} /> The seats
-      </div>
-      )}
+      {/* "The seats" eyebrow removed by request. */}
 
       {/* §2.2 pills, the same control as the bills status row and the party
           directory's groups, in one neutral treatment (lit = #efece5 on INK).
@@ -346,9 +395,11 @@ export function SeatChamber({
 
           §3.1: the button is the hit area, the span is the pill.
 
-          The whole block is inside {!home && ...}, so the homepage renders none
-          of it (§2.7). */}
-      {!home && (
+          The whole block is inside {!home && !hideTabs && ...} now — hideTabs
+          is set by a caller drawing these same tabs somewhere else on the
+          page (see the `mode`/`onModeChange`/`hideTabs` prop doc above); the
+          homepage still renders none of it either way (§2.7). */}
+      {!home && !hideTabs && (
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
         {TABS.map((t) => {
           const on = mode === t.key
@@ -421,11 +472,7 @@ export function SeatChamber({
           TABS above), so gating on it would have hidden this link
           permanently. Just !home now — the real result is reachable from
           every tab, not only one that no longer exists. */}
-      {!home && (
-        <Link href={`/elections/${electedSlug}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-          Full {electedYear} results <ArrowRight style={{ width: 14, height: 14 }} />
-        </Link>
-      )}
+      {/* "Full {year} results" signpost removed by request. */}
 
       {/* Home variant splits the card in two: the chamber sits in a container
           shaped like the chamber itself (a dome — big elliptical top corners,

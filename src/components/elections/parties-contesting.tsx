@@ -312,23 +312,10 @@ export function PartiesContesting({ pop, asAt, children }: {
         )}
       </div>
 
-      {hidden > 0 && !collapsed && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
-          <button
-            onClick={() => setShowAll(false)}
-            aria-expanded
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: 5,
-              padding: '8px 12px', margin: '-4px 0',
-              background: 'none', border: 'none', cursor: 'pointer',
-              fontFamily: MANROPE, fontSize: 12, fontWeight: 800, color: INK,
-            }}
-          >
-            Show fewer
-            <ChevronDown style={{ width: 15, height: 15, transform: 'rotate(180deg)' }} strokeWidth={3} />
-          </button>
-        </div>
-      )}
+      {/* "Show fewer" removed by request — once expanded, the list (and the
+          seats section it now reveals below it) stays expanded. There is no
+          collapse-back control at this spot any more; `showAll` only ever
+          goes true now, never back to false from here. */}
 
       {/* The threshold legend, and the "pollsters don't report N of these
           separately" note, both lived here as always-visible text — moved

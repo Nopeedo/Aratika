@@ -22,24 +22,26 @@
  * meets directly rather than behind a tap.
  */
 
-import { MapPin } from 'lucide-react'
 import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
 import type { Candidate2026 } from '@/constants/candidates-2026'
-import { INK, SECONDARY, MANROPE, JADE } from '@/constants/theme'
+import { PEER_HEADING } from './zone-head'
+import { INK, SECONDARY, MANROPE } from '@/constants/theme'
 
 export function SeatMapSection({ candidatesBySlug }: { candidatesBySlug?: Record<string, Candidate2026[]> }) {
   return (
     <div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-        <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 10, background: '#e8f5ee', flexShrink: 0 }}>
-          <MapPin style={{ width: 18, height: 18, color: JADE }} />
-        </span>
-        <span style={{ minWidth: 0, flex: 1 }}>
-          <span style={{ display: 'block', fontSize: 15.5, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.3 }}>The area you vote in</span>
-          <span style={{ display: 'block', fontSize: 13, color: SECONDARY, fontFamily: MANROPE, marginTop: 2, lineHeight: 1.45 }}>
-            All 72 electorates, shaded by how close 2023 was. Tap yours for who won it, who is standing now, and the full breakdown.
-          </span>
-        </span>
+      {/* Title at PEER_HEADING now, not 15.5px — by request, to match "Where
+          the parties are polling for 2026" and every other section heading
+          on this page (§4). The icon tile that sat beside it is gone too —
+          by request, and it also fixes a real collision: at PEER_HEADING's
+          22-24px the two-line title started overlapping the 36px icon box
+          next to it, which was sized for the old 15.5px caption. */}
+      <div style={{ marginBottom: 12 }}>
+        <h2 style={{ fontSize: PEER_HEADING, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: '0 0 4px', lineHeight: 1.15 }}>The area you vote in</h2>
+        <p style={{ fontSize: 13, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.45 }}>
+          All 72 electorates, shaded by how close 2023 was. Tap yours for who won it, who is standing now, and the full
+          breakdown. Tap an area on the map to see who is running for local MP.
+        </p>
       </div>
 
       <BattlegroundsMap candidatesBySlug={candidatesBySlug} />

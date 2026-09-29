@@ -80,7 +80,7 @@ export function PollSnapshot({
           transition: 'background-color .2s ease, border-color .2s ease, color .2s ease',
         }}>
           <TrendingUp style={{ width: 14, height: 14 }} />
-          The polls behind this
+          Source of polls
           <ChevronDown style={{ width: 14, height: 14, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform .2s' }} strokeWidth={3} />
         </span>
       </button>

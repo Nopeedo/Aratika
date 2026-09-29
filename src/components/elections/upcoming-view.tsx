@@ -58,7 +58,7 @@ import { getApprovedCandidatesBySlug } from '@/lib/candidates/live'
 import { longDate, milestone } from '@/constants/electoral-calendar'
 import { CommandHero } from './command-hero'
 import { PollSnapshot } from './poll-snapshot'
-import { SeatChamber } from './seat-chamber'
+import { SeatsWithTabs } from './seats-with-tabs'
 import { TwoVotes } from './two-votes'
 import { PartiesContesting } from './parties-contesting'
 import { ClosestRaces, type ClosestRace } from './closest-races'
@@ -158,7 +158,7 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
       {/* 1080 to match /bills and /parties. This page was the narrowest
            content column on the site at 1000, which is not a difference a
            reader can attribute to anything. */}
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: 'clamp(30px, 5vh, 44px) clamp(18px, 5vw, 36px) 64px' }}>
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: 'clamp(14px, 2.2vh, 20px) clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(34px, 5vh, 48px)' }}>
 
           {/* KeyDates (§ "Show all key dates" → the full 4-date timetable)
@@ -245,24 +245,29 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
                 the 2023 Parliament here, the coalition builder there. The reader's
                 questions run in sequence — what is there, what would the polls
                 make it, what could govern — so they are tabs on one chart now,
-                and comparing them is a tap instead of a scroll. */}
-            <section id="seats" style={{ scrollMarginTop: 80 }}>
-              <SeatChamber
-                elected={base.results!}
-                electedTotal={base.totalSeats!}
-                electedYear={base.year}
-                electedSlug={base.slug}
-                projection={projection}
-                projectionTotal={PROJECTION_SEATS}
-                asAt={asAt}
-                /* §1.4: the seat dots are a control on the homepage and were inert
-                   here. A string rather than a handler, because this is a server
-                   component and a function cannot cross that boundary — tapping a
-                   seat scrolls to that party's row in #parties, which is the pick
-                   this page has to offer. */
-                pickScrollsToIdPrefix="party-row-"
-              />
-            </section>
+                and comparing them is a tap instead of a scroll.
+
+                SeatsWithTabs, not a plain <section>+<SeatChamber> — the mode
+                tabs moved OUT of SeatChamber and up to here, right after the
+                party list (where "Show fewer" used to sit), by request. See
+                seats-with-tabs.tsx for why that needed a small client
+                wrapper: this file is a server component and can't hold the
+                `mode` state the tabs and the chamber both need to share. */}
+            <SeatsWithTabs
+              elected={base.results!}
+              electedTotal={base.totalSeats!}
+              electedYear={base.year}
+              electedSlug={base.slug}
+              projection={projection}
+              projectionTotal={PROJECTION_SEATS}
+              asAt={asAt}
+              /* §1.4: the seat dots are a control on the homepage and were inert
+                 here. A string rather than a handler, because this is a server
+                 component and a function cannot cross that boundary — tapping a
+                 seat scrolls to that party's row in #parties, which is the pick
+                 this page has to offer. */
+              pickScrollsToIdPrefix="party-row-"
+            />
             </PartiesContesting>
             {/* §2.6's exception, and the same move the bills block made: the way
                 out of this block is a small outlined chip INSIDE it rather than
@@ -287,26 +292,29 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
 
           {/* ── CLOSEST RACES ───────────────────────────────────────────────── */}
           <section id="your-seat" style={{ scrollMarginTop: 80 }}>
-            <ZoneHead eyebrow="Your electorate" title="Closest races" accent={ACCENT.seat}
-              infoLabel="Why these five seats">
-              <InfoHeading accent={ACCENT.seat}>Why these five</InfoHeading>
-              <InfoText>
-                Where {base.year} was closest is where {e.year} will likely be fought hardest. These were the five
-                tightest results of the 72 electorates, by winning margin.
-              </InfoText>
-              <InfoHeading accent={ACCENT.seat}>What the labels mean</InfoHeading>
-              <InfoText>
-                Ultra-marginal is a {base.year} majority under 1,500 votes, marginal under 3,500, competitive under
-                7,000. Every other electorate is on the full map, coloured on the same scale, down to light green for the
-                safest.
-              </InfoText>
-            </ZoneHead>
-            <ClosestRaces races={races} year={base.year} />
             {/* The map, no longer in its own closed accordion card — by
                 request, its heading, description and the map itself sit
-                directly on the page now. See seat-map-section.tsx. */}
-            <div style={{ marginTop: 14 }}>
-              <SeatMapSection candidatesBySlug={candidatesBySlug} />
+                directly on the page now. See seat-map-section.tsx. Moved
+                ABOVE Closest races by request too — it carries its own
+                peer-sized heading ("The area you vote in"), so nothing here
+                is left without one. */}
+            <SeatMapSection candidatesBySlug={candidatesBySlug} />
+            <div style={{ marginTop: 26 }}>
+              <ZoneHead eyebrow="Your electorate" title="Closest races" accent={ACCENT.seat}
+                infoLabel="Why these five seats">
+                <InfoHeading accent={ACCENT.seat}>Why these five</InfoHeading>
+                <InfoText>
+                  Where {base.year} was closest is where {e.year} will likely be fought hardest. These were the five
+                  tightest results of the 72 electorates, by winning margin.
+                </InfoText>
+                <InfoHeading accent={ACCENT.seat}>What the labels mean</InfoHeading>
+                <InfoText>
+                  Ultra-marginal is a {base.year} majority under 1,500 votes, marginal under 3,500, competitive under
+                  7,000. Every other electorate is on the full map, coloured on the same scale, down to light green for the
+                  safest.
+                </InfoText>
+              </ZoneHead>
+              <ClosestRaces races={races} year={base.year} />
             </div>
           </section>
 
