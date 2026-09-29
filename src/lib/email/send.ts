@@ -39,15 +39,33 @@ function mailer(): Transporter | null {
     port: 465,
     secure: true,
     auth: { user: process.env.ZOHO_SMTP_USER, pass: process.env.ZOHO_SMTP_PASS },
-    // Bounded, because this runs inside a Stripe webhook. Stripe treats a slow
-    // response as a failure and redelivers the event; a hung SMTP socket with
-    // no timeout would turn one donation into a queue of retries.
-    connectionTimeout: 8000,
-    greetingTimeout: 8000,
-    socketTimeout: 10000,
+    // Bounded at every stage. These are per-stage timeouts, not a budget for
+    // the whole send: socketTimeout in particular is an IDLE timeout, so a
+    // server that dribbles a byte occasionally resets it and the send never
+    // ends. SEND_DEADLINE_MS below is the ceiling that actually holds.
+    dnsTimeout: 3000,
+    connectionTimeout: 3000,
+    greetingTimeout: 3000,
+    socketTimeout: 5000,
   })
   return cached
 }
+
+/**
+ * The ceiling on one send. The receipt runs in after(), so it no longer sits
+ * on Stripe's clock — but it does sit on the function's, and a send still
+ * running when the function is killed leaves the donation row claimed with no
+ * receipt ever delivered. Well under the route's maxDuration so the failure
+ * path gets a chance to run and release the claim.
+ */
+const SEND_DEADLINE_MS = 15_000
+
+/**
+ * The same escape hatch scripts/lib/notify.mjs has. Without it, a developer
+ * running the app against the production database sends a real receipt to a
+ * real donor from their laptop.
+ */
+const dry = () => process.env.NOTIFY_DRY === '1' || process.env.MAIL_DRY === '1'
 
 /** Whether mail can be sent at all. Check before claiming work. */
 export const emailConfigured = (): boolean =>
@@ -66,5 +84,20 @@ const mailFrom = () => `"Politika" <${process.env.MAIL_FROM || 'hello@politika.n
 export async function sendMail(opts: { to: string; subject: string; text: string; html: string }): Promise<void> {
   const m = mailer()
   if (!m) throw new Error('mailer not configured')
-  await m.sendMail({ from: mailFrom(), to: opts.to, subject: opts.subject, text: opts.text, html: opts.html })
+  if (dry()) {
+    console.log('[mail DRY] would send', JSON.stringify(opts.subject), 'to', opts.to.replace(/(.).*@/, '$1***@'))
+    return
+  }
+  let timer: ReturnType<typeof setTimeout> | undefined
+  try {
+    await Promise.race([
+      m.sendMail({ from: mailFrom(), to: opts.to, subject: opts.subject, text: opts.text, html: opts.html }),
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`smtp deadline exceeded after ${SEND_DEADLINE_MS}ms`)), SEND_DEADLINE_MS)
+      }),
+    ])
+  } finally {
+    // Or the pending timer holds the event loop open past the response.
+    if (timer) clearTimeout(timer)
+  }
 }

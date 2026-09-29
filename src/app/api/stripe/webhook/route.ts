@@ -6,7 +6,7 @@
  * Local testing:  stripe listen --forward-to localhost:3000/api/stripe/webhook
  */
 
-import { NextResponse } from 'next/server'
+import { NextResponse, after } from 'next/server'
 import type Stripe from 'stripe'
 import { getStripe } from '@/lib/stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
@@ -20,6 +20,9 @@ import { renderReceipt } from '../../../../../scripts/donation-receipt/template.
 // later edge migration fails loudly here instead of silently dropping
 // every receipt.
 export const runtime = 'nodejs'
+// The receipt is sent after the response, so the function has to outlive the
+// request. Comfortably longer than the mailer’s own deadline in lib/email/send.
+export const maxDuration = 60
 
 type AdminClient = ReturnType<typeof createAdminClient>
 
@@ -89,8 +92,13 @@ async function recordDonation(admin: AdminClient, session: Stripe.Checkout.Sessi
   }, { onConflict: 'stripe_session_id', ignoreDuplicates: true })
 
   if (error) {
+    // Thrown, not swallowed. Returning here meant a 200, and a 200 tells
+    // Stripe the event was handled — it would never redeliver, and a real
+    // payment would exist with no record of it anywhere on our side. The
+    // outer catch turns this into a 500 so Stripe retries on its own
+    // schedule, and the insert is idempotent on stripe_session_id.
     console.error('[webhook] donation insert failed', session.id, error.message)
-    return
+    throw new Error(`donation insert failed: ${error.message}`)
   }
 
   // The receipt goes now, not on a schedule. It used to wait for
@@ -98,13 +106,19 @@ async function recordDonation(admin: AdminClient, session: Stripe.Checkout.Sessi
   // took about six hours to start firing at all after it was added. Ten
   // minutes is long enough for a donor to go looking for a receipt that has
   // not arrived. That workflow stays as the backstop for anything this misses.
-  try {
-    await sendReceipt(admin, session.id)
-  } catch (e) {
-    // A receipt failure must never fail the webhook. A non-2xx makes Stripe
-    // redeliver the event, and the donation itself is already recorded.
-    console.error('[webhook] receipt step threw', session.id, e instanceof Error ? e.message : e)
-  }
+  // after() runs this once the 200 has already gone back to Stripe. Awaiting
+  // it inside the request put an SMTP round trip on Stripe’s clock: a slow
+  // send meant a slow response, Stripe counts that as a failure and
+  // redelivers, and the redelivery is what turns one donation into two
+  // receipts. A receipt failure must never fail the webhook either — the
+  // donation is already recorded by this point.
+  after(async () => {
+    try {
+      await sendReceipt(admin, session.id)
+    } catch (e) {
+      console.error('[webhook] receipt step threw', session.id, e instanceof Error ? e.message : e)
+    }
+  })
 }
 
 /**
@@ -129,9 +143,14 @@ async function sendReceipt(admin: AdminClient, sessionId: string) {
     return
   }
 
+  // Held, so the release below can prove the stamp it is clearing is the one
+  // this caller wrote. Releasing on id alone would wipe a stamp another
+  // caller had just written for a receipt it really did send.
+  const claimedAt = new Date().toISOString()
+
   const { data: claimed, error: claimError } = await admin
     .from('donations')
-    .update({ receipt_sent_at: new Date().toISOString() })
+    .update({ receipt_sent_at: claimedAt, receipt_error: null })
     .eq('stripe_session_id', sessionId)
     .is('receipt_sent_at', null)
     .select('id, reference, amount_cents, currency, donor_email, donor_name, paid_at, receipt_attempts')
@@ -150,10 +169,16 @@ async function sendReceipt(admin: AdminClient, sessionId: string) {
     // Nothing to send to. Park it beyond the backstop’s retry window instead
     // of leaving it to be picked up every ten minutes forever. MAX_ATTEMPTS
     // mirrors scripts/donation-receipts.mjs; if that changes, change this.
+    //
+    // Logged at error level: Stripe Checkout always collects an email, so a
+    // donation without one means something changed at Stripe, and parking it
+    // silently would remove the only signal of that.
+    console.error('[webhook] donation has no donor email, no receipt possible', d.reference)
     await admin
       .from('donations')
       .update({ receipt_sent_at: null, receipt_error: 'no donor email', receipt_attempts: 5 })
       .eq('id', d.id)
+      .eq('receipt_sent_at', claimedAt)
     return
   }
 
@@ -174,6 +199,9 @@ async function sendReceipt(admin: AdminClient, sessionId: string) {
       .from('donations')
       .update({ receipt_sent_at: null, receipt_error: message, receipt_attempts: (d.receipt_attempts ?? 0) + 1 })
       .eq('id', d.id)
+      // Only our own claim. If another caller stamped it while this send was
+      // in flight, they sent a receipt and their stamp must stand.
+      .eq('receipt_sent_at', claimedAt)
     console.error('[webhook] receipt failed, released for retry', d.reference, message)
   }
 }

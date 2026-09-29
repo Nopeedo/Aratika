@@ -80,16 +80,38 @@ for (const d of queue) {
     reference: d.reference, paidAt: d.paid_at || d.received_at, siteUrl: SITE,
   })
   if (!LIVE) { console.log(`  would send  ${label}`); continue }
+
+  // CLAIM BEFORE SENDING. The queue above is a single snapshot, and each send
+  // takes seconds, so by the time this loop reaches a row the webhook may
+  // already have receipted it. Sending straight from the snapshot would post
+  // a second receipt for the same donation. /api/stripe/webhook claims the
+  // same way; a guard only one of two senders respects is not a guard.
+  let claimedAt = null
   try {
+    claimedAt = new Date().toISOString()
+    const { data: mine } = await sb().from('donations')
+      .update({ receipt_sent_at: claimedAt, receipt_error: null })
+      .eq('id', d.id).is('receipt_sent_at', null).select('id')
+    if (!mine || mine.length === 0) {
+      claimedAt = null
+      skipped++
+      console.log(`  taken  ${label}: already receipted`)
+      continue
+    }
+
     const ok = await emailUser(d.donor_email, subject, text, html)
     if (!ok) throw new Error('mailer not configured')
-    await sb().from('donations').update({ receipt_sent_at: new Date().toISOString(), receipt_error: null }).eq('id', d.id)
     sent++
     console.log(`  sent  ${label}`)
   } catch (e) {
     failed++
     const msg = String(e?.message || e).slice(0, 300)
-    await sb().from('donations').update({ receipt_error: msg, receipt_attempts: (d.receipt_attempts || 0) + 1 }).eq('id', d.id)
+    // Release only the claim this iteration took.
+    let q = sb().from('donations')
+      .update({ receipt_sent_at: null, receipt_error: msg, receipt_attempts: (d.receipt_attempts || 0) + 1 })
+      .eq('id', d.id)
+    if (claimedAt) q = q.eq('receipt_sent_at', claimedAt)
+    await q
     console.log(`  FAIL  ${label}: ${msg}`)
   }
 }
