@@ -10,6 +10,16 @@ import { NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 import { getStripe } from '@/lib/stripe'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { emailConfigured, sendMail } from '@/lib/email/send'
+// The same renderer the cron backstop uses. One copy of the template, so the
+// receipt a donor gets is the same one either way.
+import { renderReceipt } from '../../../../../scripts/donation-receipt/template.mjs'
+
+// nodemailer needs Node APIs, so this route must not be moved to the edge
+// runtime. Next defaults to Node for route handlers; stating it means a
+// later edge migration fails loudly here instead of silently dropping
+// every receipt.
+export const runtime = 'nodejs'
 
 type AdminClient = ReturnType<typeof createAdminClient>
 
@@ -78,7 +88,94 @@ async function recordDonation(admin: AdminClient, session: Stripe.Checkout.Sessi
     paid_at: new Date((session.created ?? Math.floor(Date.now() / 1000)) * 1000).toISOString(),
   }, { onConflict: 'stripe_session_id', ignoreDuplicates: true })
 
-  if (error) console.error('[webhook] donation insert failed', session.id, error.message)
+  if (error) {
+    console.error('[webhook] donation insert failed', session.id, error.message)
+    return
+  }
+
+  // The receipt goes now, not on a schedule. It used to wait for
+  // .github/workflows/donation-receipts.yml, which runs every ten minutes and
+  // took about six hours to start firing at all after it was added. Ten
+  // minutes is long enough for a donor to go looking for a receipt that has
+  // not arrived. That workflow stays as the backstop for anything this misses.
+  try {
+    await sendReceipt(admin, session.id)
+  } catch (e) {
+    // A receipt failure must never fail the webhook. A non-2xx makes Stripe
+    // redeliver the event, and the donation itself is already recorded.
+    console.error('[webhook] receipt step threw', session.id, e instanceof Error ? e.message : e)
+  }
+}
+
+/**
+ * Send the receipt for a donation, exactly once.
+ *
+ * CLAIM, THEN SEND. Stripe redelivers any event it did not get a 2xx for, and
+ * the cron backstop can be running at the same moment, so "is it unsent? then
+ * send it" double-sends under a race — and a donor thanked twice for one
+ * donation reads as having been charged twice. The update below only matches
+ * while receipt_sent_at is still null, so exactly one caller wins it.
+ *
+ * If the send then fails, the claim is RELEASED so the backstop can retry,
+ * with the reason and the attempt recorded rather than swallowed.
+ */
+async function sendReceipt(admin: AdminClient, sessionId: string) {
+  if (!emailConfigured()) {
+    // Loud, because the failure is invisible otherwise: the donation is
+    // recorded, the webhook returns 200, and no receipt is ever sent. These
+    // have only ever been GitHub Actions secrets — the deployment needs them
+    // too now that the app sends mail itself.
+    console.error('[webhook] ZOHO_SMTP_USER / ZOHO_SMTP_PASS not set here: no receipt for', sessionId)
+    return
+  }
+
+  const { data: claimed, error: claimError } = await admin
+    .from('donations')
+    .update({ receipt_sent_at: new Date().toISOString() })
+    .eq('stripe_session_id', sessionId)
+    .is('receipt_sent_at', null)
+    .select('id, reference, amount_cents, currency, donor_email, donor_name, paid_at, receipt_attempts')
+
+  if (claimError) {
+    console.error('[webhook] could not claim the receipt', sessionId, claimError.message)
+    return
+  }
+  // Already receipted — an earlier delivery of this same event, or the
+  // backstop got there first. Nothing to do, and nothing wrong.
+  if (!claimed || claimed.length === 0) return
+
+  const d = claimed[0]
+
+  if (!d.donor_email) {
+    // Nothing to send to. Park it beyond the backstop’s retry window instead
+    // of leaving it to be picked up every ten minutes forever. MAX_ATTEMPTS
+    // mirrors scripts/donation-receipts.mjs; if that changes, change this.
+    await admin
+      .from('donations')
+      .update({ receipt_sent_at: null, receipt_error: 'no donor email', receipt_attempts: 5 })
+      .eq('id', d.id)
+    return
+  }
+
+  try {
+    const { subject, html, text } = renderReceipt({
+      name: d.donor_name,
+      amountCents: d.amount_cents,
+      currency: d.currency,
+      reference: d.reference,
+      paidAt: d.paid_at,
+      siteUrl: process.env.NEXT_PUBLIC_APP_URL,
+    })
+    await sendMail({ to: d.donor_email, subject, text, html })
+    console.log('[webhook] receipt sent', d.reference)
+  } catch (e) {
+    const message = String(e instanceof Error ? e.message : e).slice(0, 300)
+    await admin
+      .from('donations')
+      .update({ receipt_sent_at: null, receipt_error: message, receipt_attempts: (d.receipt_attempts ?? 0) + 1 })
+      .eq('id', d.id)
+    console.error('[webhook] receipt failed, released for retry', d.reference, message)
+  }
 }
 
 export async function POST(req: Request) {
