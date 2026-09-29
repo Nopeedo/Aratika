@@ -52,7 +52,7 @@ export const NAV_ITEMS: NavItem[] = [
   // "Your Electorate" is gone as a group for the same reason The Record is:
   // the label named the grouping, not the destinations, and each of the three
   // cost a tap to reach through it.
-  { label: 'Electorate map', href: '/map', description: 'Interactive map: find your MP', feature: 'map' },
+  { label: 'Find your local MP', href: '/map', description: 'Interactive map: find your electorate and its MP', feature: 'map' },
   // /battlegrounds is "Live results 2026" now (election-night results).
   // feature 'live-results' keeps it out of the menu, the footer and the
   // explore rail until LIVE_RESULTS_ENABLED is flipped, by request. The page
