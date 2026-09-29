@@ -5,12 +5,6 @@ export const SITE = {
     'Your one-stop resource for clear, credible information on New Zealand\'s parliament, MPs, parties, and policies, all in one place.',
   url: 'https://politika.nz',
   email: 'hello@politika.nz',
-  // Onebyone's Stripe page, which takes donations for Politika. The Donate
-  // buttons (footer, phone menu) always go to /donate; with this set, /donate
-  // shows a "Donate now" button to it, and while it's null /donate says
-  // donations open soon. Paste the Stripe Payment Link
-  // (https://buy.stripe.com/...) here.
-  donateUrl: null as string | null,
   // Official accounts. These feed three things at once: the footer links, the
   // `sameAs` array in the Organization schema (how Google ties the "Politika"
   // brand to this domain), and nothing else — so adding a handle here is the

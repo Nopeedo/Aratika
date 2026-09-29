@@ -67,9 +67,8 @@ export function Footer() {
               </ul>
             )}
 
-            {/* Donate, by request: always shown, and always to the site's own
-                /donate page, which carries the payment button (Onebyone's
-                Stripe) once SITE.donateUrl is set. */}
+            {/* Donate, by request: always shown, always to the site's own
+                /donate page, where Onebyone processes the payment. */}
             {(
               <div className="mt-5">
                 <Link
