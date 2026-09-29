@@ -77,9 +77,6 @@ export function Footer() {
                 >
                   <Heart className="size-4" /> Donate to Politika
                 </Link>
-                <p className="text-xs text-[#9a9186] mt-2 leading-relaxed">
-                  Payments are processed by Onebyone Project on Politika&rsquo;s behalf.
-                </p>
               </div>
             )}
           </div>
