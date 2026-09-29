@@ -52,6 +52,8 @@ export const NAV_ITEMS: NavItem[] = [
   // Straight under Policy Comparison, by request: what the parties say,
   // then what Parliament is actually passing.
   { label: 'Bills tracker', href: '/bills', description: 'Bills before the House: plain-language', feature: 'bills' },
+  // Above Find your local MP, by request.
+  { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
   // "Your Electorate" is gone as a group for the same reason The Record is:
   // the label named the grouping, not the destinations, and each of the three
   // cost a tap to reach through it.
@@ -61,7 +63,6 @@ export const NAV_ITEMS: NavItem[] = [
   // explore rail until LIVE_RESULTS_ENABLED is flipped, by request. The page
   // still answers at its URL.
   { label: 'Live results 2026', href: '/battlegrounds', description: 'Election night results, electorate by electorate', feature: 'live-results' },
-  { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
   // "The Record" is gone as a group: it held three destinations that have
   // nothing to do with each other beyond all being facts about this term, so
   // the label explained the grouping rather than the pages, and every one of
@@ -128,6 +129,15 @@ export const FOOTER_LINKS: Record<'learn' | 'explore' | 'account' | 'legal', Foo
     { label: 'Upgrade to Premium', href: '/subscription', feature: 'premium' },
   ],
   legal: [
+    // "Our Sources" sits here rather than under Learn because the Learn and
+    // Explore columns are not rendered — this is the only footer group a
+    // reader sees. It was reachable only from the About page once the
+    // "Data sourced from:" strip came off the top of the footer, which is a
+    // strange place to hide the working on a site whose pitch is showing it.
+    // It also stays in `learn` above: that list is intact for whenever those
+    // columns come back, and nothing renders it today, so this is not a
+    // duplicate on screen.
+    { label: 'Our Sources', href: '/about#sources', feature: 'about' },
     { label: 'Help & FAQ', href: '/faq', feature: 'about' },
     { label: 'Privacy Policy', href: '/privacy', feature: 'about' },
     { label: 'Terms of Use', href: '/terms', feature: 'about' },
