@@ -22,14 +22,13 @@
  */
 
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
 import { getModule, LEARN_MODULE_IDS } from '@/constants/learn-data'
 import { learnTheme } from '@/constants/learn-theme'
 import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { ModuleExperience } from '@/components/learn/module-experience'
 import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export function generateStaticParams() {
   return LEARN_MODULE_IDS.map((module) => ({ module }))
@@ -59,9 +58,12 @@ export default async function LearnModulePage(
         <div style={{ maxWidth: 880, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) clamp(20px, 3.5vh, 28px)' }}>
           {/* A chip, not a row. It was a 38px line with 20px under it before
               the page had said what it was about. */}
-          <Link href="/learn" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 700, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, border: `1px solid ${BORDER}`, background: '#fff', borderRadius: 999, padding: '4px 11px 4px 9px', marginBottom: 13 }}>
-            <ArrowLeft style={{ width: 13, height: 13 }} /> All modules
-          </Link>
+          {/* Was a fixed link to /learn. It went to the same place however you
+              got here, so arriving from the homepage, a tracked item or a news
+              story all dropped you in a directory you had not been in. BackLink
+              returns you to the page you actually came from; /learn stays as
+              the fallback, so nothing changes when there is nothing to go back to. */}
+          <BackLink fallbackHref="/learn" label="All modules" style={{ fontSize: 12, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, border: `1px solid ${BORDER}`, background: '#fff', borderRadius: 999, padding: '4px 11px 4px 9px', marginBottom: 13 }} />
           {/* The module's own colour follows from the hub card that was tapped:
               an accent bar beside the heading, the same ink the card wore. Kept
               to an accent rather than a filled band — this page is a lesson,

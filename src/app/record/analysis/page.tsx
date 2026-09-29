@@ -12,6 +12,7 @@ import { ShieldAlert, Plus, Minus, Users, Target, ExternalLink, FileText, Messag
 import { createClient } from '@/lib/supabase/server'
 import { POLICY_ANALYSIS } from '@/constants/record-analysis'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export const metadata: Metadata = {
   title: 'Policy deep dives (private)',
@@ -29,9 +30,9 @@ export default async function PolicyAnalysisPage() {
       {/* Header */}
       <div style={{ background: '#0c0e12', color: '#fff' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '38px clamp(18px, 5vw, 36px) 30px' }}>
-          <Link href="/record" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,.6)', fontFamily: MANROPE, textDecoration: 'none', marginBottom: 14 }}>
-            ← All accountability data
-          </Link>
+          {/* The arrow is now the icon BackLink draws, rather than a literal
+              "←" character. /record stays the fallback. */}
+          <BackLink fallbackHref="/record" label="All accountability data" style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,.6)', fontFamily: MANROPE, marginBottom: 14 }} />
           <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: '#36e08a', fontFamily: MANROPE, marginBottom: 10 }}>
             Policy deep dives · Private
           </div>

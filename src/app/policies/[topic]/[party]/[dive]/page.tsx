@@ -25,6 +25,7 @@ import { getDeepDive } from '@/constants/policy-deep-dives'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { SITE } from '@/constants/site'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 // Revalidated, not force-dynamic.
 // Editor-approved deep dives, matching the topic page above it.
@@ -59,14 +60,13 @@ export default async function DeepDivePage({ params }: { params: Params }) {
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ height: 6, background: p.color }} />
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 28px' }}>
-          {/* Back to the party's position on this topic — the page this came
-              from — not to the topic index. */}
-          <Link
-            href={`/policies/${topic}/${party}`}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 16 }}
-          >
-            <ArrowLeft style={{ width: 14, height: 14 }} /> {p.name} on {t.label}
-          </Link>
+          {/* The party's position on this topic was a good guess at where the
+              reader came from, and it stays as the fallback and the label. But
+              it was only a guess: deep dives are also reached from the party
+              profile and from tracked items. BackLink uses the real answer when
+              there is one. (The link at the foot of the article still names
+              this page deliberately — that one is "finished reading", not back.) */}
+          <BackLink fallbackHref={`/policies/${topic}/${party}`} label={`${p.name} on ${t.label}`} style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 16 }} />
           <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 6 }}>
             {t.label} · In depth
           </div>

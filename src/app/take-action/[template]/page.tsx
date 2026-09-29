@@ -6,9 +6,7 @@
  */
 
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
 import {
   LETTER_TEMPLATES, LETTER_TEMPLATE_ORDER, type LetterTemplateId, type LetterContext,
 } from '@/constants/letter-templates'
@@ -21,6 +19,7 @@ import { PREMIUM_ENABLED } from '@/constants/features'
 import { PremiumGate } from '@/components/action/premium-gate'
 import { LetterStudio, LetterPreview } from '@/components/action/letter-studio'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export function generateStaticParams() {
   return LETTER_TEMPLATE_ORDER.map((template) => ({ template }))
@@ -97,9 +96,12 @@ export default async function TakeActionTemplatePage(
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 32px' }}>
-          <Link href="/take-action" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> All templates
-          </Link>
+          {/* Was a fixed link to /take-action. It went to the same place however you
+              got here, so arriving from the homepage, a tracked item or a news
+              story all dropped you in a directory you had not been in. BackLink
+              returns you to the page you actually came from; /take-action stays as
+              the fallback, so nothing changes when there is nothing to go back to. */}
+          <BackLink fallbackHref="/take-action" label="All templates" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 18 }} />
           <h1 style={{ fontSize: 'clamp(24px, 7vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.1 }}>{t.label}</h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
             {t.blurb}{ctx.recipientName ? ` · To: ${ctx.recipientName}` : ''}

@@ -9,7 +9,7 @@ import { Suspense } from 'react'
 import { BackToParty } from '@/components/policy/back-to-party'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, Info } from 'lucide-react'
+import { Info } from 'lucide-react'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { CONTESTING_PARTIES } from '@/constants/parties'
@@ -20,6 +20,7 @@ import { DeepDiveCard } from '@/components/policy/deep-dive-card'
 import { getDeepDives } from '@/constants/policy-deep-dives'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 // Revalidated, not force-dynamic.
 // Editor-approved positions, matching the topic page above it.
@@ -52,9 +53,11 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
               party page this was opened from. The second only appears when
               ?from= names a party — see BackToParty. */}
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '6px 18px', marginBottom: 18 }}>
-            <Link href={`/policies/${topic}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE }}>
-              <ArrowLeft style={{ width: 14, height: 14 }} /> All parties on {t.label}
-            </Link>
+            {/* The topic index stays as the fallback and as the label, so this
+                reads and behaves exactly as before when there is no previous
+                page — but a reader who came from the homepage, the compass or
+                an MP profile now goes back there instead. */}
+            <BackLink fallbackHref={`/policies/${topic}`} label={`All parties on ${t.label}`} style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE }} />
             <Suspense fallback={null}><BackToParty /></Suspense>
           </div>
           <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 6 }}>{t.label} · Party position</div>

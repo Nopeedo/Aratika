@@ -8,7 +8,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import {
-  ArrowLeft, ArrowUpRight, Landmark, Users, Info, FileText, Lock, PenLine,
+  ArrowUpRight, Landmark, Users, Info, FileText, Lock, PenLine,
 } from 'lucide-react'
 import {
   getBill, BILL_SLUGS, BILLS_SOURCE_URL,
@@ -25,6 +25,7 @@ import { SectionDivider } from '@/components/ui/section-divider'
 import { formatDate } from '@/lib/utils/format'
 import { PREMIUM_ENABLED } from '@/constants/features'
 import { BORDER, DISPLAY, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export function generateStaticParams() {
   return [...BILL_SLUGS, ...DEFINING_BILLS.map((b) => b.slug)].map((slug) => ({ slug }))
@@ -128,9 +129,12 @@ export default async function BillDetailPage(
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 36px' }}>
-          <Link href="/bills" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 22 }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> All bills
-          </Link>
+          {/* Was a fixed link to /bills. It went to the same place however you
+              got here, so arriving from the homepage, a tracked item or a news
+              story all dropped you in a directory you had not been in. BackLink
+              returns you to the page you actually came from; /bills stays as
+              the fallback, so nothing changes when there is nothing to go back to. */}
+          <BackLink fallbackHref="/bills" label="All bills" style={{ fontSize: 13, fontWeight: 600, color: SECONDARY, fontFamily: MANROPE, marginBottom: 22 }} />
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
             <span style={{

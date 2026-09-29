@@ -14,10 +14,10 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { TrackedHistory, type HistoryItem } from '@/components/bookmarks/tracked-history'
 import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export const metadata: Metadata = { title: 'Tracked updates', robots: { index: false, follow: false } }
 
@@ -59,9 +59,12 @@ export default async function TrackedItemPage(
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div className="ap-col" style={{ maxWidth: 820, margin: '0 auto', padding: '22px clamp(18px, 5vw, 36px) 26px' }}>
-          <Link href="/dashboard" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none', marginBottom: 14 }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> Dashboard
-          </Link>
+          {/* Was a fixed link to /dashboard. It went to the same place however you
+              got here, so arriving from the homepage, a tracked item or a news
+              story all dropped you in a directory you had not been in. BackLink
+              returns you to the page you actually came from; /dashboard stays as
+              the fallback, so nothing changes when there is nothing to go back to. */}
+          <BackLink fallbackHref="/dashboard" label="Dashboard" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 14 }} />
           <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.09em', textTransform: 'uppercase', color: SECONDARY, fontFamily: MANROPE }}>
             {KIND_LABEL[kind]} you track
           </div>

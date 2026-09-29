@@ -16,7 +16,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { ArrowLeft, Bell, Crown, Sparkles, CheckCircle2, UserRound, KeyRound, ArrowRight } from 'lucide-react'
+import { Bell, Crown, Sparkles, CheckCircle2, UserRound, KeyRound, ArrowRight } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { NotifyToggle } from '@/components/notifications/notify-toggle'
 import { EmailToggle } from '@/components/notifications/email-toggle'
@@ -26,6 +26,7 @@ import { PREMIUM_ENABLED } from '@/constants/features'
 import { isEnabled } from '@/constants/features'
 import { SignOutButton } from './sign-out-button'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export const metadata: Metadata = {
   title: 'Settings',
@@ -82,9 +83,10 @@ export default async function SettingsPage() {
     <div style={WOVEN_PAGE}>
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 64px' }}>
 
-        <Link href="/dashboard" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, textDecoration: 'none', marginBottom: 16 }}>
-          <ArrowLeft style={{ width: 14, height: 14 }} /> Back to dashboard
-        </Link>
+        {/* Settings is reached from the dashboard, but also from the footer and
+            from the unsubscribe copy in our emails, where "back to dashboard"
+            was simply wrong about where the reader had been. */}
+        <BackLink fallbackHref="/dashboard" label="Back to dashboard" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 16 }} />
 
         <h1 style={{ fontSize: 'clamp(26px, 6vw, 34px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>
           Settings
