@@ -76,6 +76,31 @@ function rgba(hex: string, a: number): string {
   return `rgba(${r},${g},${b},${a})`
 }
 
+/** The letter pressed into each dock tile. One letter each, by request: NZ and
+ *  TPM were two and three, so the six marks were three different sizes in a row
+ *  that is otherwise perfectly regular. National and NZ First both being "N" is
+ *  the accepted cost — the tiles are the one place on the page where colour
+ *  does the identifying, and the letter is texture, not a label. */
+const TILE_MARK: Record<string, string> = {
+  national: 'N', labour: 'L', green: 'G', act: 'A', nzfirst: 'N', tpm: 'T',
+}
+
+/** An indent is a shadow and a highlight the right way round, so the mark has
+ *  to know whether it is cut into a light tile or a dark one: ACT's yellow
+ *  takes a dark mark with white beneath it, NZ First's near-black takes the
+ *  reverse. A single treatment left the mark invisible on one end or the other. */
+function markInk(hex: string): { color: string; textShadow: string } {
+  const m = hex.replace('#', '')
+  const r = parseInt(m.slice(0, 2), 16), g = parseInt(m.slice(2, 4), 16), b = parseInt(m.slice(4, 6), 16)
+  const lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255
+  // Very dark tiles (NZ First is #181a1f) have no room under black: the mark
+  // has to be cut the other way, a pale face over a dark edge.
+  if (lum < 0.16) return { color: 'rgba(255,255,255,.20)', textShadow: '0 -1px 0 rgba(0,0,0,.45)' }
+  return lum > 0.45
+    ? { color: 'rgba(0,0,0,.22)', textShadow: '0 1px 0 rgba(255,255,255,.35)' }
+    : { color: 'rgba(0,0,0,.30)', textShadow: '0 1px 0 rgba(255,255,255,.16)' }
+}
+
 /** Darken party colours that are too light (e.g. ACT's yellow) so the seat
  *  number/icon stays legible on the pale panel. Dark colours pass through. */
 function seatColor(hex: string): string {
@@ -199,14 +224,15 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
           screen ALWAYS — not just once scrolled — so it's reachable one-handed at any
           scroll position. Back to its original height/padding now that the title tab
           lives in its own container above instead of inside this bar. */}
-      <div ref={tileRowRef} style={{
+      <div ref={tileRowRef} className="pt-dock" style={{
         position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 45,
-        background: '#fff', borderTop: `1px solid ${LINE}`, boxShadow: '0 -6px 16px rgba(12,14,18,.08)',
       }}>
-        <div style={{ maxWidth: 760, margin: '0 auto', padding: '12px clamp(18px, 5vw, 36px)' }}>
-          <div style={{ display: 'flex', gap: 10 }}>
+        <div className="pt-dock-inner" style={{ maxWidth: 560, margin: '0 auto', padding: '10px clamp(18px, 5vw, 22px)' }}>
+          <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
             {parties.map((p) => {
               const on = p.slug === panelSlug
+              const mark = TILE_MARK[p.slug] ?? p.name.slice(0, 1)
+              const ink = markInk(p.color)
               return (
                 <button
                   key={p.slug}
@@ -215,7 +241,13 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
                   aria-expanded={on}
                   title={p.name}
                   style={{
-                    flex: '1 1 0', minWidth: 0, aspectRatio: '1 / 1', borderRadius: 14, padding: 0,
+                    // maxWidth caps the square on wide screens: at flex 1 across
+                    // the old 760px container each tile ran to ~110px, which is a
+                    // row of six large blocks over the page. They shrink below
+                    // this on a phone as they always did.
+                    flex: '1 1 0', minWidth: 0, maxWidth: 72, aspectRatio: '1 / 1',
+                    borderRadius: 14, padding: 0, containerType: 'inline-size',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
                     cursor: 'pointer', background: p.color, pointerEvents: 'auto',
                     // Selected tile gets a white-then-colour ring so it reads as one
                     // continuous shape with the title tab sitting above it.
@@ -225,12 +257,49 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
                       : '0 10px 24px rgba(0,0,0,.24)',
                     transition: 'box-shadow .35s ease',
                   }}
-                />
+                >
+                  {/* Pressed in, not printed on: the party's own colour darkened
+                      a little, with a hairline of white under it, so the mark
+                      reads as an indent in the tile rather than a label sitting
+                      on top of one. */}
+                  {/* cqw, not %: a percentage font-size is a share of the
+                      INHERITED size, so 44% rendered a 7px letter on a 72px
+                      tile. containerType on the button above makes 44cqw mean
+                      44% of the tile's own width. */}
+                  <span aria-hidden style={{
+                    fontFamily: MANROPE, fontWeight: 800, letterSpacing: '-.02em',
+                    fontSize: '44cqw',
+                    lineHeight: 1, color: ink.color, textShadow: ink.textShadow,
+                    userSelect: 'none',
+                  }}>
+                    {mark}
+                  </span>
+                </button>
               )
             })}
           </div>
         </div>
       </div>
+
+      {/* The dock's chrome. On a phone it is the bottom edge of the screen and
+          runs edge to edge, the way a phone's own bars do. On desktop a white
+          band spanning a 2000px monitor to hold six small tiles in the middle
+          read as a page footer that had lost its content, so the white stops
+          where the tiles stop. Inline styles cannot carry a media query, so
+          this has to live in a stylesheet. */}
+      <style>{`
+        .pt-dock { background: #fff; border-top: 1px solid ${LINE}; box-shadow: 0 -6px 16px rgba(12,14,18,.08); }
+        @media (min-width: 768px) {
+          .pt-dock { background: transparent; border-top: none; box-shadow: none; }
+          .pt-dock-inner {
+            background: #fff;
+            border: 1px solid ${LINE};
+            border-bottom: none;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -6px 16px rgba(12,14,18,.08);
+          }
+        }
+      `}</style>
 
       {/* In-flow identity card — name + leader, in normal document flow, right above
           the seats row. Separate from the fixed dock/tab at the bottom. A thin
