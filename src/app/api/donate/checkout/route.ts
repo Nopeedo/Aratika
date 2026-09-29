@@ -101,7 +101,12 @@ export async function POST(request: Request) {
         email_updates: String(emailUpdates),
         cover_fee: String(coverFee),
       },
-      success_url: `${site}/donate?done=1&ref=${reference}`,
+      // /donate/thank-you, not back to /donate. This pointed at the form
+      // itself with ?done=1, which nothing read: a donor who had just paid
+      // landed on the same form, looking exactly as it did before they paid.
+      // That is how someone pays twice, and it left the written thank-you
+      // page unreachable.
+      success_url: `${site}/donate/thank-you?ref=${reference}`,
       cancel_url: `${site}/donate?cancelled=1`,
     })
 

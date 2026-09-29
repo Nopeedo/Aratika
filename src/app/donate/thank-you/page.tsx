@@ -18,7 +18,21 @@ import { INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = { title: 'Thank you', robots: { index: false } }
 
-export default function DonateThankYouPage() {
+/**
+ * Awaiting searchParams makes this route dynamic. That trade is wrong on
+ * /mps and /bills, which is why they refuse it — but this page is noindexed
+ * and only ever reached once, straight after a payment, so there is nothing
+ * to prerender for.
+ *
+ * The reference is validated before it is shown. It arrives in the URL, so
+ * anyone can put anything in it; React escapes the text, so this is not an
+ * XSS — but attacker-chosen words rendered under Politika’s letterhead are
+ * a phishing line ("your reference: call 0800…"). Only the shape
+ * /api/donate/checkout actually generates is echoed back.
+ */
+export default async function DonateThankYouPage({ searchParams }: { searchParams: Promise<{ ref?: string }> }) {
+  const { ref: rawRef } = await searchParams
+  const reference = rawRef && /^POL-[A-Z0-9]{1,12}$/.test(rawRef) ? rawRef : null
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ maxWidth: 560, margin: '0 auto', padding: 'clamp(40px, 8vh, 80px) clamp(18px, 5vw, 36px) 64px', textAlign: 'center' }}>
@@ -32,6 +46,11 @@ export default function DonateThankYouPage() {
           Your donation helps keep Politika running, independent and free for everyone. Your receipt will arrive
           by email from hello@politika.nz shortly.
         </p>
+        {reference && (
+          <p style={{ fontFamily: MANROPE, fontSize: 13, lineHeight: 1.6, color: SECONDARY, margin: '-12px 0 22px' }}>
+            Your reference: <strong style={{ color: INK }}>{reference}</strong>
+          </p>
+        )}
         <Link href="/elections/2026" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: MANROPE, fontSize: 14, fontWeight: 800, color: JADE, textDecoration: 'none' }}>
           Back to the 2026 Election <ArrowRight style={{ width: 15, height: 15 }} />
         </Link>

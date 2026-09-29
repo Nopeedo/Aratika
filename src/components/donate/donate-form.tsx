@@ -35,6 +35,17 @@ export function DonateForm({ open }: { open: boolean }) {
   // Off by default: no pre-ticked extras.
   const [coverFee, setCoverFee] = React.useState(false)
   const [submitting, setSubmitting] = React.useState(false)
+  /**
+   * Stripe returns a donor who backs out to /donate?cancelled=1. Nothing
+   * read that, so backing out looked identical to succeeding and to never
+   * having started: the same form, no word either way. Read after mount
+   * rather than during render — this component is server-rendered too, and
+   * reading window.location during render is a hydration mismatch.
+   */
+  const [cancelled, setCancelled] = React.useState(false)
+  React.useEffect(() => {
+    setCancelled(new URLSearchParams(window.location.search).get('cancelled') === '1')
+  }, [])
   const [error, setError] = React.useState('')
 
   const customNum = custom ? Math.max(0, Math.floor(Number(custom) || 0)) : 0
@@ -105,6 +116,9 @@ export function DonateForm({ open }: { open: boolean }) {
         </label>
       )}
 
+      {cancelled && !error && (
+        <div className="dn-cancelled" role="status">Payment cancelled — you haven’t been charged.</div>
+      )}
       {error && <div className="dn-error">{error}</div>}
 
       <button type="button" className="dn-cta" onClick={go} disabled={!open || submitting || amount <= 0}>
@@ -145,6 +159,7 @@ const CSS = `
 .dn-amplify { display:flex; gap:10px; align-items:flex-start; margin:0 0 16px; font:400 13px/1.5 var(--font-manrope), system-ui, sans-serif; color:#6b6157; cursor:pointer; }
 .dn-amplify input { margin-top:3px; accent-color:#1F8A4C; }
 .dn-amplify strong { color:#2A1206; }
+.dn-cancelled { background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:9px 12px; color:#713f12; font:600 13px/1.5 var(--font-manrope), system-ui, sans-serif; margin:0 0 10px; }
 .dn-error { color:#b42318; font:600 13px var(--font-manrope), system-ui, sans-serif; margin:0 0 10px; }
 .dn-cta { width:100%; border:0; border-radius:999px; background:#1F8A4C; color:#fff; padding:15px 20px; cursor:pointer;
   font:800 16px var(--font-manrope), system-ui, sans-serif; transition:background .15s, opacity .15s; }
