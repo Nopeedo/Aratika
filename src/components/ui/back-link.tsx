@@ -31,7 +31,7 @@ import { NAV_PREV_KEY } from './nav-history'
  *  correctly whether you came from the index or a single party. */
 const KNOWN: { prefix: string; label: string }[] = [
   { prefix: '/elections/2026', label: 'the 2026 election' },
-  { prefix: '/battlegrounds',  label: 'Battlegrounds' },
+  { prefix: '/battlegrounds',  label: 'Live results 2026' },
   { prefix: '/compare',        label: 'Compare parties' },
   { prefix: '/policies',       label: 'the issues' },
   // /parties itself redirects to the first party now, so this prefix only

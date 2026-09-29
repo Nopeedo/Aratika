@@ -599,11 +599,10 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
 
         {/* Links + source */}
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          {/* One name for the page, matching the back link at the top and the
-              nav (§1.7): this said "Battlegrounds map" while the hero said
-              "All battlegrounds". */}
-          <Link href="/battlegrounds" style={pill(true)}><MapPin style={ic} /> Seats to watch</Link>
-          <Link href="/elections/2026" style={pill(false)}>2026 election <ArrowRight style={ic} /></Link>
+          {/* One way out: the 2026 Election Centre, where the seat map lives.
+              The "Seats to watch" pill to /battlegrounds went — that page is
+              "Live results 2026" now and doesn't list the seats. */}
+          <Link href="/elections/2026" style={pill(true)}><MapPin style={ic} /> 2026 election <ArrowRight style={ic} /></Link>
         </div>
         <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 14, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
           <Info style={{ width: 15, height: 15, color: TERTIARY, flexShrink: 0, marginTop: 1 }} />

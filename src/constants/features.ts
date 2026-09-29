@@ -21,14 +21,14 @@ export const LAUNCH_PHASE: Phase = 1
 export const PREMIUM_ENABLED = false
 
 /**
- * Master switch for the results on /elections/2026/live ("Live results 2026").
+ * Master switch for the results on /battlegrounds ("Live results 2026").
  * Flipped by hand on election night — not tied to a date, so nothing goes
  * live by itself.
  *
  * While false the page still exists at its URL and says what it is: its
  * title, when it opens (7pm on election day, from the Commission's timetable)
- * and what it will show. Only the results area is hidden. Nothing links to
- * the page yet either; add a link when you flip this.
+ * and what it will show. Only the results area is hidden. The nav links to
+ * it as "Live results 2026", so the off state has to stand on its own.
  */
 export const LIVE_RESULTS_ENABLED = false
 

@@ -53,7 +53,9 @@ export const NAV_ITEMS: NavItem[] = [
   // the label named the grouping, not the destinations, and each of the three
   // cost a tap to reach through it.
   { label: 'Electorate map', href: '/map', description: 'Interactive map: find your MP', feature: 'map' },
-  { label: 'Battlegrounds', href: '/battlegrounds', description: 'Electorate races & candidates for 2026', feature: 'battlegrounds' },
+  // /battlegrounds is "Live results 2026" now (election-night results, hidden
+  // until LIVE_RESULTS_ENABLED is flipped). The label says what the page is.
+  { label: 'Live results 2026', href: '/battlegrounds', description: 'Election night results, electorate by electorate', feature: 'battlegrounds' },
   { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
   // "The Record" is gone as a group: it held three destinations that have
   // nothing to do with each other beyond all being facts about this term, so
@@ -103,7 +105,7 @@ export const FOOTER_LINKS: Record<'learn' | 'explore' | 'account' | 'legal', Foo
   explore: [
     { label: 'Command Centre', href: '/command-centre', feature: 'dashboard' },
     { label: 'Elections', href: '/elections', feature: 'elections' },
-    { label: 'Battlegrounds', href: '/battlegrounds', feature: 'battlegrounds' },
+    { label: 'Live results 2026', href: '/battlegrounds', feature: 'battlegrounds' },
     { label: 'Interactive Map', href: '/map', feature: 'map' },
     { label: 'MPs Directory', href: '/mps', feature: 'mps' },
     { label: 'Party Policies', href: '/policies', feature: 'policies' },

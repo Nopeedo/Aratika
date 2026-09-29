@@ -69,7 +69,7 @@ export default function ParliamentPage() {
         <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: '16px 18px', background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14 }}>
           <Vote style={{ width: 18, height: 18, color: JADE, flexShrink: 0, marginTop: 1 }} />
           <p style={{ fontSize: 13.5, color: '#33373f', fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-            After the <Link href="/elections/2023" style={lnk}>2023 General Election</Link>, National formed a coalition with ACT and New Zealand First, holding <b>68 of 123 seats</b> (a majority needs 62). See where the next contest will be decided on the <Link href="/battlegrounds" style={lnk}>Battlegrounds map</Link>.
+            After the <Link href="/elections/2023" style={lnk}>2023 General Election</Link>, National formed a coalition with ACT and New Zealand First, holding <b>68 of 123 seats</b> (a majority needs 62). See where the next contest will be decided on the <Link href="/elections/2026" style={lnk}>2026 Election Centre map</Link>.
           </p>
         </div>
 

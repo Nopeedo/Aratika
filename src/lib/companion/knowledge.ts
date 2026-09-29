@@ -35,7 +35,7 @@ const PAGES: KnowledgeItem[] = [
   { id: 'page-learn', type: 'page', title: 'Learn how Parliament works', text: 'Interactive lessons from beginner to expert: MMP, your two votes, how a bill becomes law, select committees and more. Also a Kids tier.', href: '/learn' },
   { id: 'page-take-action', type: 'page', title: 'Take Action studio', text: 'Draft a letter to your MP or a Minister, make a select-committee submission, or file an Official Information Act (OIA) request. A Premium feature.', href: '/take-action' },
   { id: 'page-elections', type: 'page', title: 'Elections', text: 'Official 2023 results and the upcoming 2026 general election, nationally and by electorate.', href: '/elections' },
-  { id: 'page-battlegrounds', type: 'page', title: 'Battlegrounds', text: 'A marginality map of the electorates and per-seat pages tracking incumbents and 2026 candidates.', href: '/battlegrounds' },
+  { id: 'page-battlegrounds', type: 'page', title: 'Live results 2026', text: 'Election night preliminary results for the 2026 General Election, from 7pm on election day. The electorate map and per-seat pages are on the 2026 Election Centre.', href: '/battlegrounds' },
   { id: 'page-parliament', type: 'page', title: 'Parliament overview', text: 'A snapshot of the current Parliament, seat distribution, the government, and the opposition.', href: '/parliament' },
   { id: 'page-glossary', type: 'page', title: 'Glossary', text: 'Plain-language definitions of New Zealand political terms.', href: '/glossary' },
   { id: 'page-start', type: 'page', title: 'Find what matters to you', text: 'A short walkthrough that finds the issues you care about and builds you a personalised plan.', href: '/start' },

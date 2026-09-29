@@ -1,138 +1,116 @@
 /**
- * /battlegrounds — the seats to watch. A marginality-coloured electorate map
- * plus a ranked list of the closest 2023 contests, each linking to its seat page.
+ * /battlegrounds — "Live results 2026".
+ *
+ * WHAT CHANGED. This route was "Seats to watch" (a margin-coloured map and
+ * every seat ranked by its 2023 margin). By request it is the election-night
+ * results page now, named "Live results 2026", with the old content hidden —
+ * it lives on, demoted, in components/battlegrounds/seats-to-watch.tsx, and
+ * the map itself still runs on the Election Centre. The seat pages under
+ * /battlegrounds/[electorate] are untouched: the Election Centre's map links
+ * to them.
+ *
+ * TWO STATES, ONE SWITCH. LIVE_RESULTS_ENABLED in constants/features.ts is
+ * flipped by hand — never by the clock — so nothing goes live by itself.
+ *   - Off: the title, when the page opens, and what it will show. The results
+ *     area is not rendered at all.
+ *   - On: the same header, then the results area.
+ *
+ * NOT POLLS. Polls are what people say they'll do; this page shows counted
+ * votes. Every date and time here is read from electoral-calendar.json (the
+ * Electoral Commission's timetable), not typed (§1.8, §4).
+ *
+ * The results area has no data feed yet. When the switch is on it says so
+ * plainly rather than showing anything that looks like a result (§1.5, §1.8).
+ * The Commission's results site sits behind a bot check, so the feed needs an
+ * arrangement with them, not a scraper.
  */
 
 import type { Metadata } from 'next'
-import { ExternalLink, Swords } from 'lucide-react'
-import { getBattlegrounds, MARGIN_TIERS, UNKNOWN_TIER } from '@/lib/battlegrounds'
-import { BattlegroundsMap } from '@/components/battlegrounds/battlegrounds-map'
-import { getApprovedCandidatesBySlug } from '@/lib/candidates/live'
-import { BattlegroundsList } from '@/components/battlegrounds/battlegrounds-list'
-import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
-import { INK, JADE, MANROPE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import Link from 'next/link'
+import { ArrowRight, Clock } from 'lucide-react'
+import { milestone, longDate } from '@/constants/electoral-calendar'
+import { LIVE_RESULTS_ENABLED } from '@/constants/features'
+import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
-/** The red the hero icon and the closest tier already use. */
-const ACCENT = '#dc2626'
+export const revalidate = 60
+
+const YEAR = '2026'
 
 export const metadata: Metadata = {
-  /* One name for the page (§1.7 and §4). The metadata said "Battlegrounds:
-     Seats to Watch", the divider above the title said "Election
-     Battlegrounds", the title said "Seats to watch" and the seat pages linked
-     back to "All battlegrounds". "Seats to watch" is the plain one. */
-  title: 'Seats to watch',
-  description:
-    'New Zealand’s most marginal electorates: the closest 2023 contests, and the seats most likely to change hands in 2026.',
+  title: 'Live results 2026',
+  description: 'Preliminary results for the 2026 General Election, electorate by electorate, from 7pm on election day.',
 }
 
-export default async function BattlegroundsHub() {
-  const candidatesBySlug = await getApprovedCandidatesBySlug()
-  const all = getBattlegrounds()
+/** "Saturday 7 November 2026" from an ISO date, in the site's own wording. */
+function fullDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00Z`)
+  const weekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getUTCDay()]
+  return `${weekday} ${longDate(iso)} ${d.getUTCFullYear()}`
+}
+
+export default function LiveResultsPage() {
+  const electionDay = milestone('election-day-2026')
+  const official = milestone('official-results-2026')
+  const opens = electionDay ? fullDate(electionDay.date) : null
 
   return (
     <div style={WOVEN_PAGE}>
-      {/*
-        The header and the body now sit on ONE pair of vertical lines: both are
-        1080 wide with a clamp(18px, 5vw, 36px) gutter. The body used a fixed
-        24px, so at 375px every card edge down the page sat 5.25px inside the
-        title above it (§5.19, and §8's "see the edges dont align").
+      <div style={{ maxWidth: 1080, margin: '0 auto', padding: 'clamp(18px, 3vh, 26px) clamp(18px, 5vw, 36px) 64px' }}>
+        {/* Title at the same size and position as the policy page's h1 and
+            the Election Centre's — every page title on the site reads at one
+            weight (§4). */}
+        <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: INK, margin: '0 0 12px' }}>
+          Live results 2026
+        </h1>
 
-        1080 rather than the old 1280, matching /bills, /parties and
-        /elections. At 1920 that is a 1008px column, which is four 244px seat
-        cards: the same track and the same card size the /mps and /parties
-        directories landed on (§2.15), so a reader crossing between them meets
-        one object at one size.
-      */}
-      <div>
-        <div style={{ maxWidth: 1080, margin: '0 auto', padding: '46px clamp(18px, 5vw, 36px) 24px' }}>
-          {/* No "Election Battlegrounds" divider badge and no "2026 election →"
-              link: the badge was a claim about the page rather than a fact
-              about any of its rows (the /bills precedent), and the election
-              link is in the nav and at the foot of every seat page. */}
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'clamp(11px, 3vw, 16px)' }}>
-            <div style={{ width: 'clamp(40px, 11vw, 54px)', height: 'clamp(40px, 11vw, 54px)', borderRadius: 15, background: '#fef2f2', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Swords style={{ width: 'clamp(20px, 5.5vw, 27px)', height: 'clamp(20px, 5.5vw, 27px)', color: ACCENT }} />
-            </div>
-            {/* The standfirst that stood here is the (i) beside the title
-                (§1.2). It was five lines on a phone saying three things a
-                reader who has been here before skips: that every seat has a
-                page, what makes one worth watching, and what the colours mean.
-                The colours are drawn on the map directly below it. */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              <h1 style={{ fontSize: 'clamp(26px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.05 }}>Seats to watch</h1>
-              <InfoButton accent={ACCENT} label="What makes a seat one to watch" size={26}>
-                <InfoHeading accent={ACCENT}>What makes a seat one to watch</InfoHeading>
-                <InfoText>
-                  Every electorate has a page of its own, with the sitting MP, their record and
-                  who has confirmed they are standing in 2026. The closest 2023 races are the
-                  likeliest to change hands, so the list is ranked by the winning margin, closest
-                  first.
-                </InfoText>
-                <InfoHeading accent={ACCENT}>What the colours mean</InfoHeading>
-                <InfoText>
-                  Hotter colours are tighter 2023 contests. {MARGIN_TIERS.map((t) => `${t.label}: ${t.threshold}`).join('. ')}.
-                  {' '}Two seats have no margin on record and show as {UNKNOWN_TIER.label.toLowerCase()}:
-                  Port Waikato, where the 2023 election was cancelled after a candidate died, and
-                  Tāmaki Makaurau, where a 2025 by-election followed the death of the sitting MP.
-                </InfoText>
-                <InfoHeading accent={ACCENT}>Where the margins come from</InfoHeading>
-                <InfoText>
-                  The Electoral Commission’s official 2023 general election results. Every row was
-                  checked against elections.nz in July 2026. Candidates for 2026 appear on each
-                  seat page as parties confirm them during the campaign.
-                </InfoText>
-              </InfoButton>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 64px' }}>
-        <BattlegroundsMap candidatesBySlug={candidatesBySlug} />
-
-        {/* The four margin tiers were stated three times within 200px of
-            scroll: this map's legend, an inert row of dot-label-count chips,
-            and the tappable filter pills below. The inert row went (§1.3, and
-            the same case as the bills stat row that "became inert figures"),
-            because it carried the identical dot, label and count as the pills
-            and did nothing when tapped. */}
-
-        {/* All electorates, filterable by margin tier */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '26px 0 10px' }}>
-          {/* 24px, matching the peer section headings on /bills. At 20px it
-              read as a caption on the hero above it (§4). */}
-          <h2 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-.025em', color: INK, fontFamily: MANROPE, margin: 0 }}>Every seat, ranked by margin</h2>
-          <InfoButton accent={ACCENT} label="How this list is ranked" size={24}>
-            <InfoHeading accent={ACCENT}>How this list is ranked</InfoHeading>
-            <InfoText>
-              Closest 2023 result first. Tap a tier to narrow the list, and tap the lit pill
-              again to go back to all 72. Every seat has a page whether the 2023 race was close
-              or not.
-            </InfoText>
-            <InfoHeading accent={ACCENT}>What the margin is</InfoHeading>
-            <InfoText>
-              The winning margin: how many more electorate votes the winner got than the
-              runner-up in 2023. It is not a forecast for 2026, and it says nothing about the
-              party vote, which is what decides how many seats each party gets.
-            </InfoText>
-          </InfoButton>
-        </div>
-        {/* The line that stood here ("Closest races first. Filter to a tier, or
-            browse them all.") explained the pills directly below it, which are
-            labelled and carry their own counts (§8). */}
-        <BattlegroundsList all={all} tiers={MARGIN_TIERS} />
-
-        {/* One dated source line, in the /bills shape, replacing a grey box
-            that held three unrelated things: a source with no date, an
-            instruction ("tap any seat") and a roadmap promise. The date was in
-            the data all along (electorates-data.ts) and the page had never
-            said it (§4). */}
-        <p style={{ fontSize: 11.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 18 }}>
-          Source: Electoral Commission, 2023 general election official results, as at July 2026.{' '}
-          <a href="https://www.electionresults.govt.nz/electionresults_2023/" target="_blank" rel="noopener noreferrer" style={{ color: JADE, fontWeight: 700 }}>
-            Official results <ExternalLink style={{ width: 11, height: 11, display: 'inline' }} />
-          </a>
+        {/* What the page is for. Always shown, switch on or off. */}
+        <p style={{ fontSize: 15, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 8px', maxWidth: 640 }}>
+          When voting closes on election night, this page shows the <b style={{ color: INK }}>preliminary results</b> as
+          the Electoral Commission releases them: who is leading in each of the 72 electorates, and how the party vote
+          is falling nationally. These are counted votes, updated through the night.
         </p>
+        {official && (
+          <p style={{ fontSize: 13.5, color: TERTIARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 22px', maxWidth: 640 }}>
+            Preliminary results can change. The official results, including special votes, are declared on{' '}
+            {longDate(official.date)}.
+          </p>
+        )}
+
+        {!LIVE_RESULTS_ENABLED ? (
+          <div style={{
+            border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '18px 20px',
+            boxShadow: '0 2px 8px rgba(42,18,6,.05)', maxWidth: 640,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>
+              <Clock style={{ width: 14, height: 14 }} /> Not open yet
+            </div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '8px 0 4px', lineHeight: 1.25 }}>
+              {/* Plain words first, by request ("Opens at 7pm, Saturday 7
+                  November 2026" read like a timestamp); the date follows. */}
+              This page will be available on election day
+            </div>
+            <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 14px' }}>
+              {opens && <><b style={{ color: INK }}>{opens}.</b>{' '}</>}
+              {electionDay?.detail ?? 'Results are released from 7pm on election day.'}
+            </p>
+            <Link href={`/elections/${YEAR}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
+              Until then, the 2026 Election Centre <ArrowRight style={{ width: 14, height: 14 }} />
+            </Link>
+          </div>
+        ) : (
+          /* The results area. No feed is connected yet, so it says that
+             rather than showing anything that could be read as a result. */
+          <section aria-label="Preliminary results" style={{
+            border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '18px 20px', maxWidth: 640,
+          }}>
+            <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>
+              Waiting for the first results
+            </div>
+            <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
+              Results will appear here as the Electoral Commission releases them.
+            </p>
+          </section>
+        )}
       </div>
     </div>
   )

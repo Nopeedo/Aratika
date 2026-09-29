@@ -78,7 +78,7 @@ export function buildPlan(p: Preferences): Rec[] {
     recs.push({ href: '/learn', title: 'Start with one small lesson', reason: 'Feeling overwhelmed is normal, you don’t need to know everything. Start with a single 5-minute lesson.', icon: 'GraduationCap', weight: 66 })
   }
   if (p.mood === 'engaged') {
-    recs.push({ href: '/battlegrounds', title: 'Explore the 2026 battlegrounds', reason: 'You follow politics closely, see which seats are on a knife-edge heading into 2026.', icon: 'Swords', weight: 64 })
+    recs.push({ href: '/elections/2026', title: 'Explore the 2026 battlegrounds', reason: 'You follow politics closely, see which seats are on a knife-edge heading into 2026.', icon: 'Swords', weight: 64 })
   }
 
   // ── Comfort level ──
