@@ -19,8 +19,8 @@ import {
 } from 'lucide-react'
 import { isEnabled } from '@/constants/features'
 import { SignLink } from '@/components/homepage/compare-sign-link'
-import { usePartyCycle } from '@/components/homepage/party-cycle'
-import { INK, MANROPE } from '@/constants/theme'
+import { usePartyCycleOptional } from '@/components/homepage/party-cycle'
+import { INK, JADE, MANROPE } from '@/constants/theme'
 
 /** Body grey, for the group labels. */
 const SUB = '#5b6067'
@@ -108,7 +108,9 @@ const GROUPS: { label: string; items: Feature[] }[] = [
 ]
 
 export function ExploreCarousel() {
-  const { accentColor } = usePartyCycle()
+  // Renders under every page now, most of which have no party cycle: fall
+  // back to the site accent rather than requiring the provider.
+  const accentColor = usePartyCycleOptional()?.accentColor ?? JADE
   // Drop anything gated off in this launch phase, then drop a group that has
   // nothing left in it.
   const groups = GROUPS

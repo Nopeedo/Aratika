@@ -32,6 +32,15 @@ export function usePartyCycle(): PartyCycle {
   return c
 }
 
+/** The same context, for components that also render OUTSIDE the homepage.
+ *  Returns null instead of throwing, so a caller can fall back to the site's
+ *  neutral accent rather than requiring a provider it has no reason to need.
+ *  The throwing version stays the default: on the homepage a missing provider
+ *  is a bug, and a silent grey tile row would hide it. */
+export function usePartyCycleOptional(): PartyCycle | null {
+  return useContext(Ctx)
+}
+
 export function PartyCycleProvider({ children }: { children: ReactNode }) {
   const reduce = useReducedMotion()
   const [index, setIndex] = useState(0)            // 0 = National (blue) first

@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import { Geist, Geist_Mono, Manrope, Space_Grotesk } from 'next/font/google'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
+import { SiteTail } from '@/components/layout/site-tail'
 import { PlanTracker } from '@/components/onboarding/plan-tracker'
 // import { PlanWidget } from '@/components/onboarding/plan-widget' // hidden for now
 import { CompanionWidget } from '@/components/companion/companion-widget'
@@ -133,6 +134,9 @@ export default function RootLayout({
         {/* <PlanWidget /> */}
         <CompanionWidget />
         <SoundToggle />
+        {/* The mailing list and the tool signposts, above the footer on every
+            page but the homepage, which renders both itself. */}
+        <SiteTail />
         <Footer />
         <Analytics />
         <SpeedInsights />

@@ -18,10 +18,10 @@
 
 import type { ReactNode } from 'react'
 import { Scale } from 'lucide-react'
-import { usePartyCycle } from '@/components/homepage/party-cycle'
+import { usePartyCycleOptional } from '@/components/homepage/party-cycle'
 import { isLightHex } from '@/components/homepage/battleground-card'
 import { SignShape } from '@/components/ui/sign-link'
-import { INK } from '@/constants/theme'
+import { INK, JADE } from '@/constants/theme'
 
 /**
  * The signpost itself, reusable: any homepage link that should read as a way
@@ -35,7 +35,9 @@ import { INK } from '@/constants/theme'
  * the issue's colour instead.
  */
 export function SignLink({ href, icon, children }: { href: string; icon?: ReactNode; children: ReactNode }) {
-  const { accentColor } = usePartyCycle()
+  // Optional: the signposts render under every page now (SiteTail), and only
+  // the homepage has a party cycle above them. Jade off it.
+  const accentColor = usePartyCycleOptional()?.accentColor ?? JADE
   return (
     <SignShape href={href} color={accentColor} fg={isLightHex(accentColor) ? INK : '#fff'} icon={icon}>
       {children}
