@@ -11,10 +11,9 @@ export function AuthShell({ title, subtitle, children }: { title: string; subtit
   return (
     <div style={{ ...WOVEN_PAGE, minHeight: 'calc(100vh - 64px)', display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '64px 24px' }}>
       <div style={{ width: '100%', maxWidth: 400 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, justifyContent: 'center', marginBottom: 24 }}>
-          <div style={{ width: 34, height: 34, borderRadius: 9, background: '#0F172A', color: '#36e08a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 18, fontFamily: MANROPE }}>A</div>
-          <span style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE }}>Politika</span>
-        </div>
+        {/* The "A" tile and "Politika" wordmark above the card are gone, by
+            request: the navbar already shows the logo, and the "A" was left
+            over from the Aratika name. Applies to every auth page. */}
         <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 20, padding: '28px 28px 24px', boxShadow: '0 2px 4px rgba(12,14,18,.03), 0 24px 48px -28px rgba(12,14,18,.22)' }}>
           <h1 style={{ fontSize: 22, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '0 0 4px', textAlign: 'center' }}>{title}</h1>
           <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 22px', textAlign: 'center' }}>{subtitle}</p>
