@@ -95,6 +95,8 @@ export function visibleNav(): NavItem[] {
 
 interface FooterLink { label: string; href: string; feature: string }
 
+// `learn` and `explore` are no longer rendered: the footer dropped both
+// columns by request. Kept so they can come back without rebuilding them.
 export const FOOTER_LINKS: Record<'learn' | 'explore' | 'account' | 'legal', FooterLink[]> = {
   learn: [
     { label: 'Find what matters to you', href: '/start', feature: 'onboarding' },

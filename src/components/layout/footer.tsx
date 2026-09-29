@@ -8,13 +8,16 @@ import { LogoMark } from '@/components/brand/logo-mark'
 
 export function Footer() {
   return (
-    <footer className="bg-brand-navy text-slate-300 mt-auto">
+    <footer className="bg-white text-[#6b6157] mt-auto border-t border-[#e6e2da]">
+      {/* White, by request (was brand navy), in the site's warm palette:
+          INK #2A1206 for headings, SECONDARY #6b6157 for links, TERTIARY
+          #9a9186 for small print, BORDER #e6e2da for rules. */}
 
       {/* Source Credibility Bar */}
-      <div className="border-b border-slate-700/60">
+      <div className="border-b border-[#e6e2da]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium mr-2">
+            <div className="flex items-center gap-1.5 text-xs text-[#6b6157] font-medium mr-2">
               <ShieldCheck className="size-3.5 text-brand-jade shrink-0" />
               Data sourced from:
             </div>
@@ -24,7 +27,7 @@ export function Footer() {
                 href={source.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-full text-xs text-slate-300 transition-colors"
+                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#faf8f4] hover:bg-[#f1ede6] border border-[#e6e2da] rounded-full text-xs text-[#6b6157] transition-colors"
               >
                 {source.name}
                 <ExternalLink className="size-2.5 opacity-60" />
@@ -36,7 +39,7 @@ export function Footer() {
 
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
 
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
@@ -44,16 +47,16 @@ export function Footer() {
               <div className="flex items-center justify-center size-8 rounded-lg bg-brand-jade select-none">
                 <LogoMark size={20} reversed />
               </div>
-              {/* Same Ara·pono split as the navbar, tuned for the dark
-                  footer: jade reads muddy on near-black, so pono takes the
-                  mark's lighter jade instead. Literal text on purpose — see
-                  the navbar note. */}
-              <span className="font-semibold text-white text-lg">Poli<span style={{ color: '#4CC38A' }}>tika</span></span>
+              {/* Same split as the navbar. On white the brand jade reads
+                  properly, so it's used here instead of the lighter jade the
+                  dark footer needed. Literal text on purpose — see the
+                  navbar note. */}
+              <span className="font-semibold text-[#2A1206] text-lg">Poli<span style={{ color: '#1F8A4C' }}>tika</span></span>
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed">
+            <p className="text-xs text-[#6b6157] leading-relaxed">
               {SITE.tagline}
             </p>
-            <p className="text-xs text-slate-500 mt-3 leading-relaxed">
+            <p className="text-xs text-[#9a9186] mt-3 leading-relaxed">
               An independent, non-partisan political information platform for New Zealanders.
             </p>
 
@@ -68,7 +71,7 @@ export function Footer() {
                       href={social.url}
                       target="_blank"
                       rel="me noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-full text-xs text-slate-300 transition-colors"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#faf8f4] hover:bg-[#f1ede6] border border-[#e6e2da] rounded-full text-xs text-[#6b6157] transition-colors"
                     >
                       {social.label}
                       <ExternalLink className="size-2.5 opacity-60" />
@@ -79,47 +82,12 @@ export function Footer() {
             )}
           </div>
 
-          {/* Learn */}
-          <div>
-            <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-3">
-              Learn
-            </h4>
-            <ul className="space-y-2">
-              {FOOTER_LINKS.learn.filter((l) => isEnabled(l.feature)).map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-slate-400 hover:text-slate-200 transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Explore */}
-          <div>
-            <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-3">
-              Explore
-            </h4>
-            <ul className="space-y-2">
-              {FOOTER_LINKS.explore.filter((l) => isEnabled(l.feature)).map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-slate-400 hover:text-slate-200 transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* The Learn and Explore columns are gone, by request. Their link
+              lists stay in FOOTER_LINKS (nav-links.ts), unrendered. */}
 
           {/* Account */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-3">
+            <h4 className="text-xs font-semibold text-[#2A1206] uppercase tracking-wider mb-3">
               Account
             </h4>
             <ul className="space-y-2">
@@ -127,7 +95,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-slate-200 transition-colors"
+                    className="text-sm text-[#6b6157] hover:text-[#2A1206] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -138,7 +106,7 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider mb-3">
+            <h4 className="text-xs font-semibold text-[#2A1206] uppercase tracking-wider mb-3">
               Legal
             </h4>
             <ul className="space-y-2">
@@ -146,7 +114,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-slate-400 hover:text-slate-200 transition-colors"
+                    className="text-sm text-[#6b6157] hover:text-[#2A1206] transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -161,9 +129,9 @@ export function Footer() {
           address is configured, so an incomplete statement never goes public.
           Kept clearly legible (not tiny) per Electoral Commission guidance. */}
       {SITE.promoter.address && (
-        <div className="border-t border-slate-700/60">
+        <div className="border-t border-[#e6e2da]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-            <p className="text-xs sm:text-[13px] text-slate-400 text-center">
+            <p className="text-xs sm:text-[13px] text-[#6b6157] text-center">
               Promoted by {SITE.promoter.name}, {SITE.promoter.address}.
             </p>
           </div>
@@ -171,12 +139,12 @@ export function Footer() {
       )}
 
       {/* Bottom Bar */}
-      <div className="border-t border-slate-700/60">
+      <div className="border-t border-[#e6e2da]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-[#9a9186]">
             © {new Date().getFullYear()} {SITE.name}. All rights reserved.
           </p>
-          <p className="text-xs text-slate-600 text-center sm:text-right max-w-md">
+          <p className="text-xs text-[#9a9186] text-center sm:text-right max-w-md">
             Politika is an independent platform. All information is sourced from official NZ government
             and electoral sources. We are not affiliated with any political party.
           </p>
