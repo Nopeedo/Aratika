@@ -53,9 +53,11 @@ export default function TermsPage() {
 
       <h2>7. Politika is free</h2>
       <p>
-        There is no paid tier, no subscription and nothing to buy. Every part of the site is available to everyone, and
-        we never ask for card details. If that ever changes we’ll say so here first, and your rights under the{' '}
-        <strong>Consumer Guarantees Act 1993</strong> would not be affected by these terms.
+        There is no paid tier, no subscription and nothing to buy. Every part of the site is available to everyone,
+        and donating unlocks nothing: it is a gift, not a purchase, and it buys no say in what Politika publishes.
+        Donations are taken on Stripe’s own page, so we never ask you for card details ourselves. Your rights under
+        the{' '}
+        <strong>Consumer Guarantees Act 1993</strong> are not affected by these terms.
       </p>
 
       <h2>8. Intellectual property &amp; sources</h2>

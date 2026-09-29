@@ -70,10 +70,10 @@ export function renderReceipt({ name, amountCents, currency, reference, paidAt, 
               ${row('Donation', esc(amount))}
               ${row('Date', esc(date))}
               ${row('Reference', esc(reference))}
-              ${row('Paid to', 'Onebyone Project, for Politika')}
+              ${row('Paid to', 'Politika')}
             </table>
             <div style="font-family:Arial,sans-serif;font-size:12.5px;color:${SUB};line-height:1.55;margin-top:12px">
-              Onebyone Project processes Politika&rsquo;s donations, so your card statement will show <b style="color:${ESPRESSO}">Onebyone Project</b>.
+              Politika takes donations through <b style="color:${ESPRESSO}">Stripe</b>. Your card details were entered on Stripe&rsquo;s own page and never reached us.
             </div>
           </td></tr>
         </table>
@@ -100,9 +100,9 @@ export function renderReceipt({ name, amountCents, currency, reference, paidAt, 
     `Donation: ${amount}`,
     `Date: ${date}`,
     `Reference: ${reference}`,
-    'Paid to: Onebyone Project, for Politika',
+    'Paid to: Politika',
     '',
-    "Onebyone Project processes Politika's donations, so your card statement will show Onebyone Project.",
+    "Politika takes donations through Stripe. Your card details were entered on Stripe's own page and never reached us.",
     '',
     'Questions about your donation? Just reply to this email.',
     '',

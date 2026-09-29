@@ -137,8 +137,8 @@ export function DonateForm({ open }: { open: boolean }) {
       {amount > 0 && (
         <p className="dn-terms">
           By tapping Continue, you agree to our <a href="/terms">Terms of Use</a> and <a href="/privacy">Privacy Policy</a>.
-          Payments are processed by Onebyone Project on Politika&rsquo;s behalf, so that&rsquo;s the name you&rsquo;ll
-          see on your statement.
+          Your card details are entered on Stripe&rsquo;s own page and never reach us. Politika is not a registered
+          charity, so a donation is not tax-deductible.
         </p>
       )}
     </>
