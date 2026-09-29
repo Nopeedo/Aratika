@@ -183,28 +183,6 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
           land, so view one at a time") is inside <RollPills>'s own (i), where
           /map gets it too. The same control was explained on one page and left
           bare on the other (§1.2, §1.4). */}
-      {/* What the map is coloured by — by request, a toggle above the map.
-          Same §2.2 pill treatment as every other pill row on the site
-          (lit = #efece5 on INK), and the §3.1 hit-area/pill split. Its own
-          row, above the roll pills: they answer different questions (what
-          the colours mean vs which roll you're looking at). */}
-      <div role="group" aria-label="Colour the map by" style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
-        {([['candidates', 'Who’s standing'], ['margin', '2023 margin']] as [MapView, string][]).map(([key, label]) => {
-          const on = view === key
-          return (
-            <button key={key} type="button" onClick={() => setView(key)} aria-pressed={on}
-              style={{ display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer' }}>
-              <span className="status-pill" style={{
-                display: 'inline-flex', alignItems: 'center', borderRadius: 999,
-                background: on ? '#efece5' : '#fff', border: `2px solid ${on ? INK : BORDER}`,
-                color: INK, fontFamily: MANROPE, fontWeight: 800, whiteSpace: 'nowrap',
-                transition: 'background-color .2s ease, border-color .2s ease',
-              }}>{label}</span>
-            </button>
-          )
-        })}
-      </div>
-
       <div style={{ marginBottom: 14 }}>
         <RollPills value={layer} onChange={switchLayer} accent={ACCENT} />
       </div>
@@ -216,6 +194,32 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
           {status === 'loading' && <MapLoading />}
           {status === 'ready' && data && <ElectorateMap key={layer} data={data} selectedKey={selectedKey} onSelect={setSelected} colorOf={colorOf} colorKey={view} />}
           {status === 'error' && <MapUnavailable message={`${layer === 'maori' ? 'Māori' : 'General'} boundaries could not be loaded.`} />}
+
+          {/* What the map is coloured by — one button ON the map, top-right,
+              by request. It was a two-pill row above the map ("Who's
+              standing" / "2023 margin"); the default view needs no button to
+              reach it, so what's left is one control that names the OTHER
+              view. Top-right because Leaflet's zoom sits top-left, the key
+              bottom-left and the attribution bottom-right. zIndex 1000, the
+              key's own, so Leaflet's panes (400-700) can't cover it. */}
+          {status === 'ready' && data && (
+            <button
+              type="button"
+              onClick={() => setView((v) => (v === 'candidates' ? 'margin' : 'candidates'))}
+              style={{
+                position: 'absolute', top: 10, right: 10, zIndex: 1000,
+                display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer',
+              }}
+            >
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', borderRadius: 999, padding: '6px 12px',
+                background: 'rgba(255,255,255,.95)', border: `1px solid ${BORDER}`, boxShadow: '0 2px 8px rgba(12,14,18,.12)',
+                color: INK, fontFamily: MANROPE, fontSize: 12.5, fontWeight: 800, whiteSpace: 'nowrap',
+              }}>
+                {view === 'candidates' ? 'View 2023 map' : 'View who’s standing'}
+              </span>
+            </button>
+          )}
 
           {/* Legend. left/bottom live in MAP_LEGEND_CSS so the media query can
               clear the Leaflet attribution strip; inline values would beat it. */}
