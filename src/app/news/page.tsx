@@ -26,7 +26,7 @@ import { getVideos, getInterviewVideos } from '@/lib/news/videos'
 import { NewsFeed } from '@/components/news/news-feed'
 import { AboutNews } from '@/components/news/about-news'
 import { OUTLET_NAMES } from '@/constants/news-outlets'
-import { BORDER, INK, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { INK, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 // Revalidated, not force-dynamic.
 // The feed is polled from the sources on a schedule, so a per-request render was
@@ -49,15 +49,20 @@ export default async function NewsPage() {
 
   return (
     <div style={WOVEN_PAGE}>
-      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: COL, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
+      {/* No rule under the header, by request: the title sits straight on
+          the feed. The bottom padding came down with it, since the rule was
+          what the 30px + 26px gap was spacing around. */}
+      <div>
+        <div style={{ maxWidth: COL, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 0' }}>
           {/* "credible" came out of the label: it is an editorial judgement
               worn as a property of the sources, with no test the reader can
               check (§1.8). What the page can say is where the stories are
               from, which it now does on the source line below. */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
             <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.08 }}>
-              The Latest
+              {/* "News", by request, matching the menu item that brings
+                  people here. Was "The Latest". */}
+              News
             </h1>
             <AboutNews />
           </div>

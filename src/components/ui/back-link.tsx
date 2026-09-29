@@ -40,7 +40,7 @@ const KNOWN: { prefix: string; label: string }[] = [
   { prefix: '/elections/2023', label: 'the 2023 results' },
   { prefix: '/dashboard',      label: 'your dashboard' },
   { prefix: '/bills',          label: 'The Record' },
-  { prefix: '/news',           label: 'Latest' },
+  { prefix: '/news',           label: 'News' },
   { prefix: '/hub',            label: 'your hub' },
   { prefix: '/mps',            label: 'MPs' },
   { prefix: '/map',            label: 'the map' },
