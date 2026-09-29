@@ -1,0 +1,54 @@
+# Donation receipts — emails a receipt from hello@politika.nz for every donation
+# Onebyone Project has reported paid (public.donations, receipt_sent_at null).
+# See scripts/donation-receipts.mjs.
+name: Donation receipts
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'List who would get a receipt, send nothing'
+        type: boolean
+        default: false
+
+concurrency:
+  group: donation-receipts
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+
+      - name: Send donation receipts
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          ZOHO_SMTP_USER: ${{ secrets.ZOHO_SMTP_USER }}
+          ZOHO_SMTP_PASS: ${{ secrets.ZOHO_SMTP_PASS }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+        run: |
+          if [ -z "$ZOHO_SMTP_USER" ] || [ -z "$ZOHO_SMTP_PASS" ]; then
+            echo "::error::ZOHO_SMTP_USER / ZOHO_SMTP_PASS not set — receipts cannot be delivered."
+            exit 1
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            node scripts/donation-receipts.mjs | tee /tmp/receipts.log
+          else
+            node scripts/donation-receipts.mjs --send | tee /tmp/receipts.log
+          fi
+          {
+            echo '## Donation receipts'
+            echo ''
+            echo '```'
+            tail -40 /tmp/receipts.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

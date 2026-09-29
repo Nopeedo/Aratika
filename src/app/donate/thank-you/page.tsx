@@ -1,51 +1,20 @@
 /**
  * /donate/thank-you — where Stripe Checkout returns a donor after paying.
  *
- * Also where the donate form's "Get email updates" tick box is honoured.
- * Checkout is where the donor gives their email, so the address only exists
- * once they're back: this reads the session (on Onebyone's account, via
- * DONATE_STRIPE_SECRET_KEY) and, when the payment is complete, came from
- * Politika's form and had the box ticked, adds the address to
- * newsletter_signups with source 'donate'. Same table and same rule as the
- * homepage sign-up: confirmed_at stays null, so nothing sends to it until a
- * confirmation step exists. Any failure here is swallowed: the donor still
- * gets their thank-you.
+ * Nothing is looked up here. The payment is confirmed server to server:
+ * Onebyone's webhook sends /api/donate/notify a signed note, which queues the
+ * receipt (sent from hello@politika.nz by scripts/donation-receipts.mjs) and
+ * the newsletter sign-up if it was ticked.
  */
 
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import Stripe from 'stripe'
 import { ArrowRight } from 'lucide-react'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = { title: 'Thank you', robots: { index: false } }
-export const dynamic = 'force-dynamic'
 
-async function recordEmailOptIn(sessionId: string) {
-  const key = process.env.DONATE_STRIPE_SECRET_KEY
-  if (!key || !/^cs_[A-Za-z0-9_]+$/.test(sessionId)) return
-  try {
-    const session = await new Stripe(key).checkout.sessions.retrieve(sessionId)
-    const email = session.customer_details?.email?.trim().toLowerCase()
-    if (
-      session.payment_status !== 'paid' ||
-      session.metadata?.source !== 'politika' ||
-      session.metadata?.email_updates !== 'true' ||
-      !email
-    ) return
-    await createAdminClient()
-      .from('newsletter_signups')
-      .upsert({ email, source: 'donate' }, { onConflict: 'email', ignoreDuplicates: true })
-  } catch (e) {
-    console.error('[donate/thank-you] email opt-in not recorded', e)
-  }
-}
-
-export default async function DonateThankYouPage({ searchParams }: { searchParams: Promise<{ session_id?: string }> }) {
-  const { session_id } = await searchParams
-  if (session_id) await recordEmailOptIn(session_id)
-
+export default function DonateThankYouPage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ maxWidth: 560, margin: '0 auto', padding: 'clamp(40px, 8vh, 80px) clamp(18px, 5vw, 36px) 64px', textAlign: 'center' }}>
@@ -56,8 +25,8 @@ export default async function DonateThankYouPage({ searchParams }: { searchParam
           Thank you
         </h1>
         <p style={{ fontFamily: MANROPE, fontSize: 15, lineHeight: 1.6, color: SECONDARY, margin: '0 0 22px' }}>
-          Your donation helps keep Politika running, independent and free for everyone. A receipt is on its way to
-          your inbox.
+          Your donation helps keep Politika running, independent and free for everyone. Your receipt will arrive
+          by email from hello@politika.nz shortly.
         </p>
         <Link href="/elections/2026" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: MANROPE, fontSize: 14, fontWeight: 800, color: JADE, textDecoration: 'none' }}>
           Back to the 2026 Election <ArrowRight style={{ width: 15, height: 15 }} />

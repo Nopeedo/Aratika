@@ -1,66 +1,62 @@
 /**
- * POST /api/donate/checkout — opens a Stripe Checkout session for a donation
- * to Politika, on ONEBYONE PROJECT's Stripe account (Onebyone is the merchant,
- * taking donations on Politika's behalf, by the owner's arrangement).
+ * POST /api/donate/checkout — starts a donation to Politika.
  *
- * That's why this does NOT use lib/stripe.ts: STRIPE_SECRET_KEY is Politika's
- * own account (the premium tier). This reads DONATE_STRIPE_SECRET_KEY, which
- * must be Onebyone's key. Unset → 503, and /donate shows "open soon".
+ * Onebyone Project is the merchant, on Politika's behalf. Politika holds no
+ * Onebyone or Stripe credentials: this asks Onebyone's server to open a
+ * Stripe Checkout session (POST /api/v1/donations/politika) and hands the
+ * browser the URL. The request is signed with DONATE_SHARED_SECRET (see
+ * lib/donate/sign.ts); without it donations aren't open and this answers 503.
  *
- * Every session and payment carries metadata source=politika, so Onebyone can
- * tell these apart from its own campaign donations in Stripe and in its
- * webhook handlers.
+ * One-time and NZD only, by request. Onebyone's webhook records the payment
+ * and sends it back to /api/donate/notify, which queues Politika's receipt.
  */
 
-import Stripe from 'stripe'
+import { donateSecret, sign } from '@/lib/donate/sign'
 
 const MIN_CENTS = 100          // $1
 const MAX_CENTS = 1_000_000    // $10,000
+const ONEBYONE_API = (process.env.ONEBYONE_API_URL || 'https://onebyoneproject-api.fly.dev').replace(/\/$/, '')
 
 export async function POST(request: Request) {
-  const key = process.env.DONATE_STRIPE_SECRET_KEY
-  if (!key) return Response.json({ error: 'Donations are not open yet' }, { status: 503 })
+  const secret = donateSecret()
+  if (!secret) return Response.json({ error: 'Donations are not open yet' }, { status: 503 })
 
-  let body: { amountCents?: unknown; currency?: unknown; coverFee?: unknown; emailUpdates?: unknown }
+  let body: { amountCents?: unknown; coverFee?: unknown; emailUpdates?: unknown }
   try {
     body = await request.json()
   } catch {
     return Response.json({ error: 'Bad request' }, { status: 400 })
   }
-
   const amount = typeof body.amountCents === 'number' ? Math.round(body.amountCents) : NaN
-  // NZD only, by request.
-  const currency = 'nzd'
   if (!Number.isFinite(amount) || amount < MIN_CENTS || amount > MAX_CENTS) {
     return Response.json({ error: 'Choose an amount between $1 and $10,000' }, { status: 400 })
   }
 
-  const origin = new URL(request.url).origin
-  const metadata = {
-    source: 'politika',
-    purpose: 'politika-running-costs',
-    cover_fee: String(body.coverFee === true),
-    // Read back on /donate/thank-you, which adds the donor's Checkout email
-    // to the newsletter list only when this is 'true'.
-    email_updates: String(body.emailUpdates === true),
-  }
+  // The donor's IP, so Onebyone rate-limits per donor rather than treating
+  // every Politika donor as one visitor (all requests come from this server).
+  const clientIp = (request.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || null
+
+  const raw = JSON.stringify({
+    amount,
+    marketing_opt_in: body.emailUpdates === true,
+    cover_fee: body.coverFee === true,
+    client_ip: clientIp,
+  })
+  const ts = String(Math.floor(Date.now() / 1000))
 
   try {
-    const stripe = new Stripe(key)
-    // One-time only, by request: no subscriptions, so nothing recurring is
-    // ever created on Onebyone's account for Politika.
-    const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      submit_type: 'donate',
-      line_items: [{ quantity: 1, price_data: { currency, unit_amount: amount, product_data: { name: 'Donation to Politika' } } }],
-      payment_intent_data: { metadata, description: 'Donation to Politika' },
-      metadata,
-      success_url: `${origin}/donate/thank-you?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/donate`,
+    const res = await fetch(`${ONEBYONE_API}/api/v1/donations/politika`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-politika-timestamp': ts, 'x-politika-signature': sign(raw, ts, secret) },
+      body: raw,
+      cache: 'no-store',
     })
-    return Response.json({ url: session.url })
+    const json = (await res.json().catch(() => ({}))) as { checkout_url?: string; detail?: string }
+    if (res.ok && json.checkout_url) return Response.json({ url: json.checkout_url })
+    console.error('[donate] onebyone refused', res.status, json.detail)
+    return Response.json({ error: 'Could not open checkout' }, { status: res.status === 429 ? 429 : 502 })
   } catch (e) {
-    console.error('[donate] checkout failed', e)
+    console.error('[donate] onebyone unreachable', e)
     return Response.json({ error: 'Could not open checkout' }, { status: 502 })
   }
 }

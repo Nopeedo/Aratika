@@ -6,9 +6,9 @@
  * is for, then one white card holding the donation form: one-time only, the
  * donor types the amount (components/donate/donate-form.tsx).
  *
- * Onebyone takes the payment as the merchant, on Politika's behalf. That runs
- * through /api/donate/checkout on Onebyone's Stripe account, which is only
- * live once DONATE_STRIPE_SECRET_KEY is set in the environment. Until then the
+ * Onebyone takes the payment as the merchant, on Politika's behalf:
+ * /api/donate/checkout asks Onebyone's server to open the Stripe checkout,
+ * signed with DONATE_SHARED_SECRET. Until that is set in the environment the
  * form still shows, and its button says donations open soon.
  */
 
@@ -27,7 +27,7 @@ export const dynamic = 'force-dynamic'
 const para: React.CSSProperties = { fontSize: 15, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }
 
 export default function DonatePage() {
-  const open = Boolean(process.env.DONATE_STRIPE_SECRET_KEY)
+  const open = Boolean(process.env.DONATE_SHARED_SECRET)
 
   return (
     <div style={WOVEN_PAGE}>
