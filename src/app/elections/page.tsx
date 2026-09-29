@@ -1,77 +1,15 @@
 /**
- * /elections — hub linking to each general election (upcoming + past results).
+ * /elections — no page of its own any more.
+ *
+ * It was a hub with one card per election (2026 upcoming, 2023 final result).
+ * Removed by request along with the "All elections" back link on the results
+ * page. The route redirects rather than 404ing so old links and bookmarks
+ * still land somewhere useful: the 2026 Election Centre. The 2023 results
+ * stay at /elections/2023, linked from the footer.
  */
 
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowRight, Vote } from 'lucide-react'
-import { ELECTIONS } from '@/constants/elections-data'
-import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
-import { SectionDivider } from '@/components/ui/section-divider'
-import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { redirect } from 'next/navigation'
 
-export const metadata: Metadata = {
-  title: 'Elections',
-  description: 'New Zealand general elections: the 2026 election ahead, and the official results from 2023.',
-}
-
-export default function ElectionsHub() {
-  return (
-    <div style={WOVEN_PAGE}>
-      <div style={{ borderBottom: `1px solid ${BORDER}` }}>
-        <div style={{ maxWidth: 1000, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
-          <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="General Elections" /></div>
-          <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Elections</h1>
-          <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
-            The election that built the current Parliament, and the next one on the horizon, with official results from the
-            Electoral Commission.
-          </p>
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 1000, margin: '0 auto', padding: '36px clamp(18px, 5vw, 36px) 64px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: 18 }}>
-          {ELECTIONS.map((e) => {
-            const upcoming = e.status === 'upcoming'
-            return (
-              <Link key={e.slug} href={`/elections/${e.slug}`} style={{ textDecoration: 'none' }}>
-                <div className="policy-card" style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 20, overflow: 'hidden', height: '100%', boxShadow: '0 2px 4px rgba(12,14,18,.03)' }}>
-                  <div style={{ height: 5, background: upcoming ? '#F5C518' : JADE }} />
-                  <div style={{ padding: '22px 22px 18px', display: 'flex', flexDirection: 'column', gap: 12, height: '100%' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: 30, fontWeight: 800, color: INK, fontFamily: MANROPE, letterSpacing: '-.02em' }}>{e.year}</span>
-                      <span style={{
-                        fontSize: 11, fontWeight: 800, letterSpacing: '.06em', textTransform: 'uppercase', fontFamily: MANROPE,
-                        padding: '3px 10px', borderRadius: 999,
-                        color: upcoming ? '#92400e' : '#065f46', background: upcoming ? '#fef3c7' : '#ecfdf5',
-                        border: `1px solid ${upcoming ? '#fde68a' : '#a7f3d0'}`,
-                      }}>{upcoming ? 'Upcoming' : 'Final result'}</span>
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5 }}>{e.headline}</div>
-                      {/* mini seat bar for completed elections */}
-                      {e.results && (
-                        <div style={{ display: 'flex', height: 8, borderRadius: 4, overflow: 'hidden', marginTop: 14 }}>
-                          {e.results.map((r) => (
-                            <div key={r.party} title={`${PARTY_NAMES[r.party].short}: ${r.seats}`} style={{ width: `${(r.seats / (e.totalSeats || 1)) * 100}%`, background: PARTY_COLORS[r.party].bg }} />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 800, color: upcoming ? '#b45309' : JADE, fontFamily: MANROPE, paddingTop: 10, borderTop: `1px solid ${BORDER}` }}>
-                      {upcoming ? 'Get ready to vote' : 'View full results'} <ArrowRight style={{ width: 14, height: 14 }} />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
-
-        <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 20, display: 'flex', alignItems: 'center', gap: 6 }}>
-          <Vote style={{ width: 14, height: 14 }} /> Results sourced from the Electoral Commission. Earlier elections (2020 and before) coming soon.
-        </p>
-      </div>
-    </div>
-  )
+export default function ElectionsIndex() {
+  redirect('/elections/2026')
 }

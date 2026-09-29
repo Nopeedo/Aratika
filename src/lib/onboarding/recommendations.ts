@@ -86,7 +86,7 @@ export function buildPlan(p: Preferences): Rec[] {
     recs.push({ href: '/glossary', title: 'The plain-English glossary', reason: 'Hit a word you don’t know? Look up any political term in everyday language.', icon: 'BookOpen', weight: 48 })
   }
   if (p.level === 'expert') {
-    recs.push({ href: '/elections', title: 'Dig into the election data', reason: 'Already clued up? Explore the full 2023 results and the 2026 race in detail.', icon: 'BarChart3', weight: 52 })
+    recs.push({ href: '/elections/2023', title: 'Dig into the election data', reason: 'Already clued up? Explore the full 2023 results.', icon: 'BarChart3', weight: 52 })
   }
 
   // ── Learning style ──

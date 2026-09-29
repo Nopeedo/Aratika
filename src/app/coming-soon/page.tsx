@@ -23,7 +23,7 @@ export default function ComingSoonPage() {
           This feature is part of a later phase, we’ll switch it on soon. In the meantime, here’s where to start:
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <Link href="/elections" style={btn(true)}><Vote style={ic} /> Elections 2026</Link>
+          <Link href="/elections/2026" style={btn(true)}><Vote style={ic} /> Elections 2026</Link>
           <Link href="/map" style={btn(false)}><Map style={ic} /> Find your electorate</Link>
           <Link href="/policies" style={btn(false)}><Scale style={ic} /> Where parties stand</Link>
           <Link href="/start" style={btn(false)}>Find what matters to you <ArrowRight style={ic} /></Link>

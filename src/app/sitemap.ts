@@ -61,7 +61,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // ── Election centre ───────────────────────────────────────────────────────
   if (isEnabled('elections')) {
-    entries.push(entry('/elections', 0.9, 'weekly'))
     for (const year of ELECTION_SLUGS) {
       // The upcoming election is the flagship page; past results are reference.
       const upcoming = year === '2026'

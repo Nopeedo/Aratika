@@ -4,9 +4,7 @@
  */
 
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
 import { getElection, ELECTION_SLUGS } from '@/constants/elections-data'
 import { SectionDivider } from '@/components/ui/section-divider'
 import { ResultsView } from '@/components/elections/results-view'
@@ -53,9 +51,9 @@ export default async function ElectionYearPage({ params }: { params: Promise<{ y
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '24px clamp(18px, 5vw, 36px) 34px' }}>
-          <Link href="/elections" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> All elections
-          </Link>
+          {/* The "All elections" back link is gone, by request, along with
+              the /elections hub it pointed at (that route redirects to the
+              2026 Election Centre now). */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
             <SectionDivider type="official" label="General Election" />
             <span style={{

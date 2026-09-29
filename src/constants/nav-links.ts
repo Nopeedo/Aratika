@@ -104,7 +104,9 @@ export const FOOTER_LINKS: Record<'learn' | 'explore' | 'account' | 'legal', Foo
   ],
   explore: [
     { label: 'Command Centre', href: '/command-centre', feature: 'dashboard' },
-    { label: 'Elections', href: '/elections', feature: 'elections' },
+    // Was 'Elections' → /elections, a hub that's gone now. This keeps the
+    // 2023 results reachable; 2026 is already in the main nav.
+    { label: '2023 results', href: '/elections/2023', feature: 'elections' },
     { label: 'Live results 2026', href: '/battlegrounds', feature: 'battlegrounds' },
     { label: 'Interactive Map', href: '/map', feature: 'map' },
     { label: 'MPs Directory', href: '/mps', feature: 'mps' },
