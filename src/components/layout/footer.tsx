@@ -67,21 +67,17 @@ export function Footer() {
               </ul>
             )}
 
-            {/* Donate, by request. Hidden until SITE.donateUrl is set, so
-                there's never a button going nowhere. Opens in a new tab: the
-                payment page is Onebyone's, and the line under the button says
-                so, because a donor's card statement will say Onebyone and
-                they should know that before they pay. */}
-            {SITE.donateUrl && (
+            {/* Donate, by request: always shown, and always to the site's own
+                /donate page, which carries the payment button (Onebyone's
+                Stripe) once SITE.donateUrl is set. */}
+            {(
               <div className="mt-5">
-                <a
-                  href={SITE.donateUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/donate"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1F8A4C] hover:bg-[#18703d] text-white text-sm font-semibold transition-colors"
                 >
                   <Heart className="size-4" /> Donate to Politika
-                </a>
+                </Link>
                 <p className="text-xs text-[#9a9186] mt-2 leading-relaxed">
                   Payments are processed by Onebyone Project on Politika&rsquo;s behalf.
                 </p>

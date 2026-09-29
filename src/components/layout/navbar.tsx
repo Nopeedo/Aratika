@@ -220,20 +220,17 @@ export function Navbar() {
             ),
           )}
 
-          {/* Donate, under Learn, by request: the footer's button, same rule.
-              Hidden until SITE.donateUrl is set; opens Onebyone's payment page
-              in a new tab, and says who processes it. */}
-          {SITE.donateUrl && (
+          {/* Donate, under Learn, by request: the footer's button, same
+              rule. Always to /donate, which holds the payment link. */}
+          {(
             <div className="px-3 pt-2 pb-1">
-              <a
-                href={SITE.donateUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/donate"
                 onClick={() => setMobileOpen(false)}
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1F8A4C] hover:bg-[#18703d] text-white text-sm font-semibold transition-colors"
               >
                 <Heart className="size-4" /> Donate to Politika
-              </a>
+              </Link>
               <p className="text-xs text-[#9a9186] mt-2 leading-relaxed">
                 Payments are processed by Onebyone Project on Politika&rsquo;s behalf.
               </p>
