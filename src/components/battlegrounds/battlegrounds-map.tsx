@@ -206,23 +206,48 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin', onl
               view. Top-right because Leaflet's zoom sits top-left, the key
               bottom-left and the attribution bottom-right. zIndex 1000, the
               key's own, so Leaflet's panes (400-700) can't cover it. */}
-          {status === 'ready' && data && !only2023 && (
-            <button
-              type="button"
-              onClick={() => setView((v) => (v === 'candidates' ? 'margin' : 'candidates'))}
-              style={{
-                position: 'absolute', top: 10, right: 10, zIndex: 1000,
-                display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer',
-              }}
-            >
-              <span style={{
-                display: 'inline-flex', alignItems: 'center', borderRadius: 999, padding: '6px 12px',
-                background: 'rgba(255,255,255,.95)', border: `1px solid ${BORDER}`, boxShadow: '0 2px 8px rgba(12,14,18,.12)',
-                color: INK, fontFamily: MANROPE, fontSize: 12.5, fontWeight: 800, whiteSpace: 'nowrap',
-              }}>
-                {view === 'candidates' ? 'View 2023 map' : 'View who’s standing'}
-              </span>
-            </button>
+          {/* Top-right row: the view toggle, and the tapped area's name
+              beside it as a green pill, by request (the card below still
+              leads with the big one). row-reverse so the toggle keeps the
+              corner and a long name wraps to a second line under it rather
+              than running into Leaflet's zoom buttons on the left (left: 56
+              keeps clear of them). pointer-events off on the row itself so
+              the empty part of it still drags the map. */}
+          {status === 'ready' && data && (!only2023 || selected) && (
+            <div style={{
+              position: 'absolute', top: 10, right: 10, left: 56, zIndex: 1000, pointerEvents: 'none',
+              display: 'flex', flexDirection: 'row-reverse', flexWrap: 'wrap', alignItems: 'center', gap: 6,
+            }}>
+              {!only2023 && (
+                <button
+                  type="button"
+                  onClick={() => setView((v) => (v === 'candidates' ? 'margin' : 'candidates'))}
+                  style={{
+                    pointerEvents: 'auto',
+                    display: 'inline-flex', padding: '8px 0', margin: '-8px 0', background: 'none', border: 'none', cursor: 'pointer',
+                  }}
+                >
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center', borderRadius: 999, padding: '6px 12px',
+                    background: 'rgba(255,255,255,.95)', border: `1px solid ${BORDER}`, boxShadow: '0 2px 8px rgba(12,14,18,.12)',
+                    color: INK, fontFamily: MANROPE, fontSize: 12.5, fontWeight: 800, whiteSpace: 'nowrap',
+                  }}>
+                    {view === 'candidates' ? 'View 2023 map' : 'View who’s standing'}
+                  </span>
+                </button>
+              )}
+              {selected && (
+                <span style={{
+                  pointerEvents: 'auto', maxWidth: '100%', boxSizing: 'border-box',
+                  display: 'inline-block', borderRadius: 999, padding: '6px 13px',
+                  background: JADE, border: `1px solid ${JADE}`, boxShadow: '0 2px 8px rgba(12,14,18,.12)',
+                  color: '#fff', fontFamily: MANROPE, fontSize: 13.5, fontWeight: 800,
+                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                }}>
+                  {selected}
+                </span>
+              )}
+            </div>
           )}
 
           {/* Legend. left/bottom live in MAP_LEGEND_CSS so the media query can
@@ -324,8 +349,8 @@ function Candidates({ candidates, seatName, seatSlug }: { candidates?: Candidate
 
   const heading = (
     <div style={{
-      fontSize: 11.5, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: INK,
-      fontFamily: MANROPE, lineHeight: 1.25, borderBottom: `1.5px solid ${BORDER}`, paddingBottom: 6, marginBottom: 8,
+      fontSize: 12, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: INK,
+      fontFamily: MANROPE, lineHeight: 1.25, borderBottom: `1.5px solid ${BORDER}`, paddingBottom: 7, marginBottom: 10,
     }}>
       {candidates?.length ? `${standing} standing in 2026` : 'Standing in 2026'}
     </div>
@@ -337,7 +362,7 @@ function Candidates({ candidates, seatName, seatSlug }: { candidates?: Candidate
     // date on a candidate list is exactly the fact this site can't get wrong.
     const close = milestone('nominations-close-2026')?.date
     return (
-      <div style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '12px 10px' }}>
+      <div>
         {heading}
         <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.5 }}>
           None recorded yet.{close ? ` Nominations close ${longDate(close)}.` : ''} We add candidates as they are announced.
@@ -346,8 +371,10 @@ function Candidates({ candidates, seatName, seatSlug }: { candidates?: Candidate
     )
   }
 
+  // No inner box any more, by request: the rows sit straight in the seat
+  // card with the count as their heading, rather than a card inside a card.
   return (
-    <div style={{ background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 14, padding: '12px 10px' }}>
+    <div>
       {heading}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
         {candidates.map((c) => {
