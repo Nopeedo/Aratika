@@ -6,7 +6,8 @@
 
 import type { Metadata } from 'next'
 import { CompassQuiz } from '@/components/compass/compass-quiz'
-import { BORDER, WOVEN_PAGE } from '@/constants/theme'
+import { BORDER, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export const metadata: Metadata = {
   title: 'Your political compass',
@@ -19,6 +20,9 @@ export default function StartPage() {
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '56px clamp(18px, 5vw, 36px) 56px' }}>
+          {/* Reached by tapping in from the homepage hero, the corner compass
+              and the explore rail — never from the navbar. */}
+          <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 18 }} />
           <CompassQuiz />
         </div>
       </div>

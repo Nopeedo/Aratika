@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { GLOSSARY } from '@/constants/glossary'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export const metadata: Metadata = {
   title: 'Glossary of NZ Political Terms',
@@ -20,6 +21,9 @@ export default function GlossaryPage() {
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1000, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
+          {/* A card on the homepage explore rail, and linked from jargon
+              explainers mid-article. */}
+          <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 14 }} />
           <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Political glossary</h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
             The jargon, in plain language. Every term you’ll bump into around Parliament and elections, explained plainly.

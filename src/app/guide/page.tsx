@@ -7,7 +7,8 @@
 
 import type { Metadata } from 'next'
 import { QuickGuide } from '@/components/guide/quick-guide'
-import { BORDER, WOVEN_PAGE } from '@/constants/theme'
+import { BORDER, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export const metadata: Metadata = {
   title: 'Get started: a quick, no-jargon guide',
@@ -20,6 +21,9 @@ export default function GuidePage() {
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 700, margin: '0 auto', padding: 'clamp(32px, 6vh, 60px) clamp(20px, 5vw, 36px)' }}>
+          {/* The homepage hero’s primary action. QuickGuide has its own Skip
+              link, but that goes to the homepage by design rather than back. */}
+          <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 18 }} />
           <QuickGuide />
         </div>
       </div>

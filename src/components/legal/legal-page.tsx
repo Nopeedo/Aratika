@@ -10,6 +10,7 @@
 
 import type { ReactNode } from 'react'
 import { BORDER, INK, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export function LegalPage({
   title, subtitle, updated, children,
@@ -23,6 +24,11 @@ export function LegalPage({
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '44px clamp(18px, 5vw, 36px) 34px' }}>
+          {/* Privacy and Terms are read mid-task: from the register form and
+              from the donate small print. Sending someone who was signing up
+              to the homepage loses their place, so this returns them to the
+              form they left. */}
+          <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 14 }} />
           <h1 style={{ fontSize: 'clamp(24px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.1 }}>{title}</h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6 }}>{subtitle}</p>
           <p style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, margin: '12px 0 0' }}>Last updated: {updated}</p>

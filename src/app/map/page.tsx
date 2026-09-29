@@ -9,7 +9,8 @@ import type { Metadata } from 'next'
 import { ExternalLink } from 'lucide-react'
 import { MapExperience } from '@/components/map/map-experience'
 import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
-import { INK, JADE, MANROPE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 export const metadata: Metadata = {
   title: 'Interactive Electorate Map',
@@ -49,6 +50,9 @@ export default async function MapPage({
               described the control directly below it and then restated the
               boundary provenance, which the Leaflet attribution inside the map
               is legally required to carry anyway. */}
+          {/* In the navbar, but also tapped into from the homepage and from
+              the electorate prompts on seat pages. */}
+          <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 14 }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
             <h1 style={{ fontSize: 'clamp(25px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0 }}>
               Find your MP

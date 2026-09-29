@@ -21,6 +21,7 @@ import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { MP_PROFILES } from '@/constants/mps-data'
 import { TOTAL_SEATS } from '@/constants/parties'
 import { INK, JADE_DARK, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
+import { BackLink } from '@/components/ui/back-link'
 
 const ROSTER = Object.keys(MP_PROFILES).length
 /** From the generator header in src/constants/mps-generated.ts. Anything that
@@ -49,6 +50,9 @@ export default function MPsDirectoryPage() {
           (§5.19). It was 1280 here and nowhere else. */}
       <div>
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 20px' }}>
+          {/* Behind the More dropdown on desktop, so most arrivals are taps
+              from the homepage, a party page or a seat page rather than nav. */}
+          <BackLink fallbackHref="/" label="Back" style={{ fontSize: 13, fontWeight: 700, color: SECONDARY, fontFamily: MANROPE, marginBottom: 14 }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0 }}>
               Members of Parliament
