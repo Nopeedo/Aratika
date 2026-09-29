@@ -401,7 +401,7 @@ function systemPrompt(topic) {
 ABSOLUTE RULES:
 - GROUNDED: use ONLY the provided text. Do not use outside knowledge. Do not invent policies, numbers, or promises. If the text does not contain a clear position on ${t.label}, return {"found": false}.
 - NEUTRAL: describe what the party says. Never say whether it is good or bad; no opinion, endorsement, prediction, or loaded language.
-- KEEP THEIR TENSE: a party in government often writes up what it HAS delivered rather than what it will do. Report it the way they wrote it. Never convert "Delivered income tax relief" into "Deliver income tax relief" — that puts a promise in their mouth they did not make. Say which of the two it is in "framing".
+- FORWARD-LOOKING ONLY: this page answers "what would this party do if elected", so report only what the party says it WILL do — commitments, plans, proposals, things it would introduce, change, keep or repeal. A governing party's own site is largely a list of what it HAS delivered; that is campaign material and it does not belong here. Drop it. Do NOT rewrite a record claim as a pledge either: "Delivered income tax relief" must not become "Deliver income tax relief", which puts a promise in their mouth they did not make. It is simply left out. If, after dropping the record claims, the text contains no forward commitment on ${t.label}, return {"found": false} — a gap stated plainly is better than a party's achievements printed as its policy.
 - PLAIN: assume the reader knows nothing about politics. The basic summary uses NO jargon. NZ English. Be concrete.
 - VERBATIM QUOTES: "excerpts" and "quote" must be copied CHARACTER-FOR-CHARACTER from the provided text — never paraphrase, compress, stitch sentences, or change words inside them. If you cannot find a suitable exact quote, use an empty string / fewer excerpts. A paraphrase inside quotation marks is a serious error. (Any excerpt or quote that is not an exact substring of the provided text is discarded automatically.)
 
@@ -409,10 +409,10 @@ Return ONLY a JSON object (no markdown) of this exact shape:
 {
   "found": true,
   "stance": "<=12 word headline of their position on ${t.label}",
-  "summary_basic": "50-90 words, no jargon, what this party says it will do on ${t.label}",
+  "summary_basic": "50-90 words, no jargon, what this party says it WILL do on ${t.label}. Not what it says it has already done",
   "summary": "100-160 words, fuller but still plain",
-  "key_proposals": ["3-6 concrete things the party says it will do, OR says it has already done — whichever the text actually states. Each a short plain phrase, grounded in the text, in the same tense the party used"],
-  "framing": "exactly one of: pledge (key_proposals are things the party says it WILL do) or record (things it says it HAS done). A governing party writing up its delivery is a record. If mixed, pick whichever covers most of them",
+  "key_proposals": ["3-6 concrete things the party says it WILL do. Each a short plain phrase, grounded in the text, in the party's own forward-looking words. Never a past achievement — no 'Delivered', 'Launched', 'Introduced', 'Passed', 'Cut' as a completed act. If the text yields fewer than 3 forward commitments, return fewer; if it yields none, return {\"found\": false}"],
+  "framing": "always \"pledge\" now that only forward commitments are reported. Kept in the shape so existing rows stay readable",
   "who_affected": [{"group": "an everyday group this touches, e.g. renters / small businesses / superannuitants", "detail": "ONE neutral, plain sentence on how it touches them in practice — what it does, not whether it's good or bad"}],
   "excerpts": ["1-3 SHORT verbatim quotes (<=240 chars each) copied exactly from the provided text"],
   "quote": "<=240 char verbatim quote from the provided text that captures their position, or empty string if none fits"
