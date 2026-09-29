@@ -109,6 +109,7 @@ export function Navbar() {
           <PolitikaLogo />
 
           {/* Desktop Nav */}
+          {/* Bold and in the body ink, not the light muted grey, by request. */}
           <nav className="hidden xl:flex items-center gap-1" aria-label="Main navigation">
             {/* Home first, by request: the same /?full=1 target as the phone
                 menu's "Home page" (a returning visitor on / is redirected to
@@ -116,10 +117,10 @@ export function Navbar() {
             <Link
               href="/?full=1"
               className={cn(
-                'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                'px-3 py-2 rounded-md text-sm font-bold transition-colors',
                 pathname === '/'
                   ? 'text-brand-jade bg-brand-jade-subtle'
-                  : 'text-muted hover:text-foreground hover:bg-surface',
+                  : 'text-foreground hover:bg-surface',
               )}
             >
               Home
@@ -132,10 +133,10 @@ export function Navbar() {
                   key={item.href}
                   href={item.href!}
                   className={cn(
-                    'px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                    'px-3 py-2 rounded-md text-sm font-bold transition-colors',
                     isActive(item.href)
                       ? 'text-brand-jade bg-brand-jade-subtle'
-                      : 'text-muted hover:text-foreground hover:bg-surface',
+                      : 'text-foreground hover:bg-surface',
                   )}
                 >
                   {item.label}
@@ -339,10 +340,10 @@ function DesktopGroup({
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         className={cn(
-          'flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium transition-colors',
+          'flex items-center gap-1 px-3 py-2 rounded-md text-sm font-bold transition-colors',
           active
             ? 'text-brand-jade bg-brand-jade-subtle'
-            : 'text-muted hover:text-foreground hover:bg-surface',
+            : 'text-foreground hover:bg-surface',
         )}
       >
         {item.label}
