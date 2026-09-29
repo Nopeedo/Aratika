@@ -127,7 +127,7 @@ export function ExploreCarousel() {
       {/* 18px of air above the heading, not 48: the section before already
           carries 26px of its own under its last signpost, so the two stacked
           into a gap wide enough to read as the page having ended. */}
-      <div style={{ maxWidth: 820, margin: '0 auto', padding: '18px clamp(18px, 5vw, 36px) 22px' }}>
+      <div className="ec-head" style={{ margin: '0 auto', padding: '18px clamp(18px, 5vw, 36px) 22px' }}>
         {/* Header + desktop arrows */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
           <div>
@@ -161,7 +161,10 @@ export function ExploreCarousel() {
           swiping. These are the same destinations as one line apiece, in the
           shape the rest of the page uses for "this way out", with the tool's
           own icon in a circle at the head of each. */}
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 48px', display: 'flex', flexDirection: 'column', gap: 22 }}>
+      {/* Three groups side by side on a wide screen, by request, so the list
+          isn't one long column on the web (.ec-groups below). A phone keeps
+          the single stack. */}
+      <div className="ec-groups" style={{ margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 48px' }}>
         {groups.map((g) => (
           <div key={g.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
             <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: SUB, fontFamily: MANROPE }}>
@@ -195,6 +198,12 @@ export function ExploreCarousel() {
       </div>
 
       <style>{`
+        .ec-head { max-width: 820px; }
+        .ec-groups { max-width: 800px; display: flex; flex-direction: column; gap: 22px; }
+        @media (min-width: 960px) {
+          .ec-head, .ec-groups { max-width: 1080px; }
+          .ec-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 24px; align-items: start; }
+        }
         .ec-rail::-webkit-scrollbar { display: none; }
         .ec-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(12,14,18,.10); border-color: #dcdad5; }
         @media (max-width: 720px) { .ec-arrows { display: none !important; } }
