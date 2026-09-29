@@ -24,17 +24,27 @@ export const SITE = {
     // and these URLs are also the `sameAs` in the Organization schema, which is
     // how Google associates the brand.
     { label: 'Instagram', url: 'https://www.instagram.com/politika.nz/' },
-    // STILL THE OLD NAME. Checked 24 Sep 2026: this page loads publicly and
-    // renders as "Arapono Arapono", so unlike Instagram it has not been
-    // renamed. facebook.com/politika.nz and /politikanz both come back "This
-    // content isn't available", and the same browser reads this page fine
-    // without logging in, so those are not login walls, they are absent pages.
-    // Left pointing at the real page rather than at a guess: a dead social link
-    // in the footer is also a dead `sameAs` in the schema.
+    // THE PAGE, not the profile — and those are two different things here.
     //
-    // The pfbid form now redirects to a stable numeric id, so that is what the
-    // footer carries; pfbid tokens rotate.
-    { label: 'Facebook', url: 'https://www.facebook.com/people/Arapono-Arapono/61592825727986/' },
+    // 61592825727986 (what this used to point at) is a PERSONAL PROFILE. It was
+    // the Arapono one and has since been renamed "Politika NZ", so the old link
+    // still resolves and looks fine — which is exactly why it needed checking
+    // rather than trusting. Facebook labels it itself: its Intro reads
+    // "Profile · Digital creator · Business · Entrepreneur".
+    //
+    // 61594988367407 is the Page, created 29 Sep 2026. Its Intro reads
+    // "Page · Digital creator · Politician". A Page is the right public face
+    // for an organisation: it gets insights and scheduling, it can be handed to
+    // another admin, and a profile standing in for a business is against
+    // Facebook's own terms. It is also the correct `sameAs` for the
+    // Organization schema, which is how Google ties this brand to the domain —
+    // pointing that at a personal profile says something different about what
+    // Politika is.
+    //
+    // Verified 29 Sep 2026 by loading it and reading the Intro, not by status
+    // code: both ids answer 200, and profile.php?id= addresses BOTH profiles
+    // and Pages, so the URL shape proves nothing.
+    { label: 'Facebook', url: 'https://www.facebook.com/people/Politikanz/61594988367407/' },
     // { label: 'TikTok', url: 'https://www.tiktok.com/@…' },
     // { label: 'YouTube', url: 'https://www.youtube.com/@…' },
   ] as { label: string; url: string }[],
