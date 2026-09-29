@@ -178,22 +178,19 @@ export async function UpcomingView({ e }: { e: ElectionData }) {
               ("Find where you stand") removed from the foot of this section
               by request; the homepage still carries it. */}
           <section id="your-vote" style={{ scrollMarginTop: 80 }}>
+            {/* The explanation is the description now, by request, and
+                shorter: it sat behind the (i) as three sentences ("Two votes,
+                two jobs"). A first-time reader needs exactly this before the
+                two tiles below make sense, so it isn't an (i) thing — §1.2's
+                test is whether a returning reader would skip it, and at one
+                sentence there's nothing to skip. The /learn/mmp link rides
+                along at the end. */}
             <ZoneHead eyebrow="Get ready to vote" title="How your vote works" accent={ACCENT.vote}
-              infoLabel="How MMP gives you two votes">
-              <InfoHeading accent={ACCENT.vote}>Two votes, two jobs</InfoHeading>
-              <InfoText>
-                Under MMP you cast two votes on the same paper. The party vote decides the share of Parliament&rsquo;s 120
-                seats each party gets, and it is where most of your influence is: it sets the overall balance. The
-                electorate vote picks the one MP for your local area.
-              </InfoText>
-              {/* The overhang is explained ONCE, in the (i) on the chamber
-                   that shows both numbers, where it derives them from the data
-                   instead of typing them. It was here as well, ~700px earlier,
-                   in the same sentences against hard-coded figures (§1.3). */}
-              <InfoText>
-                <a href="/learn/mmp" style={{ color: ACCENT.vote, fontWeight: 800, textDecoration: 'none' }}>How MMP works in full</a>
-              </InfoText>
-            </ZoneHead>
+              note={<>
+                You get two votes on the same paper: one for a party, which decides how many seats it gets, and one for
+                your local MP.{' '}
+                <a href="/learn/mmp" style={{ color: ACCENT.vote, fontWeight: 800, textDecoration: 'none', whiteSpace: 'nowrap' }}>How MMP works</a>
+              </>} />
             <TwoVotes />
           </section>
 

@@ -62,7 +62,10 @@ export function ZoneHead({ eyebrow, title, accent, infoLabel, note, children }: 
    *  section's own ZoneHead call carries no infoLabel/children and renders
    *  no (i) here at all — the content didn't get duplicated, it moved. */
   infoLabel?: string
-  note?: string
+  /** A line under the heading. ReactNode, not string, so it can end on a
+   *  link — "How your vote works" carries its "How MMP works" link here now
+   *  that its explanation moved out of the (i). */
+  note?: ReactNode
   children?: ReactNode
 }) {
   return (
