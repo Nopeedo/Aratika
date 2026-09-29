@@ -10,7 +10,6 @@ import { POLICY_TOPICS, POLICY_TOPIC_ORDER } from '@/constants/policy-topics'
 import { getAllApprovedPositions } from '@/lib/positions/live'
 import { CompareTool } from '@/components/policy/compare-tool'
 import { CoverageMatrix } from '@/components/policy/coverage-matrix'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 // Revalidated, not force-dynamic.
@@ -32,9 +31,6 @@ export default async function ComparePage() {
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
-          <div style={{ marginBottom: 10 }}>
-            <SectionDivider type="official" label="Sourced from official party policy" />
-          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <span style={{ width: 46, height: 46, borderRadius: 13, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Scale style={{ width: 23, height: 23, color: JADE }} />

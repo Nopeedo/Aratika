@@ -21,7 +21,6 @@
 
 import type { Metadata } from 'next'
 import { Newspaper } from 'lucide-react'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { getNews } from '@/lib/news/live'
 import { getVideos, getInterviewVideos } from '@/lib/news/videos'
 import { NewsFeed } from '@/components/news/news-feed'
@@ -56,7 +55,6 @@ export default async function NewsPage() {
               worn as a property of the sources, with no test the reader can
               check (§1.8). What the page can say is where the stories are
               from, which it now does on the source line below. */}
-          <div style={{ marginBottom: 12 }}><SectionDivider type="official" label="Live from NZ newsrooms" /></div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
             <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.08 }}>
               The Latest

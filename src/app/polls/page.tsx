@@ -6,7 +6,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { BarChart3, Info, ArrowRight } from 'lucide-react'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { POLL_DISCLAIMER } from '@/constants/site'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -20,7 +19,6 @@ export default function PollsPage() {
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px' }}>
-          <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Public Polls" /></div>
           <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>Have your say</h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 620, lineHeight: 1.6, margin: 0 }}>
             Quick community polls on the issues in front of Parliament, a way to see how Politika readers are feeling.

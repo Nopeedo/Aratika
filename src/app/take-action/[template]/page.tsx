@@ -17,7 +17,6 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { MP_CONTACTS } from '@/constants/mps-contacts'
 import { PARTY_NAMES } from '@/constants/parties'
 import { getBill } from '@/constants/bills-data'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { PREMIUM_ENABLED } from '@/constants/features'
 import { PremiumGate } from '@/components/action/premium-gate'
 import { LetterStudio, LetterPreview } from '@/components/action/letter-studio'
@@ -101,7 +100,6 @@ export default async function TakeActionTemplatePage(
           <Link href="/take-action" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: SECONDARY, textDecoration: 'none', fontFamily: MANROPE, marginBottom: 18 }}>
             <ArrowLeft style={{ width: 14, height: 14 }} /> All templates
           </Link>
-          <div style={{ marginBottom: 8 }}><SectionDivider type="official" label={PREMIUM_ENABLED ? 'Take Action · Premium' : 'Take Action'} /></div>
           <h1 style={{ fontSize: 'clamp(24px, 7vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px', lineHeight: 1.1 }}>{t.label}</h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0 }}>
             {t.blurb}{ctx.recipientName ? ` · To: ${ctx.recipientName}` : ''}

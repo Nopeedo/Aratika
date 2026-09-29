@@ -8,7 +8,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { HelpCircle, Mail, ArrowUpRight } from 'lucide-react'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { SITE } from '@/constants/site'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -45,7 +44,6 @@ export default function FaqPage() {
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '44px clamp(18px, 5vw, 36px) 34px' }}>
-          <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Help" /></div>
           <h1 style={{ fontSize: 'clamp(24px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.1 }}>Frequently asked questions</h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6, maxWidth: 620 }}>
             The honest answers, who we are, how we stay neutral, where our information comes from, and how to get started.

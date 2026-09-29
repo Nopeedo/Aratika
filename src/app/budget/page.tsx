@@ -28,7 +28,6 @@
 
 import type { Metadata } from 'next'
 import { ExternalLink, Landmark, Scale, ClipboardCheck } from 'lucide-react'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { SignShape } from '@/components/ui/sign-link'
 import { AboutBudget, AboutOutlook, AboutSectors, AboutThemes } from '@/components/budget/about-budget'
 import { BudgetSectors, BudgetOutlook } from '@/components/budget/budget-sectors'
@@ -53,9 +52,6 @@ export default function BudgetPage() {
       {/* ── Header ────────────────────────────────────────────── */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: COL, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 30px' }}>
-          <div style={{ marginBottom: 12 }}>
-            <SectionDivider type="official" label="Official: The Treasury" />
-          </div>
 
           {/* §3.4: clamp(30px, 5vw, 46px) never fired on a phone — 5vw is
               18.75px at 375, so the h1 rendered at its 30px floor and

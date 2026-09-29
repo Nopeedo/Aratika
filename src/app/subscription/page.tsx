@@ -7,7 +7,6 @@
 
 import type { Metadata } from 'next'
 import { Check, Sparkles, Heart } from 'lucide-react'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { UpgradeButton } from '@/components/billing/billing-buttons'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -39,9 +38,6 @@ export default function SubscriptionPage() {
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 980, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 40px', textAlign: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>
-            <SectionDivider type="official" label="Politika Premium" />
-          </div>
           <h1 style={{ fontSize: 'clamp(25px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 10px' }}>
             Do more with Politika
           </h1>

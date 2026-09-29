@@ -11,7 +11,6 @@ import {
 } from 'lucide-react'
 import { LETTER_TEMPLATES, LETTER_TEMPLATE_ORDER } from '@/constants/letter-templates'
 import { PREMIUM_ENABLED } from '@/constants/features'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
@@ -36,8 +35,7 @@ export default function TakeActionHub() {
       {/* Hero */}
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 1080, margin: '0 auto', padding: '46px clamp(18px, 5vw, 36px) 40px' }}>
-          <div style={{ marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
-            <SectionDivider type="official" label="Take Action" />
+          <div style={{ marginBottom: PREMIUM_ENABLED ? 10 : 0, display: 'flex', alignItems: 'center', gap: 10 }}>
             {/* The kill switch in features.ts says that while PREMIUM_ENABLED is
                 false everything is free and every Premium prompt is hidden. This
                 badge was missed by that sweep, so a free tool was telling people

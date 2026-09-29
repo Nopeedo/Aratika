@@ -12,7 +12,6 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import { PARTY_NAMES, PARTY_COLORS, PARTY_ORDER } from '@/constants/parties'
 import { PartySlug } from '@/types'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
@@ -52,7 +51,6 @@ export default function ParliamentPage() {
       {/* Header */}
       <div style={{ borderBottom: `1px solid ${BORDER}`, background: '#fff' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 8px' }}>
-          <div style={{ marginBottom: 8 }}><SectionDivider type="official" label="Current Parliament" /></div>
           <h1 style={{ fontSize: 'clamp(26px, 7vw, 40px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px' }}>The 54th Parliament</h1>
           <p style={{ fontSize: 17, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, maxWidth: 640, lineHeight: 1.6, margin: 0 }}>
             Who holds power, who opposes it, and how it’s arranged, the make-up of New Zealand’s House of Representatives since the 2023 election.

@@ -6,7 +6,6 @@
 
 import type { Metadata } from 'next'
 import { Mail, Flag, ShieldCheck, ArrowUpRight } from 'lucide-react'
-import { SectionDivider } from '@/components/ui/section-divider'
 import { SITE } from '@/constants/site'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -22,7 +21,6 @@ export default function ContactPage() {
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '44px clamp(18px, 5vw, 36px) 34px' }}>
-          <div style={{ marginBottom: 10 }}><SectionDivider type="official" label="Contact" /></div>
           <h1 style={{ fontSize: 'clamp(24px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 8px', lineHeight: 1.1 }}>Contact &amp; corrections</h1>
           <p style={{ fontSize: 16, fontWeight: 500, color: SECONDARY, fontFamily: MANROPE, margin: 0, lineHeight: 1.6, maxWidth: 620 }}>
             We’d love to hear from you, and if we’ve got something wrong, we want to fix it fast.
