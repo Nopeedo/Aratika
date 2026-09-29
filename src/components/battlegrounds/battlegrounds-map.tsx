@@ -96,7 +96,7 @@ function countTier(n: number) {
   return COUNT_TIERS.find((t) => n >= t.min) ?? NONE_YET
 }
 
-export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin', only2023 = false }: {
+export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin', only2023 = false, defaultSelected = null }: {
   candidatesBySlug?: Record<string, Candidate2026[]>
   /**
    * The 2023 results page's copy of this map, by request: the same map, the
@@ -105,6 +105,12 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin', onl
    * outright instead of behind "Last election".
    */
   only2023?: boolean
+  /**
+   * An area open on arrival, as its boundary name ('Wellington Central'), so
+   * the card under the map shows a real example before anyone taps. Switching
+   * roll still clears it, since the other roll's map has no such area.
+   */
+  defaultSelected?: string | null
   /**
    * Which colouring the map opens on. /battlegrounds keeps 'margin' — that
    * page is about how close 2023 was. The Election Centre opens on
@@ -116,7 +122,7 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin', onl
   const [layer, setLayer] = React.useState<Roll>('general')
   const [sets, setSets] = React.useState<Record<Roll, FeatureCollection | null>>({ general: null, maori: null })
   const [status, setStatus] = React.useState<'loading' | 'ready' | 'error'>('loading')
-  const [selected, setSelected] = React.useState<string | null>(null)
+  const [selected, setSelected] = React.useState<string | null>(defaultSelected)
 
   /**
    * The active roll first, the other one once it is drawn. This used to

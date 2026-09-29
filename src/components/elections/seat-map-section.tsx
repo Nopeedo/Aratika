@@ -48,7 +48,9 @@ export function SeatMapSection({ candidatesBySlug }: { candidatesBySlug?: Record
         </p>
       </div>
 
-      <BattlegroundsMap candidatesBySlug={candidatesBySlug} defaultView="candidates" />
+      {/* Opens on Wellington Central, the capital's electorate, by request, so
+          the card below shows who's running somewhere before the first tap. */}
+      <BattlegroundsMap candidatesBySlug={candidatesBySlug} defaultView="candidates" defaultSelected="Wellington Central" />
     </div>
   )
 }
