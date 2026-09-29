@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Link from 'next/link'
-import { ShieldCheck, ExternalLink } from 'lucide-react'
-import { SITE, DATA_SOURCES } from '@/constants/site'
+import { ExternalLink } from 'lucide-react'
+import { SITE } from '@/constants/site'
 import { FOOTER_LINKS } from '@/constants/nav-links'
 import { isEnabled } from '@/constants/features'
 import { LogoMark } from '@/components/brand/logo-mark'
@@ -13,29 +13,15 @@ export function Footer() {
           INK #2A1206 for headings, SECONDARY #6b6157 for links, TERTIARY
           #9a9186 for small print, BORDER #e6e2da for rules. */}
 
-      {/* Source Credibility Bar */}
-      <div className="border-b border-[#e6e2da]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-1.5 text-xs text-[#6b6157] font-medium mr-2">
-              <ShieldCheck className="size-3.5 text-brand-jade shrink-0" />
-              Data sourced from:
-            </div>
-            {DATA_SOURCES.map((source) => (
-              <a
-                key={source.name}
-                href={source.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#faf8f4] hover:bg-[#f1ede6] border border-[#e6e2da] rounded-full text-xs text-[#6b6157] transition-colors"
-              >
-                {source.name}
-                <ExternalLink className="size-2.5 opacity-60" />
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* The "Data sourced from:" strip was here, on every page: six logos in
+          pills above the footer proper. Removed by request, and it costs
+          nothing real — it was a badge rather than evidence. The sourcing that
+          carries weight is per-claim and untouched: every policy position
+          links to the party's own document, every bill to its page on
+          Parliament, and /about#sources still lists all six in full (linked
+          not from this footer: its Learn and Explore columns were removed
+          earlier, so "Our Sources" is not linked from here. /about#sources is
+          reachable from the About page and from in-page links only). */}
 
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
