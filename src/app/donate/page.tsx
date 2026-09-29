@@ -32,9 +32,17 @@ export default function DonatePage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ maxWidth: 640, margin: '0 auto', padding: 'clamp(24px, 5vh, 48px) clamp(18px, 5vw, 36px) 64px' }}>
-        <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: INK, margin: '0 0 16px' }}>
+        <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: INK, margin: '0 0 10px' }}>
           Support Politika
         </h1>
+        {/* Two sentences under the title, by request: the ask, and why, before
+            the form. Kept to claims the site can stand behind (no party
+            behind it, free for everyone), nothing it can't show. */}
+        <p style={{ fontSize: 16, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: '0 0 18px' }}>
+          Politika explains New Zealand politics in plain language, free for everyone and with no party behind it.
+          If it&rsquo;s helped you make sense of the 2026 election, a donation of any size keeps it running for the
+          next person.
+        </p>
         {/* The form first, by request, then what the money is for. */}
         <div style={{ border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '20px 20px 18px', boxShadow: '0 2px 8px rgba(42,18,6,.05)' }}>
           <DonateForm open={open} />
