@@ -31,7 +31,7 @@
 import * as React from 'react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { ArrowRight, ChevronDown, ShieldCheck } from 'lucide-react'
+import { ArrowRight, ChevronDown, MapPin, ShieldCheck } from 'lucide-react'
 import type { FeatureCollection } from 'geojson'
 import { normalizeElectorateKey, getElectorate, ELECTORATES, type ElectorateInfo } from '@/constants/electorates-data'
 import { PARTY_NAMES, PARTY_COLORS } from '@/constants/parties'
@@ -353,12 +353,14 @@ function Candidates({ candidates, seatName, seatSlug }: { candidates?: Candidate
   // is who is standing, and it has to match the map's shading.
   const standing = (candidates ?? []).filter((c) => !c.withdrawn).length
 
-  // A plain-words title under the area's name, by request, with the count
+  // A plain-words title under the area's name, by request ("seat" read as one
+  // of several places up for grabs; one person wins each electorate, and
+  // "local MP" is the menu's word), with the count
   // kept as a small line under it (the number has to match the map's shading).
   const heading = (
     <div style={{ borderBottom: `1.5px solid ${BORDER}`, paddingBottom: 8, marginBottom: 10 }}>
       <h4 style={{ fontSize: 17, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.25, margin: 0 }}>
-        Who is running for a seat here
+        Who&rsquo;s running to be your local MP
       </h4>
       {candidates?.length ? (
         <div style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 2 }}>{standing} standing in 2026</div>
@@ -502,7 +504,17 @@ function SeatCard({ name, slug, info, tier, mp, candidates, only2023 = false }: 
           map doesn't send people there. */}
       {!only2023 && (
         <Link href={`/battlegrounds/${slug}`} style={{ marginTop: 12, textDecoration: 'none' }}>
-          <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', background: INK, borderRadius: 11, padding: '11px 16px', color: '#fff', fontSize: 14, fontWeight: 800, fontFamily: MANROPE }}>Open this seat <ArrowRight style={{ width: 15, height: 15 }} /></span>
+          {/* The Election Centre's "Enrol now" pill, by request (was a
+              solid near-black block): jade outline, jade text, leading
+              icon, arrow. A touch larger, since it spans the card. */}
+          <span style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, width: '100%', boxSizing: 'border-box',
+            color: JADE, background: 'transparent', border: `1.5px solid ${JADE}`, borderRadius: 999,
+            padding: '10px 16px', fontSize: 13.5, fontWeight: 800, fontFamily: MANROPE, whiteSpace: 'nowrap',
+          }}>
+            <MapPin style={{ width: 14, height: 14, flexShrink: 0 }} />
+            Open this seat <ArrowRight style={{ width: 15, height: 15, flexShrink: 0 }} strokeWidth={3} />
+          </span>
         </Link>
       )}
     </div>
