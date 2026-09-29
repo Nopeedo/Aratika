@@ -347,12 +347,16 @@ function Candidates({ candidates, seatName, seatSlug }: { candidates?: Candidate
   // is who is standing, and it has to match the map's shading.
   const standing = (candidates ?? []).filter((c) => !c.withdrawn).length
 
+  // A plain-words title under the area's name, by request, with the count
+  // kept as a small line under it (the number has to match the map's shading).
   const heading = (
-    <div style={{
-      fontSize: 12, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: INK,
-      fontFamily: MANROPE, lineHeight: 1.25, borderBottom: `1.5px solid ${BORDER}`, paddingBottom: 7, marginBottom: 10,
-    }}>
-      {candidates?.length ? `${standing} standing in 2026` : 'Standing in 2026'}
+    <div style={{ borderBottom: `1.5px solid ${BORDER}`, paddingBottom: 8, marginBottom: 10 }}>
+      <h4 style={{ fontSize: 17, fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.25, margin: 0 }}>
+        Who is running for a seat here
+      </h4>
+      {candidates?.length ? (
+        <div style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE, marginTop: 2 }}>{standing} standing in 2026</div>
+      ) : null}
     </div>
   )
 
@@ -441,17 +445,20 @@ function SeatCard({ name, slug, info, tier, mp, candidates, only2023 = false }: 
     }}>
       {/* The area's name as a big green pill, by request, so a tap lands on
           an unmistakable answer to "which area is this?". Brand jade, the
-          logo's green. The margin badge moved down beside the electorate
-          type rather than sitting as a small pill on top of a big one. */}
+          logo's green. */}
       <h3 style={{
         alignSelf: 'flex-start', maxWidth: '100%', boxSizing: 'border-box',
         fontSize: 'clamp(20px, 5.4vw, 24px)', fontWeight: 800, letterSpacing: '-.015em', lineHeight: 1.15,
-        color: '#fff', background: JADE, borderRadius: 999, padding: '10px 20px', margin: '0 0 10px', fontFamily: MANROPE,
+        color: '#fff', background: JADE, borderRadius: 999, padding: '10px 20px', margin: '0 0 14px', fontFamily: MANROPE,
       }}>{name}</h3>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
+      {/* The margin badge ("Ultra-marginal") and "General electorate" line
+          came off the 2026 card, by request: the title below says what the
+          card is for. The 2023 map keeps them, since that map is shaded by
+          the margin and the badge is its key. */}
+      {only2023 && <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 14, marginTop: -4 }}>
         <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase', color: tier.fg, background: tier.light, border: `1px solid ${tier.color}`, borderRadius: 999, padding: '3px 10px', fontFamily: MANROPE }}>{tier.label}</span>
         <span style={{ fontSize: 12.5, color: TERTIARY, fontFamily: MANROPE }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</span>
-      </div>
+      </div>}
 
       {!only2023 && <Candidates candidates={candidates} seatName={name} seatSlug={slug} />}
 
