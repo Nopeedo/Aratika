@@ -40,6 +40,7 @@ import { MP_PROFILES } from '@/constants/mps-data'
 import { toSlug } from '@/lib/utils/format'
 import { MpPhotoTile } from '@/components/map/mp-photo-tile'
 import { Avatar } from '@/components/ui/avatar'
+import { CandidatePreview } from './candidate-preview'
 import { milestone, longDate } from '@/constants/electoral-calendar'
 import { RollPills, type Roll } from '@/components/map/roll-pills'
 import { MapLoading, MapUnavailable, MetaRow } from '@/components/map/map-states'
@@ -296,7 +297,9 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
  * for thirteen seats we hold nothing, and a heading over an empty list reads
  * as "nobody is standing", which is false and the worse of the two errors.
  */
-function Candidates({ candidates }: { candidates?: Candidate2026[] }) {
+function Candidates({ candidates, seatName, seatSlug }: { candidates?: Candidate2026[]; seatName: string; seatSlug: string }) {
+  // The candidate whose preview is open, if any. One at a time.
+  const [open, setOpen] = React.useState<Candidate2026 | null>(null)
   // Withdrawn candidates stay visible and marked, per the field's note in
   // candidates-2026.ts: quietly dropping one rewrites the record of a contest.
   // They don't count towards the number in the heading, though: that number
@@ -336,10 +339,12 @@ function Candidates({ candidates }: { candidates?: Candidate2026[] }) {
           const photo = c.mpSlug ? MP_PROFILES[c.mpSlug]?.photo : undefined
           const partyName = c.party === 'independent' ? 'Independent' : PARTY_NAMES[c.party]?.short ?? c.party
           return (
-            <div key={c.key ?? c.name} style={{
-              display: 'flex', alignItems: 'center', gap: 7, minWidth: 0, height: 44, boxSizing: 'border-box',
+            // A button, not a link, by request: tapping opens a preview over
+            // the page rather than leaving it — the caucus box's behaviour.
+            <button key={c.key ?? c.name} type="button" onClick={() => setOpen(c)} aria-haspopup="dialog" style={{
+              display: 'flex', alignItems: 'center', gap: 7, minWidth: 0, width: '100%', height: 44, boxSizing: 'border-box',
               border: '1px solid #00000014', background: '#fff', borderRadius: 9, padding: '4px 8px 4px 4px',
-              opacity: c.withdrawn ? 0.55 : 1,
+              opacity: c.withdrawn ? 0.55 : 1, textAlign: 'left', cursor: 'pointer', font: 'inherit',
             }}>
               <Avatar src={photo} name={c.name} party={party} size="xs" face />
               <span style={{ minWidth: 0 }}>
@@ -353,10 +358,11 @@ function Candidates({ candidates }: { candidates?: Candidate2026[] }) {
                   {c.withdrawn ? ' · withdrawn' : ''}
                 </span>
               </span>
-            </div>
+            </button>
           )
         })}
       </div>
+      {open && <CandidatePreview candidate={open} seatName={seatName} seatSlug={seatSlug} onClose={() => setOpen(null)} />}
     </div>
   )
 }
@@ -390,7 +396,7 @@ function SeatCard({ name, slug, info, tier, mp, candidates }: {
       <h3 style={{ fontSize: 'clamp(17px, 2.6vw, 21px)', fontWeight: 800, color: INK, margin: '0 0 2px', fontFamily: MANROPE }}>{name}</h3>
       <div style={{ fontSize: 12.5, color: TERTIARY, marginBottom: 14, fontFamily: MANROPE }}>{info.type === 'maori' ? 'Māori electorate' : 'General electorate'}{info.region ? ` · ${info.region}` : ''}</div>
 
-      <Candidates candidates={candidates} />
+      <Candidates candidates={candidates} seatName={name} seatSlug={slug} />
 
       {/* §3.1: the button is the 44px hit area. */}
       <button

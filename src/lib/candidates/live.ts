@@ -100,6 +100,13 @@ export const getApprovedCandidatesBySlug = unstable_cache(
         confirmed: true,
         ...(r.source_id ? { key: r.source_id as string } : {}),
         ...(mpSlug ? { mpSlug } : {}),
+        // notes and citations, carried here too now. The map's candidate rows
+        // open a preview, and for a challenger who isn't a sitting MP these
+        // two are the only sourced things we hold — without them the preview
+        // would be a name and a party. Same fields getApprovedCandidates()
+        // below already carries, for the same reason.
+        ...(typeof d.notes === 'string' && d.notes.trim() ? { notes: d.notes.trim() } : {}),
+        ...(Array.isArray(d.citations) && d.citations.length ? { citations: d.citations.filter((c): c is string => typeof c === 'string') } : {}),
         ...(d.withdrawn?.date && d.withdrawn?.source
           ? { withdrawn: { date: d.withdrawn.date, source: d.withdrawn.source } }
           : {}),
