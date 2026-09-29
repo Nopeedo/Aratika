@@ -38,7 +38,7 @@ export default function DonatePage() {
         {/* The ask, short and bold, by request (two sentences read too long).
             The why is under "Why we ask for donations" below the form. */}
         <p style={{ fontSize: 19, fontWeight: 800, color: INK, fontFamily: MANROPE, lineHeight: 1.3, letterSpacing: '-.01em', margin: '0 0 18px' }}>
-          Help keep Politika running.
+          Make a donation to help keep Politika running.
         </p>
         {/* The form first, by request, then what the money is for. */}
         <div style={{ border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '20px 20px 18px', boxShadow: '0 2px 8px rgba(42,18,6,.05)' }}>
