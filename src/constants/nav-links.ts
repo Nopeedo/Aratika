@@ -58,7 +58,8 @@ export const NAV_ITEMS: NavItem[] = [
   // than either destination, and both of them cost a tap behind a dropdown
   // that held exactly two things.
   { label: 'News', href: '/news', description: 'Live election news: every party, every issue', feature: 'news' },
-  { label: 'Video', href: '/news#video', description: 'Leaders & the press', feature: 'news' },
+  // Video came out of the menu, by request: it was a second link to the
+  // same page (/news#video). The clips are still on /news, below the stories.
   // Above Find your local MP, by request.
   { label: 'MPs directory', href: '/mps', description: 'Every current MP, by name or electorate', feature: 'mps' },
   // "Your Electorate" is gone as a group for the same reason The Record is:
