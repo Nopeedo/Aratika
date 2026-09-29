@@ -58,7 +58,7 @@
 
 import { useState, type ReactNode } from 'react'
 import Link from 'next/link'
-import { ChevronDown } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { PARTY_COLORS, PARTY_NAMES, CURRENT_SEATS, PARLIAMENTARY_PARTIES, NON_PARLIAMENTARY_CONTESTING } from '@/constants/parties'
 import { MINOR_PARTY_READINGS } from '@/constants/polls-history'
 import type { PartySlug } from '@/types'
@@ -77,16 +77,11 @@ const fillPct = (pct: number) => Math.max(1.5, (Math.min(pct, FULL_AT) / FULL_AT
 /** Where the 5% line sits in that zone — identical on every tile. */
 const THRESH_PCT = (THRESHOLD / FULL_AT) * 100
 
-/** Rows shown before the rest are folded away (§3.6). Six rather than five,
- *  because six IS the parliamentary group: the cut lands exactly where the
- *  reader's own mental line is, rather than one row inside it. */
+/** Rows per page (§3.5). Six rather than five, because six IS the
+ *  parliamentary group: the first page ends exactly where the reader's own
+ *  mental line is, rather than one row inside it. Was the §3.6 fold count
+ *  before paging replaced the fold; the FOLD_MASK that went with it is gone. */
 const VISIBLE = 6
-
-/** §3.6's mask, stops copied verbatim from defining-bills.tsx. The fade has to
- *  reach up INTO the last row to be visible at all: the list carries 34px of
- *  bottom padding for the control to sit in, so a 46px fade spent almost all of
- *  itself on empty space and the rows cut off square. */
-const FOLD_MASK = 'linear-gradient(to bottom, #000 0%, #000 calc(100% - 86px), rgba(0,0,0,.12) calc(100% - 26px), transparent calc(100% - 10px))'
 
 type Group = 'all' | 'parliament' | 'no-seats' | 'not-polled'
 
@@ -151,18 +146,24 @@ export function PartiesContesting({ pop, asAt, children }: {
   asAt?: string
   /**
    * The seats section, by request — moved in here from its own standalone
-   * spot on the page, and gated on the SAME "Show N more" state this
-   * component already had, rather than always visible. Passed as children
-   * (not built here) because it needs props — elected results, the poll
-   * projection, asAt, pickScrollsToIdPrefix — that already live in
-   * upcoming-view.tsx and would otherwise have to be threaded through this
-   * component just to reach SeatChamber.
+   * spot on the page. Used to be gated on the expand state this component
+   * held; that state is gone now (§3.5 paging replaced it), so this renders
+   * unconditionally, always visible. Passed as children (not built here)
+   * because it needs props — elected results, the poll projection, asAt,
+   * pickScrollsToIdPrefix — that already live in upcoming-view.tsx and would
+   * otherwise have to be threaded through this component just to reach
+   * SeatChamber.
    */
   children?: ReactNode
 }) {
   const pctBySlug = new Map(pop.map((p) => [p.slug, p.pct]))
   const [group, setGroup] = useState<Group>('all')
-  const [showAll, setShowAll] = useState(false)
+  // §3.5: "paging beats horizontal scroll" was written for the coverage
+  // matrix, and the same call applies here — the "Show 11 more" fold hid
+  // eleven of seventeen parties behind a tap and a reader had to guess there
+  // was anything past the fade. A page, not a fold: VISIBLE rows at a time,
+  // arrows to step, same PageButton the coverage matrix uses.
+  const [page, setPage] = useState(0)
 
   const ordered: PartySlug[] = [
     ...PARLIAMENTARY_PARTIES,
@@ -178,9 +179,11 @@ export function PartiesContesting({ pop, asAt, children }: {
   }
 
   const matching = ordered.filter(inGroup)
-  const hidden = Math.max(0, matching.length - VISIBLE)
-  const collapsed = !showAll && hidden > 0
-  const shown = collapsed ? matching.slice(0, VISIBLE) : matching
+  const pages = Math.max(1, Math.ceil(matching.length / VISIBLE))
+  const cur = Math.min(page, pages - 1)
+  const from = cur * VISIBLE
+  const to = Math.min(from + VISIBLE, matching.length)
+  const shown = matching.slice(from, to)
 
   const counts: Record<Group, number> = {
     all: ordered.length,
@@ -273,49 +276,37 @@ export function PartiesContesting({ pop, asAt, children }: {
             label={label}
             count={counts[key]}
             on={group === key}
-            onClick={() => { setGroup(group === key ? 'all' : key); setShowAll(false) }}
+            onClick={() => { setGroup(group === key ? 'all' : key); setPage(0) }}
           />
         ))}
       </div>
 
-      <div style={{ position: 'relative' }}>
-        <div
-          className="pc-rows"
-          style={{
-            paddingBottom: collapsed ? 34 : 0,
-            ...(collapsed ? { WebkitMaskImage: FOLD_MASK, maskImage: FOLD_MASK } : null),
-          }}
-        >
-          {shown.map((slug) => (
-            <Row key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} />
-          ))}
+      {/* The pager, by request: arrows above the % column instead of a
+          "Show N more" fold. Only rendered when the current filter needs more
+          than one page. It names the range, the same way the coverage
+          matrix's pager does, so "which ones am I looking at" never needs
+          counting. */}
+      {pages > 1 && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, margin: '0 0 8px' }}>
+          <span style={{ fontSize: 12, color: TERTIARY, fontFamily: MANROPE }}>
+            {from + 1}–{to} of {matching.length}
+          </span>
+          <span style={{ display: 'inline-flex', gap: 6 }}>
+            <PageButton onClick={() => setPage(cur - 1)} disabled={cur === 0} label="Previous parties">
+              <ChevronLeft style={{ width: 16, height: 16 }} />
+            </PageButton>
+            <PageButton onClick={() => setPage(cur + 1)} disabled={cur >= pages - 1} label="More parties">
+              <ChevronRight style={{ width: 16, height: 16 }} />
+            </PageButton>
+          </span>
         </div>
+      )}
 
-        {/* Names the number. "11 more" is a decision a reader can make, "more"
-            is not. While collapsed it sits ON the fade, where the fade is
-            already saying "this continues". */}
-        {collapsed && (
-          <button
-            onClick={() => setShowAll(true)}
-            aria-expanded={false}
-            style={{
-              position: 'absolute', left: '50%', bottom: 0, transform: 'translateX(-50%)',
-              display: 'inline-flex', alignItems: 'center', gap: 5,
-              padding: '6px 12px', borderRadius: 999,
-              background: 'none', border: 'none', cursor: 'pointer',
-              fontFamily: MANROPE, fontSize: 12, fontWeight: 800, color: INK,
-            }}
-          >
-            Show {hidden} more
-            <ChevronDown style={{ width: 15, height: 15 }} strokeWidth={3} />
-          </button>
-        )}
+      <div className="pc-rows">
+        {shown.map((slug) => (
+          <Row key={slug} slug={slug} pct={pctBySlug.get(slug) ?? null} />
+        ))}
       </div>
-
-      {/* "Show fewer" removed by request — once expanded, the list (and the
-          seats section it now reveals below it) stays expanded. There is no
-          collapse-back control at this spot any more; `showAll` only ever
-          goes true now, never back to false from here. */}
 
       {/* The threshold legend, and the "pollsters don't report N of these
           separately" note, both lived here as always-visible text — moved
@@ -326,12 +317,45 @@ export function PartiesContesting({ pop, asAt, children }: {
           states the 5% threshold directly, and "What a poll is not"
           already covered the Others/not-polled explanation. */}
 
-      {/* The seats section, revealed with everything else once the list is
-          expanded — !collapsed, not showAll, so it also shows when there
-          was nothing to fold in the first place (fewer than VISIBLE
-          parties matching the current filter). */}
-      {!collapsed && children}
+      {/* The seats section, always visible now — there is no expand state
+          left to gate it on. */}
+      {children}
     </div>
+  )
+}
+
+/** A pager arrow — copied from coverage-matrix.tsx's PageButton rather than
+ *  re-derived, so the site's two pagers look and behave the same (§1.4).
+ *  Quiet at rest, invisible-but-present when it can't go further so the row
+ *  doesn't reflow; the button is a 44px hit area around a 30px visible span
+ *  (§3.1). */
+function PageButton({ onClick, disabled, label, children }: {
+  onClick: () => void
+  disabled: boolean
+  label: string
+  children: ReactNode
+}) {
+  const size = 30
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      style={{
+        padding: (44 - size) / 2, margin: -(44 - size) / 2,
+        background: 'none', border: 'none',
+        cursor: disabled ? 'default' : 'pointer',
+        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      <span style={{
+        width: size, height: size, borderRadius: 9,
+        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+        background: '#fff', border: `1px solid ${BORDER}`,
+        color: disabled ? '#cdd2d8' : INK, opacity: disabled ? .55 : 1,
+      }}>{children}</span>
+    </button>
   )
 }
 
