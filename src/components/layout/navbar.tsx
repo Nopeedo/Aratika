@@ -154,14 +154,19 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile Menu Toggle */}
+          {/* Menu toggle. Icon only on a phone, where the bar is tight and a
+              hamburger is understood; the word joins it from 768px up, where
+              there is room and the button is otherwise three lines with no
+              name on a wide screen. Hidden entirely at xl, where the nav
+              links themselves are on the bar. */}
           <button
-            className="xl:hidden flex items-center justify-center size-9 rounded-md text-muted hover:text-foreground hover:bg-surface transition-colors"
+            className="xl:hidden flex items-center justify-center gap-2 h-9 px-2 md:px-3 rounded-md text-muted hover:text-foreground hover:bg-surface transition-colors"
             onClick={() => { setOpenedAt(pathname); setMobileOpen((o) => !o) }}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            <span className="hidden md:inline text-sm font-bold">{mobileOpen ? 'Close' : 'Menu'}</span>
           </button>
         </div>
       </div>
