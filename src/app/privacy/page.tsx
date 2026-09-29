@@ -87,6 +87,11 @@ export default function PrivacyPage() {
         <li><strong>Account emails</strong>, confirming your address, or resetting your password.</li>
       </ul>
       <p>
+        <strong>Email updates without an account.</strong> You can also join our mailing list without an account,
+        through the email box on our pages. For that we store your email address, where on the site you signed up,
+        and when. Every email we send has an unsubscribe link.
+      </p>
+      <p>
         We keep a record that an alert was sent to you, so we don’t send the same one twice. We don’t sell your address,
         we don’t share it for marketing, and we don’t send advertising.
       </p>
@@ -97,7 +102,9 @@ export default function PrivacyPage() {
         your browser data removes it: the one thing you last tapped Track on before signing up (so it can be tracked
         for you once you are in), your Learn scores, which onboarding steps you’ve done,
         whether you’ve asked for jargon to be explained, your answers to the quick guide (including whether you said
-        you’re enrolled), banners you’ve dismissed, and when you last looked at a particular MP’s page.
+        you’re enrolled), banners you’ve dismissed, and when you last looked at a particular MP’s page. Your browser
+        also keeps two random codes for our visit counts (see “Cookies and measurement”); they identify a browser,
+        not a person.
       </p>
 
       <h2>What we deliberately do not collect</h2>
@@ -119,6 +126,13 @@ export default function PrivacyPage() {
         that it was finished, how many issues you engaged with, and the voting-frequency option you picked. <strong>Your
         actual answers, your issues and any party leaning are not sent</strong>, we only learn that the tool is being
         used and roughly by whom.
+      </p>
+      <p>
+        We also <strong>count page visits ourselves</strong>, so we can see which pages are useful. Each visit records
+        the page’s address (without anything after a “?”), a random code your browser keeps so we can count visitors
+        rather than visits, a second random code that lasts one visit, whether you’re on a phone, tablet or computer,
+        and, on the first page of a visit, the name of the site that linked you here. We don’t record your IP address,
+        and none of this is tied to your account. Visits from search-engine robots aren’t counted.
       </p>
 
       <h2>Who else your browser talks to</h2>

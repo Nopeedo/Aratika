@@ -32,6 +32,16 @@ export const PREMIUM_ENABLED = false
  */
 export const LIVE_RESULTS_ENABLED = false
 
+/**
+ * Donations. OFF: paused by the owner (29 Sep 2026), who doesn't want
+ * Onebyone Project processing them. With this false every Donate button is
+ * hidden (top bar, footer, phone menu), /api/donate/checkout refuses, and
+ * /donate still loads but says donations aren't open. The whole flow is
+ * intact behind it (see src/app/api/donate and scripts/donation-receipts.mjs).
+ * Before turning it back on, the payment has to move off Onebyone.
+ */
+export const DONATIONS_ENABLED = false
+
 // The phase in which each feature becomes available.
 export const FEATURE_PHASE: Record<string, Phase> = {
   // Phase 1 — Election Central (dashboard/command centre ships now as the centrepiece)

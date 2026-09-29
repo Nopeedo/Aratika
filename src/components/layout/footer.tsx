@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ExternalLink, Heart } from 'lucide-react'
 import { SITE } from '@/constants/site'
 import { FOOTER_LINKS } from '@/constants/nav-links'
-import { isEnabled } from '@/constants/features'
+import { isEnabled, DONATIONS_ENABLED } from '@/constants/features'
 import { LogoMark } from '@/components/brand/logo-mark'
 
 export function Footer() {
@@ -69,7 +69,7 @@ export function Footer() {
 
             {/* Donate, by request: always shown, always to the site's own
                 /donate page, where Onebyone processes the payment. */}
-            {(
+            {DONATIONS_ENABLED && (
               <div className="mt-5">
                 <Link
                   href="/donate"

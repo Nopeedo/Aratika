@@ -7,7 +7,7 @@ import { Menu, X, ChevronDown, Map, User, LogOut, Crown, ListChecks, Settings, H
 import { cn } from '@/lib/utils/cn'
 import { Button } from '@/components/ui/button'
 import { visibleNav, desktopNav, type NavItem } from '@/constants/nav-links'
-import { PREMIUM_ENABLED } from '@/constants/features'
+import { PREMIUM_ENABLED, DONATIONS_ENABLED } from '@/constants/features'
 import { SITE } from '@/constants/site'
 import { useUser } from '@/hooks/use-user'
 import { createClient } from '@/lib/supabase/client'
@@ -150,7 +150,7 @@ export function Navbar() {
           <div className="hidden xl:flex items-center gap-2">
             {/* Donate, in the top bar by request, for everyone signed in or
                 not. Outlined so it doesn't compete with Sign up free. */}
-            <Link
+            {DONATIONS_ENABLED && <Link
               href="/donate"
               className={cn(
                 'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-semibold border-[1.5px] transition-colors',
@@ -160,7 +160,7 @@ export function Navbar() {
               )}
             >
               <Heart className="size-3.5" /> Donate
-            </Link>
+            </Link>}
             {isLoggedIn ? (
               <>
                 {PREMIUM_ENABLED && !isPremium && (
@@ -253,7 +253,7 @@ export function Navbar() {
 
           {/* Donate, under Learn, by request: the footer's button, same
               rule. Always to /donate, which holds the payment link. */}
-          {(
+          {DONATIONS_ENABLED && (
             <div className="px-3 pt-2 pb-1">
               <Link
                 href="/donate"

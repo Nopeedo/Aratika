@@ -14,6 +14,7 @@
 
 import type { Metadata } from 'next'
 import { DonateForm } from '@/components/donate/donate-form'
+import { DONATIONS_ENABLED } from '@/constants/features'
 import { BORDER, INK, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
@@ -27,7 +28,7 @@ export const dynamic = 'force-dynamic'
 const para: React.CSSProperties = { fontSize: 15, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: '0 0 12px' }
 
 export default function DonatePage() {
-  const open = Boolean(process.env.DONATE_SHARED_SECRET)
+  const open = DONATIONS_ENABLED && Boolean(process.env.DONATE_SHARED_SECRET)
 
   return (
     <div style={WOVEN_PAGE}>

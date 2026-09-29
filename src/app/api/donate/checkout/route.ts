@@ -12,6 +12,7 @@
  */
 
 import { donateSecret, sign } from '@/lib/donate/sign'
+import { DONATIONS_ENABLED } from '@/constants/features'
 
 const MIN_CENTS = 100          // $1
 const MAX_CENTS = 1_000_000    // $10,000
@@ -19,7 +20,7 @@ const ONEBYONE_API = (process.env.ONEBYONE_API_URL || 'https://onebyoneproject-a
 
 export async function POST(request: Request) {
   const secret = donateSecret()
-  if (!secret) return Response.json({ error: 'Donations are not open yet' }, { status: 503 })
+  if (!DONATIONS_ENABLED || !secret) return Response.json({ error: 'Donations are not open yet' }, { status: 503 })
 
   let body: { amountCents?: unknown; coverFee?: unknown; emailUpdates?: unknown }
   try {
