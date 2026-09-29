@@ -327,6 +327,15 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
              name twice in one view; on desktop the dock is off in the corner
              and the tab is the only thing naming what the colours mean. */
           .pt-tab { opacity: 1 !important; }
+
+          /* Desktop type scale. Every size on this page is inline, so a
+             breakpoint can only reach them with !important — the alternative
+             was editing each call site and losing the phone sizes, which are
+             right as they are. Roughly a fifth off the largest things. */
+          .hp-h2 { font-size: 26px !important; }
+          .hp-partyname { font-size: 42px !important; }
+          .hp-seatslabel { font-size: 19px !important; }
+          .hp-blocklabel { font-size: 17px !important; }
           .pt-dock-inner {
             width: fit-content;
             max-width: 100%;
@@ -470,7 +479,7 @@ export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
 
   return (
     <section style={{ background: 'transparent' }}>
-      <div style={{ maxWidth: 1040, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
         <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
           <div style={{ marginBottom: 6, fontSize: 12.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: MUTE, fontFamily: MANROPE }}>
             Latest in media
@@ -482,7 +491,7 @@ export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
             {/* Two lines reserved. "…on Te Pāti Māori" wraps on a phone where
                 "…on ACT" does not, which changed the page height every time the
                 cycle turned. */}
-            <h2 style={{ fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.2, minHeight: '2.4em' }}>
+            <h2 className="hp-h2" style={{ fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.2, minHeight: '2.4em' }}>
               What&rsquo;s being reported on <span style={{ color: seatColor(p.color) }}>{p.name}</span>
             </h2>
           </div>
@@ -645,7 +654,7 @@ function BillsRow({ p }: { p: TileParty }) {
               Same size and spacing as "Seats in Parliament" above it: the two
               are peer blocks in one column, and at 13px against 20px this one
               read as a caption on the seats block rather than its own thing. */}
-          <div style={{ flex: 1, minWidth: 0, fontSize: 20, fontWeight: 800, letterSpacing: 0, textTransform: 'uppercase', color: INK, fontFamily: MANROPE, textAlign: 'center', lineHeight: 1.15 }}>
+          <div className="hp-blocklabel" style={{ flex: 1, minWidth: 0, fontSize: 20, fontWeight: 800, letterSpacing: 0, textTransform: 'uppercase', color: INK, fontFamily: MANROPE, textAlign: 'center', lineHeight: 1.15 }}>
             Bills introduced by {p.name} this term
           </div>
           <BillsInfoButton accent={accent} governing={!!p.governing} slug={p.slug} />
@@ -793,7 +802,7 @@ export function PartyStanceSummary({ parties }: { parties: TileParty[] }) {
 function PanelHeader({ p }: { p: TileParty }) {
   return (
     <div>
-      <span style={{ display: 'block', fontSize: 'clamp(30px,6.4vw,56px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.05 }}>{p.name}</span>
+      <span className="hp-partyname" style={{ display: 'block', fontSize: 'clamp(30px,6.4vw,56px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, lineHeight: 1.05 }}>{p.name}</span>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 12 }}>
         {/* Each photo sits in a solid white ring — a frame, so the disc reads as
@@ -906,7 +915,7 @@ function SeatsRow({ p }: { p: TileParty }) {
           the smaller of them made the block look top-light. The (i) carries
           what a seat IS, for a reader the number means nothing to. */}
       <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
-        <span ref={labelRef} style={{ fontSize: 23, fontWeight: 800, color: INK, textTransform: 'uppercase', letterSpacing: '.02em', lineHeight: 1.15, whiteSpace: 'nowrap', fontFamily: MANROPE }}>Seats in Parliament</span>
+        <span ref={labelRef} className="hp-seatslabel" style={{ fontSize: 23, fontWeight: 800, color: INK, textTransform: 'uppercase', letterSpacing: '.02em', lineHeight: 1.15, whiteSpace: 'nowrap', fontFamily: MANROPE }}>Seats in Parliament</span>
         <SeatsInfoButton accent={seatColor(p.color)} party={p.name} slug={p.slug} />
       </span>
       {/* What won those seats, rather than "as of 2023 election" — the date

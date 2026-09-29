@@ -125,7 +125,7 @@ export function ExploreCarousel() {
       {/* 18px of air above the heading, not 48: the section before already
           carries 26px of its own under its last signpost, so the two stacked
           into a gap wide enough to read as the page having ended. */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '18px clamp(18px, 5vw, 36px) 22px' }}>
+      <div style={{ maxWidth: 940, margin: '0 auto', padding: '18px clamp(18px, 5vw, 36px) 22px' }}>
         {/* Header + desktop arrows */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 12, marginBottom: 20, flexWrap: 'wrap' }}>
           <div>
@@ -145,7 +145,7 @@ export function ExploreCarousel() {
                 background: `radial-gradient(ellipse at center, ${rgba(accentColor, 0.2)}, ${rgba(accentColor, 0)} 70%)`,
                 transition: 'background .3s ease-in-out', pointerEvents: 'none', zIndex: -1,
               }} />
-              <h2 style={{ position: 'relative', fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>Explore Politika&rsquo;s tools</h2>
+              <h2 className="hp-h2" style={{ position: 'relative', fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>Explore Politika&rsquo;s tools</h2>
             </div>
             {/* No sub-line: nine signposts under the heading say what this is
                 more plainly than a sentence about them did. */}
@@ -159,7 +159,7 @@ export function ExploreCarousel() {
           swiping. These are the same destinations as one line apiece, in the
           shape the rest of the page uses for "this way out", with the tool's
           own icon in a circle at the head of each. */}
-      <div style={{ maxWidth: 1040, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 48px', display: 'flex', flexDirection: 'column', gap: 22 }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 48px', display: 'flex', flexDirection: 'column', gap: 22 }}>
         {groups.map((g) => (
           <div key={g.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
             <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: SUB, fontFamily: MANROPE }}>
