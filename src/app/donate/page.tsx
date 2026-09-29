@@ -32,12 +32,24 @@ export default function DonatePage() {
   return (
     <div style={WOVEN_PAGE}>
       <div style={{ maxWidth: 640, margin: '0 auto', padding: 'clamp(24px, 5vh, 48px) clamp(18px, 5vw, 36px) 64px' }}>
-        <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: INK, margin: '0 0 12px' }}>
+        <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: INK, margin: '0 0 16px' }}>
           Support Politika
         </h1>
+        {/* The form first, by request, then what the money is for. */}
+        <div style={{ border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '20px 20px 18px', boxShadow: '0 2px 8px rgba(42,18,6,.05)' }}>
+          <DonateForm open={open} />
+        </div>
+
+        <p style={{ fontFamily: MANROPE, fontSize: 12.5, color: TERTIARY, textAlign: 'center', margin: '10px 0 22px' }}>
+          Secured by Stripe
+        </p>
         {/* What the money is for, in the owner's terms: run independently,
             working towards proper funding, and donations covering running
-            costs until then. */}
+            costs until then. Under its own heading, by request, so it reads
+            as the answer to a question rather than small print. */}
+        <h2 style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-.01em', lineHeight: 1.25, fontFamily: MANROPE, color: INK, margin: '0 0 8px' }}>
+          Why we ask for donations
+        </h2>
         <p style={para}>
           Politika is run independently. It isn&rsquo;t owned by a party, a media company or a government agency, and
           it&rsquo;s free for everyone to use.
@@ -46,17 +58,10 @@ export default function DonatePage() {
           Our goal is to secure proper funding so Politika can keep growing. Until then, donations help cover the
           costs of running it: hosting, data, and the time it takes to keep every figure checked against its source.
         </p>
-        <p style={{ ...para, margin: '0 0 20px' }}>
+        <p style={{ ...para, margin: 0 }}>
           Every donation, big or small, helps keep the site online and free.
         </p>
 
-        <div style={{ border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '20px 20px 18px', boxShadow: '0 2px 8px rgba(42,18,6,.05)' }}>
-          <DonateForm open={open} />
-        </div>
-
-        <p style={{ fontFamily: MANROPE, fontSize: 12.5, color: TERTIARY, textAlign: 'center', margin: '12px 0 0' }}>
-          Secured by Stripe
-        </p>
       </div>
     </div>
   )

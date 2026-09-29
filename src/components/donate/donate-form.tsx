@@ -5,8 +5,8 @@
  * /donate page (onebyoneproject.co frontend/src/pages/PlatformDonate.tsx), by
  * request, cut down further by request: one-time only, and the donor types
  * their own amount (no preset amounts, nothing pre-selected, no monthly).
- * Currency pill, amount field, the optional fee cover, one Continue button to
- * Stripe. Politika's jade in place of Onebyone's teal.
+ * NZD only, by request. Amount field, the optional fee cover, an email-updates
+ * tick box once an amount is in, and one Continue button to Stripe. Politika's jade in place of Onebyone's teal.
  *
  * Onebyone processes the payment (it's the merchant, on Politika's behalf):
  * Continue posts to /api/donate/checkout, which opens a Stripe Checkout
@@ -17,10 +17,8 @@
 
 import * as React from 'react'
 
-// Weight-matched, not FX-converted: $10 is $10 in each, and the number shown
-// is the number charged (Onebyone's rule, for the same reason).
-const CURRENCIES = ['NZD', 'USD', 'AUD'] as const
-type Currency = (typeof CURRENCIES)[number]
+// NZD only, by request (Onebyone's page also offers USD and AUD).
+const currency = 'NZD'
 
 /** Stripe NZ standard pricing, 2.9% + 30c: drives the optional fee cover. */
 function processingFee(dollars: number): number {
@@ -31,7 +29,9 @@ function processingFee(dollars: number): number {
 
 export function DonateForm({ open }: { open: boolean }) {
   const [custom, setCustom] = React.useState('')
-  const [currency, setCurrency] = React.useState<Currency>('NZD')
+  // Unticked by default: signing up for email is the donor's choice, not
+  // something they have to notice and undo. (Onebyone's page pre-ticks it.)
+  const [emailUpdates, setEmailUpdates] = React.useState(false)
   // Off by default: no pre-ticked extras.
   const [coverFee, setCoverFee] = React.useState(false)
   const [submitting, setSubmitting] = React.useState(false)
@@ -57,7 +57,7 @@ export function DonateForm({ open }: { open: boolean }) {
       const res = await fetch('/api/donate/checkout', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ amountCents: Math.round(total * 100), currency: currency.toLowerCase(), coverFee }),
+        body: JSON.stringify({ amountCents: Math.round(total * 100), currency: 'nzd', coverFee, emailUpdates }),
       })
       const json = (await res.json().catch(() => ({}))) as { url?: string }
       if (res.ok && json.url) {
@@ -75,16 +75,7 @@ export function DonateForm({ open }: { open: boolean }) {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <div className="dn-amount-row">
-        <label htmlFor="dn-currency" className="dn-sr">Currency</label>
-        <div className="dn-currency">
-          <select id="dn-currency" value={currency} onChange={(e) => setCurrency(e.target.value as Currency)}>
-            {CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
-          <svg aria-hidden viewBox="0 0 12 12" width="12" height="12"><path d="M2.5 4.5l3.5 3.5 3.5-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        </div>
-        <span className="dn-label">One-time donation</span>
-      </div>
+      <label htmlFor="dn-amount" className="dn-label">One-time donation (NZD)</label>
 
       <div className={'dn-custom' + (customNum > 0 ? ' on' : '')}>
         <span aria-hidden>$</span>
@@ -100,6 +91,17 @@ export function DonateForm({ open }: { open: boolean }) {
             <strong>Amplify your gift:</strong> help cover the <em>{currency} {fee.toFixed(2)}</em> estimated processing
             fee, so more of your donation goes to running Politika.
           </span>
+        </label>
+      )}
+
+      {/* Email updates, once an amount is in, by request (Onebyone's page
+          does the same). The donor's address comes from Stripe Checkout;
+          /donate/thank-you adds it to the newsletter list only if this was
+          ticked. */}
+      {amount > 0 && (
+        <label className="dn-amplify">
+          <input type="checkbox" checked={emailUpdates} onChange={(e) => setEmailUpdates(e.target.checked)} />
+          <span>Get email updates from Politika</span>
         </label>
       )}
 
@@ -129,13 +131,7 @@ export function DonateForm({ open }: { open: boolean }) {
 // Politika's jade #1F8A4C, its tints become jade tints.
 const CSS = `
 .dn-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
-.dn-amount-row { display:flex; justify-content:space-between; align-items:center; gap:8px; margin:0 0 10px; }
-.dn-label { font:700 14px var(--font-manrope), system-ui, sans-serif; color:#2A1206; }
-.dn-currency { position:relative; display:inline-flex; flex-shrink:0; }
-.dn-currency select { appearance:none; -webkit-appearance:none; background:#F5F8F6; border:1px solid #D9E3DD; border-radius:999px;
-  padding:5px 26px 5px 12px; font:600 12px/1.4 var(--font-manrope), system-ui, sans-serif; letter-spacing:.04em; color:#4A5560; cursor:pointer; outline:none; }
-.dn-currency select:focus-visible { border-color:#1F8A4C; box-shadow:0 0 0 3px rgba(31,138,76,.18); }
-.dn-currency svg { position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#8A929B; pointer-events:none; }
+.dn-label { display:block; margin:0 0 8px; font:700 14px var(--font-manrope), system-ui, sans-serif; color:#2A1206; }
 .dn-custom { display:flex; align-items:center; gap:8px; background:#fff; border:2px solid #E6ECE8; border-radius:14px; padding:0 14px;
   height:56px; margin:0 0 18px; font:700 18px var(--font-manrope), system-ui, sans-serif; color:#2A1206; }
 .dn-custom.on { border-color:#1F8A4C; }

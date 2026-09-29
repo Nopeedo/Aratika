@@ -14,7 +14,6 @@
 
 import Stripe from 'stripe'
 
-const CURRENCIES = new Set(['nzd', 'usd', 'aud'])
 const MIN_CENTS = 100          // $1
 const MAX_CENTS = 1_000_000    // $10,000
 
@@ -22,7 +21,7 @@ export async function POST(request: Request) {
   const key = process.env.DONATE_STRIPE_SECRET_KEY
   if (!key) return Response.json({ error: 'Donations are not open yet' }, { status: 503 })
 
-  let body: { amountCents?: unknown; currency?: unknown; coverFee?: unknown }
+  let body: { amountCents?: unknown; currency?: unknown; coverFee?: unknown; emailUpdates?: unknown }
   try {
     body = await request.json()
   } catch {
@@ -30,13 +29,21 @@ export async function POST(request: Request) {
   }
 
   const amount = typeof body.amountCents === 'number' ? Math.round(body.amountCents) : NaN
-  const currency = typeof body.currency === 'string' ? body.currency.toLowerCase() : ''
-  if (!Number.isFinite(amount) || amount < MIN_CENTS || amount > MAX_CENTS || !CURRENCIES.has(currency)) {
+  // NZD only, by request.
+  const currency = 'nzd'
+  if (!Number.isFinite(amount) || amount < MIN_CENTS || amount > MAX_CENTS) {
     return Response.json({ error: 'Choose an amount between $1 and $10,000' }, { status: 400 })
   }
 
   const origin = new URL(request.url).origin
-  const metadata = { source: 'politika', purpose: 'politika-running-costs', cover_fee: String(body.coverFee === true) }
+  const metadata = {
+    source: 'politika',
+    purpose: 'politika-running-costs',
+    cover_fee: String(body.coverFee === true),
+    // Read back on /donate/thank-you, which adds the donor's Checkout email
+    // to the newsletter list only when this is 'true'.
+    email_updates: String(body.emailUpdates === true),
+  }
 
   try {
     const stripe = new Stripe(key)
@@ -48,7 +55,7 @@ export async function POST(request: Request) {
       line_items: [{ quantity: 1, price_data: { currency, unit_amount: amount, product_data: { name: 'Donation to Politika' } } }],
       payment_intent_data: { metadata, description: 'Donation to Politika' },
       metadata,
-      success_url: `${origin}/donate/thank-you`,
+      success_url: `${origin}/donate/thank-you?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/donate`,
     })
     return Response.json({ url: session.url })
