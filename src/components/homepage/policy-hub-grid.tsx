@@ -21,7 +21,7 @@ export async function PolicyHubGrid() {
     // extends past its own box via negative inset) at the section edge, so it
     // never causes the page itself to overflow/shift sideways on mobile.
     <section style={{ background: 'transparent', overflowX: 'hidden' }}>
-      <div style={{ maxWidth: 940, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 56px' }}>
+      <div style={{ maxWidth: 820, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 56px' }}>
         {/* "Tap an issue below" now rides inline off the end of the heading —
             see PolicyHubHeading. */}
         <div style={{ marginBottom: 28 }}>

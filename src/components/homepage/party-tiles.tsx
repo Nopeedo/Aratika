@@ -332,10 +332,10 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
              breakpoint can only reach them with !important — the alternative
              was editing each call site and losing the phone sizes, which are
              right as they are. Roughly a fifth off the largest things. */
-          .hp-h2 { font-size: 26px !important; }
-          .hp-partyname { font-size: 42px !important; }
-          .hp-seatslabel { font-size: 19px !important; }
-          .hp-blocklabel { font-size: 17px !important; }
+          .hp-h2 { font-size: 23px !important; }
+          .hp-partyname { font-size: 36px !important; }
+          .hp-seatslabel { font-size: 17px !important; }
+          .hp-blocklabel { font-size: 15px !important; }
           .pt-dock-inner {
             width: fit-content;
             max-width: 100%;
@@ -479,7 +479,7 @@ export function PartyNewsSummary({ parties }: { parties: TileParty[] }) {
 
   return (
     <section style={{ background: 'transparent' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
+      <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 clamp(18px, 5vw, 36px) 40px' }}>
         <div style={{ opacity: fading ? 0 : 1, transition: `opacity ${fadeMs}ms ease-in-out` }}>
           <div style={{ marginBottom: 6, fontSize: 12.5, fontWeight: 800, letterSpacing: '.12em', textTransform: 'uppercase', color: MUTE, fontFamily: MANROPE }}>
             Latest in media
