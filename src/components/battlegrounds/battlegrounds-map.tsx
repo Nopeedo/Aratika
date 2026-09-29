@@ -265,7 +265,13 @@ export function BattlegroundsMap({ candidatesBySlug, defaultView = 'margin' }: {
             twice in this file, once for a branch that no longer exists. */}
         <div ref={panelRef} className="bg-map-panel" style={{ fontFamily: MANROPE, minHeight: 0 }}>
           {!selected ? (
-            <Prompt />
+            // Empty state. Hidden on phones by request (.bg-map-prompt-empty in
+            // GRID_CSS): there the panel stacks UNDER the map, so this was a
+            // 150px box saying "tap a seat" directly below a map whose own
+            // description, just above it, already says "Tap an area on the map".
+            // Kept beside the map on a desktop, where the column would
+            // otherwise be a blank 340px strip.
+            <Prompt empty />
           ) : info && tier ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12, height: '100%', minHeight: 0 }}>
               {/* key={selected}: the "Last election" reveal closes again when
@@ -442,9 +448,9 @@ function SeatCard({ name, slug, info, tier, mp, candidates }: {
 /** One prompt, used by the empty state and the unmatched-boundary state.
  *  It reserved 300px before, which is a third of a phone screen spent telling
  *  the reader to do the thing they can already see. A prompt is a prompt. */
-function Prompt({ message }: { message?: string }) {
+function Prompt({ message, empty = false }: { message?: string; empty?: boolean }) {
   return (
-    <div className="bg-map-prompt" style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', border: `1px solid ${BORDER}`, borderRadius: 16, background: SURFACE, padding: 20, color: TERTIARY, fontFamily: MANROPE }}>
+    <div className={empty ? 'bg-map-prompt bg-map-prompt-empty' : 'bg-map-prompt'} style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', border: `1px solid ${BORDER}`, borderRadius: 16, background: SURFACE, padding: 20, color: TERTIARY, fontFamily: MANROPE }}>
       <ShieldCheck style={{ width: 26, height: 26, color: JADE, marginBottom: 10 }} />
       <div style={{ fontSize: 14, fontWeight: 700, color: SECONDARY }}>{message ? 'No record for this boundary' : 'Tap a seat'}</div>
       {/* What the colours mean is said once, in the (i) beside the page title.
@@ -469,5 +475,6 @@ const GRID_CSS = `
   .bg-map-box { height: 460px; }
   .bg-map-panel { height: auto; overflow-y: visible; }
   .bg-map-prompt { min-height: 150px; }
+  .bg-map-prompt-empty { display: none !important; }
 }
 `
