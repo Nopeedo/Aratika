@@ -46,9 +46,8 @@ export function EmailUpdates() {
     <section style={{ background: 'transparent' }}>
       <div style={{ maxWidth: 800, margin: '0 auto', padding: '8px clamp(18px, 5vw, 36px) 40px' }}>
         <div style={{
-          background: '#fff', border: `2px solid ${BORDER}`, borderTop: `3px solid ${accentColor}`,
+          background: '#fff', border: `2px solid ${BORDER}`,
           borderRadius: 16, padding: 'clamp(16px, 3vw, 22px)',
-          transition: 'border-color .3s ease-in-out',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 6 }}>
             <Mail style={{ width: 17, height: 17, color: accentColor, flexShrink: 0, transition: 'color .3s ease-in-out' }} />
