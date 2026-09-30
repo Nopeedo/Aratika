@@ -33,14 +33,22 @@ export const PREMIUM_ENABLED = false
 export const LIVE_RESULTS_ENABLED = false
 
 /**
- * Donations. OFF: paused by the owner (29 Sep 2026), who doesn't want
- * Onebyone Project processing them. With this false every Donate button is
- * hidden (top bar, footer, phone menu), /api/donate/checkout refuses, and
- * /donate still loads but says donations aren't open. The whole flow is
- * intact behind it (see src/app/api/donate and scripts/donation-receipts.mjs).
- * Before turning it back on, the payment has to move off Onebyone.
+ * Donations. ON since 30 Sep 2026.
+ *
+ * They were paused on 29 Sep because the owner did not want Onebyone Project
+ * processing them, and the condition written here for turning them back on was
+ * that the payment move off Onebyone. It has: 8bbc4f7 put checkout on
+ * Politika's own Stripe account, so the card statement reads POLITIKA, and
+ * a627fe3/b8b51f7 moved the receipt to the webhook with a claim/release guard
+ * so it cannot double-send.
+ *
+ * With this true the Donate buttons show (top bar, footer, phone menu) and
+ * /api/donate/checkout accepts. It still needs STRIPE_SECRET_KEY to be a LIVE
+ * key on Politika's own account in production, and STRIPE_WEBHOOK_SECRET to be
+ * the signing secret of the live endpoint — the flag does not check either, so
+ * a wrong key here is a failed checkout or money in the wrong account.
  */
-export const DONATIONS_ENABLED = false
+export const DONATIONS_ENABLED = true
 
 // The phase in which each feature becomes available.
 export const FEATURE_PHASE: Record<string, Phase> = {
