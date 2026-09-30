@@ -192,8 +192,8 @@ export async function UpcomingView(_props: { e: ElectionData }) {
               <InfoHeading accent={ACCENT.parties}>Who is on this list</InfoHeading>
               <InfoText>
                 Every party registered with the Electoral Commission to contest the party vote, by registration rather
-                than by polling. The parliamentary parties come first, in seat order, then the rest by their most recent
-                published figure. The final list is confirmed when nominations close
+                than by polling. Parties now in Parliament come first, in seat order, followed by any party polling at
+                or above the 5% threshold to enter it, then the rest by their most recent published figure. The final list is confirmed when nominations close
                 {nominationsClose ? `, ${longDate(nominationsClose)}` : ''}.{' '}
                 <a href="/party-inclusion" style={{ color: ACCENT.parties, fontWeight: 800, textDecoration: 'none' }}>How we decide who is included</a>
               </InfoText>

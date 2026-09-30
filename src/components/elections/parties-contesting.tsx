@@ -165,9 +165,38 @@ export function PartiesContesting({ pop, asAt, children }: {
   // arrows to step, same PageButton the coverage matrix uses.
   const [page, setPage] = useState(0)
 
+  /**
+   * FIRST PAGE = PARLIAMENT AS IT IS, PLUS PARLIAMENT AS THE POLLS PROJECT IT.
+   *
+   * This used to be the six parliamentary parties and nothing else, with
+   * VISIBLE set to six so the first page ended exactly on the reader’s own
+   * mental line. The intent was right; the line was drawn in the wrong place.
+   * Seats are the 2023 result, so the rule keyed the front page to the last
+   * election and made any party RISING toward Parliament invisible behind a
+   * pagination arrow — which is incumbency bias, not neutrality.
+   *
+   * It showed: Te Pāti Māori on page one at 2.1%, while The Opportunities
+   * Party sat on page two at 6.2% and a projected 8 seats. A reader looking
+   * at the poll list and then at the seat projection directly below it saw a
+   * party in one and not the other.
+   *
+   * The line is now "in Parliament, or polling your way into it": the same
+   * 5% the chart already draws a dashed marker at, and the same threshold
+   * the Electoral Act uses. It is a rule, not a judgement — it promotes
+   * whoever clears the bar and demotes them again when they stop clearing
+   * it, with no party named anywhere in the code.
+   *
+   * Parties below the threshold keep their existing order, by most recent
+   * published figure. Only the grouping changed.
+   */
+  const contenders = NON_PARLIAMENTARY_CONTESTING.filter(
+    (s) => (pctBySlug.get(s) ?? MINOR_PARTY_READINGS[s]?.pct ?? 0) >= THRESHOLD,
+  )
+  const restOfField = NON_PARLIAMENTARY_CONTESTING.filter((s) => !contenders.includes(s))
   const ordered: PartySlug[] = [
     ...PARLIAMENTARY_PARTIES,
-    ...orderByMeasure(NON_PARLIAMENTARY_CONTESTING, pctBySlug),
+    ...orderByMeasure(contenders, pctBySlug),
+    ...orderByMeasure(restOfField, pctBySlug),
   ]
   const notPolled = ordered.filter((s) => !hasAnyFigure(s, pctBySlug))
 
@@ -179,10 +208,18 @@ export function PartiesContesting({ pop, asAt, children }: {
   }
 
   const matching = ordered.filter(inGroup)
-  const pages = Math.max(1, Math.ceil(matching.length / VISIBLE))
+  /**
+   * Page size follows the same line. On the full list the first page has to
+   * hold everyone in or entering Parliament, or the fix above would put a
+   * contender at the top of page two instead of the bottom of page one and
+   * change nothing a reader sees. The filtered groups keep the flat VISIBLE,
+   * where there is no such line to land on.
+   */
+  const perPage = group === 'all' ? PARLIAMENTARY_PARTIES.length + contenders.length : VISIBLE
+  const pages = Math.max(1, Math.ceil(matching.length / perPage))
   const cur = Math.min(page, pages - 1)
-  const from = cur * VISIBLE
-  const to = Math.min(from + VISIBLE, matching.length)
+  const from = cur * perPage
+  const to = Math.min(from + perPage, matching.length)
   const shown = matching.slice(from, to)
 
   const counts: Record<Group, number> = {
