@@ -35,15 +35,23 @@ function PolitikaLogo() {
           where a word at this size would not fit. */}
       {/* The drawn wordmark, replacing the two coloured spans that stood in
           for it. Same "Poli" ink / "tika" jade split, plus the hand-drawn
-          underline the type could not carry. Transparent PNG, so it sits on
-          the bar and on any background the header takes.
+          underline the type could not carry. Transparent SVG, so it sits on
+          the bar and on any background the header takes, and stays sharp at
+          any size.
+
+          `unoptimized` is required, not incidental: next/image refuses to
+          serve SVG through the optimizer unless images.dangerouslyAllowSVG
+          is set, and that flag would let ANY remote SVG through as well.
+          This bypasses the optimizer for one local file instead. An SVG has
+          nothing to optimize anyway.
 
           Height fixed and width derived from the file's own 1603x445, so the
           bar never reflows while the image loads. `priority` because it is in
           the first screen on every page. The share-image card (lib/og/card)
           still draws the split in type; change both together. */}
       <Image
-        src="/politika-wordmark.png"
+        src="/politika-wordmark.svg"
+        unoptimized
         alt={SITE.name}
         width={108}
         height={30}

@@ -33,7 +33,9 @@ export function Footer() {
                 the name were saying the name twice; the wordmark says it once
                 and says it the way the brand now does. */}
             <div className="mb-3">
-              <Image src="/politika-wordmark.png" alt={SITE.name} width={126} height={35} className="h-[32px] w-auto" />
+              {/* unoptimized for the same reason as the header: next/image
+                  will not serve an SVG through the optimizer. */}
+              <Image src="/politika-wordmark.svg" alt={SITE.name} width={126} height={35} unoptimized className="h-[32px] w-auto" />
             </div>
             <p className="text-xs text-[#6b6157] leading-relaxed">
               {SITE.tagline}
