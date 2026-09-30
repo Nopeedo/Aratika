@@ -42,6 +42,34 @@ export interface ProposalGrouping {
   proposals: GroupedProposal[]
 }
 
+/**
+ * 1 Oct 2026 — NINE GROUPINGS REMOVED, and why none were replaced.
+ *
+ * A grouping replaces a position’s keyProposals on the homepage panel,
+ * matched on topic+party and never compared against the text it stands in
+ * for. The rules above accept that a proposal ADDED in /editor will not
+ * reach a grouped panel. They did not anticipate a position being REWRITTEN.
+ *
+ * national/foreign-policy had drifted completely: the grouping said
+ * diplomacy, a combat-ready military and veterans, while the approved
+ * position said trade deals and doubling exports. The homepage was showing
+ * a party position no editor had approved.
+ *
+ * The other eight were removed on the editor’s call, to make the
+ * editor-approved text the single source of truth: green/economy,
+ * act/housing, act/education, act/crime-justice, nzfirst/climate,
+ * nzfirst/environment, nzfirst/immigration, nzfirst/foreign-policy. Some of
+ * those were probably still accurate — act/crime-justice’s "Bring back
+ * Three Strikes" and its position’s "Tougher penalties for serious
+ * offenders" are the same policy in different words — so this trades a
+ * curated reading of eight panels for the guarantee that what the homepage
+ * says is what an editor approved.
+ *
+ * Before adding any grouping back, run:
+ *   npx tsx scripts/audit-proposal-groupings.mts
+ * and re-run it whenever positions are re-drafted. A grouping is the only
+ * text on this site that can go stale without anything saying so.
+ */
 export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
   {
     topic: 'housing',
@@ -323,24 +351,6 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
   },
 
   {
-    topic: 'economy',
-    party: 'green',
-    proposals: [
-      {
-        headline: 'Publish an alternative budget and apply a Green Fiscal Strategy to how public money is managed',
-        details: [
-          'Publish an alternative budget showing different spending and revenue choices',
-          'Apply a Green Fiscal Strategy to guide how public money is managed',
-        ],
-      },
-      // Left separate: both are aims for the economy rather than instruments,
-      // and merging them would say less than either does on its own.
-      'Build an economy that meets everyone’s basic needs',
-      'Give everyday people more power to shape the economic system',
-    ],
-  },
-
-  {
     topic: 'climate',
     party: 'green',
     proposals: [
@@ -439,22 +449,6 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
   },
 
   {
-    topic: 'housing',
-    party: 'act',
-    proposals: [
-      'Allow thousands of overseas building products to be used in New Zealand to lower construction costs',
-      {
-        headline: 'Repeal and replace the Resource Management Act with a property-rights-based, rules-based system',
-        details: [
-          'Repeal and replace the Resource Management Act with a property-rights-based system',
-          'Create a rules-based framework where development can proceed quickly without lengthy compliance',
-        ],
-      },
-      'Enable private investment in major infrastructure through Public Private Partnerships',
-    ],
-  },
-
-  {
     topic: 'health',
     party: 'act',
     proposals: [
@@ -474,50 +468,6 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
         ],
       },
       'Focus health funding on frontline services rather than management',
-    ],
-  },
-
-  {
-    topic: 'education',
-    party: 'act',
-    // Only one merge here. Student Education Accounts and partnership schools
-    // both widen choice, but they are two distinct mechanisms — an account
-    // families spend, and a type of school — so they stay apart.
-    proposals: [
-      'Introduce Student Education Accounts, publicly funded accounts parents can spend at any registered school or provider',
-      'Publish detailed, comparable school performance data for parents',
-      {
-        headline: 'Raise teacher training standards and introduce performance-based pay',
-        details: [
-          'Raise teacher training standards with a focus on evidence-based literacy and numeracy methods',
-          'Introduce performance-based pay so schools can reward their best teachers',
-        ],
-      },
-      'Restore and expand partnership (charter) schools, publicly funded but independently run',
-      'Keep curriculum focused on core subjects: reading, writing, maths, science, and history',
-    ],
-  },
-
-  {
-    topic: 'crime-justice',
-    party: 'act',
-    proposals: [
-      {
-        headline: 'Bring back Three Strikes, and longer sentences for attacks on vulnerable workers',
-        details: [
-          'Bring back Three Strikes, serious repeat violent or sexual offenders serve full sentences with no parole',
-          'Longer sentences for attacks on vulnerable workers such as shop staff and bus drivers',
-        ],
-      },
-      {
-        headline: 'Expand prison capacity and drop targets to reduce prisoner numbers',
-        details: [
-          'Expand prison capacity and remove targets to reduce prisoner numbers',
-          'Keep dangerous offenders in prison based on evidence of rehabilitation, not political targets',
-        ],
-      },
-      'Allow prisoners early parole only if they gain literacy, a trade, or a qualification',
-      'Focus police on frontline work against gangs and violent crime by cutting paperwork',
     ],
   },
 
@@ -611,42 +561,6 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
   },
 
   {
-    topic: 'climate',
-    party: 'nzfirst',
-    proposals: [
-      {
-        headline: 'Repeal the ban on new offshore oil and gas exploration, and investigate reopening the Marsden Point refinery',
-        details: [
-          'Repeal the 2018 law banning new offshore oil and gas exploration permits',
-          'Investigate reopening the Marsden Point oil refinery',
-        ],
-      },
-      'Establish a Ministry of Energy focused on powering economic growth',
-      'Keep the Tiwai Point aluminium smelter open',
-      'Work with other countries on climate change resilience through foreign policy',
-      'Make cheap renewable energy a competitive advantage for New Zealand’s economy',
-    ],
-  },
-
-  {
-    topic: 'environment',
-    party: 'nzfirst',
-    proposals: [
-      'Fix infrastructure damaged by severe weather events',
-      'Address aquatic and land-based pests, weeds, and biosecurity threats',
-      {
-        headline: 'Repeal Labour’s planning laws, temporarily reinstate the RMA, and replace the Environment Court with legislation limiting third-party appeals',
-        details: [
-          'Repeal Labour’s planning laws and temporarily reinstate the Resource Management Act',
-          'Replace the Environment Court with new planning legislation limiting third-party appeals',
-        ],
-      },
-      'Repeal the 2018 law banning new oil and gas exploration',
-      'Improve water storage in productive rural regions',
-    ],
-  },
-
-  {
     topic: 'crime-justice',
     party: 'nzfirst',
     proposals: [
@@ -661,47 +575,6 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
       'Create a gang-only prison and designate gangs as terrorist organisations',
       'Introduce a Youth Justice Demerit Points system for young offenders',
       'Establish Mental Health Response Units for mental health crises in communities',
-    ],
-  },
-
-  {
-    topic: 'immigration',
-    party: 'nzfirst',
-    proposals: [
-      'Replace the Accredited Employer Work Visa with a Skills Shortage Visa and a Labour Shortage Visa',
-      {
-        headline: 'Prioritise recruiting around 2,000 overseas doctors, fast-tracking residence for in-demand clinical staff',
-        details: [
-          'Fast-track residence (within 30 days) and permanent residence (within 2 years) for in-demand clinical staff from six named countries',
-          'Make recruiting overseas doctors an immigration priority to fill a shortfall of around 2,000',
-        ],
-      },
-      'Crack down on exploitation of immigrant workers in poor working conditions',
-      'Establish an Essential Worker workforce planning mechanism for long-term skills and labour shortage planning',
-      'Combine Immigration New Zealand, Customs, and the Defence Force into a new Border Protection Force',
-    ],
-  },
-
-  {
-    topic: 'foreign-policy',
-    party: 'nzfirst',
-    proposals: [
-      {
-        headline: 'Pursue closer Commonwealth economic relations and a full free trade agreement with the United States',
-        details: [
-          'Launch a Closer Commonwealth Economic Relations arrangement with the UK, Australia, Canada, Singapore, Malaysia and Brunei',
-          'Continue working toward a full free trade agreement with the United States',
-        ],
-      },
-      {
-        headline: 'Increase defence spending to 2% of GDP by 2030, with a permanent Defence Capital Fund for equipment',
-        details: [
-          'Progressively increase defence spending to reach 2% of GDP by 2030',
-          'Establish a permanent Defence Capital Fund to pay for military equipment',
-        ],
-      },
-      'Create a New Zealand Border Protection Force combining Defence, Customs, and Immigration',
-      'Require a national interest test before following United Nations or WHO directives',
     ],
   },
 
