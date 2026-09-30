@@ -31,7 +31,33 @@ import { BORDER, INK, MANROPE, SECONDARY, SURFACE, TERTIARY } from '@/constants/
 
 /** Width of the sticky party column, shared by the header cell, the CSS and
  *  the fit calculation, so the three cannot drift apart. */
-const PARTY_COL = 58
+/**
+ * The party column, measured rather than fixed.
+ *
+ * It was a flat 58px. That is narrower than the WORD "Opportunities", so
+ * the name had nowhere to break and overflowed into the first topic,
+ * painting over its tick. Forcing it to break instead fixed the overlap and
+ * replaced it with something worse to read: "Nati / onal", "Labo / ur",
+ * "The / Opp / or- / tun- / ities / Part / y".
+ *
+ * Neither was necessary. On a desktop the table sits in an ~825px container
+ * with room to spare, and 58px was starving the names while the topic cells
+ * had space going free. Give the names enough width to sit on one or two
+ * whole words and the breaking stops without any wrapping tricks.
+ *
+ * Narrower on a phone, because there the trade is real: every pixel here is
+ * one the topic columns do not get. 96px still clears "Opportunities" (~85px
+ * at this size) on one line, and the topics are PAGED rather than squeezed,
+ * so a narrower party column buys fewer columns per page and not much else.
+ *
+ * Kept as a JS number, not a CSS variable: the effect below subtracts it
+ * from the container width to work out how many topic columns fit, so a
+ * value only CSS knows about would silently break the paging maths.
+ */
+const PARTY_COL_NARROW = 96
+const PARTY_COL_WIDE = 150
+/** The width the server renders at, before anything has been measured. */
+const PARTY_COL = PARTY_COL_WIDE
 
 export function CoverageMatrix({ positions, topics }: { positions: PartyPosition[]; topics: { slug: string; label: string }[] }) {
   const lookup = new Map<string, PartyPosition>()
@@ -61,6 +87,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
    * and for a viewport too narrow for even one column.
    */
   const [perPage, setPerPage] = useState(topics.length)
+  const [partyCol, setPartyCol] = useState(PARTY_COL)
   const [page, setPage] = useState(0)
   const boxRef = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
@@ -68,7 +95,11 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
     if (!el) return
     const measure = () => {
       const MIN_COL = 42
-      const room = el.clientWidth - PARTY_COL
+      // The container, not the viewport: this table is inside a centred
+      // column, so the window width says nothing useful about the room here.
+      const pc = el.clientWidth >= 640 ? PARTY_COL_WIDE : PARTY_COL_NARROW
+      setPartyCol(pc)
+      const room = el.clientWidth - pc
       const fits = Math.max(1, Math.floor(room / MIN_COL))
       // Balance the pages instead of filling each to the brim: eleven topics
       // five-at-a-time is 5/5/1, and a last page holding one column reads as
@@ -144,7 +175,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
                   and thBase's maxWidth:0 (which lets the topic headings clip)
                   collapsed the party column to 18px and slid the names under
                   the ticks. PARTY_COL in the measuring effect is this number. */}
-                      <th style={{ ...thBase, maxWidth: PARTY_COL, width: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, borderRight: PARTY_EDGE }}>
+                      <th style={{ ...thBase, maxWidth: partyCol, width: partyCol, textAlign: 'left', position: 'sticky', left: 0, background: SURFACE, zIndex: 1, borderRight: PARTY_EDGE }}>
                 {/* Empty by design: the column holds party names, which say so
                     themselves, and "Party" was the only heading in the row that
                     wasn't a topic. Named for screen readers, which do still
@@ -156,7 +187,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
           </thead>
           <tbody>
             {PARTY_DIRECTORY_ORDER.map((slug) => (
-              <Row key={slug} slug={slug} topics={shown} lookup={lookup} onPreview={setPreview} />
+              <Row key={slug} slug={slug} topics={shown} lookup={lookup} onPreview={setPreview} partyCol={partyCol} />
             ))}
             {/* The parties outside Parliament sit in their own labelled band. They
                 hold real published positions too — hiding them read as "no data",
@@ -195,11 +226,11 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
                     same header again, and a screen reader should not be told
                     the table has a second set of column names. */}
                 <tr aria-hidden>
-                  <td style={{ ...tdBase, width: PARTY_COL, maxWidth: PARTY_COL, position: 'sticky', left: 0, background: SURFACE, zIndex: 1, borderRight: PARTY_EDGE }} />
+                  <td style={{ ...tdBase, width: partyCol, maxWidth: partyCol, position: 'sticky', left: 0, background: SURFACE, zIndex: 1, borderRight: PARTY_EDGE }} />
                   <TopicHeadCells topics={shown} repeat />
                 </tr>
                 {minors.map((slug) => (
-                  <Row key={slug} slug={slug} topics={shown} lookup={lookup} onPreview={setPreview} />
+                  <Row key={slug} slug={slug} topics={shown} lookup={lookup} onPreview={setPreview} partyCol={partyCol} />
                 ))}
               </>
             )}
@@ -230,7 +261,7 @@ export function CoverageMatrix({ positions, topics }: { positions: PartyPosition
 
 type OpenPreview = (p: { slug: PartySlug; topic: { slug: string; label: string }; pos?: PartyPosition }) => void
 
-function Row({ slug, topics, lookup, onPreview }: { slug: PartySlug; topics: { slug: string; label: string }[]; lookup: Map<string, PartyPosition>; onPreview: OpenPreview }) {
+function Row({ slug, topics, lookup, onPreview, partyCol }: { slug: PartySlug; topics: { slug: string; label: string }[]; lookup: Map<string, PartyPosition>; onPreview: OpenPreview; partyCol: number }) {
   const party = PARTY_PROFILES[slug]
   return (
     <tr>
@@ -265,7 +296,7 @@ function Row({ slug, topics, lookup, onPreview }: { slug: PartySlug; topics: { s
           doing the wrapping. The real cause of the long labels is that
           PARTY_NAMES.top.short is the FULL name, 23 characters, where every
           other party has a genuinely short one. */}
-      <td style={{ ...tdBase, whiteSpace: 'normal', overflowWrap: 'break-word', hyphens: 'auto', width: PARTY_COL, maxWidth: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, borderRight: PARTY_EDGE }} title={PARTY_NAMES[slug].short}>
+      <td style={{ ...tdBase, whiteSpace: 'normal', overflowWrap: 'break-word', hyphens: 'auto', width: partyCol, maxWidth: partyCol, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, borderRight: PARTY_EDGE }} title={PARTY_NAMES[slug].short}>
         {/* Short name, not the full registered one: this column is sized by its
             longest label, and "Animal Justice Party Aotearoa New Zealand" was
             pushing it past half the screen on a phone while the topic cells sat
