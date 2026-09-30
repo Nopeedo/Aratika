@@ -239,7 +239,33 @@ function Row({ slug, topics, lookup, onPreview }: { slug: PartySlug; topics: { s
           wrap to a second line inside the column rather than running under
           the ticks, with a rule down the column's right edge separating the
           two. The full name is also the cell's title. */}
-      <td style={{ ...tdBase, whiteSpace: 'normal', width: PARTY_COL, maxWidth: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, borderRight: PARTY_EDGE }} title={PARTY_NAMES[slug].short}>
+      {/* overflowWrap and hyphens are load-bearing, not polish.
+          whiteSpace:'normal' only wraps at SPACES, so a single word wider
+          than the 58px column has nowhere to break and overflows the cell
+          instead — painting over the first topic’s tick. "Te Pāti Māori"
+          behaves because it is three short words; "The Opportunities Party"
+          did not, because "Opportunities" alone is far wider than 58px.
+
+          Fixed here rather than by widening the column: the width is a
+          deliberate choice (see the short-name note below — the full names
+          were eating half a phone screen), and widening it would only move
+          the failure to the next long name. anywhere + auto makes the
+          overflow impossible for ANY name, including ones not registered
+          yet.
+
+          break-word rather than anywhere, because anywhere breaks greedily
+          and also shrinks min-content sizing; break-word only breaks when a
+          word genuinely cannot fit.
+
+          hyphens:auto is set but MEASURED AS DOING NOTHING here: Chrome ships
+          hyphenation dictionaries per locale and <html lang="en-NZ"> is not
+          one it has, so breaks land mid-word ("Opportu/nities") with no
+          hyphen. Kept because it costs nothing and starts working if the lang
+          tag or Chrome’s dictionary list changes — but do not assume it is
+          doing the wrapping. The real cause of the long labels is that
+          PARTY_NAMES.top.short is the FULL name, 23 characters, where every
+          other party has a genuinely short one. */}
+      <td style={{ ...tdBase, whiteSpace: 'normal', overflowWrap: 'break-word', hyphens: 'auto', width: PARTY_COL, maxWidth: PARTY_COL, textAlign: 'left', position: 'sticky', left: 0, background: '#fff', zIndex: 1, borderRight: PARTY_EDGE }} title={PARTY_NAMES[slug].short}>
         {/* Short name, not the full registered one: this column is sized by its
             longest label, and "Animal Justice Party Aotearoa New Zealand" was
             pushing it past half the screen on a phone while the topic cells sat
@@ -532,7 +558,7 @@ const PREVIEW_CSS = `
 const MATRIX_CSS = `
 .coverage-matrix th,
 .coverage-matrix td { padding: 10px 12px; }
-.coverage-party-name { font-size: 13px; }
+.coverage-party-name { font-size: 13px; overflow-wrap: break-word; hyphens: auto; }
 .coverage-tick { width: 17px; height: 17px; display: block; }
 /* Padding out, margin back in: the tap area grows past the glyph without the
    row growing with it, so a 31px row still offers a finger-sized target. */
