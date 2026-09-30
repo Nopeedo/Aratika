@@ -304,7 +304,27 @@ export function PartyTiles({ parties }: { parties: TileParty[] }) {
           /* Desktop only. The dock leaves the middle and sits in the bottom
              right corner, out of the way of a page read left to right, and
              stops being a band across the screen at all. */
-          .pt-dock { background: transparent; border-top: none; box-shadow: none; display: flex; justify-content: flex-end; }
+          /* RIGHT-ANCHORED, not stretched-then-pushed.
+
+             This was left:0 right:0 (inline) plus display:flex with
+             justify-content:flex-end — a full-width bar with the tiles shoved
+             to its end. That relies on the fixed element being exactly as wide
+             as what the reader can see. On iPadOS Safari a fixed element is
+             laid out against the LAYOUT viewport, which can be wider than the
+             visual one, so flex-end put the tiles at the layout edge and off
+             screen. Reported cut off on an iPad in landscape while Chrome at
+             1194, 1133, 1024, 900 and 820 measured them 18px INSIDE the edge.
+
+             The name tab above the dock never had the bug, and that is the
+             tell: it anchors with right:12px instead of being pushed to the
+             end of a stretched box. In the reported screenshot the tab is
+             fully visible and only the tiles are clipped.
+
+             left:auto makes the fixed box shrink to its content and sit
+             against right:0. Nothing stretches, so there is no end to be
+             pushed past. !important because left is set inline, which a media
+             query cannot outrank (DESIGN-SPEC 3.2). */
+          .pt-dock { background: transparent; border-top: none; box-shadow: none; left: auto !important; display: block; }
           /* The tiles take a definite width here so the white can be sized to
              them. At flex-basis 0 they have no intrinsic width, so fit-content
              measured the row as zero and the bar vanished. !important because
