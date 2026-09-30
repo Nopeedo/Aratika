@@ -24,18 +24,26 @@ const MIN_CENTS = 100          // $1
 const MAX_CENTS = 1_000_000    // $10,000
 
 /**
- * What the donor sees on their statement.
+ * What the donor sees on their statement, after the account’s own descriptor.
  *
- * Stripe prepends the account's own descriptor and appends this, so the
- * ACCOUNT's descriptor has to say Politika too — that is a Stripe dashboard
- * setting (Settings → Business → Public details), not something code can set.
- * This suffix is the half that can be guaranteed from here; if the account is
- * still registered under another trading name, the statement will carry that
- * name first and this after it.
+ * Stripe builds the line as ACCOUNT DESCRIPTOR + this suffix, capped at 22
+ * characters for the two together. The account descriptor is a dashboard
+ * setting no code can read or set; as of 30 Sep 2026 it is POLITIKA.NZ
+ * (confirmed against the live account, settings.payments.statement_descriptor).
  *
- * Stripe rejects the characters < > \ ' " * and caps the suffix at 22.
+ * So: POLITIKA.NZ (11) + a separator + DONATION (8) = 20, inside the cap.
+ *
+ * This used to say 'POLITIKA DONATION'. That was right while the account was
+ * still named Aratika — the suffix was the only half carrying the real name,
+ * so a donor at least saw Politika somewhere. Now that the account says
+ * POLITIKA.NZ, keeping it would print the name twice AND blow the 22-character
+ * cap (11 + 1 + 17 = 29), so Stripe would truncate it mid-word.
+ *
+ * If the account descriptor is ever changed, redo the arithmetic here.
+ *
+ * Stripe rejects the characters < > \ ' " * in a suffix.
  */
-const STATEMENT_SUFFIX = 'POLITIKA DONATION'.slice(0, 22)
+const STATEMENT_SUFFIX = 'DONATION'
 
 export async function POST(request: Request) {
   if (!DONATIONS_ENABLED) return Response.json({ error: 'Donations are not open yet' }, { status: 503 })
