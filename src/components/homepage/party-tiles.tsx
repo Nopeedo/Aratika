@@ -855,6 +855,11 @@ function PanelHeader({ p }: { p: TileParty }) {
 }
 
 /** Seats in Parliament — its own standalone row, above the "Where they stand" box. */
+/** Every party this row can be rendered for. Hoisted because the height of
+ *  the status line is measured across ALL of them, not just the one on
+ *  screen — see the sizers below. */
+const TILE_SLUGS = ['national', 'labour', 'green', 'act', 'nzfirst', 'tpm'] as const
+
 function SeatsRow({ p }: { p: TileParty }) {
   const res = BASELINE_ELECTION.results?.find((r) => r.party === p.slug)
   const votePct = res?.votePct
@@ -862,10 +867,22 @@ function SeatsRow({ p }: { p: TileParty }) {
   // New Zealand First coalition"), so the parties are read back out of it by
   // name rather than kept as a second list that could drift from it.
   const govText = BASELINE_ELECTION.governmentFormed ?? ''
-  const govParties = (['national', 'labour', 'green', 'act', 'nzfirst', 'tpm'] as const)
+  const govParties = TILE_SLUGS
     .filter((slug) => govText.includes(PARTY_NAMES[slug].full) || govText.includes(PARTY_NAMES[slug].short))
   const inGovernment = govParties.includes(p.slug as typeof govParties[number])
   const govPartners = govParties.filter((slug) => slug !== p.slug).map((slug) => PARTY_NAMES[slug].short).join(' and ')
+  /**
+   * The status sentence, for any party. Used for the visible line AND for
+   * the invisible sizers that stop the page jumping — one source, so they
+   * cannot drift apart.
+   */
+  const statusText = (slug: (typeof TILE_SLUGS)[number]): string => {
+    const partners = govParties.filter((g) => g !== slug).map((g) => PARTY_NAMES[g].short).join(' and ')
+    return govParties.includes(slug)
+      ? `${PARTY_NAMES[slug].short} governs${partners ? ` with ${partners}` : ''}`
+      : `${PARTY_NAMES[slug].short} is in opposition`
+  }
+
   const labelRef = useRef<HTMLSpanElement>(null)
   const lineRef = useRef<HTMLSpanElement>(null)
 
@@ -961,13 +978,44 @@ function SeatsRow({ p }: { p: TileParty }) {
           is (Te Pāti Māori hold 6 seats on 3.1% because all six are
           electorates), and whether a party is IN government is the fact that
           frames everything else the reader is about to read about them. */}
-      <div style={{ marginTop: 12, maxWidth: labelW ? labelW * 0.88 : undefined, fontSize: 14.5, fontWeight: 800, lineHeight: 1.35, fontFamily: MANROPE, color: INK }}>
+      {/*
+        THIS LINE USED TO MOVE THE WHOLE PAGE.
+
+        A governing party gets a longer sentence than an opposition one
+        ("National governs with ACT and NZ First" against "Labour is in
+        opposition"), and the longer one wraps to a second line. Measured:
+        196px for National, ACT and NZ First, 177px for the other three —
+        so the document grew 19px the moment a governing party was selected
+        and everything below the tiles jumped.
+
+        Fixed by reserving the tallest variant instead of the current one.
+        Every party’s sentence is rendered into the SAME grid cell, all but
+        the real one invisible, so the row is as tall as the tallest of them
+        and nothing changes when the selection does.
+
+        Sizers rather than a min-height in px: where the sentence wraps
+        depends on the width, which is measured (labelW) and differs on a
+        phone. A hardcoded two-line min-height would be right on a desktop
+        and wrong on a narrow screen, which is where the jump was worst.
+        They are built from statusText, the same function as the visible
+        line, so a coalition change resizes the box automatically.
+      */}
+      <div style={{ marginTop: 12, maxWidth: labelW ? labelW * 0.88 : undefined, fontSize: 14.5, fontWeight: 800, lineHeight: 1.35, fontFamily: MANROPE, color: INK, display: 'grid' }}>
+        {TILE_SLUGS.map((slug) => (
+          <span
+            key={slug}
+            aria-hidden
+            style={{ gridArea: '1 / 1', visibility: 'hidden', pointerEvents: 'none', userSelect: 'none' }}
+          >{statusText(slug)}</span>
+        ))}
         {/* Names the party and says what it DOES — "governs" rather than the
             static "in government" — so the line reads as a statement about
             them rather than a status label. */}
-        {inGovernment
-          ? <><span style={{ color: seatColor(p.color) }}>{p.name}</span> governs{govPartners ? <span style={{ fontWeight: 600, color: SUB }}> with {govPartners}</span> : null}</>
-          : <><span style={{ color: seatColor(p.color) }}>{p.name}</span> is in opposition</>}
+        <span style={{ gridArea: '1 / 1' }}>
+          {inGovernment
+            ? <><span style={{ color: seatColor(p.color) }}>{p.name}</span> governs{govPartners ? <span style={{ fontWeight: 600, color: SUB }}> with {govPartners}</span> : null}</>
+            : <><span style={{ color: seatColor(p.color) }}>{p.name}</span> is in opposition</>}
+        </span>
       </div>
       {/* The electorate-vs-list split was here ("2 won a local seat, 9 came
           off the party list"). Removed: it explains the MMP MECHANISM, and
