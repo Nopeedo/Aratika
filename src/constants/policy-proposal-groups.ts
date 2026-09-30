@@ -270,24 +270,29 @@ export const PROPOSAL_GROUPINGS: ProposalGrouping[] = [
     ],
   },
 
-  {
-    topic: 'foreign-policy',
-    party: 'national',
-    proposals: [
-      'Prioritise diplomacy, international partnerships, and trade agreements in line with NZ values',
-      {
-        headline: 'Maintain a combat-ready military and work with allies on security challenges',
-        details: [
-          'Maintain a modern, combat-ready military to protect New Zealand’s Exclusive Economic Zone',
-          'Collaborate with allies and global partners to address security challenges',
-        ],
-      },
-      // Left separate from the diplomacy line above: one is how New Zealand
-      // trades and partners, the other is what it advocates for.
-      'Promote democracy, freedom, human rights, and inclusivity internationally',
-      'Ensure veterans receive timely care, recognition, and support',
-    ],
-  },
+  // REMOVED 1 Oct 2026: national / foreign-policy.
+  //
+  // This grouping said diplomacy, a combat-ready military, promoting
+  // democracy and caring for veterans. The approved position it was standing
+  // in for had been re-drafted (asOf 2026-09-22) and is about trade: growing
+  // exports, new trade deals, trade missions, doubling export value by 2034.
+  // Not a rewording — a different subject.
+  //
+  // Because a grouping REPLACES the panel bullets entirely (see the rules at
+  // the top of this file), the homepage was showing a National foreign-policy
+  // position no editor had approved, while /policies/foreign-policy/national
+  // showed the real one. A reader who tapped through from the homepage got a
+  // different answer than the one they had just read.
+  //
+  // Deleted rather than rewritten: with no grouping the panel falls back to
+  // the live keyProposals, which is the editor-approved text and cannot go
+  // stale. A replacement would only be worth writing if those seven trade
+  // proposals read badly as a flat list, which they do not.
+  //
+  // The rules above accept that a proposal ADDED in /editor will not reach a
+  // grouped panel. They did not anticipate a position being REWRITTEN, which
+  // is silent and much worse. scripts/audit-proposal-groupings.mts now
+  // compares every grouping against the position it replaces.
 
   // ── Green ─────────────────────────────────────────────────────────────────
   // Green's recorded proposals are more principle-based than the other two
