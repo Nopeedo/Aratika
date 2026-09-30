@@ -6,7 +6,8 @@
 
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowLeft, ArrowUpRight, Scale, ListChecks, BarChart3, ShieldCheck } from 'lucide-react'
+import { BackLink } from '@/components/ui/back-link'
+import { ArrowUpRight, Scale, ListChecks, BarChart3, ShieldCheck } from 'lucide-react'
 import { PARTY_NAMES, PARLIAMENTARY_PARTIES, NON_PARLIAMENTARY_CONTESTING } from '@/constants/parties'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, SURFACE, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
@@ -44,9 +45,11 @@ export default function PartyInclusionPage() {
     <div style={WOVEN_PAGE}>
       <div style={{ borderBottom: `1px solid ${BORDER}` }}>
         <div style={{ maxWidth: 820, margin: '0 auto', padding: '40px clamp(18px, 5vw, 36px) 34px' }}>
-          <Link href="/elections/2026" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: JADE, fontFamily: MANROPE, textDecoration: 'none', marginBottom: 16 }}>
-            <ArrowLeft style={{ width: 14, height: 14 }} /> Election Centre
-          </Link>
+          {/* BackLink, not a hardcoded link to the Election Centre: this page
+              is linked from several places, and a fixed parent posts everyone
+              who did not come from there to a page they never saw. */}
+          <BackLink fallbackHref="/elections/2026" label="2026 Election"
+            style={{ fontSize: 13, fontWeight: 700, color: JADE, fontFamily: MANROPE, marginBottom: 16 }} />
           <div style={{ fontSize: 12, fontWeight: 800, letterSpacing: '.1em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE, marginBottom: 8 }}>Our approach</div>
           <h1 style={{ fontSize: 'clamp(27px, 4.5vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 12px', lineHeight: 1.1 }}>
             How we decide which parties are included

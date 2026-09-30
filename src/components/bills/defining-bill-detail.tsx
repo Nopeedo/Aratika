@@ -6,7 +6,8 @@
  */
 
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, ExternalLink, CheckCircle2, XCircle, Clock } from 'lucide-react'
+import { BackLink } from '@/components/ui/back-link'
+import { ArrowRight, ExternalLink, CheckCircle2, XCircle, Clock } from 'lucide-react'
 import { BookmarkButton } from '@/components/bookmarks/bookmark-button'
 import { DEFINING_BILLS_META, type DefiningBill } from '@/constants/defining-bills'
 import { POLICY_TOPICS } from '@/constants/policy-topics'
@@ -71,9 +72,11 @@ export function DefiningBillDetail({ bill, readerSlugs = {} }: { bill: DefiningB
     <div style={{ background: GROUND, minHeight: '100vh' }}>
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '30px 24px 72px' }}>
 
-        <Link href="/bills" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: MUTED, fontFamily: MANROPE, textDecoration: 'none', marginBottom: 20 }}>
-          <ArrowLeft style={{ width: 15, height: 15 }} /> All bills
-        </Link>
+        {/* BackLink: these bills are linked from the homepage as well as from
+            /bills, so a fixed "All bills" sent homepage readers somewhere they
+            had not been. */}
+        <BackLink fallbackHref="/bills" label="All bills"
+          style={{ fontSize: 13, fontWeight: 700, color: MUTED, fontFamily: MANROPE, marginBottom: 20 }} />
 
         <div>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 800, color: st.fg, background: st.bg, borderRadius: 999, padding: '4px 12px', fontFamily: MANROPE }}>

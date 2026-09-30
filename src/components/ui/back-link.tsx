@@ -50,10 +50,25 @@ const KNOWN: { prefix: string; label: string }[] = [
 ]
 
 function describe(path: string): { href: string; label: string } | null {
+  // The homepage, matched exactly. It cannot go in KNOWN because every path
+  // starts with "/", so a prefix entry would swallow the whole site.
+  //
+  // This is the case that sent people the wrong way. Tapping an MP from the
+  // homepage opens a NEW TAB (see OpenLinksInNewTab), which starts with a
+  // history length of 1, so router.back() was unavailable and the button fell
+  // through to its fallbackHref — /mps. The reader came from the homepage and
+  // was posted to the MPs directory, a page they had never seen.
+  if (path === '/') return { href: '/', label: 'the homepage' }
+
   const hit = [...KNOWN]
     .sort((a, b) => b.prefix.length - a.prefix.length)
     .find((k) => path === k.prefix || path.startsWith(k.prefix + '/'))
-  return hit ? { href: path, label: hit.label } : null
+  if (hit) return { href: path, label: hit.label }
+
+  // Anything else we still know where they were, we just have no name for it.
+  // Going to the right page under a vaguer label beats going to the wrong page
+  // under a confident one, which is what the fallback was doing.
+  return { href: path, label: 'where you were' }
 }
 
 // sessionStorage is external state, so read it through useSyncExternalStore: the
