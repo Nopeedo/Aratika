@@ -39,9 +39,20 @@ export function SignShape({ href, color, fg, icon, children }: {
         padding: `9px ${SIGN_POINT + 12}px 9px 14px`,
         // The fill fades toward the point, so the sign reads as travelling
         // that way rather than as a solid slab that happens to be pointed.
-        // Held flat across the label, then falls away over the last third —
-        // to a wash of the colour, not to nothing, so the tip keeps its edge.
-        background: `linear-gradient(to right, ${color} 0%, ${color} 62%, ${tint(color, 0.35)} 100%)`,
+        //
+        // The fade was 62% → 35% alpha, which is right at 4x magnification and
+        // wrong at the size these actually render. A signpost is about 30px
+        // tall, so that fade compressed into roughly the last 20 pixels —
+        // exactly where the clip-path cuts the diagonal. A third-strength
+        // fill on a diagonal edge over pale paper does not read as motion, it
+        // reads as a bleached tip with a white outline, and it was reported
+        // as a rendering fault rather than seen as a design.
+        //
+        // So: hold the flat colour most of the way (80%), and fade only to a
+        // strong wash (0.7), not a faint one. Same idea, legible at the size
+        // it is drawn — the fade now highlights the point instead of erasing
+        // it. Any change here should be judged on a real tile, not zoomed in.
+        background: `linear-gradient(to right, ${color} 0%, ${color} 80%, ${tint(color, 0.7)} 100%)`,
         color: fg,
         borderRadius: '12px 0 0 12px',
         clipPath: `polygon(0 0, calc(100% - ${SIGN_POINT}px) 0, 100% 50%, calc(100% - ${SIGN_POINT}px) 100%, 0 100%)`,
