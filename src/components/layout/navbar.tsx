@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X, ChevronDown, Map, User, LogOut, Crown, ListChecks, Settings, Heart } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
@@ -32,16 +33,23 @@ function PolitikaLogo() {
           cannot read. The word alone, at a size that can carry the bar on its
           own, is the mark. The tile is still the app icon and the favicon,
           where a word at this size would not fit. */}
-      {/* "Poli" in ink, "tika" in jade — tika (right, just, correct), so the
-          split says what the site is for, the way Ara|pono once did with pono
-          (true). Written out rather than sliced from SITE.name on purpose: a
-          coloured split has to mean something, and a future rename should have
-          to make this decision again rather than colour letters at an offset
-          left over from this name. The footer and the share-image card carry
-          the same split; change all three together. */}
-      <span className="font-bold text-2xl text-foreground tracking-tight">
-        Poli<span style={{ color: '#1F8A4C' }}>tika</span>
-      </span>
+      {/* The drawn wordmark, replacing the two coloured spans that stood in
+          for it. Same "Poli" ink / "tika" jade split, plus the hand-drawn
+          underline the type could not carry. Transparent PNG, so it sits on
+          the bar and on any background the header takes.
+
+          Height fixed and width derived from the file's own 1603x445, so the
+          bar never reflows while the image loads. `priority` because it is in
+          the first screen on every page. The share-image card (lib/og/card)
+          still draws the split in type; change both together. */}
+      <Image
+        src="/politika-wordmark.png"
+        alt={SITE.name}
+        width={108}
+        height={30}
+        priority
+        className="h-[26px] w-auto sm:h-[30px]"
+      />
     </Link>
   )
 }

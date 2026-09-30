@@ -1,10 +1,10 @@
 import * as React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ExternalLink, Heart } from 'lucide-react'
 import { SITE } from '@/constants/site'
 import { FOOTER_LINKS } from '@/constants/nav-links'
 import { isEnabled, DONATIONS_ENABLED } from '@/constants/features'
-import { LogoMark } from '@/components/brand/logo-mark'
 
 export function Footer() {
   return (
@@ -29,15 +29,11 @@ export function Footer() {
 
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2.5 mb-3">
-              <div className="flex items-center justify-center size-8 rounded-lg bg-brand-jade select-none">
-                <LogoMark size={20} reversed />
-              </div>
-              {/* Same split as the navbar. On white the brand jade reads
-                  properly, so it's used here instead of the lighter jade the
-                  dark footer needed. Literal text on purpose — see the
-                  navbar note. */}
-              <span className="font-semibold text-[#2A1206] text-lg">Poli<span style={{ color: '#1F8A4C' }}>tika</span></span>
+            {/* The drawn wordmark, same file as the header. The jade tile and
+                the name were saying the name twice; the wordmark says it once
+                and says it the way the brand now does. */}
+            <div className="mb-3">
+              <Image src="/politika-wordmark.png" alt={SITE.name} width={126} height={35} className="h-[32px] w-auto" />
             </div>
             <p className="text-xs text-[#6b6157] leading-relaxed">
               {SITE.tagline}
