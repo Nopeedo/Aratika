@@ -12,6 +12,7 @@ import { PREMIUM_ENABLED, DONATIONS_ENABLED } from '@/constants/features'
 import { SITE } from '@/constants/site'
 import { useUser } from '@/hooks/use-user'
 import { createClient } from '@/lib/supabase/client'
+import { LogoMark } from '@/components/brand/logo-mark'
 
 const NAV = visibleNav()
 // The desktop bar: the same items, with MPs directory, Find your local MP
@@ -27,12 +28,20 @@ function PolitikaLogo() {
     // returning visitor hitting / is redirected to /hub (see app/page.tsx), so
     // without the flag clicking the logo bounces them to the hub instead of the
     // homepage, which reads as the logo being broken.
-    <Link href="/?full=1" className="flex items-center shrink-0" aria-label={`${SITE.name} home`}>
-      {/* No mark beside the name. The jade tile and the name were saying the
-          same thing twice in a 64px bar, and the tile was the half a reader
-          cannot read. The word alone, at a size that can carry the bar on its
-          own, is the mark. The tile is still the app icon and the favicon,
-          where a word at this size would not fit. */}
+    <Link href="/?full=1" className="flex items-center gap-2 shrink-0" aria-label={`${SITE.name} home`}>
+      {/* The mark is back beside the name, by request.
+
+          It left because the jade TILE and the name said the same thing twice
+          in a 64px bar — a filled block competing with the word for the same
+          job. That argument was about the tile, not about the mark inside it.
+          Stripped of its tile the ara reads as a mark rather than a second
+          logo: three ascending chevrons in jade, no ground, no box.
+
+          Sized off the wordmark's own height rather than its `size` prop, so
+          the two move together at the sm breakpoint and the bar never has a
+          mark that outgrows the word. The tile keeps its own life as the app
+          icon and favicon (src/app/icon.svg), where a word would not fit. */}
+      <LogoMark size={28} className="h-[22px] w-auto shrink-0 sm:h-[26px]" />
       {/* The drawn wordmark, replacing the two coloured spans that stood in
           for it. Same "Poli" ink / "tika" jade split, plus the hand-drawn
           underline the type could not carry. Transparent SVG, so it sits on

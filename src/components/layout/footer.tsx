@@ -5,6 +5,7 @@ import { ExternalLink, Heart } from 'lucide-react'
 import { SITE } from '@/constants/site'
 import { FOOTER_LINKS } from '@/constants/nav-links'
 import { isEnabled, DONATIONS_ENABLED } from '@/constants/features'
+import { LogoMark } from '@/components/brand/logo-mark'
 
 export function Footer() {
   return (
@@ -29,10 +30,13 @@ export function Footer() {
 
           {/* Brand Column */}
           <div className="col-span-2 md:col-span-1">
-            {/* The drawn wordmark, same file as the header. The jade tile and
-                the name were saying the name twice; the wordmark says it once
-                and says it the way the brand now does. */}
-            <div className="mb-3">
+            {/* The drawn wordmark, same file as the header — and, since the
+                header took the ara back, the same lockup here so the two ends
+                of the page do not disagree about what the brand looks like.
+                What the old comment objected to was the jade TILE doubling the
+                name, not the mark; untiled, it reads as a mark. */}
+            <div className="mb-3 flex items-center gap-2">
+              <LogoMark size={28} className="h-[28px] w-auto shrink-0" />
               {/* unoptimized for the same reason as the header: next/image
                   will not serve an SVG through the optimizer. */}
               <Image src="/politika-wordmark.svg" alt={SITE.name} width={126} height={35} unoptimized className="h-[32px] w-auto" />
