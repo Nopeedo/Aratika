@@ -1,6 +1,6 @@
 name: Weekly newsletter
 
-# Builds and sends the Arapono Weekly.
+# Builds and sends the Politika Weekly.
 #
 # Scheduled runs always SEND. A manual run defaults to a dry run, and the "mode"
 # input controls it:
@@ -50,7 +50,7 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           ZOHO_SMTP_USER: ${{ secrets.ZOHO_SMTP_USER }}
           ZOHO_SMTP_PASS: ${{ secrets.ZOHO_SMTP_PASS }}
-          NEXT_PUBLIC_APP_URL: https://arapono.org.nz
+          NEXT_PUBLIC_APP_URL: https://politika.nz
         run: |
           # A scheduled run has no inputs, so `mode` is empty and the case below
           # would fall through to the dry-run default — the cron would have run

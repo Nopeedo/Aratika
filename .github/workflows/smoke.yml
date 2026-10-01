@@ -21,4 +21,4 @@ jobs:
       - name: Smoke the live site
         run: node scripts/smoke.mjs
         env:
-          BASE: https://arapono.org.nz
+          BASE: https://politika.nz
