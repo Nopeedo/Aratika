@@ -342,6 +342,10 @@
         "title": "Labour's Student Debt Cut Policy"
       },
       {
+        "url": "https://www.labour.org.nz/fair-go-for-families",
+        "title": "Labour's Ban on Hidden Fees"
+      },
+      {
         "url": "https://www.labour.org.nz/fairer-grocery-prices",
         "title": "Labour's Fairer Grocery Prices Policy"
       },
@@ -1004,8 +1008,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-09-30",
+    "lastRun": "2026-10-02",
     "parties": 14,
-    "policyPages": 207
+    "policyPages": 208
   }
 }
