@@ -401,7 +401,7 @@
       },
       {
         "url": "https://www.labour.org.nz/medicard",
-        "title": "Labour's Free Doctor's Visits Medicard"
+        "title": "Labour Free Doctor's Visits with the Medicard"
       },
       {
         "url": "https://www.labour.org.nz/prescriptions",
@@ -859,7 +859,7 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Full employment and 35-hour working week"
+        "title": "Full Employment and 35-Hour Week Workers' Rights Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
@@ -871,7 +871,11 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-rebuild-universal-social-security/",
-        "title": "Alliance Universal Social Security Policy"
+        "title": "Alliance Universal Social Security Rebuild Plan"
+      },
+      {
+        "url": "https://allianceparty.nz/alliance-public-ownership-economic-democracy-policy/",
+        "title": "Alliance Public Ownership and Reverse Privatisation Plan"
       },
       {
         "url": "https://allianceparty.nz/alliance-retirement-aged-care-kiwisaver-policy/",
@@ -883,25 +887,25 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "First $20,000 income tax-free, funded by wealth tax"
+        "title": "Tax Plan: First $20,000 Income Tax-Free, Funded by Wealth Tax"
       }
     ],
     "health": [
       {
         "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
-        "title": "Free GP, dental, optical and audiology services"
+        "title": "Alliance Free GP, Dental, Optical and Audiology Health Policy"
       }
     ],
     "environment": [
       {
         "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
-        "title": "Just Transition: environment and sustainable economy policy"
+        "title": "Alliance Environment, Climate and Sustainable Economy Policy"
       }
     ],
     "crime-justice": [
       {
         "url": "https://allianceparty.nz/alliance-justice-policy-three-strikes-into-treatment/",
-        "title": "Alliance Justice Policy: Three Strikes and into Treatment"
+        "title": "Alliance Justice Policy: Three Strikes into Treatment"
       }
     ],
     "housing": [
@@ -919,7 +923,7 @@
     "foreign-policy": [
       {
         "url": "https://allianceparty.nz/open-not-owned-alliance-trade-policy/",
-        "title": "Alliance Trade Policy: Open, Not Owned"
+        "title": "Alliance Trade Policy"
       }
     ]
   },
@@ -1010,6 +1014,6 @@
   "_meta": {
     "lastRun": "2026-10-02",
     "parties": 14,
-    "policyPages": 208
+    "policyPages": 209
   }
 }
