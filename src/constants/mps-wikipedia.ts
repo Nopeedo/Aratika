@@ -169,7 +169,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Francisco_Hernandez_(politician)"
   },
   "chris-hipkins": {
-    "bio": "Christopher John Hipkins is a New Zealand politician who has served as leader of the New Zealand Labour Party since January 2023 and leader of the Opposition since November 2023. He was the 41st prime minister of New Zealand from January to November 2023, previously serving as the minister for the public service and minister for education from 2017 to 2023, and the minister for health and the COVID-19 response from 2020 to 2022. He has been the member of Parliament (MP) for Remutaka since the 2008 general election.",
+    "bio": "Christopher John Hipkins is a New Zealand politician who has served as leader of the New Zealand Labour Party since January 2023 and leader of the Opposition since November 2023. He was the 41st prime minister of New Zealand from January to November 2023, previously serving as the minister for the public service and minister for education from 2017 to 2023, the minister for health for several months in 2020, and the COVID-19 response from 2020 to 2022. He has been the member of Parliament (MP) for Remutaka since the 2008 general election.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Chris_Hipkins"
   },
   "andrew-hoggard": {
