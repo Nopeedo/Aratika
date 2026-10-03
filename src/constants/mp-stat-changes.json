@@ -1,6 +1,46 @@
 {
-  "generated": "2026-10-02",
+  "generated": "2026-10-03",
   "changes": [
+    {
+      "mp": "teanau-tuiono",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 5362,
+      "to": 5363,
+      "date": "2026-10-03"
+    },
+    {
+      "mp": "carmel-sepuloni",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2731,
+      "to": 2728,
+      "date": "2026-10-03"
+    },
+    {
+      "mp": "rachel-boyack",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 1346,
+      "to": 1349,
+      "date": "2026-10-03"
+    },
+    {
+      "mp": "lan-pham",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 2043,
+      "to": 2050,
+      "date": "2026-10-03"
+    },
+    {
+      "mp": "dan-rosewarne",
+      "field": "writtenQuestions",
+      "label": "Written questions",
+      "from": 214,
+      "to": 213,
+      "date": "2026-10-03"
+    },
     {
       "mp": "willow-jean-prime",
       "field": "writtenQuestions",
