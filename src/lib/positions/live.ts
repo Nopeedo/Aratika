@@ -111,7 +111,7 @@ const readApproved = unstable_cache(
     return (data as Row[] | null) ?? []
   },
   ['approved-positions'],
-  { revalidate: 60, tags: ['positions'] },
+  { revalidate: 300, tags: ['positions'] },
 )
 
 /** Approved positions for one topic. */

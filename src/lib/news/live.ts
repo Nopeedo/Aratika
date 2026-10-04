@@ -93,7 +93,7 @@ const readNews = unstable_cache(
     return data ?? []
   },
   ['approved-news'],
-  { revalidate: 60, tags: ['news'] },
+  { revalidate: 300, tags: ['news'] },
 )
 
 /** Newest-first political news. Sorted by published date (falls back to insert order). */

@@ -163,10 +163,23 @@ if (RESET) {
 // again on the next run. They could not become duplicates (the table is unique
 // on (type, source_id)) but they broke the INSERT instead, which was worse: see
 // the batching below.
+// Bounded to the last 90 days.
+//
+// The upsert below already handles duplicates — it is
+// `onConflict: 'type,source_id', ignoreDuplicates: true`, and the table is
+// unique on that pair — so this scan does not prevent anything. It exists only
+// to feed the "skipped" counter, and it was paging the ENTIRE table every run
+// to do it.
+//
+// A feed never serves a link from last year, so a 90-day window catches every
+// duplicate that can realistically appear while reading a fraction of the rows.
+// Anything older that does slip through is caught by the upsert and simply does
+// not show in the skip count.
+const SCAN_SINCE = new Date(Date.now() - 90 * 86400000).toISOString()
 const have = new Set()
 for (let from = 0; ; from += 1000) {
   const { data: page } = await sb.from('content_items')
-    .select('source_id').eq('type', 'news').order('id').range(from, from + 999)
+    .select('source_id').eq('type', 'news').gte('fetched_at', SCAN_SINCE).order('id').range(from, from + 999)
   for (const r of page || []) have.add(r.source_id)
   if (!page || page.length < 1000) break
 }

@@ -5,7 +5,13 @@ name: Donation receipts
 
 on:
   schedule:
-    - cron: '*/10 * * * *'
+    # Hourly, not every 10 minutes. At */10 this was 4,383 runs a month --
+    # 82% of every scheduled run in the repo -- against a donations table
+    # holding two rows, with DONATIONS_ENABLED off for most of that time. A
+    # receipt arriving within the hour is not a worse receipt. If donations
+    # get busy enough to need faster, trigger this from the Stripe webhook
+    # rather than polling.
+    - cron: '0 * * * *'
   workflow_dispatch:
     inputs:
       dry_run:

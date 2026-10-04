@@ -45,6 +45,35 @@ if (PREVIEW) {
   process.exit(0)
 }
 
+// Nothing to do when donations are off. The schedule kept running against a
+// two-row table through the whole period DONATIONS_ENABLED was false.
+//
+// Read the REAL constant, not an env var. The first version of this guard
+// checked process.env.DONATIONS_ENABLED, which this workflow does not set and
+// which exists nowhere outside constants/features.ts — so it would have exited
+// every single time and silently stopped sending receipts. Node strips the
+// types on import, so the script can read the same flag the site reads and the
+// two cannot drift.
+//
+// Fails OPEN. If the import ever breaks, this continues and sends; a missed
+// receipt is worse than a wasted run.
+//
+// Scheduled runs only — a manual workflow_dispatch still goes through, so a
+// catch-up right after switching donations on is unaffected.
+const scheduled = !process.env.GITHUB_EVENT_NAME || process.env.GITHUB_EVENT_NAME === 'schedule'
+if (scheduled) {
+  let donationsOn = true
+  try {
+    ;({ DONATIONS_ENABLED: donationsOn } = await import('../src/constants/features.ts'))
+  } catch (e) {
+    console.warn('could not read DONATIONS_ENABLED, continuing:', e.message)
+  }
+  if (donationsOn !== true) {
+    console.log('DONATIONS_ENABLED is false — nothing to send.')
+    process.exit(0)
+  }
+}
+
 if (LIVE && !emailConfigured()) {
   console.error('ZOHO_SMTP_USER / ZOHO_SMTP_PASS not set: receipts cannot be sent.')
   process.exit(1)

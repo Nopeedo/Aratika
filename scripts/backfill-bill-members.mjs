@@ -96,9 +96,20 @@ for (const b of bills) {
   byTitle.set(normTitle(b.title), b)
 }
 
-const { data, error } = await sb.from('content_items').select('id, title, data').eq('type', 'legislation')
-if (error) { console.error(error.message); process.exit(1) }
-const rows = data || []
+// Paginated. This was a single select with no .limit(), which silently stops
+// at PostgREST's 1000-row default — it does not error, it returns less.
+// A short read here silently skips bills from the backfill, which then look
+// like they simply have no member data.
+// Legislation sits at 296 rows today, so it has not bitten yet; that is precisely why it is
+// worth fixing before the count crosses over unnoticed.
+const rows = []
+for (let pgFrom = 0; ; pgFrom += 1000) {
+  const { data: pg, error: pgErr } = await sb.from('content_items')
+    .select('id, title, data').eq('type', 'legislation').order('id').range(pgFrom, pgFrom + 999)
+  if (pgErr) { console.error(pgErr.message); process.exit(1) }
+  rows.push(...(pg || []))
+  if (!pg || pg.length < 1000) break
+}
 
 let matchedNum = 0, matchedTitle = 0, unmatched = 0, linked = 0, updated = 0, stageFixed = 0
 const updates = []

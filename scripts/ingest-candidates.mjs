@@ -155,8 +155,21 @@ console.log(`parsed ${found.length} candidate rows across ${new Set(found.map((f
 // Sanity guard: a page-layout change should write nothing, not garbage.
 if (found.length < 10) { console.error('Too few candidates parsed — page layout may have changed. Writing nothing.'); process.exit(1) }
 
-const { data: existing, error: e1 } = await sb.from('content_items').select('id, source_id, data').eq('type', 'candidate')
-if (e1) { console.error(e1.message); process.exit(1) }
+// Paginated. This was a single select with no .limit(), which silently stops
+// at PostgREST's 1000-row default — it does not error, it returns less.
+// Truncation here is not merely slow, it is WRONG: this set feeds the
+// withdrawal check below, so a short read would report live candidates as
+// missing from the source and flag them as possible withdrawals.
+// Candidate sits at 375 rows today, so it has not bitten yet; that is precisely why it is
+// worth fixing before the count crosses over unnoticed.
+const existing = []
+for (let pgFrom = 0; ; pgFrom += 1000) {
+  const { data: pg, error: pgErr } = await sb.from('content_items')
+    .select('id, source_id, data').eq('type', 'candidate').order('id').range(pgFrom, pgFrom + 999)
+  if (pgErr) { console.error(pgErr.message); process.exit(1) }
+  existing.push(...(pg || []))
+  if (!pg || pg.length < 1000) break
+}
 const byId = new Map((existing || []).map((r) => [r.source_id, r]))
 
 const today = new Date().toISOString().slice(0, 10)

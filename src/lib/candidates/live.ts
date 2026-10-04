@@ -116,7 +116,7 @@ export const getApprovedCandidatesBySlug = unstable_cache(
     return out
   },
   ['approved-candidates-by-slug'],
-  { revalidate: 60, tags: ['candidates'] },
+  { revalidate: 300, tags: ['candidates'] },
 )
 
 export async function getApprovedCandidates(electorateSlug: string, opts?: { excludeName?: string }): Promise<Candidate2026[]> {

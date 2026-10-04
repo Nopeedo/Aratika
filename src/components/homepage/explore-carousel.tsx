@@ -82,7 +82,7 @@ const GROUPS: { label: string; items: Feature[] }[] = [
     items: [
       { feature: 'map', title: 'Electorate map', desc: 'Find your electorate and your MP', href: '/map', Icon: Map, tint: '#ecfeff' },
       { feature: 'mps', title: 'MPs directory', desc: 'Every current MP, by name or electorate', href: '/mps', Icon: UserSquare2, tint: '#f0f9ff' },
-      { feature: 'live-results', title: 'Live results 2026', desc: 'Election night results, electorate by electorate', href: '/battlegrounds', Icon: Swords, tint: '#fef2f2' },
+      { feature: 'battlegrounds', title: '2026 Election map', desc: 'All 72 electorates on one map: who is standing in each', href: '/battlegrounds', Icon: Swords, tint: '#fef2f2' },
     ],
   },
   {

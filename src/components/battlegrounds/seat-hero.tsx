@@ -65,7 +65,7 @@ export function SeatHero({
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '20px clamp(18px, 5vw, 36px) 28px' }}>
         {/* Back to the 2026 Election Centre, where the seat map that links
             here lives now. It went to /battlegrounds as "Seats to watch", but
-            that page is "Live results 2026" now and doesn't show the seats. */}
+            that page is the 2026 Election map now and does show the seats. */}
         <BackLink fallbackHref="/elections/2026" label="2026 election"
           style={{ fontSize: 13, fontWeight: 600, color: WARM, fontFamily: MANROPE, marginBottom: 18 }} />
 

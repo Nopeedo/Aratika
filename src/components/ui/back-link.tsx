@@ -34,7 +34,7 @@ const KNOWN: { prefix: string; label: string }[] = [
   // prefix + '/', which for this entry is '//', and nothing starts with that.
   { prefix: '/',               label: 'the homepage' },
   { prefix: '/elections/2026', label: 'the 2026 election' },
-  { prefix: '/battlegrounds',  label: 'Live results 2026' },
+  { prefix: '/battlegrounds',  label: '2026 Election map' },
   { prefix: '/compare',        label: 'Compare parties' },
   { prefix: '/policies',       label: 'the issues' },
   // /parties itself redirects to the first party now, so this prefix only

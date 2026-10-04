@@ -3,7 +3,7 @@
  * electorate map plus a ranked list of the closest 2023 contests, each linking
  * to its seat page.
  *
- * DEMOTED, NOT RENDERED. By request, /battlegrounds became "Live results 2026"
+ * THIS IS THE PAGE. It was demoted and unrendered while /battlegrounds was
  * (see app/battlegrounds/page.tsx) with this content hidden. Kept whole, per
  * the handoff's "demote, don't delete": the map itself still runs on the
  * Election Centre, and this is one import away from coming back — after

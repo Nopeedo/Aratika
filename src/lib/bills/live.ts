@@ -108,7 +108,15 @@ const readApprovedBills = unstable_cache(
     return (data as Row[] | null) ?? []
   },
   ['approved-bills'],
-  { revalidate: 60, tags: ['bills'] },
+  // 300, not 60. The tag is decorative: revalidateTag is never called
+  // anywhere in this codebase (grep src/ scripts/ -- zero hits), so nothing
+  // was invalidating on demand and the only thing expiring this cache was the
+  // timer. Sixty seconds bought nothing against hand-approval in /editor and a
+  // 4x-daily ingest, while pinning ~168 of 217 prerendered route segments to a
+  // 60-second cycle, because an unstable_cache revalidate propagates up to any
+  // segment that does not declare its own. Same change in candidates, news,
+  // polls and positions; latest/live.ts was already 300.
+  { revalidate: 300, tags: ['bills'] },
 )
 
 /** Approved, enriched legislation (has a summary + policy breakdown). */

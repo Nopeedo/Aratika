@@ -105,7 +105,7 @@ const readApprovedPolls = unstable_cache(
     return (data as Row[] | null) ?? []
   },
   ['approved-polls'],
-  { revalidate: 60, tags: ['polls'] },
+  { revalidate: 300, tags: ['polls'] },
 )
 
 /** Approved polls, newest first, ONE per pollster (their most recent). Keeps the

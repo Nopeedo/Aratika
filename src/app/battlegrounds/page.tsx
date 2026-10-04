@@ -1,5 +1,5 @@
 /**
- * /battlegrounds — "Live results 2026".
+ * /battlegrounds — "2026 Election map", and the election-night results.
  *
  * WHAT CHANGED. This route was "Seats to watch" (a margin-coloured map and
  * every seat ranked by its 2023 margin). By request it is the election-night

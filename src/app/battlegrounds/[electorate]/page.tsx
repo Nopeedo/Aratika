@@ -601,7 +601,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           {/* One way out: the 2026 Election Centre, where the seat map lives.
               The "Seats to watch" pill to /battlegrounds went — that page is
-              "Live results 2026" now and doesn't list the seats. */}
+              the 2026 Election map now and does list the seats. */}
           <Link href="/elections/2026" style={pill(true)}><MapPin style={ic} /> 2026 election <ArrowRight style={ic} /></Link>
         </div>
         <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 14, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
