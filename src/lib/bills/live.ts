@@ -5,6 +5,7 @@
  */
 
 import { unstable_cache } from 'next/cache'
+import { cache } from 'react'
 import { publicClient } from '@/lib/supabase/public'
 import { billSlugFromLink, normBillTitle } from './slug'
 
@@ -160,12 +161,32 @@ export async function getBillReaderSlugs(): Promise<Record<string, string>> {
   }
 }
 
-export async function getApprovedBillBySlug(slug: string): Promise<LiveBill | null> {
+/**
+ * The bill WITHOUT its full text — straight off the cached list, no extra query.
+ *
+ * generateMetadata() needs only title and summary, but it was calling
+ * getApprovedBillBySlug, which fetches full_text. Next calls generateMetadata
+ * and then renders the page, so every one of the 290 bill pages was pulling the
+ * same bill's text twice per render and discarding one copy. Mean ~36KB, with
+ * one bill at 926KB.
+ */
+export async function getApprovedBillMetaBySlug(slug: string): Promise<LiveBill | null> {
   const all = await getApprovedBills()
-  const bill = all.find((b) => b.slug === slug)
+  return all.find((b) => b.slug === slug) ?? null
+}
+
+/**
+ * The bill WITH its full text, for the reader itself.
+ *
+ * Wrapped in React's cache() so that if anything does call it more than once in
+ * a render, the second call is free. That is per-render memoisation, not a data
+ * cache — it cannot serve anything stale.
+ */
+export const getApprovedBillBySlug = cache(async (slug: string): Promise<LiveBill | null> => {
+  const bill = await getApprovedBillMetaBySlug(slug)
   if (!bill) return null
   // Load the heavy full text only for the single bill being read.
   const supabase = publicClient()
   const { data } = await supabase.from('content_items').select('full_text').eq('id', bill.id).maybeSingle()
   return { ...bill, fullText: (data?.full_text as string | null) ?? null }
-}
+})

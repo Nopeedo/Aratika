@@ -4,6 +4,7 @@
  * We store the videoId/thumbnail and EMBED via the privacy player; never rehost.
  */
 
+import { unstable_cache } from 'next/cache'
 import { publicClient } from '@/lib/supabase/public'
 
 export interface VideoItem {
@@ -63,15 +64,39 @@ function toVideoItem(r: { id: string; title: string; data: unknown }): VideoItem
   }
 }
 
+/**
+ * The raw read, cached — mirroring readNews in news/live.ts.
+ *
+ * This file was the only one of six publicClient readers in src/lib with no
+ * caching at all; bills, candidates, latest, news and polls are all wrapped.
+ * The commit that added the others touched news/live.ts and skipped this file
+ * sitting beside it. Every call hit the database, and the rails on /news and
+ * /elections/2026 each pay for their own 300-row read on every render.
+ *
+ * Not pushing the rail filters down into the query, deliberately. The
+ * debate/presser selection below is carefully tuned for small-party fairness
+ * (see getDebateVideos) and the age filter runs on pubDate, which is not the
+ * created_at column a SQL bound would use. Caching is the safe win; narrowing
+ * the filter is a change to behaviour and wants its own look.
+ */
+const readVideos = unstable_cache(
+  async (limit: number) => {
+    const supabase = publicClient()
+    const { data } = await supabase
+      .from('content_items')
+      .select('id, title, data, created_at')
+      .eq('type', 'video')
+      .eq('status', 'approved')
+      .order('created_at', { ascending: false })
+      .limit(limit)
+    return data ?? []
+  },
+  ['approved-videos'],
+  { revalidate: 300, tags: ['videos'] },
+)
+
 export async function getVideos(limit = 48): Promise<VideoItem[]> {
-  const supabase = publicClient()
-  const { data } = await supabase
-    .from('content_items')
-    .select('id, title, data, created_at')
-    .eq('type', 'video')
-    .eq('status', 'approved')
-    .order('created_at', { ascending: false })
-    .limit(limit)
+  const data = await readVideos(limit)
   const items = (data ?? []).map(toVideoItem)
   const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 86_400_000).toISOString().slice(0, 10)
   return items

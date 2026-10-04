@@ -6,7 +6,7 @@
 
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getApprovedBillBySlug } from '@/lib/bills/live'
+import { getApprovedBillBySlug, getApprovedBillMetaBySlug } from '@/lib/bills/live'
 import { BillReader } from '@/components/bills/bill-reader'
 import { BackLink } from '@/components/ui/back-link'
 import { buildStancesByTopic } from '@/lib/positions/stances-by-topic'
@@ -18,7 +18,9 @@ export const revalidate = 60
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const bill = await getApprovedBillBySlug(slug)
+  // Meta variant: title and summary only, so this does not pull the bill's full
+  // text just to build a <title> and then throw it away.
+  const bill = await getApprovedBillMetaBySlug(slug)
   if (!bill) return { title: 'Legislation not found' }
   return { title: bill.title, description: bill.summary?.slice(0, 155) ?? `Read ${bill.title} in Politika's plain-language breakdown.` }
 }
