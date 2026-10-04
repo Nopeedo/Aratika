@@ -149,7 +149,9 @@ export async function UpcomingView(_props: { e: ElectionData }) {
               does, and why the party vote decides the shape of Parliament —
               the primer the parties section below assumes. Compass CTA
               ("Find where you stand") removed from the foot of this section
-              by request; the homepage still carries it. */}
+              by request. The homepage carries it, below the issue
+              sections — verified, not assumed: this comment and the
+              homepage's each used to claim the other page had it. */}
           <section id="your-vote" style={{ scrollMarginTop: 80 }}>
             {/* The explanation is the description now, by request, and
                 shorter: it sat behind the (i) as three sentences ("Two votes,

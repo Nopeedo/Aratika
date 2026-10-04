@@ -20,6 +20,7 @@ import { HomeBackground } from '@/components/homepage/home-background'
 import { PartyTilesSection, PartyNewsSection, PartySeatsSection, PartyBillsSection } from '@/components/homepage/party-tiles-section'
 // import { PartyStanceSection } from '@/components/homepage/party-tiles-section' // hidden — see below
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
+import { CompassCta } from '@/components/compass/compass-cta'
 // import { ThisTerm } from '@/components/homepage/this-term' // hidden — see below
 // import { WhatsMoved } from '@/components/homepage/whats-moved' // hidden — see below
 // import { CredibilityStrip } from '@/components/homepage/credibility-strip' // hidden — see below
@@ -82,12 +83,21 @@ export default function HomePage() {
             uncomment to bring it back. */}
         {/* <PartyStanceSection /> */}
 
-        {/* The compass, back on the homepage. It was built as a homepage entry
-            card and then rendered nowhere — orphaned in the first-impression
-            diet. It sits after the issue sections deliberately: it asks the
-            reader for twelve answers, which is a fair thing to ask only once
-            they have seen what the site does with them. Its results now link
-            to our own sourced positions for all seven parties. */}
+        {/* The compass, back on the homepage, by request — and restyled into
+            the current theme on the way in (it used to cycle through six party
+            colours, which §1.6 gives to parties and §1.3 already spends on the
+            hero).
+
+            It sits after the issue sections deliberately: it asks the reader
+            for twelve answers, which is a fair thing to ask only once they have
+            seen what the site does with them.
+
+            Note on the comments this replaces: this one said the card "still
+            rides the Election Centre", and the Election Centre's said "the
+            homepage still carries it". Each pointed at the other and it
+            rendered in neither — CompassCta had no importers at all, so /start
+            was reachable only from the footer. */}
+        <CompassCta />
 
         {/* "Who's in Parliament right now" — the electorate map — was here.
             Removed from the front page by request. The component is intact
@@ -141,11 +151,8 @@ export default function HomePage() {
         {/* ── Everything else, in one carousel of links ── */}
         <ExploreCarousel />
 
-        {/* The compass card is off the front page by request — it moved four
-            times before this and is now gone from here entirely. The card
-            itself is untouched and still rides the Election Centre's
-            how-your-vote-works section, and /start is still linked from the
-            footer. */}
+        {/* (The compass card used to be described here as "gone from here
+            entirely". It is back, above, after the issue sections.) */}
 
         {/* "Find your MP" is off the front page by request. The lookup is
             untouched at /map, and the menu links to it (Electorate map); this
