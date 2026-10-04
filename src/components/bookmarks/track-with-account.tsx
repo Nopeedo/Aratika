@@ -23,6 +23,7 @@ import Link from 'next/link'
 import { Bookmark, BookmarkCheck, X, MailCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useBookmarks, type BookmarkEntity } from '@/hooks/use-bookmarks'
+import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { Field, PasswordField, SubmitButton, ErrorBox, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
 import { Mail, User as UserIcon } from 'lucide-react'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY } from '@/constants/theme'
@@ -50,23 +51,80 @@ export function TrackWithAccount({ entity, label, savedLabel, accent }: {
   // not compete with it. Muted ink and a hairline at rest; the issue's colour
   // only on the mark itself, and the site's green once it is on.
   const base: React.CSSProperties = {
-    display: 'inline-flex', alignItems: 'center', gap: 6,
-    padding: '5px 10px', borderRadius: 9,
-    fontSize: 12.5, fontWeight: 700, fontFamily: MANROPE,
+    display: 'inline-flex', alignItems: 'center', gap: 7,
+    padding: '10px 17px', borderRadius: 11,
+    fontSize: 14, fontWeight: 800, fontFamily: MANROPE,
     whiteSpace: 'nowrap', transition: 'all .15s ease',
   }
 
+  // §3.2 — inline styles cannot be reached from globals.css, so the phone
+  // sizing ships with the component. At 375px the jade control sits beside a
+  // page title ("Tukituki", "Christopher Luxon") that already owns the row, and
+  // at 14px/800 with 17px of side padding "Track this seat" plus its (i) pushed
+  // past the gutter. Smaller, tighter, and allowed to sit on its own line.
+  //
+  // The 44px tap target is NOT reduced — that is §3.1, and the button around
+  // the visible span keeps it.
+  const phoneCss = `
+    @media (max-width: 640px) {
+      .tw-wrap { gap: 6px !important; flex-wrap: wrap; }
+      .tw-pill { padding: 8px 13px !important; font-size: 13px !important; border-radius: 10px !important; }
+    }
+    @media (max-width: 380px) {
+      .tw-pill { padding: 7px 11px !important; font-size: 12.5px !important; }
+    }
+  `
+
+  // What tracking actually does. It was never said anywhere, so the control
+  // asked for a commitment without naming the return — and the account
+  // requirement came as a surprise at the moment of tapping.
+  //
+  // Every line below maps to a real detector in scripts/detect-*.mjs. "Stay up
+  // to date" would have been unfalsifiable; §1.8 applies to a promise as much
+  // as to a figure.
+  //
+  // Rendered in BOTH branches below. It does not depend on whether a session
+  // has resolved, and putting it only in the resolved branch made it arrive a
+  // beat late and shift the heading sideways.
+  const info = (
+    <InfoButton accent={accent} label="What tracking does" size={26}>
+      <InfoHeading accent={accent}>What tracking does</InfoHeading>
+      <InfoText>
+        Tracked things gather in your dashboard, and we tell you when they change.
+      </InfoText>
+      <InfoHeading accent={accent}>What counts as a change</InfoHeading>
+      <InfoText>
+        A seat — a new candidate stands there, or news names it.{' '}
+        An MP — their voting record, written questions or expenses move.{' '}
+        A party — a stated position changes, or a new deep dive lands.{' '}
+        An issue — any party changes its position on it.{' '}
+        A bill — it moves a stage, or opens for public submissions.
+      </InfoText>
+      <InfoHeading accent={accent}>What it costs</InfoHeading>
+      <InfoText>
+        A free account, because a track saved in one browser cannot tell you
+        anything later. Alerts arrive as notifications, not email, and we never
+        send you anything you did not ask for.
+      </InfoText>
+    </InfoButton>
+  )
+
   if (!known) {
     return (
-      <span aria-hidden style={{ ...base, background: '#fff', border: `1px solid ${BORDER}`, color: 'transparent', opacity: .5 }}>
-        <Bookmark style={{ width: 13, height: 13, color: BORDER }} />
-        {label}
+      <span className="tw-wrap" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+        <style dangerouslySetInnerHTML={{ __html: phoneCss }} />
+        <span aria-hidden className="tw-pill" style={{ ...base, background: '#fff', border: `1.5px solid ${BORDER}`, color: 'transparent', opacity: .5 }}>
+          <Bookmark style={{ width: 15, height: 15, color: BORDER }} />
+          {label}
+        </span>
+        {info}
       </span>
     )
   }
 
   return (
-    <>
+    <span className="tw-wrap" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+      <style dangerouslySetInnerHTML={{ __html: phoneCss }} />
       {/* The VISIBLE control is the inner span; the button is the tap target.
           globals.css gives every button a 44px minimum on a phone, which is
           right for a finger and wrong for a control that is meant to sit
@@ -82,18 +140,28 @@ export function TrackWithAccount({ entity, label, savedLabel, accent }: {
           display: 'inline-flex', alignItems: 'center',
         }}
       >
-        <span style={{
+        {/* Jade ground, white type, by request — it was a white ghost button
+            with grey text and the page title swallowed it.
+
+            The TRACKING state inverts instead of going louder: once it is on,
+            the control is no longer an invitation and should stop competing
+            with the page. Jade on mint reads as a state; jade on white reads as
+            a button you have not pressed yet. */}
+        <span className="tw-pill" style={{
           ...base,
-          background: saved ? '#ecfdf5' : '#fff',
-          border: `1px solid ${saved ? '#a7f3d0' : BORDER}`,
-          color: saved ? JADE : SECONDARY,
+          background: saved ? '#ecfdf5' : JADE,
+          border: `1.5px solid ${saved ? '#a7f3d0' : JADE}`,
+          color: saved ? JADE : '#fff',
         }}>
           {saved
-            ? <BookmarkCheck style={{ width: 13, height: 13 }} />
-            : <Bookmark style={{ width: 13, height: 13, color: accent }} />}
+            ? <BookmarkCheck style={{ width: 15, height: 15 }} />
+            : <Bookmark style={{ width: 15, height: 15 }} />}
           {saved ? savedLabel : label}
         </span>
       </button>
+
+
+      {info}
 
       {askAccount && (
         <AccountDialog
@@ -103,7 +171,7 @@ export function TrackWithAccount({ entity, label, savedLabel, accent }: {
           onSignedIn={async () => { await toggle(entity) }}
         />
       )}
-    </>
+    </span>
   )
 }
 

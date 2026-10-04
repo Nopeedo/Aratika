@@ -12,14 +12,24 @@
  */
 
 import { useEffect, useState } from 'react'
-import { Download, Share, SquarePlus, X, Check } from 'lucide-react'
+import { Download, Share, SquarePlus, X, Check, Bell } from 'lucide-react'
 import { BORDER, INK, JADE, MANROPE } from '@/constants/theme'
 
 const SUB = '#5b6067'
 
 interface BIPEvent extends Event { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> }
 
-export function InstallButton() {
+/**
+ * `panel` (default) is the compact control on /settings.
+ * `hero` is the homepage section — bigger, jade, and leading with the reason
+ * rather than the mechanism.
+ *
+ * One component, not two, because the decision that matters is "can this
+ * browser install, and is it already installed" — and that returning null has
+ * to be made once. A separate homepage section would have rendered its heading
+ * over an empty space for anyone already installed.
+ */
+export function InstallButton({ variant = 'panel' }: { variant?: 'panel' | 'hero' } = {}) {
   const [deferred, setDeferred] = useState<BIPEvent | null>(null)
   const [isIOS, setIsIOS] = useState(false)
   const [installed, setInstalled] = useState(false)
@@ -60,6 +70,67 @@ export function InstallButton() {
   if (installed) return null
   // Nothing to offer: not installable here and not iOS.
   if (!deferred && !isIOS) return null
+
+  if (variant === 'hero') {
+    return (
+      <section style={{ background: 'transparent' }}>
+        <div style={{ maxWidth: 820, margin: '0 auto', padding: '8px clamp(18px, 5vw, 36px) 20px' }}>
+          <div style={{
+            background: JADE, borderRadius: 20, padding: 'clamp(26px, 5vw, 34px)',
+            fontFamily: MANROPE, display: 'flex', flexDirection: 'column', gap: 14,
+          }}>
+            <div style={{ display: 'flex', gap: 9, flexWrap: 'wrap' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 999, background: 'rgba(255,255,255,.17)', color: '#fff', fontSize: 12, fontWeight: 800 }}>
+                <Bell style={{ width: 13, height: 13 }} /> Election alerts
+              </span>
+              <span style={{ padding: '6px 12px', borderRadius: 999, background: 'rgba(255,255,255,.17)', color: '#fff', fontSize: 12, fontWeight: 800 }}>
+                No app store
+              </span>
+            </div>
+
+            <h2 style={{ fontSize: 'clamp(23px, 4vw, 30px)', fontWeight: 800, letterSpacing: '-.02em', color: '#fff', margin: 0, lineHeight: 1.15 }}>
+              Put Politika on your phone
+            </h2>
+
+            {/* Leads with the reason, not the mechanism. "Install our app" is a
+                request; this is the only route to alerts, which is a reason. */}
+            <p style={{ fontSize: 'clamp(14.5px, 2vw, 16px)', fontWeight: 500, color: 'rgba(255,255,255,.88)', lineHeight: 1.6, margin: 0, maxWidth: 520 }}>
+              {needsSafari
+                ? <>Open <b style={{ color: '#fff' }}>politika.nz in Safari</b> to add it — this browser can&rsquo;t. It&rsquo;s the only way to get alerts when something you follow changes.</>
+                : <>It installs straight from your browser in a couple of taps, and it&rsquo;s the only way to get alerts when something you follow changes.</>}
+            </p>
+
+            <div style={{ marginTop: 2 }}>
+              {deferred ? (
+                <button onClick={install} style={heroBtn}><Download style={ic} /> Install Politika</button>
+              ) : (
+                <button onClick={() => setShowIOS((v) => !v)} style={heroBtn}>
+                  <Share style={ic} /> {needsSafari ? 'How to install on iPhone' : 'How to add to Home Screen'}
+                </button>
+              )}
+            </div>
+
+            {showIOS && isIOS && (
+              <div style={{ marginTop: 4, padding: '14px 16px', borderRadius: 13, background: 'rgba(255,255,255,.13)', position: 'relative' }}>
+                <button onClick={() => setShowIOS(false)} aria-label="Close" style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,.75)' }}>
+                  <X style={{ width: 15, height: 15 }} />
+                </button>
+                <ol style={{ margin: 0, paddingLeft: 18, fontSize: 13.5, color: '#fff', lineHeight: 1.7 }}>
+                  {needsSafari && <li>Open <b>politika.nz in Safari</b> first — this in-app browser can&rsquo;t install.</li>}
+                  <li>Tap <b>Share</b> <Share style={{ width: 13, height: 13, verticalAlign: '-2px' }} /> (the box with an &uarr;).</li>
+                  <li>Scroll down, tap <b>Add to Home Screen</b> <SquarePlus style={{ width: 13, height: 13, verticalAlign: '-2px' }} />, then <b>Add</b>.</li>
+                  <li>Open Politika from your Home Screen.</li>
+                </ol>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, fontSize: 12.5, color: '#fff', fontWeight: 700 }}>
+                  <Check style={{ width: 14, height: 14 }} /> Then you can turn on alerts.
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <div style={{ border: `1px solid ${BORDER}`, borderRadius: 14, padding: '16px 18px', background: '#fff', fontFamily: MANROPE }}>
@@ -110,4 +181,11 @@ function btn(primary: boolean): React.CSSProperties {
     fontFamily: MANROPE, fontSize: 14, fontWeight: 800, cursor: 'pointer',
     border: primary ? 'none' : `1px solid ${BORDER}`, background: primary ? INK : '#fff', color: primary ? '#fff' : SUB,
   }
+}
+
+const heroBtn: React.CSSProperties = {
+  display: 'inline-flex', alignItems: 'center', gap: 8, minHeight: 44,
+  padding: '12px 22px', borderRadius: 13, fontFamily: MANROPE,
+  fontSize: 15.5, fontWeight: 800, cursor: 'pointer', border: 'none',
+  background: '#fff', color: INK,
 }

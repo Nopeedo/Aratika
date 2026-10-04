@@ -26,6 +26,7 @@ import { CompassCta } from '@/components/compass/compass-cta'
 // import { CredibilityStrip } from '@/components/homepage/credibility-strip' // hidden — see below
 import { ParliamentNow } from '@/components/homepage/parliament-now'
 import { EmailUpdates } from '@/components/homepage/email-updates'
+import { InstallButton } from '@/components/notifications/install-button'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 // import { AlertsBanner } from '@/components/notifications/alerts-banner' // hidden — see below
 import { OpenLinksInNewTab } from '@/components/homepage/open-links-in-new-tab'
@@ -126,6 +127,18 @@ export default function HomePage() {
             Under the 2023-term section on purpose: by here a reader has seen
             what the site holds, which is the only honest moment to ask for
             their address. Signing up for mail, not for an account. */}
+        {/* Directly above the newsletter, by request. The two are the same
+            ask at different weights — install for alerts, subscribe for the
+            weekly — so they belong together rather than scattered.
+
+            It renders NOTHING when the app is already installed or the browser
+            cannot install it, so this is not a permanent fixture for anyone who
+            has already done it. That check lives inside the component, which is
+            why this is a variant rather than a separate homepage section
+            wrapping it: a section would have shown its heading over an empty
+            space. */}
+        <InstallButton variant="hero" />
+
         <EmailUpdates />
 
         {/* "What's moved" — new candidates and bill stage changes — was
