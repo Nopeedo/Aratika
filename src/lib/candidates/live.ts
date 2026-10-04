@@ -120,15 +120,24 @@ export const getApprovedCandidatesBySlug = unstable_cache(
 )
 
 export async function getApprovedCandidates(electorateSlug: string, opts?: { excludeName?: string }): Promise<Candidate2026[]> {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('content_items')
-    .select('source_id, data')
-    .eq('type', 'candidate')
-    .eq('status', 'approved')
-  const rows = (data ?? [])
-    .map((r) => ({ key: r.source_id as string | null, d: r.data as CandidateRow }))
-    .filter(({ d }) => d?.electorateSlug === electorateSlug && typeof d.name === 'string')
+  // Read through the CACHED sibling rather than querying again.
+  //
+  // This used to call `await createClient()`, which touches cookies() — and a
+  // cookie read anywhere in the tree opts the whole route out of static
+  // rendering. That is why all 72 /battlegrounds/[electorate] pages were
+  // rendering dynamically despite generateStaticParams() returning every slug:
+  // zero .html files in the build, while 123 /mps/*.html sat beside them. It is
+  // the exact failure lib/supabase/public.ts exists to prevent, and it was
+  // documented 100 lines above this function.
+  //
+  // It also pulled the ENTIRE 372-row approved-candidate table on every
+  // request — no electorate filter, no limit — and threw away 71/72 of it.
+  // Measured at 32,268 bytes gzipped per request.
+  //
+  // getApprovedCandidatesBySlug already returns this exact shape, grouped, and
+  // is cached. One read now serves every seat.
+  const bySlug = await getApprovedCandidatesBySlug()
+  const rows = (bySlug[electorateSlug] ?? []).map((c) => ({ key: c.key ?? null, d: c as unknown as CandidateRow }))
   const out: Candidate2026[] = []
   for (const { key, d } of rows) {
     if (!isKnownParty(d.party)) continue

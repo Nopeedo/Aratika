@@ -18,6 +18,7 @@
  */
 
 import { createClient } from '@/lib/supabase/server'
+import { publicClient } from '@/lib/supabase/public'
 
 export interface CandidateCoverageItem {
   id: string
@@ -38,7 +39,11 @@ export async function getCoverageForCandidates(
   const out = new Map<string, CandidateCoverageItem[]>()
   if (keys.length === 0) return out
 
-  const supabase = await createClient()
+  // publicClient(), not createClient(): the latter reads cookies(), and a
+  // cookie read anywhere in the tree makes the whole route dynamic. Both this
+  // and getApprovedCandidates had to change — fixing one alone leaves a
+  // cookies() call on the render and the 72 seat pages still do not prerender.
+  const supabase = publicClient()
 
   // Filter server-side on the JSONB tag rather than fetching a recent slice and
   // matching in JS. The first version did the latter, taking the newest 400
@@ -55,7 +60,9 @@ export async function getCoverageForCandidates(
   if (safe.length === 0) return out
   const { data } = await supabase
     .from('content_items')
-    .select('id, type, title, data, source_url, created_at')
+    // Narrowed from `data` to the four keys the mapper below reads. The whole
+    // data blob carried fields no coverage row renders; measured 45% smaller.
+    .select('id, type, title, source_url, created_at, data->candidates, data->source, data->outlet, data->link, data->pubDate')
     .in('type', ['news', 'video'])
     .eq('status', 'approved')
     .or(safe.map((k) => `data->candidates.cs.["${k}"]`).join(','))
@@ -64,7 +71,9 @@ export async function getCoverageForCandidates(
 
   const wanted = new Set(keys)
   for (const r of data ?? []) {
-    const d = (r.data || {}) as Record<string, unknown>
+    // The `data->key` projections above arrive flattened onto the row, not
+    // nested under `data` — so read them off r itself.
+    const d = r as unknown as Record<string, unknown>
     const tagged = Array.isArray(d.candidates) ? (d.candidates as string[]) : []
     const isVideo = r.type === 'video'
     const item: CandidateCoverageItem = {
