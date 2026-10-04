@@ -16,7 +16,20 @@ import { WOVEN_PAGE, BORDER } from '@/constants/theme'
 
 export function PageSkeleton({ lines = 3, cards = 2 }: { lines?: number; cards?: number }) {
   return (
-    <div style={WOVEN_PAGE}>
+    // minHeight 100vh, so the document does not COLLAPSE during the swap.
+    //
+    // The skeleton is a few hundred pixels tall; the pages it stands in for run
+    // to twelve thousand (/bills measured 12,974px). Without a floor, every
+    // navigation shrank the document to the skeleton's height and then grew it
+    // back — and the browser, which has scrollRestoration 'auto', resolves its
+    // scroll against whatever height exists at that moment. Land on the short
+    // version and the position clamps; the tall page then renders underneath
+    // you, which reads as arriving part-way down and then reflowing from the
+    // top.
+    //
+    // A viewport-tall floor keeps the document at least as tall as the screen
+    // for the whole swap, so there is nothing to clamp against.
+    <div style={{ ...WOVEN_PAGE, minHeight: '100vh' }}>
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 80px' }}>
         <Bar w="34%" h={16} />
         <div style={{ height: 14 }} />

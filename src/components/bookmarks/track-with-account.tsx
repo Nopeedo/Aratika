@@ -110,13 +110,34 @@ export function TrackWithAccount({ entity, label, savedLabel, accent }: {
   )
 
   if (!known) {
+    // Render the REAL control, not a transparent ghost.
+    //
+    // This used to paint an invisible placeholder until useUser() finished a
+    // round trip to Supabase for the session, so the control was absent on
+    // first paint and popped in a beat later — it read as still loading while
+    // the rest of the page was already there.
+    //
+    // Untracked is the correct state for almost every reader on almost every
+    // item, so draw that immediately and let the rare already-tracked case
+    // settle to its mint state when the session lands. Disabled until then, so
+    // a tap cannot race the answer, and aria-busy says why.
     return (
       <span className="tw-wrap" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
         <style dangerouslySetInnerHTML={{ __html: phoneCss }} />
-        <span aria-hidden className="tw-pill" style={{ ...base, background: '#fff', border: `1.5px solid ${BORDER}`, color: 'transparent', opacity: .5 }}>
-          <Bookmark style={{ width: 15, height: 15, color: BORDER }} />
-          {label}
-        </span>
+        <button
+          disabled
+          aria-busy="true"
+          aria-label={label}
+          style={{
+            padding: 9, margin: -9, background: 'none', border: 'none',
+            cursor: 'default', display: 'inline-flex', alignItems: 'center',
+          }}
+        >
+          <span className="tw-pill" style={{ ...base, background: JADE, border: `1.5px solid ${JADE}`, color: '#fff' }}>
+            <Bookmark style={{ width: 15, height: 15 }} />
+            {label}
+          </span>
+        </button>
         {info}
       </span>
     )
