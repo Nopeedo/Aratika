@@ -66,11 +66,22 @@ export const NAV_ITEMS: NavItem[] = [
   // the label named the grouping, not the destinations, and each of the three
   // cost a tap to reach through it.
   { label: 'Find your local MP', href: '/map', description: 'Interactive map: find your electorate and its MP', feature: 'map' },
-  // /battlegrounds is "Live results 2026" now (election-night results).
-  // feature 'live-results' keeps it out of the menu, the footer and the
-  // explore rail until LIVE_RESULTS_ENABLED is flipped, by request. The page
-  // still answers at its URL.
-  { label: 'Live results 2026', href: '/battlegrounds', description: 'Election night results, electorate by electorate', feature: 'live-results' },
+  // Back in the menu, by request. It was hidden behind 'live-results' because
+  // the page was ONLY the election-night results and showed a "not open yet"
+  // card until the switch flipped — a menu item leading to a placeholder.
+  //
+  // The page has two real states now (app/battlegrounds/page.tsx): before
+  // election night it is the seat-by-seat picture — all 72 electorates, who is
+  // standing, which 2023 contests were closest — and on the night it becomes
+  // the results. So it is gated on 'battlegrounds', which is on, and the
+  // RESULTS block alone still waits for LIVE_RESULTS_ENABLED.
+  //
+  // Labelled "2026 Election map", by request: "Battlegrounds" and "Who's
+  // standing" both needed explaining, and §1.7 wants the plain words a
+  // first-timer already has. It also separates cleanly from "Find your local
+  // MP" — that one answers where am I, this one is the whole field on a map.
+  // The page's h1 and <title> carry the same name.
+  { label: '2026 Election map', href: '/battlegrounds', description: 'All 72 electorates on one map: who is standing in each', feature: 'battlegrounds' },
   // "The Record" is gone as a group: it held three destinations that have
   // nothing to do with each other beyond all being facts about this term, so
   // the label explained the grouping rather than the pages, and every one of

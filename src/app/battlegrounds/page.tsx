@@ -30,16 +30,22 @@ import Link from 'next/link'
 import { ArrowRight, Clock } from 'lucide-react'
 import { milestone, longDate } from '@/constants/electoral-calendar'
 import { LIVE_RESULTS_ENABLED } from '@/constants/features'
+import { SeatsToWatch } from '@/components/battlegrounds/seats-to-watch'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const revalidate = 60
 
 const YEAR = '2026'
 
-export const metadata: Metadata = {
-  title: 'Live results 2026',
-  description: 'Preliminary results for the 2026 General Election, electorate by electorate, from 7pm on election day.',
-}
+export const metadata: Metadata = LIVE_RESULTS_ENABLED
+  ? {
+      title: 'Live results 2026',
+      description: 'Preliminary results for the 2026 General Election, electorate by electorate, from 7pm on election day.',
+    }
+  : {
+      title: '2026 Election map',
+      description: 'All 72 electorates on one map for the 2026 election: who is standing in each, and which seats were closest last time. Live results appear here on election night.',
+    }
 
 /** "Saturday 7 November 2026" from an ISO date, in the site's own wording. */
 function fullDate(iso: string): string {
@@ -73,55 +79,41 @@ export default function LiveResultsPage() {
   )
 
   return (
-    <div style={WOVEN_PAGE}>
-      <div style={{ maxWidth: 1080, margin: '0 auto', padding: 'clamp(18px, 3vh, 26px) clamp(18px, 5vw, 36px) 64px' }}>
-        {/* Title at the same size and position as the policy page's h1 and
-            the Election Centre's — every page title on the site reads at one
-            weight (§4). */}
-        <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: INK, margin: '0 0 16px' }}>
-          Live results 2026
-        </h1>
+    <>
+      {/* SeatsToWatch owns the page: its own h1, its own WOVEN_PAGE ground,
+          its own container. Wrapping it in a second one gave the page two h1s
+          ("Who's standing" over "Seats to watch") and stacked the woven
+          background on itself.
 
-        {!LIVE_RESULTS_ENABLED ? (
-          <div style={{
-            border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '18px 20px',
-            boxShadow: '0 2px 8px rgba(42,18,6,.05)', maxWidth: 640,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, fontWeight: 800, letterSpacing: '.08em', textTransform: 'uppercase', color: JADE, fontFamily: MANROPE }}>
-              <Clock style={{ width: 14, height: 14 }} /> Not open yet
-            </div>
-            <div style={{ fontSize: 20, fontWeight: 800, color: INK, fontFamily: MANROPE, margin: '8px 0 4px', lineHeight: 1.25 }}>
-              {/* Plain words first, by request ("Opens at 7pm, Saturday 7
-                  November 2026" read like a timestamp); the date follows. */}
-              This page will be available on election day
-            </div>
-            <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
-              {opens && <><b style={{ color: INK }}>{opens}.</b>{' '}</>}
-              {electionDay?.detail ?? 'Results are released from 7pm on election day.'}
-            </p>
-            <div style={{ borderTop: `1px solid ${BORDER}`, margin: '14px 0', paddingTop: 14 }}>{about}</div>
-            <Link href={`/elections/${YEAR}`} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13.5, fontWeight: 800, color: JADE, fontFamily: MANROPE, textDecoration: 'none' }}>
-              Until then, the 2026 Election Centre <ArrowRight style={{ width: 14, height: 14 }} />
-            </Link>
+          The "This page will be available on election day" card is gone with
+          the gate. It was true when the page was nothing but a placeholder;
+          over a working map of all 72 electorates it contradicted the thing
+          the reader was looking at. The election-night promise now lives in
+          the (i) beside the title, which is where §1.2 puts a fact a returning
+          reader would skip. */}
+      {LIVE_RESULTS_ENABLED && (
+        <div style={WOVEN_PAGE}>
+          <div style={{ maxWidth: 1080, margin: '0 auto', padding: 'clamp(18px, 3vh, 26px) clamp(18px, 5vw, 36px) 0' }}>
+            <h1 style={{ fontSize: 'clamp(28px, 7vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', lineHeight: 1.15, fontFamily: MANROPE, color: INK, margin: '0 0 16px' }}>
+              Live results 2026
+            </h1>
+            <div style={{ maxWidth: 640, marginBottom: 18 }}>{about}</div>
+            <section aria-label="Preliminary results" style={{
+              border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '18px 20px',
+              maxWidth: 640,
+            }}>
+              <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>
+                Waiting for the first results
+              </div>
+              <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
+                Results will appear here as the Electoral Commission releases them.
+              </p>
+            </section>
           </div>
-        ) : (
-          /* The results area. No feed is connected yet, so it says that
-             rather than showing anything that could be read as a result. */
-          <>
-          <div style={{ maxWidth: 640, marginBottom: 18 }}>{about}</div>
-          <section aria-label="Preliminary results" style={{
-            border: `1px solid ${BORDER}`, borderRadius: 16, background: '#fff', padding: '18px 20px', maxWidth: 640,
-          }}>
-            <div style={{ fontSize: 16, fontWeight: 800, color: INK, fontFamily: MANROPE, marginBottom: 4 }}>
-              Waiting for the first results
-            </div>
-            <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.55, margin: 0 }}>
-              Results will appear here as the Electoral Commission releases them.
-            </p>
-          </section>
-          </>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+
+      <SeatsToWatch />
+    </>
   )
 }

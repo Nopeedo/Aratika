@@ -55,7 +55,7 @@ export async function SeatsToWatch() {
                 page, what makes one worth watching, and what the colours mean.
                 The colours are drawn on the map directly below it. */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              <h1 style={{ fontSize: 'clamp(26px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.05 }}>Seats to watch</h1>
+              <h1 style={{ fontSize: 'clamp(26px, 7vw, 38px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.05 }}>2026 Election map</h1>
               <InfoButton accent={ACCENT} label="What makes a seat one to watch" size={26}>
                 <InfoHeading accent={ACCENT}>What makes a seat one to watch</InfoHeading>
                 <InfoText>
@@ -71,6 +71,11 @@ export async function SeatsToWatch() {
                   Port Waikato, where the 2023 election was cancelled after a candidate died, and
                   Tāmaki Makaurau, where a 2025 by-election followed the death of the sitting MP.
                 </InfoText>
+                <InfoHeading accent={ACCENT}>On election night</InfoHeading>
+                <InfoText>
+                  Preliminary results appear on this page from 7pm on election day, above the map.
+                  The map keeps working underneath.
+                </InfoText>
                 <InfoHeading accent={ACCENT}>Where the margins come from</InfoHeading>
                 <InfoText>
                   The Electoral Commission’s official 2023 general election results. Every row was
@@ -84,7 +89,11 @@ export async function SeatsToWatch() {
       </div>
 
       <div style={{ maxWidth: 1080, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 64px' }}>
-        <BattlegroundsMap candidatesBySlug={candidatesBySlug} />
+        {/* Opens on who is standing, not on 2023 margins: the page is named for
+            the current field, and last election's result is the secondary
+            view (the map has a toggle). Same default as the Election
+            Centre's copy of this map, so the two agree. */}
+        <BattlegroundsMap candidatesBySlug={candidatesBySlug} defaultView="candidates" />
 
         {/* The four margin tiers were stated three times within 200px of
             scroll: this map's legend, an inert row of dot-label-count chips,
