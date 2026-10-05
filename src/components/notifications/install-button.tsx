@@ -9,6 +9,20 @@
  *  - Hides itself entirely if the app is already installed, or if the browser
  *    can't install it and it isn't iOS.
  * Installing also unlocks Web Push on iOS, so this doubles as notification onboarding.
+ *
+ * THE ONE CASE IT CANNOT WORK OUT: iPhone, already added to the Home Screen,
+ * now browsing in Safari. `display-mode: standalone` is false in a Safari tab,
+ * iOS fires no `appinstalled` event, and a Home Screen web app gets its own
+ * storage partition — so a flag written inside the installed app is not
+ * readable from Safari. There is no signal at all, and the card would go on
+ * explaining how to add something they added last week.
+ *
+ * Chrome needs no equivalent: it stops firing `beforeinstallprompt` once the
+ * app is installed, so the card disappears on its own. This is iOS-only.
+ *
+ * So the card asks. "I've already added it" is a reader telling us the thing
+ * we cannot detect, and it is remembered per browser. It is offered on the
+ * `hero` variant only — see the note on DISMISS_KEY.
  */
 
 import { useEffect, useState } from 'react'
@@ -17,6 +31,18 @@ import { BORDER, INK, JADE, MANROPE } from '@/constants/theme'
 import { stashedInstallPrompt, type InstallPromptEvent as BIPEvent } from '@/lib/pwa/install-prompt'
 
 const SUB = '#5b6067'
+
+/**
+ * "I've already added it", remembered per browser.
+ *
+ * Deliberately honoured by the `hero` variant and IGNORED by `panel`. The
+ * homepage card follows you around and should take no for an answer; the
+ * /settings panel is somewhere you went looking for, and leaving it there is
+ * what makes this dismissal safe — tap it by mistake, or get a new phone, and
+ * the instructions are still where you would go to find them. Nothing else
+ * could bring them back, since the flag is unreadable from the installed app.
+ */
+const DISMISS_KEY = 'politika.install.dismissed'
 
 /**
  * `panel` (default) is the compact control on /settings.
@@ -34,11 +60,16 @@ export function InstallButton({ variant = 'panel' }: { variant?: 'panel' | 'hero
   const [installed, setInstalled] = useState(false)
   const [showIOS, setShowIOS] = useState(false)
   const [needsSafari, setNeedsSafari] = useState(false)
+  const [saidInstalled, setSaidInstalled] = useState(false)
 
   useEffect(() => {
     const standalone = window.matchMedia('(display-mode: standalone)').matches
       || (navigator as unknown as { standalone?: boolean }).standalone === true
     if (standalone) { setInstalled(true); return }
+
+    // Set in the same pass as isIOS below, so React batches them into one
+    // render and the card never flashes up before being dismissed.
+    try { if (localStorage.getItem(DISMISS_KEY) === '1') setSaidInstalled(true) } catch { /* private mode */ }
 
     const ua = navigator.userAgent
     const ios = /iP(hone|ad|od)/.test(ua) || (navigator.platform === 'MacIntel' && (navigator as unknown as { maxTouchPoints?: number }).maxTouchPoints! > 1)
@@ -73,9 +104,16 @@ export function InstallButton({ variant = 'panel' }: { variant?: 'panel' | 'hero
     setDeferred(null)
   }
 
+  function dismiss() {
+    setSaidInstalled(true)
+    try { localStorage.setItem(DISMISS_KEY, '1') } catch { /* private mode */ }
+  }
+
   if (installed) return null
   // Nothing to offer: not installable here and not iOS.
   if (!deferred && !isIOS) return null
+  // They told us what the browser could not. Homepage only — see DISMISS_KEY.
+  if (variant === 'hero' && saidInstalled) return null
 
   if (variant === 'hero') {
     return (
@@ -130,6 +168,27 @@ export function InstallButton({ variant = 'panel' }: { variant?: 'panel' | 'hero
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 10, fontSize: 12.5, color: '#fff', fontWeight: 700 }}>
                   <Check style={{ width: 14, height: 14 }} /> Then you can turn on alerts.
                 </div>
+              </div>
+            )}
+
+            {/* Last, and quiet: it is a correction, not an alternative to the
+                button above it. Offered on iOS only, because iOS is the only
+                place the card cannot work it out for itself — beside a working
+                Install button it would read as a second, contradictory option. */}
+            {isIOS && (
+              <div>
+                <button
+                  onClick={dismiss}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 7,
+                    background: 'none', border: 'none', padding: '6px 0', cursor: 'pointer',
+                    fontFamily: MANROPE, fontSize: 13.5, fontWeight: 700,
+                    color: 'rgba(255,255,255,.82)', textDecoration: 'underline',
+                    textUnderlineOffset: 3,
+                  }}
+                >
+                  <Check style={{ width: 14, height: 14 }} /> I&rsquo;ve already added it
+                </button>
               </div>
             )}
           </div>
