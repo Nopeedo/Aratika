@@ -342,6 +342,10 @@
         "title": "Labour's Student Debt Cut Policy"
       },
       {
+        "url": "https://www.labour.org.nz/fair-go-for-drivers",
+        "title": "Labour's Fair Go For Drivers"
+      },
+      {
         "url": "https://www.labour.org.nz/fair-go-for-families",
         "title": "Labour's Ban on Hidden Fees"
       },
@@ -461,7 +465,7 @@
     "housing": [
       {
         "url": "https://www.act.org.nz/policies/infrastructure",
-        "title": "ACT Housing and Infrastructure Policy"
+        "title": "ACT Housing & Infrastructure Policy"
       }
     ],
     "environment": [
@@ -1024,8 +1028,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-04",
+    "lastRun": "2026-10-06",
     "parties": 14,
-    "policyPages": 212
+    "policyPages": 213
   }
 }
