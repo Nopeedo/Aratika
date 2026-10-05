@@ -20,12 +20,20 @@
  * `beforeinstallprompt` fires once, early in page load, so the listener has to
  * be mounted with the page rather than opened on demand. That is why this is
  * inline in the homepage and not a modal opened from a button.
+ *
+ * Even mounted with the page that is not early enough on its own: a useEffect
+ * runs after hydration and the event can land before it. The inline script in
+ * layout.tsx holds the event, and stashedInstallPrompt() reads it.
+ *
+ * (This component is currently NOT rendered — the homepage's import of it is
+ * commented out. The stash read is here so it is correct if it comes back.)
  */
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Bell, Download, Share, SquarePlus, X, Check } from 'lucide-react'
 import { pushSupported, iosNeedsInstall, isSubscribed, subscribeToPush } from '@/lib/notifications/push-client'
+import { stashedInstallPrompt } from '@/lib/pwa/install-prompt'
 import { INK, JADE, MANROPE } from '@/constants/theme'
 
 const SUB = '#5b6067'
@@ -77,6 +85,9 @@ export function AlertsBanner() {
       setMode((m) => (m === 'hidden' ? 'install' : m))
     }
     window.addEventListener('beforeinstallprompt', onBIP)
+    // ...and the one that already fired, before this effect existed.
+    const early = stashedInstallPrompt()
+    if (early) { setDeferred(early); setMode((m) => (m === 'hidden' ? 'install' : m)) }
 
     ;(async () => {
       if (iosNeedsInstall()) {

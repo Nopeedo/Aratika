@@ -15,7 +15,9 @@ import { OrganizationSchema } from '@/components/seo/organization-schema'
 import { Analytics } from '@vercel/analytics/next'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { StayPrompt } from '@/components/onboarding/stay-prompt'
 import { SITE } from '@/constants/site'
+import { INSTALL_STASH_SCRIPT } from '@/lib/pwa/install-prompt'
 import './globals.css'
 
 // ─── Fonts ────────────────────────────────────────────────────────────────────
@@ -119,6 +121,14 @@ export default function RootLayout({
       `}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        {/* Catches `beforeinstallprompt` BEFORE hydration. Chrome fires it once,
+            early, and on a repeat visit (manifest + service worker already
+            cached) that can land before React has hydrated — a listener added
+            in a useEffect misses it and the install card then hides itself on a
+            browser that was offering to install a moment earlier. The script is
+            inline and tiny on purpose; see src/lib/pwa/install-prompt.ts, which
+            owns both the script and the read. */}
+        <script dangerouslySetInnerHTML={{ __html: INSTALL_STASH_SCRIPT }} />
         <OrganizationSchema />
         <SWRegister />
         {/* Every route takes 0.8-2.3s to first byte and the App Router keeps the
@@ -135,6 +145,12 @@ export default function RootLayout({
         {/* <PlanWidget /> */}
         <CompanionWidget />
         <SoundToggle />
+        {/* The account ask, raised once a reader has actually stayed five
+            minutes. Mounted here rather than on a page so the clock survives
+            moving between pages — the ask is about time on the SITE. It renders
+            nothing for anyone signed in, anyone who has dismissed it, and on
+            the routes listed in the component. */}
+        <StayPrompt />
         {/* The mailing list and the tool signposts, above the footer on every
             page but the homepage, which renders both itself. */}
         <SiteTail />

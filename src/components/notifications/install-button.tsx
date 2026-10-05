@@ -14,10 +14,9 @@
 import { useEffect, useState } from 'react'
 import { Download, Share, SquarePlus, X, Check, Bell } from 'lucide-react'
 import { BORDER, INK, JADE, MANROPE } from '@/constants/theme'
+import { stashedInstallPrompt, type InstallPromptEvent as BIPEvent } from '@/lib/pwa/install-prompt'
 
 const SUB = '#5b6067'
-
-interface BIPEvent extends Event { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> }
 
 /**
  * `panel` (default) is the compact control on /settings.
@@ -49,6 +48,13 @@ export function InstallButton({ variant = 'panel' }: { variant?: 'panel' | 'hero
     const inApp = /FBAN|FBAV|Instagram|Line\/|Twitter|Snapchat|Pinterest|LinkedInApp|Messenger|MicroMessenger/i.test(ua)
     const iosOtherBrowser = ios && /CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua)
     if (ios && (inApp || iosOtherBrowser)) setNeedsSafari(true)
+
+    // The event may already have happened: it fires once, early, and on a
+    // repeat visit it can beat hydration. The inline script in layout.tsx holds
+    // it for us. Read the stash AND keep listening — this covers the event
+    // landing on either side of hydration, and neither path alone does.
+    const early = stashedInstallPrompt()
+    if (early) setDeferred(early)
 
     const onBIP = (e: Event) => { e.preventDefault(); setDeferred(e as BIPEvent) }
     const onInstalled = () => setInstalled(true)
