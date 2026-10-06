@@ -230,20 +230,16 @@
   "national": {
     "economy": [
       {
-        "url": "https://www.national.org.nz/economy",
-        "title": "National's Economic Rebuilding Plan"
-      },
-      {
         "url": "https://www.national.org.nz/policies/boost-for-graduates",
-        "title": "Back Pocket Boost for Graduates"
+        "title": "Back Pocket Boost for Graduates – Student Loan Repayment Rate"
       },
       {
         "url": "https://www.national.org.nz/policies/build-the-future",
-        "title": "Easier Commercial Building Consents"
+        "title": "Easier Building Consent System for Commercial Buildings"
       },
       {
         "url": "https://www.national.org.nz/policies/grocery-competition",
-        "title": "More Grocery Competition"
+        "title": "More Grocery Competition – Supermarket Separation"
       },
       {
         "url": "https://www.national.org.nz/policies/hunters-and-anglers",
@@ -267,23 +263,23 @@
       },
       {
         "url": "https://www.national.org.nz/policies/responsibility-rules",
-        "title": "Budget Responsibility Rules"
+        "title": "National's Budget Responsibility Rules"
       },
       {
         "url": "https://www.national.org.nz/policies/solar",
-        "title": "Home Energy Fund"
+        "title": "Home Energy Fund – Electrify NZ"
       }
     ],
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "5% First Home Deposits via First Home Loan"
+        "title": "5% First Home Deposits via First Home Loan Scheme"
       }
     ],
     "foreign-policy": [
       {
         "url": "https://www.national.org.nz/policies/new-trade",
-        "title": "New Zealand's Next Billion Customers Trade Policy"
+        "title": "New Zealand's Next Billion Customers – Trade Policy"
       }
     ],
     "environment": [
@@ -314,6 +310,10 @@
       {
         "url": "https://www.national.org.nz/healthcare",
         "title": "National's Quality Timely Healthcare Policy"
+      },
+      {
+        "url": "https://www.national.org.nz/policies/more-medicines-and-earlier-care",
+        "title": "More Medicines and Earlier Care"
       }
     ],
     "education": [
@@ -1028,7 +1028,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-06",
+    "lastRun": "2026-10-07",
     "parties": 14,
     "policyPages": 213
   }
