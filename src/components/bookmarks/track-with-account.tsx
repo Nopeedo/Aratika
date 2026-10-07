@@ -95,7 +95,13 @@ export function TrackWithAccount({ entity, label, savedLabel, accent }: {
       <InfoHeading accent={accent}>What counts as a change</InfoHeading>
       <InfoText>
         A seat — a new candidate stands there, or news names it.{' '}
-        An MP — their voting record, written questions or expenses move.{' '}
+        {/* Named against scripts/detect-mp-stat-changes.mjs FIELDS, which is the
+            only thing that moves an MP tile. It watches bills in charge,
+            members' bills passed, ballot bills, written questions and speeches.
+            This line used to promise "voting record" and "expenses": Parliament
+            publishes no machine-readable vote record and nothing here reads
+            expenses, so two of the three things it named could never fire. */}
+        An MP — their bills, written questions or speeches in the House.{' '}
         A party — a stated position changes, or a new deep dive lands.{' '}
         An issue — any party changes its position on it.{' '}
         A bill — it moves a stage, or opens for public submissions.
