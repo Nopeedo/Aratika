@@ -161,8 +161,17 @@ export default function HomePage() {
             to bring the pill back. */}
         {/* <AlertsBanner /> */}
 
-        {/* ── Everything else, in one carousel of links ── */}
-        <ExploreCarousel />
+        {/* ── The on-ramps ──
+            Trimmed from the full rail by request. It used to list the whole
+            toolkit, but ten of the eleven destinations in the navbar were in
+            it, so the bottom of this page was the main menu a second time with
+            the footer's links stacked under that. Now it carries only what the
+            menu does not: the ways in for someone who has read this far and
+            still does not know what to do.
+
+            Every other page still gets the full rail through SiteTail, where
+            it is the only signposting and earns its place. */}
+        <ExploreCarousel variant="onramps" />
 
         {/* (The compass card used to be described here as "gone from here
             entirely". It is back, above, after the issue sections.) */}

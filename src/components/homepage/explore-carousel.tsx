@@ -107,13 +107,48 @@ const GROUPS: { label: string; items: Feature[] }[] = [
   },
 ]
 
-export function ExploreCarousel() {
+/**
+ * The HOMEPAGE variant.
+ *
+ * The full rail repeated the main menu: ten of the eleven destinations in the
+ * navbar also appeared here, so a reader met the same list twice on one page
+ * and then a third block of links in the footer. It read as the menu doubling
+ * up, which is exactly what it was.
+ *
+ * So the homepage keeps only what the menu does NOT offer: the on-ramps. The
+ * other pages still get the full rail through SiteTail, where it is the only
+ * signposting on the page and earns its place.
+ *
+ * Selected by href rather than redefined. Two copies of "Find what matters to
+ * you" would drift the first time one of them was reworded.
+ */
+const ONRAMPS: { label: string; hrefs: string[] }[] = [
+  { label: 'New to this?', hrefs: ['/guide', '/start', '/plan'] },
+  { label: 'Have your say', hrefs: ['/command-centre', '/take-action'] },
+]
+
+const ALL_ITEMS: Feature[] = GROUPS.flatMap((g) => g.items)
+
+function onrampGroups(): { label: string; items: Feature[] }[] {
+  return ONRAMPS.map((g) => ({
+    label: g.label,
+    // A href that no longer exists in GROUPS drops out rather than throwing,
+    // so renaming a route degrades to a missing card, not a blank homepage.
+    items: g.hrefs.map((h) => ALL_ITEMS.find((i) => i.href === h)).filter(Boolean) as Feature[],
+  }))
+}
+
+/**
+ * `full` (default) is the whole toolkit, under every page but the homepage.
+ * `onramps` is the trimmed homepage version described above.
+ */
+export function ExploreCarousel({ variant = 'full' }: { variant?: 'full' | 'onramps' } = {}) {
   // Renders under every page now, most of which have no party cycle: fall
   // back to the site accent rather than requiring the provider.
   const accentColor = usePartyCycleOptional()?.accentColor ?? JADE
   // Drop anything gated off in this launch phase, then drop a group that has
   // nothing left in it.
-  const groups = GROUPS
+  const groups = (variant === 'onramps' ? onrampGroups() : GROUPS)
     .map((g) => ({ ...g, items: g.items.filter((f) => isEnabled(f.feature)) }))
     .filter((g) => g.items.length > 0)
   if (groups.length === 0) return null
@@ -147,7 +182,7 @@ export function ExploreCarousel() {
                 background: `radial-gradient(ellipse at center, ${rgba(accentColor, 0.2)}, ${rgba(accentColor, 0)} 70%)`,
                 transition: 'background .3s ease-in-out', pointerEvents: 'none', zIndex: -1,
               }} />
-              <h2 className="hp-h2" style={{ position: 'relative', fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>Explore Politika&rsquo;s tools</h2>
+              <h2 className="hp-h2" style={{ position: 'relative', fontSize: 'clamp(28px,5.5vw,32px)', fontWeight: 800, letterSpacing: '-.01em', color: INK, fontFamily: MANROPE, margin: 0 }}>{variant === 'onramps' ? 'Not sure where to start?' : 'Explore Politika’s tools'}</h2>
             </div>
             {/* No sub-line: nine signposts under the heading say what this is
                 more plainly than a sentence about them did. */}
