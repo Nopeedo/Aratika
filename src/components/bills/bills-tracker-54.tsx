@@ -660,13 +660,15 @@ function BillBreakdown({ b, readerSlug, summary, submissionsOpen, party, onClose
       </div>
 
       {/* Have your say — only while submissions are genuinely open. */}
-      {submissionsOpen && (
+      {(submissionsOpen || b.submissionsCloseUnknown) && (
         <div style={{ marginTop: 12, background: '#eef4ff', border: '1px solid #bfd4fe', borderRadius: 10, padding: '9px 11px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 800, color: '#1e3a8a', fontFamily: MANROPE }}>
             <PenLine style={{ width: 13, height: 13 }} /> You can have your say on this bill
           </div>
           <div style={{ fontSize: 11.5, color: '#1e40af', fontFamily: MANROPE, marginTop: 3 }}>
-            Submissions close {fmtDate(b.submissionsClose)}
+            {b.submissionsClose
+              ? `Submissions close ${fmtDate(b.submissionsClose)}`
+              : 'Parliament has not published a closing date yet'}
           </div>
           {/* The strongest outcome we can evidence: not that someone read about
               a bill, but that they went on to have their say. */}

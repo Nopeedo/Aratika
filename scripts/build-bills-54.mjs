@@ -99,6 +99,27 @@ const search = await jget(`${API}/search`, { method: 'POST', body: JSON.stringif
 const rows = search.results
 console.log(`Search: ${rows.length} bills in the 54th Parliament`)
 
+/**
+ * Parliament's API uses 2098-12-31 as its own placeholder for "no closing date
+ * announced". It was being copied straight through, so six bills published
+ * "Submissions close 31 December 2098" on the tracker, on the dashboard tile
+ * and in the emails detect-submissions.mjs sends. Those six were the only bills
+ * the site called open, so its one time-sensitive feature was entirely
+ * placeholder data.
+ *
+ * Anything more than two years out is not a real select-committee deadline —
+ * committees report within months — so treat it as unknown rather than invent
+ * a date or silently drop the fact that submissions were called.
+ */
+const CLOSE_SANITY_YEARS = 2
+function plausibleCloseDate(iso) {
+  if (!iso) return null
+  const t = Date.parse(iso + 'T00:00:00Z')
+  if (Number.isNaN(t)) return null
+  const limit = Date.now() + CLOSE_SANITY_YEARS * 365.25 * 86400000
+  return t > limit ? null : iso
+}
+
 const bills = rows.map((b) => ({
   id: b.id, title: b.title, number: b.billNumber, type: b.itemType, status: b.status,
   committee: b.selectCommittee || null, date: (b.lastStageDate || b.date || '').slice(0, 10),
@@ -127,8 +148,12 @@ await pool(bills, 6, async (b) => {
     const sc = d.SelectCommitteeInfo || null
     if (sc && sc.SubmissionCalled) {
       b.submissionsCalled = true
-      b.submissionsClose = (sc.SubmissionDueDate || '').slice(0, 10) || null
-      b.reportDue = (sc.ReportDueDate || '').slice(0, 10) || null
+      b.submissionsClose = plausibleCloseDate((sc.SubmissionDueDate || '').slice(0, 10))
+      // Parliament called for submissions but has not published a closing date.
+      // Recorded explicitly so the UI can say that, rather than having to guess
+      // from a null whether submissions were never called or just undated.
+      b.submissionsCloseUnknown = !b.submissionsClose
+      b.reportDue = plausibleCloseDate((sc.ReportDueDate || '').slice(0, 10))
     }
   } catch { /* leave null */ }
 })
@@ -150,7 +175,7 @@ const tracker = bills
     // Parliament homepage.
     officialUrl: `https://bills.parliament.nz/v/6/${b.id}`,
     legislationUrl: b.legislationUrl || null,
-    ...(b.submissionsCalled ? { submissionsCalled: true, submissionsClose: b.submissionsClose, reportDue: b.reportDue } : {}),
+    ...(b.submissionsCalled ? { submissionsCalled: true, submissionsClose: b.submissionsClose, submissionsCloseUnknown: b.submissionsCloseUnknown, reportDue: b.reportDue } : {}),
   }))
 
 writeFileSync(OUT_BILLS, `/**
@@ -170,6 +195,8 @@ export interface Bill54 {
   submissionsCalled?: true
   /** ISO date submissions close (compare against today before inviting anyone). */
   submissionsClose?: string | null
+  /** Submissions called, but Parliament has published no closing date. */
+  submissionsCloseUnknown?: boolean
   /** ISO date the committee reports back. */
   reportDue?: string | null
 }
