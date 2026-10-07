@@ -230,6 +230,10 @@
   "national": {
     "economy": [
       {
+        "url": "https://www.national.org.nz/economy",
+        "title": "National's Economic Record and Plan"
+      },
+      {
         "url": "https://www.national.org.nz/policies/boost-for-graduates",
         "title": "Back Pocket Boost for Graduates – Student Loan Repayment Rate"
       },
@@ -328,6 +332,10 @@
       {
         "url": "https://www.labour.org.nz/ai-for-new-zealand",
         "title": "Labour's AI in New Zealand's Interests Policy"
+      },
+      {
+        "url": "https://www.labour.org.nz/banking-for-everyone",
+        "title": "Banking for Everyone – Labour Open Banking Policy"
       },
       {
         "url": "https://www.labour.org.nz/banning-price-gouging",
@@ -1028,8 +1036,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-07",
+    "lastRun": "2026-10-08",
     "parties": 14,
-    "policyPages": 213
+    "policyPages": 215
   }
 }
