@@ -9,6 +9,7 @@
 
 import Link from 'next/link'
 import { Check, Compass, ArrowRight, Crown, RefreshCw, Sparkles } from 'lucide-react'
+import { PlanDeadlines } from '@/components/onboarding/plan-deadlines'
 import { usePreferences } from '@/hooks/use-preferences'
 import { usePlanProgress } from '@/hooks/use-plan-progress'
 import { buildPlan } from '@/lib/onboarding/recommendations'
@@ -25,10 +26,12 @@ export function PlanView() {
     return <div style={{ minHeight: 240 }} />
   }
 
-  // Not done the survey yet → invite them in.
+  // Not done the survey yet → show the dates anyway, then invite them in.
   if (!prefs.completed) {
     return (
-      <div style={{ textAlign: 'center', padding: '40px 0', maxWidth: 480, margin: '0 auto' }}>
+      <div style={{ maxWidth: 760, margin: '0 auto' }}>
+      <PlanDeadlines />
+      <div style={{ textAlign: 'center', padding: '20px 0 40px', maxWidth: 480, margin: '0 auto' }}>
         <div style={{ width: 56, height: 56, borderRadius: 16, background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 18px' }}>
           <Compass style={{ width: 28, height: 28, color: JADE }} />
         </div>
@@ -38,6 +41,7 @@ export function PlanView() {
           about and the parts of the site that help you most.
         </p>
         <Link href="/start" style={primaryLink}><Compass style={ic} /> Take the walkthrough <ArrowRight style={ic} /></Link>
+      </div>
       </div>
     )
   }
@@ -54,8 +58,14 @@ export function PlanView() {
       {/* header + progress */}
       <h1 style={{ fontSize: 'clamp(24px, 7vw, 32px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: '0 0 6px' }}>Your plan</h1>
       <p style={{ fontSize: 15.5, color: SECONDARY, fontFamily: MANROPE, margin: '0 0 20px', lineHeight: 1.55 }}>
-        Built from your answers. Steps tick off as you go, pick up wherever you left off.
+        The dates are fixed for everyone. The rest is built from your answers and ticks off as you go.
       </p>
+
+      {/* The deadlines come FIRST and are not part of the checklist. They are
+          not steps on a tour of the site, they are the two or three moments
+          where being late costs you something, and they apply whatever anyone
+          answered in the survey. */}
+      <PlanDeadlines />
 
       <div style={{ background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: '18px 20px', marginBottom: 22 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
