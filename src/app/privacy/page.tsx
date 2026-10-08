@@ -157,8 +157,9 @@ export default function PrivacyPage() {
 
       <h2>Cookies and measurement</h2>
       <p>
-        We use <strong>sign-in cookies only</strong>, they keep you logged in and keep the sign-in process secure.
-        There are no advertising cookies and no third-party tracking cookies.
+        We use <strong>sign-in cookies</strong>, which keep you logged in and keep the sign-in process secure, and
+        <strong>one cookie for the pledge counter</strong>, which records that this browser has already pledged so you
+        aren’t counted twice. There are no advertising cookies and no third-party tracking cookies.
       </p>
       <p>
         We do measure how the site performs, page speed and how pages are used, through our host, Vercel. It’s
@@ -171,8 +172,23 @@ export default function PrivacyPage() {
         We also <strong>count page visits ourselves</strong>, so we can see which pages are useful. Each visit records
         the page’s address (without anything after a “?”), a random code your browser keeps so we can count visitors
         rather than visits, a second random code that lasts one visit, whether you’re on a phone, tablet or computer,
-        and, on the first page of a visit, the name of the site that linked you here. We don’t record your IP address,
-        and none of this is tied to your account. Visits from search-engine robots aren’t counted.
+        and, on the first page of a visit, the name of the site that linked you here. We don’t record your IP address
+        when counting page visits, and none of this is tied to your account. Visits from search-engine robots aren’t counted.
+      </p>
+
+      <h2>If you pledge to vote</h2>
+      <p>
+        Tapping the pledge button records one line: the time, a random code kept in a cookie on your device so you
+        aren’t counted twice, your account if you’re signed in, and your answer to the
+        enrolment question if you give one.
+      </p>
+      <p>
+        We also store a <strong>scrambled one-way code made from your internet address</strong>. It exists only to stop
+        automated scripts inflating the count, it is not your IP address, and it cannot be turned back into one.
+      </p>
+      <p>
+        We never learn whether you enrolled or actually voted. <strong>Nobody can</strong> &mdash; the Electoral
+        Commission doesn’t share that, and it shouldn’t.
       </p>
 
       <h2>Who else your browser talks to</h2>
