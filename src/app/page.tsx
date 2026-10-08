@@ -86,20 +86,23 @@ export default function HomePage() {
             the page wrapper to ride the whole page (see party-tiles.tsx). */}
         <div id="parties" aria-hidden style={{ scrollMarginTop: 72 }} />
 
-        {/* ── The pledge ──
-            High on the page, directly under the hero, because it is the one
-            thing here with a deadline on it: enrolment closes 25 October and
-            the election is 7 November. It is also a single tap, where
-            everything below it asks the reader to read something first.
-
-            It counts pledges, not enrolments and not votes. The site cannot
-            learn either — vote.nz is a separate origin with no callback — and
-            the component's own note says so. Move this line to change where it
-            sits; nothing else depends on the position. */}
-        {PLEDGE_ENABLED && <PledgeCounter />}
-
         {/* ═══ CORE 1 — the parties (sticky tile row rides the page) ═══ */}
         <PartyTilesSection />
+
+        {/* ── The pledge ──
+            Between the party tiles and the issues, by request.
+
+            It used to sit directly under the hero, which put it above the fold
+            but pushed the sticky tile row down with it — and the tiles are the
+            first thing on this page that MOVES, so they are what makes the
+            homepage feel alive rather than read. Here the reader meets the
+            tiles first, taps a party, sees it respond, and is asked to pledge
+            having just done something.
+
+            A sibling section, never a wrapper: the tile row above is sticky and
+            rides the whole page, and anything that became its containing block
+            would pin it (see party-tiles.tsx). */}
+        {PLEDGE_ENABLED && <PledgeCounter />}
 
         {/* ═══ CORE 2 — explore by issue ═══ */}
         <PolicyHubGrid />
