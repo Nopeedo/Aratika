@@ -51,6 +51,16 @@ export const LIVE_RESULTS_ENABLED = false
 export const PLEDGE_ENABLED = true
 
 /**
+ * Whether the pledge card also appears on the HOMEPAGE. Paused by request.
+ *
+ * Separate from PLEDGE_ENABLED on purpose: the campaign is live at /pledge and
+ * on the /links bio page regardless. This only controls the homepage placement,
+ * so the card can come and go without taking the pledge itself down or
+ * invalidating a link already in a bio.
+ */
+export const PLEDGE_ON_HOMEPAGE = false
+
+/**
  * Donations. ON since 30 Sep 2026.
  *
  * They were paused on 29 Sep because the owner did not want Onebyone Project

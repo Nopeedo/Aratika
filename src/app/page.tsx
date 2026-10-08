@@ -20,7 +20,7 @@ import { HomeBackground } from '@/components/homepage/home-background'
 import { PartyTilesSection, PartyNewsSection, PartySeatsSection, PartyBillsSection } from '@/components/homepage/party-tiles-section'
 // import { PartyStanceSection } from '@/components/homepage/party-tiles-section' // hidden — see below
 import { PledgeCounter } from '@/components/pledge/pledge-counter'
-import { PLEDGE_ENABLED } from '@/constants/features'
+import { PLEDGE_ENABLED, PLEDGE_ON_HOMEPAGE } from '@/constants/features'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { CompassCta } from '@/components/compass/compass-cta'
 // import { ThisTerm } from '@/components/homepage/this-term' // hidden — see below
@@ -102,7 +102,7 @@ export default function HomePage() {
             A sibling section, never a wrapper: the tile row above is sticky and
             rides the whole page, and anything that became its containing block
             would pin it (see party-tiles.tsx). */}
-        {PLEDGE_ENABLED && <PledgeCounter />}
+        {PLEDGE_ENABLED && PLEDGE_ON_HOMEPAGE && <PledgeCounter />}
 
         {/* ═══ CORE 2 — explore by issue ═══ */}
         <PolicyHubGrid />
