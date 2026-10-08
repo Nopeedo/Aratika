@@ -33,7 +33,7 @@ export const PREMIUM_ENABLED = false
 export const LIVE_RESULTS_ENABLED = false
 
 /**
- * The pledge to vote. OFF until the launch video goes up.
+ * The pledge to vote. ON since 9 October 2026.
  *
  * Flipped by hand, like LIVE_RESULTS_ENABLED, so nothing goes live on its own.
  * A counter that opens at zero to an empty room reads as a failed campaign, so
@@ -48,7 +48,7 @@ export const LIVE_RESULTS_ENABLED = false
  * and the migration can be applied whenever; flipping this to true is the whole
  * release.
  */
-export const PLEDGE_ENABLED = false
+export const PLEDGE_ENABLED = true
 
 /**
  * Donations. ON since 30 Sep 2026.
