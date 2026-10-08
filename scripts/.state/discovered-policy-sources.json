@@ -235,23 +235,23 @@
       },
       {
         "url": "https://www.national.org.nz/policies/boost-for-graduates",
-        "title": "Back Pocket Boost for Graduates – Student Loan Repayment Rate"
+        "title": "Back Pocket Boost for Graduates"
       },
       {
         "url": "https://www.national.org.nz/policies/build-the-future",
-        "title": "Easier Building Consent System for Commercial Buildings"
+        "title": "Easier building consent system"
       },
       {
         "url": "https://www.national.org.nz/policies/grocery-competition",
-        "title": "More Grocery Competition – Supermarket Separation"
+        "title": "More grocery competition"
       },
       {
         "url": "https://www.national.org.nz/policies/hunters-and-anglers",
-        "title": "National Backs South Island Growth"
+        "title": "National backs South Island growth"
       },
       {
         "url": "https://www.national.org.nz/policies/international-visitor-levy",
-        "title": "International Visitor Levy Reset"
+        "title": "International Visitor Levy reset"
       },
       {
         "url": "https://www.national.org.nz/policies/kiwisaver",
@@ -259,7 +259,7 @@
       },
       {
         "url": "https://www.national.org.nz/policies/no-new-taxes",
-        "title": "No New Taxes Under National"
+        "title": "No new taxes under National"
       },
       {
         "url": "https://www.national.org.nz/policies/paid-parental-leave",
@@ -267,17 +267,21 @@
       },
       {
         "url": "https://www.national.org.nz/policies/responsibility-rules",
-        "title": "National's Budget Responsibility Rules"
+        "title": "Budget Responsibility Rules"
       },
       {
         "url": "https://www.national.org.nz/policies/solar",
-        "title": "Home Energy Fund – Electrify NZ"
+        "title": "Home Energy Fund"
+      },
+      {
+        "url": "https://www.national.org.nz/policies/walfare",
+        "title": "Firm, fair and affordable welfare system"
       }
     ],
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "5% First Home Deposits via First Home Loan Scheme"
+        "title": "Widening access to 5% first home deposits"
       }
     ],
     "foreign-policy": [
@@ -317,7 +321,7 @@
       },
       {
         "url": "https://www.national.org.nz/policies/more-medicines-and-earlier-care",
-        "title": "More Medicines and Earlier Care"
+        "title": "More medicines and earlier care"
       }
     ],
     "education": [
@@ -340,6 +344,10 @@
       {
         "url": "https://www.labour.org.nz/banning-price-gouging",
         "title": "Labour's Ban on Price Gouging"
+      },
+      {
+        "url": "https://www.labour.org.nz/better-deal-when-you-fly",
+        "title": "Better Deal When You Fly"
       },
       {
         "url": "https://www.labour.org.nz/capitalgainstax",
@@ -449,7 +457,7 @@
     "economy": [
       {
         "url": "https://www.act.org.nz/policies/economy",
-        "title": "ACT Economy & Cost of Living Policy"
+        "title": "ACT Economy and Cost of Living Policy"
       }
     ],
     "crime-justice": [
@@ -879,11 +887,11 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Full employment and 35-hour working week workers' rights policy"
+        "title": "Full Employment and 35-Hour Week Workers' Rights Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
-        "title": "Alliance National Transport Strategy"
+        "title": "National Transport Strategy"
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-eliminate-child-poverty/",
@@ -895,7 +903,7 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-public-ownership-economic-democracy-policy/",
-        "title": "Alliance Public Ownership and Economic Democracy Policy"
+        "title": "Alliance Public Ownership and Reverse Privatisation Plan"
       },
       {
         "url": "https://allianceparty.nz/alliance-retirement-aged-care-kiwisaver-policy/",
@@ -907,25 +915,25 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "First $20,000 income tax-free funded by wealth tax"
+        "title": "Tax Plan: First $20,000 Income Tax-Free, Funded by Wealth Tax"
       }
     ],
     "health": [
       {
         "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
-        "title": "Free GP, dental, optical and audiology services"
+        "title": "Free GP, Dental, Optical and Audiology Healthcare"
       }
     ],
     "environment": [
       {
         "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
-        "title": "Just transition: environment, climate and sustainable economy policy"
+        "title": "Environment, Climate and Sustainable Economy Policy"
       }
     ],
     "crime-justice": [
       {
         "url": "https://allianceparty.nz/alliance-justice-policy-three-strikes-into-treatment/",
-        "title": "Alliance Justice Policy"
+        "title": "Alliance Justice Policy: Three Strikes and into Treatment"
       }
     ],
     "housing": [
@@ -1036,8 +1044,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-08",
+    "lastRun": "2026-10-09",
     "parties": 14,
-    "policyPages": 215
+    "policyPages": 217
   }
 }
