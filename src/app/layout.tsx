@@ -15,6 +15,7 @@ import { OrganizationSchema } from '@/components/seo/organization-schema'
 import { Analytics } from '@vercel/analytics/next'
 import { PageViewTracker } from '@/components/analytics/page-view-tracker'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { ChromeGate } from '@/components/layout/chrome-gate'
 import { StayPrompt } from '@/components/onboarding/stay-prompt'
 import { SITE } from '@/constants/site'
 import { INSTALL_STASH_SCRIPT } from '@/lib/pwa/install-prompt'
@@ -104,6 +105,9 @@ export const viewport: Viewport = {
   themeColor: '#1F8A4C',
 }
 
+/** Routes that render without any site furniture. See ChromeGate. */
+const BARE_ROUTES = ['/links']
+
 // ─── Root Layout ──────────────────────────────────────────────────────────────
 
 export default function RootLayout({
@@ -138,23 +142,29 @@ export default function RootLayout({
         {/* Records the previous in-app route so BackLink can return you to where
             you actually came from rather than a page's fixed parent. */}
         <NavHistory />
-        <Navbar />
-        <PlanTracker />
+        <ChromeGate hideOn={BARE_ROUTES}>
+          <Navbar />
+          <PlanTracker />
+        </ChromeGate>
         <main className="flex-1">{children}</main>
         {/* Plan feature hidden for now — restore this to bring back the floating checklist. */}
         {/* <PlanWidget /> */}
-        <CompanionWidget />
-        <SoundToggle />
+        <ChromeGate hideOn={BARE_ROUTES}>
+          <CompanionWidget />
+          <SoundToggle />
+        </ChromeGate>
         {/* The account ask, raised once a reader has actually stayed five
             minutes. Mounted here rather than on a page so the clock survives
             moving between pages — the ask is about time on the SITE. It renders
             nothing for anyone signed in, anyone who has dismissed it, and on
             the routes listed in the component. */}
-        <StayPrompt />
+        <ChromeGate hideOn={BARE_ROUTES}><StayPrompt /></ChromeGate>
         {/* The mailing list and the tool signposts, above the footer on every
             page but the homepage, which renders both itself. */}
-        <SiteTail />
-        <Footer />
+        <ChromeGate hideOn={BARE_ROUTES}>
+          <SiteTail />
+          <Footer />
+        </ChromeGate>
         <Analytics />
         {/* The admin's own page-view count, read on /editor/analytics. */}
         <PageViewTracker />
