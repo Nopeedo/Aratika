@@ -120,7 +120,7 @@ export function PledgeCounter({ source = 'homepage' }: { source?: string }) {
           {!pledged ? (
             <>
               <h2 style={{ fontSize: 'clamp(26px, 5vw, 34px)', fontWeight: 800, letterSpacing: '-.025em', margin: '0 0 20px', lineHeight: 1.15 }}>
-                Will you vote?
+                Will you pledge to vote?
               </h2>
               <button onClick={pledge} disabled={busy} className="pl-cta" style={{
                 minHeight: 44, padding: '15px 38px', borderRadius: 13, border: 'none',
