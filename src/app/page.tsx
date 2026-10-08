@@ -19,6 +19,8 @@ import { PartyCycleProvider } from '@/components/homepage/party-cycle'
 import { HomeBackground } from '@/components/homepage/home-background'
 import { PartyTilesSection, PartyNewsSection, PartySeatsSection, PartyBillsSection } from '@/components/homepage/party-tiles-section'
 // import { PartyStanceSection } from '@/components/homepage/party-tiles-section' // hidden — see below
+import { PledgeCounter } from '@/components/pledge/pledge-counter'
+import { PLEDGE_ENABLED } from '@/constants/features'
 import { PolicyHubGrid } from '@/components/homepage/policy-hub-grid'
 import { CompassCta } from '@/components/compass/compass-cta'
 // import { ThisTerm } from '@/components/homepage/this-term' // hidden — see below
@@ -83,6 +85,18 @@ export default function HomePage() {
             tile row's containing block — the tiles must stay a direct child of
             the page wrapper to ride the whole page (see party-tiles.tsx). */}
         <div id="parties" aria-hidden style={{ scrollMarginTop: 72 }} />
+
+        {/* ── The pledge ──
+            High on the page, directly under the hero, because it is the one
+            thing here with a deadline on it: enrolment closes 25 October and
+            the election is 7 November. It is also a single tap, where
+            everything below it asks the reader to read something first.
+
+            It counts pledges, not enrolments and not votes. The site cannot
+            learn either — vote.nz is a separate origin with no callback — and
+            the component's own note says so. Move this line to change where it
+            sits; nothing else depends on the position. */}
+        {PLEDGE_ENABLED && <PledgeCounter />}
 
         {/* ═══ CORE 1 — the parties (sticky tile row rides the page) ═══ */}
         <PartyTilesSection />

@@ -33,6 +33,24 @@ export const PREMIUM_ENABLED = false
 export const LIVE_RESULTS_ENABLED = false
 
 /**
+ * The pledge to vote. OFF until the launch video goes up.
+ *
+ * Flipped by hand, like LIVE_RESULTS_ENABLED, so nothing goes live on its own.
+ * A counter that opens at zero to an empty room reads as a failed campaign, so
+ * this waits for the traffic rather than the traffic waiting for it.
+ *
+ * While false: the homepage card does not render, and /api/pledge refuses every
+ * method. Gating the UI alone would leave the endpoint open, and anything POSTed
+ * to it before launch would be in the published total on day one — the number
+ * has to start at a real zero.
+ *
+ * Nothing else is removed. The table, the route and the component are all intact
+ * and the migration can be applied whenever; flipping this to true is the whole
+ * release.
+ */
+export const PLEDGE_ENABLED = false
+
+/**
  * Donations. ON since 30 Sep 2026.
  *
  * They were paused on 29 Sep because the owner did not want Onebyone Project
