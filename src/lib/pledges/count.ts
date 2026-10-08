@@ -8,11 +8,15 @@
  * to be up to a minute stale, which nobody can perceive on a counter that moves
  * a few times an hour.
  *
- * TWO NUMBERS, ALWAYS. `total` is every pledge. `verified` is the subset made by
- * a signed-in account, which is the figure to quote when someone asks how this
- * was counted — anonymous pledges are deduped only by a cookie, and a cookie is
- * defeated by clearing site data. Reporting one without the other would overstate
- * what the site can actually stand behind.
+ * TWO NUMBERS, ALWAYS. `total` is every pledge. `verified` is the subset that
+ * gave an email, which is the figure to quote when someone asks how this was
+ * counted: an address is unique in the table, where a cookie is defeated by a
+ * private window. Reporting one without the other would overstate what the site
+ * can actually stand behind.
+ *
+ * This counted signed-in accounts before the pledge took an email. An address
+ * is the stronger key and covers far more pledges, and /api/pledge counts
+ * `verified` the same way — the two must not drift.
  */
 
 import { unstable_cache } from 'next/cache'
@@ -36,7 +40,7 @@ async function read(): Promise<PledgeTotals> {
     // egress regardless of how large the table gets.
     const [all, signed] = await Promise.all([
       sb.from('pledges').select('id', { count: 'exact', head: true }),
-      sb.from('pledges').select('id', { count: 'exact', head: true }).not('user_id', 'is', null),
+      sb.from('pledges').select('id', { count: 'exact', head: true }).not('email', 'is', null),
     ])
     if (all.error || signed.error) return { total: 0, verified: 0, ok: false }
     return { total: all.count ?? 0, verified: signed.count ?? 0, ok: true }

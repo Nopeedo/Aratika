@@ -102,7 +102,7 @@ export default function HomePage() {
             A sibling section, never a wrapper: the tile row above is sticky and
             rides the whole page, and anything that became its containing block
             would pin it (see party-tiles.tsx). */}
-        {PLEDGE_ENABLED && PLEDGE_ON_HOMEPAGE && <PledgeCounter />}
+        {PLEDGE_ENABLED && PLEDGE_ON_HOMEPAGE && <PledgeCounter showWall={false} />}
 
         {/* ═══ CORE 2 — explore by issue ═══ */}
         <PolicyHubGrid />

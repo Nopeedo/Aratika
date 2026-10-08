@@ -1,49 +1,68 @@
 'use client'
 
 /**
- * PledgeCounter — "Will you vote?", the counter, and the moment after.
+ * PledgeCounter — the pledge to vote, in four steps.
+ *
+ *   ask        "Will you pledge to vote?" and one button
+ *   celebrate  the ara climbs out of the burst, their number lands
+ *   details    name, email, two consents, and a visible way to skip
+ *   check      "Now check you're enrolled", with the link
+ *
+ * THE TAP COMES FIRST AND THE FORM AFTERWARDS. Asking for an email as the price
+ * of pledging would cost most of the conversions. Asking once the pledge is
+ * already counted costs none of them, which is why `details` says plainly that
+ * skipping changes nothing.
  *
  * WHAT THE NUMBER MEANS. It counts taps on this button. It is not a count of
- * enrolments or of votes, and the copy never implies otherwise: the Commission's
+ * enrolments or of votes and the copy never implies otherwise: the Commission's
  * enrolment flow is a separate origin behind a bot challenge with no callback
  * and no API, so this site cannot learn what happened after someone leaves for
  * vote.nz. See migration 0021.
  *
- * THE ENROLMENT QUESTION COMES SECOND, on purpose. 90.77% of New Zealanders are
- * already enrolled (Commission, 30 September 2026), so leading with "are you
- * enrolled?" speaks to under a tenth of the country. The bigger gap is further
- * down: 829,396 people were enrolled in 2023 and did not vote. So the ask is
- * the vote, and enrolment is the follow-up for the minority who need it.
+ * NOBODY IS ASKED TO GUESS. This used to ask "are you enrolled?" with yes / no /
+ * I don't know. Most people genuinely cannot tell without looking it up, so
+ * being asked to CHECK is more use than being asked to guess — and the site
+ * stopped storing a self-reported answer it could never verify.
  *
- * "I don't know" is a real answer and gets its own button. You cannot see your
- * own roll entry without looking it up, and forcing a guess between yes and no
- * sends half of those people down the wrong path.
+ * THREE CONSENTS, NEVER COLLAPSED. An email given to register a pledge is not
+ * agreement to appear on a public list, and not agreement to be mailed. Both
+ * boxes start unticked and neither is inferred from the other. See 0022.
  *
  * Keyframes cannot live in an inline style object, so the animation ships as a
  * style tag with the component (§3.2), the same way the track control does.
  */
 
 import * as React from 'react'
-import { JADE, MANROPE } from '@/constants/theme'
+import { ExternalLink } from 'lucide-react'
+import { INK, TERTIARY, BORDER, SURFACE, JADE, MANROPE } from '@/constants/theme'
 
 const DEEP = '#0E3F26'
 const MINT = '#8FD3AC'
 
-type Enrolled = 'yes' | 'no' | 'unknown'
-
-interface Totals { total: number; verified: number; goal: number; ok: boolean }
-
-/** vote.nz's own enrol/update entry point. "No" and "I don't know" both go here:
- *  the page checks and updates as well as enrols. */
+/** vote.nz's own enrol-or-update entry point: it checks and updates as well as
+ *  enrols, so it is the right destination whether or not someone is on the roll. */
 const VOTE_NZ = 'https://vote.nz/enrolling/enrol-or-update/enrol-or-update-online'
 
-export function PledgeCounter({ source = 'homepage' }: { source?: string }) {
+type Step = 'ask' | 'celebrate' | 'details' | 'check'
+interface WallEntry { id: string; name: string; named: boolean }
+interface Totals { total: number; verified: number; goal: number; ok: boolean }
+
+export function PledgeCounter({ source = 'homepage', showWall = true }: {
+  source?: string
+  showWall?: boolean
+}) {
   const [totals, setTotals] = React.useState<Totals | null>(null)
-  const [pledged, setPledged] = React.useState(false)
+  const [step, setStep] = React.useState<Step>('ask')
   const [position, setPosition] = React.useState<number | null>(null)
-  const [enrolled, setEnrolled] = React.useState<Enrolled | null>(null)
+  const [wall, setWall] = React.useState<WallEntry[]>([])
+  const [burst, setBurst] = React.useState(false)
   const [busy, setBusy] = React.useState(false)
-  const [failed, setFailed] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+
+  const [name, setName] = React.useState('')
+  const [email, setEmail] = React.useState('')
+  const [listed, setListed] = React.useState(false)
+  const [news, setNews] = React.useState(false)
 
   React.useEffect(() => {
     let alive = true
@@ -52,7 +71,12 @@ export function PledgeCounter({ source = 'homepage' }: { source?: string }) {
       .then((d) => {
         if (!alive) return
         setTotals({ total: d.total ?? 0, verified: d.verified ?? 0, goal: d.goal ?? 100000, ok: !!d.ok })
-        if (d.mine?.pledged) { setPledged(true); setPosition(d.total ?? null); setEnrolled(d.mine.enrolled ?? null) }
+        setWall(Array.isArray(d.wall) ? d.wall : [])
+        // Already pledged on this browser: skip to whatever is still worth doing.
+        if (d.mine?.pledged) {
+          setPosition(d.total ?? null)
+          setStep(d.mine.hasDetails ? 'check' : 'details')
+        }
       })
       .catch(() => { if (alive) setTotals({ total: 0, verified: 0, goal: 100000, ok: false }) })
     return () => { alive = false }
@@ -60,7 +84,7 @@ export function PledgeCounter({ source = 'homepage' }: { source?: string }) {
 
   async function pledge() {
     if (busy) return
-    setBusy(true); setFailed(false)
+    setBusy(true); setError(null)
     try {
       const r = await fetch('/api/pledge', {
         method: 'POST', headers: { 'content-type': 'application/json' },
@@ -70,140 +94,278 @@ export function PledgeCounter({ source = 'homepage' }: { source?: string }) {
       if (!r.ok) throw new Error(d.error || 'failed')
       setTotals((t) => ({ total: d.total, verified: d.verified, goal: d.goal, ok: t?.ok ?? true }))
       setPosition(d.position ?? d.total ?? null)
-      setPledged(true)
+      if (d.already && d.hasDetails) { setStep('check'); return }
+      setBurst(true)
+      setStep('celebrate')
+      // Long enough for the burst and the three chevrons to land, so the form
+      // does not cut off the one moment the whole thing is building to.
+      window.setTimeout(() => setStep('details'), 2100)
     } catch {
-      setFailed(true)
-    } finally {
-      setBusy(false)
-    }
+      setError('That didn’t save. Try once more.')
+    } finally { setBusy(false) }
   }
 
-  async function answer(value: Enrolled) {
-    setEnrolled(value)
-    // Fire and forget: the answer is useful to have and not worth blocking the
-    // reader on, and the destination opens either way.
-    fetch('/api/pledge', {
-      method: 'PATCH', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ enrolled: value }),
-    }).catch(() => {})
-    if (value !== 'yes') window.open(VOTE_NZ, '_blank', 'noopener,noreferrer')
+  async function saveDetails(e: React.FormEvent) {
+    e.preventDefault()
+    if (busy) return
+    setBusy(true); setError(null)
+    try {
+      const r = await fetch('/api/pledge', {
+        method: 'PUT', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ name, email, displayName: listed, newsletter: news }),
+      })
+      const d = await r.json()
+      if (!r.ok) {
+        // Their pledge still counts; only the details failed to attach. Say
+        // that, rather than implying the pledge itself fell over.
+        setError(
+          d.error === 'email_taken' ? 'That email has already pledged. Yours is still counted.'
+          : d.error === 'bad_email' ? 'That email doesn’t look right.'
+          : 'Couldn’t save those details. Your pledge is still counted.'
+        )
+        return
+      }
+      setTotals((t) => (t ? { ...t, total: d.total, verified: d.verified } : t))
+      if (Array.isArray(d.wall)) setWall(d.wall)
+      setStep('check')
+    } catch {
+      setError('Couldn’t save those details. Your pledge is still counted.')
+    } finally { setBusy(false) }
   }
 
   // The CARD renders immediately; only the NUMBER waits for the fetch.
   //
   // Waiting for the count before rendering anything would make this a block
   // that appears after load and shoves the rest of the page down — the exact
-  // layout shift this site was just fixed for. The ask needs no data, so it
-  // paints with the first frame and the count slots into space already
-  // reserved for it.
+  // layout shift this site was fixed for. The ask needs no data, so it paints
+  // with the first frame and the count slots into space already reserved.
   //
-  // The one case that still hides the card is an explicit failure: `ok: false`
-  // means the pledges table is not there yet or Supabase is unreachable, so the
+  // The one case that hides the card is an explicit failure: `ok: false` means
+  // the pledges table is not there yet or Supabase is unreachable, so the
   // feature is not live and a button that would fail is worse than nothing.
   if (totals && !totals.ok) return null
 
   const goal = totals?.goal ?? 100000
-  const shown = pledged ? (position ?? totals?.total ?? 0) : (totals?.total ?? 0)
+  const shown = position ?? totals?.total ?? 0
   const pct = totals ? Math.min(100, Math.max(1.2, (totals.total / goal) * 100)) : 0
+  const done = step !== 'ask'
 
   return (
     <section style={{ background: 'transparent' }}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '8px clamp(18px, 5vw, 36px) 20px' }}>
-        <div className={`pl-card${pledged ? ' go' : ''}`} style={{
+        <div className={`pl-card${done ? ' go' : ''}`} style={{
           background: DEEP, borderRadius: 20, padding: 'clamp(28px, 5vw, 36px)',
           fontFamily: MANROPE, color: '#fff', textAlign: 'center',
           position: 'relative', overflow: 'hidden',
         }}>
-          {pledged && <Burst />}
+          {burst && <Burst />}
 
-          {!pledged ? (
+          {step === 'ask' && (
             <>
               <h2 style={{ fontSize: 'clamp(26px, 5vw, 34px)', fontWeight: 800, letterSpacing: '-.025em', margin: '0 0 20px', lineHeight: 1.15 }}>
                 Will you pledge to vote?
               </h2>
-              <button onClick={pledge} disabled={busy} className="pl-cta" style={{
-                minHeight: 44, padding: '15px 38px', borderRadius: 13, border: 'none',
-                background: '#fff', color: DEEP, fontFamily: MANROPE,
-                fontSize: 18, fontWeight: 800, cursor: busy ? 'default' : 'pointer',
-                opacity: busy ? 0.7 : 1,
-              }}>
-                {busy ? 'One moment' : 'Yes, I pledge'}
+              <button onClick={pledge} disabled={busy} className="pl-cta" style={cta(busy)}>
+                {busy ? 'One moment' : 'I’m in'}
               </button>
-              {failed && (
-                <p style={{ fontSize: 13.5, color: '#ffd9c7', margin: '14px 0 0' }}>
-                  That didn&rsquo;t save. Try once more.
-                </p>
-              )}
-            </>
-          ) : (
-            <>
-              <svg className="pl-ara" width="72" height="67" viewBox="0 0 28 26" aria-hidden="true" style={{ display: 'block', margin: '0 auto' }}>
-                <g stroke={MINT} strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 22 L14 16 L23 22" />
-                  <path d="M5 15 L14 9 L23 15" />
-                  <path d="M5 8 L14 2 L23 8" />
-                </g>
-              </svg>
-              <div className="pl-after">
-                <div style={{ fontSize: 'clamp(42px, 9vw, 58px)', fontWeight: 800, letterSpacing: '-.04em', lineHeight: 1, marginTop: 14, fontVariantNumeric: 'tabular-nums' }}>
-                  {shown.toLocaleString('en-NZ')}
-                </div>
-                <p style={{ fontSize: 16, fontWeight: 600, color: 'rgba(255,255,255,.7)', margin: '5px 0 0' }}>
-                  of {goal.toLocaleString('en-NZ')}
-                </p>
-              </div>
+              {error && <Err>{error}</Err>}
+              <Bar pct={pct} total={totals?.total ?? null} goal={goal} />
             </>
           )}
 
-          {/* The bar carries the collective number in both states. */}
-          <div style={{ maxWidth: 380, margin: '24px auto 0' }}>
-            <div style={{ height: 10, borderRadius: 5, background: 'rgba(255,255,255,.18)', overflow: 'hidden' }}>
-              <div style={{ width: `${pct}%`, height: '100%', borderRadius: 5, background: MINT, transition: 'width .7s cubic-bezier(.2,.8,.2,1)' }} />
-            </div>
-            {!pledged && (
-              /* minHeight holds the line before the count arrives, so nothing
-                 below this card moves when it does. */
-              <p style={{ fontSize: 16, fontWeight: 700, color: 'rgba(255,255,255,.92)', margin: '11px 0 0', minHeight: 22 }}>
-                {totals ? (
-                  <>
-                    {totals.total.toLocaleString('en-NZ')}{' '}
-                    <span style={{ color: 'rgba(255,255,255,.55)', fontWeight: 600 }}>
-                      of {goal.toLocaleString('en-NZ')}
-                    </span>
-                  </>
-                ) : null}
-              </p>
-            )}
-          </div>
+          {done && <Ara />}
 
-          {pledged && enrolled === null && (
-            <div className="pl-after" style={{ marginTop: 26 }}>
-              <p style={{ fontSize: 16, fontWeight: 600, color: 'rgba(255,255,255,.9)', margin: '0 0 14px' }}>
-                Are you enrolled?
-              </p>
-              <div style={{ display: 'flex', gap: 9, justifyContent: 'center', flexWrap: 'wrap' }}>
-                <button onClick={() => answer('yes')} style={solid}>Yes</button>
-                <button onClick={() => answer('no')} style={ghost}>No, enrol me</button>
-                <button onClick={() => answer('unknown')} style={ghost}>I don&rsquo;t know</button>
+          {step === 'celebrate' && (
+            <div className="pl-after">
+              <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.14em', color: MINT, marginTop: 14 }}>
+                YOU&rsquo;RE IN
               </div>
-              <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,.52)', margin: '14px 0 0' }}>
+              <div style={{ fontSize: 'clamp(42px, 9vw, 58px)', fontWeight: 800, letterSpacing: '-.04em', lineHeight: 1, margin: '10px 0 2px', fontVariantNumeric: 'tabular-nums' }}>
+                {shown.toLocaleString('en-NZ')}
+              </div>
+              <p style={{ fontSize: 16, fontWeight: 600, color: 'rgba(255,255,255,.7)', margin: 0 }}>
+                of {goal.toLocaleString('en-NZ')}
+              </p>
+              <Bar pct={pct} />
+            </div>
+          )}
+
+          {/* No heading here. They have already answered the question, and
+              asking it again reads as though the tap did not register. */}
+          {step === 'details' && (
+            <form onSubmit={saveDetails} className="pl-in" style={{ marginTop: 22 }}>
+              <Field
+                label={<>Your name <span style={{ color: 'rgba(255,255,255,.45)', fontWeight: 600 }}>(optional)</span></>}
+                hint="Only shown if you tick the box below."
+              >
+                <input value={name} onChange={(e) => setName(e.target.value)} placeholder="First and last name"
+                  autoComplete="name" maxLength={80} style={input} />
+              </Field>
+              <Field label="Email" hint="Never shown publicly. Used to count each person once.">
+                <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com"
+                  type="email" autoComplete="email" required maxLength={320} style={input} />
+              </Field>
+
+              <div style={{ margin: '20px 0 22px' }}>
+                <Check checked={listed} onChange={setListed} label="Show my name on the wall"
+                  sub={'Appears as “John D.” Leave it unticked and you’ll show as Anonymous.'} />
+                <Check checked={news} onChange={setNews} label="Email me updates from Politika"
+                  sub="Occasional, and you can stop any time." />
+              </div>
+
+              <button type="submit" disabled={busy} className="pl-cta" style={cta(busy)}>
+                {busy ? 'Saving' : 'Add my pledge'}
+              </button>
+              {error && <Err>{error}</Err>}
+              <button type="button" onClick={() => setStep('check')} style={skip}>
+                Or skip this &mdash; your pledge is already counted.
+              </button>
+            </form>
+          )}
+
+          {step === 'check' && (
+            <div className="pl-in">
+              <p style={{ fontSize: 20, fontWeight: 800, margin: '20px 0 7px', lineHeight: 1.3 }}>
+                Now check you&rsquo;re enrolled
+              </p>
+              <p style={{ fontSize: 14.5, color: 'rgba(255,255,255,.66)', margin: '0 0 20px', lineHeight: 1.5 }}>
+                Most people think they are. Takes about a minute to be sure.
+              </p>
+              <a href={VOTE_NZ} target="_blank" rel="noopener noreferrer"
+                className="pl-cta" style={{ ...cta(false), gap: 9, fontSize: 16.5, textDecoration: 'none' }}>
+                Check at vote.nz <ExternalLink style={{ width: 15, height: 15 }} aria-hidden />
+              </a>
+              <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,.52)', margin: '15px 0 0' }}>
                 Enrolment closes midnight, Sunday 25 October.
               </p>
             </div>
           )}
-
-          {pledged && enrolled !== null && (
-            <p style={{ fontSize: 14, color: 'rgba(255,255,255,.72)', margin: '22px 0 0', lineHeight: 1.55 }}>
-              {enrolled === 'yes'
-                ? 'Good. Now work out who you’re voting for.'
-                : <>vote.nz is open in another tab. Enrolment closes <b style={{ color: '#fff' }}>midnight, Sunday 25 October</b>.</>}
-            </p>
-          )}
         </div>
+
+        {showWall && wall.length > 0 && <Wall entries={wall} total={totals?.total ?? 0} />}
       </div>
     </section>
   )
+}
+
+/* ── pieces ──────────────────────────────────────────────────────────────── */
+
+/**
+ * The wall.
+ *
+ * Everyone who pledged appears. Opting out shows as Anonymous rather than
+ * vanishing, so the list reads as everyone who pledged and anonymity reads as a
+ * normal choice other people are making rather than an absence.
+ */
+function Wall({ entries, total }: { entries: WallEntry[]; total: number }) {
+  const rest = total - entries.length
+  return (
+    <div style={{
+      background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 20,
+      padding: 'clamp(22px, 4vw, 28px)', fontFamily: MANROPE, marginTop: 14,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+        <h2 style={{ fontSize: 21, fontWeight: 800, letterSpacing: '-.02em', color: INK, margin: 0 }}>
+          Who&rsquo;s pledged
+        </h2>
+        <span style={{ fontSize: 13, fontWeight: 700, color: JADE }}>
+          {total.toLocaleString('en-NZ')} so far
+        </span>
+      </div>
+      <p style={{ fontSize: 13, color: TERTIARY, margin: '6px 0 18px', lineHeight: 1.5 }}>
+        Most recent first. Names show only for people who chose to be listed.
+      </p>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        {entries.map((e) => (
+          <span key={e.id} style={{
+            padding: '9px 15px', borderRadius: 999,
+            background: e.named ? '#fff' : 'transparent',
+            border: `1px ${e.named ? 'solid' : 'dashed'} ${BORDER}`,
+            fontSize: 14, fontWeight: e.named ? 700 : 600,
+            color: e.named ? INK : TERTIARY,
+          }}>
+            {e.name}
+          </span>
+        ))}
+        {rest > 0 && (
+          <span style={{
+            padding: '9px 15px', borderRadius: 999, background: JADE,
+            fontSize: 14, fontWeight: 800, color: '#fff',
+          }}>
+            + {rest.toLocaleString('en-NZ')} more
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function Ara() {
+  return (
+    <svg className="pl-ara" width="66" height="61" viewBox="0 0 28 26" aria-hidden="true" style={{ display: 'block', margin: '0 auto' }}>
+      <g stroke={MINT} strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 22 L14 16 L23 22" />
+        <path d="M5 15 L14 9 L23 15" />
+        <path d="M5 8 L14 2 L23 8" />
+      </g>
+    </svg>
+  )
+}
+
+function Bar({ pct, total, goal }: { pct: number; total?: number | null; goal?: number }) {
+  return (
+    <div style={{ maxWidth: 380, margin: '24px auto 0' }}>
+      <div style={{ height: 10, borderRadius: 5, background: 'rgba(255,255,255,.18)', overflow: 'hidden' }}>
+        <div style={{ width: `${pct}%`, height: '100%', borderRadius: 5, background: MINT, transition: 'width .7s cubic-bezier(.2,.8,.2,1)' }} />
+      </div>
+      {goal != null && (
+        /* minHeight holds the line before the count arrives, so nothing below
+           this card moves when it does. */
+        <p style={{ fontSize: 16, fontWeight: 700, color: 'rgba(255,255,255,.92)', margin: '11px 0 0', minHeight: 22 }}>
+          {total != null && (
+            <>
+              {total.toLocaleString('en-NZ')}{' '}
+              <span style={{ color: 'rgba(255,255,255,.55)', fontWeight: 600 }}>
+                of {goal.toLocaleString('en-NZ')}
+              </span>
+            </>
+          )}
+        </p>
+      )}
+    </div>
+  )
+}
+
+function Field({ label, hint, children }: { label: React.ReactNode; hint: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 14, textAlign: 'left' }}>
+      <label style={{ display: 'block', fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,.82)', marginBottom: 6 }}>
+        {label}
+      </label>
+      {children}
+      <p style={{ fontSize: 11.5, color: 'rgba(255,255,255,.5)', margin: '6px 0 0' }}>{hint}</p>
+    </div>
+  )
+}
+
+function Check({ checked, onChange, label, sub }: {
+  checked: boolean; onChange: (v: boolean) => void; label: string; sub: string
+}) {
+  return (
+    <label style={{ display: 'flex', gap: 11, alignItems: 'flex-start', marginBottom: 13, textAlign: 'left', cursor: 'pointer' }}>
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)}
+        style={{ width: 22, height: 22, flexShrink: 0, marginTop: 1, accentColor: MINT, cursor: 'pointer' }} />
+      <span style={{ minWidth: 0 }}>
+        <span style={{ display: 'block', fontSize: 14.5, fontWeight: 700, color: '#fff', lineHeight: 1.35 }}>{label}</span>
+        <span style={{ display: 'block', fontSize: 12.5, color: 'rgba(255,255,255,.58)', lineHeight: 1.45, marginTop: 3 }}>{sub}</span>
+      </span>
+    </label>
+  )
+}
+
+function Err({ children }: { children: React.ReactNode }) {
+  return <p role="alert" style={{ fontSize: 13.5, color: '#ffd9c7', margin: '14px 0 0', lineHeight: 1.5 }}>{children}</p>
 }
 
 /** Rays with uneven length, reach and delay. Evenly spaced identical rays read
@@ -232,19 +394,32 @@ function Burst() {
   )
 }
 
-const solid: React.CSSProperties = {
-  minHeight: 44, padding: '12px 24px', borderRadius: 12, border: 'none',
-  background: '#fff', color: DEEP, fontFamily: MANROPE, fontSize: 15, fontWeight: 800, cursor: 'pointer',
+const cta = (busy: boolean): React.CSSProperties => ({
+  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+  minHeight: 44, padding: '15px 32px', borderRadius: 13, border: 'none',
+  background: '#fff', color: DEEP, fontFamily: MANROPE,
+  fontSize: 17.5, fontWeight: 800, cursor: busy ? 'default' : 'pointer',
+  opacity: busy ? 0.7 : 1,
+})
+
+const input: React.CSSProperties = {
+  width: '100%', background: 'rgba(255,255,255,.1)',
+  border: '1px solid rgba(255,255,255,.26)', borderRadius: 12,
+  padding: '15px 16px', fontSize: 16, color: '#fff',
+  fontFamily: MANROPE, outline: 'none',
 }
-const ghost: React.CSSProperties = {
-  minHeight: 44, padding: '12px 24px', borderRadius: 12,
-  border: '1.5px solid rgba(255,255,255,.45)', background: 'transparent',
-  color: '#fff', fontFamily: MANROPE, fontSize: 15, fontWeight: 800, cursor: 'pointer',
+
+const skip: React.CSSProperties = {
+  display: 'block', margin: '14px auto 0', background: 'none', border: 'none',
+  color: 'rgba(255,255,255,.55)', fontFamily: MANROPE, fontSize: 12.5,
+  cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 3,
 }
 
 const CSS = `
 .pl-card > *:not(.pl-burst) { position: relative; z-index: 1 }
 .pl-cta:hover { background: ${MINT} }
+.pl-card input::placeholder { color: rgba(255,255,255,.45) }
+.pl-card input[type="text"]:focus, .pl-card input[type="email"]:focus { border-color: ${MINT} }
 
 .pl-burst { position: absolute; inset: 0; pointer-events: none; z-index: 0 }
 .pl-burst span {
@@ -280,10 +455,13 @@ const CSS = `
 @keyframes pl-lift { to { opacity: 1; transform: translateY(0) } }
 .pl-after { opacity: 0; transform: translateY(8px) }
 .pl-card.go .pl-after { animation: pl-lift 420ms ease-out 780ms forwards }
+/* Mounts after the burst has finished, so no delay — a delay here would read
+   as the step having failed to load. */
+.pl-in { animation: pl-lift 300ms ease-out forwards; opacity: 0; transform: translateY(6px) }
 
 @media (prefers-reduced-motion: reduce) {
   .pl-card.go .pl-burst span, .pl-card.go .pl-ring { display: none }
-  .pl-card.go .pl-ara path, .pl-card.go .pl-after {
+  .pl-card.go .pl-ara path, .pl-card.go .pl-after, .pl-in {
     animation-duration: 1ms !important; animation-delay: 0ms !important;
   }
 }

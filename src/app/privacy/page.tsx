@@ -38,7 +38,7 @@ export default function PrivacyPage() {
     <LegalPage
       title="Privacy Policy"
       subtitle="What we collect, what never leaves your device, and who else sees anything."
-      updated="September 2026"
+      updated="October 2026"
     >
       <h2>Who we are</h2>
       <p>
@@ -179,16 +179,26 @@ export default function PrivacyPage() {
       <h2>If you pledge to vote</h2>
       <p>
         Tapping the pledge button records one line: the time, a random code kept in a cookie on your device so you
-        aren’t counted twice, your account if you’re signed in, and your answer to the
-        enrolment question if you give one.
+        aren’t counted twice, and your account if you’re signed in.
+      </p>
+      <p>
+        Then we ask for a <strong>name and an email</strong>. The name is optional. The email is how each person is
+        counted once, because a cookie can be cleared and an address can’t be. We don’t send anything to it unless
+        you tick the box asking us to, and you can skip both and still be counted.
+      </p>
+      <p>
+        <strong>Your name only appears publicly if you tick that box</strong>, and it shows as a first name and a
+        surname initial, like “John D.”. Never your full name, never your email. Leave it unticked and you appear
+        as “Anonymous”. Asking to be emailed is a separate box, and neither is ticked for you.
       </p>
       <p>
         We also store a <strong>scrambled one-way code made from your internet address</strong>. It exists only to stop
         automated scripts inflating the count, it is not your IP address, and it cannot be turned back into one.
       </p>
       <p>
-        We never learn whether you enrolled or actually voted. <strong>Nobody can</strong> &mdash; the Electoral
-        Commission doesn’t share that, and it shouldn’t.
+        We don’t ask whether you’re enrolled, we just point you at vote.nz to check. We never learn whether you
+        enrolled or actually voted. <strong>Nobody can</strong> &mdash; the Electoral Commission doesn’t share that,
+        and it shouldn’t.
       </p>
 
       <h2>Who else your browser talks to</h2>
