@@ -29,7 +29,7 @@ import { EmailUpdates } from '@/components/homepage/email-updates'
 import { InstallButton } from '@/components/notifications/install-button'
 import { ExploreCarousel } from '@/components/homepage/explore-carousel'
 // import { AlertsBanner } from '@/components/notifications/alerts-banner' // hidden — see below
-import { OpenLinksInNewTab } from '@/components/homepage/open-links-in-new-tab'
+// import { OpenLinksInNewTab } from '@/components/homepage/open-links-in-new-tab' // see note below
 
 // The navbar logo and the hub both link to /?full=1, which serves the same
 // content as / to anyone signed out (crawlers included) — canonical stops it
@@ -59,10 +59,21 @@ export default function HomePage() {
           current party's accent colour; sections are transparent so it shows
           through. */}
       <HomeBackground>
-        {/* Every link in the page content opens a new tab. Renders nothing —
-            deliberately NOT a wrapper, since a wrapper div would become the
-            sticky tile row's containing block (see party-tiles.tsx). */}
-        <OpenLinksInNewTab />
+        {/* OpenLinksInNewTab was here. It opened every content link in a new
+            tab so that following one "shouldn't lose the reader's place" in the
+            homepage. It achieved the opposite.
+
+            A new tab starts with a history length of 1, so there is nothing to
+            go back to: the browser's back button is dead, and BackLink's
+            router.back() is unavailable, which is why back-link.tsx already
+            carries a note about readers tapping an MP from the homepage and
+            being posted to the MPs directory, a page they had never seen.
+
+            Same-tab navigation gives the reader's place back for real — the
+            browser restores the homepage scroll position on back, which is the
+            thing the new tab was trying to approximate. The component is intact
+            at components/homepage/open-links-in-new-tab.tsx; restore the import
+            and this line to bring it back. */}
 
         {/* ── The choice: guided help, or explore ── */}
         <CinematicHero />
