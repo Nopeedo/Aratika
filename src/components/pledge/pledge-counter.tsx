@@ -128,7 +128,7 @@ export function PledgeCounter({ source = 'homepage' }: { source?: string }) {
                 fontSize: 18, fontWeight: 800, cursor: busy ? 'default' : 'pointer',
                 opacity: busy ? 0.7 : 1,
               }}>
-                {busy ? 'One moment' : 'I’m voting'}
+                {busy ? 'One moment' : 'Yes, I pledge'}
               </button>
               {failed && (
                 <p style={{ fontSize: 13.5, color: '#ffd9c7', margin: '14px 0 0' }}>
