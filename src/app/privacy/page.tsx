@@ -178,13 +178,13 @@ export default function PrivacyPage() {
 
       <h2>If you pledge to vote</h2>
       <p>
-        Tapping the pledge button records one line: the time, a random code kept in a cookie on your device so you
-        aren’t counted twice, and your account if you’re signed in.
+        Pledging records one line: the time, your email, your name if you gave one, a random code kept in a cookie
+        on your device so you aren’t counted twice, and your account if you’re signed in.
       </p>
       <p>
-        Then we ask for a <strong>name and an email</strong>. The name is optional. The email is how each person is
-        counted once, because a cookie can be cleared and an address can’t be. We don’t send anything to it unless
-        you tick the box asking us to, and you can skip both and still be counted.
+        The <strong>name is optional, the email isn’t</strong>. The email is how each person is counted once,
+        because a cookie can be cleared and an address can’t be. We don’t send anything to it unless you tick the
+        box asking us to. Nothing is recorded until you confirm, so opening the form and leaving it records nothing.
       </p>
       <p>
         <strong>Your name only appears publicly if you tick that box</strong>, and it shows as a first name and a

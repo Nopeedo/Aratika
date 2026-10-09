@@ -58,9 +58,16 @@ const SNOOZE_DAYS = 30
  * Mid-task routes. Prefix match, so /start and /start/results are both quiet.
  * The signed-in areas (/hub, /dashboard, /settings) do not need listing — the
  * session check below already covers them — and listing them would imply the
- * ask could otherwise appear there.
+ * ask could otherwise appear there. /links is likewise already covered, by
+ * BARE_ROUTES on the gate that mounts this.
+ *
+ * /pledge earns its place for a second reason as well as being mid-task: that
+ * page asks for an email of its own, and raising a modal that asks for an
+ * account and an email over a form asking for an email reads as two different
+ * people wanting the same thing. The pledge form carries the newsletter as a
+ * checkbox, so nothing is lost by staying quiet here.
  */
-const QUIET = ['/login', '/register', '/auth', '/editor', '/start', '/donate', '/subscription']
+const QUIET = ['/login', '/register', '/auth', '/editor', '/start', '/donate', '/subscription', '/pledge']
 
 function snoozed(): boolean {
   try {
@@ -113,6 +120,20 @@ export function StayPrompt() {
   }, [])
 
   const quiet = QUIET.some((p) => pathname === p || pathname.startsWith(`${p}/`))
+
+  /**
+   * Walking INTO a quiet route with the ask already up takes it away.
+   *
+   * The gate below only decides whether to OPEN; the render then checks nothing
+   * but `open`. Without this, someone who reaches five minutes on one page and
+   * then follows a link to /pledge carries the sign-up sheet onto it, which is
+   * the exact collision these routes are listed to avoid. Deliberately not
+   * folded into the effect below: engaged time must keep accruing on quiet
+   * routes, so that effect still has to run there.
+   */
+  React.useEffect(() => {
+    if (quiet) setOpen(false)
+  }, [quiet])
 
   React.useEffect(() => {
     if (open || !signedOut || snoozed()) return

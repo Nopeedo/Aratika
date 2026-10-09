@@ -8,7 +8,7 @@
  *
  * TWO LINKS ONLY, by request. An earlier version carried four, including an
  * enrol link to vote.nz; that one is gone and nothing is lost by it, because
- * the pledge flow asks about enrolment itself and sends anyone who needs it to
+ * the pledge flow points everyone at vote.nz to check enrolment at the end, and
  * vote.nz on the next screen.
  *
  * NO DONATE, and not only because it was asked for: this page is linked from

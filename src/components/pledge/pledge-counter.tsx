@@ -3,21 +3,22 @@
 /**
  * PledgeCounter — the pledge to vote, in four steps.
  *
- *   ask        "Will you pledge to vote?" and one button
+ *   ask        "Will you pledge to vote?" and one button. Writes nothing.
+ *   details    name, email, two consents, and the confirm that records it
  *   celebrate  the ara climbs out of the burst, their number lands
- *   details    name, email, two consents, and a visible way to skip
  *   check      "Now check you're enrolled", with the link
  *
- * THE TAP COMES FIRST AND THE FORM AFTERWARDS. Asking for an email as the price
- * of pledging would cost most of the conversions. Asking once the pledge is
- * already counted costs none of them, which is why `details` says plainly that
- * skipping changes nothing.
+ * THE PLEDGE IS RECORDED ON CONFIRM, NOT ON THE FIRST TAP. The opening button
+ * opens the form and sends nothing, so the number on the card means a person
+ * who gave an address rather than anyone who brushed a button. An earlier
+ * version counted the tap and asked for details afterwards: better conversion,
+ * weaker number. This is the number the site has to be able to stand behind.
  *
- * WHAT THE NUMBER MEANS. It counts taps on this button. It is not a count of
- * enrolments or of votes and the copy never implies otherwise: the Commission's
- * enrolment flow is a separate origin behind a bot challenge with no callback
- * and no API, so this site cannot learn what happened after someone leaves for
- * vote.nz. See migration 0021.
+ * WHAT THE NUMBER MEANS. It counts people who said they intend to vote. It is
+ * not a count of enrolments or of votes and the copy never implies otherwise:
+ * the Commission's enrolment flow is a separate origin behind a bot challenge
+ * with no callback and no API, so this site cannot learn what happened after
+ * someone leaves for vote.nz. See migration 0021.
  *
  * NOBODY IS ASKED TO GUESS. This used to ask "are you enrolled?" with yes / no /
  * I don't know. Most people genuinely cannot tell without looking it up, so
@@ -43,7 +44,7 @@ const MINT = '#8FD3AC'
  *  enrols, so it is the right destination whether or not someone is on the roll. */
 const VOTE_NZ = 'https://vote.nz/enrolling/enrol-or-update/enrol-or-update-online'
 
-type Step = 'ask' | 'celebrate' | 'details' | 'check'
+type Step = 'ask' | 'details' | 'celebrate' | 'check'
 interface WallEntry { id: string; name: string; named: boolean }
 interface Totals { total: number; verified: number; goal: number; ok: boolean }
 
@@ -72,64 +73,56 @@ export function PledgeCounter({ source = 'homepage', showWall = true }: {
         if (!alive) return
         setTotals({ total: d.total ?? 0, verified: d.verified ?? 0, goal: d.goal ?? 100000, ok: !!d.ok })
         setWall(Array.isArray(d.wall) ? d.wall : [])
-        // Already pledged on this browser: skip to whatever is still worth doing.
-        if (d.mine?.pledged) {
+        // Already pledged on this browser: straight to the thing still worth
+        // doing. No burst — that belongs to the moment of pledging, and firing
+        // it again at someone who pledged last week celebrates nothing.
+        if (d.mine?.pledged && d.mine?.hasDetails) {
           setPosition(d.total ?? null)
-          setStep(d.mine.hasDetails ? 'check' : 'details')
+          setStep('check')
         }
       })
       .catch(() => { if (alive) setTotals({ total: 0, verified: 0, goal: 100000, ok: false }) })
     return () => { alive = false }
   }, [])
 
-  async function pledge() {
-    if (busy) return
-    setBusy(true); setError(null)
-    try {
-      const r = await fetch('/api/pledge', {
-        method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ source }),
-      })
-      const d = await r.json()
-      if (!r.ok) throw new Error(d.error || 'failed')
-      setTotals((t) => ({ total: d.total, verified: d.verified, goal: d.goal, ok: t?.ok ?? true }))
-      setPosition(d.position ?? d.total ?? null)
-      if (d.already && d.hasDetails) { setStep('check'); return }
-      setBurst(true)
-      setStep('celebrate')
-      // Long enough for the burst and the three chevrons to land, so the form
-      // does not cut off the one moment the whole thing is building to.
-      window.setTimeout(() => setStep('details'), 2100)
-    } catch {
-      setError('That didn’t save. Try once more.')
-    } finally { setBusy(false) }
+  /** Step one records nothing. It only opens the form. */
+  function openForm() {
+    setError(null)
+    setStep('details')
   }
 
-  async function saveDetails(e: React.FormEvent) {
+  async function confirmPledge(e: React.FormEvent) {
     e.preventDefault()
     if (busy) return
     setBusy(true); setError(null)
     try {
       const r = await fetch('/api/pledge', {
-        method: 'PUT', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ name, email, displayName: listed, newsletter: news }),
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ name, email, displayName: listed, newsletter: news, source }),
       })
       const d = await r.json()
       if (!r.ok) {
-        // Their pledge still counts; only the details failed to attach. Say
-        // that, rather than implying the pledge itself fell over.
+        // 'email_taken' is gone: the route now answers every already-pledged
+        // case the same way, with already:true, and this screen moves on.
         setError(
-          d.error === 'email_taken' ? 'That email has already pledged. Yours is still counted.'
-          : d.error === 'bad_email' ? 'That email doesn’t look right.'
-          : 'Couldn’t save those details. Your pledge is still counted.'
+          d.error === 'bad_email' ? 'That email doesn’t look right.'
+          : d.error === 'rate_limited' ? 'Too many pledges from this connection just now. Try again shortly.'
+          : 'That didn’t save. Try once more.'
         )
         return
       }
-      setTotals((t) => (t ? { ...t, total: d.total, verified: d.verified } : t))
+      setTotals((t) => ({ total: d.total, verified: d.verified, goal: d.goal, ok: t?.ok ?? true }))
+      setPosition(d.position ?? d.total ?? null)
       if (Array.isArray(d.wall)) setWall(d.wall)
-      setStep('check')
+      // Confirming a pledge that already exists is not worth a celebration.
+      if (d.already) { setStep('check'); return }
+      setBurst(true)
+      setStep('celebrate')
+      // Long enough for the burst and the three chevrons to land, so the next
+      // step does not cut off the one moment the whole thing builds to.
+      window.setTimeout(() => setStep('check'), 2600)
     } catch {
-      setError('Couldn’t save those details. Your pledge is still counted.')
+      setError('That didn’t save. Try once more.')
     } finally { setBusy(false) }
   }
 
@@ -148,13 +141,13 @@ export function PledgeCounter({ source = 'homepage', showWall = true }: {
   const goal = totals?.goal ?? 100000
   const shown = position ?? totals?.total ?? 0
   const pct = totals ? Math.min(100, Math.max(1.2, (totals.total / goal) * 100)) : 0
-  const done = step !== 'ask'
+  const landed = step === 'celebrate' || step === 'check'
 
   return (
     <section style={{ background: 'transparent' }}>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '8px clamp(18px, 5vw, 36px) 20px' }}>
-        <div className={`pl-card${done ? ' go' : ''}`} style={{
+        <div className={`pl-card${landed ? ' go' : ''}`} style={{
           background: DEEP, borderRadius: 20, padding: 'clamp(28px, 5vw, 36px)',
           fontFamily: MANROPE, color: '#fff', textAlign: 'center',
           position: 'relative', overflow: 'hidden',
@@ -166,35 +159,17 @@ export function PledgeCounter({ source = 'homepage', showWall = true }: {
               <h2 style={{ fontSize: 'clamp(26px, 5vw, 34px)', fontWeight: 800, letterSpacing: '-.025em', margin: '0 0 20px', lineHeight: 1.15 }}>
                 Will you pledge to vote?
               </h2>
-              <button onClick={pledge} disabled={busy} className="pl-cta" style={cta(busy)}>
-                {busy ? 'One moment' : 'I’m in'}
+              <button onClick={openForm} className="pl-cta" style={cta(false)}>
+                I&rsquo;m in
               </button>
-              {error && <Err>{error}</Err>}
               <Bar pct={pct} total={totals?.total ?? null} goal={goal} />
             </>
           )}
 
-          {done && <Ara />}
-
-          {step === 'celebrate' && (
-            <div className="pl-after">
-              <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.14em', color: MINT, marginTop: 14 }}>
-                YOU&rsquo;RE IN
-              </div>
-              <div style={{ fontSize: 'clamp(42px, 9vw, 58px)', fontWeight: 800, letterSpacing: '-.04em', lineHeight: 1, margin: '10px 0 2px', fontVariantNumeric: 'tabular-nums' }}>
-                {shown.toLocaleString('en-NZ')}
-              </div>
-              <p style={{ fontSize: 16, fontWeight: 600, color: 'rgba(255,255,255,.7)', margin: 0 }}>
-                of {goal.toLocaleString('en-NZ')}
-              </p>
-              <Bar pct={pct} />
-            </div>
-          )}
-
-          {/* No heading here. They have already answered the question, and
-              asking it again reads as though the tap did not register. */}
+          {/* No heading. They answered the question on the screen before, and
+              asking it again reads as though the first tap didn't register. */}
           {step === 'details' && (
-            <form onSubmit={saveDetails} className="pl-in" style={{ marginTop: 22 }}>
+            <form onSubmit={confirmPledge} className="pl-in">
               <Field
                 label={<>Your name <span style={{ color: 'rgba(255,255,255,.45)', fontWeight: 600 }}>(optional)</span></>}
                 hint="Only shown if you tick the box below."
@@ -215,31 +190,49 @@ export function PledgeCounter({ source = 'homepage', showWall = true }: {
               </div>
 
               <button type="submit" disabled={busy} className="pl-cta" style={cta(busy)}>
-                {busy ? 'Saving' : 'Add my pledge'}
+                {busy ? 'Saving' : 'Confirm my pledge'}
               </button>
               {error && <Err>{error}</Err>}
-              <button type="button" onClick={() => setStep('check')} style={skip}>
-                Or skip this &mdash; your pledge is already counted.
-              </button>
             </form>
           )}
 
+          {step === 'celebrate' && (
+            <>
+              <Ara />
+              <div className="pl-after">
+                <div style={{ fontSize: 11.5, fontWeight: 800, letterSpacing: '.14em', color: MINT, marginTop: 14 }}>
+                  YOU&rsquo;RE IN
+                </div>
+                <div style={{ fontSize: 'clamp(42px, 9vw, 58px)', fontWeight: 800, letterSpacing: '-.04em', lineHeight: 1, margin: '10px 0 2px', fontVariantNumeric: 'tabular-nums' }}>
+                  {shown.toLocaleString('en-NZ')}
+                </div>
+                <p style={{ fontSize: 16, fontWeight: 600, color: 'rgba(255,255,255,.7)', margin: 0 }}>
+                  of {goal.toLocaleString('en-NZ')}
+                </p>
+                <Bar pct={pct} />
+              </div>
+            </>
+          )}
+
           {step === 'check' && (
-            <div className="pl-in">
-              <p style={{ fontSize: 20, fontWeight: 800, margin: '20px 0 7px', lineHeight: 1.3 }}>
-                Now check you&rsquo;re enrolled
-              </p>
-              <p style={{ fontSize: 14.5, color: 'rgba(255,255,255,.66)', margin: '0 0 20px', lineHeight: 1.5 }}>
-                Most people think they are. Takes about a minute to be sure.
-              </p>
-              <a href={VOTE_NZ} target="_blank" rel="noopener noreferrer"
-                className="pl-cta" style={{ ...cta(false), gap: 9, fontSize: 16.5, textDecoration: 'none' }}>
-                Check at vote.nz <ExternalLink style={{ width: 15, height: 15 }} aria-hidden />
-              </a>
-              <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,.52)', margin: '15px 0 0' }}>
-                Enrolment closes midnight, Sunday 25 October.
-              </p>
-            </div>
+            <>
+              <Ara />
+              <div className="pl-in">
+                <p style={{ fontSize: 20, fontWeight: 800, margin: '20px 0 7px', lineHeight: 1.3 }}>
+                  Now check you&rsquo;re enrolled
+                </p>
+                <p style={{ fontSize: 14.5, color: 'rgba(255,255,255,.66)', margin: '0 0 20px', lineHeight: 1.5 }}>
+                  Most people think they are. Takes about a minute to be sure.
+                </p>
+                <a href={VOTE_NZ} target="_blank" rel="noopener noreferrer"
+                  className="pl-cta" style={{ ...cta(false), gap: 9, fontSize: 16.5, textDecoration: 'none' }}>
+                  Check at vote.nz <ExternalLink style={{ width: 15, height: 15 }} aria-hidden />
+                </a>
+                <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,.52)', margin: '15px 0 0' }}>
+                  Enrolment closes midnight, Sunday 25 October.
+                </p>
+              </div>
+            </>
           )}
         </div>
 
@@ -259,7 +252,10 @@ export function PledgeCounter({ source = 'homepage', showWall = true }: {
  * normal choice other people are making rather than an absence.
  */
 function Wall({ entries, total }: { entries: WallEntry[]; total: number }) {
-  const rest = total - entries.length
+  // `total` is the cached count (up to a minute stale); `entries` is live. Never
+  // let the header claim a number smaller than the chips sitting under it.
+  const shownTotal = Math.max(total, entries.length)
+  const rest = shownTotal - entries.length
   return (
     <div style={{
       background: SURFACE, border: `1px solid ${BORDER}`, borderRadius: 20,
@@ -270,7 +266,7 @@ function Wall({ entries, total }: { entries: WallEntry[]; total: number }) {
           Who&rsquo;s pledged
         </h2>
         <span style={{ fontSize: 13, fontWeight: 700, color: JADE }}>
-          {total.toLocaleString('en-NZ')} so far
+          {shownTotal.toLocaleString('en-NZ')} so far
         </span>
       </div>
       <p style={{ fontSize: 13, color: TERTIARY, margin: '6px 0 18px', lineHeight: 1.5 }}>
@@ -354,7 +350,11 @@ function Check({ checked, onChange, label, sub }: {
 }) {
   return (
     <label style={{ display: 'flex', gap: 11, alignItems: 'flex-start', marginBottom: 13, textAlign: 'left', cursor: 'pointer' }}>
+      {/* aria-label is explicit because the visible text lives in nested spans
+          and the accessibility tree reported this as an unnamed "checkbox, on".
+          A consent a screen reader cannot read is not a consent. */}
       <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)}
+        aria-label={`${label}. ${sub}`}
         style={{ width: 22, height: 22, flexShrink: 0, marginTop: 1, accentColor: MINT, cursor: 'pointer' }} />
       <span style={{ minWidth: 0 }}>
         <span style={{ display: 'block', fontSize: 14.5, fontWeight: 700, color: '#fff', lineHeight: 1.35 }}>{label}</span>
@@ -409,12 +409,6 @@ const input: React.CSSProperties = {
   fontFamily: MANROPE, outline: 'none',
 }
 
-const skip: React.CSSProperties = {
-  display: 'block', margin: '14px auto 0', background: 'none', border: 'none',
-  color: 'rgba(255,255,255,.55)', fontFamily: MANROPE, fontSize: 12.5,
-  cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: 3,
-}
-
 const CSS = `
 .pl-card > *:not(.pl-burst) { position: relative; z-index: 1 }
 .pl-cta:hover { background: ${MINT} }
@@ -455,8 +449,8 @@ const CSS = `
 @keyframes pl-lift { to { opacity: 1; transform: translateY(0) } }
 .pl-after { opacity: 0; transform: translateY(8px) }
 .pl-card.go .pl-after { animation: pl-lift 420ms ease-out 780ms forwards }
-/* Mounts after the burst has finished, so no delay — a delay here would read
-   as the step having failed to load. */
+/* Mounts when the burst is over, so no delay — a delay here would read as the
+   step having failed to load. */
 .pl-in { animation: pl-lift 300ms ease-out forwards; opacity: 0; transform: translateY(6px) }
 
 @media (prefers-reduced-motion: reduce) {

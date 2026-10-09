@@ -47,8 +47,9 @@ export default function PledgePage() {
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 64px' }}>
         <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 18 }}>
           <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-            A pledge is one person tapping a button. We can&rsquo;t check whether anyone enrolled or
-            voted, and nobody can &mdash; the Electoral Commission doesn&rsquo;t share that.
+            A pledge is one person saying they intend to vote, counted once per email address. We can&rsquo;t
+            check whether anyone enrolled or voted, and nobody can &mdash; the Electoral Commission
+            doesn&rsquo;t share that.
           </p>
         </div>
       </div>
