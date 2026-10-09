@@ -100,7 +100,7 @@ export default function LinksPage() {
               justifyContent: 'center', gap: 10, fontFamily: MANROPE,
               fontSize: 17.5, fontWeight: 800, color: INK,
             }}>
-              Work out your vote
+              Politika Home
               <ArrowRight style={{ width: 18, height: 18, color: JADE, flexShrink: 0 }} />
             </div>
           </Link>

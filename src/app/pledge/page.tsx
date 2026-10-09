@@ -26,7 +26,12 @@ export default function PledgePage() {
   if (!PLEDGE_ENABLED) redirect('/')
 
   return (
-    <div style={{ ...WOVEN_PAGE, paddingBottom: 56 }}>
+    // WOVEN_PAGE carries minHeight 100vh so a short page still fills the screen
+    // with the weave rather than stopping abruptly. This page is short AND the
+    // footer below it is tall, so the page scrolls either way and the 100vh only
+    // buys a screen of empty texture under the card. Overridden here rather than
+    // in the constant, which 20 pages share.
+    <div style={{ ...WOVEN_PAGE, minHeight: 'auto', paddingBottom: 48 }}>
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 12px' }}>
         <h1 style={{
           fontSize: 'clamp(28px, 6vw, 40px)', fontWeight: 800, letterSpacing: '-.03em',
