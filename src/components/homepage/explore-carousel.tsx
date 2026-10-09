@@ -74,7 +74,7 @@ const GROUPS: { label: string; items: Feature[] }[] = [
       // it belongs with, and the questionnaire asks something of the reader
       // where the other three just show them something.
       { feature: 'bills', title: 'All bills directory', desc: 'Every bill this term, and where it has got to', href: '/bills', Icon: FileText, tint: '#fdf4ff' },
-      { feature: 'onboarding', title: 'Find what matters to you', desc: 'Twelve questions, and where you stand', href: '/start', Icon: Compass, tint: '#f2fbf6' },
+      { feature: 'onboarding', title: 'Take the survey', desc: 'Twelve questions, and where you stand', href: '/start', Icon: Compass, tint: '#f2fbf6' },
     ],
   },
   {
