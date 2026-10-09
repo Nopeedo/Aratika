@@ -140,7 +140,13 @@ export function PledgeCounter({ source = 'homepage', showWall = true }: {
 
   const goal = totals?.goal ?? 100000
   const shown = position ?? totals?.total ?? 0
-  const pct = totals ? Math.min(100, Math.max(1.2, (totals.total / goal) * 100)) : 0
+  // The 1.2% floor keeps a handful of pledges visible on the track. It must not
+  // apply at zero: a filled segment beside "0 of 100,000" draws about 1,200
+  // pledges that do not exist, on the one card whose whole claim is that its
+  // number is honest.
+  const pct = totals && totals.total > 0
+    ? Math.min(100, Math.max(1.2, (totals.total / goal) * 100))
+    : 0
   const landed = step === 'celebrate' || step === 'check'
 
   return (
