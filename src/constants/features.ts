@@ -115,6 +115,10 @@ export function isEnabled(feature: string): boolean {
   // Not a phase: the Live results 2026 links (menu, footer, explore rail)
   // follow the hand-flipped switch, so they appear the night it goes on.
   if (feature === 'live-results') return LIVE_RESULTS_ENABLED
+  // Likewise the pledge: the nav link follows PLEDGE_ENABLED, so turning the
+  // campaign off takes its link with it rather than leaving a menu item
+  // pointing at a page that redirects home.
+  if (feature === 'pledge') return PLEDGE_ENABLED
   const p = FEATURE_PHASE[feature]
   return p === undefined ? true : p <= LAUNCH_PHASE
 }

@@ -37,9 +37,15 @@ export default function PledgePage() {
           fontSize: 'clamp(28px, 6vw, 40px)', fontWeight: 800, letterSpacing: '-.03em',
           color: INK, fontFamily: MANROPE, margin: '0 0 10px', lineHeight: 1.12,
         }}>
-          829,396 New Zealanders were enrolled in 2023 and didn&rsquo;t vote.
+          Pledge to vote
         </h1>
+        {/* The statistic is the REASON, not the headline. It led the page until
+            the nav gained a "Pledge to vote" item: a reader who taps that and
+            lands on a number about 2023 has to work out they are in the right
+            place. The argument still has to be here though — "pledge to vote"
+            on its own is a slogan, and this is what makes it land. */}
         <p style={{ fontSize: 16.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0, maxWidth: 580 }}>
+          <b style={{ color: INK, fontWeight: 800 }}>829,396 New Zealanders were enrolled in 2023 and didn&rsquo;t vote.</b>{' '}
           That&rsquo;s nearly twice the number who weren&rsquo;t enrolled at all.
           <span style={{ display: 'block', fontSize: 13, color: '#9a9186', marginTop: 6 }}>
             Electoral Commission, 2023 General Election turnout statistics.

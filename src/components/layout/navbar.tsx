@@ -8,13 +8,15 @@ import { Menu, X, ChevronDown, Map, User, LogOut, Crown, ListChecks, Settings, H
 import { cn } from '@/lib/utils/cn'
 import { Button } from '@/components/ui/button'
 import { visibleNav, desktopNav, type NavItem } from '@/constants/nav-links'
-import { PREMIUM_ENABLED, DONATIONS_ENABLED } from '@/constants/features'
+import { PREMIUM_ENABLED, DONATIONS_ENABLED, PLEDGE_ENABLED } from '@/constants/features'
 import { SITE } from '@/constants/site'
 import { useUser } from '@/hooks/use-user'
 import { createClient } from '@/lib/supabase/client'
 import { LogoMark } from '@/components/brand/logo-mark'
 
-const NAV = visibleNav()
+/** The phone menu. The pledge comes OUT of it, because the bar below shows it
+ *  already and a list that repeats what is visible above it reads as a mistake. */
+const NAV = visibleNav().filter((i) => i.href !== '/pledge')
 // The desktop bar: the same items, with MPs directory, Find your local MP
 // and Learn under "More" (nav-links.ts).
 const DESKTOP_NAV = desktopNav()
@@ -209,6 +211,27 @@ export function Navbar() {
               </>
             )}
           </div>
+
+          {/* THE ONE LINK ON THE BAR BELOW xl, by request.
+              Everything else on a phone lives behind the hamburger; this sits
+              out in the open because it is what the campaign is driving people
+              to, and a link nobody opens a menu to find is a link nobody
+              follows. Filled rather than plain so it reads as the action it is
+              against a bar that is otherwise a logo and an icon, and hidden at
+              xl where it is already in the nav row beside the election map. */}
+          {PLEDGE_ENABLED && (
+            <Link
+              href="/pledge"
+              className={cn(
+                'xl:hidden inline-flex items-center rounded-full px-3.5 py-1.5 text-[13px] font-extrabold whitespace-nowrap transition-colors',
+                pathname === '/pledge'
+                  ? 'bg-[#0E3F26] text-white'
+                  : 'bg-[#1F8A4C] text-white hover:bg-[#0E3F26]',
+              )}
+            >
+              Pledge to vote
+            </Link>
+          )}
 
           {/* Menu toggle. Icon only on a phone, where the bar is tight and a
               hamburger is understood; the word joins it from 768px up, where

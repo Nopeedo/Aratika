@@ -49,6 +49,14 @@ export const NAV_ITEMS: NavItem[] = [
   // MP" — that one answers where am I, this one is the whole field on a map.
   // The page's h1 and <title> carry the same name.
   { label: '2026 Election map', href: '/battlegrounds', description: 'All 72 electorates on one map: who is standing in each', feature: 'battlegrounds' },
+  // Next to the map, by request. Gated on PLEDGE_ENABLED rather than a launch
+  // phase (see isEnabled), so the link and the campaign go on and off together.
+  //
+  // On a phone this one is NOT in the collapsed menu: the navbar lifts it out
+  // and shows it on the bar as the only visible item, because it is the one
+  // thing the campaign is driving people to and a link nobody opens the menu
+  // to find is a link nobody follows. See navbar.tsx.
+  { label: 'Pledge to vote', href: '/pledge', description: 'Pledge to vote in the 2026 election, and check you are enrolled', feature: 'pledge' },
 
   // "Your Vote" (/start, the personal compass) left the nav by request — the
   // pillar was one label among seven, and the compass now rides the two pages
