@@ -14,7 +14,7 @@ import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { PledgeCounter } from '@/components/pledge/pledge-counter'
 import { PLEDGE_ENABLED } from '@/constants/features'
-import { BORDER, INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
+import { INK, MANROPE, SECONDARY, WOVEN_PAGE } from '@/constants/theme'
 
 export const metadata: Metadata = {
   title: 'Will you pledge to vote?',
@@ -26,7 +26,7 @@ export default function PledgePage() {
   if (!PLEDGE_ENABLED) redirect('/')
 
   return (
-    <div style={WOVEN_PAGE}>
+    <div style={{ ...WOVEN_PAGE, paddingBottom: 56 }}>
       <div style={{ maxWidth: 820, margin: '0 auto', padding: '48px clamp(18px, 5vw, 36px) 12px' }}>
         <h1 style={{
           fontSize: 'clamp(28px, 6vw, 40px)', fontWeight: 800, letterSpacing: '-.03em',
@@ -43,16 +43,6 @@ export default function PledgePage() {
       </div>
 
       <PledgeCounter source="pledge-page" />
-
-      <div style={{ maxWidth: 820, margin: '0 auto', padding: '4px clamp(18px, 5vw, 36px) 64px' }}>
-        <div style={{ borderTop: `1px solid ${BORDER}`, paddingTop: 18 }}>
-          <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.6, margin: 0 }}>
-            A pledge is one person saying they intend to vote, counted once per email address. We can&rsquo;t
-            check whether anyone enrolled or voted, and nobody can &mdash; the Electoral Commission
-            doesn&rsquo;t share that.
-          </p>
-        </div>
-      </div>
     </div>
   )
 }
