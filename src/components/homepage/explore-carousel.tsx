@@ -214,15 +214,12 @@ export function ExploreCarousel({ variant = 'full' }: { variant?: 'full' | 'onra
                 <SignLink
                   key={f.href}
                   href={f.href}
-                  icon={
-                    <span style={{
-                      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                      width: 24, height: 24, borderRadius: '50%', flexShrink: 0,
-                      background: f.tint,
-                    }}>
-                      <f.Icon style={{ width: 14, height: 14, color: INK }} />
-                    </span>
-                  }
+                  /* Bare, like every other signpost on the site. The icon used
+                     to sit in a tinted disc, which made these the only signs
+                     with a second shape inside the shape, and the disc's pale
+                     tint fought the party colour behind it. currentColor so it
+                     follows the sign's own ink or white. */
+                  icon={<f.Icon style={{ width: 15, height: 15, flexShrink: 0, color: 'currentColor' }} />}
                 >
                   {f.title}
                 </SignLink>

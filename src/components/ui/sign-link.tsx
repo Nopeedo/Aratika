@@ -15,12 +15,17 @@
 
 import type { ReactNode } from 'react'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
 import { MANROPE, tint } from '@/constants/theme'
 
 /** Depth of the pointed end. Right padding is this plus the normal inset, so
- *  the arrow sits inside the rectangle and the point extends past it. */
-export const SIGN_POINT = 22
+ *  the label clears the diagonal.
+ *
+ *  Was 22, with a chevron glyph sitting inside the sign pointing the same way
+ *  the sign already points. The glyph is gone and the whole sign came down
+ *  with it: the point no longer has to be deep enough to balance an arrow
+ *  beside it, so the shape reads as one arrow rather than an arrow carrying a
+ *  smaller arrow. */
+export const SIGN_POINT = 18
 
 export function SignShape({ href, color, fg, icon, children }: {
   href: string
@@ -36,7 +41,7 @@ export function SignShape({ href, color, fg, icon, children }: {
       href={href}
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 8,
-        padding: `9px ${SIGN_POINT + 12}px 9px 14px`,
+        padding: `8px ${SIGN_POINT + 11}px 8px 13px`,
         // The fill fades toward the point, so the sign reads as travelling
         // that way rather than as a solid slab that happens to be pointed.
         //
@@ -57,16 +62,13 @@ export function SignShape({ href, color, fg, icon, children }: {
         borderRadius: '12px 0 0 12px',
         clipPath: `polygon(0 0, calc(100% - ${SIGN_POINT}px) 0, 100% 50%, calc(100% - ${SIGN_POINT}px) 100%, 0 100%)`,
         filter: 'drop-shadow(0 2px 5px rgba(12,14,18,.18))',
-        fontSize: 14, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none',
+        fontSize: 13.5, fontWeight: 800, fontFamily: MANROPE, textDecoration: 'none',
         whiteSpace: 'nowrap',
         transition: 'background-color .25s ease-in-out, color .25s ease-in-out',
       }}
     >
       {icon}
       {children}
-      {/* The arrow carries the emphasis: bigger and heavier than the label,
-          and it points the same way the sign does. */}
-      <ArrowRight style={{ width: 20, height: 20, flexShrink: 0, marginLeft: 2 }} strokeWidth={3} />
     </Link>
   )
 }
