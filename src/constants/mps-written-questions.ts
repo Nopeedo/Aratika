@@ -138,19 +138,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Minister of Internal Affairs",
         "date": "2026-09-23",
-        "question": "Does the Minister's monitoring of the savings she expects to be made, by Fire and Emergency New Zealand, if any, show about where those savings have come from?",
+        "question": "Does the Minister think that Fire and Emergency New Zealand should make the public aware when fire stations are closed for a period of time due to a lack of staffing or other issues, as well as when they are closed for a one-hour strike?",
+        "reply": "Parliament dissolved: no reply received"
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "date": "2026-09-23",
+        "question": "How has the number of properties levied by Fire and Emergency New Zealand changed over the last 4 years, if at all, and how has the number of firefighters and appliances changed over that time?",
         "reply": "Parliament dissolved: no reply received"
       },
       {
         "minister": "Minister of Internal Affairs",
         "date": "2026-09-23",
         "question": "What funding has Fire and Emergency New Zealand had from their levies over the last 4 years and what additional money, if any, has Government funded them over that time?",
-        "reply": "Parliament dissolved: no reply received"
-      },
-      {
-        "minister": "Minister of Internal Affairs",
-        "date": "2026-09-23",
-        "question": "Does the Minister think that Fire and Emergency New Zealand should make the public aware when fire stations are closed for a period of time due to a lack of staffing or other issues, as well as when they are closed for a one-hour strike?",
         "reply": "Parliament dissolved: no reply received"
       }
     ]
@@ -526,7 +526,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Justice",
-        "count": 310
+        "count": 309
       },
       {
         "minister": "Minister for the Public Service and Digitising Government",
@@ -549,35 +549,43 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 205
       },
       {
+        "minister": "Minister for Māori Development",
+        "count": 202
+      },
+      {
         "minister": "Minister of Conservation",
         "count": 199
-      },
-      {
-        "minister": "Minister for Māori Development",
-        "count": 198
-      },
-      {
-        "minister": "Minister of Housing",
-        "count": 197
       },
       {
         "minister": "Minister for Regulation",
         "count": 197
       },
       {
-        "minister": "Minister for Social Investment",
-        "count": 196
-      },
-      {
         "minister": "Minister of Finance",
-        "count": 195
+        "count": 196
       },
       {
         "minister": "Minister of Education",
         "count": 195
       },
       {
+        "minister": "Minister for Pacific Peoples",
+        "count": 194
+      },
+      {
         "minister": "Minister for Women",
+        "count": 194
+      },
+      {
+        "minister": "Minister for Social Investment",
+        "count": 194
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 193
+      },
+      {
+        "minister": "Minister of Housing",
         "count": 193
       },
       {
@@ -589,28 +597,12 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 193
       },
       {
-        "minister": "Minister of Internal Affairs",
+        "minister": "Minister of Corrections",
         "count": 192
-      },
-      {
-        "minister": "Minister for Pacific Peoples",
-        "count": 192
-      },
-      {
-        "minister": "Minister for Infrastructure",
-        "count": 190
       },
       {
         "minister": "Minister for Arts, Culture and Heritage",
         "count": 190
-      },
-      {
-        "minister": "Minister of Corrections",
-        "count": 189
-      },
-      {
-        "minister": "Minister of Defence",
-        "count": 189
       },
       {
         "minister": "Minister of Agriculture",
@@ -629,11 +621,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 187
       },
       {
-        "minister": "Minister of Foreign Affairs",
-        "count": 187
-      },
-      {
-        "minister": "Minister for Children",
+        "minister": "Minister for Rail",
         "count": 186
       },
       {
@@ -641,7 +629,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 186
       },
       {
-        "minister": "Minister for Whānau Ora",
+        "minister": "Minister of Defence",
         "count": 185
       },
       {
@@ -649,12 +637,24 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 185
       },
       {
-        "minister": "Minister for Economic Growth",
+        "minister": "Minister for Children",
+        "count": 184
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 184
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
         "count": 184
       },
       {
         "minister": "Minister for Trade and Investment",
         "count": 184
+      },
+      {
+        "minister": "Minister for Economic Growth",
+        "count": 183
       },
       {
         "minister": "Minister of Climate Change",
@@ -665,12 +665,16 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 183
       },
       {
-        "minister": "Minister for Rail",
-        "count": 180
+        "minister": "Minister for Infrastructure",
+        "count": 182
       },
       {
         "minister": "Minister of Revenue",
         "count": 175
+      },
+      {
+        "minister": "Minister of Police",
+        "count": 173
       },
       {
         "minister": "Minister of Statistics",
@@ -681,20 +685,16 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 172
       },
       {
-        "minister": "Minister of Police",
-        "count": 172
-      },
-      {
         "minister": "Minister for Land Information",
         "count": 171
       },
       {
         "minister": "Minister for Ethnic Communities",
-        "count": 168
+        "count": 164
       },
       {
         "minister": "Attorney-General",
-        "count": 161
+        "count": 162
       },
       {
         "minister": "Minister for Youth",
@@ -706,15 +706,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Courts",
-        "count": 147
+        "count": 148
       },
       {
         "minister": "Minister for Veterans",
-        "count": 144
+        "count": 143
       },
       {
         "minister": "Minister for Seniors",
-        "count": 136
+        "count": 142
       },
       {
         "minister": "Associate Minister of Justice",
@@ -741,6 +741,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 114
       },
       {
+        "minister": "Minister for Racing",
+        "count": 113
+      },
+      {
         "minister": "Minister for the Community and Voluntary Sector",
         "count": 112
       },
@@ -750,10 +754,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Associate Minister of Education",
-        "count": 109
-      },
-      {
-        "minister": "Minister for Racing",
         "count": 109
       },
       {
@@ -2124,18 +2124,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Acting Minister for Women",
-        "count": 1
-      },
-      {
-        "minister": "Minister for Veterans",
-        "count": 1
-      },
-      {
-        "minister": "Minister for Trade",
-        "count": 1
-      },
-      {
         "minister": "Minister of Corrections",
         "count": 1
       },
@@ -2149,6 +2137,18 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Associate Minister of Housing",
+        "count": 1
+      },
+      {
+        "minister": "Acting Minister for Women",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Veterans",
+        "count": 1
+      },
+      {
+        "minister": "Minister for Trade",
         "count": 1
       },
       {
@@ -2260,11 +2260,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 1
       },
       {
-        "minister": "Minister for Child Poverty Reduction",
+        "minister": "Minister for Small Business and Manufacturing",
         "count": 1
       },
       {
-        "minister": "Minister for Small Business and Manufacturing",
+        "minister": "Minister for Child Poverty Reduction",
         "count": 1
       },
       {
@@ -4559,10 +4559,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "reply": "As Minister for Seniors, none."
       },
       {
-        "minister": "Minister of Health",
+        "minister": "Associate Minister of Health",
         "date": "2026-09-11",
-        "question": "Further to his answer to written question 37368 (2026): does any part of Health New Zealand collect this information, if so, which?",
-        "reply": "I refer the Member to Written Parliamentary Question 40493 (2026)."
+        "question": "How will Health New Zealand ensure that those, living with dementia, who currently receive home support, are in consent over changes to who is providing their care; how will this be communicated, and within what time frame before changes?",
+        "reply": "I am advised that clients and, where appropriate, their families and/or their Enduring Power of Attorney, will be advised of any changes well in advance."
       }
     ]
   },
@@ -6401,7 +6401,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
         "date": "2026-09-23",
         "question": "When, if at all, will 2026 ministerial briefings from the Crown Response Office be proactively released?",
-        "reply": null
+        "reply": "Cabinet papers are proactively released. Key briefings supporting Cabinet decisions are expected to be proactively released by the end of November. All briefings are available to be requested under the Official Information Act and may also be proactively released subsequently."
       },
       {
         "minister": "Minister for Social Development and Employment",
@@ -6543,12 +6543,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister of Housing",
-        "date": "2026-09-22",
-        "question": "How many tenants, if any, have been relocated from Jordan Ave, State Ave, and Rowlands Ave state housing dwellings since 27 November 2023 to 17 September 2026?",
-        "reply": null
-      },
-      {
         "minister": "Minister of Conservation",
         "date": "2026-09-22",
         "question": "What assessment, if any, has the Department of Conservation undertaken of the current capacity of wildlife hospitals to manage increased numbers of sick or injured wild birds during an H5 bird flu outbreak; if so, what were the findings?",
@@ -6557,20 +6551,26 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Minister of Housing",
         "date": "2026-09-22",
-        "question": "How many tenants, if any, have been relocated from Jordan Ave, State Ave, and Rowlands Ave state housing dwellings since 27 November 2023 to 17 September 2026 to another Kāinga Ora home?",
-        "reply": null
+        "question": "How many tenants, if any, have been relocated from Jordan Ave, State Ave, and Rowlands Ave state housing dwellings since 27 November 2023 to 17 September 2026?",
+        "reply": "Kāinga Ora – Homes and Communities advises me that between 27 November 2023 and 31 August 2026, there were 17 tenancies relocated from Jordan Avenue, State Avenue, and Rowlands Avenue. Kāinga Ora may relocate tenants for a number of reasons, including overcrowding, redevelopment, under utilisation, or to due to antisocial behaviour."
       },
       {
-        "minister": "Minister of Education",
-        "date": "2026-09-18",
-        "question": "How many children, if any, are currently on waitlists for learning support services, including Early Intervention, Ongoing Resourcing Scheme, and specialist assessments, as of 17 September 2026?",
-        "reply": "Parliament dissolved: no reply received"
+        "minister": "Minister of Housing",
+        "date": "2026-09-22",
+        "question": "How many tenants, if any, have been relocated from Jordan Ave, State Ave, and Rowlands Ave state housing dwellings since 27 November 2023 to 17 September 2026 to another Kāinga Ora home?",
+        "reply": "Kāinga Ora – Homes and Communities advises me that between 27 November 2023 and 31 August 2026, 16 tenancies from Jordan Avenue, State Avenue, and Rowlands Avenue were relocated to another Kāinga Ora home, involving a total of 59 tenants."
       },
       {
         "minister": "Minister of Housing",
         "date": "2026-09-18",
-        "question": "What directives, if any, have Ministers issued regarding the relocation of tenants in state housing since 27 November 2023 to 17 September 2026?",
-        "reply": "Parliament dissolved: no reply received"
+        "question": "What directives, if any, have Ministers issued regarding the eviction of tenants from state housing since 27 November 2023 to 17 September 2026?",
+        "reply": "I refer the Member to my answer to WPQ 34891 (2025). [REMOVE BEFORE PUBLISHING 34891 (2025). Hon Priyanca Radhakrishnan to the Minister of Housing: What directives, if any, have ministers issued regarding the eviction of tenants from state housing since 27 November 2023? Hon Chris Bishop: Tenancy Evictions and relocations are operational matters and therefore not the subject of Ministerial Directives. The March 2024 Letter of Expectations to the Kāinga Ora Board noted that we expected Kāinga Ora…"
+      },
+      {
+        "minister": "Minister of Housing",
+        "date": "2026-09-18",
+        "question": "How many, if any, undeveloped sites owned by Kāinga Ora in the Maungakiekie electorate have been sold from 27 November 2023 to 17 September 2026, by location?",
+        "reply": "I refer the member to my answer to WPQ 41211 (2026). In the Oranga Large Scale project, land and undeveloped sites are synonymous as cleared development land is sold to development partners."
       }
     ]
   },
@@ -7828,31 +7828,31 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "minister": "Minister of Foreign Affairs",
         "date": "2026-09-21",
         "question": "Has he sought advice since November 2023 from the Ministry of Foreign Affairs and Trade on the implications of New Zealand withdrawing from the Paris Agreement?",
-        "reply": null
+        "reply": "No."
       },
       {
         "minister": "Minister of Foreign Affairs",
         "date": "2026-09-21",
         "question": "Further to reply 39788, when, if ever, will the Foreign Minister decide on whether New Zealand will participate in the International Panel on Inequality at the United Nations?",
-        "reply": null
+        "reply": "As the proposed International Panel on Inequality has not yet been established, no decision is needed."
       },
       {
         "minister": "Minister of Foreign Affairs",
         "date": "2026-09-21",
         "question": "Further to reply 39788, has the Foreign Minister sought advice from the Ministry of Foreign Affairs and Trade about New Zealand participation in the International Panel on Inequality?",
-        "reply": null
+        "reply": "No."
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
+        "date": "2026-09-21",
+        "question": "What advice, if any, has he received on the implications of New Zealand withdrawing from the Paris Agreement?",
+        "reply": "None."
       },
       {
         "minister": "Associate Minister of Housing",
         "date": "2026-09-15",
         "question": "How many case files, if any, since June 1st 2026 have been made by the Ministry of Social Development as a result of requesting emergency housing via phone calls; listed by month and region?",
         "reply": "I am advised that the Ministry of Social Development (the Ministry) is unable to provide the number of emergency housing applications broken down by association with a phone call to the Ministry, as this would require a review of individual client files, and for the Ministry to undertake substantial manual collation and divert staff from their core duties. In accordance with the Speaker’s Ruling 210/6, I consider that the time, and hence the expense, of answering this part of the Member’s questi…"
-      },
-      {
-        "minister": "Associate Minister of Housing",
-        "date": "2026-09-15",
-        "question": "How many calls, if any, since June 1st 2026 have been made to the Ministry of Social Development to request emergency housing; listed by month and region?",
-        "reply": "I refer the Member to reply number 40957 (2026)"
       }
     ]
   },
@@ -8166,11 +8166,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 33
       },
       {
-        "minister": "Minister for the Environment",
+        "minister": "Minister of Finance",
         "count": 33
       },
       {
-        "minister": "Minister of Finance",
+        "minister": "Minister for the Environment",
         "count": 33
       },
       {
@@ -8238,11 +8238,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 22
       },
       {
-        "minister": "Minister of Transport",
+        "minister": "Minister for Children",
         "count": 22
       },
       {
-        "minister": "Minister for Children",
+        "minister": "Minister of Transport",
         "count": 22
       },
       {
@@ -8338,11 +8338,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 17
       },
       {
-        "minister": "Minister for Youth",
+        "minister": "Minister of Corrections",
         "count": 16
       },
       {
-        "minister": "Minister of Corrections",
+        "minister": "Minister for Youth",
         "count": 16
       },
       {
@@ -8608,7 +8608,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "minister": "Minister of Immigration",
         "date": "2026-09-24",
         "question": "What is the percentage of expressions of interest for the Parent Resident Visa that were renewed within 90 days after expiration, from 12/10/2024 to 8/8/2026?",
-        "reply": null
+        "reply": "I am advised that approximately 75% of EOIs were resubmitted within 90 days of expiry. EOIs may not be resubmitted for a range of reasons including sponsors no long meeting sponsorship requirements, a change in circumstances or intentions for the parent/s, or the parent/s no longer meeting eligibility requirements. An EOI resubmitted within 90 days will have generally had an EOI consistently active to be selected from each ballot which indicates a clear and continuous commitment for over two yea…"
       },
       {
         "minister": "Minister of Immigration",
@@ -9275,14 +9275,14 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Associate Minister of Health",
         "date": "2026-09-14",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 7 September 2026, listed by agency, title and date received?",
-        "reply": null
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 7 September 2026, by title and date?",
+        "reply": "As Associate Minister of Health, none."
       },
       {
         "minister": "Associate Minister of Health",
         "date": "2026-09-14",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 7 September 2026, by title and date?",
-        "reply": null
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 7 September 2026, listed by agency, title and date received?",
+        "reply": "Titles of all advice that I have received have been, or will be, proactively released on the Ministry of Health and Health New Zealand websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2019-2025 https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2026 https://www.tewhatuora.govt.nz/publications https://www.tewhatuora.govt.nz/publications/te-aka-whai-ora-advice-provided-to-the-minister-and-associate-ministers-of-healt…"
       },
       {
         "minister": "Associate Minister of Health",
