@@ -118,9 +118,6 @@ export function PledgeCounter({ source = 'homepage', showWall = true }: {
       if (d.already) { setStep('check'); return }
       setBurst(true)
       setStep('celebrate')
-      // Long enough for the burst and the three chevrons to land, so the next
-      // step does not cut off the one moment the whole thing builds to.
-      window.setTimeout(() => setStep('check'), 2600)
     } catch {
       setError('That didn’t save. Try once more.')
     } finally { setBusy(false) }
@@ -215,7 +212,19 @@ export function PledgeCounter({ source = 'homepage', showWall = true }: {
                 <p style={{ fontSize: 16, fontWeight: 600, color: 'rgba(255,255,255,.7)', margin: 0 }}>
                   of {goal.toLocaleString('en-NZ')}
                 </p>
+                {/* On the screen people are asked to screenshot, so the
+                    screenshot carries the campaign rather than just a number. */}
+                <p style={{ fontSize: 15.5, fontWeight: 800, color: MINT, letterSpacing: '-.01em', margin: '16px 0 0' }}>
+                  #PledgeToVote
+                </p>
                 <Bar pct={pct} />
+                {/* Quiet, and theirs to ignore. The enrolment check is the
+                    right next thing but it is not what they came for, and
+                    taking the screen off them to offer it loses the
+                    screenshot. */}
+                <button onClick={() => setStep('check')} style={nextStep}>
+                  Check you&rsquo;re enrolled <span aria-hidden>&rarr;</span>
+                </button>
               </div>
             </>
           )}
@@ -407,6 +416,14 @@ const cta = (busy: boolean): React.CSSProperties => ({
   fontSize: 17.5, fontWeight: 800, cursor: busy ? 'default' : 'pointer',
   opacity: busy ? 0.7 : 1,
 })
+
+const nextStep: React.CSSProperties = {
+  display: 'inline-flex', alignItems: 'center', gap: 7,
+  margin: '26px auto 0', padding: '11px 18px', borderRadius: 11,
+  border: '1.5px solid rgba(255,255,255,.3)', background: 'transparent',
+  color: 'rgba(255,255,255,.88)', fontFamily: MANROPE,
+  fontSize: 14, fontWeight: 700, cursor: 'pointer',
+}
 
 const input: React.CSSProperties = {
   width: '100%', background: 'rgba(255,255,255,.1)',
