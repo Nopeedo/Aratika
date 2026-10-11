@@ -9,7 +9,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink, Swords, ChevronDown, ChevronUp, Pencil, Check } from 'lucide-react'
+import { Users, Landmark, MapPin, Scale, Gavel, X, ArrowRight, Map as MapIcon, PenLine, ExternalLink, Swords, ChevronDown, ChevronUp, Pencil, Check, Bookmark as BookmarkIcon } from 'lucide-react'
 import { Avatar } from '@/components/ui/avatar'
 import { BILLS_54, type Bill54 } from '@/constants/bills-54'
 import { PARTY_COLORS } from '@/constants/parties'
@@ -50,6 +50,9 @@ const GROUPS: { kind: Bookmark['kind']; label: string; icon: React.ElementType }
   { kind: 'mp', label: 'Tracked MPs', icon: Users },
   { kind: 'party', label: 'Tracked parties', icon: Landmark },
   { kind: 'policy', label: 'Tracked policy topics', icon: Scale },
+  // Saved positions are a different act from tracking a topic: one party on
+  // one issue, kept for when the reader comes to decide.
+  { kind: 'position', label: 'Saved policies', icon: BookmarkIcon },
   { kind: 'bill', label: 'Tracked bills', icon: Gavel },
   { kind: 'electorate', label: 'Tracked electorates', icon: MapPin },
   // Separate from electorates on purpose: "my seat, who represents me" and
@@ -67,6 +70,9 @@ const KIND_STYLE: Record<Bookmark['kind'], { tint: string; ink: string }> = {
   bill:       { tint: '#fdf3ff', ink: '#a21caf' },
   electorate:   { tint: '#fef1f2', ink: '#be123c' },
   battleground: { tint: '#fff7ed', ink: '#c2410c' },
+  // Close to policy's teal, because a saved position IS a policy, just a
+  // narrower one. Far enough apart to tell the two rows apart at a glance.
+  position:     { tint: '#ecfdf5', ink: '#047857' },
 }
 
 /** The card's ground and edge.
@@ -118,6 +124,8 @@ function hrefFor(b: Bookmark): string {
     case 'mp': return `/mps/${b.ref_id}`
     case 'party': return `/parties/${b.ref_id}`
     case 'policy': return `/policies/${b.ref_id}`
+    // ref_id is '<topic>:<party>'.
+    case 'position': return `/policies/${b.ref_id.replace(':', '/')}`
     case 'bill': return `/bills/${b.ref_id}`
     case 'electorate': return `/map?search=${encodeURIComponent(b.ref_id)}`
     default: return '/'

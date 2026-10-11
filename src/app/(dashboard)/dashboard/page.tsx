@@ -137,6 +137,7 @@ export default async function DashboardPage() {
   const trackedTopics = new Set<string>()
   const trackedMps = new Set<string>()          // MP slugs — matches item.mps
   const trackedElectorates = new Set<string>()  // ref_id + display label — matches item.electorates (tagged by name)
+  const savedPositions = new Set<string>()      // '<topic>:<party>' — counted, not fed into the match sets
   for (const b of bookmarks) {
     if (b.kind === 'party') trackedParties.add(b.ref_id)
     else if (b.kind === 'mp') {
@@ -146,8 +147,15 @@ export default async function DashboardPage() {
     }
     else if (b.kind === 'policy') trackedTopics.add(b.ref_id)
     else if (b.kind === 'electorate') { trackedElectorates.add(b.ref_id); if (b.label) trackedElectorates.add(b.label) }
+    // Saved positions are counted but deliberately NOT fed into the match
+    // sets below. Saving National on housing is a request for that position,
+    // not for every National story and every housing story — widening the
+    // feed off one save would bury the reader in a feed they never asked
+    // for. The notification for a saved position comes from
+    // detect-positions.mjs, which targets this kind directly.
+    else if (b.kind === 'position') savedPositions.add(b.ref_id)
   }
-  const following = trackedParties.size + trackedTopics.size + trackedMps.size + trackedElectorates.size
+  const following = trackedParties.size + trackedTopics.size + trackedMps.size + trackedElectorates.size + savedPositions.size
   const matches = (parties: string[], topics: string[], mps: string[] = [], electorates: string[] = []) =>
     parties.some((p) => trackedParties.has(p)) ||
     topics.some((t) => trackedTopics.has(t)) ||

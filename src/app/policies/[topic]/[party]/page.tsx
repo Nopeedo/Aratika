@@ -21,6 +21,7 @@ import { getDeepDives } from '@/constants/policy-deep-dives'
 import { PolicyCoverage } from '@/components/policy/policy-coverage'
 import { BORDER, INK, JADE, MANROPE, SECONDARY, TERTIARY, WOVEN_PAGE } from '@/constants/theme'
 import { BackLink } from '@/components/ui/back-link'
+import { TrackWithAccount } from '@/components/bookmarks/track-with-account'
 
 // Revalidated, not force-dynamic.
 // Editor-approved positions, matching the topic page above it.
@@ -64,6 +65,26 @@ export default async function PositionPage({ params }: { params: Promise<{ topic
           <h1 style={{ fontSize: 'clamp(26px, 4vw, 36px)', fontWeight: 800, letterSpacing: '-.02em', color: INK, fontFamily: MANROPE, margin: 0, lineHeight: 1.1 }}>
             {p.name} on {t.label}
           </h1>
+          {/* SAVE, not "like". A like on a party's policy reads as endorsement
+              on a non-partisan site, and a visible count would be a popularity
+              ranking of party policies that nobody asked us to publish. This is
+              private: RLS restricts every bookmark row to its owner.
+
+              Distinct from the Track control on /policies/[topic], which follows
+              a whole issue. This is one party on one issue, which is the thing
+              a reader comparing positions actually wants to keep. */}
+          <div style={{ marginTop: 16 }}>
+            <TrackWithAccount
+              entity={{
+                kind: 'position', refId: `${topic}:${party}`,
+                label: `${p.name} on ${t.label}`, sublabel: 'Party position',
+                href: `/policies/${topic}/${party}`, accent: p.color,
+              }}
+              label="Save this policy"
+              savedLabel="Saved"
+              accent={p.color}
+            />
+          </div>
         </div>
       </div>
 

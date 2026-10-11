@@ -64,7 +64,7 @@ const current = items.filter((it) => String(it.data?.period || '') !== '2023')
 console.log(`Current-policy positions (2023 manifesto entries skipped): ${current.length}`)
 
 const { data: bms, error: e2 } = await sb()
-  .from('bookmarks').select('user_id, kind, ref_id').in('kind', ['party', 'policy'])
+  .from('bookmarks').select('user_id, kind, ref_id').in('kind', ['party', 'policy', 'position'])
 if (e2) { console.error(e2.message); process.exit(1) }
 
 // The bookmark's OWN ref_id is carried alongside the user, not just the
@@ -74,13 +74,17 @@ if (e2) { console.error(e2.message); process.exit(1) }
 // does not exist.
 const byParty = new Map()
 const byTopic = new Map()
+// kind='position' is ONE party on ONE topic, ref_id '<topic>:<party>'. Keyed
+// whole, so a reader who saved National on housing hears about National on
+// housing and nothing else they did not ask for.
+const byPosition = new Map()
 for (const b of bms || []) {
-  const m = b.kind === 'party' ? byParty : byTopic
+  const m = b.kind === 'party' ? byParty : b.kind === 'position' ? byPosition : byTopic
   const key = lc(b.ref_id)
   if (!m.has(key)) m.set(key, [])
   m.get(key).push({ userId: b.user_id, refId: b.ref_id })
 }
-console.log(`Trackers: ${byParty.size} part(ies), ${byTopic.size} topic(s)`)
+console.log(`Trackers: ${byParty.size} part(ies), ${byTopic.size} topic(s), ${byPosition.size} saved position(s)`)
 
 let enqueued = 0
 let skipped = 0
@@ -101,8 +105,13 @@ for (const it of current) {
   // Topic before party, the same order of specificity detect-content uses: a
   // reader tracking both wants "National on Economy" under Economy, which is
   // the narrower of the two things they asked to hear about.
+  // Most specific first, so the notification lands on the narrowest thing the
+  // reader asked for. A saved position beats a tracked topic beats a tracked
+  // party: someone who saved National on housing AND follows housing wants this
+  // filed under the position they kept, not under the whole issue.
   const targets = new Map()
-  for (const b of byTopic.get(topic) || []) targets.set(b.userId, { kind: 'policy', ref: b.refId })
+  for (const b of byPosition.get(`${topic}:${party}`) || []) targets.set(b.userId, { kind: 'position', ref: b.refId })
+  for (const b of byTopic.get(topic) || []) if (!targets.has(b.userId)) targets.set(b.userId, { kind: 'policy', ref: b.refId })
   for (const b of byParty.get(party) || []) if (!targets.has(b.userId)) targets.set(b.userId, { kind: 'party', ref: b.refId })
   if (targets.size === 0) continue
 

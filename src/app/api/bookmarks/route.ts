@@ -18,7 +18,7 @@ export const runtime = 'nodejs'
 // 'battleground' was split out of 'electorate' the constraint was widened and
 // this list was not, so every attempt to track a battleground returned 400 for
 // three days while the map's button appeared to work.
-const KINDS = ['mp', 'party', 'electorate', 'policy', 'bill', 'battleground']
+const KINDS = ['mp', 'party', 'electorate', 'policy', 'bill', 'battleground', 'position']
 
 export async function GET() {
   const supabase = await createClient()

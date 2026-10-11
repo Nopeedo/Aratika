@@ -18,7 +18,9 @@ import { useCallback, useEffect, useState } from 'react'
 import { useUser } from '@/hooks/use-user'
 
 export interface BookmarkEntity {
-  kind: 'mp' | 'party' | 'electorate' | 'policy' | 'bill' | 'battleground'
+  // 'position' is one party on one topic, ref_id '<topic>:<party>'. Distinct
+  // from 'policy', which follows a whole topic for changes.
+  kind: 'mp' | 'party' | 'electorate' | 'policy' | 'bill' | 'battleground' | 'position'
   refId: string
   label: string
   sublabel?: string
