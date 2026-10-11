@@ -210,6 +210,10 @@ export default function PrivacyPage() {
         <li><strong>Stripe</strong>, takes donations. Donating sends your browser to Stripe’s own page, so your card
         details and your IP address reach Stripe there rather than here. No Stripe code runs on Politika.</li>
         <li><strong>Esri</strong>, supplies the background imagery for the electorate map. Loading the map means Esri receives your IP address and which part of the country you’re looking at.</li>
+        <li><strong>YouTube</strong>, hosts the video clips on the news page, MP profiles and electorate pages. We
+        use youtube-nocookie.com, so Google sets no tracking cookies and receives nothing until you actually press
+        play on a clip. Once you do, YouTube sees your IP address and which video you watched, the same as if you had
+        opened it there.</li>
         <li><strong>News publishers</strong>, article pictures on the news page load from RNZ, the Beehive, NZ Herald, Stuff and Newsroom directly, so those sites see your IP address when the page loads. The headlines link out to them too.</li>
         <li><strong>Your browser’s notification service</strong>, Google, Apple or Mozilla, depending on your browser, but only if you turn notifications on. The message itself is encrypted before it leaves us, though they can see that something was sent to your device.</li>
       </ul>

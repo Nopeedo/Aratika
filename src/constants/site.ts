@@ -45,8 +45,10 @@ export const SITE = {
     // code: both ids answer 200, and profile.php?id= addresses BOTH profiles
     // and Pages, so the URL shape proves nothing.
     { label: 'Facebook', url: 'https://www.facebook.com/people/Politikanz/61594988367407/' },
-    // { label: 'TikTok', url: 'https://www.tiktok.com/@…' },
-    // { label: 'YouTube', url: 'https://www.youtube.com/@…' },
+    { label: 'TikTok', url: 'https://www.tiktok.com/@politika.nz3' },
+    // By CHANNEL ID, not handle. The id is permanent; the handle is not, and a
+    // handle change would break this link silently. Channel created 12 Oct 2026.
+    { label: 'YouTube', url: 'https://www.youtube.com/channel/UCONssxHIEEIJ-E498hScHyg' },
   ] as { label: string; url: string }[],
 
   // Promoter statement (Electoral Act 1993 s204F). An election advertisement must
