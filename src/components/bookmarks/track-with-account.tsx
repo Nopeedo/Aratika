@@ -22,7 +22,9 @@ import * as React from 'react'
 import Link from 'next/link'
 import { Bookmark, BookmarkCheck, X, MailCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { useBookmarks, type BookmarkEntity } from '@/hooks/use-bookmarks'
+import { useBookmarks, stashPendingTrack, clearPendingTrack, type BookmarkEntity } from '@/hooks/use-bookmarks'
+import { GoogleSignIn } from '@/components/auth/google-signin'
+import { OrDivider } from '@/components/auth/auth-ui'
 import { InfoButton, InfoHeading, InfoText } from '@/components/ui/info-button'
 import { Field, PasswordField, SubmitButton, ErrorBox, PasswordStrength, passwordIssue } from '@/components/auth/auth-ui'
 import { Mail, User as UserIcon } from 'lucide-react'
@@ -194,6 +196,7 @@ export function TrackWithAccount({ entity, label, savedLabel, accent }: {
         <AccountDialog
           accent={accent}
           what={entity.label}
+          pending={entity}
           onClose={() => setAskAccount(false)}
           onSignedIn={async () => { await toggle(entity) }}
         />
@@ -205,13 +208,34 @@ export function TrackWithAccount({ entity, label, savedLabel, accent }: {
 /** The ask itself: a dialog over the page, never a navigation. */
 /** Exported so BookmarkButton raises the SAME on-page ask rather than a
  *  second implementation of it. */
-export function AccountDialog({ accent, what, onClose, onSignedIn }: {
+export function AccountDialog({ accent, what, pending, onClose, onSignedIn }: {
   accent: string
   what: string
+  /**
+   * The thing they tapped, stashed for the SIGN-IN REPLAY.
+   *
+   * Email sign-up and the GIS Google button both finish on this page, so
+   * onSignedIn runs and the track is made directly. Google's REDIRECT fallback
+   * cannot: it leaves the page, and whatever was held in React state is gone.
+   * use-bookmarks already lifts anything in localStorage into the account on
+   * sign-in, so stashing it there makes the redirect path work too, with no
+   * second mechanism to keep in step.
+   *
+   * Cleared again if the dialog is closed without an account, so a reader who
+   * changes their mind does not silently acquire a track on some later sign-in.
+   */
+  pending?: BookmarkEntity
   onClose: () => void
   /** Run the track the reader asked for, now that there is somewhere to put it. */
   onSignedIn: () => Promise<void>
 }) {
+  // Held for the redirect path, dropped again if they close without an account.
+  React.useEffect(() => {
+    if (!pending) return
+    stashPendingTrack(pending)
+    return () => { clearPendingTrack(pending) }
+  }, [pending])
+
   const [name, setName] = React.useState('')
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -278,7 +302,7 @@ export function AccountDialog({ accent, what, onClose, onSignedIn }: {
               <MailCheck style={{ width: 22, height: 22, color: JADE }} />
               <p style={{ fontSize: 14, color: INK, fontFamily: MANROPE, lineHeight: 1.55, margin: '8px 0 0' }}>
                 We&rsquo;ve sent a link to <b>{email}</b>. Confirm it, and then tap Track again to follow
-                {' '}{what.toLowerCase()}. Tracking needs an account, so nothing is saved until yours exists.
+                {' '}<b style={{ color: INK }}>{what}</b>. Tracking needs an account, so nothing is saved until yours exists.
               </p>
             </div>
           ) : (
@@ -287,9 +311,19 @@ export function AccountDialog({ accent, what, onClose, onSignedIn }: {
                   tapped. Not "sign up to continue": the reason is the point. */}
               <p style={{ fontSize: 13.5, color: SECONDARY, fontFamily: MANROPE, lineHeight: 1.5, margin: '8px 0 14px' }}>
                 Tracking lives in your account, so we can tell you when a position on{' '}
-                <b style={{ color: INK }}>{what.toLowerCase()}</b> is added or changes. Make one and we&rsquo;ll start
+                <b style={{ color: INK }}>{what}</b> is added or changes. Make one and we&rsquo;ll start
                 tracking it straight away.
               </p>
+
+              {/* Google first: it is one tap against three fields, and most
+                  people already have the session on the device. The GIS button
+                  signs in without leaving the page, so onSignedIn finishes the
+                  track here; if GIS is unavailable it falls back to the
+                  redirect flow, which the stash above covers. */}
+              <GoogleSignIn next={typeof window !== 'undefined' ? window.location.pathname : '/dashboard'}
+                onError={setError}
+                onSignedIn={async () => { await onSignedIn(); onClose() }} />
+              <OrDivider />
 
               <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {error && <ErrorBox message={error} />}

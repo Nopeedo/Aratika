@@ -42,6 +42,40 @@ function readLocal(): Bookmark[] {
   try { const raw = window.localStorage.getItem(LS_KEY); return raw ? JSON.parse(raw) : [] } catch { return [] }
 }
 
+/**
+ * Hold a track across a sign-in that LEAVES THE PAGE.
+ *
+ * Email sign-up and the GIS Google button both finish in place, so the caller
+ * simply runs the toggle afterwards. Google's redirect fallback cannot: it
+ * navigates away and React state goes with it. The sign-in sync above already
+ * lifts anything here into the account and clears it, so this reuses that one
+ * mechanism rather than adding a second thing to keep in step.
+ *
+ * Exported as a pair so the storage key and the row shape stay in this file.
+ */
+export function stashPendingTrack(e: BookmarkEntity) {
+  if (typeof window === 'undefined') return
+  try {
+    const list = readLocal().filter((b) => keyOf(b.kind, b.ref_id) !== keyOf(e.kind, e.refId))
+    list.push({
+      id: `tmp-${keyOf(e.kind, e.refId)}`, kind: e.kind, ref_id: e.refId, label: e.label,
+      sublabel: e.sublabel, href: e.href, accent: e.accent, created_at: new Date().toISOString(),
+    })
+    window.localStorage.setItem(LS_KEY, JSON.stringify(list))
+  } catch { /* private mode: the in-page paths still work */ }
+}
+
+/** Dropped when the reader closes the ask without making an account, so they
+ *  do not silently acquire a track on some unrelated sign-in weeks later. */
+export function clearPendingTrack(e: BookmarkEntity) {
+  if (typeof window === 'undefined') return
+  try {
+    const list = readLocal().filter((b) => keyOf(b.kind, b.ref_id) !== keyOf(e.kind, e.refId))
+    if (list.length) window.localStorage.setItem(LS_KEY, JSON.stringify(list))
+    else window.localStorage.removeItem(LS_KEY)
+  } catch { /* nothing to clean up */ }
+}
+
 export function useBookmarks() {
   const { user, loading: authLoading } = useUser()
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])

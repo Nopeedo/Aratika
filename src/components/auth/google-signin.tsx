@@ -86,7 +86,16 @@ function loadGis(): Promise<void> {
   })
 }
 
-export function GoogleSignIn({ next = '/dashboard', onError }: { next?: string; onError?: (msg: string) => void }) {
+export function GoogleSignIn({ next = '/dashboard', onError, onSignedIn }: {
+  next?: string
+  onError?: (msg: string) => void
+  /** Supplied by a dialog that must STAY on the page and finish what the
+   *  reader tapped. Navigating to `next` would throw away the pending
+   *  action the account was created for. Only the GIS path can honour this;
+   *  the redirect fallback below leaves the page by definition, which is why
+   *  callers also stash the pending action for the sign-in replay. */
+  onSignedIn?: () => void | Promise<void>
+}) {
   const router = useRouter()
   const hostRef = React.useRef<HTMLDivElement>(null)
   const rawNonceRef = React.useRef('')
@@ -115,6 +124,7 @@ export function GoogleSignIn({ next = '/dashboard', onError }: { next?: string; 
           const supabase = createClient()
           const { error } = await supabase.auth.signInWithIdToken({ provider: 'google', token: resp.credential, nonce: rawNonceRef.current })
           if (error) { onError?.(error.message); return }
+          if (onSignedIn) { await onSignedIn(); router.refresh(); return }
           router.push(next)
           router.refresh()
         },
@@ -130,7 +140,7 @@ export function GoogleSignIn({ next = '/dashboard', onError }: { next?: string; 
     })().catch(() => { if (!cancelled) setState('failed') })
 
     return () => { cancelled = true }
-  }, [next, onError, router])
+  }, [next, onError, router, onSignedIn])
 
   // GIS unavailable / not configured → the proven redirect flow still works.
   if (state === 'failed') return <GoogleButton next={next} onError={onError} />
