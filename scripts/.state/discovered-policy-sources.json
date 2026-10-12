@@ -239,27 +239,31 @@
       },
       {
         "url": "https://www.national.org.nz/policies/build-the-future",
-        "title": "Easier building consent system"
+        "title": "Easier Building Consent System"
       },
       {
         "url": "https://www.national.org.nz/policies/grocery-competition",
-        "title": "More grocery competition"
+        "title": "More Grocery Competition"
       },
       {
         "url": "https://www.national.org.nz/policies/hunters-and-anglers",
-        "title": "National backs South Island growth"
+        "title": "National Backs South Island Growth"
       },
       {
         "url": "https://www.national.org.nz/policies/international-visitor-levy",
-        "title": "International Visitor Levy reset"
+        "title": "International Visitor Levy Reset"
       },
       {
         "url": "https://www.national.org.nz/policies/kiwisaver",
         "title": "Enhancing KiwiSaver for Everyone"
       },
       {
+        "url": "https://www.national.org.nz/policies/nationals-fiscal-plan",
+        "title": "National's Fiscal Plan"
+      },
+      {
         "url": "https://www.national.org.nz/policies/no-new-taxes",
-        "title": "No new taxes under National"
+        "title": "No New Taxes Under National"
       },
       {
         "url": "https://www.national.org.nz/policies/paid-parental-leave",
@@ -275,13 +279,13 @@
       },
       {
         "url": "https://www.national.org.nz/policies/walfare",
-        "title": "Firm, fair and affordable welfare system"
+        "title": "Firm, Fair and Affordable Welfare System"
       }
     ],
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "Widening access to 5% first home deposits"
+        "title": "5% First Home Deposits"
       }
     ],
     "foreign-policy": [
@@ -317,11 +321,11 @@
     "health": [
       {
         "url": "https://www.national.org.nz/healthcare",
-        "title": "National's Quality Timely Healthcare Policy"
+        "title": "Quality, Timely Healthcare Policy"
       },
       {
         "url": "https://www.national.org.nz/policies/more-medicines-and-earlier-care",
-        "title": "More medicines and earlier care"
+        "title": "More Medicines and Earlier Care"
       }
     ],
     "education": [
@@ -442,6 +446,10 @@
         "title": "Labour's Apprenticeship Boost Expansion"
       },
       {
+        "url": "https://www.labour.org.nz/cutting-back-to-school-costs",
+        "title": "Cutting Back-to-School Costs"
+      },
+      {
         "url": "https://www.labour.org.nz/maori-trades-training",
         "title": "Labour's Māori Trades Training Investment"
       }
@@ -463,7 +471,7 @@
     "crime-justice": [
       {
         "url": "https://www.act.org.nz/policies/law-and-order",
-        "title": "ACT Law & Order Policy"
+        "title": "ACT Law and Order Policy"
       }
     ],
     "health": [
@@ -1044,8 +1052,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-12",
+    "lastRun": "2026-10-13",
     "parties": 14,
-    "policyPages": 217
+    "policyPages": 219
   }
 }
