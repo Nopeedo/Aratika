@@ -255,13 +255,31 @@ const pending = []          // pages needing triage this run
 const stats = { crawled: 0, fetched: 0, unchanged: 0, failed: 0, skippedJunk: 0, offIndex: 0, dropped: 0 }
 const firstRunParties = []
 
+/** Parties that know pages but managed to fetch none this run. */
+const blind = []
+
 for (const p of targets) {
   const known = state[p.slug] || {}
+  const fetchedBefore = stats.fetched
   const isFirstRun = Object.keys(known).length === 0
   if (isFirstRun) firstRunParties.push(p.slug)
 
-  let links
-  try { links = linksOn(p.index) } catch (e) { console.warn(`  ✗ ${p.slug}: index fetch failed (${e.message})`); continue }
+  // A FAILED INDEX NO LONGER SKIPS THE PARTY. It used to `continue` here, which
+  // threw away every known page too — and that silently froze five parties for
+  // five weeks (green, nzfirst, top, tpm, nz-outdoors, all stuck on their
+  // 7 Sep first-run hashes while the job stayed green). The comment forty lines
+  // below already said a broken index "only costs DISCOVERY of new pages for
+  // one run … not worth skipping the party for"; the catch did the opposite.
+  //
+  // Now: no index means no NEW pages this run, and every page already known is
+  // still fetched and hashed. The failure is recorded and reported at the end.
+  let links = []
+  let indexFailed = null
+  try { links = linksOn(p.index) }
+  catch (e) {
+    indexFailed = e.message
+    console.warn(`  ⚠ ${p.slug}: index fetch failed (${e.message}) — no new pages discovered; known pages still checked`)
+  }
 
   // The same broken-fetch guard the old detector had, and for the same reason:
   // a blocked or redirected index returns a handful of links, and without this
@@ -356,8 +374,13 @@ for (const p of targets) {
   }
 
   const seen = Object.keys(next).length
+  const got = stats.fetched - fetchedBefore
+  // A party that KNOWS pages and fetched NONE is a fault, not a quiet day. That
+  // is exactly the shape the silent freeze had: entries intact, nothing
+  // re-read, and no signal anywhere that coverage had stopped.
+  if (!isFirstRun && knownCount > 0 && got === 0) blind.push({ slug: p.slug, known: knownCount, indexFailed })
   console.log(`  ${p.slug.padEnd(22)} ${String(candidates.length).padStart(3)} pages` +
-    (isFirstRun ? '  (first run — recording state)' : `  ${pending.filter((x) => x.slug === p.slug).length} new/changed of ${seen} tracked`))
+    (isFirstRun ? '  (first run — recording state)' : `  ${pending.filter((x) => x.slug === p.slug).length} new/changed of ${seen} tracked, ${got} fetched`))
 }
 
 // ── Triage ───────────────────────────────────────────────────────────────────
@@ -473,6 +496,14 @@ sources._meta = {
   lastRun: today,
   parties: Object.keys(sources).length,
   policyPages: Object.values(sources).reduce((n, t) => n + Object.values(t).reduce((m, l) => m + l.length, 0), 0),
+  // Written so the morning freshness check can tell "crawled, nothing changed"
+  // apart from "never crawled" — a distinction it could not make, which is why
+  // five frozen parties passed it every day for five weeks.
+  blind: blind.map((b) => b.slug),
+  perParty: Object.fromEntries(Object.entries(state).map(([slug, pages]) => {
+    const ds = Object.values(pages).map((e) => e.lastChanged).filter(Boolean).sort()
+    return [slug, { pages: Object.keys(pages).length, newest: ds[ds.length - 1] || null }]
+  })),
 }
 
 if (DRY) { console.log('\n(dry run — state not written)'); process.exit(0) }
@@ -488,6 +519,22 @@ console.log(`\nState written. ${sources._meta.policyPages} policy page(s) across
 // unrelated git error went unnoticed — nobody was reading a passing run either.
 // Exit 2 when there is real work waiting, so the run goes red for a true reason
 // and the daily refresh has something to act on.
+// A PARTY THAT FETCHED NOTHING IS A BREAKAGE, and it outranks exit 2. Exit 2
+// means "there is work to do", which is routine. This means the crawl is lying
+// about its coverage: every downstream fingerprint for that party is frozen at
+// whatever it last managed to read, and nothing says so.
+if (blind.length) {
+  console.error(`
+✗ ${blind.length} part(y/ies) fetched ZERO pages this run despite knowing some:`)
+  for (const b of blind) {
+    console.error(`    ${b.slug.padEnd(22)} ${b.known} known page(s)` +
+      (b.indexFailed ? ` — index fetch failed: ${b.indexFailed}` : ' — index fetched, but every page failed'))
+  }
+  console.error('  Their policy pages are NOT being watched, so their positions cannot update.')
+  console.error('  Most likely a WAF or bot block on the runner IP: these sites fetch fine from a desktop.')
+  process.exit(1)
+}
+
 if (newPolicies.length || changedPolicies.length) {
   console.log('\nExiting 2: policy pages changed. refresh-positions will re-draft them into /editor.')
   process.exit(2)

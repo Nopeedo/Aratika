@@ -15,7 +15,7 @@
       },
       {
         "url": "https://www.greens.org.nz/manifesto_2026",
-        "title": "Green Party 2026 Manifesto"
+        "title": "Green Party Manifesto 2026"
       },
       {
         "url": "https://www.greens.org.nz/media_policy",
@@ -33,7 +33,7 @@
     "treaty-maori-affairs": [
       {
         "url": "https://www.greens.org.nz/te_tiriti_o_waitangi",
-        "title": "Green Party Te Tiriti o Waitangi Policy"
+        "title": "Te Tiriti o Waitangi Policy"
       },
       {
         "url": "https://www.greens.org.nz/te_tiriti_policy",
@@ -66,6 +66,10 @@
         "title": "Government in the Economy Policy"
       },
       {
+        "url": "https://www.greens.org.nz/jobs_redirect",
+        "title": "Good Jobs for All of Us"
+      },
+      {
         "url": "https://www.greens.org.nz/livelihoods_policy",
         "title": "Green Party Livelihoods Policy"
       },
@@ -82,6 +86,24 @@
         "title": "Workforce Policy"
       }
     ],
+    "climate": [
+      {
+        "url": "https://www.greens.org.nz/climate_change_policy",
+        "title": "Climate Change Policy"
+      },
+      {
+        "url": "https://www.greens.org.nz/energy_policy",
+        "title": "Green Party Energy Policy"
+      },
+      {
+        "url": "https://www.greens.org.nz/nature_and_climate",
+        "title": "Nature and Climate Policy"
+      },
+      {
+        "url": "https://www.greens.org.nz/transport_policy",
+        "title": "Green Party Transport Policy"
+      }
+    ],
     "environment": [
       {
         "url": "https://www.greens.org.nz/agriculture_policy",
@@ -94,6 +116,10 @@
       {
         "url": "https://www.greens.org.nz/biodiversity_environmental_regeneration_policy",
         "title": "Biodiversity and Environmental Regeneration Policy"
+      },
+      {
+        "url": "https://www.greens.org.nz/connect_aotearoa_nav_rd",
+        "title": "Connect Aotearoa: Public Transport Policy"
       },
       {
         "url": "https://www.greens.org.nz/emergency_management_policy",
@@ -122,20 +148,6 @@
       {
         "url": "https://www.greens.org.nz/waste_and_hazardous_substances_policy",
         "title": "Waste and Hazardous Substances Policy"
-      }
-    ],
-    "climate": [
-      {
-        "url": "https://www.greens.org.nz/climate_change_policy",
-        "title": "Climate Change Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/energy_policy",
-        "title": "Green Party Energy Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/transport_policy",
-        "title": "Green Party Transport Policy"
       }
     ],
     "health": [
@@ -231,7 +243,7 @@
     "economy": [
       {
         "url": "https://www.national.org.nz/economy",
-        "title": "National's Economic Record and Plan"
+        "title": "National's Economic Plan and Record"
       },
       {
         "url": "https://www.national.org.nz/policies/boost-for-graduates",
@@ -239,27 +251,31 @@
       },
       {
         "url": "https://www.national.org.nz/policies/build-the-future",
-        "title": "Easier building consent system"
+        "title": "Easier Building Consent System"
       },
       {
         "url": "https://www.national.org.nz/policies/grocery-competition",
-        "title": "More grocery competition"
+        "title": "More Grocery Competition"
       },
       {
         "url": "https://www.national.org.nz/policies/hunters-and-anglers",
-        "title": "National backs South Island growth"
+        "title": "National Backs South Island Growth"
       },
       {
         "url": "https://www.national.org.nz/policies/international-visitor-levy",
-        "title": "International Visitor Levy reset"
+        "title": "International Visitor Levy Reset"
       },
       {
         "url": "https://www.national.org.nz/policies/kiwisaver",
         "title": "Enhancing KiwiSaver for Everyone"
       },
       {
+        "url": "https://www.national.org.nz/policies/nationals-fiscal-plan",
+        "title": "National's Fiscal Plan"
+      },
+      {
         "url": "https://www.national.org.nz/policies/no-new-taxes",
-        "title": "No new taxes under National"
+        "title": "No New Taxes Commitment"
       },
       {
         "url": "https://www.national.org.nz/policies/paid-parental-leave",
@@ -275,19 +291,19 @@
       },
       {
         "url": "https://www.national.org.nz/policies/walfare",
-        "title": "Firm, fair and affordable welfare system"
+        "title": "Firm, Fair and Affordable Welfare System"
       }
     ],
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "Widening access to 5% first home deposits"
+        "title": "5% First Home Deposit Scheme"
       }
     ],
     "foreign-policy": [
       {
         "url": "https://www.national.org.nz/policies/new-trade",
-        "title": "New Zealand's Next Billion Customers – Trade Policy"
+        "title": "New Zealand's Next Billion Customers Trade Policy"
       }
     ],
     "environment": [
@@ -317,11 +333,11 @@
     "health": [
       {
         "url": "https://www.national.org.nz/healthcare",
-        "title": "National's Quality Timely Healthcare Policy"
+        "title": "Quality Timely Healthcare Policy"
       },
       {
         "url": "https://www.national.org.nz/policies/more-medicines-and-earlier-care",
-        "title": "More medicines and earlier care"
+        "title": "More Medicines and Earlier Care"
       }
     ],
     "education": [
@@ -442,6 +458,10 @@
         "title": "Labour's Apprenticeship Boost Expansion"
       },
       {
+        "url": "https://www.labour.org.nz/cutting-back-to-school-costs",
+        "title": "Cutting Back-to-School Costs"
+      },
+      {
         "url": "https://www.labour.org.nz/maori-trades-training",
         "title": "Labour's Māori Trades Training Investment"
       }
@@ -463,7 +483,7 @@
     "crime-justice": [
       {
         "url": "https://www.act.org.nz/policies/law-and-order",
-        "title": "ACT Law & Order Policy"
+        "title": "ACT Law and Order policy"
       }
     ],
     "health": [
@@ -475,7 +495,7 @@
     "democracy-government": [
       {
         "url": "https://www.act.org.nz/policies/democracy",
-        "title": "ACT Equal Rights and Democracy Policy"
+        "title": "ACT Equal Rights and Democracy policy"
       }
     ],
     "housing": [
@@ -512,6 +532,10 @@
         "title": "Disestablish Auckland's Independent Māori Statutory Board"
       },
       {
+        "url": "https://www.nzfirst.nz/establish-royal-commission-of-inquiry-into-media-bias-and-manipulation",
+        "title": "Royal Commission of Inquiry into Media Bias"
+      },
+      {
         "url": "https://www.nzfirst.nz/petition_maori_seats_referendum",
         "title": "Petition for Referendum on Māori Seats"
       },
@@ -521,6 +545,10 @@
       }
     ],
     "economy": [
+      {
+        "url": "https://www.nzfirst.nz/20_tax_rate_for_smes",
+        "title": "Lowering Tax Rate for SMEs to 20%"
+      },
       {
         "url": "https://www.nzfirst.nz/backing_a_new_zealand_owned_bank",
         "title": "Buy Back BNZ to Create National Bank of New Zealand"
@@ -550,16 +578,24 @@
         "title": "National Subsurface Development Survey for Fuel Security"
       },
       {
+        "url": "https://www.nzfirst.nz/increasing_working_for_families_and_minimum_wage",
+        "title": "Increasing Working for Families and Minimum Wage"
+      },
+      {
         "url": "https://www.nzfirst.nz/nz_super_for_citizens_only",
         "title": "NZ Superannuation for Citizens Only"
       },
       {
-        "url": "https://www.nzfirst.nz/policy",
-        "title": "NZ First policy pillars including energy, supermarkets and KiwiSaver"
+        "url": "https://www.nzfirst.nz/petition_reopen_marsden_point",
+        "title": "Reopen Marsden Point Refinery"
       },
       {
         "url": "https://www.nzfirst.nz/returning_50_of_mining_royalties_to_the_regions",
         "title": "Returning 50% of Mining Royalties to Regions"
+      },
+      {
+        "url": "https://www.nzfirst.nz/road-to-0-potholes",
+        "title": "Road to 0 Potholes"
       },
       {
         "url": "https://www.nzfirst.nz/the_100bn_new_zealand_future_fund",
@@ -579,6 +615,42 @@
         "url": "https://www.nzfirst.nz/withdraw_from_paris_accord",
         "title": "Withdraw from the Paris Accord"
       }
+    ],
+    "health": [
+      {
+        "url": "https://www.nzfirst.nz/removemandates",
+        "title": "Remove Mandates for Frontline Health Workers"
+      },
+      {
+        "url": "https://www.nzfirst.nz/the_plan_to_make_nz_healthy",
+        "title": "Plan to Make NZ Healthy"
+      }
+    ],
+    "crime-justice": [
+      {
+        "url": "https://www.nzfirst.nz/all-gangs-should-be-designated-terrorist-entities",
+        "title": "Designate All Gangs as Terrorist Entities"
+      },
+      {
+        "url": "https://www.nzfirst.nz/ban_public_sales_of_fireworks",
+        "title": "Ban Public Sales of Fireworks"
+      }
+    ],
+    "immigration": [
+      {
+        "url": "https://www.nzfirst.nz/immigration_reform_policies",
+        "title": "Immigration Reform Policies"
+      },
+      {
+        "url": "https://www.nzfirst.nz/scrapping_accredited_working_visa_model",
+        "title": "Scrapping Accredited Employer Work Visa Model"
+      }
+    ],
+    "treaty-maori-affairs": [
+      {
+        "url": "https://www.nzfirst.nz/ending_the_waitangi_makework_industry",
+        "title": "Abolish Waitangi Tribunal and Replace with Completion Commission"
+      }
     ]
   },
   "tpm": {
@@ -586,24 +658,24 @@
       {
         "url": "https://www.maoriparty.org.nz/permanently_ban_seabed_mining",
         "title": "Permanently Ban Seabed Mining in New Zealand Waters"
-      },
-      {
-        "url": "https://www.maoriparty.org.nz/users/facebook/connect?page_id=2890&scope=public_profile%2Cemail",
-        "title": "Te Pāti Māori kai sovereignty policy"
       }
     ],
     "economy": [
       {
         "url": "https://www.maoriparty.org.nz/cost_of_living",
-        "title": "Cost of Living – income, welfare and affordability relief"
+        "title": "Cost of living relief"
       },
       {
         "url": "https://www.maoriparty.org.nz/economic_development",
-        "title": "Economic Development – Māori enterprise, wealth building and data sovereignty"
+        "title": "Māori economic development"
+      },
+      {
+        "url": "https://www.maoriparty.org.nz/energy_sovereignty",
+        "title": "Energy Sovereignty Policy"
       },
       {
         "url": "https://www.maoriparty.org.nz/kai_sovereignt",
-        "title": "Kai Sovereignty – Māori food systems and food sovereignty"
+        "title": "Kai sovereignty and food systems"
       },
       {
         "url": "https://www.maoriparty.org.nz/tax",
@@ -613,71 +685,75 @@
     "treaty-maori-affairs": [
       {
         "url": "https://www.maoriparty.org.nz/freshwater_policy",
-        "title": "Freshwater Policy – Māori rights and authority over freshwater"
+        "title": "Māori freshwater rights and authority"
       },
       {
         "url": "https://www.maoriparty.org.nz/mana_motuhake",
-        "title": "Mana Motuhake – Treaty-based constitutional change and rangatiratanga"
+        "title": "Mana Motuhake constitutional transformation"
       },
       {
         "url": "https://www.maoriparty.org.nz/mokopuna_m_ori",
-        "title": "Mokopuna Māori – protecting Māori children and whānau authority"
+        "title": "Mokopuna Māori child protection"
       },
       {
         "url": "https://www.maoriparty.org.nz/takat_pui",
-        "title": "Takatāpui – wellbeing, safety and dignity of takatāpui Māori"
+        "title": "Takatāpui Māori wellbeing and safety"
       },
       {
         "url": "https://www.maoriparty.org.nz/te_reo_maori",
-        "title": "Te Reo Māori – language revitalisation and state accountability"
+        "title": "Te Reo Māori revitalisation"
+      },
+      {
+        "url": "https://www.maoriparty.org.nz/te_tiriti_entrenchment",
+        "title": "Te Tiriti Entrenchment Policy"
       },
       {
         "url": "https://www.maoriparty.org.nz/toi_maori",
-        "title": "Toi Māori – investment in Māori arts and cultural rights"
+        "title": "Toi Māori arts investment"
       }
     ],
     "health": [
       {
         "url": "https://www.maoriparty.org.nz/disabilities",
-        "title": "Disabilities – Māori-led disability services and support"
+        "title": "Māori disability services"
       },
       {
         "url": "https://www.maoriparty.org.nz/health",
-        "title": "Health – Māori-led health authority and accessible services"
+        "title": "Māori-led health authority"
       },
       {
         "url": "https://www.maoriparty.org.nz/sports",
-        "title": "Sports – investment in community sport and rangatahi pathways"
+        "title": "Sports and community wellbeing investment"
       }
     ],
     "housing": [
       {
         "url": "https://www.maoriparty.org.nz/housing",
-        "title": "Housing – affordable homes and building on Māori land"
+        "title": "Public and affordable housing"
       }
     ],
     "education": [
       {
         "url": "https://www.maoriparty.org.nz/education_training",
-        "title": "Education & Training – Māori-led education and mātauranga Māori"
+        "title": "Māori-led education and training"
       }
     ],
     "crime-justice": [
       {
         "url": "https://www.maoriparty.org.nz/justice",
-        "title": "Justice – Māori-led justice and criminal justice reform"
+        "title": "Māori-led justice reform"
       }
     ],
     "foreign-policy": [
       {
         "url": "https://www.maoriparty.org.nz/military_neutrality",
-        "title": "Military Neutrality – independent foreign policy and Pacific focus"
+        "title": "Military neutrality and independent foreign policy"
       }
     ],
     "climate": [
       {
         "url": "https://www.maoriparty.org.nz/climate",
-        "title": "Climate – protecting whenua and moana and climate resilience"
+        "title": "Climate protection and resilience"
       }
     ]
   },
@@ -685,75 +761,83 @@
     "climate": [
       {
         "url": "https://www.opportunity.org.nz/abundant-energy",
-        "title": "Opportunity Party abundant energy policy"
+        "title": "Abundant Energy policy"
       },
       {
         "url": "https://www.opportunity.org.nz/climate_action",
-        "title": "Climate Action Policy"
+        "title": "Climate Action policy"
       }
     ],
     "economy": [
       {
+        "url": "https://www.opportunity.org.nz/bottom_lines",
+        "title": "Five Bottom Lines for 2026 Election"
+      },
+      {
         "url": "https://www.opportunity.org.nz/breakthrough-economy",
-        "title": "Opportunity Party breakthrough economy policy"
+        "title": "Breakthrough Economy policy"
+      },
+      {
+        "url": "https://www.opportunity.org.nz/digital-future",
+        "title": "Digital Future policy"
       },
       {
         "url": "https://www.opportunity.org.nz/intergenerational_infrastructure",
-        "title": "Intergenerational Infrastructure Plan"
+        "title": "Inter-Generational Infrastructure policy"
       },
       {
         "url": "https://www.opportunity.org.nz/tax-reset",
-        "title": "Opportunity Party tax reset policy"
+        "title": "Tax Reset policy"
       }
     ],
     "democracy-government": [
       {
         "url": "https://www.opportunity.org.nz/citizens-voice",
-        "title": "Opportunity Party citizens' assemblies policy"
+        "title": "Citizens' Voice policy"
       },
       {
         "url": "https://www.opportunity.org.nz/clean_up_politics",
-        "title": "Opportunity Party clean up politics policy"
+        "title": "Clean Up Politics policy"
       }
     ],
     "environment": [
       {
         "url": "https://www.opportunity.org.nz/healthy_land",
-        "title": "Healthy Land Policy"
+        "title": "Healthy Land and Water policy"
       },
       {
         "url": "https://www.opportunity.org.nz/healthy-oceans",
-        "title": "Opportunity Party healthy oceans policy"
+        "title": "Healthy Oceans policy"
       }
     ],
     "education": [
       {
         "url": "https://www.opportunity.org.nz/future_fit_education",
-        "title": "Opportunity Party future-fit education policy"
+        "title": "Future-fit Education policy"
       }
     ],
     "health": [
       {
         "url": "https://www.opportunity.org.nz/healthy_people",
-        "title": "10-Year Health Plan"
+        "title": "Healthy People policy"
       }
     ],
     "treaty-maori-affairs": [
       {
         "url": "https://www.opportunity.org.nz/honouring_te_tiriti",
-        "title": "Honouring Te Tiriti"
+        "title": "Honouring Te Tiriti policy"
       }
     ],
     "crime-justice": [
       {
         "url": "https://www.opportunity.org.nz/smart_on_crime",
-        "title": "Smart on Crime Policy"
+        "title": "Smart On Crime policy"
       }
     ],
     "housing": [
       {
         "url": "https://www.opportunity.org.nz/affordable_housing",
-        "title": "Affordable Housing Policy"
+        "title": "Affordable Housing policy"
       }
     ]
   },
@@ -1044,8 +1128,81 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-12",
+    "lastRun": "2026-10-13",
     "parties": 14,
-    "policyPages": 217
+    "policyPages": 236,
+    "blind": [
+      "nz-outdoors"
+    ],
+    "perParty": {
+      "green": {
+        "pages": 85,
+        "newest": "2026-10-13"
+      },
+      "national": {
+        "pages": 91,
+        "newest": "2026-10-13"
+      },
+      "labour": {
+        "pages": 36,
+        "newest": "2026-10-13"
+      },
+      "act": {
+        "pages": 11,
+        "newest": "2026-10-13"
+      },
+      "nzfirst": {
+        "pages": 43,
+        "newest": "2026-10-13"
+      },
+      "tpm": {
+        "pages": 33,
+        "newest": "2026-10-13"
+      },
+      "top": {
+        "pages": 28,
+        "newest": "2026-10-13"
+      },
+      "alcp": {
+        "pages": 10,
+        "newest": "2026-09-25"
+      },
+      "animal-justice": {
+        "pages": 25,
+        "newest": "2026-09-26"
+      },
+      "conservative": {
+        "pages": 16,
+        "newest": "2026-10-13"
+      },
+      "nz-outdoors": {
+        "pages": 20,
+        "newest": "2026-09-07"
+      },
+      "vision-nz": {
+        "pages": 16,
+        "newest": "2026-09-29"
+      },
+      "alliance": {
+        "pages": 22,
+        "newest": "2026-10-13"
+      },
+      "free-palestine": {
+        "pages": 0,
+        "newest": null
+      },
+      "nz-loyal": {
+        "pages": 0,
+        "newest": null
+      },
+      "te-tai-tokerau-party": {
+        "pages": 2,
+        "newest": "2026-09-25"
+      },
+      "womens-rights": {
+        "pages": 19,
+        "newest": "2026-10-06"
+      }
+    }
   }
 }

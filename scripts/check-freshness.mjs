@@ -95,6 +95,55 @@ for (const c of CHECKS) {
     const stale = ageMs > MAX_HOURS * 36e5
     console.log(`  ${stale ? '✗' : '✓'} Policy watch  last ran ${fmtAge(ageMs).padStart(7)} ago   (limit ${MAX_HOURS}h — ${meta.policyPages} pages, ${meta.parties} parties)`)
     if (stale) failures.push(`Policy watch: last ran ${fmtAge(ageMs)} ago (limit ${MAX_HOURS}h) — party policy changes are going undetected`)
+
+    // ── PER-PARTY COVERAGE ────────────────────────────────────────────────
+    // "Did it run" is not "did it look at everything". The heartbeat above was
+    // green every day while FIVE parties — green, nzfirst, top, tpm,
+    // nz-outdoors — sat frozen on their 7 September first-run hashes for five
+    // weeks. A party whose index fetch threw was skipped whole, its existing
+    // entries left untouched, so it still counted toward `parties` and
+    // `policyPages` and the check saw a healthy crawl.
+    //
+    // Two signals now. `blind` is the watcher saying outright that a party
+    // fetched nothing. `newest` is the backstop for any future way of going
+    // quiet: if one party's most recent change is far behind the pack while
+    // others are moving, it is not being read.
+    if (meta.blind?.length) {
+      console.log(`  ✗ Policy watch  ${meta.blind.length} party(ies) fetched ZERO pages: ${meta.blind.join(', ')}`)
+      failures.push(`Policy watch: ${meta.blind.join(', ')} fetched no pages — their positions cannot update`)
+    }
+    // perParty is written by the watcher, but only from its NEXT run onward.
+    // Falling back to the watch file itself means this check works tonight
+    // rather than tomorrow — and a check that needs a deploy before it can fire
+    // is how the gap it is closing stayed open.
+    let perParty = meta.perParty
+    if (!perParty) {
+      try {
+        const wp = join(dirname(fileURLToPath(import.meta.url)), '.state', 'policy-watch.json')
+        const w = JSON.parse(readFileSync(wp, 'utf8'))
+        perParty = Object.fromEntries(Object.entries(w).map(([slug, pages]) => {
+          const ds = Object.values(pages).map((e) => e.lastChanged).filter(Boolean).sort()
+          return [slug, { pages: Object.keys(pages).length, newest: ds[ds.length - 1] || null }]
+        }))
+      } catch { perParty = {} }
+    }
+    const per = Object.entries(perParty).filter(([, v]) => v.pages > 0 && v.newest)
+    if (per.length >= 4) {
+      // Compare against the pack, not against today: parties genuinely do go
+      // quiet, but they do not all go quiet while others publish.
+      const newest = per.map(([, v]) => v.newest).sort()
+      const pack = newest[Math.floor(newest.length * 0.75)]      // upper quartile
+      const DAYS = 21
+      const behind = per.filter(([, v]) =>
+        (new Date(pack) - new Date(v.newest)) / 864e5 > DAYS)
+      if (behind.length) {
+        console.log(`  ✗ Policy watch  ${behind.length} party(ies) >${DAYS}d behind the pack (newest elsewhere: ${pack})`)
+        behind.forEach(([slug, v]) => console.log(`      ${slug.padEnd(22)} newest ${v.newest}  (${v.pages} pages)`))
+        failures.push(`Policy watch: ${behind.map(([s]) => s).join(', ')} last changed >${DAYS}d before the rest — likely not being crawled`)
+      } else {
+        console.log(`  ✓ Policy watch  every party crawled within ${DAYS}d of the pack`)
+      }
+    }
   }
 }
 
