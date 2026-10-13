@@ -20,6 +20,24 @@ import { PartySlug } from '@/types'
 export interface Candidate2026 {
   name: string
   party: PartySlug | 'independent'
+  /**
+   * The affiliation to SHOW, when it is not a party this site profiles.
+   *
+   * The Electoral Commission's 2026 field is 404 candidates for the 17
+   * registered parties, 48 independents, and 17 standing for parties that are
+   * NOT registered — Money Free Party NZ, Te Pāti Hira, Economic Euthenics,
+   * Your PIC Party and the rest. Those 17 have no PartySlug, because inclusion
+   * on this site is by registration (see /party-inclusion), so they get no
+   * tile, no colour and no profile link.
+   *
+   * They are still standing, though, and the previous behaviour dropped any
+   * candidate whose label did not map — which is the same silent-drop that hid
+   * 30 of 321 candidates until the August 2026 audit. So they carry
+   * party: 'independent' structurally, meaning "no registered party", with the
+   * stated affiliation here. Its PRESENCE is also what distinguishes them from
+   * a true independent, who has none.
+   */
+  partyLabel?: string
   incumbent?: boolean
   mpSlug?: string
   bio?: string

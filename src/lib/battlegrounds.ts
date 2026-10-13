@@ -4,6 +4,7 @@
  */
 
 import { ELECTORATES, normalizeElectorateKey, type ElectorateInfo } from '@/constants/electorates-data'
+import { ELECTORATES_2026, get2026Electorate } from '@/constants/electorates-2026'
 
 export interface MarginTier {
   key: string
@@ -46,6 +47,19 @@ export const MARGIN_TIERS: MarginTier[] = [
  * missing. It is not in MARGIN_TIERS, because classifyMargin must not be able
  * to put a seat in it by comparing a number.
  */
+/**
+ * A seat created in the 2025 boundary review.
+ *
+ * Distinct from UNKNOWN_TIER, which means "we do not have the 2023 margin".
+ * These seats HAVE no 2023 margin, because they did not exist in 2023, and
+ * labelling them "Result pending" implies a number is coming that never will.
+ */
+export const NEW_SEAT_TIER: MarginTier = {
+  key: 'new', label: 'New electorate', color: '#8a7f6d', max: 0,
+  light: '#f2efe8', fg: '#5b5247',
+  threshold: 'created in the 8 August 2025 boundary review, so it has no previous result',
+}
+
 export const UNKNOWN_TIER: MarginTier = {
   key: 'unknown', label: 'Result pending', color: '#d8d5cf', max: 0,
   light: '#f5f3ef', fg: '#6b6157', threshold: 'no 2023 winning margin on record',
@@ -58,21 +72,71 @@ export function classifyMargin(majority?: number): MarginTier {
 
 export interface BattlegroundEntry {
   slug: string
-  info: ElectorateInfo
+  info: SeatInfo
   tier: MarginTier
+}
+
+/** The tier for a seat, which is not always a margin: a seat created in 2025
+ *  has no previous result to be marginal against. */
+export function seatTier(info: { majority?: number; newIn2026?: boolean }): MarginTier {
+  return info.newIn2026 ? NEW_SEAT_TIER : classifyMargin(info.majority)
 }
 
 /** All electorates, most marginal first. */
 export function getBattlegrounds(): BattlegroundEntry[] {
-  return Object.entries(ELECTORATES)
-    .map(([slug, info]) => ({ slug, info, tier: classifyMargin(info.majority) }))
+  // The 2026 field, not the 2023 one. The ten seats created in the boundary
+  // review have no prior margin, so they classify as UNKNOWN rather than being
+  // given a predecessor's number.
+  return ELECTORATES_2026
+    .map((e) => { const info = getElectorateBySlug(e.slug)!; return { slug: e.slug, info, tier: seatTier(info) } })
     .sort((a, b) => (a.info.majority ?? Infinity) - (b.info.majority ?? Infinity))
 }
 
-export const ELECTORATE_SLUGS = Object.keys(ELECTORATES)
+/**
+ * A seat as it is being CONTESTED in 2026, with whatever is known about who
+ * holds it now.
+ *
+ * The two were the same thing until the Representation Commission's 8 August
+ * 2025 review, and treating them as the same thing afterwards is what broke
+ * the candidate pages: the site went on offering /battlegrounds/wellington-central
+ * (a seat nobody can vote for in 2026) while /battlegrounds/wellington-north
+ * (where 8 people are actually standing) returned 404.
+ */
+export type SeatInfo = ElectorateInfo & {
+  /** No sitting MP: the seat was created in the 2025 boundary review. */
+  newIn2026?: boolean
+  /** The Electoral Commission's official candidate count for this seat. */
+  officialCandidates?: number
+}
 
-export function getElectorateBySlug(slug: string): ElectorateInfo | undefined {
-  return ELECTORATES[slug]
+/**
+ * Routes come from the 2026 list, so a page exists for exactly the seats being
+ * contested — all 71 of them, and nothing else.
+ */
+export const ELECTORATE_SLUGS = ELECTORATES_2026.map((e) => e.slug)
+
+export function getElectorateBySlug(slug: string): SeatInfo | undefined {
+  const seat = get2026Electorate(slug)
+  if (!seat) return undefined
+  // A seat whose name survived the review keeps its 2023 metadata — the MP, the
+  // party and the margin are still facts about who holds it going in. Its
+  // BOUNDARIES may still have moved, which is why the page says so rather than
+  // implying the contest is unchanged.
+  const prior = ELECTORATES[slug]
+  if (prior && !seat.newIn2026) {
+    return { ...prior, name: seat.name, type: seat.type, officialCandidates: seat.candidates }
+  }
+  // Created in 2025: there is no incumbent to defend it, so party/MP/majority
+  // are deliberately absent rather than inherited from a predecessor. Naming a
+  // single heir would invent a continuity the Commission did not create.
+  return {
+    name: seat.name,
+    type: seat.type,
+    party: null,
+    verified: false,
+    newIn2026: true,
+    officialCandidates: seat.candidates,
+  }
 }
 
 /** Map fill colour for an electorate (by its GeoJSON name), by marginality. */

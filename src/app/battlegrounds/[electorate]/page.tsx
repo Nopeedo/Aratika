@@ -8,7 +8,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowRight, MapPin, Landmark, Info, UserRound, Vote, FileText, Megaphone, Users2, ScrollText, ArrowUpRight, Newspaper, PlayCircle } from 'lucide-react'
-import { ELECTORATE_SLUGS, getElectorateBySlug, classifyMargin } from '@/lib/battlegrounds'
+import { ELECTORATE_SLUGS, getElectorateBySlug, seatTier, NEW_SEAT_TIER } from '@/lib/battlegrounds'
 import { getCandidates } from '@/constants/candidates-2026'
 import { getApprovedCandidates } from '@/lib/candidates/live'
 import { getCoverageForCandidates } from '@/lib/candidates/coverage'
@@ -69,7 +69,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   const info = getElectorateBySlug(electorate)
   if (!info) notFound()
 
-  const tier = classifyMargin(info.majority)
+  const tier = seatTier(info)
   // Curated profiles first (richer), then editor-approved announced candidates
   // from the weekly ingest — deduped by name, incumbent excluded (they render
   // separately as "the defender").
@@ -332,7 +332,27 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
   const partyHasProfile = (slug: string): boolean => slug !== 'independent' && !!profileOf(slug)
 
   const rosterItems: RosterItem[] = [
-    {
+    // A seat created in the 2025 boundary review has nobody defending it, so
+    // there is no defender row. The alternative — a card reading "Result
+    // pending" with a '?' avatar — states that we are missing data about a
+    // sitting MP, when the truth is that no such MP exists.
+    ...(info.newIn2026 ? [{
+      key: 'new-seat',
+      color: NEW_SEAT_TIER.color,
+      light: NEW_SEAT_TIER.light,
+      avatarName: info.name,
+      title: 'No sitting MP',
+      subtitle: 'New electorate for 2026',
+      badge: 'New seat',
+      body: (
+        <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.6, color: SECONDARY }}>
+          {info.name} was created by the Representation Commission on 8 August 2025,
+          when the lower North Island fell below the population quota and the country
+          went from 72 electorates to 71. Nobody is defending it, so every candidate
+          here is standing for a seat for the first time.
+        </p>
+      ),
+    }] : [{
       key: 'defender',
       color: incumbentColor,
       light: sittingParty ? PARTY_COLORS[sittingParty].light : undefined,
@@ -350,7 +370,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
         : undefined,
       badge: 'Sitting MP',
       body: defenderBody,
-    },
+    }]),
     ...(standing.length === 0
       ? [{
           key: 'challengers-empty',
@@ -380,7 +400,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             avatarParty: c.party === 'independent' ? undefined : c.party,
             avatarPhoto: c.mpSlug ? MP_PROFILES[c.mpSlug]?.photo : undefined,
             title: c.name,
-            subtitle: `${partyLabel(c.party)} · ${isOut ? 'Withdrew' : 'Standing in 2026'}`,
+            subtitle: `${c.partyLabel ?? partyLabel(c.party)} · ${isOut ? 'Withdrew' : 'Standing in 2026'}`,
             badge: isOut ? 'Withdrew' : c.incumbent ? 'Sitting MP' : undefined,
             body: (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 16 }}>
@@ -515,7 +535,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
         tierColor={tier.color}
         majority={info.majority}
         incumbentName={mp?.name ?? info.mpName ?? 'the incumbent'}
-        challengerLabel={leadChallenger ? (leadChallenger.party === 'independent' ? 'an independent' : PARTY_NAMES[leadChallenger.party].short) : 'a challenger'}
+        challengerLabel={leadChallenger ? (leadChallenger.partyLabel ?? (leadChallenger.party === 'independent' ? 'an independent' : PARTY_NAMES[leadChallenger.party].short)) : 'a challenger'}
         /* Track sits in the hero's title row, not floating above the content.
            Follows this seat into the Command Centre alongside tracked MPs,
            parties and bills.
@@ -534,7 +554,7 @@ export default async function BattlePage({ params }: { params: Promise<{ elector
             kind: 'battleground',
             refId: info.name,
             label: info.name,
-            sublabel: `${tier.label} in 2023${info.party ? ` · ${mp?.name ?? info.mpName}` : ''}`,
+            sublabel: info.newIn2026 ? 'New electorate for 2026' : `${tier.label} in 2023${info.party ? ` · ${mp?.name ?? info.mpName}` : ''}`,
             href: `/battlegrounds/${electorate}`,
             accent: incumbentColor,
           }}

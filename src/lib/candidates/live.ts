@@ -29,6 +29,8 @@ interface CandidateRow {
   electorateSlug?: string
   name?: string
   party?: string | null
+  /** Stated affiliation for a candidate whose party is not registered. */
+  partyLabel?: string
   notes?: string
   citations?: unknown[]
   /** Written only by scripts/mark-withdrawn.mjs, and only with a citation. */
@@ -98,6 +100,9 @@ export const getApprovedCandidatesBySlug = unstable_cache(
         name: d.name,
         party: d.party,
         confirmed: true,
+        // Carried for the 17 candidates standing for unregistered parties; see
+        // the field's note on Candidate2026.
+        ...(typeof d.partyLabel === 'string' && d.partyLabel.trim() ? { partyLabel: d.partyLabel.trim() } : {}),
         ...(r.source_id ? { key: r.source_id as string } : {}),
         ...(mpSlug ? { mpSlug } : {}),
         // notes and citations, carried here too now. The map's candidate rows
