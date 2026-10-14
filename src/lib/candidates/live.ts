@@ -58,6 +58,25 @@ interface CandidateRow {
  * obviously the same entity as the profiled "Conservative Party NZ", and
  * guessing is how a candidate gets mislabelled.
  */
+/**
+ * The affiliation to show for a candidate who has no REGISTERED party.
+ *
+ * data.partyLabel cannot be the signal on its own. The Wikipedia ingest wrote it
+ * on every row it ever staged, so 326 approved candidates carry a scraped short
+ * form — "National", "Green", "Opportunity" — beside a perfectly good party
+ * slug. Preferring the label would replace each party's proper name with the
+ * scraper's abbreviation across the whole site.
+ *
+ * A registered party is identified by its SLUG, so the label is only consulted
+ * when there is no slug (party 'independent'), and only when it says something
+ * a true independent's row would not.
+ */
+const unregisteredLabel = (d: CandidateRow): string | undefined => {
+  if (d.party !== 'independent') return undefined
+  const label = typeof d.partyLabel === 'string' ? d.partyLabel.trim() : ''
+  return label && label.toLowerCase() !== 'independent' ? label : undefined
+}
+
 const isKnownParty = (p: unknown): p is PartySlug | 'independent' =>
   p === 'independent' || (typeof p === 'string' && (p in PARTY_NAMES || p in PARTY_PROFILES))
 
@@ -100,9 +119,9 @@ export const getApprovedCandidatesBySlug = unstable_cache(
         name: d.name,
         party: d.party,
         confirmed: true,
-        // Carried for the 17 candidates standing for unregistered parties; see
-        // the field's note on Candidate2026.
-        ...(typeof d.partyLabel === 'string' && d.partyLabel.trim() ? { partyLabel: d.partyLabel.trim() } : {}),
+        // Only for candidates standing for a party that is not registered; see
+        // unregisteredLabel above for why the field alone cannot decide this.
+        ...(unregisteredLabel(d) ? { partyLabel: unregisteredLabel(d) } : {}),
         ...(r.source_id ? { key: r.source_id as string } : {}),
         ...(mpSlug ? { mpSlug } : {}),
         // notes and citations, carried here too now. The map's candidate rows
@@ -156,6 +175,12 @@ export async function getApprovedCandidates(electorateSlug: string, opts?: { exc
       name: d.name!,
       party: d.party,
       confirmed: true,
+      // Already resolved by getApprovedCandidatesBySlug (see unregisteredLabel),
+      // so it passes straight through here. This function REBUILDS the object
+      // rather than forwarding it, which is why the field was silently dropped
+      // on the path the seat pages actually use — every candidate standing for
+      // an unregistered party rendered as a plain "Independent".
+      ...(typeof d.partyLabel === 'string' && d.partyLabel ? { partyLabel: d.partyLabel } : {}),
       ...(key ? { key } : {}),
       ...(mpSlug ? { mpSlug } : {}),
       ...(typeof d.notes === 'string' && d.notes.trim() ? { notes: d.notes.trim() } : {}),
