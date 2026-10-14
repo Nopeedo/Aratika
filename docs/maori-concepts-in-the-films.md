@@ -103,16 +103,23 @@ drawn as:
 
 | slot | glyphs | qualifier caption |
 |---|---|---|
-| 0 · papakāinga | **one** house, scale 0.84 | *none* |
+| 0 · papakāinga | **one** house, scale 0.84 | "on their own land" |
 | 1 · developers | **two** houses, scale 0.70 | "some affordable" |
 | 2 · committees | **two** figures, scale 0.84 | "renters too" |
 
-Papakāinga is the only slot that gets a single glyph and no qualifier. And it is
-the *same* `house()` glyph used for private-developer stock, whose settled
-meaning in this series is a separately ownable dwelling — which is the one thing
-a papakāinga dwelling is not. Te Aka's sense of papa kāinga is "original home,
-home base, village, communal Māori land"; one house is below the floor of every
-source available.
+**Correction to an earlier draft of this document**, which said papakāinga was
+the only slot with no qualifier. That was wrong: film.js:392 draws "on their own
+land" at the same size, weight and ink as the other two. Checked in the source.
+The asymmetry that IS real is the glyph count — one against two — and that is
+the smaller half of the problem.
+
+The real problem is the glyph itself. It is the *same* `house()` used for
+private-developer stock, whose settled meaning in this series is a separately
+ownable dwelling — the one thing a papakāinga dwelling is not, since TTWMA
+s148(3) denies an owner of an undivided interest the capacity to alienate it
+separately. Te Aka's sense of papa kāinga is "original home, home base, village,
+communal Māori land", and Te Puni Kōkiri's own guidance says "generally 3-10
+houses", so one house is below the floor of every source available.
 
 The film's own CIVIC line defines papakāinga by a **relationship** — "by the
 people who belong to it" — and an identical generic glyph is precisely what
@@ -228,6 +235,91 @@ are **not specified by a designer at all** until the review relationship exists.
 And if that relationship cannot exist before 7 November, the honest consequence
 is a written explainer on politika.nz — not a cautious frame shipped unreviewed.
 Drawing less is not the same as drawing safely.
+
+---
+
+## 6. A grounded visual vocabulary
+
+Researched 14 October 2026 against how Māori designers, councils and the Māori
+Land Court *actually* diagram this — because the way not to be flippant is to
+follow real practice rather than invent a respectful-looking picture.
+
+### The find that matters
+
+**Te Tai Tokerau Papakāinga Toolkit** (Northland Regional Council with the Far
+North, Whangārei and Kaipara district councils), in its "Forms of Māori Land
+Ownership" pages, draws **the same block six times**. Single collective title,
+occupation order, licence to occupy, lease, partition — one rectangle, redrawn
+identically, with different writing on it each time, and a line labelled ROAD
+along one edge as the only external context. Owners appear as a list of letters
+*beside* the block, never as divisions of it.
+
+That is a complete diagrammatic convention for exactly our subject, from a real
+papakāinga toolkit, and it independently matches the instinct already in the TPM
+film — no internal division lines, nothing unlocks.
+
+### The marks
+
+| mark | means | grounded in |
+|---|---|---|
+| **The edge** — one unbroken boundary, interior never divided | One title held in common. An interior line would mean a separate title has been created, so there are none. | Te Tai Tokerau Toolkit; already the TPM film's own instinct |
+| **Relabel, never erase** | A legal change is the *byte-identical* rectangle with different text on it. Nothing unlocks, fades, shrinks or is removed. | The Toolkit's six panels are literally this method |
+| **The owner register** — a dated count in type, *outside* the edge | Ownership is an entry against a title: proportional, and **not located** anywhere on the ground. | Māori Land Court, *Māori Land Update*, June 2025 — the Court's own unit is the "allocated ownership record", 3,136,458 of them, averaging 111 owners per block |
+| **Unequal whare, turned in** — three or more, never one, never identical | A range of dwellings for one group of people. | Te Puni Kōkiri: "generally 3-10 houses"; *A Guide to Papakāinga Housing* (2017) |
+| **The worked share** — a labelled māra kai | A papakāinga lawfully contains things that are not houses. The cheapest mark a developer's stock glyph cannot carry. | NES-P definition D11: māra kai "means food garden" |
+| **The access edge** — one ROAD line, one side, nothing else outside | A block with legal access. The whole of the external context we claim to know. | Every one of the Toolkit's six panels |
+| **The consent ladder** — thresholds as chips, none ever marked reached | The planning rule is a scale set by law, including what it does not reach. | Resource Management (National Environmental Standards for Papakāinga) Regulations 2026, SL 2026/166, in force 2 July 2026 |
+| **Provenance on every Māori figure** — source and date, same ink tier as its caption | | Te Mana Raraunga, *Principles of Māori Data Sovereignty*, Brief #1 (2018), 2.1: "All data has a whakapapa" |
+| **The instrument card** — draw the document, never the place | For wāhi tapu. HNZPTA s6 separates the place from the land category in its own structure. | HNZPTA 2014 s6 |
+
+**The reframe, in one line:** stop drawing papakāinga as a kind of **house** and
+draw it as a kind of **ground**. Everywhere else in these films a house is a
+thing that can be owned, moved, counted, financed and sold. In a papakāinga
+frame the house is the one element that is *not* the subject.
+
+### Two marks that did not survive, and why
+
+- **An open sightline** leaving the frame toward something unnamed, to carry
+  orientation to a tohu. Rejected. Every source for it is a *named* hapū
+  orienting to a *named* landmark on their own whenua, so a generic version
+  invents a tikanga rather than following one. It also breaks the edge rule: an
+  unlabelled line crossing the title boundary is exactly the mark that means
+  "a separate title now exists".
+- **A held-open middle**, the shared centre with nothing standing in it.
+  Rejected on sourcing. Its authority was the NES-P definition D12 — which
+  defines a **marae complex** ("the complex of buildings around the open area in
+  front of a wharenui"), not a papakāinga. Borrowing a marae definition for
+  papakāinga is a motif reinvented by another route.
+
+### What Te Aranga can and cannot do for us
+
+The **Te Aranga Māori Design Principles** (Ngā Aho, 2008; published via the
+Auckland Design Manual) are the one framework published so that non-iwi
+designers can engage — seven outcomes: Mana, Whakapapa, Taiao, Mauri Tū, Mahi
+Toi, Tohu, Ahi Kā. Three things follow:
+
+1. Their use is expressly "predicated on the development of high quality durable
+   relationships" with iwi/hapū, and **Mana is named as the catalyst that
+   activates the other six**. So we may read, cite and learn from Te Aranga — we
+   cannot claim to *apply* it without that relationship.
+2. **Mahi Toi is itself the rule against borrowed motif**: it requires that
+   iwi/hapū *mandated* artists do the narrative work. A publisher drawing its own
+   "Māori motif" is outside the framework, not applying it.
+3. It is a **Tāmaki Makaurau** instrument, and the Mana Whenua Kaitiaki Forum has
+   notified Auckland Council that it intends to develop Tāmaki-specific
+   principles that will replace it there.
+
+### The warning worth heeding
+
+A full build-up of this vocabulary in the Greens frame was costed at roughly
+**seven times** the treatment the other two slots get — nine seconds alone, eight
+drawn elements against the developers' two houses — and it would stage the
+construction *under the Greens' funding line*, which is the policy visibly
+working. That reverses the asymmetry instead of fixing it.
+
+So: **the reframe is right, the expansion is wrong.** Papakāinga keeps one slot
+of equal weight. What changes is the glyph — ground rather than house — not the
+airtime.
 
 ---
 
