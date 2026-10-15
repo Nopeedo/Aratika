@@ -285,7 +285,7 @@
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "5% First Home Deposits"
+        "title": "5% First Home Deposit Scheme"
       }
     ],
     "foreign-policy": [
@@ -864,26 +864,22 @@
     ]
   },
   "vision-nz": {
-    "democracy-government": [
-      {
-        "url": "https://www.vision.org.nz/news/common-sense-is-finally-catching-up-in-wellington",
-        "title": "Vision NZ – Support for Biological Sex Definitions Bill"
-      },
-      {
-        "url": "https://www.vision.org.nz/visionpolicies",
-        "title": "Vision New Zealand Family Empowerment and Social Policy"
-      }
-    ],
     "foreign-policy": [
       {
         "url": "https://www.vision.org.nz/news/submission-on-the-new-zealand-india-free-trade-agreement-national-interest-analysis",
-        "title": "Vision NZ – Opposition to NZ-India Free Trade Agreement"
+        "title": "Submission Opposing NZ-India Free Trade Agreement"
       }
     ],
     "treaty-maori-affairs": [
       {
         "url": "https://www.vision.org.nz/news/te-tiriti-o-waitangi-betrayal",
-        "title": "Vision NZ opposes India FTA over Treaty obligations"
+        "title": "Te Tiriti o Waitangi Betrayal in India Trade Deal"
+      }
+    ],
+    "democracy-government": [
+      {
+        "url": "https://www.vision.org.nz/visionpolicies",
+        "title": "Vision New Zealand Family Empowerment and Social Policy"
       }
     ]
   },
@@ -891,15 +887,15 @@
     "economy": [
       {
         "url": "https://allianceparty.nz/alliance-52-weeks-paid-parental-leave-gender-equality/",
-        "title": "Alliance 52 Weeks Paid Parental Leave and Gender Equality Policy"
+        "title": "Alliance gender equality policy: 52 weeks paid parental leave"
       },
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Full Employment and 35-Hour Week Workers' Rights Policy"
+        "title": "Alliance workers' rights policy: full employment and 35-hour week"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
-        "title": "National Transport Strategy"
+        "title": "Alliance national transport strategy"
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-eliminate-child-poverty/",
@@ -907,11 +903,11 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-rebuild-universal-social-security/",
-        "title": "Alliance Universal Social Security Policy"
+        "title": "Alliance plan to rebuild universal social security"
       },
       {
         "url": "https://allianceparty.nz/alliance-public-ownership-economic-democracy-policy/",
-        "title": "Alliance Public Ownership and Reverse Privatisation Plan"
+        "title": "Alliance Public Ownership and Economic Democracy Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-retirement-aged-care-kiwisaver-policy/",
@@ -919,35 +915,35 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-small-business-local-enterprise-cooperatives/",
-        "title": "Alliance Small Business, Local Enterprise and Cooperatives Policy"
+        "title": "Alliance small business, local enterprise and cooperatives policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Tax Plan: First $20,000 Income Tax-Free, Funded by Wealth Tax"
+        "title": "Alliance tax plan: first $20,000 income tax-free"
       }
     ],
     "health": [
       {
         "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
-        "title": "Free GP, Dental, Optical and Audiology Healthcare"
+        "title": "Alliance health policy: free GP, dental, optical and audiology"
       }
     ],
     "environment": [
       {
         "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
-        "title": "Environment, Climate and Sustainable Economy Policy"
+        "title": "Alliance environment and climate just transition policy"
       }
     ],
     "crime-justice": [
       {
         "url": "https://allianceparty.nz/alliance-justice-policy-three-strikes-into-treatment/",
-        "title": "Alliance Justice Policy: Three Strikes and into Treatment"
+        "title": "Alliance justice policy: three strikes into treatment"
       }
     ],
     "housing": [
       {
         "url": "https://allianceparty.nz/the-right-to-a-roof-alliance-housing-policy/",
-        "title": "Alliance Housing Policy"
+        "title": "Alliance housing policy: right to a roof"
       }
     ],
     "democracy-government": [
@@ -1052,8 +1048,8 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-14",
+    "lastRun": "2026-10-15",
     "parties": 14,
-    "policyPages": 219
+    "policyPages": 218
   }
 }
