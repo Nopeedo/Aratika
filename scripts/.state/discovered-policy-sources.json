@@ -231,7 +231,7 @@
     "economy": [
       {
         "url": "https://www.national.org.nz/economy",
-        "title": "National's Economic Record and Plan"
+        "title": "National's Economic Rebuild Plan"
       },
       {
         "url": "https://www.national.org.nz/policies/boost-for-graduates",
@@ -285,7 +285,7 @@
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "5% First Home Deposit Scheme"
+        "title": "5% First Home Deposit Access"
       }
     ],
     "foreign-policy": [
@@ -1048,8 +1048,85 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-15",
+    "lastRun": "2026-10-16",
     "parties": 14,
-    "policyPages": 218
+    "policyPages": 218,
+    "blind": [
+      "green",
+      "nzfirst",
+      "tpm",
+      "top",
+      "nz-outdoors"
+    ],
+    "perParty": {
+      "green": {
+        "pages": 81,
+        "newest": "2026-09-07"
+      },
+      "national": {
+        "pages": 42,
+        "newest": "2026-10-16"
+      },
+      "labour": {
+        "pages": 36,
+        "newest": "2026-10-13"
+      },
+      "act": {
+        "pages": 11,
+        "newest": "2026-10-16"
+      },
+      "nzfirst": {
+        "pages": 30,
+        "newest": "2026-09-07"
+      },
+      "tpm": {
+        "pages": 31,
+        "newest": "2026-09-07"
+      },
+      "top": {
+        "pages": 26,
+        "newest": "2026-09-07"
+      },
+      "alcp": {
+        "pages": 9,
+        "newest": "2026-09-25"
+      },
+      "animal-justice": {
+        "pages": 25,
+        "newest": "2026-09-26"
+      },
+      "conservative": {
+        "pages": 16,
+        "newest": "2026-10-13"
+      },
+      "nz-outdoors": {
+        "pages": 20,
+        "newest": "2026-09-07"
+      },
+      "vision-nz": {
+        "pages": 17,
+        "newest": "2026-10-15"
+      },
+      "alliance": {
+        "pages": 22,
+        "newest": "2026-10-15"
+      },
+      "free-palestine": {
+        "pages": 0,
+        "newest": null
+      },
+      "nz-loyal": {
+        "pages": 0,
+        "newest": null
+      },
+      "te-tai-tokerau-party": {
+        "pages": 2,
+        "newest": "2026-09-25"
+      },
+      "womens-rights": {
+        "pages": 19,
+        "newest": "2026-10-06"
+      }
+    }
   }
 }
