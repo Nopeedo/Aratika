@@ -42,6 +42,19 @@ export interface PartyPosition {
   sourceLabel: string
   sourceUrl: string | null
   asOf: string | null
+  /**
+   * Politika's own explainer film for this position, if one exists.
+   *
+   * Deliberately NOT part of the content_items type='video' feed. That feed is
+   * "Leaders & the press" — party channels and the interview tier — and it
+   * ingests as pending because, in ingest-videos.mjs's own words, those are
+   * partisan campaign content needing editor approval. These films are neither
+   * campaign content nor press coverage, and filing them there would label them
+   * as something they are not. They live on the position they explain, which
+   * also keeps them from drifting: the film and the row share a source and an
+   * as-at date. Embedded from YouTube, never rehosted — same rule as the feed.
+   */
+  explainer: { videoId: string; seconds: number; label: string } | null
 }
 
 interface Row {
@@ -77,6 +90,18 @@ function toPosition(r: Row): PartyPosition | null {
     sourceLabel: typeof d.source_label === 'string' ? d.source_label : 'Official source',
     sourceUrl: r.source_url,
     asOf: typeof d.asOf === 'string' ? d.asOf : null,
+    // A row without an explainer is the normal case — only housing has films
+    // so far — so this reads as null rather than throwing the row away.
+    explainer: (() => {
+      const e = d.explainer as Record<string, unknown> | undefined
+      if (!e || typeof e.videoId !== 'string' || !e.videoId) return null
+      const secs = typeof e.seconds === 'number' ? e.seconds : 0
+      return {
+        videoId: e.videoId,
+        seconds: secs,
+        label: typeof e.label === 'string' && e.label ? e.label : 'Watch the explainer',
+      }
+    })(),
   }
 }
 

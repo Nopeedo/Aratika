@@ -43,10 +43,18 @@ function loadApi(): Promise<any> {
   return apiPromise
 }
 
-export function VideoLightbox({ video, accent, onClose }: {
+export function VideoLightbox({ video, accent, onClose, portrait = false }: {
   video: PlayingVideo
   accent: string
   onClose: () => void
+  /**
+   * The clip is 9:16 rather than 16:9. Defaults to false because every caller
+   * before this one played landscape press and debate clips; Politika's own
+   * policy explainers are vertical, and in the landscape panel they rendered
+   * pillarboxed with most of the panel black. A portrait panel is also
+   * narrower, or a 9:16 clip at 880px wide would be 1564px tall.
+   */
+  portrait?: boolean
 }) {
   const holder = useRef<HTMLDivElement>(null)
   const [failed, setFailed] = useState(false)
@@ -106,11 +114,14 @@ export function VideoLightbox({ video, accent, onClose }: {
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          width: 'min(880px, 100%)', background: '#fff', borderRadius: 16, overflow: 'hidden',
+          // A portrait clip is capped by the VIEWPORT HEIGHT, not just width:
+          // 9:16 at any generous width runs off the bottom of a laptop screen.
+          width: portrait ? 'min(min(420px, 100%), calc((100svh - 190px) * 0.5625))' : 'min(880px, 100%)',
+          background: '#fff', borderRadius: 16, overflow: 'hidden',
           border: `4px solid ${accent}`, boxShadow: '0 24px 60px -12px rgba(12,14,18,.5)',
         }}
       >
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', background: '#000' }}>
+        <div style={{ position: 'relative', width: '100%', aspectRatio: portrait ? '9 / 16' : '16 / 9', background: '#000' }}>
           {!failed && <div ref={holder} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />}
           {failed && (
             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, textAlign: 'center' }}>

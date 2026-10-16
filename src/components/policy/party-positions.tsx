@@ -10,7 +10,8 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ExternalLink, ArrowRight, ChevronDown } from 'lucide-react'
+import { ExternalLink, ArrowRight, ChevronDown, Play } from 'lucide-react'
+import { VideoLightbox, type PlayingVideo } from '@/components/homepage/video-lightbox'
 import { PARTY_PROFILES } from '@/constants/parties-data'
 import type { PartySlug } from '@/types'
 import type { PartyPosition } from '@/lib/positions/live'
@@ -43,6 +44,11 @@ export function PartyPositions({ parties, getPos, detailed, topic, topicLabel }:
 }) {
   const [open, setOpen] = useState<Set<string>>(new Set())
   const [detailedRows, setDetailedRows] = useState<Set<string>>(new Set())
+  /** Politika's own explainer film for a position, played in a panel over the
+   *  page rather than sending the reader to YouTube. VideoLightbox handles the
+   *  case where embedding is switched off and falls back to opening the clip,
+   *  so the reader never lands on a dead black box. */
+  const [playing, setPlaying] = useState<PlayingVideo | null>(null)
   const perCard = detailed === undefined
   const withData = parties.filter((s) => getPos(s))
   const toggle = (s: string) => setOpen((p) => { const n = new Set(p); n.has(s) ? n.delete(s) : n.add(s); return n })
@@ -113,12 +119,40 @@ export function PartyPositions({ parties, getPos, detailed, topic, topicLabel }:
                     )}
                     {pos.asOf && <span style={{ fontSize: 13, color: TERTIARY, fontFamily: MANROPE }}>· as at {pos.asOf}</span>}
                   </div>
+                  {/* OUR OWN EXPLAINER, if this position has one. It sits below
+                      the source row, not in it: the row above is where the
+                      position came FROM, and this is something we made about
+                      it. Conflating the two would imply the party published
+                      the film. The party's colour is the border only — the
+                      label is ink, because the film is ours, not theirs. */}
+                  {pos.explainer && (
+                    <button
+                      type="button"
+                      onClick={() => setPlaying({
+                        videoId: pos.explainer!.videoId,
+                        title: `${pos.partyName} · Housing`,
+                        source: 'Politika',
+                      })}
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 12,
+                        padding: '9px 14px', borderRadius: 9, cursor: 'pointer',
+                        background: tint(party.color, 0.1), border: `1px solid ${tint(party.color, 0.5)}`,
+                        fontFamily: MANROPE, fontSize: 14, fontWeight: 800, color: INK,
+                      }}
+                    >
+                      <Play style={{ width: 14, height: 14 }} />
+                      {pos.explainer.label}
+                    </button>
+                  )}
                 </div>
               )}
             </div>
           )
         })}
       </div>
+      {playing && (
+        <VideoLightbox video={playing} accent={JADE} portrait onClose={() => setPlaying(null)} />
+      )}
     </div>
   )
 }
