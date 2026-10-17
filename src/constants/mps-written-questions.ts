@@ -526,7 +526,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Justice",
-        "count": 309
+        "count": 307
       },
       {
         "minister": "Minister for the Public Service and Digitising Government",
@@ -549,12 +549,20 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 205
       },
       {
-        "minister": "Minister for Māori Development",
-        "count": 202
-      },
-      {
         "minister": "Minister of Conservation",
         "count": 199
+      },
+      {
+        "minister": "Minister for Māori Development",
+        "count": 198
+      },
+      {
+        "minister": "Minister of Housing",
+        "count": 197
+      },
+      {
+        "minister": "Minister of Education",
+        "count": 197
       },
       {
         "minister": "Minister for Regulation",
@@ -565,28 +573,8 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 196
       },
       {
-        "minister": "Minister of Education",
-        "count": 195
-      },
-      {
-        "minister": "Minister for Pacific Peoples",
-        "count": 194
-      },
-      {
-        "minister": "Minister for Women",
-        "count": 194
-      },
-      {
         "minister": "Minister for Social Investment",
-        "count": 194
-      },
-      {
-        "minister": "Minister of Internal Affairs",
-        "count": 193
-      },
-      {
-        "minister": "Minister of Housing",
-        "count": 193
+        "count": 196
       },
       {
         "minister": "Minister for the Environment",
@@ -597,12 +585,28 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 193
       },
       {
-        "minister": "Minister of Corrections",
+        "minister": "Minister for Pacific Peoples",
         "count": 192
+      },
+      {
+        "minister": "Minister for Women",
+        "count": 192
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 191
+      },
+      {
+        "minister": "Minister for Infrastructure",
+        "count": 190
       },
       {
         "minister": "Minister for Arts, Culture and Heritage",
         "count": 190
+      },
+      {
+        "minister": "Minister of Defence",
+        "count": 189
       },
       {
         "minister": "Minister of Agriculture",
@@ -621,7 +625,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 187
       },
       {
-        "minister": "Minister for Rail",
+        "minister": "Minister of Corrections",
+        "count": 186
+      },
+      {
+        "minister": "Minister for Children",
+        "count": 186
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 186
+      },
+      {
+        "minister": "Minister of Foreign Affairs",
         "count": 186
       },
       {
@@ -629,7 +645,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 186
       },
       {
-        "minister": "Minister of Defence",
+        "minister": "Minister for Economic Growth",
         "count": 185
       },
       {
@@ -637,24 +653,12 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 185
       },
       {
-        "minister": "Minister for Children",
-        "count": 184
-      },
-      {
-        "minister": "Minister for Whānau Ora",
-        "count": 184
-      },
-      {
-        "minister": "Minister of Foreign Affairs",
+        "minister": "Minister for Rail",
         "count": 184
       },
       {
         "minister": "Minister for Trade and Investment",
         "count": 184
-      },
-      {
-        "minister": "Minister for Economic Growth",
-        "count": 183
       },
       {
         "minister": "Minister of Climate Change",
@@ -665,16 +669,8 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 183
       },
       {
-        "minister": "Minister for Infrastructure",
-        "count": 182
-      },
-      {
         "minister": "Minister of Revenue",
         "count": 175
-      },
-      {
-        "minister": "Minister of Police",
-        "count": 173
       },
       {
         "minister": "Minister of Statistics",
@@ -689,12 +685,12 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 171
       },
       {
-        "minister": "Minister for Ethnic Communities",
-        "count": 164
+        "minister": "Minister of Police",
+        "count": 171
       },
       {
-        "minister": "Attorney-General",
-        "count": 162
+        "minister": "Minister for Ethnic Communities",
+        "count": 170
       },
       {
         "minister": "Minister for Youth",
@@ -705,19 +701,23 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 161
       },
       {
+        "minister": "Attorney-General",
+        "count": 160
+      },
+      {
         "minister": "Minister for Courts",
-        "count": 148
+        "count": 146
       },
       {
         "minister": "Minister for Veterans",
         "count": 143
       },
       {
-        "minister": "Minister for Seniors",
-        "count": 142
+        "minister": "Associate Minister of Justice",
+        "count": 132
       },
       {
-        "minister": "Associate Minister of Justice",
+        "minister": "Minister for Seniors",
         "count": 132
       },
       {
@@ -733,11 +733,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 117
       },
       {
-        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
-        "count": 114
+        "minister": "Minister for Regional Development",
+        "count": 116
       },
       {
-        "minister": "Minister for Regional Development",
+        "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
         "count": 114
       },
       {
@@ -2529,11 +2529,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 45
       },
       {
-        "minister": "Minister for Māori Development",
+        "minister": "Minister for Oceans and Fisheries",
         "count": 45
       },
       {
-        "minister": "Minister for Oceans and Fisheries",
+        "minister": "Minister for Māori Development",
         "count": 45
       },
       {

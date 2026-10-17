@@ -293,7 +293,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Mark_Patterson_(New_Zealand_politician)"
   },
   "tamatha-paul": {
-    "bio": "Tamatha-Kaye Erin Paul is a New Zealand activist and politician who is a Member of Parliament for Wellington Central. In 2018 she was the first Māori woman to be elected President of the Victoria University of Wellington Students' Association. Running as an independent Paul was elected to the Wellington City Council in 2019. She joined the Green Party of Aotearoa New Zealand ahead of the 2022 local elections.",
+    "bio": "Tamatha-Kaye Erin Paul is a New Zealand activist and Green Party politician who has served as the Member of Parliament for Wellington Central since 2023.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Tamatha_Paul"
   },
   "chris-penk": {
@@ -381,7 +381,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Todd_Stephenson"
   },
   "chle-swarbrick": {
-    "bio": "Chlöe Charlotte Swarbrick is a New Zealand politician who has served as a co-leader of the Green Party of Aotearoa New Zealand since 2024.",
+    "bio": "Chlöe Charlotte Swarbrick is a New Zealand politician who has served as a Member of Parliament since 2017 and as co-leader of the Green Party of Aotearoa New Zealand since 2024.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Chl%C3%B6e_Swarbrick"
   },
   "cushla-tangaere-manuel": {
@@ -417,7 +417,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Tim_van_de_Molen"
   },
   "brooke-van-velden": {
-    "bio": "Brooke Olivia van Velden is a New Zealand politician who has served as the deputy leader of ACT New Zealand since June 2020. She has been a member of Parliament (MP) since the 2020 general election, first as a list MP and, since 2023, the MP for Tāmaki. Van Velden currently serves in the National-led government as the 38th minister of internal affairs and 6th minister for workplace relations and safety. She is the second youngest cabinet minister in New Zealand history, being just eight days older than Phil Goff was when he became Minister of Housing after the 1984 election.",
+    "bio": "Brooke Olivia van Velden is a New Zealand politician who served as the deputy leader of ACT New Zealand from June 2020 to June 2026. She has been a member of Parliament (MP) since the 2020 general election, first as a list MP and, since 2023, the MP for Tāmaki. Van Velden currently serves in the National-led government as the 38th minister of internal affairs and 6th minister for workplace relations and safety. She is the second youngest cabinet minister in New Zealand history, being just eight days older than Phil Goff was when he became Minister of Housing after the 1984 election.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Brooke_van_Velden"
   },
   "ayesha-verrall": {
