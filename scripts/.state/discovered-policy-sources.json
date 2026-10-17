@@ -1048,7 +1048,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-16",
+    "lastRun": "2026-10-17",
     "parties": 14,
     "policyPages": 218,
     "blind": [
@@ -1060,12 +1060,12 @@
     ],
     "perParty": {
       "green": {
-        "pages": 81,
+        "pages": 80,
         "newest": "2026-09-07"
       },
       "national": {
-        "pages": 42,
-        "newest": "2026-10-16"
+        "pages": 91,
+        "newest": "2026-10-17"
       },
       "labour": {
         "pages": 36,
@@ -1080,15 +1080,15 @@
         "newest": "2026-09-07"
       },
       "tpm": {
-        "pages": 31,
+        "pages": 30,
         "newest": "2026-09-07"
       },
       "top": {
-        "pages": 26,
+        "pages": 25,
         "newest": "2026-09-07"
       },
       "alcp": {
-        "pages": 9,
+        "pages": 10,
         "newest": "2026-09-25"
       },
       "animal-justice": {
