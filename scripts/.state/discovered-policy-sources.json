@@ -235,6 +235,12 @@
         "url": "https://www.labour.org.nz/solarsaver",
         "title": "SolarSaver – Government-backed solar finance scheme"
       }
+    ],
+    "crime-justice": [
+      {
+        "url": "https://www.labour.org.nz/safer-online",
+        "title": "Safer Online – Social Media Safety Rules"
+      }
     ]
   },
   "act": {
@@ -568,9 +574,9 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-18",
+    "lastRun": "2026-10-19",
     "parties": 10,
-    "policyPages": 116,
+    "policyPages": 117,
     "blind": [
       "green",
       "nzfirst",
@@ -580,35 +586,35 @@
     ],
     "perParty": {
       "green": {
-        "pages": 1,
+        "pages": 80,
         "newest": null
       },
       "national": {
-        "pages": 91,
-        "newest": "2026-10-18"
+        "pages": 42,
+        "newest": "2026-10-19"
       },
       "labour": {
-        "pages": 37,
-        "newest": "2026-10-18"
+        "pages": 38,
+        "newest": "2026-10-19"
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-18"
+        "newest": "2026-10-19"
       },
       "nzfirst": {
-        "pages": 0,
+        "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 1,
+        "pages": 31,
         "newest": null
       },
       "top": {
-        "pages": 1,
+        "pages": 25,
         "newest": null
       },
       "alcp": {
-        "pages": 10,
+        "pages": 9,
         "newest": "2026-09-25"
       },
       "animal-justice": {
@@ -617,10 +623,10 @@
       },
       "conservative": {
         "pages": 16,
-        "newest": "2026-10-13"
+        "newest": "2026-10-19"
       },
       "nz-outdoors": {
-        "pages": 0,
+        "pages": 19,
         "newest": null
       },
       "vision-nz": {
