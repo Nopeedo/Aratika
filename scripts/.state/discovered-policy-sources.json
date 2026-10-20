@@ -192,6 +192,10 @@
         "title": "Labour's Free Cervical Screening"
       },
       {
+        "url": "https://www.labour.org.nz/ed-recovery-plan",
+        "title": "Labour ED Recovery Plan"
+      },
+      {
         "url": "https://www.labour.org.nz/familydoctorloanscheme",
         "title": "Family Doctor Loan Scheme"
       },
@@ -209,7 +213,7 @@
       },
       {
         "url": "https://www.labour.org.nz/prescriptions",
-        "title": "Labour's Free Prescriptions"
+        "title": "Labour Free Prescriptions Policy"
       }
     ],
     "education": [
@@ -574,9 +578,9 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-19",
+    "lastRun": "2026-10-20",
     "parties": 10,
-    "policyPages": 117,
+    "policyPages": 118,
     "blind": [
       "green",
       "nzfirst",
@@ -586,35 +590,35 @@
     ],
     "perParty": {
       "green": {
-        "pages": 80,
+        "pages": 79,
         "newest": null
       },
       "national": {
-        "pages": 42,
-        "newest": "2026-10-19"
+        "pages": 91,
+        "newest": "2026-10-20"
       },
       "labour": {
-        "pages": 38,
-        "newest": "2026-10-19"
+        "pages": 39,
+        "newest": "2026-10-20"
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-19"
+        "newest": "2026-10-20"
       },
       "nzfirst": {
         "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 31,
+        "pages": 30,
         "newest": null
       },
       "top": {
-        "pages": 25,
+        "pages": 24,
         "newest": null
       },
       "alcp": {
-        "pages": 9,
+        "pages": 10,
         "newest": "2026-09-25"
       },
       "animal-justice": {
@@ -623,7 +627,7 @@
       },
       "conservative": {
         "pages": 16,
-        "newest": "2026-10-19"
+        "newest": "2026-10-20"
       },
       "nz-outdoors": {
         "pages": 19,
