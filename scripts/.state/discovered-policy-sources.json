@@ -114,6 +114,10 @@
         "title": "Labour's AI in New Zealand's Interests Policy"
       },
       {
+        "url": "https://www.labour.org.nz/backing-maori-businesses",
+        "title": "Labour Backing Māori Businesses Procurement Policy"
+      },
+      {
         "url": "https://www.labour.org.nz/banking-for-everyone",
         "title": "Banking for Everyone – Labour Open Banking Policy"
       },
@@ -128,6 +132,10 @@
       {
         "url": "https://www.labour.org.nz/capitalgainstax",
         "title": "Labour Capital Gains Tax Policy"
+      },
+      {
+        "url": "https://www.labour.org.nz/cost-of-living-plan",
+        "title": "Labour's Cost of Living Plan"
       },
       {
         "url": "https://www.labour.org.nz/cutting-student-debt",
@@ -146,6 +154,10 @@
         "title": "Labour's Fairer Grocery Prices Policy"
       },
       {
+        "url": "https://www.labour.org.nz/fairer-workplaces",
+        "title": "Labour Fairer Workplaces Policy"
+      },
+      {
         "url": "https://www.labour.org.nz/farecap",
         "title": "Labour's $20 Public Transport Fare Cap"
       },
@@ -158,8 +170,16 @@
         "title": "Labour's Fiscal Strategy"
       },
       {
+        "url": "https://www.labour.org.nz/fuel-tax-freeze",
+        "title": "Labour Fuel Tax Freeze"
+      },
+      {
         "url": "https://www.labour.org.nz/futurefund",
         "title": "Labour's New Zealand Future Fund"
+      },
+      {
+        "url": "https://www.labour.org.nz/good-jobs",
+        "title": "Labour Good Jobs Plan"
       },
       {
         "url": "https://www.labour.org.nz/pay-equity",
@@ -188,8 +208,16 @@
     ],
     "health": [
       {
+        "url": "https://www.labour.org.nz/affordable-healthcare",
+        "title": "Labour Affordable Healthcare Medicard Plan"
+      },
+      {
         "url": "https://www.labour.org.nz/cervicalscreening",
         "title": "Labour's Free Cervical Screening"
+      },
+      {
+        "url": "https://www.labour.org.nz/disability",
+        "title": "Labour Disability Policy"
       },
       {
         "url": "https://www.labour.org.nz/ed-recovery-plan",
@@ -226,6 +254,14 @@
         "title": "Cutting Back-to-School Costs"
       },
       {
+        "url": "https://www.labour.org.nz/early-childhood-education",
+        "title": "Labour Early Childhood Education Policy"
+      },
+      {
+        "url": "https://www.labour.org.nz/ece",
+        "title": "Labour Early Childhood Education Policy"
+      },
+      {
         "url": "https://www.labour.org.nz/kids-off-screens",
         "title": "Keeping Kids off Screens"
       },
@@ -236,6 +272,10 @@
     ],
     "climate": [
       {
+        "url": "https://www.labour.org.nz/fixing-the-ets",
+        "title": "Labour Fixing the Emissions Trading Scheme"
+      },
+      {
         "url": "https://www.labour.org.nz/solarsaver",
         "title": "SolarSaver – Government-backed solar finance scheme"
       }
@@ -244,6 +284,30 @@
       {
         "url": "https://www.labour.org.nz/safer-online",
         "title": "Safer Online – Social Media Safety Rules"
+      }
+    ],
+    "foreign-policy": [
+      {
+        "url": "https://www.labour.org.nz/foreign-affairs",
+        "title": "Labour Foreign Affairs Policy"
+      }
+    ],
+    "immigration": [
+      {
+        "url": "https://www.labour.org.nz/immigration",
+        "title": "Labour Immigration Policy"
+      }
+    ],
+    "democracy-government": [
+      {
+        "url": "https://www.labour.org.nz/government-you-can-trust",
+        "title": "Labour Government Accountability and Voting Reforms"
+      }
+    ],
+    "housing": [
+      {
+        "url": "https://www.labour.org.nz/community-housing-and-retirement-villages",
+        "title": "Labour Community Housing and Retirement Villages Policy"
       }
     ]
   },
@@ -578,9 +642,9 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-20",
+    "lastRun": "2026-10-21",
     "parties": 10,
-    "policyPages": 118,
+    "policyPages": 132,
     "blind": [
       "green",
       "nzfirst",
@@ -590,31 +654,31 @@
     ],
     "perParty": {
       "green": {
-        "pages": 79,
+        "pages": 1,
         "newest": null
       },
       "national": {
         "pages": 91,
-        "newest": "2026-10-20"
+        "newest": "2026-10-21"
       },
       "labour": {
-        "pages": 39,
-        "newest": "2026-10-20"
+        "pages": 54,
+        "newest": "2026-10-21"
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-20"
+        "newest": "2026-10-21"
       },
       "nzfirst": {
-        "pages": 14,
+        "pages": 0,
         "newest": null
       },
       "tpm": {
-        "pages": 30,
+        "pages": 1,
         "newest": null
       },
       "top": {
-        "pages": 24,
+        "pages": 1,
         "newest": null
       },
       "alcp": {
@@ -623,14 +687,14 @@
       },
       "animal-justice": {
         "pages": 25,
-        "newest": "2026-09-26"
+        "newest": "2026-10-21"
       },
       "conservative": {
         "pages": 16,
         "newest": "2026-10-20"
       },
       "nz-outdoors": {
-        "pages": 19,
+        "pages": 0,
         "newest": null
       },
       "vision-nz": {
