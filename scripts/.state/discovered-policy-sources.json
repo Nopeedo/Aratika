@@ -315,13 +315,13 @@
     "economy": [
       {
         "url": "https://www.act.org.nz/policies/economy",
-        "title": "ACT Economy and Cost of Living Policy"
+        "title": "ACT Economy & Cost of Living Policy"
       }
     ],
     "crime-justice": [
       {
         "url": "https://www.act.org.nz/policies/law-and-order",
-        "title": "ACT Law and Order Policy"
+        "title": "ACT Law & Order Policy"
       }
     ],
     "health": [
@@ -333,7 +333,7 @@
     "democracy-government": [
       {
         "url": "https://www.act.org.nz/policies/democracy",
-        "title": "ACT Equal Rights and Democracy Policy"
+        "title": "ACT Equal Rights & Democracy Policy"
       }
     ],
     "housing": [
@@ -345,11 +345,11 @@
     "environment": [
       {
         "url": "https://www.act.org.nz/policies/hunting",
-        "title": "ACT Hunting, Conservation and Firearms Policy"
+        "title": "ACT Hunting, Conservation & Firearms Policy"
       },
       {
         "url": "https://www.act.org.nz/policies/rural",
-        "title": "ACT's Backing Rural New Zealand Policy"
+        "title": "ACT Backing Rural NZ Policy"
       }
     ],
     "education": [
@@ -642,7 +642,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-21",
+    "lastRun": "2026-10-22",
     "parties": 10,
     "policyPages": 132,
     "blind": [
@@ -654,12 +654,12 @@
     ],
     "perParty": {
       "green": {
-        "pages": 1,
+        "pages": 80,
         "newest": null
       },
       "national": {
-        "pages": 91,
-        "newest": "2026-10-21"
+        "pages": 42,
+        "newest": "2026-10-22"
       },
       "labour": {
         "pages": 54,
@@ -667,22 +667,22 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-21"
+        "newest": "2026-10-22"
       },
       "nzfirst": {
-        "pages": 0,
+        "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 1,
+        "pages": 31,
         "newest": null
       },
       "top": {
-        "pages": 1,
+        "pages": 25,
         "newest": null
       },
       "alcp": {
-        "pages": 10,
+        "pages": 9,
         "newest": "2026-09-25"
       },
       "animal-justice": {
@@ -694,7 +694,7 @@
         "newest": "2026-10-20"
       },
       "nz-outdoors": {
-        "pages": 0,
+        "pages": 19,
         "newest": null
       },
       "vision-nz": {
@@ -703,7 +703,7 @@
       },
       "alliance": {
         "pages": 22,
-        "newest": "2026-10-15"
+        "newest": "2026-10-22"
       },
       "free-palestine": {
         "pages": 0,
