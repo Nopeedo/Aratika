@@ -199,7 +199,7 @@
       },
       {
         "url": "https://www.labour.org.nz/start-work-now",
-        "title": "Labour Start Work Now – jobs and infrastructure plan"
+        "title": "Labour Start Work Now – Jobs and Infrastructure Plan"
       },
       {
         "url": "https://www.labour.org.nz/strengthening-kiwisaver",
@@ -221,7 +221,7 @@
       },
       {
         "url": "https://www.labour.org.nz/ed-recovery-plan",
-        "title": "Labour ED Recovery Plan"
+        "title": "Labour's ED Recovery Plan"
       },
       {
         "url": "https://www.labour.org.nz/familydoctorloanscheme",
@@ -642,7 +642,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-22",
+    "lastRun": "2026-10-23",
     "parties": 10,
     "policyPages": 132,
     "blind": [
@@ -654,35 +654,35 @@
     ],
     "perParty": {
       "green": {
-        "pages": 80,
+        "pages": 79,
         "newest": null
       },
       "national": {
-        "pages": 42,
-        "newest": "2026-10-22"
+        "pages": 91,
+        "newest": "2026-10-23"
       },
       "labour": {
         "pages": 54,
-        "newest": "2026-10-21"
+        "newest": "2026-10-23"
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-22"
+        "newest": "2026-10-23"
       },
       "nzfirst": {
         "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 31,
+        "pages": 30,
         "newest": null
       },
       "top": {
-        "pages": 25,
+        "pages": 24,
         "newest": null
       },
       "alcp": {
-        "pages": 9,
+        "pages": 10,
         "newest": "2026-09-25"
       },
       "animal-justice": {
@@ -703,7 +703,7 @@
       },
       "alliance": {
         "pages": 22,
-        "newest": "2026-10-22"
+        "newest": "2026-10-23"
       },
       "free-palestine": {
         "pages": 0,
