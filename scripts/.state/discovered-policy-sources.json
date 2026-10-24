@@ -315,7 +315,7 @@
     "economy": [
       {
         "url": "https://www.act.org.nz/policies/economy",
-        "title": "ACT Economy & Cost of Living Policy"
+        "title": "Economy & Cost of Living Policy"
       }
     ],
     "crime-justice": [
@@ -355,7 +355,7 @@
     "education": [
       {
         "url": "https://www.act.org.nz/policies/education",
-        "title": "ACT Education Policy"
+        "title": "Education Policy"
       }
     ]
   },
@@ -642,7 +642,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-23",
+    "lastRun": "2026-10-24",
     "parties": 10,
     "policyPages": 132,
     "blind": [
@@ -650,11 +650,12 @@
       "nzfirst",
       "tpm",
       "top",
-      "nz-outdoors"
+      "nz-outdoors",
+      "alliance"
     ],
     "perParty": {
       "green": {
-        "pages": 79,
+        "pages": 1,
         "newest": null
       },
       "national": {
@@ -667,18 +668,18 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-23"
+        "newest": "2026-10-24"
       },
       "nzfirst": {
-        "pages": 14,
+        "pages": 0,
         "newest": null
       },
       "tpm": {
-        "pages": 30,
+        "pages": 1,
         "newest": null
       },
       "top": {
-        "pages": 24,
+        "pages": 1,
         "newest": null
       },
       "alcp": {
@@ -694,7 +695,7 @@
         "newest": "2026-10-20"
       },
       "nz-outdoors": {
-        "pages": 19,
+        "pages": 0,
         "newest": null
       },
       "vision-nz": {
