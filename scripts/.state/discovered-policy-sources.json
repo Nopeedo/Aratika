@@ -362,12 +362,8 @@
   "alcp": {
     "crime-justice": [
       {
-        "url": "https://alcp.org.nz/",
-        "title": "ALCP Cannabis Legalisation and Regulation Policy"
-      },
-      {
         "url": "https://alcp.org.nz/policy",
-        "title": "ALCP Full Spectrum Cannabis Policy"
+        "title": "ALCP Cannabis Legalisation Policy"
       }
     ]
   },
@@ -486,6 +482,10 @@
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
         "title": "Alliance workers' rights policy: full employment and 35-hour week"
+      },
+      {
+        "url": "https://allianceparty.nz/alliance-monetary-currency-policy/",
+        "title": "Alliance Monetary and Currency Policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
@@ -642,7 +642,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-24",
+    "lastRun": "2026-10-25",
     "parties": 10,
     "policyPages": 132,
     "blind": [
@@ -650,16 +650,15 @@
       "nzfirst",
       "tpm",
       "top",
-      "nz-outdoors",
-      "alliance"
+      "nz-outdoors"
     ],
     "perParty": {
       "green": {
-        "pages": 1,
+        "pages": 80,
         "newest": null
       },
       "national": {
-        "pages": 91,
+        "pages": 42,
         "newest": "2026-10-23"
       },
       "labour": {
@@ -668,23 +667,23 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-24"
+        "newest": "2026-10-25"
       },
       "nzfirst": {
-        "pages": 0,
+        "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 1,
+        "pages": 31,
         "newest": null
       },
       "top": {
-        "pages": 1,
+        "pages": 25,
         "newest": null
       },
       "alcp": {
-        "pages": 10,
-        "newest": "2026-09-25"
+        "pages": 9,
+        "newest": "2026-10-25"
       },
       "animal-justice": {
         "pages": 25,
@@ -695,7 +694,7 @@
         "newest": "2026-10-20"
       },
       "nz-outdoors": {
-        "pages": 0,
+        "pages": 19,
         "newest": null
       },
       "vision-nz": {
@@ -703,8 +702,8 @@
         "newest": "2026-10-15"
       },
       "alliance": {
-        "pages": 22,
-        "newest": "2026-10-23"
+        "pages": 23,
+        "newest": "2026-10-25"
       },
       "free-palestine": {
         "pages": 0,
