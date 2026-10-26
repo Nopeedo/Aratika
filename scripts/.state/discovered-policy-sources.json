@@ -6,6 +6,10 @@
         "title": "National's Economic Rebuild Plan"
       },
       {
+        "url": "https://www.national.org.nz/policies/100-day-plan-secure-future",
+        "title": "National's 100 Day Plan"
+      },
+      {
         "url": "https://www.national.org.nz/policies/boost-for-graduates",
         "title": "Back Pocket Boost for Graduates"
       },
@@ -57,13 +61,13 @@
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "5% First Home Deposit Access"
+        "title": "5% First Home Deposits"
       }
     ],
     "foreign-policy": [
       {
         "url": "https://www.national.org.nz/policies/new-trade",
-        "title": "New Zealand's Next Billion Customers – Trade Policy"
+        "title": "New Zealand's Next Billion Customers Trade Policy"
       }
     ],
     "environment": [
@@ -237,7 +241,7 @@
       },
       {
         "url": "https://www.labour.org.nz/medicard",
-        "title": "Labour Free Doctor's Visits with the Medicard"
+        "title": "Free Doctor's Visits with the Medicard"
       },
       {
         "url": "https://www.labour.org.nz/prescriptions",
@@ -315,13 +319,13 @@
     "economy": [
       {
         "url": "https://www.act.org.nz/policies/economy",
-        "title": "Economy & Cost of Living Policy"
+        "title": "ACT Economy and Cost of Living Policy"
       }
     ],
     "crime-justice": [
       {
         "url": "https://www.act.org.nz/policies/law-and-order",
-        "title": "ACT Law & Order Policy"
+        "title": "ACT Law and Order Policy"
       }
     ],
     "health": [
@@ -339,7 +343,7 @@
     "housing": [
       {
         "url": "https://www.act.org.nz/policies/infrastructure",
-        "title": "ACT Housing & Infrastructure Policy"
+        "title": "ACT Housing and Infrastructure Policy"
       }
     ],
     "environment": [
@@ -361,6 +365,10 @@
   },
   "alcp": {
     "crime-justice": [
+      {
+        "url": "https://alcp.org.nz/",
+        "title": "ALCP Cannabis Legalisation Policy"
+      },
       {
         "url": "https://alcp.org.nz/policy",
         "title": "ALCP Cannabis Legalisation Policy"
@@ -642,9 +650,9 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-25",
+    "lastRun": "2026-10-26",
     "parties": 10,
-    "policyPages": 132,
+    "policyPages": 134,
     "blind": [
       "green",
       "nzfirst",
@@ -654,36 +662,36 @@
     ],
     "perParty": {
       "green": {
-        "pages": 80,
+        "pages": 79,
         "newest": null
       },
       "national": {
-        "pages": 42,
-        "newest": "2026-10-23"
+        "pages": 92,
+        "newest": "2026-10-26"
       },
       "labour": {
         "pages": 54,
-        "newest": "2026-10-23"
+        "newest": "2026-10-26"
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-25"
+        "newest": "2026-10-26"
       },
       "nzfirst": {
         "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 31,
+        "pages": 30,
         "newest": null
       },
       "top": {
-        "pages": 25,
+        "pages": 24,
         "newest": null
       },
       "alcp": {
-        "pages": 9,
-        "newest": "2026-10-25"
+        "pages": 10,
+        "newest": "2026-10-26"
       },
       "animal-justice": {
         "pages": 25,
@@ -703,7 +711,7 @@
       },
       "alliance": {
         "pages": 23,
-        "newest": "2026-10-25"
+        "newest": "2026-10-26"
       },
       "free-palestine": {
         "pages": 0,
