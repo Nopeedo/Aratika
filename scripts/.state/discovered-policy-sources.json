@@ -310,6 +310,10 @@
     ],
     "housing": [
       {
+        "url": "https://www.labour.org.nz/buy-your-first-home",
+        "title": "Labour First Home Buying Policy"
+      },
+      {
         "url": "https://www.labour.org.nz/community-housing-and-retirement-villages",
         "title": "Labour Community Housing and Retirement Villages Policy"
       }
@@ -337,7 +341,7 @@
     "democracy-government": [
       {
         "url": "https://www.act.org.nz/policies/democracy",
-        "title": "ACT Equal Rights & Democracy Policy"
+        "title": "ACT Equal Rights and Democracy Policy"
       }
     ],
     "housing": [
@@ -359,7 +363,7 @@
     "education": [
       {
         "url": "https://www.act.org.nz/policies/education",
-        "title": "Education Policy"
+        "title": "ACT Education Policy"
       }
     ]
   },
@@ -408,6 +412,10 @@
         "title": "Ban Recreational Fishing and Fishing Competitions"
       },
       {
+        "url": "https://animaljustice.org.nz/policies/compassionate-pound-and-shelter-reform-2/",
+        "title": "Animal Justice Party Compassionate Pound and Shelter Reform"
+      },
+      {
         "url": "https://animaljustice.org.nz/policies/end-the-private-sale-and-use-of-fireworks/",
         "title": "End the Private Sale and Use of Fireworks"
       },
@@ -438,6 +446,10 @@
       {
         "url": "https://animaljustice.org.nz/policies/towards-a-cruelty-free-and-sustainable-fashion-industry/",
         "title": "Towards a Cruelty-Free and Sustainable Fashion Industry"
+      },
+      {
+        "url": "https://animaljustice.org.nz/policies/universal-veterinary-care/",
+        "title": "Animal Justice Party Universal Veterinary Care Policy"
       }
     ],
     "economy": [
@@ -650,9 +662,9 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-26",
+    "lastRun": "2026-10-27",
     "parties": 10,
-    "policyPages": 134,
+    "policyPages": 137,
     "blind": [
       "green",
       "nzfirst",
@@ -662,31 +674,31 @@
     ],
     "perParty": {
       "green": {
-        "pages": 79,
+        "pages": 1,
         "newest": null
       },
       "national": {
         "pages": 92,
-        "newest": "2026-10-26"
+        "newest": "2026-10-27"
       },
       "labour": {
-        "pages": 54,
-        "newest": "2026-10-26"
+        "pages": 55,
+        "newest": "2026-10-27"
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-26"
+        "newest": "2026-10-27"
       },
       "nzfirst": {
-        "pages": 14,
+        "pages": 0,
         "newest": null
       },
       "tpm": {
-        "pages": 30,
+        "pages": 1,
         "newest": null
       },
       "top": {
-        "pages": 24,
+        "pages": 1,
         "newest": null
       },
       "alcp": {
@@ -694,15 +706,15 @@
         "newest": "2026-10-26"
       },
       "animal-justice": {
-        "pages": 25,
-        "newest": "2026-10-21"
+        "pages": 27,
+        "newest": "2026-10-27"
       },
       "conservative": {
         "pages": 16,
-        "newest": "2026-10-20"
+        "newest": "2026-10-27"
       },
       "nz-outdoors": {
-        "pages": 19,
+        "pages": 0,
         "newest": null
       },
       "vision-nz": {
