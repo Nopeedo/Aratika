@@ -30,6 +30,10 @@
         "title": "International Visitor Levy Reset"
       },
       {
+        "url": "https://www.national.org.nz/policies/kiwi-kids",
+        "title": "National's Plan for Kiwi Kids"
+      },
+      {
         "url": "https://www.national.org.nz/policies/kiwisaver",
         "title": "Enhancing KiwiSaver for Everyone"
       },
@@ -46,8 +50,16 @@
         "title": "Modernising Paid Parental Leave"
       },
       {
+        "url": "https://www.national.org.nz/policies/plan-for-parents",
+        "title": "National's Plan for Parents"
+      },
+      {
         "url": "https://www.national.org.nz/policies/responsibility-rules",
         "title": "Budget Responsibility Rules"
+      },
+      {
+        "url": "https://www.national.org.nz/policies/retirement",
+        "title": "National's Plan for Retirement"
       },
       {
         "url": "https://www.national.org.nz/policies/solar",
@@ -56,12 +68,16 @@
       {
         "url": "https://www.national.org.nz/policies/walfare",
         "title": "Firm, Fair and Affordable Welfare System"
+      },
+      {
+        "url": "https://www.national.org.nz/policies/young-adults",
+        "title": "National's Plan for Young Adults"
       }
     ],
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "5% First Home Deposits"
+        "title": "Giving More Kiwis Access to 5% First Home Deposits"
       }
     ],
     "foreign-policy": [
@@ -316,6 +332,10 @@
       {
         "url": "https://www.labour.org.nz/community-housing-and-retirement-villages",
         "title": "Labour Community Housing and Retirement Villages Policy"
+      },
+      {
+        "url": "https://www.labour.org.nz/renting-better",
+        "title": "Making Renting Better"
       }
     ]
   },
@@ -662,9 +682,9 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-27",
+    "lastRun": "2026-10-29",
     "parties": 10,
-    "policyPages": 137,
+    "policyPages": 142,
     "blind": [
       "green",
       "nzfirst",
@@ -674,35 +694,35 @@
     ],
     "perParty": {
       "green": {
-        "pages": 1,
+        "pages": 80,
         "newest": null
       },
       "national": {
-        "pages": 92,
-        "newest": "2026-10-27"
+        "pages": 47,
+        "newest": "2026-10-29"
       },
       "labour": {
-        "pages": 55,
-        "newest": "2026-10-27"
+        "pages": 56,
+        "newest": "2026-10-29"
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-27"
+        "newest": "2026-10-29"
       },
       "nzfirst": {
-        "pages": 0,
+        "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 1,
+        "pages": 31,
         "newest": null
       },
       "top": {
-        "pages": 1,
+        "pages": 25,
         "newest": null
       },
       "alcp": {
-        "pages": 10,
+        "pages": 9,
         "newest": "2026-10-26"
       },
       "animal-justice": {
@@ -714,7 +734,7 @@
         "newest": "2026-10-27"
       },
       "nz-outdoors": {
-        "pages": 0,
+        "pages": 19,
         "newest": null
       },
       "vision-nz": {
@@ -739,7 +759,7 @@
       },
       "womens-rights": {
         "pages": 19,
-        "newest": "2026-10-06"
+        "newest": "2026-10-29"
       }
     }
   }
