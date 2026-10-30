@@ -682,7 +682,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-10-30",
+    "lastRun": "2026-10-31",
     "parties": 10,
     "policyPages": 142,
     "blind": [
@@ -694,12 +694,12 @@
     ],
     "perParty": {
       "green": {
-        "pages": 79,
+        "pages": 1,
         "newest": null
       },
       "national": {
         "pages": 96,
-        "newest": "2026-10-30"
+        "newest": "2026-10-31"
       },
       "labour": {
         "pages": 56,
@@ -707,18 +707,18 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-30"
+        "newest": "2026-10-31"
       },
       "nzfirst": {
-        "pages": 14,
+        "pages": 0,
         "newest": null
       },
       "tpm": {
-        "pages": 30,
+        "pages": 1,
         "newest": null
       },
       "top": {
-        "pages": 24,
+        "pages": 1,
         "newest": null
       },
       "alcp": {
@@ -734,7 +734,7 @@
         "newest": "2026-10-27"
       },
       "nz-outdoors": {
-        "pages": 19,
+        "pages": 0,
         "newest": null
       },
       "vision-nz": {
