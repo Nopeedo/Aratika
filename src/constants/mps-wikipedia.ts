@@ -65,7 +65,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Rachel_Brooking"
   },
   "simeon-brown": {
-    "bio": "Simeon Peter Brown is a New Zealand politician and Member of Parliament in the House of Representatives for the National Party. Following the 2023 New Zealand general election, Brown became Minister of Energy, Minister of Local Government, Minister of Transport, Minister for Auckland, and Deputy leader of the House in the Sixth National Government. In January 2025, he was appointed as Minister of Health and Minister for State Owned Enterprises, while dropping his energy, local government and transport portfolios. In April 2026, Brown regained his energy portfolio and became the National…",
+    "bio": "Simeon Peter Brown is a New Zealand politician and Member of Parliament in the House of Representatives for the National Party. Following the 2023 general election, Brown became Minister of Energy, Minister of Local Government, Minister of Transport, Minister for Auckland, and Deputy leader of the House in the Sixth National Government. In January 2025, he was appointed as Minister of Health and Minister for State Owned Enterprises, while dropping his energy, local government and transport portfolios. In April 2026, Brown regained his energy portfolio and became the National Party's campaign…",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Simeon_Brown"
   },
   "gerry-brownlee": {
@@ -85,7 +85,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Hamish_Campbell"
   },
   "kahurangi-carter": {
-    "bio": "Kahurangi Carter is a New Zealand politician, representing the Green Party of Aotearoa New Zealand as a Member of Parliament since the 2023 New Zealand general election.",
+    "bio": "Kahurangi Carter MP is a New Zealand politician. She has served as a list Member of Parliament for the Green Party of Aotearoa New Zealand since 2023. She is a candidate for the Christchurch Central electorate in the upcoming 2026 general election, and is ranked number 11 on the party list.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Kahurangi_Carter"
   },
   "carlos-cheung": {
@@ -145,7 +145,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Paulo_Garcia_(New_Zealand_politician)"
   },
   "julie-anne-genter": {
-    "bio": "Julie Anne Genter is an American-born New Zealand politician who is a member of the House of Representatives representing the Green Party of Aotearoa New Zealand. Genter was elected to each Parliament from 2011 to 2023 on the party lists, before being elected as the Member of Parliament for the Rongotai electorate in the 2023 election. She served as the Minister for Women, Associate Minister for Health and Associate Minister for Transport during the first term of the Sixth Labour Government. She holds dual citizenship of New Zealand and the United States.",
+    "bio": "Julie Anne Genter is an American-born New Zealand politician. She has served as a Member of Parliament for the Green Party of Aotearoa New Zealand since 2011, first as a list member, and since 2023, for the Rongotai electorate. She served as the Minister for Women, Associate Minister for Health and Associate Minister for Transport during the first term of the Sixth Labour Government. She holds dual citizenship of New Zealand and the United States.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Julie_Anne_Genter"
   },
   "paul-goldsmith": {
@@ -217,7 +217,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Jo_Luxton"
   },
   "huhana-lyndon": {
-    "bio": "Hūhana Melanie Lyndon is a New Zealand politician who was elected on the Green Party list in the 2023 New Zealand general election.",
+    "bio": "Hūhana Melanie Lyndon MP is a New Zealand politician. She has served as a list Member of Parliament for the Green Party of Aotearoa New Zealand since 2023. She is a candidate for the Te Tai Tokerau Māori electorate in the upcoming 2026 general election, and is ranked number 7 on the party list.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/H%C5%ABhana_Lyndon"
   },
   "david-macleod": {
@@ -305,7 +305,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Winston_Peters"
   },
   "lan-pham": {
-    "bio": "Ngoc-Lan Thi Pham is a New Zealand politician and ecologist. She was a regional councillor for Environment Canterbury for six years and was elected to Parliament as a Green in the 2023 New Zealand general election.",
+    "bio": "Ngoc-Lan Thi Pham MP is a New Zealand politician and ecologist. She has served as a list Member of Parliament for the Green Party of Aotearoa New Zealand since 2023. She previously served as a regional councillor for Environment Canterbury from 2016 to 2022. She is a candidate for the Kenepuru electorate in the upcoming 2026 general election, and is ranked number 6 on the party list.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Lan_Pham"
   },
   "tama-potaka": {
@@ -409,7 +409,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Louise_Upston"
   },
   "tangi-utikere": {
-    "bio": "Tangi William Edward Utikere is a New Zealand politician, and Member of Parliament for Palmerston North since 2020. He was the deputy mayor of Palmerston North from 2016 to 2020, being the first non-Pākehā to serve in that role.",
+    "bio": "Tangi William Edward Utikere is a New Zealand politician, and Member of Parliament for Palmerston North since 2020. He was the deputy mayor of Palmerston North from 2016 to 2020, being the first non-New Zealand European to serve in that role.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Tangi_Utikere"
   },
   "tim-van-de-molen": {

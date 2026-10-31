@@ -10567,13 +10567,13 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Energy",
+        "minister": "Associate Minister for Energy",
         "date": "2026-09-14",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 7 September 2026, by title and date?",
         "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
       },
       {
-        "minister": "Associate Minister for Energy",
+        "minister": "Minister for Energy",
         "date": "2026-09-14",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 7 September 2026, by title and date?",
         "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
