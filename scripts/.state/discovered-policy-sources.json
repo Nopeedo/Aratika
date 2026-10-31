@@ -694,11 +694,11 @@
     ],
     "perParty": {
       "green": {
-        "pages": 1,
+        "pages": 80,
         "newest": null
       },
       "national": {
-        "pages": 96,
+        "pages": 47,
         "newest": "2026-10-31"
       },
       "labour": {
@@ -710,19 +710,19 @@
         "newest": "2026-10-31"
       },
       "nzfirst": {
-        "pages": 0,
+        "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 1,
+        "pages": 31,
         "newest": null
       },
       "top": {
-        "pages": 1,
+        "pages": 25,
         "newest": null
       },
       "alcp": {
-        "pages": 10,
+        "pages": 9,
         "newest": "2026-10-26"
       },
       "animal-justice": {
@@ -734,7 +734,7 @@
         "newest": "2026-10-27"
       },
       "nz-outdoors": {
-        "pages": 0,
+        "pages": 19,
         "newest": null
       },
       "vision-nz": {
