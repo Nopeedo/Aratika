@@ -162,6 +162,10 @@
         "title": "Labour's Student Debt Cut Policy"
       },
       {
+        "url": "https://www.labour.org.nz/fair-charges-on-bills",
+        "title": "Cracking down on unfair charges and misleading discounts"
+      },
+      {
         "url": "https://www.labour.org.nz/fair-go-for-drivers",
         "title": "Labour's Fair Go For Drivers"
       },
@@ -395,7 +399,7 @@
       },
       {
         "url": "https://alcp.org.nz/policy",
-        "title": "ALCP Cannabis Legalisation Policy"
+        "title": "Aotearoa Legalise Cannabis Party full policy platform"
       }
     ]
   },
@@ -682,9 +686,9 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-02",
+    "lastRun": "2026-11-03",
     "parties": 10,
-    "policyPages": 142,
+    "policyPages": 143,
     "blind": [
       "green",
       "nzfirst",
@@ -694,7 +698,7 @@
     ],
     "perParty": {
       "green": {
-        "pages": 79,
+        "pages": 1,
         "newest": null
       },
       "national": {
@@ -702,28 +706,28 @@
         "newest": "2026-10-31"
       },
       "labour": {
-        "pages": 56,
-        "newest": "2026-10-29"
+        "pages": 57,
+        "newest": "2026-11-03"
       },
       "act": {
         "pages": 11,
-        "newest": "2026-10-31"
+        "newest": "2026-11-03"
       },
       "nzfirst": {
-        "pages": 14,
+        "pages": 0,
         "newest": null
       },
       "tpm": {
-        "pages": 30,
+        "pages": 1,
         "newest": null
       },
       "top": {
-        "pages": 24,
+        "pages": 1,
         "newest": null
       },
       "alcp": {
         "pages": 10,
-        "newest": "2026-10-26"
+        "newest": "2026-11-03"
       },
       "animal-justice": {
         "pages": 27,
@@ -734,7 +738,7 @@
         "newest": "2026-10-27"
       },
       "nz-outdoors": {
-        "pages": 19,
+        "pages": 0,
         "newest": null
       },
       "vision-nz": {
