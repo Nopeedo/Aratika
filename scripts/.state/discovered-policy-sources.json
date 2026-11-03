@@ -686,7 +686,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-03",
+    "lastRun": "2026-11-04",
     "parties": 10,
     "policyPages": 143,
     "blind": [
@@ -698,12 +698,12 @@
     ],
     "perParty": {
       "green": {
-        "pages": 1,
+        "pages": 80,
         "newest": null
       },
       "national": {
-        "pages": 96,
-        "newest": "2026-10-31"
+        "pages": 47,
+        "newest": "2026-11-04"
       },
       "labour": {
         "pages": 57,
@@ -711,22 +711,22 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-11-03"
+        "newest": "2026-11-04"
       },
       "nzfirst": {
-        "pages": 0,
+        "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 1,
+        "pages": 31,
         "newest": null
       },
       "top": {
-        "pages": 1,
+        "pages": 25,
         "newest": null
       },
       "alcp": {
-        "pages": 10,
+        "pages": 9,
         "newest": "2026-11-03"
       },
       "animal-justice": {
@@ -735,10 +735,10 @@
       },
       "conservative": {
         "pages": 16,
-        "newest": "2026-10-27"
+        "newest": "2026-11-04"
       },
       "nz-outdoors": {
-        "pages": 0,
+        "pages": 19,
         "newest": null
       },
       "vision-nz": {
@@ -747,7 +747,7 @@
       },
       "alliance": {
         "pages": 23,
-        "newest": "2026-10-26"
+        "newest": "2026-11-04"
       },
       "free-palestine": {
         "pages": 0,
