@@ -31,19 +31,23 @@
       },
       {
         "url": "https://www.national.org.nz/policies/kiwi-kids",
-        "title": "National's Plan for Kiwi Kids"
+        "title": "National's plan for Kiwi kids"
       },
       {
         "url": "https://www.national.org.nz/policies/kiwisaver",
         "title": "Enhancing KiwiSaver for Everyone"
       },
       {
+        "url": "https://www.national.org.nz/policies/national-manifesto",
+        "title": "National's manifesto to secure NZ's future"
+      },
+      {
         "url": "https://www.national.org.nz/policies/nationals-fiscal-plan",
-        "title": "National's Fiscal Plan"
+        "title": "National's fiscal plan"
       },
       {
         "url": "https://www.national.org.nz/policies/no-new-taxes",
-        "title": "No New Taxes Under National"
+        "title": "No new taxes under National"
       },
       {
         "url": "https://www.national.org.nz/policies/paid-parental-leave",
@@ -51,7 +55,7 @@
       },
       {
         "url": "https://www.national.org.nz/policies/plan-for-parents",
-        "title": "National's Plan for Parents"
+        "title": "National's plan for parents"
       },
       {
         "url": "https://www.national.org.nz/policies/responsibility-rules",
@@ -59,7 +63,7 @@
       },
       {
         "url": "https://www.national.org.nz/policies/retirement",
-        "title": "National's Plan for Retirement"
+        "title": "National's plan for retirement"
       },
       {
         "url": "https://www.national.org.nz/policies/solar",
@@ -71,13 +75,13 @@
       },
       {
         "url": "https://www.national.org.nz/policies/young-adults",
-        "title": "National's Plan for Young Adults"
+        "title": "National's plan for young adults"
       }
     ],
     "housing": [
       {
         "url": "https://www.national.org.nz/policies/backing-first-home-buyers",
-        "title": "Giving More Kiwis Access to 5% First Home Deposits"
+        "title": "Giving more Kiwis access to 5% first home deposits"
       }
     ],
     "foreign-policy": [
@@ -686,9 +690,9 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-04",
+    "lastRun": "2026-11-05",
     "parties": 10,
-    "policyPages": 143,
+    "policyPages": 144,
     "blind": [
       "green",
       "nzfirst",
@@ -698,12 +702,12 @@
     ],
     "perParty": {
       "green": {
-        "pages": 80,
+        "pages": 79,
         "newest": null
       },
       "national": {
-        "pages": 47,
-        "newest": "2026-11-04"
+        "pages": 97,
+        "newest": "2026-11-05"
       },
       "labour": {
         "pages": 57,
@@ -711,22 +715,22 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-11-04"
+        "newest": "2026-11-05"
       },
       "nzfirst": {
         "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 31,
+        "pages": 30,
         "newest": null
       },
       "top": {
-        "pages": 25,
+        "pages": 24,
         "newest": null
       },
       "alcp": {
-        "pages": 9,
+        "pages": 10,
         "newest": "2026-11-03"
       },
       "animal-justice": {
@@ -735,7 +739,7 @@
       },
       "conservative": {
         "pages": 16,
-        "newest": "2026-11-04"
+        "newest": "2026-11-05"
       },
       "nz-outdoors": {
         "pages": 19,
