@@ -350,6 +350,10 @@
   "act": {
     "economy": [
       {
+        "url": "https://www.act.org.nz/",
+        "title": "ACT Plan to Unlock New Zealand's Potential"
+      },
+      {
         "url": "https://www.act.org.nz/policies/economy",
         "title": "ACT Economy and Cost of Living Policy"
       }
@@ -690,24 +694,25 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-06",
+    "lastRun": "2026-11-07",
     "parties": 10,
-    "policyPages": 144,
+    "policyPages": 145,
     "blind": [
       "green",
       "nzfirst",
       "tpm",
       "top",
+      "alcp",
       "nz-outdoors"
     ],
     "perParty": {
       "green": {
-        "pages": 1,
+        "pages": 80,
         "newest": null
       },
       "national": {
-        "pages": 97,
-        "newest": "2026-11-06"
+        "pages": 48,
+        "newest": "2026-11-07"
       },
       "labour": {
         "pages": 57,
@@ -715,22 +720,22 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-11-06"
+        "newest": "2026-11-07"
       },
       "nzfirst": {
-        "pages": 0,
+        "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 1,
+        "pages": 31,
         "newest": null
       },
       "top": {
-        "pages": 1,
+        "pages": 25,
         "newest": null
       },
       "alcp": {
-        "pages": 10,
+        "pages": 9,
         "newest": "2026-11-03"
       },
       "animal-justice": {
@@ -742,7 +747,7 @@
         "newest": "2026-11-05"
       },
       "nz-outdoors": {
-        "pages": 0,
+        "pages": 19,
         "newest": null
       },
       "vision-nz": {
