@@ -351,7 +351,7 @@
     "economy": [
       {
         "url": "https://www.act.org.nz/",
-        "title": "ACT Plan to Unlock New Zealand's Potential"
+        "title": "ACT Party plan including KiwiSaver tax removal and other policies"
       },
       {
         "url": "https://www.act.org.nz/policies/economy",
@@ -403,7 +403,7 @@
     "crime-justice": [
       {
         "url": "https://alcp.org.nz/",
-        "title": "ALCP Cannabis Legalisation Policy"
+        "title": "ALCP cannabis legalisation and regulation policy"
       },
       {
         "url": "https://alcp.org.nz/policy",
@@ -529,35 +529,35 @@
     "economy": [
       {
         "url": "https://allianceparty.nz/alliance-52-weeks-paid-parental-leave-gender-equality/",
-        "title": "Alliance gender equality policy: 52 weeks paid parental leave"
+        "title": "Alliance 52 weeks paid parental leave and gender equality policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-full-employment-35-hour-week-workers-rights-policy/",
-        "title": "Alliance workers' rights policy: full employment and 35-hour week"
+        "title": "Full employment, 35-hour week and workers' rights"
       },
       {
         "url": "https://allianceparty.nz/alliance-monetary-currency-policy/",
-        "title": "Alliance Monetary and Currency Policy"
+        "title": "Alliance monetary and currency policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-national-transport-strategy/",
-        "title": "Alliance national transport strategy"
+        "title": "National integrated transport strategy"
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-eliminate-child-poverty/",
-        "title": "Alliance Plan to Eliminate Child Poverty"
+        "title": "Alliance plan to eliminate child poverty"
       },
       {
         "url": "https://allianceparty.nz/alliance-plan-to-rebuild-universal-social-security/",
-        "title": "Alliance plan to rebuild universal social security"
+        "title": "Alliance universal social security and welfare policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-public-ownership-economic-democracy-policy/",
-        "title": "Alliance Public Ownership and Economic Democracy Policy"
+        "title": "Alliance public ownership and reverse privatisation policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-retirement-aged-care-kiwisaver-policy/",
-        "title": "Alliance Retirement, Aged Care and KiwiSaver Policy"
+        "title": "Alliance retirement, aged care and KiwiSaver policy"
       },
       {
         "url": "https://allianceparty.nz/alliance-small-business-local-enterprise-cooperatives/",
@@ -565,47 +565,47 @@
       },
       {
         "url": "https://allianceparty.nz/alliance-tax-plan-first-20000-income-tax-free/",
-        "title": "Alliance tax plan: first $20,000 income tax-free"
+        "title": "$20,000 income tax-free threshold funded by wealth tax"
       }
     ],
     "health": [
       {
         "url": "https://allianceparty.nz/alliance-health-policy-free-gp-dental-optical-audiology/",
-        "title": "Alliance health policy: free GP, dental, optical and audiology"
+        "title": "Free GP, dental, optical and audiology services"
       }
     ],
     "environment": [
       {
         "url": "https://allianceparty.nz/alliance-environment-climate-sustainable-economy-policy/",
-        "title": "Alliance environment and climate just transition policy"
+        "title": "Just transition: environment, climate and sustainable economy"
       }
     ],
     "crime-justice": [
       {
         "url": "https://allianceparty.nz/alliance-justice-policy-three-strikes-into-treatment/",
-        "title": "Alliance justice policy: three strikes into treatment"
+        "title": "Alliance justice policy"
       }
     ],
     "housing": [
       {
         "url": "https://allianceparty.nz/the-right-to-a-roof-alliance-housing-policy/",
-        "title": "Alliance housing policy: right to a roof"
+        "title": "Alliance housing policy"
       }
     ],
     "democracy-government": [
       {
         "url": "https://allianceparty.nz/alliance-te-tiriti-democracy-constitutional-policy/",
-        "title": "Alliance Te Tiriti, Democracy and Constitutional Policy"
+        "title": "Alliance Te Tiriti, democracy and constitutional policy"
       }
     ],
     "foreign-policy": [
       {
         "url": "https://allianceparty.nz/alliance-foreign-affairs-defence-international-relations-policy/",
-        "title": "Alliance Foreign Affairs, Defence and International Relations Policy"
+        "title": "Alliance foreign affairs, defence and international relations policy"
       },
       {
         "url": "https://allianceparty.nz/open-not-owned-alliance-trade-policy/",
-        "title": "Alliance Trade Policy"
+        "title": "Alliance trade policy"
       }
     ]
   },
@@ -694,7 +694,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-08",
+    "lastRun": "2026-11-09",
     "parties": 10,
     "policyPages": 145,
     "blind": [
@@ -702,12 +702,11 @@
       "nzfirst",
       "tpm",
       "top",
-      "alcp",
       "nz-outdoors"
     ],
     "perParty": {
       "green": {
-        "pages": 79,
+        "pages": 1,
         "newest": null
       },
       "national": {
@@ -720,23 +719,23 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-11-07"
+        "newest": "2026-11-09"
       },
       "nzfirst": {
-        "pages": 14,
+        "pages": 0,
         "newest": null
       },
       "tpm": {
-        "pages": 30,
+        "pages": 1,
         "newest": null
       },
       "top": {
-        "pages": 24,
+        "pages": 1,
         "newest": null
       },
       "alcp": {
         "pages": 10,
-        "newest": "2026-11-03"
+        "newest": "2026-11-09"
       },
       "animal-justice": {
         "pages": 27,
@@ -747,7 +746,7 @@
         "newest": "2026-11-05"
       },
       "nz-outdoors": {
-        "pages": 19,
+        "pages": 0,
         "newest": null
       },
       "vision-nz": {
@@ -756,7 +755,7 @@
       },
       "alliance": {
         "pages": 23,
-        "newest": "2026-11-04"
+        "newest": "2026-11-09"
       },
       "free-palestine": {
         "pages": 0,
