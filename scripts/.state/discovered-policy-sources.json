@@ -628,12 +628,8 @@
         "title": "Women's Rights Party Priorities"
       },
       {
-        "url": "https://womensrightsparty.nz/policy-proposal/advocating-for-women/",
-        "title": "Advocating for Women's Sex-Based Rights"
-      },
-      {
         "url": "https://womensrightsparty.nz/policy-proposal/human-rights-act/",
-        "title": "Oppose Gender Identity in Human Rights Act"
+        "title": "Opposition to Gender Identity in Human Rights Act"
       }
     ],
     "health": [
@@ -647,7 +643,7 @@
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/working-for-families-reform/",
-        "title": "Working for Families reform and support for mothers and children"
+        "title": "Caring for Mothers and Children – Working for Families Reform"
       }
     ],
     "education": [
@@ -663,7 +659,7 @@
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/prostitution/",
-        "title": "Prostitution Reform — Nordic Model"
+        "title": "Prostitution Reform – Equality Model"
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/rough-sex-murder-defence/",
@@ -673,30 +669,30 @@
     "environment": [
       {
         "url": "https://womensrightsparty.nz/policy-proposal/environmental/",
-        "title": "Environmental Policy — Right to Clean Natural Environment"
+        "title": "Environmental Policy and Women's Voices"
       }
     ],
     "foreign-policy": [
       {
         "url": "https://womensrightsparty.nz/policy-proposal/international/",
-        "title": "International Policy on Women's Rights in Conflict"
+        "title": "International Women's Rights Policy"
       }
     ],
     "economy": [
       {
         "url": "https://womensrightsparty.nz/policy-proposal/financial-stability-for-women-in-older-age/",
-        "title": "Financial stability for older women"
+        "title": "Financial Stability for Women in Older Age"
       },
       {
         "url": "https://womensrightsparty.nz/policy-proposal/pay-equity/",
-        "title": "Pay equity for women workers"
+        "title": "Pay Equity for Women Workers"
       }
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-09",
+    "lastRun": "2026-11-10",
     "parties": 10,
-    "policyPages": 145,
+    "policyPages": 144,
     "blind": [
       "green",
       "nzfirst",
@@ -706,12 +702,12 @@
     ],
     "perParty": {
       "green": {
-        "pages": 1,
+        "pages": 80,
         "newest": null
       },
       "national": {
-        "pages": 97,
-        "newest": "2026-11-07"
+        "pages": 48,
+        "newest": "2026-11-10"
       },
       "labour": {
         "pages": 57,
@@ -722,19 +718,19 @@
         "newest": "2026-11-09"
       },
       "nzfirst": {
-        "pages": 0,
+        "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 1,
+        "pages": 31,
         "newest": null
       },
       "top": {
-        "pages": 1,
+        "pages": 25,
         "newest": null
       },
       "alcp": {
-        "pages": 10,
+        "pages": 9,
         "newest": "2026-11-09"
       },
       "animal-justice": {
@@ -746,7 +742,7 @@
         "newest": "2026-11-05"
       },
       "nz-outdoors": {
-        "pages": 0,
+        "pages": 19,
         "newest": null
       },
       "vision-nz": {
@@ -771,7 +767,7 @@
       },
       "womens-rights": {
         "pages": 19,
-        "newest": "2026-10-29"
+        "newest": "2026-11-10"
       }
     }
   }
