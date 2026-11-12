@@ -350,10 +350,6 @@
   "act": {
     "economy": [
       {
-        "url": "https://www.act.org.nz/",
-        "title": "ACT Party plan including KiwiSaver tax removal and other policies"
-      },
-      {
         "url": "https://www.act.org.nz/policies/economy",
         "title": "ACT Economy and Cost of Living Policy"
       }
@@ -690,9 +686,9 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-12",
+    "lastRun": "2026-11-13",
     "parties": 10,
-    "policyPages": 144,
+    "policyPages": 143,
     "blind": [
       "green",
       "nzfirst",
@@ -702,11 +698,11 @@
     ],
     "perParty": {
       "green": {
-        "pages": 1,
+        "pages": 80,
         "newest": null
       },
       "national": {
-        "pages": 97,
+        "pages": 48,
         "newest": "2026-11-11"
       },
       "labour": {
@@ -715,22 +711,22 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-11-09"
+        "newest": "2026-11-13"
       },
       "nzfirst": {
-        "pages": 0,
+        "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 1,
+        "pages": 31,
         "newest": null
       },
       "top": {
-        "pages": 1,
+        "pages": 25,
         "newest": null
       },
       "alcp": {
-        "pages": 10,
+        "pages": 9,
         "newest": "2026-11-12"
       },
       "animal-justice": {
@@ -742,7 +738,7 @@
         "newest": "2026-11-11"
       },
       "nz-outdoors": {
-        "pages": 0,
+        "pages": 19,
         "newest": null
       },
       "vision-nz": {
