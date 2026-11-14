@@ -526,7 +526,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Justice",
-        "count": 309
+        "count": 305
       },
       {
         "minister": "Minister for the Public Service and Digitising Government",
@@ -545,47 +545,39 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 211
       },
       {
-        "minister": "Prime Minister",
+        "minister": "Minister for Māori Development",
         "count": 205
       },
       {
-        "minister": "Minister for Māori Development",
-        "count": 202
+        "minister": "Prime Minister",
+        "count": 205
       },
       {
         "minister": "Minister of Conservation",
         "count": 199
       },
       {
+        "minister": "Minister of Education",
+        "count": 198
+      },
+      {
+        "minister": "Minister of Finance",
+        "count": 197
+      },
+      {
         "minister": "Minister for Regulation",
         "count": 197
       },
       {
-        "minister": "Minister of Finance",
-        "count": 196
+        "minister": "Minister of Housing",
+        "count": 195
       },
       {
-        "minister": "Minister of Education",
+        "minister": "Minister for Social Investment",
         "count": 195
       },
       {
         "minister": "Minister for Pacific Peoples",
-        "count": 194
-      },
-      {
-        "minister": "Minister for Women",
-        "count": 194
-      },
-      {
-        "minister": "Minister for Social Investment",
-        "count": 194
-      },
-      {
-        "minister": "Minister of Internal Affairs",
-        "count": 193
-      },
-      {
-        "minister": "Minister of Housing",
         "count": 193
       },
       {
@@ -597,12 +589,20 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 193
       },
       {
-        "minister": "Minister of Corrections",
+        "minister": "Minister for Women",
         "count": 192
+      },
+      {
+        "minister": "Minister of Internal Affairs",
+        "count": 191
       },
       {
         "minister": "Minister for Arts, Culture and Heritage",
         "count": 190
+      },
+      {
+        "minister": "Minister for Rail",
+        "count": 189
       },
       {
         "minister": "Minister of Agriculture",
@@ -621,7 +621,19 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 187
       },
       {
-        "minister": "Minister for Rail",
+        "minister": "Minister of Defence",
+        "count": 187
+      },
+      {
+        "minister": "Minister of Corrections",
+        "count": 186
+      },
+      {
+        "minister": "Minister for Whānau Ora",
+        "count": 186
+      },
+      {
+        "minister": "Minister for Infrastructure",
         "count": 186
       },
       {
@@ -629,20 +641,16 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 186
       },
       {
-        "minister": "Minister of Defence",
+        "minister": "Minister for Economic Growth",
+        "count": 185
+      },
+      {
+        "minister": "Minister for Children",
         "count": 185
       },
       {
         "minister": "Minister for Sport and Recreation",
         "count": 185
-      },
-      {
-        "minister": "Minister for Children",
-        "count": 184
-      },
-      {
-        "minister": "Minister for Whānau Ora",
-        "count": 184
       },
       {
         "minister": "Minister of Foreign Affairs",
@@ -653,10 +661,6 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 184
       },
       {
-        "minister": "Minister for Economic Growth",
-        "count": 183
-      },
-      {
         "minister": "Minister of Climate Change",
         "count": 183
       },
@@ -665,16 +669,8 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 183
       },
       {
-        "minister": "Minister for Infrastructure",
-        "count": 182
-      },
-      {
         "minister": "Minister of Revenue",
         "count": 175
-      },
-      {
-        "minister": "Minister of Police",
-        "count": 173
       },
       {
         "minister": "Minister of Statistics",
@@ -689,12 +685,12 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 171
       },
       {
-        "minister": "Minister for Ethnic Communities",
-        "count": 164
+        "minister": "Minister of Police",
+        "count": 171
       },
       {
-        "minister": "Attorney-General",
-        "count": 162
+        "minister": "Minister for Ethnic Communities",
+        "count": 169
       },
       {
         "minister": "Minister for Youth",
@@ -705,16 +701,20 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 161
       },
       {
+        "minister": "Attorney-General",
+        "count": 160
+      },
+      {
         "minister": "Minister for Courts",
-        "count": 148
+        "count": 146
       },
       {
         "minister": "Minister for Veterans",
-        "count": 143
+        "count": 142
       },
       {
         "minister": "Minister for Seniors",
-        "count": 142
+        "count": 133
       },
       {
         "minister": "Associate Minister of Justice",
@@ -729,6 +729,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 124
       },
       {
+        "minister": "Minister for Racing",
+        "count": 117
+      },
+      {
         "minister": "Minister of Science, Innovation and Technology",
         "count": 117
       },
@@ -737,15 +741,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 114
       },
       {
-        "minister": "Minister for Regional Development",
-        "count": 114
-      },
-      {
-        "minister": "Minister for Racing",
-        "count": 113
-      },
-      {
         "minister": "Minister for the Community and Voluntary Sector",
+        "count": 112
+      },
+      {
+        "minister": "Minister for Regional Development",
         "count": 112
       },
       {
@@ -2529,11 +2529,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 45
       },
       {
-        "minister": "Minister for Māori Development",
+        "minister": "Minister for Oceans and Fisheries",
         "count": 45
       },
       {
-        "minister": "Minister for Oceans and Fisheries",
+        "minister": "Minister for Māori Development",
         "count": 45
       },
       {
@@ -10567,13 +10567,13 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
     ],
     "recent": [
       {
-        "minister": "Minister for Energy",
+        "minister": "Associate Minister for Energy",
         "date": "2026-09-14",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 7 September 2026, by title and date?",
         "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"
       },
       {
-        "minister": "Associate Minister for Energy",
+        "minister": "Minister for Energy",
         "date": "2026-09-14",
         "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 7 September 2026, by title and date?",
         "reply": "With the exception of Cabinet Appointments and Honours (APH) papers and minutes, all Cabinet and Cabinet committee papers and minutes must be proactively released and published online within 30 business days of final decisions being taken by Cabinet, unless there is good reason not to publish all or part of the material, or to delay the release beyond 30 business days. It is my view that the application of additional resources to answer this and similar questions now is not a good use of taxpaye…"

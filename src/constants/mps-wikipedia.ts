@@ -49,11 +49,11 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Dan_Bidois"
   },
   "chris-bishop": {
-    "bio": "Christopher Bishop is a New Zealand politician for the National Party. He was first elected to the New Zealand House of Representatives in 2014 as a list MP. Bishop won the Hutt South electorate in 2017 but lost the seat in 2020. He returned to Parliament as a National list MP and served as National spokesperson for Housing and Infrastructure and was the Shadow Leader of the House.",
+    "bio": "Christopher John Stuart Bishop is a New Zealand politician and a member of the National Party. First elected to the New Zealand House of Representatives in 2014 as a list MP, Bishop won the Hutt South electorate in 2017 but lost the seat in 2020. He returned to Parliament as a National list MP in 2020 and served as National spokesperson for Housing and Infrastructure and as the Shadow Leader of the House.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Chris_Bishop"
   },
   "rachel-boyack": {
-    "bio": "Rachel Elizabeth Boyack-Mayer is a New Zealand unionist and politician. Since 2020, she has been a Member of Parliament for the Labour Party.",
+    "bio": "Rachel Elizabeth Boyack-Mayer is a New Zealand unionist and politician. She served as member of parliament (MP) for Nelson from 2020 to 2026, representing the Labour Party.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Rachel_Boyack"
   },
   "cameron-brewer": {
@@ -89,7 +89,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Kahurangi_Carter"
   },
   "carlos-cheung": {
-    "bio": "Chun Ho Carlos Cheung is a New Zealand politician. He was elected as a Member of the New Zealand House of Representatives for Mount Roskill, representing the National Party, in the 2023 New Zealand general election. Cheung has worked as a medical researcher and owned two property management companies.",
+    "bio": "Chun Ho Carlos Cheung is a New Zealand politician. He was elected as a Member of the New Zealand House of Representatives for Mount Roskill, representing the National Party, in the 2023 New Zealand general election. Cheung has worked as a medical researcher and owned two property management companies. During the 2026 New Zealand general election, Cheung was unseated after no National list MPs were elected into Parliament via the party vote.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Carlos_Cheung"
   },
   "karen-chhour": {
@@ -145,7 +145,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Paulo_Garcia_(New_Zealand_politician)"
   },
   "julie-anne-genter": {
-    "bio": "Julie Anne Genter is an American-born New Zealand politician. She has served as a Member of Parliament for the Green Party of Aotearoa New Zealand since 2011, first as a list member, and since 2023, for the Rongotai electorate. She served as the Minister for Women, Associate Minister for Health and Associate Minister for Transport during the first term of the Sixth Labour Government. She holds dual citizenship of New Zealand and the United States.",
+    "bio": "Julie Anne Genter is a New Zealand politician. She has served as a Member of Parliament for the Green Party of Aotearoa New Zealand since 2011, first as a list member, and since 2023, for the Rongotai electorate. She served as the Minister for Women, Associate Minister for Health and Associate Minister for Transport during the first term of the Sixth Labour Government. She holds dual citizenship of New Zealand and the United States.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Julie_Anne_Genter"
   },
   "paul-goldsmith": {
@@ -297,7 +297,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Tamatha_Paul"
   },
   "chris-penk": {
-    "bio": "Christopher Aidan Penk is a New Zealand politician who has been a member of Parliament in the House of Representatives with the National Party representing the western/northern Auckland electorates of Helensville and Kaipara ki Mahurangi since 2017.",
+    "bio": "Christopher Aidan Penk is a New Zealand politician who was a member of Parliament in the House of Representatives with the National Party representing the western/northern Auckland electorates of Helensville and Kaipara ki Mahurangi from 2017 to 2026.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Chris_Penk"
   },
   "winston-peters": {
@@ -385,7 +385,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Chl%C3%B6e_Swarbrick"
   },
   "cushla-tangaere-manuel": {
-    "bio": "Cushla Tangaere-Manuel is a New Zealand politician and Member of Parliament in the House of Representatives for the Labour Party. She represents the Ikaroa-Rāwhiti electorate and was first elected at the 2023 general election. Prior to entering parliament, Tangaere-Manuel worked as a broadcaster for TVNZ and Whakaata Māori, and as a sports administrator.",
+    "bio": "Cushla Tangaere-Manuel is a New Zealand politician and member of Parliament in the House of Representatives for the Labour Party. She represents the Ikaroa-Rāwhiti electorate and was first elected at the 2023 general election. Prior to entering parliament, Tangaere-Manuel worked as a broadcaster for TVNZ and Whakaata Māori, and as a sports administrator.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Cushla_Tangaere-Manuel"
   },
   "jan-tinetti": {
@@ -449,7 +449,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Catherine_Wedd"
   },
   "vanessa-weenink": {
-    "bio": "Vanessa Joan Weenink is a New Zealand politician. She was elected as a Member of the New Zealand House of Representatives for Banks Peninsula, representing the National Party, in the 2023 New Zealand general election. She is a doctor by training.",
+    "bio": "Vanessa Joan Weenink is a New Zealand politician. She was elected as a Member of the New Zealand House of Representatives for Banks Peninsula, representing the National Party, in the 2023 New Zealand general election. She served one term, having been defeated in the 2026 general election. She is a doctor by training.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Vanessa_Weenink"
   },
   "helen-white": {
@@ -461,7 +461,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Arena_Williams"
   },
   "nicola-willis": {
-    "bio": "Nicola Valentine Willis is a New Zealand politician who has been deputy leader of the National Party since 2021. She is also the Minister of Finance, the Minister for Social Investment, the Minister for Economic Growth, and was also the Minister for the Public Services in the Sixth National Government.",
+    "bio": "Nicola Valentine Willis is a New Zealand politician who was a list MP for the New Zealand National Party from 2018 to 2026, and served as deputy leader of the party since 2021. She is also the minister of finance, the minister for social investment, the minister for economic growth, and is the minister for the public services in the Sixth National Government.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Nicola_Willis"
   },
   "scott-willis": {
@@ -469,7 +469,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Scott_Willis_(politician)"
   },
   "megan-woods": {
-    "bio": "Megan Cherie Woods is a New Zealand Labour Party politician who served as a Cabinet Minister in the Sixth Labour Government and has served as Member of Parliament for Wigram since 2011.",
+    "bio": "Megan Cherie Woods is a New Zealand Labour Party politician who served as a Cabinet minister in the Sixth Labour Government and has served as member of Parliament for Wigram since 2011.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Megan_Woods"
   },
   "lawrence-xu-nan": {
