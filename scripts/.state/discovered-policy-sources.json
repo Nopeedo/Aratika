@@ -617,7 +617,7 @@
     "environment": [
       {
         "url": "https://www.act.org.nz/policies/hunting",
-        "title": "ACT Hunting, Conservation & Firearms Policy"
+        "title": "Hunting, Conservation & Firearms Policy"
       },
       {
         "url": "https://www.act.org.nz/policies/rural",
@@ -1298,15 +1298,19 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-17",
+    "lastRun": "2026-11-18",
     "parties": 14,
     "policyPages": 275,
     "blind": [
+      "green",
+      "nzfirst",
+      "tpm",
+      "top",
       "nz-outdoors"
     ],
     "perParty": {
       "green": {
-        "pages": 85,
+        "pages": 86,
         "newest": "2026-11-17"
       },
       "national": {
@@ -1319,22 +1323,22 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-11-13"
+        "newest": "2026-11-18"
       },
       "nzfirst": {
         "pages": 53,
         "newest": "2026-11-17"
       },
       "tpm": {
-        "pages": 32,
+        "pages": 33,
         "newest": "2026-11-17"
       },
       "top": {
-        "pages": 27,
+        "pages": 28,
         "newest": "2026-11-17"
       },
       "alcp": {
-        "pages": 9,
+        "pages": 10,
         "newest": "2026-11-12"
       },
       "animal-justice": {
@@ -1346,7 +1350,7 @@
         "newest": "2026-11-11"
       },
       "nz-outdoors": {
-        "pages": 19,
+        "pages": 0,
         "newest": null
       },
       "vision-nz": {
