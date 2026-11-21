@@ -65,7 +65,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Rachel_Brooking"
   },
   "simeon-brown": {
-    "bio": "Simeon Peter Brown is a New Zealand politician and Member of Parliament in the House of Representatives for the National Party. Following the 2023 general election, Brown became Minister of Energy, Minister of Local Government, Minister of Transport, Minister for Auckland, and Deputy leader of the House in the Sixth National Government. In January 2025, he was appointed as Minister of Health and Minister for State Owned Enterprises, while dropping his energy, local government and transport portfolios. In April 2026, Brown regained his energy portfolio and became the National Party's campaign…",
+    "bio": "Simeon Peter Brown is a New Zealand politician and member of Parliament (MP) for the National Party. He has served in the Sixth National Government since 2023, currently holding the portfolios of minister of health, minister for state owned enterprises, and minister of energy.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Simeon_Brown"
   },
   "gerry-brownlee": {
@@ -85,7 +85,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Hamish_Campbell"
   },
   "kahurangi-carter": {
-    "bio": "Kahurangi Carter MP is a New Zealand politician. She has served as a list Member of Parliament for the Green Party of Aotearoa New Zealand since 2023. She is a candidate for the Christchurch Central electorate in the upcoming 2026 general election, and is ranked number 11 on the party list.",
+    "bio": "Kahurangi Carter MP is a New Zealand politician. She has served as a list Member of Parliament for the Green Party of Aotearoa New Zealand since 2023.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Kahurangi_Carter"
   },
   "carlos-cheung": {
@@ -125,7 +125,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Matt_Doocey"
   },
   "barbara-edmonds": {
-    "bio": "Barbara Rachael Fati Palepa Edmonds is a New Zealand politician. She was elected as the Member of the New Zealand Parliament for Mana, representing the Labour Party, in 2020. She served as the Minister of Internal Affairs, Minister for Pacific Peoples, Minister of Revenue and Minister for Economic Development in the final year of the Sixth Labour Government.",
+    "bio": "Barbara Rachael Fati Palepa Edmonds is a New Zealand politician. She was elected as the member of the New Zealand Parliament for Mana, representing the Labour Party, in 2020. She served as the minister of internal affairs, minister for Pacific Peoples, minister of revenue and minister for economic development in the final year of the Sixth Labour Government.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Barbara_Edmonds"
   },
   "takuta-ferris": {
@@ -201,7 +201,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Ingrid_Leary"
   },
   "melissa-lee": {
-    "bio": "Melissa Ji-Yun Lee is a New Zealand politician. She was elected to the House of Representatives as a list MP for the National Party in the 2008 election. She served as the 11th Minister for Economic Development and 2nd Minister for Ethnic Communities from November 2023 to January 2025. She also served as the 28th Minister for Media and Communications from November 2023 to April 2024.",
+    "bio": "Melissa Ji-Yun Lee is a New Zealand politician. She was elected to the House of Representatives as a list MP for the National Party in the 2008 general election. She served as the 11th Minister for Economic Development and 2nd Minister for Ethnic Communities from November 2023 to January 2025. She also served as the 28th Minister for Media and Communications from November 2023 to April 2024. During the 2026 general election, Lee was unseated after no National list MPs were elected to Parliament via the party list.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Melissa_Lee"
   },
   "nancy-lu": {
@@ -217,7 +217,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Jo_Luxton"
   },
   "huhana-lyndon": {
-    "bio": "Hūhana Melanie Lyndon MP is a New Zealand politician. She has served as a list Member of Parliament for the Green Party of Aotearoa New Zealand since 2023. She is a candidate for the Te Tai Tokerau Māori electorate in the upcoming 2026 general election, and is ranked number 7 on the party list.",
+    "bio": "Hūhana Melanie Lyndon MP is a New Zealand politician. She has served as a Member of Parliament for the Green Party of Aotearoa New Zealand since 2023.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/H%C5%ABhana_Lyndon"
   },
   "david-macleod": {
@@ -249,7 +249,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Laura_McClure"
   },
   "nicole-mckee": {
-    "bio": "Nicole Raima McKee is a New Zealand politician. She has been a Member of Parliament for ACT New Zealand since the 2020 general election. She currently serves as the 12th Minister for Courts and Associate Minister of Justice (Firearms).",
+    "bio": "Nicole Raima McKee is a New Zealand politician. She has been a Member of Parliament for ACT New Zealand since the 2020 general election, and Deputy Leader since June 2026. She currently serves as the 12th Minister for Courts and Associate Minister of Justice (Firearms).",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Nicole_McKee"
   },
   "tracey-mclellan": {
@@ -293,7 +293,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Mark_Patterson_(New_Zealand_politician)"
   },
   "tamatha-paul": {
-    "bio": "Tamatha-Kaye Erin Paul is a New Zealand activist and Green Party politician who has served as the Member of Parliament for Wellington Central since 2023.",
+    "bio": "Tamatha-Kaye Erin Paul is a New Zealand activist and Green Party politician. She has been a Member of Parliament in the House of Representatives for the Wellington North electorate since 2023.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Tamatha_Paul"
   },
   "chris-penk": {
@@ -305,7 +305,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Winston_Peters"
   },
   "lan-pham": {
-    "bio": "Ngoc-Lan Thi Pham MP is a New Zealand politician and ecologist. She has served as a list Member of Parliament for the Green Party of Aotearoa New Zealand since 2023. She previously served as a regional councillor for Environment Canterbury from 2016 to 2022. She is a candidate for the Kenepuru electorate in the upcoming 2026 general election, and is ranked number 6 on the party list.",
+    "bio": "Ngoc-Lan Thi Pham MP is a New Zealand politician and ecologist. She has served as a list Member of Parliament for the Green Party of Aotearoa New Zealand since 2023. She previously served as a regional councillor for Environment Canterbury from 2016 to 2022.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Lan_Pham"
   },
   "tama-potaka": {
@@ -381,7 +381,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Todd_Stephenson"
   },
   "chle-swarbrick": {
-    "bio": "Chlöe Charlotte Swarbrick is a New Zealand politician who has served as a Member of Parliament since 2017 and as co-leader of the Green Party of Aotearoa New Zealand since 2024.",
+    "bio": "Chlöe Charlotte Swarbrick is a New Zealand politician. She has been a Member of Parliament in the House of Representatives since 2017, and has served as co-leader of the Green Party of Aotearoa New Zealand since 2024.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Chl%C3%B6e_Swarbrick"
   },
   "cushla-tangaere-manuel": {
@@ -473,7 +473,7 @@ export const MP_WIKI: Record<string, { bio: string; wikipediaUrl: string }> = {
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Megan_Woods"
   },
   "lawrence-xu-nan": {
-    "bio": "Lawrence Xi Xu-Nan is a New Zealand politician and member of parliament in the New Zealand House of Representatives for the Green Party.",
+    "bio": "Lawrence Xi Xu-Nan is a New Zealand politician and member of Parliament (MP). He has served as a list MP for the Green Party since 2024.",
     "wikipediaUrl": "https://en.wikipedia.org/wiki/Lawrence_Xu-Nan"
   }
 }

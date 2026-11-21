@@ -526,7 +526,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister of Justice",
-        "count": 305
+        "count": 307
       },
       {
         "minister": "Minister for the Public Service and Digitising Government",
@@ -545,23 +545,23 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 211
       },
       {
-        "minister": "Minister for Māori Development",
+        "minister": "Prime Minister",
         "count": 205
       },
       {
-        "minister": "Prime Minister",
-        "count": 205
+        "minister": "Minister for Māori Development",
+        "count": 202
       },
       {
         "minister": "Minister of Conservation",
         "count": 199
       },
       {
-        "minister": "Minister of Education",
-        "count": 198
+        "minister": "Minister of Housing",
+        "count": 197
       },
       {
-        "minister": "Minister of Finance",
+        "minister": "Minister of Education",
         "count": 197
       },
       {
@@ -569,16 +569,12 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 197
       },
       {
-        "minister": "Minister of Housing",
-        "count": 195
+        "minister": "Minister of Finance",
+        "count": 196
       },
       {
         "minister": "Minister for Social Investment",
-        "count": 195
-      },
-      {
-        "minister": "Minister for Pacific Peoples",
-        "count": 193
+        "count": 196
       },
       {
         "minister": "Minister for the Environment",
@@ -589,6 +585,10 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 193
       },
       {
+        "minister": "Minister for Pacific Peoples",
+        "count": 192
+      },
+      {
         "minister": "Minister for Women",
         "count": 192
       },
@@ -597,11 +597,15 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 191
       },
       {
+        "minister": "Minister for Infrastructure",
+        "count": 190
+      },
+      {
         "minister": "Minister for Arts, Culture and Heritage",
         "count": 190
       },
       {
-        "minister": "Minister for Rail",
+        "minister": "Minister of Defence",
         "count": 189
       },
       {
@@ -621,11 +625,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 187
       },
       {
-        "minister": "Minister of Defence",
-        "count": 187
+        "minister": "Minister of Corrections",
+        "count": 186
       },
       {
-        "minister": "Minister of Corrections",
+        "minister": "Minister for Children",
         "count": 186
       },
       {
@@ -633,7 +637,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 186
       },
       {
-        "minister": "Minister for Infrastructure",
+        "minister": "Minister of Foreign Affairs",
         "count": 186
       },
       {
@@ -645,15 +649,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 185
       },
       {
-        "minister": "Minister for Children",
-        "count": 185
-      },
-      {
         "minister": "Minister for Sport and Recreation",
         "count": 185
       },
       {
-        "minister": "Minister of Foreign Affairs",
+        "minister": "Minister for Rail",
         "count": 184
       },
       {
@@ -690,7 +690,7 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Ethnic Communities",
-        "count": 169
+        "count": 170
       },
       {
         "minister": "Minister for Youth",
@@ -710,14 +710,14 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       },
       {
         "minister": "Minister for Veterans",
-        "count": 142
-      },
-      {
-        "minister": "Minister for Seniors",
-        "count": 133
+        "count": 143
       },
       {
         "minister": "Associate Minister of Justice",
+        "count": 132
+      },
+      {
+        "minister": "Minister for Seniors",
         "count": 132
       },
       {
@@ -729,16 +729,16 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 124
       },
       {
-        "minister": "Minister for Racing",
-        "count": 117
-      },
-      {
         "minister": "Minister of Science, Innovation and Technology",
         "count": 117
       },
       {
         "minister": "Lead Coordination Minister for the Government's Response to the Royal Commission’s Report into Historical Abuse in State Care and in the Care of Faith-based Institutions",
         "count": 114
+      },
+      {
+        "minister": "Minister for Racing",
+        "count": 113
       },
       {
         "minister": "Minister for the Community and Voluntary Sector",
@@ -2529,11 +2529,11 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
         "count": 45
       },
       {
-        "minister": "Minister for Oceans and Fisheries",
+        "minister": "Minister for Māori Development",
         "count": 45
       },
       {
-        "minister": "Minister for Māori Development",
+        "minister": "Minister for Oceans and Fisheries",
         "count": 45
       },
       {
@@ -9287,14 +9287,14 @@ export const MP_WRITTEN_QUESTIONS: Record<string, MPWrittenQuestions> = {
       {
         "minister": "Associate Minister of Health",
         "date": "2026-09-14",
-        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 7 September 2026, listed by agency, title and date received?",
-        "reply": "Titles of all advice that I have received have been, or will be, proactively released on the Ministry of Health and Pharmac websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2019-2025 https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2026 https://pharmac.govt.nz/news-and-resources/official-information-act/list-of-ministerial-briefings"
+        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 7 September 2026, by title and date?",
+        "reply": "None."
       },
       {
         "minister": "Associate Minister of Health",
         "date": "2026-09-14",
-        "question": "What papers, if any, did the Minister take to Cabinet during the week beginning 7 September 2026, by title and date?",
-        "reply": "None."
+        "question": "What aides-mémoire, briefings, memos, notes, reports, or any other advice, if any, has the Minister or their Office received during the week beginning 7 September 2026, listed by agency, title and date received?",
+        "reply": "Titles of all advice that I have received have been, or will be, proactively released on the Ministry of Health and Pharmac websites: https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2019-2025 https://www.health.govt.nz/information-releases/lists-of-advice-provided-to-ministers-2026 https://pharmac.govt.nz/news-and-resources/official-information-act/list-of-ministerial-briefings"
       }
     ]
   },
