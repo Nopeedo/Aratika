@@ -1046,20 +1046,23 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-22",
+    "lastRun": "2026-11-23",
     "parties": 12,
     "policyPages": 223,
     "blind": [
-      "nz-outdoors",
-      "alliance"
+      "green",
+      "nzfirst",
+      "tpm",
+      "top",
+      "nz-outdoors"
     ],
     "perParty": {
       "green": {
-        "pages": 83,
+        "pages": 82,
         "newest": "2026-11-22"
       },
       "national": {
-        "pages": 48,
+        "pages": 97,
         "newest": "2026-11-21"
       },
       "labour": {
@@ -1075,11 +1078,11 @@
         "newest": "2026-11-22"
       },
       "tpm": {
-        "pages": 33,
+        "pages": 32,
         "newest": "2026-11-22"
       },
       "top": {
-        "pages": 27,
+        "pages": 26,
         "newest": "2026-11-22"
       },
       "alcp": {
