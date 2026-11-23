@@ -1046,7 +1046,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-23",
+    "lastRun": "2026-11-24",
     "parties": 12,
     "policyPages": 223,
     "blind": [
@@ -1054,11 +1054,12 @@
       "nzfirst",
       "tpm",
       "top",
-      "nz-outdoors"
+      "nz-outdoors",
+      "alliance"
     ],
     "perParty": {
       "green": {
-        "pages": 82,
+        "pages": 83,
         "newest": "2026-11-22"
       },
       "national": {
@@ -1071,22 +1072,22 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-11-18"
+        "newest": "2026-11-24"
       },
       "nzfirst": {
         "pages": 53,
         "newest": "2026-11-22"
       },
       "tpm": {
-        "pages": 32,
+        "pages": 33,
         "newest": "2026-11-22"
       },
       "top": {
-        "pages": 26,
+        "pages": 27,
         "newest": "2026-11-22"
       },
       "alcp": {
-        "pages": 9,
+        "pages": 10,
         "newest": "2026-11-20"
       },
       "animal-justice": {
@@ -1098,7 +1099,7 @@
         "newest": "2026-11-11"
       },
       "nz-outdoors": {
-        "pages": 19,
+        "pages": 0,
         "newest": null
       },
       "vision-nz": {
