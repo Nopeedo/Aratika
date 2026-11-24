@@ -1,236 +1,4 @@
 {
-  "green": {
-    "democracy-government": [
-      {
-        "url": "https://www.greens.org.nz/digital_policy",
-        "title": "Green Party Digital Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/governance_policy",
-        "title": "Green Party Governance Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/human_rights_policy",
-        "title": "Green Party Human Rights Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/manifesto_2026",
-        "title": "Green Party Manifesto 2026"
-      },
-      {
-        "url": "https://www.greens.org.nz/media_policy",
-        "title": "Green Party Media Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/womens_policy",
-        "title": "Green Party Women's Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/youth_policy",
-        "title": "Green Party Youth Policy"
-      }
-    ],
-    "treaty-maori-affairs": [
-      {
-        "url": "https://www.greens.org.nz/te_tiriti_o_waitangi",
-        "title": "Te Tiriti o Waitangi Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/te_tiriti_policy",
-        "title": "Green Party Te Tiriti o Waitangi Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/te_waonui_a_taane_nav",
-        "title": "Te Waonui a Tāne – Marae funding and support policy"
-      }
-    ],
-    "environment": [
-      {
-        "url": "https://www.greens.org.nz/agriculture_policy",
-        "title": "Agriculture Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/animal_welfare_policy",
-        "title": "Animal Welfare Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/biodiversity_environmental_regeneration_policy",
-        "title": "Biodiversity and Environmental Regeneration Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/emergency_management_policy",
-        "title": "Emergency Management Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/food_policy",
-        "title": "Food Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/forestry_policy",
-        "title": "Forestry Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/freshwater_policy",
-        "title": "Freshwater Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/land_use_and_soils_policy",
-        "title": "Land Use and Soils Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/marine_policy",
-        "title": "Marine Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/rural_communities_policy",
-        "title": "Green Party Rural Communities Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/tourism_policy",
-        "title": "Green Party Tourism Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/waste_and_hazardous_substances_policy",
-        "title": "Waste and Hazardous Substances Policy"
-      }
-    ],
-    "climate": [
-      {
-        "url": "https://www.greens.org.nz/climate_change_policy",
-        "title": "Climate Change Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/energy_policy",
-        "title": "Green Party Energy Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/transport_policy",
-        "title": "Green Party Transport Policy"
-      }
-    ],
-    "health": [
-      {
-        "url": "https://www.greens.org.nz/accident_compensation_policy",
-        "title": "Green Party Accident Compensation Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/children_policy",
-        "title": "Children's Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/disability_policy",
-        "title": "Disability Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/health_policy",
-        "title": "Green Party Health Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/rainbow_policy",
-        "title": "Green Party Rainbow Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/recreation_and_sports_policy",
-        "title": "Green Party Recreation and Sports Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/seniors_policy",
-        "title": "Green Party Seniors Policy"
-      }
-    ],
-    "immigration": [
-      {
-        "url": "https://www.greens.org.nz/communities_of_colour_policy",
-        "title": "Communities of Colour Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/immigration_policy",
-        "title": "Green Party Immigration Policy"
-      }
-    ],
-    "foreign-policy": [
-      {
-        "url": "https://www.greens.org.nz/global_affairs_policy",
-        "title": "Green Party Global Affairs Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/overseas_new_zealanders_policy",
-        "title": "Overseas New Zealanders Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/security_and_defence_policy",
-        "title": "Green Party Security and Defence Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/tagata_moana_policy",
-        "title": "Green Party Tagata Moana Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/trade_and_foreign_investment_policy",
-        "title": "Green Party Trade and Foreign Investment Policy"
-      }
-    ],
-    "crime-justice": [
-      {
-        "url": "https://www.greens.org.nz/drug_policy",
-        "title": "Green Party Drug Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/justice_policy",
-        "title": "Green Party Justice Policy"
-      }
-    ],
-    "education": [
-      {
-        "url": "https://www.greens.org.nz/education_policy",
-        "title": "Green Party Education Policy"
-      }
-    ],
-    "housing": [
-      {
-        "url": "https://www.greens.org.nz/housing_policy",
-        "title": "Green Party Housing and Sustainable Communities Policy"
-      }
-    ],
-    "economy": [
-      {
-        "url": "https://www.greens.org.nz/arts_culture_and_heritage_policy",
-        "title": "Green Party Arts, Culture and Heritage Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/business_policy",
-        "title": "Green Party Business Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/community_in_the_economy_policy",
-        "title": "Green Party Community in the Economy Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/fiscal_plan_redirect",
-        "title": "Green Party Fiscal Plan 2026"
-      },
-      {
-        "url": "https://www.greens.org.nz/government_in_the_economy_policy",
-        "title": "Green Party Government in the Economy Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/jobs_redirect",
-        "title": "Good Jobs for All of Us"
-      },
-      {
-        "url": "https://www.greens.org.nz/livelihoods_policy",
-        "title": "Green Party Livelihoods Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/research_science_and_technology_policy",
-        "title": "Green Party Research, Science and Technology Policy"
-      },
-      {
-        "url": "https://www.greens.org.nz/workforce_policy",
-        "title": "Green Party Workforce Policy"
-      }
-    ]
-  },
   "national": {
     "economy": [
       {
@@ -627,134 +395,6 @@
       }
     ]
   },
-  "nzfirst": {
-    "democracy-government": [
-      {
-        "url": "https://www.nzfirst.nz/citizens_only_voting",
-        "title": "Restrict voting rights to citizens only"
-      },
-      {
-        "url": "https://www.nzfirst.nz/establish-royal-commission-of-inquiry-into-media-bias-and-manipulation",
-        "title": "Royal Commission of Inquiry into media bias"
-      },
-      {
-        "url": "https://www.nzfirst.nz/petition_maori_seats_referendum",
-        "title": "Petition for binding referendum on Māori seats"
-      },
-      {
-        "url": "https://www.nzfirst.nz/referendum_on_maori_seats",
-        "title": "Referendum on Māori seats"
-      }
-    ],
-    "health": [
-      {
-        "url": "https://www.nzfirst.nz/removemandates",
-        "title": "Remove vaccine mandates for frontline health workers"
-      },
-      {
-        "url": "https://www.nzfirst.nz/the_plan_to_make_nz_healthy",
-        "title": "Make NZ Healthy: shift focus to preventive healthcare"
-      }
-    ],
-    "economy": [
-      {
-        "url": "https://www.nzfirst.nz/20_tax_rate_for_smes",
-        "title": "Lower company tax rate for SMEs to 20%"
-      },
-      {
-        "url": "https://www.nzfirst.nz/backing_a_new_zealand_owned_bank",
-        "title": "Buy back BNZ to create NZ-owned bank"
-      },
-      {
-        "url": "https://www.nzfirst.nz/break_up_the_supermarket_duopoly",
-        "title": "Break up supermarket duopoly"
-      },
-      {
-        "url": "https://www.nzfirst.nz/breaking_up_the_gentailers",
-        "title": "Break up electricity gentailers"
-      },
-      {
-        "url": "https://www.nzfirst.nz/complete_the_christ_church_cathedral",
-        "title": "Fund $15 million for Christchurch Cathedral rebuild"
-      },
-      {
-        "url": "https://www.nzfirst.nz/establishing_a_kiwisaver_generation",
-        "title": "Compulsory KiwiSaver enrolment from birth"
-      },
-      {
-        "url": "https://www.nzfirst.nz/establishing_a_special_economic_zone_at_marsden_point",
-        "title": "Establish Special Economic Zone at Marsden Point"
-      },
-      {
-        "url": "https://www.nzfirst.nz/future_proofing_our_fuel_security",
-        "title": "National Subsurface Development Survey for fuel security"
-      },
-      {
-        "url": "https://www.nzfirst.nz/increasing_working_for_families_and_minimum_wage",
-        "title": "Increase minimum wage and Working for Families"
-      },
-      {
-        "url": "https://www.nzfirst.nz/nz_super_for_citizens_only",
-        "title": "NZ Superannuation for citizens only"
-      },
-      {
-        "url": "https://www.nzfirst.nz/petition_reopen_marsden_point",
-        "title": "Reopen Marsden Point Refinery"
-      },
-      {
-        "url": "https://www.nzfirst.nz/returning_50_of_mining_royalties_to_the_regions",
-        "title": "Return 50% of mining royalties to regions"
-      },
-      {
-        "url": "https://www.nzfirst.nz/road-to-0-potholes",
-        "title": "Road to 0 Potholes – road maintenance petition"
-      },
-      {
-        "url": "https://www.nzfirst.nz/the_100bn_new_zealand_future_fund",
-        "title": "$100 billion New Zealand Future Fund for infrastructure"
-      },
-      {
-        "url": "https://www.nzfirst.nz/the_kiwi_kids_grant",
-        "title": "Kiwi Kids Grant for first three children"
-      },
-      {
-        "url": "https://www.nzfirst.nz/use_it_or_lose_it_dairy_policy",
-        "title": "Use It or Lose It dairy manufacturing policy"
-      }
-    ],
-    "crime-justice": [
-      {
-        "url": "https://www.nzfirst.nz/all-gangs-should-be-designated-terrorist-entities",
-        "title": "Designate all gangs as terrorist entities"
-      },
-      {
-        "url": "https://www.nzfirst.nz/ban_public_sales_of_fireworks",
-        "title": "Ban public sale and use of fireworks"
-      }
-    ],
-    "treaty-maori-affairs": [
-      {
-        "url": "https://www.nzfirst.nz/disestablish_auckland_s_independent_maori_statutory_board",
-        "title": "Disestablish Auckland's Independent Māori Statutory Board"
-      },
-      {
-        "url": "https://www.nzfirst.nz/ending_the_waitangi_makework_industry",
-        "title": "Abolish Waitangi Tribunal and end Treaty grievance industry"
-      }
-    ],
-    "foreign-policy": [
-      {
-        "url": "https://www.nzfirst.nz/withdraw_from_paris_accord",
-        "title": "Withdraw from the Paris Accord"
-      }
-    ],
-    "immigration": [
-      {
-        "url": "https://www.nzfirst.nz/immigration_reform_policies",
-        "title": "Sweeping immigration reform policies"
-      }
-    ]
-  },
   "alcp": {
     "crime-justice": [
       {
@@ -1046,24 +686,23 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-24",
-    "parties": 12,
-    "policyPages": 223,
+    "lastRun": "2026-11-25",
+    "parties": 10,
+    "policyPages": 143,
     "blind": [
       "green",
       "nzfirst",
       "tpm",
       "top",
-      "nz-outdoors",
-      "alliance"
+      "nz-outdoors"
     ],
     "perParty": {
       "green": {
-        "pages": 83,
-        "newest": "2026-11-22"
+        "pages": 1,
+        "newest": null
       },
       "national": {
-        "pages": 97,
+        "pages": 48,
         "newest": "2026-11-21"
       },
       "labour": {
@@ -1072,22 +711,22 @@
       },
       "act": {
         "pages": 11,
-        "newest": "2026-11-24"
+        "newest": "2026-11-25"
       },
       "nzfirst": {
-        "pages": 53,
-        "newest": "2026-11-22"
+        "pages": 0,
+        "newest": null
       },
       "tpm": {
-        "pages": 33,
-        "newest": "2026-11-22"
+        "pages": 1,
+        "newest": null
       },
       "top": {
-        "pages": 27,
-        "newest": "2026-11-22"
+        "pages": 1,
+        "newest": null
       },
       "alcp": {
-        "pages": 10,
+        "pages": 9,
         "newest": "2026-11-20"
       },
       "animal-justice": {
@@ -1099,7 +738,7 @@
         "newest": "2026-11-11"
       },
       "nz-outdoors": {
-        "pages": 0,
+        "pages": 19,
         "newest": null
       },
       "vision-nz": {
@@ -1124,7 +763,7 @@
       },
       "womens-rights": {
         "pages": 19,
-        "newest": "2026-11-10"
+        "newest": "2026-11-25"
       }
     }
   }
