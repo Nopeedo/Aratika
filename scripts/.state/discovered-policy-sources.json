@@ -686,7 +686,7 @@
     ]
   },
   "_meta": {
-    "lastRun": "2026-11-25",
+    "lastRun": "2026-11-26",
     "parties": 10,
     "policyPages": 143,
     "blind": [
@@ -698,11 +698,11 @@
     ],
     "perParty": {
       "green": {
-        "pages": 1,
+        "pages": 79,
         "newest": null
       },
       "national": {
-        "pages": 48,
+        "pages": 97,
         "newest": "2026-11-21"
       },
       "labour": {
@@ -714,15 +714,15 @@
         "newest": "2026-11-25"
       },
       "nzfirst": {
-        "pages": 0,
+        "pages": 14,
         "newest": null
       },
       "tpm": {
-        "pages": 1,
+        "pages": 30,
         "newest": null
       },
       "top": {
-        "pages": 1,
+        "pages": 24,
         "newest": null
       },
       "alcp": {
